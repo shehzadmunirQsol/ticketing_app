@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import layoutReducer from './reducers/layout';
+import adminLayoutReducer from './reducers/admin_layout';
 
 const store = configureStore({
   reducer: {
     layout: layoutReducer,
+    adminLayout: adminLayoutReducer,
   },
 });
 
