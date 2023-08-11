@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
+import Header from './header';
 
-function index() {
+type DefaultLayoutProps = { children: ReactNode };
+
+function index({ children }: DefaultLayoutProps) {
   return (
     <>
-      <header>My Header</header>
-      <div className="flex">
-        Sidebar
-        <div className="flex-1">Main content</div>
+      <div className="relative">
+        <Header />
+        <div className="w-screen">{children}</div>
       </div>
     </>
   );

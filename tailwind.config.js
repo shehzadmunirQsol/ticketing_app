@@ -36,6 +36,7 @@ module.exports = {
         white: '#FFFFFF',
         black: '#000000',
         grey: '#bbbdc1',
+        teal: '#23D2B3',
         background: '240 10% 3.9%',
         foreground: '0 0% 98%',
         card: '240 10% 3.9%',
