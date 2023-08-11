@@ -16,6 +16,7 @@ specifiers:
   '@trpc/react-query': ^10.17.0
   '@trpc/server': ^10.17.0
   '@types/node': ^18.7.20
+  '@types/nodemailer': ^6.4.9
   '@types/react': ^18.0.9
   '@typescript-eslint/eslint-plugin': ^5.47.0
   '@typescript-eslint/parser': ^5.47.0
@@ -31,6 +32,7 @@ specifiers:
   lucide-react: ^0.127.0
   next: ^13.2.1
   next-themes: ^0.2.1
+  nodemailer: ^6.9.4
   npm-run-all: ^4.1.5
   postcss: ^8.4.21
   prettier: ^2.7.1
@@ -68,6 +70,7 @@ dependencies:
   lucide-react: 0.127.0_react@18.2.0
   next: 13.2.1_biqbaboplfbrettd7655fr4n2y
   next-themes: 0.2.1_qgtcjgzkkjtbiyvnx7d32fl5vu
+  nodemailer: 6.9.4
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
   react-redux: 8.0.5_2zx2umvpluuhvlq44va5bta2da
@@ -79,6 +82,7 @@ dependencies:
 devDependencies:
   '@playwright/test': 1.28.1
   '@types/node': 18.7.20
+  '@types/nodemailer': 6.4.9
   '@types/react': 18.0.25
   '@typescript-eslint/eslint-plugin': 5.47.0_jhaguxqfxx2v4alxps2nzei754
   '@typescript-eslint/parser': 5.47.0_yvgxsonm4ikac5pm5z5getdq5e
@@ -1330,6 +1334,12 @@ packages:
 
   /@types/node/18.7.20:
     resolution: {integrity: sha512-adzY4vLLr5Uivmx8+zfSJ5fbdgKxX8UMtjtl+17n0B1q1Nz8JEmE151vefMdpD+1gyh+77weN4qEhej/O7budQ==}
+    dev: true
+
+  /@types/nodemailer/6.4.9:
+    resolution: {integrity: sha512-XYG8Gv+sHjaOtUpiuytahMy2mM3rectgroNbs6R3djZEKmPNiIJwe9KqOJBGzKKnNZNKvnuvmugBgpq3w/S0ig==}
+    dependencies:
+      '@types/node': 18.13.0
     dev: true
 
   /@types/prop-types/15.7.5:
@@ -3498,6 +3508,11 @@ packages:
   /node-releases/2.0.10:
     resolution: {integrity: sha512-5GFldHPXVG/YZmFzJvKK2zDSzPKhEp0+ZR5SVaoSag9fsL5YgHbUHDfnG5494ISANDcK4KwPXAx2xqVEydmd7w==}
     dev: true
+
+  /nodemailer/6.9.4:
+    resolution: {integrity: sha512-CXjQvrQZV4+6X5wP6ZIgdehJamI63MFoYFGGPtHudWym9qaEHDNdPzaj5bfMCvxG1vhAileSWW90q7nL0N36mA==}
+    engines: {node: '>=6.0.0'}
+    dev: false
 
   /normalize-package-data/2.5.0:
     resolution: {integrity: sha512-/5CMN3T0R4XTj4DcGaexo+roZSdSFW/0AOOTROrjxzCG1wrWXEsGbRKevjlIL+ZDE4sZlJr5ED4YW0yqmkK+eA==}
