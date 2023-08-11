@@ -43,14 +43,12 @@ function Header() {
   }
 
   return (
-    <div className="sticky top-0 flex bg-primary items-center bg-slate-300 dark:bg-black border-b border-color-brand-primary/50 justify-between py-2 px-5 shadow-sm">
+    <div className="sticky top-0 flex items-center bg-background border-b border-input justify-between py-2 px-4 shadow-sm">
       <Button onClick={toggleSidebarHandler} variant="outline" size="icon">
         <i className="fa-solid fa-bars" />
       </Button>
       <Image src={LogoImage} alt="Logo Image" width={150} height={140} />
-      <Button variant="outline" size="icon">
-        <i className="fa-solid fa-user" />
-      </Button>
+      <DropdownMenuDemo />
     </div>
   );
 }
@@ -61,7 +59,9 @@ export function DropdownMenuDemo() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline">Open</Button>
+        <Button variant="outline" size="icon">
+          <i className="fa-solid fa-user" />
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuLabel>My Account</DropdownMenuLabel>

@@ -68,14 +68,14 @@ export default function Sidebar() {
   }
 
   function routeHandler(item: { key: string; child: number | undefined }) {
-    if (!item?.child) router.push(item.key);
+    // if (!item?.child) router.push(item.key);
   }
 
   return (
     <div
       className={`${
         isSidebarOpen ? 'w-64' : 'w-20 overflow-hidden'
-      } duration-150 p-4 space-y-2 text-grey`}
+      } duration-150 p-4 space-y-2 text-grey bg-background min-h-screen`}
     >
       {SIDEBAR_DATA.map((item, index) => {
         let active = childActive;
@@ -94,10 +94,10 @@ export default function Sidebar() {
                 className={`
                      ${
                        active === item.key
-                         ? 'text-secondary-800 bg-secondary-100 font-semibold '
+                         ? 'text-primary bg-secondary/80 font-semibold '
                          : ''
                      }
-                        flex items-center mb-2 pr-4 rounded-full hover:bg-secondary-100 hover:text-secondary-800 align-middle justify-between cursor-pointer`}
+                        flex items-center mb-2 pr-4 rounded-full hover:bg-secondary/80 hover:text-primary align-middle justify-between cursor-pointer`}
                 onClick={() =>
                   routeHandler({ key: item.key, child: item.child?.length })
                 }
@@ -126,10 +126,10 @@ export default function Sidebar() {
                     className={`
                         ${
                           active === `${item.key}-${index}`
-                            ? 'text-secondary-800 bg-secondary-100 font-semibold '
+                            ? 'text-primary bg-secondary/80 font-semibold '
                             : ''
                         }
-                          flex items-center gap-5 cursor-pointer rounded-full hover:bg-secondary-100 hover:text-secondary-800
+                          flex items-center gap-5 cursor-pointer rounded-full hover:bg-secondary/80 hover:text-primary
                         `}
                   >
                     {itemChild.icon}
