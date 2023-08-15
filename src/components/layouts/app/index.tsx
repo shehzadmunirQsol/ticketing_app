@@ -29,7 +29,8 @@ function index({ children }: DefaultLayoutProps) {
   return (
     <>
       <div className="relative w-full overflow-x-hidden">
-        <Header />
+        
+          <Header />
         <div className="w-full">{children}</div>
       </div>
       <Button onClick={handleClick}>Test Email</Button>

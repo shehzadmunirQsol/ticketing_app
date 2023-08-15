@@ -57,7 +57,7 @@ function Header() {
   }
 
   return (
-    <div className="sticky top-0 h-[120px]  flex items-center bg-transparent  dark:bg-black border-b border-color-brand-primary/50 justify-between py-8 px-6 shadow-sm">
+    <div className="sticky z-50 top-0 h-[120px]  flex items-center !bg-transparent  dark:bg-black  justify-between py-8 px-6 shadow-sm">
       <Image
         src={LogoImage}
         alt="Logo Image"
@@ -74,12 +74,12 @@ function Header() {
           <Button variant="outline" size="icon_square">
             <i className="fa-solid fa-user" />
           </Button>
-          <Select>
-            <SelectTrigger className="h-10 w-10 rounded-none border-teal text-gray-200">
-              <SelectValue placeholder="LN" />
+          <Select >
+            <SelectTrigger  className="h-10 w-10  rounded-none border-teal text-gray-200">
+              <SelectValue placeholder="EN" />
             </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
+            <SelectContent  >
+              <SelectGroup  >
                 <SelectItem value="EN">EN</SelectItem>
                 <SelectItem value="AR">AR</SelectItem>
               </SelectGroup>
