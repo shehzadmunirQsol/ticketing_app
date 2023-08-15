@@ -11,10 +11,10 @@ interface cardInterface {
 function ProductCard(props: cardInterface) {
   return (
     <div
-      className={`group  rounded-sm overflow-hidden shadow-lg bg-card ${props?.class}`}
+      className={`   rounded-sm overflow-hidden shadow-lg bg-card h-1/5 ${props?.class}`}
     >
       <div className="relative">
-        <div className=" absolute top-0 w-1/2 p-2 z-2 bg-primary text-black text-sm">
+        <div className=" absolute top-0 w-fit p-2 z-2 bg-primary text-black text-sm">
           <span className=" font-bold">CLOSES TODAY</span> 20:00
         </div>
         <Image
@@ -23,7 +23,7 @@ function ProductCard(props: cardInterface) {
           quality={100}
           alt="Sunset in the mountains"
         />
-        <div className="absolute -bottom-8 left-4 rounded-full w-1/5 p-1 bg-gradient-to-b from-primary to-neutral-900">
+        <div className="absolute -bottom-8 left-4 rounded-full w-20 p-1 bg-gradient-to-b from-primary to-neutral-900">
           <Image
             className="w-full h-full object-cover  rounded-full bg-white"
             src={BottleImage}

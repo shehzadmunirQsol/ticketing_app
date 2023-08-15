@@ -1,11 +1,20 @@
 /** @type {import('tailwindcss').Config} */
+
+const defaultTheme = require('tailwindcss/defaultTheme');
+// const fontFamily = defaultTheme.fontFamily;
+// fontFamily['sans'] = [
+//   'Proxima Nova',
+//   'system-ui',
+//   // <-- you may provide more font fallbacks here
+// ];
+
 module.exports = {
   darkMode: 'class',
   content: ['./src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
       fontFamily: {
-        primary: 'Proxima Nova',
+        sans: ['Proxima-Nova', ...defaultTheme.fontFamily.sans],
       },
       colors: {
         // admin
@@ -61,6 +70,7 @@ module.exports = {
       },
     },
     screens: {
+      xs: '340px',
       sm: '640px',
       // => @media (min-width: 640px) { ... }
 

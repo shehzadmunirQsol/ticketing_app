@@ -1,16 +1,23 @@
 @tailwind base;
+
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-  font-family: 'Proxima Nova';
-  src: url(/src/public/assets/fonts/Proxima-Nova-Font.otf);
-}
-
 @layer base {
-  /* html {
-    font-family: Proxima Nova;
-  } */
+  html {
+    font-family: Proxima Nova, sans-serif;
+  }
+  body {
+    font-family: Proxima Nova, sans-serif;
+  }
+
+  @font-face {
+    font-family: 'ProximaNova';
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: optional;
+    src: url(/src/pages/fonts/Proxima-Nova-Font.otf);
+  }
 
   :root {
     --background: 206, 37%, 4%, 1;
@@ -48,4 +55,11 @@
     9% 31%,
     1% 0
   );
+}
+.categoryClip {
+  clip-path: polygon(0 0, 100% 0, 17% 100%, 0 100%);
+}
+
+.mainContainer:hover .categoryClip {
+  clip-path: polygon(0 0, 100% 0, 100% 73%, 75% 100%, 0 100%, 0% 50%);
 }

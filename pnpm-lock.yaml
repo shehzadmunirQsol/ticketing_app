@@ -2,6 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@hookform/resolvers': ^3.2.0
+  '@next/font': ^13.4.16
   '@playwright/test': ^1.26.1
   '@prisma/client': ^4.10.1
   '@radix-ui/react-accordion': ^1.1.2
@@ -30,6 +31,7 @@ specifiers:
   autoprefixer: ^10.4.14
   class-variance-authority: ^0.4.0
   clsx: ^1.2.1
+  dotenv: ^16.3.1
   eslint: ^8.30.0
   eslint-config-next: ^13.2.1
   eslint-config-prettier: ^8.5.0
@@ -52,6 +54,8 @@ specifiers:
   react-slick: ^0.29.0
   select: ^1.1.2
   shadcn-ui: ^0.3.0
+  sib-api-v3-sdk: ^8.5.0
+  sib-api-v3-typescript: ^2.2.2
   slick-carousel: ^1.8.1
   start-server-and-test: ^1.12.0
   superjson: ^1.7.4
@@ -66,6 +70,7 @@ specifiers:
 
 dependencies:
   '@hookform/resolvers': 3.2.0_react-hook-form@7.45.4
+  '@next/font': 13.4.16
   '@prisma/client': 4.10.1_prisma@4.10.1
   '@radix-ui/react-accordion': 1.1.2_2zx2umvpluuhvlq44va5bta2da
   '@radix-ui/react-checkbox': 1.0.4_2zx2umvpluuhvlq44va5bta2da
@@ -87,6 +92,7 @@ dependencies:
   add: 2.0.6
   class-variance-authority: 0.4.0_typescript@4.8.3
   clsx: 1.2.1
+  dotenv: 16.3.1
   lucide-react: 0.127.0_react@18.2.0
   navigation-menu: 1.0.0_jhaguxqfxx2v4alxps2nzei754
   next: 13.2.1_biqbaboplfbrettd7655fr4n2y
@@ -99,6 +105,8 @@ dependencies:
   react-slick: 0.29.0_biqbaboplfbrettd7655fr4n2y
   select: 1.1.2
   shadcn-ui: 0.3.0
+  sib-api-v3-sdk: 8.5.0
+  sib-api-v3-typescript: 2.2.2
   slick-carousel: 1.8.1
   superjson: 1.11.0
   tailwind-merge: 1.10.0
@@ -806,6 +814,10 @@ packages:
     dependencies:
       glob: 7.1.7
     dev: true
+
+  /@next/font/13.4.16:
+    resolution: {integrity: sha512-1UciFHgwieMfDygileymqeYPEmIeZWIfgrsa2POZlRW+yAsDt0qy0InfFAYvXhNgALTI6ix3JU2XhcuzonhQLA==}
+    dev: false
 
   /@next/swc-android-arm-eabi/13.2.1:
     resolution: {integrity: sha512-Yua7mUpEd1wzIT6Jjl3dpRizIfGp9NR4F2xeRuQv+ae+SDI1Em2WyM9m46UL+oeW5GpMiEHoaBagr47RScZFmQ==}
@@ -2508,7 +2520,7 @@ packages:
     resolution: {integrity: sha512-WKExI/eSGgGAkWAO+wMVdFObZV7hQen54UpD1kCCTN3tvlL3W1jL4+lPP/M7MwoP7Q4RHzKtO3JQ4HxYEcd+xQ==}
     dependencies:
       browserslist: 1.7.7
-      caniuse-db: 1.0.30001519
+      caniuse-db: 1.0.30001520
       normalize-range: 0.1.2
       num2fraction: 1.2.2
       postcss: 5.2.18
@@ -2519,7 +2531,7 @@ packages:
     resolution: {integrity: sha512-C9yv/UF3X+eJTi/zvfxuyfxmLibYrntpF3qoJYrMeQwgUJOZrZvpJiMG2FMQ3qnhWtF/be4pYONBBw95ZGe3vA==}
     dependencies:
       browserslist: 2.11.3
-      caniuse-lite: 1.0.30001519
+      caniuse-lite: 1.0.30001469
       normalize-range: 0.1.2
       num2fraction: 1.2.2
       postcss: 6.0.23
@@ -2572,6 +2584,32 @@ packages:
 
   /babel-core/6.26.0:
     resolution: {integrity: sha512-FSiqfr4SYrH5Zv5KgWahyY99VC+Aod1ioMRNvL1lPS4WTUqvPAdYo7ioWEhDHEDqZADapbJZMX0sBuRsc93bDQ==}
+    dependencies:
+      babel-code-frame: 6.26.0
+      babel-generator: 6.26.1
+      babel-helpers: 6.24.1
+      babel-messages: 6.23.0
+      babel-register: 6.26.0
+      babel-runtime: 6.26.0
+      babel-template: 6.26.0
+      babel-traverse: 6.26.0
+      babel-types: 6.26.0
+      babylon: 6.18.0
+      convert-source-map: 1.9.0
+      debug: 2.6.9
+      json5: 0.5.1
+      lodash: 4.17.21
+      minimatch: 3.1.2
+      path-is-absolute: 1.0.1
+      private: 0.1.8
+      slash: 1.0.0
+      source-map: 0.5.7
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
+  /babel-core/6.26.3:
+    resolution: {integrity: sha512-6jyFLuDmeidKmUEb3NM+/yawG0M2bDZ9Z1qbZP59cyHLz8kYGKYwpJP0UwUKKUiTRNvxfLesJnTedqczP7cTDA==}
     dependencies:
       babel-code-frame: 6.26.0
       babel-generator: 6.26.1
@@ -2750,7 +2788,7 @@ packages:
   /babel-jest/20.0.3:
     resolution: {integrity: sha512-eAycDKZn+m6jMBv5KMXRKttDeoDUE7Y6eQpeiF4ip0lLaI4uwGNhJIdVK2RptHjO9N9RJ2gONMn2XE67wBdf8A==}
     dependencies:
-      babel-core: 6.26.0
+      babel-core: 6.26.3
       babel-plugin-istanbul: 4.1.6
       babel-preset-jest: 20.0.3
     transitivePeerDependencies:
@@ -3231,7 +3269,7 @@ packages:
   /babel-register/6.26.0:
     resolution: {integrity: sha512-veliHlHX06wjaeY8xNITbveXSiI+ASFnOqvne/LaIJIqOWi2Ogmj91KOugEz/hoh/fwMhXNBJPCv8Xaz5CyM4A==}
     dependencies:
-      babel-core: 6.26.0
+      babel-core: 6.26.3
       babel-runtime: 6.26.0
       core-js: 2.6.12
       home-or-tmp: 2.0.0
@@ -3532,8 +3570,8 @@ packages:
     deprecated: Browserslist 2 could fail on reading Browserslist >3.0 config used in other tools.
     hasBin: true
     dependencies:
-      caniuse-db: 1.0.30001519
-      electron-to-chromium: 1.4.490
+      caniuse-db: 1.0.30001520
+      electron-to-chromium: 1.4.491
     dev: false
 
   /browserslist/2.11.3:
@@ -3541,8 +3579,8 @@ packages:
     deprecated: Browserslist 2 could fail on reading Browserslist >3.0 config used in other tools.
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001519
-      electron-to-chromium: 1.4.490
+      caniuse-lite: 1.0.30001520
+      electron-to-chromium: 1.4.491
     dev: false
 
   /browserslist/4.21.10:
@@ -3550,8 +3588,8 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001519
-      electron-to-chromium: 1.4.490
+      caniuse-lite: 1.0.30001520
+      electron-to-chromium: 1.4.491
       node-releases: 2.0.13
       update-browserslist-db: 1.0.11_browserslist@4.21.10
     dev: false
@@ -3714,13 +3752,13 @@ packages:
     resolution: {integrity: sha512-SBTl70K0PkDUIebbkXrxWqZlHNs0wRgRD6QZ8guctShjbh63gEPfF+Wj0Yw+75f5Y8tSzqAI/NcisYv/cCah2Q==}
     dependencies:
       browserslist: 1.7.7
-      caniuse-db: 1.0.30001519
+      caniuse-db: 1.0.30001520
       lodash.memoize: 4.1.2
       lodash.uniq: 4.5.0
     dev: false
 
-  /caniuse-db/1.0.30001519:
-    resolution: {integrity: sha512-nY0JTY0Po8r8bNBred32hc3QMr2+I/CsJCGmH6tZaVEFUzLSfv64i1E8VwTqP3Of6yyzu4MDKus2eoR0pHCZ2A==}
+  /caniuse-db/1.0.30001520:
+    resolution: {integrity: sha512-iJ7Eq4xhi04qgp5M+D0TWpsm8uB1sMwaqcpggAazaRFzXJNug4++Z8u9mhF7eNjPGK/IdHnftHqvMhQLa0Sofg==}
     dev: false
 
   /caniuse-lite/1.0.30001434:
@@ -3729,10 +3767,9 @@ packages:
 
   /caniuse-lite/1.0.30001469:
     resolution: {integrity: sha512-Rcp7221ScNqQPP3W+lVOYDyjdR6dC+neEQCttoNr5bAyz54AboB4iwpnWgyi8P4YUsPybVzT4LgWiBbI3drL4g==}
-    dev: true
 
-  /caniuse-lite/1.0.30001519:
-    resolution: {integrity: sha512-0QHgqR+Jv4bxHMp8kZ1Kn8CH55OikjKJ6JmKkZYP1F3D7w+lnFXF70nG5eNfsZS89jadi5Ywy5UCSKLAglIRkg==}
+  /caniuse-lite/1.0.30001520:
+    resolution: {integrity: sha512-tahF5O9EiiTzwTUqAeFjIZbn4Dnqxzz7ktrgGlMYNLH43Ul26IgTMH/zvL3DG0lZxBYnlT04axvInszUsZULdA==}
     dev: false
 
   /capture-stack-trace/1.0.2:
@@ -4181,6 +4218,10 @@ packages:
     engines: {node: '>= 0.6'}
     dev: false
 
+  /cookiejar/2.1.4:
+    resolution: {integrity: sha512-LDx6oHrK+PhzLKJU9j5S7/Y3jM/mUHvD/DeI1WQmJn652iPC5Y4TBzC9l+5OMOXlyTTA+SmVUPm0HQUwpD5Jqw==}
+    dev: false
+
   /copy-anything/3.0.2:
     resolution: {integrity: sha512-CzATjGXzUQ0EvuvgOCI6A4BGOo2bcVx8B+eC2nF862iv9fopnPQwlrbACakNCHRIJbCSBj+J/9JeDf60k64MkA==}
     engines: {node: '>=12.13'}
@@ -4211,10 +4252,6 @@ packages:
 
   /core-util-is/1.0.2:
     resolution: {integrity: sha512-3lqz5YjWTYnW6dlDa5TLaTCcShfar1e40rmcJVwCBJC6mWlFuj0eCHIElmG1g5kyuJ/GD+8Wn4FFCcz4gJPfaQ==}
-    dev: false
-
-  /core-util-is/1.0.3:
-    resolution: {integrity: sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==}
     dev: false
 
   /cosmiconfig/2.2.2:
@@ -4849,6 +4886,11 @@ packages:
       is-obj: 1.0.1
     dev: false
 
+  /dotenv/16.3.1:
+    resolution: {integrity: sha512-IPzF4w4/Rd94bA9imS68tZBaYyBWSCE47V1RGuMrB94iyTOIEwRmVL2x/4An+6mETpLrKJ5hQkB8W4kFAadeIQ==}
+    engines: {node: '>=12'}
+    dev: false
+
   /dotenv/4.0.0:
     resolution: {integrity: sha512-XcaMACOr3JMVcEv0Y/iUM2XaOsATRZ3U1In41/1jjK6vJZ2PZbQ1bzCG8uvaByfaBpl9gqc9QWJovpUGBXLLYQ==}
     engines: {node: '>=4.6.0'}
@@ -4880,8 +4922,8 @@ packages:
     resolution: {integrity: sha512-W8gdzXG86mVPoc56eM8YA+QiLxaAxJ8cmDjxZgfhLLWVvZQxyA918w5tX2JEWApZta45T1/sYcmFHTsTOUE3nw==}
     dev: true
 
-  /electron-to-chromium/1.4.490:
-    resolution: {integrity: sha512-6s7NVJz+sATdYnIwhdshx/N/9O6rvMxmhVoDSDFdj6iA45gHR8EQje70+RYsF4GeB+k0IeNSBnP7yG9ZXJFr7A==}
+  /electron-to-chromium/1.4.491:
+    resolution: {integrity: sha512-ZzPqGKghdVzlQJ+qpfE+r6EB321zed7e5JsvHIlMM4zPFF8okXUkF5Of7h7F3l3cltPL0rG7YVmlp5Qro7RQLA==}
     dev: false
 
   /elliptic/6.5.4:
@@ -5656,7 +5698,7 @@ packages:
       jsx-ast-utils: 3.3.3
       language-tags: 1.0.7
       minimatch: 3.1.2
-      semver: 6.3.1
+      semver: 6.3.0
     dev: true
 
   /eslint-plugin-prettier/4.2.1_2hxy7go4jctxpydwanartvpwq4:
@@ -6382,6 +6424,11 @@ packages:
     engines: {node: '>=12.20.0'}
     dependencies:
       fetch-blob: 3.2.0
+    dev: false
+
+  /formidable/1.2.6:
+    resolution: {integrity: sha512-KcpbcpuLNOwrEjnbpMC0gS+X8ciDoZE1kkqzat4a8vrprf+s9pKNQ/QIwWfbfs4ltgmFl3MD177SNTkve3BwGQ==}
+    deprecated: 'Please upgrade to latest, formidable@v2 or formidable@v3! Check these notes: https://bit.ly/2ZEqIau'
     dev: false
 
   /forwarded/0.2.0:
@@ -7903,7 +7950,7 @@ packages:
     resolution: {integrity: sha512-NTGhGRKhfM19w0egxges3hhIO8gPXB2H6Txaie3+AZIHF+VZCItH27uEFzU6cQTdwzcWaiieYgCAfGKNeUUf7g==}
     hasBin: true
     dependencies:
-      babel-core: 6.26.0
+      babel-core: 6.26.3
       babel-jest: 20.0.3
       babel-plugin-istanbul: 4.1.6
       chalk: 1.1.3
@@ -8948,7 +8995,7 @@ packages:
       readable-stream: 2.3.8
       stream-browserify: 2.0.2
       stream-http: 2.8.3
-      string_decoder: 1.3.0
+      string_decoder: 1.1.1
       timers-browserify: 2.0.12
       tty-browserify: 0.0.0
       url: 0.11.1
@@ -10189,13 +10236,6 @@ packages:
       side-channel: 1.0.4
     dev: false
 
-  /qs/6.11.2:
-    resolution: {integrity: sha512-tDNIz22aBzCDxLtVH++VnTfzxlfeK5CbqohpSqpJgj1Wg/cQbStNAz3NuqCs5vV+pjBsK4x4pN9HlVh7rcYRiA==}
-    engines: {node: '>=0.6'}
-    dependencies:
-      side-channel: 1.0.4
-    dev: false
-
   /qs/6.5.3:
     resolution: {integrity: sha512-qxXIEh4pCGfHICj1mAJQ2/2XVZkjCDTcEgfoSQxc/fYivUZxTkk7L3bDBJSoNrEzXI17oUO5Dp07ktqE5KzczA==}
     engines: {node: '>=0.6'}
@@ -10212,6 +10252,12 @@ packages:
   /querystring-es3/0.2.1:
     resolution: {integrity: sha512-773xhDQnZBMFobEiztv8LIl70ch5MSF/jUQVlhwFyBILqq96anmoctVIYz+ZRp0qbCKATTn6ev02M3r7Ga5vqA==}
     engines: {node: '>=0.4.x'}
+    dev: false
+
+  /querystring/0.2.0:
+    resolution: {integrity: sha512-X/xY82scca2tau62i9mDyU9K+I+djTMUsvwf7xnUX5GLvVzgJybOJf4Y6o9Zx3oJK/LSXg5tTZBjwzqVPaPO2g==}
+    engines: {node: '>=0.4.x'}
+    deprecated: The querystring API is considered Legacy. new code should use the URLSearchParams API instead.
     dev: false
 
   /querystringify/2.2.0:
@@ -10357,6 +10403,7 @@ packages:
 
   /react-error-overlay/3.0.0:
     resolution: {integrity: sha512-XzgvowFrwDo6TWcpJ/WTiarb9UI6lhA4PMzS7n1joK3sHfBBBOQHUc0U4u57D6DWO9vHv6lVSWx2Q/Ymfyv4hw==}
+    dev: false
 
   /react-hook-form/7.45.4_react@18.2.0:
     resolution: {integrity: sha512-HGDV1JOOBPZj10LB3+OZgfDBTn+IeEsNOKiq/cxbQAIbKaiJUe/KV8DBUzsx0Gx/7IG/orWqRRm736JwOfUSWQ==}
@@ -10639,7 +10686,7 @@ packages:
   /readable-stream/2.3.8:
     resolution: {integrity: sha512-8p0AUk4XODgIewSi0l8Epjs+EVnWiK7NoDIEGU0HhE7+ZyY8D1IMY7odu5lRrFXGg71L15KG8QrPmum45RTtdA==}
     dependencies:
-      core-util-is: 1.0.3
+      core-util-is: 1.0.2
       inherits: 2.0.4
       isarray: 1.0.0
       process-nextick-args: 2.0.1
@@ -10653,7 +10700,7 @@ packages:
     engines: {node: '>= 6'}
     dependencies:
       inherits: 2.0.4
-      string_decoder: 1.3.0
+      string_decoder: 1.1.1
       util-deprecate: 1.0.2
     dev: false
 
@@ -10988,6 +11035,15 @@ packages:
     resolution: {integrity: sha512-U9nH88a3fc/ekCF1l0/UP1IosiuIjyTh7hBvXVMHYgVcfGvt897Xguj2UOLDeI5BG2m7/uwyaLVT6fbtCwTyzw==}
     engines: {iojs: '>=1.0.0', node: '>=0.10.0'}
 
+  /rewire/3.0.2:
+    resolution: {integrity: sha512-ejkkt3qYnsQ38ifc9llAAzuHiGM7kR8N5/mL3aHWgmWwet0OMFcmJB8aTsMV2PBHCWxNVTLCeRfBpEa8X2+1fw==}
+    dependencies:
+      babel-core: 6.26.3
+      babel-plugin-transform-es2015-block-scoping: 6.26.0
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
   /right-align/0.1.3:
     resolution: {integrity: sha512-yqINtL/G7vs2v+dFIZmFUDbnVyFUJFKd6gK22Kgo6R4jfJGFtisKyncWDDULgjfqf4ASQuIQyjJ7XZ+3aWpsAg==}
     engines: {node: '>=0.10.0'}
@@ -11146,6 +11202,7 @@ packages:
   /semver/6.3.1:
     resolution: {integrity: sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA==}
     hasBin: true
+    dev: false
 
   /semver/7.3.8:
     resolution: {integrity: sha512-NB1ctGL5rlHrPJtFDVIVzTyQylMLu9N9VICA6HSFJo8MCGVTMW6gfpicwKmmK/dAjTOrqu5l63JJOpDSrAis3A==}
@@ -11302,6 +11359,26 @@ packages:
 
   /shellwords/0.1.1:
     resolution: {integrity: sha512-vFwSUfQvqybiICwZY5+DAWIPLKsWO31Q91JSKl3UYv+K5c2QRPzn0qzec6QPu1Qc9eHYItiP3NdJqNVqetYAww==}
+    dev: false
+
+  /sib-api-v3-sdk/8.5.0:
+    resolution: {integrity: sha512-6Ratp5kLN/rEEvk4XVIQ4L8IrCIrcfE9m1HjvHz/WepC+CVXPsjOlgRcK/jQjpN5kC+dmhDAqrTo1OtnF6i1wA==}
+    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
+    dependencies:
+      querystring: 0.2.0
+      superagent: 3.7.0
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
+  /sib-api-v3-typescript/2.2.2:
+    resolution: {integrity: sha512-GSB/osL9FmGciwUIq6m8+7VtsMD/SsNJMKSw8anScuzYywkM927J0cNZH/gBw9MDECFGripqMgrtXBYThSgFAg==}
+    dependencies:
+      bluebird: 3.7.2
+      request: 2.88.2
+      rewire: 3.0.2
+    transitivePeerDependencies:
+      - supports-color
     dev: false
 
   /side-channel/1.0.4:
@@ -11703,12 +11780,6 @@ packages:
       safe-buffer: 5.1.2
     dev: false
 
-  /string_decoder/1.3.0:
-    resolution: {integrity: sha512-hkRX8U1WjJFd8LsDJ2yQ/wWWxaopEsABU1XfkM8A+j0+85JAGppt16cr1Whg6KIbb4okU6Mql6BOj+uup/wKeA==}
-    dependencies:
-      safe-buffer: 5.2.1
-    dev: false
-
   /strip-ansi/3.0.1:
     resolution: {integrity: sha512-VhumSSbBqDTP8p2ZLKj40UjBCV4+v8bUSEpUb4KjRgWk9pbqGF4REFj6KEagidb2f/M6AzC0EmFyDNGaw9OCzg==}
     engines: {node: '>=0.10.0'}
@@ -11835,6 +11906,25 @@ packages:
 
   /stylis/3.5.4:
     resolution: {integrity: sha512-8/3pSmthWM7lsPBKv7NXkzn2Uc9W7NotcwGNpJaa3k7WMM1XDCA4MgT5k/8BIexd5ydZdboXtU90XH9Ec4Bv/Q==}
+    dev: false
+
+  /superagent/3.7.0:
+    resolution: {integrity: sha512-/8trxO6NbLx4YXb7IeeFTSmsQ35pQBiTBsLNvobZx7qBzBeHYvKCyIIhW2gNcWbLzYxPAjdgFbiepd8ypwC0Gw==}
+    engines: {node: '>= 4.0'}
+    deprecated: Please upgrade to v7.0.2+ of superagent.  We have fixed numerous issues with streams, form-data, attach(), filesystem errors not bubbling up (ENOENT on attach()), and all tests are now passing.  See the releases tab for more information at <https://github.com/visionmedia/superagent/releases>.
+    dependencies:
+      component-emitter: 1.3.0
+      cookiejar: 2.1.4
+      debug: 3.2.7
+      extend: 3.0.2
+      form-data: 2.3.3
+      formidable: 1.2.6
+      methods: 1.1.2
+      mime: 1.6.0
+      qs: 6.5.3
+      readable-stream: 2.3.8
+    transitivePeerDependencies:
+      - supports-color
     dev: false
 
   /superjson/1.11.0:
@@ -12481,7 +12571,7 @@ packages:
     resolution: {integrity: sha512-rWS3H04/+mzzJkv0eZ7vEDGiQbgquI1fGfOad6zKvgYQi1SzMmhl7c/DdRGxhaWrVH6z0qWITo8rpnxK/RfEhA==}
     dependencies:
       punycode: 1.4.1
-      qs: 6.11.2
+      qs: 6.11.0
     dev: false
 
   /use-callback-ref/1.3.0_fan5qbzahqtxlm5dzefqlqx5ia:
