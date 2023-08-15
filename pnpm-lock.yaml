@@ -2,6 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@hookform/resolvers': ^3.2.0
+  '@next/font': ^13.4.16
   '@playwright/test': ^1.26.1
   '@prisma/client': ^4.10.1
   '@radix-ui/react-accordion': ^1.1.2
@@ -69,6 +70,7 @@ specifiers:
 
 dependencies:
   '@hookform/resolvers': 3.2.0_react-hook-form@7.45.4
+  '@next/font': 13.4.16
   '@prisma/client': 4.10.1_prisma@4.10.1
   '@radix-ui/react-accordion': 1.1.2_2zx2umvpluuhvlq44va5bta2da
   '@radix-ui/react-checkbox': 1.0.4_2zx2umvpluuhvlq44va5bta2da
@@ -812,6 +814,10 @@ packages:
     dependencies:
       glob: 7.1.7
     dev: true
+
+  /@next/font/13.4.16:
+    resolution: {integrity: sha512-1UciFHgwieMfDygileymqeYPEmIeZWIfgrsa2POZlRW+yAsDt0qy0InfFAYvXhNgALTI6ix3JU2XhcuzonhQLA==}
+    dev: false
 
   /@next/swc-android-arm-eabi/13.2.1:
     resolution: {integrity: sha512-Yua7mUpEd1wzIT6Jjl3dpRizIfGp9NR4F2xeRuQv+ae+SDI1Em2WyM9m46UL+oeW5GpMiEHoaBagr47RScZFmQ==}
@@ -3866,7 +3872,7 @@ packages:
       path-is-absolute: 1.0.1
       readdirp: 2.2.1_supports-color@4.5.0
     optionalDependencies:
-      fsevents: 1.1.2
+      fsevents: 1.2.13
     transitivePeerDependencies:
       - supports-color
     dev: false

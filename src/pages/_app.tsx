@@ -5,6 +5,8 @@ import Layout from '~/components/layouts';
 import { trpc } from '~/utils/trpc';
 import '~/styles/globals.css';
 
+
+
 export type NextPageWithLayout<
   TProps = Record<string, unknown>,
   TInitialProps = TProps,
@@ -17,9 +19,19 @@ type AppPropsWithLayout = AppProps & {
 };
 
 const MyApp = (({ Component, pageProps }: AppPropsWithLayout) => {
-  const getLayout = Component.getLayout ?? ((page) => <Layout>{page}</Layout>);
+  const getLayout =
+    Component.getLayout ??
+    ((page) => (
+      <main className={'font-sans'}>
+        <Layout>{page}</Layout>
+      </main>
+    ));
 
-  return getLayout(<Component {...pageProps} />);
+  return getLayout(
+    <main className={'font-sans'}>
+      <Component {...pageProps} />
+    </main>,
+  );
 }) as AppType;
 
 export default trpc.withTRPC(MyApp);
