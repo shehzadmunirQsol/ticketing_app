@@ -1,6 +1,7 @@
 import { NextPageWithLayout } from '~/pages/_app';
 import { Button } from '@/ui/button';
 import { useTheme } from 'next-themes';
+import Home from '~/components/app/home';
 
 const IndexPage: NextPageWithLayout = () => {
   const { theme, setTheme } = useTheme();
@@ -11,9 +12,10 @@ const IndexPage: NextPageWithLayout = () => {
   }
 
   return (
-    <div className="bg-slate-300 dark:bg-black grid justify-center items-center h-screen ">
+    <div className="bg-slate-300 dark:bg-black grid justify-center items-center  w-full  ">
       <div className="">
-        <Button onClick={toggleTheme}>Magic appears</Button>
+        {/* <Button onClick={toggleTheme}>Magic appears</Button> */}
+        <Home />
       </div>
     </div>
   );

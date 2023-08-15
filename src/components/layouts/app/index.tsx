@@ -6,9 +6,9 @@ type DefaultLayoutProps = { children: ReactNode };
 function index({ children }: DefaultLayoutProps) {
   return (
     <>
-      <div className="relative">
+      <div className="relative w-full overflow-x-hidden">
         <Header />
-        <div className="w-screen">{children}</div>
+        <div className="w-full">{children}</div>
       </div>
     </>
   );
