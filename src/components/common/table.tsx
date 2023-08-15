@@ -286,7 +286,6 @@ export default function DataTableDemo() {
         <div className="space-x-2">
           <Button
             variant="outline"
-            size="sm"
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
@@ -294,7 +293,6 @@ export default function DataTableDemo() {
           </Button>
           <Button
             variant="outline"
-            size="sm"
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
