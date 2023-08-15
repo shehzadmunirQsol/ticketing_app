@@ -57,7 +57,7 @@ function Header() {
   }
 
   return (
-    <div className="sticky z-50 top-0 h-[120px]  flex items-center !bg-transparent  dark:bg-black  justify-between py-8 px-6 shadow-sm">
+    <div className="sticky z-50 top-0 h-[120px]  flex  items-center !bg-transparent   justify-between py-8 px-6 shadow-md">
       <Image
         src={LogoImage}
         alt="Logo Image"

@@ -54,10 +54,10 @@ function Home() {
   return (
     <div className="relative h-[110vh] ">
       <div
-        className="absolute -top-32 w-full h-[120vh] flex justify-between px-4 z-10"
+        className="absolute -top-32 w-full h-[100vh] flex justify-between px-4 z-10"
         style={{
-          background: `url('${carSlider[select]?.image.src}') no-repeat `
-          
+          background: `url('${carSlider[select]?.image.src}') no-repeat `,
+          backgroundSize:"100vw 100vh",
         }}
       >
         {/* text content */}

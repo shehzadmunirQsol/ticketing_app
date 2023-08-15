@@ -14,7 +14,7 @@
     font-display: optional;
     src: url(/src/pages/fonts/Proxima-Nova-Font.otf);
   }
-  
+
   :root {
     --background: 206, 37%, 4%, 1;
     --foreground: 0 0% 95%;
@@ -51,4 +51,11 @@
     9% 31%,
     1% 0
   );
+}
+.categoryClip {
+  clip-path: polygon(0 0, 100% 0, 17% 100%, 0 100%);
+}
+
+.mainContainer:hover .categoryClip {
+  clip-path: polygon(0 0, 100% 0, 100% 73%, 75% 100%, 0 100%, 0% 50%);
 }

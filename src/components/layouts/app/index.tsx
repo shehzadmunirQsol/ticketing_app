@@ -33,7 +33,7 @@ function index({ children }: DefaultLayoutProps) {
           <Header />
         <div className="w-full">{children}</div>
       </div>
-      <Button onClick={handleClick}>Test Email</Button>
+      {/* <Button onClick={handleClick}>Test Email</Button> */}
     </>
   );
 }
