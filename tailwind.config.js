@@ -1,37 +1,13 @@
-// const { fontFamily } = require('tailwindcss/defaultTheme');
-
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: 'class',
-  // darkMode: ['class', '[data-scheme="dark"]'],
-  // darkMode: ['class', '[data-theme="dark"]'],
   content: ['./src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
-      // fontFamily: {
-      //   sans: ['var(font-sans)', ...fontFamily.sans],
-      // },
+      fontFamily: {
+        primary: 'Proxima Nova',
+      },
       colors: {
-        // 'color-brand-primary': '#23D2B3',
-        // 'color-brand-secondary': '',
-        // 'color-brand-tertiary': '',
-        // 'color-text-primary': '#FFFFFF',
-        // 'color-text-secondary': '#EAEAEA',
-        // 'color-text-inverted': '',
-        // 'color-text-link': '',
-        // 'color-text-ok': '',
-        // 'color-text-warn': '',
-        // 'color-text-danger': '',
-        // 'color-background-primary': '#060A0D',
-        // 'color-background-secondary': '#101417',
-        // 'color-background-tertiary': '#1B1D1F',
-        // 'color-ui-primary': '',
-        // 'color-ui-secondary': '',
-        // 'color-ui-tertiary': '',
-        // 'color-ui-ok': '',
-        // 'color-ui-warn': '',
-        // 'color-ui-danger': '',
-
         // admin
         white: '#FFFFFF',
         black: '#000000',
@@ -58,15 +34,38 @@ module.exports = {
         input: '240 3.7% 15.9%',
         ring: '240 4.9% 83.9%',
 
+        border: 'hsl(var(--border))',
+        input: 'hsl(var(--input))',
+        ring: 'hsl(var(--ring))',
+        background: 'hsl(var(--background))',
+        foreground: 'hsl(var(--foreground))',
         primary: {
-          100: '#38393d',
-          500: '#212327',
-          800: '#090b0e',
+          DEFAULT: 'hsl(var(--primary))',
+          foreground: 'hsl(var(--primary-foreground))',
         },
         secondary: {
-          100: '#394b4a',
-          500: '#78bfac',
-          800: '#4efec9',
+          DEFAULT: 'hsl(var(--secondary))',
+          foreground: 'hsl(var(--secondary-foreground))',
+        },
+        destructive: {
+          DEFAULT: 'hsl(var(--destructive))',
+          foreground: 'hsl(var(--destructive-foreground))',
+        },
+        muted: {
+          DEFAULT: 'hsl(var(--muted))',
+          foreground: 'hsl(var(--muted-foreground))',
+        },
+        accent: {
+          DEFAULT: 'hsl(var(--accent))',
+          foreground: 'hsl(var(--accent-foreground))',
+        },
+        popover: {
+          DEFAULT: 'hsl(var(--popover))',
+          foreground: 'hsl(var(--popover-foreground))',
+        },
+        card: {
+          DEFAULT: 'hsl(var(--card))',
+          foreground: 'hsl(var(--card-foreground))',
         },
       },
 

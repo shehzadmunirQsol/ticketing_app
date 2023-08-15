@@ -56,7 +56,7 @@ function ProductCard() {
           <div className="text-teal text-lg font-black leading-[18px]">
             AED 120.00
           </div>
-          <Button variant="outline" size="icon_square">
+          <Button variant="rounded" >
             ENTER NOW
           </Button>
         </div>

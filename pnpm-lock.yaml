@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@hookform/resolvers': ^3.2.0
   '@playwright/test': ^1.26.1
   '@prisma/client': ^4.10.1
   '@radix-ui/react-accordion': ^1.1.2
@@ -8,6 +9,7 @@ specifiers:
   '@radix-ui/react-collapsible': ^1.0.3
   '@radix-ui/react-dropdown-menu': ^2.0.5
   '@radix-ui/react-icons': ^1.3.0
+  '@radix-ui/react-label': ^2.0.2
   '@radix-ui/react-progress': ^1.0.3
   '@radix-ui/react-select': ^1.2.2
   '@radix-ui/react-slot': ^1.0.2
@@ -45,6 +47,7 @@ specifiers:
   prisma: ^4.10.1
   react: ^18.2.0
   react-dom: ^18.2.0
+  react-hook-form: ^7.45.4
   react-redux: ^8.0.5
   react-slick: ^0.29.0
   select: ^1.1.2
@@ -59,15 +62,17 @@ specifiers:
   typescript: ^4.8.3
   vite: ^4.1.2
   vitest: ^0.28.5
-  zod: ^3.0.0
+  zod: ^3.20.2
 
 dependencies:
+  '@hookform/resolvers': 3.2.0_react-hook-form@7.45.4
   '@prisma/client': 4.10.1_prisma@4.10.1
   '@radix-ui/react-accordion': 1.1.2_2zx2umvpluuhvlq44va5bta2da
   '@radix-ui/react-checkbox': 1.0.4_2zx2umvpluuhvlq44va5bta2da
   '@radix-ui/react-collapsible': 1.0.3_2zx2umvpluuhvlq44va5bta2da
   '@radix-ui/react-dropdown-menu': 2.0.5_2zx2umvpluuhvlq44va5bta2da
   '@radix-ui/react-icons': 1.3.0_react@18.2.0
+  '@radix-ui/react-label': 2.0.2_2zx2umvpluuhvlq44va5bta2da
   '@radix-ui/react-progress': 1.0.3_2zx2umvpluuhvlq44va5bta2da
   '@radix-ui/react-select': 1.2.2_2zx2umvpluuhvlq44va5bta2da
   '@radix-ui/react-slot': 1.0.2_fan5qbzahqtxlm5dzefqlqx5ia
@@ -89,6 +94,7 @@ dependencies:
   nodemailer: 6.9.4
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
+  react-hook-form: 7.45.4_react@18.2.0
   react-redux: 8.0.5_2zx2umvpluuhvlq44va5bta2da
   react-slick: 0.29.0_biqbaboplfbrettd7655fr4n2y
   select: 1.1.2
@@ -736,6 +742,14 @@ packages:
       '@hapi/hoek': 9.3.0
     dev: true
 
+  /@hookform/resolvers/3.2.0_react-hook-form@7.45.4:
+    resolution: {integrity: sha512-skXQHhLxq0Sz2xDwCyv5dygBCtXJe1GmWwxDzfdtl0X6agD6qcyTG8HrZWkjJoy8AkiLARqYvSYJ8z7+Nwmi7w==}
+    peerDependencies:
+      react-hook-form: ^7.0.0
+    dependencies:
+      react-hook-form: 7.45.4_react@18.2.0
+    dev: false
+
   /@humanwhocodes/config-array/0.11.8:
     resolution: {integrity: sha512-UybHIJzJnR5Qc/MsD9Kr+RpO2h+/P1GhOwdiLPXK5TWk5sgTdu88bTD9UP+CKbPPh5Rni1u0GjAdYQLemG8g+g==}
     engines: {node: '>=10.10.0'}
@@ -1257,6 +1271,26 @@ packages:
       '@radix-ui/react-use-layout-effect': 1.0.1_fan5qbzahqtxlm5dzefqlqx5ia
       '@types/react': 18.0.25
       react: 18.2.0
+    dev: false
+
+  /@radix-ui/react-label/2.0.2_2zx2umvpluuhvlq44va5bta2da:
+    resolution: {integrity: sha512-N5ehvlM7qoTLx7nWPodsPYPgMzA5WM8zZChQg8nyFJKnDO5WHdba1vv5/H6IO5LtJMfD2Q3wh1qHFGNtK0w3bQ==}
+    peerDependencies:
+      '@types/react': '*'
+      '@types/react-dom': '*'
+      react: ^16.8 || ^17.0 || ^18.0
+      react-dom: ^16.8 || ^17.0 || ^18.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      '@types/react-dom':
+        optional: true
+    dependencies:
+      '@babel/runtime': 7.20.7
+      '@radix-ui/react-primitive': 1.0.3_2zx2umvpluuhvlq44va5bta2da
+      '@types/react': 18.0.25
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
     dev: false
 
   /@radix-ui/react-menu/2.0.5_2zx2umvpluuhvlq44va5bta2da:
@@ -10323,6 +10357,14 @@ packages:
 
   /react-error-overlay/3.0.0:
     resolution: {integrity: sha512-XzgvowFrwDo6TWcpJ/WTiarb9UI6lhA4PMzS7n1joK3sHfBBBOQHUc0U4u57D6DWO9vHv6lVSWx2Q/Ymfyv4hw==}
+
+  /react-hook-form/7.45.4_react@18.2.0:
+    resolution: {integrity: sha512-HGDV1JOOBPZj10LB3+OZgfDBTn+IeEsNOKiq/cxbQAIbKaiJUe/KV8DBUzsx0Gx/7IG/orWqRRm736JwOfUSWQ==}
+    engines: {node: '>=12.22.0'}
+    peerDependencies:
+      react: ^16.8.0 || ^17 || ^18
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /react-is/16.13.1:
