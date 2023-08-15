@@ -42,12 +42,12 @@ function WhyChoose() {
         WHY CHOOSE US?
       </div>
 
-      <div className="grid grid-cols-3 gap-8   py-8 ">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8   py-8 ">
         {HowtoStart?.map((item, index) => {
           return (
             <div
               key={index}
-              className=" py-6 max-w-2xl space-y-4 text-white items-center border-t-2  border-b-2 border-b-border  border-t-primary "
+              className=" py-6 max-w-2xl space-y-4 text-white items-center border-t-2  md:border-b-2 md:border-b-border  border-t-primary "
             >
               <div className=" h-20 w-20">
                 <Image

@@ -35,7 +35,7 @@ function HowtoSection() {
   ];
   return (
     <div className="relative   w-full mb-2 py-4">
-      <div className="   bg-primary   grid grid-cols-2   ">
+      <div className="   bg-primary   grid grid-cols-1 lg:grid-cols-2   ">
         <div className="  m-auto w-3/4 text-black font-extrabold text-9xl  uppercase ">
           HOW TO PLAY?
         </div>
