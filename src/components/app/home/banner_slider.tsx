@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Background from '../../../public/assets/win-banner-1_cleanup.png';
-import BgImage1 from '../../../public/assets/rolls.png';
+import BgImage1 from '../../../public/assets/win-banner-2.jpeg';
 import BgImage2 from '../../../public/assets/Ford-Mustang-Yellow-PNG.png';
 import BgImage3 from '../../../public/assets/Ford-Mustang-PNG-Pic.png';
 import BgImage4 from '../../../public/assets/ferrari.png';
@@ -10,6 +10,9 @@ import { Button } from '~/components/ui/button';
 
 const BannerSlider = () => {
   const [select, setSelect] = useState(2);
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [showElement, setShowElement] = useState(false);
 
   const carSlider: any = [
     {
@@ -46,10 +49,65 @@ const BannerSlider = () => {
     },
   ];
 
+  // FOR ANIMATION IN THE
+  const animateSlideChange = () => {
+    setShowElement(false); // Hide the content with the animation
+    setTimeout(() => {
+      setShowElement(true); // Show the new content with the animation
+    }, 50); // A small delay to ensure the transition classes are applied smoothly
+  };
+
+  const goToSlide = (slideIndex: any) => {
+    animateSlideChange(); // Show the new content with the animation
+    setCurrentIndex(slideIndex);
+  };
+
+  const nextSlide = () => {
+    animateSlideChange(); // Show the new content with the animation
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % carSlider.length);
+  };
+
+  // useEffect for infinite loops
+
+  // 1.useEffect to change the current index
+  useEffect(() => {
+    const interval = setInterval(() => {
+      nextSlide();
+    }, 4000);
+
+    return function () {
+      clearTimeout(interval);
+    };
+  });
+
+  // 1.useEffect for handling animation
+  useEffect(() => {
+    // Function to handle the animation when currentIndex changes
+    const animateSlideChange = () => {
+      setShowElement(false); // Hide the content with the animation
+      setTimeout(() => {
+        setShowElement(true); // Show the new content with the animation
+      }, 0); // A small delay to ensure the transition classes are applied smoothly
+    };
+
+    animateSlideChange(); // Call the animation function whenever currentIndex changes
+
+    // Clear the animation class after the animation is completed
+    const animationTimeout = setTimeout(() => {
+      setShowElement(false);
+    }, 3000); // Adjust the duration as needed to match your transition duration in CSS
+
+    return () => clearTimeout(animationTimeout);
+  }, [currentIndex]);
+
   return (
     <div
       className="relative w-full h-screen sm:overflow-hidden"
-      style={{ background: `url(${Background.src}) no-repeat`,backgroundSize:"100vw 100vh", zIndex:1 }}
+      style={{
+        background: `url(${Background.src}) no-repeat`,
+        backgroundSize: '100vw 100vh',
+        zIndex: 1,
+      }}
     >
       <div className="relative ">
         <Image
@@ -74,22 +132,26 @@ const BannerSlider = () => {
       <div className=" w-full  flex flex-col sm:!flex-row justify-between z-20">
         {/* text content */}
 
-        <div className="relative top-32 sm:top-48 h-fit  sm:ml-20 text-white sm:max-w-[700px]">
+        <div
+          className={`relative ${
+            showElement ? 'fading-animation' : ''
+          } transition-all  duration-500  ease-in-out top-32 sm:top-48 h-fit  sm:ml-20 text-white sm:max-w-[700px]`}
+        >
           <p className="text-5xl font-[900] tracking-[-2px] ">
-            {carSlider[select]?.BannerTitle}
+            {carSlider[currentIndex]?.BannerTitle}
           </p>
-          {carSlider[select]?.BannerPrice ? (
+          {carSlider[currentIndex]?.BannerPrice ? (
             <p className="text-5xl tracking-[-2px] my-3 ">
-              + {carSlider[select]?.BannerPrice} CASH
+              + {carSlider[currentIndex]?.BannerPrice} CASH
             </p>
           ) : (
             ''
           )}
           <p className="text-xl  font-normal ">
-            {carSlider[select]?.BannerPara}
+            {carSlider[currentIndex]?.BannerPara}
           </p>
           <p className="text-3xl tracking-[-2px] font-[900]  my-3">
-            {carSlider[select]?.BannerDate}
+            {carSlider[currentIndex]?.BannerDate}
           </p>
           <Button
             className="text-black font-sans font-[900]  tracking-[-1px]"
@@ -103,7 +165,7 @@ const BannerSlider = () => {
         <div className="  absolute  mb-10 right-0 top-36   z-20 w-full max-w-[700px] h-full max-h-[340px]">
           <Image
             className="drop-shadow-2xl   object-cover"
-            src={carSlider[select]?.image}
+            src={carSlider[currentIndex]?.image}
             alt="/"
             fill
             // width={750}
@@ -115,7 +177,7 @@ const BannerSlider = () => {
           {carSlider.map((item: any, i: number) => (
             <div
               className="group relative top-32 max-w-[120px] text-center font-semibold hover:cursor-pointer"
-              onClick={() => setSelect(i)}
+              onClick={() => goToSlide(i)}
             >
               <div className="relative w-[100px] h-[60px] mx-auto border-2  border-transparent group-hover:border-primary">
                 <Image
