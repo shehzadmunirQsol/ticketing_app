@@ -25,7 +25,7 @@ function ProductSection(props: producctInterface) {
     className: 'center slider variable-width ',
 
     dots: false,
-    infinite: true,
+    infinite: props?.center,
     speed: 500,
     slidesToShow: props?.slidesToShow,
     slidesToScroll: props?.slidesToShow,

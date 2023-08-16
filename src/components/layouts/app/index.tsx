@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 import { Button } from '~/components/ui/button';
 import Header from './header';
+import Footer from './footer';
 
 type DefaultLayoutProps = { children: ReactNode };
 
@@ -31,6 +32,7 @@ function index({ children }: DefaultLayoutProps) {
       <div className="relative w-full overflow-x-hidden">
         <Header />
         <div className="w-full">{children}</div>
+        <Footer />
       </div>
       {/* <Button onClick={handleClick}>Test Email</Button> */}
     </>
