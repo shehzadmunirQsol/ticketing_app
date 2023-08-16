@@ -1,5 +1,4 @@
 @tailwind base;
-
 @tailwind components;
 @tailwind utilities;
 
@@ -7,12 +6,9 @@
   html {
     font-family: Proxima Nova, sans-serif;
   }
-  body {
-    font-family: Proxima Nova, sans-serif;
-  }
 
   @font-face {
-    font-family: 'ProximaNova';
+    font-family: 'Proxima-Nova';
     font-style: normal;
     font-weight: 100 900;
     font-display: optional;
@@ -63,4 +59,20 @@
 
 .mainContainer:hover .categoryClip {
   clip-path: polygon(0 0, 100% 0, 100% 73%, 75% 100%, 0 100%, 0% 50%);
+}
+
+
+
+.fading-animation {
+  animation: fadeInAnimation ease-in-out 0.5s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+@keyframes fadeInAnimation {
+  0% {
+      opacity: 0;
+  }
+  100% {
+      opacity: 1;
+  }
 }

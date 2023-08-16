@@ -57,13 +57,13 @@ function Header() {
   }
 
   return (
-    <div className="sticky top-0 h-[120px]  flex  items-center bg-transparent  dark:bg-black  justify-between py-8 px-6 shadow-md">
+    <div className="fixed w-full z-50 top-0 h-[120px]  flex  items-center !bg-transparent   justify-between py-8 px-6 ">
       <Image
         src={LogoImage}
         alt="Logo Image"
         width={150}
         height={140}
-        className="h-6 w-56"
+        className="h-4 sm:h-6 w-28 sm:w-56 "
       />
       <div className="  flex gap-8 items-center justify-center">
         <ItemMenuDemo />
@@ -74,12 +74,12 @@ function Header() {
           <Button variant="outline" size="icon_square">
             <i className="fa-solid fa-user" />
           </Button>
-          <Select>
-            <SelectTrigger className="h-10 w-10 rounded-none border-teal text-gray-200">
-              <SelectValue placeholder="LN" />
+          <Select >
+            <SelectTrigger  className="h-10 w-14  rounded-none border-teal text-gray-200">
+              <SelectValue placeholder="EN" />
             </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
+            <SelectContent  >
+              <SelectGroup  >
                 <SelectItem value="EN">EN</SelectItem>
                 <SelectItem value="AR">AR</SelectItem>
               </SelectGroup>
@@ -219,7 +219,7 @@ export function ItemMenuDemo() {
               <li key={index} className="group border-b-2 border-transparent  ">
                 <a
                   href="#"
-                  className="flex flex-col py-2 pl-3 pr-4 text-gray-200   hover:bg-gray-100  md:hover:bg-transparent  dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                  className="flex flex-col py-2 pl-3 pr-4 text-gray-200  hover:underline hover:bg-gray-100  md:hover:bg-transparent  dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
                 >
                   {item?.name}
                   <span className="w-full h-1 bg-transparent group-hover:bg-teal mt-1 rounded-sm  "></span>

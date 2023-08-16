@@ -16,6 +16,7 @@ module.exports = {
       fontFamily: {
         sans: ['Proxima-Nova', ...defaultTheme.fontFamily.sans],
       },
+      
       colors: {
         // admin
 

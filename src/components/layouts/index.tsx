@@ -20,7 +20,7 @@ export default function DefaultLayout({ children }: DefaultLayoutProps) {
     <Provider store={store}>
       <ThemeProvider attribute="class" defaultTheme="dark">
         <Head>
-          <title>Prisma Starter</title>
+          <title>Winnar</title>
           <link rel="icon" href="/favicon.ico" />
         </Head>
         <Layout>
