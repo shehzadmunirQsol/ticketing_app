@@ -74,12 +74,12 @@ function Header() {
           <Button variant="outline" size="icon_square">
             <i className="fa-solid fa-user" />
           </Button>
-          <Select >
-            <SelectTrigger  className="h-10 w-14  rounded-none border-teal text-gray-200">
+          <Select>
+            <SelectTrigger className="h-10 w-14  rounded-none border-teal text-gray-200">
               <SelectValue placeholder="EN" />
             </SelectTrigger>
-            <SelectContent  >
-              <SelectGroup  >
+            <SelectContent>
+              <SelectGroup>
                 <SelectItem value="EN">EN</SelectItem>
                 <SelectItem value="AR">AR</SelectItem>
               </SelectGroup>
