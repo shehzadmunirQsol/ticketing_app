@@ -7,7 +7,7 @@ import { RootState } from '~/store/store';
 
 const SIDEBAR_DATA = [
   {
-    key: '/dashboard',
+    key: '/admin/dashboard',
     icon: <i className="fa-solid fa-home p-4 rounded-full" />,
     title: 'Dashboard',
   },
