@@ -90,21 +90,25 @@ function ProductSection(props: producctInterface) {
           </Button>
         </div>
       </div>
-      <div className="">
-        <Slider ref={slide} {...settings}>
-          {['', '', '', '', '', '', '', '', '', '', '', '', '', ''].map(
-            (item, index) => {
-              return (
-                <div key={index}>
-                  <ProductCard
-                    class={`${props?.class} `}
-                    dir={`${lang?.dir}`}
-                  />
-                </div>
-              );
-            },
-          )}
-        </Slider>
+      <div className="relative z-10">
+        <div className="absolute bottom-10 right-0  z-2  w-1/5 h-3/5  bg-teal-400 bg-opacity-50 rounded-full blur-3xl"></div>
+
+        <div className=" ">
+          <Slider ref={slide} {...settings}>
+            {['', '', '', '', '', '', '', '', '', '', '', '', '', ''].map(
+              (item, index) => {
+                return (
+                  <div key={index}>
+                    <ProductCard
+                      class={`${props?.class} `}
+                      dir={`${lang?.dir}`}
+                    />
+                  </div>
+                );
+              },
+            )}
+          </Slider>
+        </div>
       </div>
     </div>
   );

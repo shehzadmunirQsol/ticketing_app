@@ -1,4 +1,5 @@
 import * as Collapsible from '@radix-ui/react-collapsible';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { useSelector } from 'react-redux';
@@ -9,6 +10,11 @@ const SIDEBAR_DATA = [
     key: '/dashboard',
     icon: <i className="fa-solid fa-home p-4 rounded-full" />,
     title: 'Dashboard',
+  },
+  {
+    key: '/event',
+    icon: <i className="fa-solid fa-home p-4 rounded-full" />,
+    title: 'Events',
   },
   {
     key: '/client',
@@ -120,8 +126,9 @@ export default function Sidebar() {
               {item.child &&
                 item.child.length > 0 &&
                 item.child.map((itemChild, index) => (
-                  <div
+                  <Link
                     onClick={() => handleClickChild(`${item.key}-${index}`)}
+                    href={item.key}
                     key={itemChild.title}
                     className={`
                         ${
@@ -134,7 +141,7 @@ export default function Sidebar() {
                   >
                     {itemChild.icon}
                     {itemChild.title}
-                  </div>
+                  </Link>
                 ))}
             </Collapsible.Content>
           </Collapsible.Root>
