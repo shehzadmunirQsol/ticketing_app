@@ -5,6 +5,22 @@ export const otpSchema = z.object({
     otp: z.string().length(4),
 });
 
+
 export const loginSchema = z.object({
     email: z.string({ required_error: 'Invalid email' }).email(),
+    password: z.string()
 });
+
+
+export const registerSchema = z.object({
+    email: z.string({ required_error: 'Invalid email' }).email(),
+    name: z
+      .string()
+      .min(3, 'User name should be equal to or greater than 3 characters.')
+      .max(36, 'User name should be equal to or less than 36 characters.'),
+    role_id: z.number(),
+    password: z.string()
+});
+
+export type LoginInput = z.TypeOf<typeof loginSchema>;
+export type RegisterInput = z.TypeOf<typeof registerSchema>;

@@ -25,6 +25,7 @@ model Role {
 model User {
   id         Int     @id @default(autoincrement())
   name       String
+  password   String
   email      String  @unique
   role_id    Int
   is_deleted Boolean @default(false)
