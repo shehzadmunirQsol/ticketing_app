@@ -12,7 +12,7 @@ const SIDEBAR_DATA = [
     title: 'Dashboard',
   },
   {
-    key: '/event',
+    key: '/admin/events',
     icon: <i className="fa-solid fa-home p-4 rounded-full" />,
     title: 'Events',
   },
@@ -74,7 +74,7 @@ export default function Sidebar() {
   }
 
   function routeHandler(item: { key: string; child: number | undefined }) {
-    // if (!item?.child) router.push(item.key);
+    if (!item?.child) router.push(item.key);
   }
 
   return (
@@ -127,8 +127,8 @@ export default function Sidebar() {
                 item.child.length > 0 &&
                 item.child.map((itemChild, index) => (
                   <Link
-                    onClick={() => handleClickChild(`${item.key}-${index}`)}
                     href={item.key}
+                    onClick={() => handleClickChild(`${item.key}-${index}`)}
                     key={itemChild.title}
                     className={`
                         ${
