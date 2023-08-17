@@ -57,7 +57,7 @@ const SIDEBAR_DATA = [
         key: '/admin/settings/banners',
 
         icon: <i className="fa-solid fa-file p-4 rounded-full" />,
-        title: 'banner',
+        title: 'Banner',
       },
     ],
   },

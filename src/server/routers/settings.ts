@@ -29,6 +29,16 @@ export const settingRouter = router({
             group: 'BANNER',
           },
         };
+        if (input?.lang_id) {
+          options.where = {
+            lang_id: input?.lang_id,
+          };
+        }
+        if (input?.banner_id) {
+          options.where = {
+            id: input?.banner_id,
+          };
+        }
         if (input.startDate) {
           const startDate = new Date(input?.startDate);
           startDate.setDate(startDate.getDate());

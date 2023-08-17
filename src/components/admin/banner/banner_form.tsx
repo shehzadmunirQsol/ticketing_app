@@ -16,7 +16,7 @@ import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
 import { FileInput } from '~/components/common/file_input';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { trpc } from '~/utils/trpc';
 
 const loginFormSchema = z.object({
@@ -42,7 +42,17 @@ const loginFormSchema = z.object({
 export function BannerForm() {
   const router = useRouter();
   const [optimizeFile, setOptimizeFile] = useState<any>(null);
+  const [editData, seteditData] = useState<any>(null);
   const { index } = router.query;
+  const initialOrderFilters: any = {
+    rows: 10,
+    first: 0,
+    page: 0,
+  };
+  if (index) initialOrderFilters.banner_id = +index;
+  const [orderFilters, setOrderFilters] = useState({
+    ...initialOrderFilters,
+  });
   const {
     data: BannerApiData,
     refetch: BannerRefetch,
@@ -52,8 +62,19 @@ export function BannerForm() {
   } = trpc.settings.get_banner.useQuery(orderFilters, {
     refetchOnWindowFocus: false,
 
-    // enabled: user?.id ? true : false,
+    enabled: index ? true : false,
   });
+  useEffect(() => {
+    if (!isLoading && isFetched && BannerApiData !== undefined) {
+      const data: any = { ...BannerApiData[0] };
+      seteditData(data);
+      console.log({ data });
+      const json_data = JSON.parse(data?.value);
+      form.setValue('link', json_data?.link);
+      form.setValue('thumb', json_data?.thumb);
+    }
+  }, [isLoading, isFetched]);
+  console.log({ BannerApiData });
   const nftUpload = trpc.settings.banner_create.useMutation({
     onSuccess: () => {
       console.log('upload successfully');
@@ -72,9 +93,6 @@ export function BannerForm() {
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof loginFormSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    // router.push('/admin/dashboard');
     const payload: any = { ...values };
     const dataPayload = [
       {
@@ -183,11 +201,20 @@ export function BannerForm() {
               )}
             />
           </div>
-          <Tabs defaultValue="en" className="w-full">
-            <TabsList>
-              <TabsTrigger value="en">English</TabsTrigger>
-              <TabsTrigger value="ar">Arabic</TabsTrigger>
-            </TabsList>
+          <Tabs
+            defaultValue={index && editData?.lang_id == 1 ? 'en' : 'ar'}
+            className="w-full"
+          >
+            {index ? (
+              <></>
+            ) : (
+              <>
+                <TabsList>
+                  <TabsTrigger value="en">English</TabsTrigger>
+                  <TabsTrigger value="ar">Arabic</TabsTrigger>
+                </TabsList>
+              </>
+            )}
             <TabsContent value="en">
               <FormField
                 control={form.control}
