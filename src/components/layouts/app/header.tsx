@@ -67,13 +67,13 @@ function Header() {
   console.log({ lang });
 
   return (
-    <div className="sticky top-0 h-[120px]  flex bg-primary items-center bg-transparent  dark:bg-black border-b border-color-brand-primary/50 justify-between py-8 px-6 shadow-sm">
+    <div className="fixed w-full z-50 top-0 h-[120px]  flex  items-center !bg-transparent   justify-between py-8 px-6 ">
       <Image
         src={LogoImage}
         alt="Logo Image"
         width={150}
         height={140}
-        className="h-6 w-56"
+        className="h-4 sm:h-6 w-28 sm:w-56 "
       />
       <div className="  flex gap-8 items-center justify-center">
         <ItemMenuDemo />
@@ -229,7 +229,7 @@ export function ItemMenuDemo() {
               <li key={index} className="group border-b-2 border-transparent  ">
                 <a
                   href="#"
-                  className="flex flex-col py-2 pl-3 pr-4 text-gray-200   hover:bg-gray-100  md:hover:bg-transparent  dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                  className="flex flex-col py-2 pl-3 pr-4 text-gray-200  hover:underline hover:bg-gray-100  md:hover:bg-transparent  dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
                 >
                   {item?.name}
                   <span className="w-full h-1 bg-transparent group-hover:bg-teal mt-1 rounded-sm  "></span>
