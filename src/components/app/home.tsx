@@ -22,7 +22,7 @@ function Home() {
       <div className='relative top-0'>
         <BannerSlider />
       </div>
-      {/* <div className=" w-full h-full text-white p-2">
+      {/* <div className=" w-full h-full t    ext-white p-2">
           <ProductCard />
         </div>
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from '@/ui/button';
 import LogoImage from '~/public/assets/logo.png';
 import Image from 'next/image';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toggleSidebar } from '~/store/reducers/admin_layout';
 import {
   DropdownMenu,
@@ -43,6 +43,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '~/components/ui/select';
+import { useRouter } from 'next/router';
+import { toggleLang } from '~/store/reducers/layout';
+import { RootState } from '~/store/store';
 interface LinkItemProps {
   name: string;
   link: string;
@@ -50,11 +53,18 @@ interface LinkItemProps {
   disable?: boolean;
 }
 function Header() {
+  const { lang } = useSelector((state: RootState) => state.layout);
+
   const dispatch = useDispatch();
 
-  function toggleSidebarHandler() {
-    dispatch(toggleSidebar());
+  function toggleLanguageHandler(lang: 'en' | 'ar') {
+    const dir: 'ltr' | 'rtl' = lang === 'ar' ? 'rtl' : 'ltr';
+    const language = { lang, dir };
+
+    dispatch(toggleLang(language));
   }
+
+  console.log({ lang });
 
   return (
     <div className="fixed w-full z-50 top-0 h-[120px]  flex  items-center !bg-transparent   justify-between py-8 px-6 ">
@@ -74,14 +84,14 @@ function Header() {
           <Button variant="outline" size="icon_square">
             <i className="fa-solid fa-user" />
           </Button>
-          <Select >
-            <SelectTrigger  className="h-10 w-14  rounded-none border-teal text-gray-200">
+          <Select onValueChange={toggleLanguageHandler}>
+            <SelectTrigger className="h-10 w-10 rounded-none border-teal text-gray-200">
               <SelectValue placeholder="EN" />
             </SelectTrigger>
-            <SelectContent  >
-              <SelectGroup  >
-                <SelectItem value="EN">EN</SelectItem>
-                <SelectItem value="AR">AR</SelectItem>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="en">EN</SelectItem>
+                <SelectItem value="ar">AR</SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>

@@ -1,10 +1,15 @@
 import React, { ReactNode } from 'react';
 import { Button } from '~/components/ui/button';
 import Header from './header';
+import { useSelector } from 'react-redux';
+import { RootState } from '~/store/store';
 
 type DefaultLayoutProps = { children: ReactNode };
 
-function index({ children }: DefaultLayoutProps) {
+function Index({ children }: DefaultLayoutProps) {
+
+  const { lang } = useSelector((state: RootState) => state.layout);
+
   const handleClick = async () => {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/email/mailer`,
@@ -26,16 +31,17 @@ function index({ children }: DefaultLayoutProps) {
     }
   };
 
+
   return (
-    <>
-      <div className="relative w-full overflow-x-hidden">
-        
-        <Header />
-        <div className="w-full">{children}</div>
-      </div>
-      {/* <Button onClick={handleClick}>Test Email</Button> */}
-    </>
+    <div
+      dir={lang.dir}
+      lang={lang.lang}
+      className="relative w-full overflow-x-hidden"
+    >
+      <Header />
+      <div className="w-full">{children}</div>
+    </div>
   );
 }
 
-export default index;
+export default Index;
