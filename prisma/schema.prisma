@@ -24,7 +24,7 @@ model Role {
 
 model Setting {
   id         Int          @id @default(autoincrement())
-  group      SettingEnums @default(banner)
+  group      SettingEnums @default(BANNER)
   key        String
   value      String
   lang_id    Int          @default(1)
@@ -273,9 +273,9 @@ model EventFAQ {
 }
 
 enum SettingEnums {
-  banner
-  wonder
-  payment
+  BANNER
+  WONDER
+  PAYMENT
 }
 
 // Tables
