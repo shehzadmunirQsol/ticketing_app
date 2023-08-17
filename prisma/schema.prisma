@@ -2,7 +2,7 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 datasource db {
-  provider = "mongodb"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
@@ -10,14 +10,267 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Post {
-  id    String @id @default(auto()) @map("_id") @db.ObjectId
-  title String
-  text  String
+model Role {
+  id         Int     @id @default(autoincrement())
+  name       String
+  is_deleted Boolean @default(false)
 
-  // To return `Date`s intact through the API we use transformers
-  // https://trpc.io/docs/data-transformers
-  // This is unique so it can be used for cursor-based pagination
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+  User       User[]
+
+  @@map("role")
 }
+
+model User {
+  id         Int     @id @default(autoincrement())
+  name       String
+  email      String  @unique
+  role_id    Int
+  is_deleted Boolean @default(false)
+
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+
+  Role Role @relation(fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  Post                Category[]
+  Event               Event[]
+  FAQs                FAQ[]
+  FAQsDescription     FaqDescription[]
+  CustomerDescription CustomerDescription[]
+
+  @@index([role_id])
+  @@map("user")
+}
+
+model Language {
+  id         Int     @id @default(autoincrement())
+  name       String
+  code       String
+  is_default Boolean @default(false)
+  is_deleted Boolean @default(false)
+
+  created_at          DateTime              @default(now()) @db.Timestamp(6)
+  updated_at          DateTime              @default(now()) @db.Timestamp(6)
+  FAQsDescription     FaqDescription[]
+  CustomerDescription CustomerDescription[]
+  CharityDescription  CharityDescription[]
+  CategoryDescription CategoryDescription[]
+  EventDescription    EventDescription[]
+  EventFAQ            EventFAQ[]
+
+  @@map("language")
+}
+
+model FAQ {
+  id         Int     @id @default(autoincrement())
+  user_id    Int
+  is_deleted Boolean @default(false)
+
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+
+  User            User             @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  FAQsDescription FaqDescription[]
+
+  @@index([user_id])
+  @@map("faq")
+}
+
+model FaqDescription {
+  id      Int    @id @default(autoincrement())
+  qustion String
+  answer  String
+  lang_id Int
+  faq_id  Int
+
+  Language Language @relation(fields: [lang_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  FAQ      FAQ      @relation(fields: [faq_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  User     User?    @relation(fields: [userId], references: [id])
+  userId   Int?
+
+  @@index([lang_id, faq_id])
+  @@map("faq_description")
+}
+
+model Customer {
+  id         Int     @id @default(autoincrement())
+  email      String  @unique
+  is_deleted Boolean @default(false)
+
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+
+  @@map("customer")
+}
+
+model CustomerDescription {
+  id      Int    @id @default(autoincrement())
+  name    String
+  lang_id Int
+  user_id Int
+
+  User     User     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Language Language @relation(fields: [lang_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([user_id, lang_id])
+  @@map("customer_description")
+}
+
+model Charity {
+  id         Int     @id @default(autoincrement())
+  price      Int
+  thumb      String
+  is_deleted Boolean @default(false)
+
+  created_at         DateTime             @default(now()) @db.Timestamp(6)
+  updated_at         DateTime             @default(now()) @db.Timestamp(6)
+  CharityDescription CharityDescription[]
+
+  @@map("charity")
+}
+
+model CharityDescription {
+  id         Int     @id @default(autoincrement())
+  name       String
+  desc       String?
+  lang_id    Int
+  charity_id Int
+
+  Charity  Charity  @relation(fields: [charity_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Language Language @relation(fields: [lang_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  // @@index([charity_id, lang_id])
+  @@map("charity_description")
+}
+
+model Category {
+  id         Int      @id @default(autoincrement())
+  thumb      String
+  creator_id Int
+  is_deleted Boolean  @default(false)
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+
+  User                User                  @relation(fields: [creator_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Event               Event[]
+  CategoryDescription CategoryDescription[]
+
+  @@index([creator_id])
+  @@map("category")
+}
+
+model CategoryDescription {
+  id          Int     @id @default(autoincrement())
+  name        String
+  desc        String?
+  lang_id     Int
+  category_id Int
+
+  Category Category @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Language Language @relation(fields: [lang_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([category_id, lang_id])
+  @@map("category_description")
+}
+
+model Event {
+  id                Int     @id @default(autoincrement())
+  thumb             String
+  video_src         String?
+  price             Int
+  cash_alt          Int?
+  total_tickets     Int
+  tickets_sold      Int
+  user_ticket_limit Int
+  is_alt            Boolean @default(false)
+  creator_id        Int
+  category_id       Int
+
+  launch_date DateTime? @default(now()) @db.Timestamp(6)
+  end_date    DateTime? @default(now()) @db.Timestamp(6)
+  is_deleted  Boolean   @default(false)
+
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+
+  User             User               @relation(fields: [creator_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Category         Category           @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  EventImages      EventImage[]
+  EventFAQs        EventFAQ[]
+  EventDescription EventDescription[]
+
+  @@index([creator_id, category_id])
+  @@map("event")
+}
+
+model EventDescription {
+  id           Int     @id @default(autoincrement())
+  name         String
+  desc         String?
+  comp_details String?
+  lang_id      Int
+  event_id     Int
+
+  Event    Event    @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Language Language @relation(fields: [lang_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([event_id, lang_id])
+  @@map("event_description")
+}
+
+model EventImage {
+  id         Int     @id @default(autoincrement())
+  thumb      String
+  event_id   Int
+  is_deleted Boolean @default(false)
+
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+
+  Event Event @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([event_id])
+  @@map("event_image")
+}
+
+model EventFAQ {
+  id         Int     @id @default(autoincrement())
+  question   String
+  answer     String
+  lang_id    Int
+  event_id   Int
+  is_deleted Boolean @default(false)
+
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+
+  Event    Event    @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Language Language @relation(fields: [lang_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([event_id, lang_id])
+  @@map("event_faq")
+}
+
+// Tables
+
+// Front tables
+//1- Customers
+//2- Categories
+//3- Charity
+//3- Events
+//3- Event Images
+//3- Events FAQs 
+//4- Orders
+//4- Orders Details
+//5- Coupons
+
+// Admin tables
+//7- Users
+//8- Roles
+//9- Resource
+//10- Roles Permissions
+//11- Settings?
+//12- CMS
+//6- FAQs
