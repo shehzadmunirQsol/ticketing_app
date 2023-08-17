@@ -1,14 +1,14 @@
 import { router, publicProcedure } from '../trpc';
 import { TRPCError } from '@trpc/server';
 import {
-  createCategorySchema,
-  deleteCategorySchema,
-  getCategorySchema,
-} from '~/schema/category';
+  createEventSchema,
+  deleteEventSchema,
+  getEventSchema,
+} from '~/schema/event';
 import { prisma } from '~/server/prisma';
 
-export const categoryRouter = router({
-  get: publicProcedure.input(getCategorySchema).query(async ({ input }) => {
+export const eventRouter = router({
+  get: publicProcedure.input(getEventSchema).query(async ({ input }) => {
     try {
       const where: any = { is_deleted: false };
 
@@ -21,35 +21,35 @@ export const categoryRouter = router({
         where.created_at = { lte: endDate };
       }
 
-      if (input.category_id) where.id = input.category_id;
+      if (input.event_id) where.id = input.event_id;
 
-      const totalCategoryPromise = prisma.category.count({
+      const totalEventPromise = prisma.event.count({
         where: where,
       });
 
-      const categoryPromise = prisma.category.findMany({
+      const eventPromise = prisma.event.findMany({
         orderBy: { created_at: 'desc' },
         skip: input.first,
         take: input.rows,
         where: where,
       });
 
-      const [totalCategory, category] = await Promise.all([
-        totalCategoryPromise,
-        categoryPromise,
+      const [totalEvent, event] = await Promise.all([
+        totalEventPromise,
+        eventPromise,
       ]);
 
-      if (!category?.length) {
+      if (!event?.length) {
         throw new TRPCError({
           code: 'NOT_FOUND',
-          message: 'Categories not found',
+          message: 'Events not found',
         });
       }
 
       return {
-        message: 'categories found',
-        count: totalCategory,
-        data: category,
+        message: 'events found',
+        count: totalEvent,
+        data: event,
       };
     } catch (error: any) {
       throw new TRPCError({
@@ -59,37 +59,37 @@ export const categoryRouter = router({
     }
   }),
   create: publicProcedure
-    .input(createCategorySchema)
+    .input(createEventSchema)
     .mutation(async ({ input }) => {
       try {
-        const { en, ar, ...categoryPayload } = input;
+        const { en, ar, ...eventPayload } = input;
 
-        const category = await prisma.category.create({
-          data: categoryPayload,
-        });
-        if (!category) {
+        const event = await prisma.event.create({ data: eventPayload });
+
+        if (!event) {
           throw new TRPCError({
             code: 'BAD_REQUEST',
-            message: 'Category not created',
+            message: 'Event not created',
           });
         }
-        const categoryDescPayload = [
-          { ...en, category_id: category.id },
-          { ...ar, category_id: category.id },
+
+        const eventDescPayload = [
+          { ...en, event_id: event.id },
+          { ...ar, event_id: event.id },
         ];
 
-        const categoryDesc = await prisma.categoryDescription.createMany({
-          data: categoryDescPayload,
+        const eventDesc = await prisma.eventDescription.createMany({
+          data: eventDescPayload,
         });
 
-        if (!categoryDesc.count) {
+        if (!eventDesc.count) {
           throw new TRPCError({
             code: 'BAD_REQUEST',
-            message: 'Category Description not created',
+            message: 'Event Description not created',
           });
         }
 
-        return { data: category, message: 'Category created' };
+        return { data: event, message: 'Event created' };
       } catch (error: any) {
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
@@ -98,21 +98,21 @@ export const categoryRouter = router({
       }
     }),
   delete: publicProcedure
-    .input(deleteCategorySchema)
+    .input(deleteEventSchema)
     .mutation(async ({ input }) => {
       try {
-        const category = await prisma.category.update({
+        const event = await prisma.event.update({
           where: { id: input.id },
           data: { is_deleted: true },
         });
-        if (!category) {
+        if (!event) {
           throw new TRPCError({
             code: 'BAD_REQUEST',
-            message: 'Category not found',
+            message: 'Event not found',
           });
         }
 
-        return { data: category, message: 'Category deleted' };
+        return { data: event, message: 'Event deleted' };
       } catch (error: any) {
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
@@ -120,5 +120,4 @@ export const categoryRouter = router({
         });
       }
     }),
-  
 });
