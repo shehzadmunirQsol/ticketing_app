@@ -25,12 +25,12 @@ export function FileInput(props: any) {
     }
   }, [props?.getValues('thumb')]);
   return (
-    <div className=" relative flex items-center justify-center w-full p-2  ">
+    <div className=" relative flex items-center justify-center w-full p-2   ">
       {image !== null ? (
         <>
           <div
             onClick={() => handleDelete(props?.register?.name)}
-            className="z-50 absolute top-[-16px] right-[-14px] h-10 w-10 duration bg-white  hover:bg-ac-2 hover:text-black text-black rounded-full flex justify-center items-center text-center"
+            className=" absolute top-[-16px] right-[-14px] h-10 w-10 duration bg-white  hover:bg-ac-2 hover:text-black text-black rounded-full flex justify-center items-center text-center"
           >
             <i className={` fa fa-remove text-xl `}></i>
           </div>
@@ -112,7 +112,7 @@ export function FileInput2(props: any) {
         <>
           <div
             onClick={() => handleDelete(props?.register?.name)}
-            className="z-50 absolute top-[-16px] right-[-14px] h-10 w-10 duration bg-white text-ac-2 hover:bg-ac-2 hover:text-white rounded-full flex justify-center items-center text-center"
+            className=" absolute top-[-16px] right-[-14px] h-10 w-10 duration bg-white text-ac-2 hover:bg-ac-2 hover:text-white rounded-full flex justify-center items-center text-center"
           >
             <i className={` fas fa-remove text-xl `}></i>
           </div>
@@ -206,7 +206,7 @@ export function SeoImage(props: any) {
         <>
           <div
             onClick={() => handleDelete(props?.register?.name)}
-            className="z-50 absolute top-[-16px] right-[-14px] h-10 w-10 duration bg-white text-ac-2 hover:bg-ac-2 hover:text-white rounded-full flex justify-center items-center text-center"
+            className=" absolute top-[-16px] right-[-14px] h-10 w-10 duration bg-white text-ac-2 hover:bg-ac-2 hover:text-white rounded-full flex justify-center items-center text-center"
           >
             <i className={` fas fa-remove text-xl `}></i>
           </div>

@@ -17,6 +17,7 @@ import { useRouter } from 'next/router';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
 import { FileInput } from '~/components/common/file_input';
 import { useState } from 'react';
+import { trpc } from '~/utils/trpc';
 
 const loginFormSchema = z.object({
   thumb: z.any(),
@@ -38,41 +39,58 @@ const loginFormSchema = z.object({
   }),
 });
 
-export function EventForm() {
+export function BannerForm() {
   const router = useRouter();
   const [optimizeFile, setOptimizeFile] = useState<any>(null);
+  const { index } = router.query;
+  const {
+    data: BannerApiData,
+    refetch: BannerRefetch,
+    isFetched,
+    isLoading,
+    isError,
+  } = trpc.settings.get_banner.useQuery(orderFilters, {
+    refetchOnWindowFocus: false,
+
+    // enabled: user?.id ? true : false,
+  });
+  const nftUpload = trpc.settings.banner_create.useMutation({
+    onSuccess: () => {
+      console.log('upload successfully');
+
+      // router.push('/store/wallet-connect');
+    },
+    onError(error: any) {
+      console.log({ error });
+    },
+  });
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof loginFormSchema>>({
     resolver: zodResolver(loginFormSchema),
-    defaultValues: {
-      thumb: '',
-      link: '',
-
-      en: {
-        model: '',
-        title: '',
-        price: '',
-        description: '',
-        date: '',
-      },
-      ar: {
-        model: '',
-        title: '',
-        price: '',
-        description: '',
-        date: '',
-      },
-    },
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof loginFormSchema>) {
+  async function onSubmit(values: z.infer<typeof loginFormSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     // router.push('/admin/dashboard');
+    const payload: any = { ...values };
+    const dataPayload = [
+      {
+        lang_id: 1,
+        key: 'banner_en',
+        value: JSON.stringify({ thumb: '', link: values?.link, ...values?.ar }),
+      },
+      {
+        lang_id: 2,
+        key: 'banner_ar',
+        value: JSON.stringify({ thumb: '', link: values?.link, ...values?.ar }),
+      },
+    ];
+    const data = await nftUpload.mutateAsync(dataPayload);
 
-    console.log({ values });
+    console.log({ dataPayload });
   }
   async function imageCompressorHandler(originalFile: any) {
     const imageFile = originalFile;
@@ -139,7 +157,7 @@ export function EventForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="justify-center items-center px-8 py-4"
+        className="justify-center items-center px-8 py-4 space-y-4"
       >
         <div className="space-y-4">
           <div>
@@ -244,7 +262,7 @@ export function EventForm() {
             <TabsContent value="ar">
               <FormField
                 control={form.control}
-                name="en.model"
+                name="ar.model"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Modal</FormLabel>
@@ -316,8 +334,8 @@ export function EventForm() {
         </div>
         <div className="flex items-center justify-between">
           <div></div>
-          <Button type="submit" variant={'clip'} className="w-28">
-            Add Event
+          <Button type="submit" variant={'clip'} className="w-1/2">
+            Add Banner
           </Button>
         </div>
       </form>

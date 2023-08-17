@@ -22,10 +22,14 @@ const SIDEBAR_DATA = [
     title: 'Clients',
     child: [
       {
+        key: '/admin/banners',
+
         icon: <i className="fa-solid fa-table p-4 rounded-full" />,
         title: 'Listing',
       },
       {
+        key: '/admin/banners',
+
         icon: <i className="fa-solid fa-image p-4 rounded-full" />,
         title: 'Gallery',
       },
@@ -37,6 +41,8 @@ const SIDEBAR_DATA = [
     title: 'Notification',
     child: [
       {
+        key: '/admin/banners',
+
         icon: <i className="fa-solid fa-file p-4 rounded-full" />,
         title: 'Email',
       },
@@ -46,6 +52,14 @@ const SIDEBAR_DATA = [
     key: '/settings',
     icon: <i className="fa-solid fa-gear p-4 rounded-full" />,
     title: 'Settings',
+    child: [
+      {
+        key: '/admin/settings/banners',
+
+        icon: <i className="fa-solid fa-file p-4 rounded-full" />,
+        title: 'banner',
+      },
+    ],
   },
 ];
 
@@ -127,7 +141,7 @@ export default function Sidebar() {
                 item.child.length > 0 &&
                 item.child.map((itemChild, index) => (
                   <Link
-                    href={item.key}
+                    href={itemChild?.key}
                     onClick={() => handleClickChild(`${item.key}-${index}`)}
                     key={itemChild.title}
                     className={`
