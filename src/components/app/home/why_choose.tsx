@@ -60,7 +60,7 @@ function WhyChoose() {
               <div>
                 <div>
                   <div className=" text-4xl  leading-tight">{item?.title}</div>
-                  <div className=" text-base font-normal text-border leading-tight">
+                  <div className=" text-base font-normal text-gray-500 text-border leading-tight">
                     {item?.desc}
                   </div>
                 </div>

@@ -3,6 +3,7 @@ import { Button } from '~/components/ui/button';
 import Header from './header';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
+import Footer from './footer';
 
 type DefaultLayoutProps = { children: ReactNode };
 
@@ -39,7 +40,8 @@ function Index({ children }: DefaultLayoutProps) {
       className="relative w-full overflow-x-hidden"
     >
       <Header />
-      <div className="w-full">{children}</div>
+      <div className="w-full ">{children}</div>
+      <Footer />
     </div>
   );
 }

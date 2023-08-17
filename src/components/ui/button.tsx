@@ -20,7 +20,9 @@ const buttonVariants = cva(
         link: 'text-primary underline-offset-4 hover:underline',
         clip: 'bg-primary text-primary-foreground hover:opacity-90 clip',
         rounded:
-          'bg-primary text-primary-foreground rounded-full border border-primary group-hover:bg-background hover:bg-background hover:text-primary group-hover:text-primary',
+          'bg-primary text-primary-foreground rounded-full border border-primary  hover:bg-background hover:text-primary ',
+        'rounded-outline':
+          'hover:bg-primary hover:text-primary-foreground rounded-full border border-primary  bg-background text-primary ',
       },
       size: {
         default: 'h-10 px-4 py-2',
