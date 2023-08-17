@@ -7,6 +7,8 @@ import DataCard from '../../common/card';
 import { Card } from '../../ui/card';
 import ProductCard from '../../common/card';
 import { Button } from '../../ui/button';
+import { useSelector } from 'react-redux';
+import { RootState } from '~/store/store';
 interface producctInterface {
   class?: string;
   title: string;
@@ -14,6 +16,8 @@ interface producctInterface {
   slidesToShow?: number;
 }
 function ProductSection(props: producctInterface) {
+  const { lang } = useSelector((state: RootState) => state.layout);
+
   const slide = useRef<any>();
   const next = () => {
     slide?.current.slickNext();
@@ -64,7 +68,11 @@ function ProductSection(props: producctInterface) {
         <div className="text-gray-200 sm:text-2xl lg:text-5xl font-black uppercase  ">
           {props?.title}
         </div>
-        <div className=" md:absolute right-10 flex gap-2 items-center justify-center ">
+        <div
+          className={`${
+            lang?.dir == 'rtl' ? ' flex-row-reverse' : 'md:absolute right-10'
+          }  flex gap-2 items-center justify-center `}
+        >
           <Button
             variant="rounded"
             className="button prev-btn h-14 w-14"
@@ -88,7 +96,10 @@ function ProductSection(props: producctInterface) {
             (item, index) => {
               return (
                 <div key={index}>
-                  <ProductCard class={props?.class} />
+                  <ProductCard
+                    class={`${props?.class} `}
+                    dir={`${lang?.dir}`}
+                  />
                 </div>
               );
             },

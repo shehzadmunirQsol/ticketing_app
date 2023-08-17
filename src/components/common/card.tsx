@@ -7,10 +7,13 @@ import { Progress } from '../ui/progress';
 import { Button } from '../ui/button';
 interface cardInterface {
   class?: string;
+  dir?: string;
 }
 function ProductCard(props: cardInterface) {
+  console.log({props});
   return (
     <div
+      dir={props?.dir}
       className={`   rounded-sm overflow-hidden shadow-lg bg-card h-1/5 ${props?.class}`}
     >
       <div className="relative">

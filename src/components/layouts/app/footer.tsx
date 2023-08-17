@@ -7,6 +7,7 @@ import { toggleSidebar } from '~/store/reducers/admin_layout';
 
 import Lines from '~/public/assets/icons/Lines_Big.png';
 import Group16 from '~/public/assets/icons/Group16.svg';
+import Group17 from '~/public/assets/icons/Group17.png';
 import Link from 'next/link';
 
 interface LinkItemProps {
@@ -40,7 +41,7 @@ function Footer() {
         <div className="relative z-30">
           <div className="relative p-4 py-6 lg:py-8 lg:px-8">
             <div className="md:flex md:justify-between ">
-              <div className="mb-6 md:mb-0 flex flex-col gap-4 w-full">
+              <div className="mb-6 md:mb-0 flex flex-col gap-8 w-full">
                 <div>
                   <Button variant="rounded-outline" className="z-30">
                     <div>
@@ -53,12 +54,17 @@ function Footer() {
                   © Copyright WINNAR 2023 Registered Company Number: 11320154,
                   UAE
                 </div>
+                <div className="w-full lg:w-1/3 text-sm text-white opacity-70">
+                  <Image
+                    className="w-full h-full object-contain  "
+                    src={Group17}
+                    quality={100}
+                    alt="Sunset in the mountains"
+                  />
+                </div>
               </div>
               <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-2  w-full">
                 <div>
-                  <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
-                    Resources
-                  </h2>
                   <ul className="text-gray-500 dark:text-gray-400 font-medium">
                     {[
                       'Home',
@@ -69,7 +75,7 @@ function Footer() {
                       'My Account',
                     ].map((item, index) => {
                       return (
-                        <li key={index} className="mb-2">
+                        <li key={index} className=" text-sm">
                           <a href="/item" className="hover:underline">
                             {item}
                           </a>
@@ -79,9 +85,6 @@ function Footer() {
                   </ul>
                 </div>
                 <div>
-                  <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
-                    Follow us
-                  </h2>
                   <ul className="text-gray-500 dark:text-gray-400 font-medium">
                     {[
                       'About Us',
@@ -92,7 +95,7 @@ function Footer() {
                       'Cookie & Privacy Policy',
                     ].map((item, index) => {
                       return (
-                        <li key={index} className="mb-2">
+                        <li key={index} className="text-sm">
                           <a href="/item" className="hover:underline">
                             {item}
                           </a>
@@ -100,6 +103,37 @@ function Footer() {
                       );
                     })}
                   </ul>
+                </div>
+                <div className=" col-span-2 w-full ">
+                  <div className=" flex items-center justify-between  ">
+                    <div className=" text-sm font-bold w-full">
+                      CONNECT WITH US
+                    </div>
+                    <div className="w-full  flex  gap-4  justify-start items-center">
+                      {' '}
+                      <Button
+                        variant="outline"
+                        size="icon_square"
+                        className=" rounded-md"
+                      >
+                        <i className="fa-brands fa-facebook-f text-xl"></i>
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="icon_square"
+                        className=" rounded-md"
+                      >
+                        <i className="fa-brands fa-instagram text-xl"></i>
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="icon_square"
+                        className=" rounded-md"
+                      >
+                        <i className="fa-brands fa-youtube text-xl"></i>
+                      </Button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
