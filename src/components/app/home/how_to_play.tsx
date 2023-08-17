@@ -36,8 +36,10 @@ function HowtoSection() {
   return (
     <div className="relative   w-full mb-2 py-4">
       <div className="   bg-primary   grid grid-cols-1 lg:grid-cols-2   ">
-        <div className="  m-auto w-3/4 text-black font-extrabold xs:text-4xl text-9xl  uppercase ">
-          HOW TO PLAY?
+        <div className=" my-auto   w-full ">
+          <p className="m-auto px-6 py-4 md:py-0 text-left !w-full md:!max-w-[460px] text-black font-[1000] tracking-[-4px] !text-6xl   md:!text-6xl lg:!text-8xl   uppercase">
+            HOW TO PLAY?
+          </p>
         </div>
 
         <div className="flex flex-col gap-8 space-y-4 p-8">
@@ -57,7 +59,7 @@ function HowtoSection() {
                     <div className="text-background text-sm font-normal leading-tight">
                       0{item?.step} STEP
                     </div>
-                    <div className="text-background text-lg font-bold leading-tight">
+                    <div className="text-background text-lg font-extrabold leading-2 ">
                       {item?.title}
                     </div>
                   </div>

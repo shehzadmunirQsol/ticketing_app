@@ -61,7 +61,14 @@
   clip-path: polygon(0 0, 100% 0, 100% 73%, 75% 100%, 0 100%, 0% 50%);
 }
 
-
+.banner_img {
+  background: url(../public/assets/win-banner-1_cleanup.png) center no-repeat;
+  background-size: 100vw 100vh;
+}
+.banner_img_flip {
+  background: url(../public/assets/flip_background_cleanup.png) center no-repeat;
+  background-size: 100vw 100vh;
+}
 
 .fading-animation {
   animation: fadeInAnimation ease-in-out 0.5s;

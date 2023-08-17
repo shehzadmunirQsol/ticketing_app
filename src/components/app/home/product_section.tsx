@@ -40,8 +40,9 @@ function ProductSection(props: producctInterface) {
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: 3,
           slidesToScroll: 2,
+          
         },
       },
       {
@@ -63,9 +64,9 @@ function ProductSection(props: producctInterface) {
     ],
   };
   return (
-    <div className="relative min-h-screen w-full ">
+    <div className="relative  w-full ">
       <div className=" relative flex flex-col md:flex-row h-28 md:h-auto py-6 gap-2 items-center w-full md:justify-between mb-6">
-        <div className="text-gray-200 sm:text-2xl lg:text-5xl font-black uppercase  ">
+        <div className="text-gray-200 text-xl sm:text-2xl lg:text-5xl font-black uppercase  ">
           {props?.title}
         </div>
         <div
@@ -92,7 +93,7 @@ function ProductSection(props: producctInterface) {
       </div>
       <div className="">
         <Slider ref={slide} {...settings}>
-          {['', '', '', '', '', '', '', '', '', '', '', '', '', ''].map(
+          {['', '', '', '', '', '', '', '', '', ].map(
             (item, index) => {
               return (
                 <div key={index}>

@@ -10,7 +10,7 @@ interface cardInterface {
   dir?: string;
 }
 function ProductCard(props: cardInterface) {
-  console.log({props});
+
   return (
     <div
       dir={props?.dir}

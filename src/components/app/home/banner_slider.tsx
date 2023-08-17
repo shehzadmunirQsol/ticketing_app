@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import Background from '../../../public/assets/win-banner-1_cleanup.png';
-import BgImage1 from '../../../public/assets/win-banner-2.jpeg';
+
+import BgImage1 from '../../../public/assets/rolls.png';
 import BgImage2 from '../../../public/assets/Ford-Mustang-Yellow-PNG.png';
-import BgImage3 from '../../../public/assets/Ford-Mustang-PNG-Pic.png';
-import BgImage4 from '../../../public/assets/ferrari.png';
+import BgImage3 from '../../../public/assets/ferrari.png';
+// import BgImage4 from '../../../public/assets/Ford-Mustang-PNG-Pic.png';
 import Slant from '../../../public/assets/slants.png';
 import Image from 'next/image';
 import { Button } from '~/components/ui/button';
+import { useSelector } from 'react-redux';
+import { RootState } from '~/store/store';
 
 const BannerSlider = () => {
+  const { lang } = useSelector((state: RootState) => state.layout);
   const [select, setSelect] = useState(2);
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -17,36 +21,37 @@ const BannerSlider = () => {
   const carSlider: any = [
     {
       image: BgImage1,
-      text: 'TOYOTA RAV4 2023',
-      BannerTitle: 'WIN THIS TOYOTA',
+      text: 'ROLLS ROYCE PHANTOM 2023',
+      BannerTitle: 'WIN THIS ROLLS ROYCE',
       BannerPrice: '1000 AED',
       BannerPara: 'Get your dream car at a fraction of the price!',
       BannerDate: 'WIN SUNDAY 8 PM',
     },
     {
       image: BgImage2,
-      text: 'TOYOTA RAV4 2023',
-      BannerTitle: 'WIN THIS TOYOTA',
+      text: 'FORD MUSTANG 2023',
+      BannerTitle: 'WIN THIS FORD MUSTANG',
       BannerPrice: '1000 AED',
       BannerPara: 'Get your dream car at a fraction of the price!',
       BannerDate: 'WIN SUNDAY 8 PM',
     },
     {
       image: BgImage3,
-      text: '2021 BMW X5 40D & £1000',
-      BannerTitle: 'WIN THIS BMW',
-      BannerPrice: '1000 AED',
-      BannerPara: 'Get your dream car at a fraction of the price!',
-      BannerDate: 'WIN SUNDAY 8 PM',
-    },
-    {
-      image: BgImage4,
       text: 'FERARRI LAFERRARI 2014',
       BannerTitle: 'WIN THIS FERRARI',
       BannerPrice: '1000 AED',
       BannerPara: 'Get your dream car at a fraction of the price!',
       BannerDate: 'WIN SUNDAY 8 PM',
     },
+    // {
+    //   image: BgImage4,
+    //   text: '2021 BMW X5 40D & £1000',
+    //   BannerTitle: 'WIN THIS BMW',
+    //   BannerPrice: '1000 AED',
+    //   BannerPara: 'Get your dream car at a fraction of the price!',
+    //   BannerDate: 'WIN SUNDAY 8 PM',
+
+    // },
   ];
 
   // FOR ANIMATION IN THE
@@ -100,20 +105,14 @@ const BannerSlider = () => {
     return () => clearTimeout(animationTimeout);
   }, [currentIndex]);
 
+
   return (
-    <div
-      className="relative w-full h-screen sm:overflow-hidden"
-      style={{
-        background: `url(${Background.src}) no-repeat`,
-        backgroundSize: '100vw 100vh',
-        zIndex: 1,
-      }}
-    >
+    <div className={`relative w-full h-screen sm:overflow-hidden ${lang.dir === "ltr" ? "banner_img" :"banner_img_flip"}`} >
       <div className="relative ">
         <Image
           src={Slant}
           alt="/"
-          className="absolute right-0 top-0 bg-blend-darken"
+          className="absolute ltr:right-0 rtl:left-0 top-0 bg-blend-darken transform rtl:-scale-x-100 ltr:scale-100"
           width={500}
           height={1200}
         />
@@ -123,19 +122,19 @@ const BannerSlider = () => {
         <Image
           src={Slant}
           alt="/"
-          className="absolute left-10 mt-56 transform -scale-100 "
+          className="absolute ltr:left-10 mt-56 transform rtl:-scale-y-100 ltr:-scale-100"
           width={500}
           height={1200}
         />
       </div>
 
-      <div className=" w-full  flex flex-col sm:!flex-row justify-between z-20">
+      <div className=" w-full  flex flex-col  sm:!flex-row justify-between z-20">
         {/* text content */}
 
         <div
           className={`relative ${
             showElement ? 'fading-animation' : ''
-          } transition-all  duration-500  ease-in-out top-32 sm:top-48 h-fit  sm:ml-20 text-white sm:max-w-[700px]`}
+          } transition-all  duration-500  ease-in-out top-32 sm:top-48 h-fit  ltr:sm:ml-20 rtl:sm:mr-20 text-white sm:max-w-[700px]`}
         >
           <p className="text-5xl font-[900] tracking-[-2px] ">
             {carSlider[currentIndex]?.BannerTitle}
@@ -162,29 +161,34 @@ const BannerSlider = () => {
         </div>
 
         {/* text select cards */}
-        <div className="  absolute  mb-10 right-0 top-36   z-20 w-full max-w-[700px] h-full max-h-[340px]">
+        <div className="  absolute  mb-10 mx-4 top-[170px] ltr:right-6 rtl:left-6  z-20 w-full max-w-[680px] h-full max-h-[320px]">
           <Image
-            className="drop-shadow-2xl   object-cover"
+            className="drop-shadow-2xl   object-cover transform rtl:-scale-x-100 ltr:scale-100"
             src={carSlider[currentIndex]?.image}
             alt="/"
             fill
+
             // width={750}
             // height={400}
             // sizes="(max-width: 768px) 900px 500px, (max-width: 1200px) 700px 400px"
           />
         </div>
-        <div className="relative w-fit right-16 z-30 sm:top-[360px] items-end h-fit flex justify-between  gap-3 mx-auto sm:mx-0">
+        <div className="relative w-fit   ltr:right-16 rtl:left-16 z-30 sm:top-[360px] items-end h-fit flex justify-between  gap-3 mx-auto sm:mx-0">
           {carSlider.map((item: any, i: number) => (
             <div
               className="group relative top-32 max-w-[120px] text-center font-semibold hover:cursor-pointer"
               onClick={() => goToSlide(i)}
             >
-              <div className="relative w-[100px] h-[60px] mx-auto border-2  border-transparent group-hover:border-primary">
+              <div
+                className={`relative w-[100px] h-[60px] mx-auto border-2  ${
+                  currentIndex === i ? 'border-primary' : 'border-transparent'
+                } group-hover:border-primary`}
+              >
                 <Image
                   src={item.image}
                   alt="/"
                   fill
-                  className="rounded-md object-contain group-hover:rounded-none"
+                  className="rounded-md object-contain group-hover:rounded-none transform rtl:-scale-x-100 ltr:scale-100"
                 />
               </div>
               <p className="mt-3">{item.text}</p>

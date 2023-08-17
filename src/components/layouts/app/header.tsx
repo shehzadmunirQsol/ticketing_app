@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/ui/button';
 import LogoImage from '~/public/assets/logo.png';
 import Image from 'next/image';
@@ -31,6 +31,8 @@ import {
   PlusCircle,
   Settings,
   User,
+  ShoppingCart,
+  Languages,
   UserPlus,
   Users,
 } from 'lucide-react';
@@ -66,8 +68,25 @@ function Header() {
 
   console.log({ lang });
 
+  const [color, setColor] = useState(false);
+  if (typeof window !== 'undefined') {
+    const changeColor = () =>
+      window.scrollY >= 100 && window.innerWidth >= 768
+        ? setColor(true)
+        : setColor(false);
+
+    window.addEventListener('scroll', changeColor);
+  }
+
+  const [click, setClick] = useState(false);
   return (
-    <div className="fixed w-full z-50 top-0 h-[120px]  flex  items-center !bg-transparent   justify-between py-8 px-6 ">
+    <div
+      className={`fixed w-full z-50 top-0 h-[100px]  flex  items-center ${
+        color
+          ? '!bg-background-footer  duration-500 shadow-xl'
+          : '!bg-transparent  duration-500'
+      }   transform ease-in-out justify-between py-8 px-6 `}
+    >
       <Image
         src={LogoImage}
         alt="Logo Image"
@@ -75,7 +94,7 @@ function Header() {
         height={140}
         className="h-4 sm:h-6 w-28 sm:w-56 "
       />
-      <div className="  flex gap-8 items-center justify-center">
+      <div className="hidden  md:flex gap-8 items-center justify-center">
         <ItemMenuDemo />
         <div className="flex items-center justify-center gap-2">
           <Button variant="outline" size="icon_square">
@@ -97,6 +116,9 @@ function Header() {
           </Select>
         </div>
       </div>
+      <div className="z-50 md:hidden">
+        <DropdownMenuDemo />
+      </div>
     </div>
   );
 }
@@ -104,90 +126,61 @@ function Header() {
 export default Header;
 
 export function DropdownMenuDemo() {
+  const [click, setClick] = useState(false);
   return (
-    <DropdownMenu>
+    <DropdownMenu >
       <DropdownMenuTrigger asChild>
-        <Button variant="outline">Open</Button>
+        <Button variant="outline">
+          <i className="fas fa-bars"></i>
+        </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56">
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
-        <DropdownMenuSeparator />
+      <DropdownMenuContent className="w-40" side={"bottom-end"}>
+        {/* <DropdownMenuLabel></DropdownMenuLabel> */}
+    
         <DropdownMenuGroup>
+          <DropdownMenuItem>
+            <span>Cars</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <span>Cash</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <span>Winings</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <span>About Us</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <span>FAQ</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <ShoppingCart className="mr-2 h-4 w-4" />
+            <span>Cart</span>
+          </DropdownMenuItem>
           <DropdownMenuItem>
             <User className="mr-2 h-4 w-4" />
-            <span>Profile</span>
-            <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <CreditCard className="mr-2 h-4 w-4" />
-            <span>Billing</span>
-            <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Settings className="mr-2 h-4 w-4" />
-            <span>Settings</span>
-            <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Keyboard className="mr-2 h-4 w-4" />
-            <span>Keyboard shortcuts</span>
-            <DropdownMenuShortcut>⌘K</DropdownMenuShortcut>
+            <span>Users</span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
-        <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <Users className="mr-2 h-4 w-4" />
-            <span>Team</span>
-          </DropdownMenuItem>
           <DropdownMenuSub>
             <DropdownMenuSubTrigger>
-              <UserPlus className="mr-2 h-4 w-4" />
-              <span>Invite users</span>
+              <Languages className="mr-2 h-4 w-4" />
+              <span>Language</span>
             </DropdownMenuSubTrigger>
-            <DropdownMenuPortal>
-              <DropdownMenuSubContent>
+            <DropdownMenuPortal >
+              <DropdownMenuSubContent className='!w-14'>
                 <DropdownMenuItem>
-                  <Mail className="mr-2 h-4 w-4" />
-                  <span>Email</span>
+                  <span>EN</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  <MessageSquare className="mr-2 h-4 w-4" />
-                  <span>Message</span>
+                  <span>AR</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <PlusCircle className="mr-2 h-4 w-4" />
-                  <span>More...</span>
-                </DropdownMenuItem>
               </DropdownMenuSubContent>
             </DropdownMenuPortal>
           </DropdownMenuSub>
-          <DropdownMenuItem>
-            <Plus className="mr-2 h-4 w-4" />
-            <span>New Team</span>
-            <DropdownMenuShortcut>⌘+T</DropdownMenuShortcut>
-          </DropdownMenuItem>
         </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          <Github className="mr-2 h-4 w-4" />
-          <span>GitHub</span>
-        </DropdownMenuItem>
-        <DropdownMenuItem>
-          <LifeBuoy className="mr-2 h-4 w-4" />
-          <span>Support</span>
-        </DropdownMenuItem>
-        <DropdownMenuItem disabled>
-          <Cloud className="mr-2 h-4 w-4" />
-          <span>API</span>
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          <LogOut className="mr-2 h-4 w-4" />
-          <span>Log out</span>
-          <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
-        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

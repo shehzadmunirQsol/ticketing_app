@@ -13,7 +13,7 @@ function Home() {
         <BannerSlider />
       </div>
       {/* product section 1 */}
-      <div className="relative flex flex-col gap-8 min-h-screen w-screen px-6 py-2 ">
+      <div className="relative flex flex-col gap-8  px-6 py-2 ">
         <ProductSection
           class="max-w-sm lg:max-w-xs"
           slidesToShow={4}
@@ -24,7 +24,7 @@ function Home() {
         <ProductSection
           class="max-w-md lg:max-w-sm xl:max-w-md ml-2   "
           slidesToShow={3}
-          center={true}
+          center={false}
           title="UPCOMING COMPETITIONS"
         />
         <CategorySection />

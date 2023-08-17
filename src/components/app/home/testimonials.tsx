@@ -7,6 +7,8 @@ import 'slick-carousel/slick/slick-theme.css';
 import Group15 from '~/public/assets/icons/Group15.png';
 import Group14 from '~/public/assets/icons/Group14.png';
 
+import {User } from "lucide-react"
+
 import Image from 'next/image';
 interface producctInterface {
   class?: string;
@@ -19,42 +21,42 @@ function Testimonials() {
     {
       step: 1,
       name: 'Adam S',
-      stars: 4,
+      stars: 5,
       publish: 'Last year',
       class: 'row-span-2',
       desc: '100% legit company for those sceptical people out there, I was one of them too to begin with but then i bagged 20k on my second time of playing. Money was in my account within 24 hours. Honestly these guys are genuinely nice people they were happy for me and made the process so easy and simple! I’ll be playing again put it that way…… got to be in it to win it!!!',
     },
     {
       step: 1,
-      name: 'Oliver Bailey',
-      stars: 4,
+      name: 'Tom Macca',
+      stars: 5,
       class: 'row-span-1',
+
+      publish: 'Last year',
+      desc: '5* Won a Mercedes c63s AMG for just £10 off just 10 tickets on their raffle competitions!',
+    },
+    {
+      step: 1,
+      name: 'Andy Bone',
+      class: 'row-span-1',
+
+      stars: 5,
+      publish: 'Last year',
+      desc: 'Excellent friendly service and would highly recommend. Won a few times and goods arrived quickly. Cash alternative in bank within a few hours. Excellent and great.',
+    },
+    {
+      step: 1,
+      name: 'Oliver Bailey',
+      stars: 5,
+      class: 'row-span-2',
 
       publish: 'Last year',
       desc: 'Won the Toyota Supra which is a amazing car the staff where great will definitely be entering again',
     },
     {
       step: 1,
-      name: 'Oliver Bailey',
-      class: 'row-span-1',
-
-      stars: 4,
-      publish: 'Last year',
-      desc: 'Won the Toyota Supra which is a amazing car the staff where great will definitely be entering again',
-    },
-    {
-      step: 1,
-      name: 'Oliver Bailey',
-      stars: 4,
-      class: 'row-span-1',
-
-      publish: 'Last year',
-      desc: 'Won the Toyota Supra which is a amazing car the staff where great will definitely be entering again',
-    },
-    {
-      step: 1,
-      name: 'Oliver Bailey',
-      stars: 4,
+      name: 'Michael Jolley',
+      stars: 5,
       class: 'row-span-2',
 
       publish: 'Last year',
@@ -62,12 +64,12 @@ function Testimonials() {
     },
     {
       step: 1,
-      name: 'Oliver Bailey',
-      stars: 4,
+      name: 'Daniel Lloyd Mechanic',
+      stars: 5,
       class: 'row-span-1',
 
       publish: 'Last year',
-      desc: 'Won the Toyota Supra which is a amazing car the staff where great will definitely be entering again',
+      desc: 'I have played in many competitions with 7 days the last few years and finally bagged a winner on tickets I forgot all about. I won the £5000 tui voucher but chose the cash instead.',
     },
   ];
   return (
@@ -95,11 +97,11 @@ function Testimonials() {
         </div>
       </div>
 
-      <div className="     grid grid-cols-1 lg:grid-cols-3  h-fit grid-rows-3  gap-4 px-4 ml-2 mr-2  ">
+      <div className="     grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 items-start h-fit   gap-4 px-4 ml-2 mr-2  ">
         {TestimonialsData?.map((item, index) => {
           return (
             <div
-              className={`relative flex   h-fit p-4 gap-4 items-start w-full border-t border-l  border-white/20 bg-teal-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-10  ${item?.class}`}
+              className={`relative flex   h-fit p-6 gap-4 items-start w-full border-t border-l  border-white/20 bg-testimonials backdrop-blur-lg rounded-md bg-clip-padding backdrop-filter  bg-opacity-10  ${item?.class}`}
               // className="relative flex   h-fit p-4 gap-4 items-start bg-primary   backdrop-filter backdrop-blur-md bg-opacity-10 rounded-md shadow-sm  "
               key={index}
             >
@@ -110,6 +112,7 @@ function Testimonials() {
                   quality={100}
                   alt="Sunset in the mountains"
                 />
+                {/* <User className='h-4 w-4 m-2'/> */}
               </div>
               <div className="flex flex-col gap-2 w-full">
                 {/* name */}
