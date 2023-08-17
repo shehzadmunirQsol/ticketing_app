@@ -204,6 +204,7 @@ model Event {
   tickets_sold      Int
   user_ticket_limit Int
   is_alt            Boolean @default(false)
+  is_enable         Boolean @default(false)
   creator_id        Int
   category_id       Int
 
