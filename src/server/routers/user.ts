@@ -1,36 +1,48 @@
 import { router, publicProcedure } from '../trpc';
 import { TRPCError } from '@trpc/server';
-import { loginSchema, registerSchema } from '~/schema/user';
+import { loginSchema, registerSchema, logoutSchema, updateUserSchema, deleteUserSchema } from '~/schema/user';
 import { prisma } from '~/server/prisma';
 import {hashPass, isSamePass} from '~/utils/hash';
+import { serialize } from 'cookie';
+import { signJWT, verifyJWT } from '~/utils/jwt';
 
 export const userRouter = router({
     login: publicProcedure
     .input(loginSchema)
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input,ctx }) => {
         try {
             const user = await prisma.user.findFirst({
                 where: { email: input.email},
             });
             console.log('user found: ', user);
-            if (!user) {
-            throw new TRPCError({
-                code: 'NOT_FOUND',
-                message: 'User not found'
-            });
+            if (user.is_deleted) {
+                throw new TRPCError({
+                    code: 'NOT_FOUND',
+                    message: 'User Not Found'
+                });
             }
             console.log("Inout Pass : ",input.password)
             console.log("User Pass : ",user.password)
             let checkPass = await isSamePass(input.password, user.password);
             console.log("check pass", checkPass);
+            
             if(!checkPass){
-            throw new TRPCError({
-                code: 'BAD_REQUEST',
-                message: 'Password is incorrect'
-            });
+                throw new TRPCError({
+                    code: 'BAD_REQUEST',
+                    message: 'Password is incorrect'
+                });
             }
+            const jwt = signJWT({ email: user.email, id: user.id });
+            const serialized = serialize('winnar-token', jwt, {
+                httpOnly: true,
+                path: '/',
+                sameSite: 'strict'
+              });
+            
+            ctx?.res?.setHeader('Set-Cookie', serialized);
+      
+            return { user, jwt };
 
-            return {user};
         } catch (e: any) {
             console.log("data error", e);
                 
@@ -41,23 +53,23 @@ export const userRouter = router({
         }
     }),
 
-
-
     register: publicProcedure
     .input(registerSchema)
     .mutation(async ({ input }) => {
+        console.log("INPUT :: ",input)
         try {   
             const exists = await prisma.user.findFirst({
                 where: { email: input.email },
             });
 
-            if (exists) {
+            if (exists?.is_deleted) {
                 throw new TRPCError({
                     code: 'FORBIDDEN',
                     message: 'User already exists.',
                 });
             }
-            let hashPassword = hashPass(input.password)
+            let hashPassword = await hashPass(input.password)
+            console.log("HASH Pass : ",hashPassword)
             const paylaod: any = {
                 email: input.email,
                 password: hashPassword,
@@ -78,5 +90,92 @@ export const userRouter = router({
         }
     }),
 
+    logout: publicProcedure
+    .input(logoutSchema)
+    .mutation(async ({ ctx }) => {
+        try {
+          const serialized = serialize('winnar-token', '', {
+            httpOnly: true,
+            path: '/',
+            sameSite: 'strict',
+            // secure: process.env.NODE_ENV !== "development",
+          });
+          console.log("Serialized :: ",serialized)
+          ctx?.res?.setHeader('Set-Cookie', serialized);
+          return { message: 'Logout successfully!' };
+        } catch (error: any) {
+          throw new TRPCError({
+            code: 'INTERNAL_SERVER_ERROR',
+            message: error?.message,
+          });
+        }
+    }),
 
+    updateUser: publicProcedure
+    .input(updateUserSchema)
+    .mutation(async ({ ctx, input }) => {
+      try {
+        
+        const paylaod: any = { ...input };
+        delete paylaod?.id;
+
+        const user = await prisma.user.update({
+          where: { id: input.id },
+          data: paylaod,
+        });
+
+        if (!user) {
+          throw new TRPCError({
+            code: 'FORBIDDEN',
+            message: 'User not registered!',
+          });
+        }
+        const jwt = signJWT({ email: user.email, id: user.id });
+
+        const serialized = serialize('winnar-token', jwt, {
+          httpOnly: true,
+          path: '/',
+          sameSite: 'strict',
+          // secure: process.env.NODE_ENV !== "development",
+        });
+
+        ctx.res?.setHeader('Set-Cookie', serialized);
+
+        return { user, jwt };
+      } catch (error: any) {
+        console.log('data error', error);
+
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: error?.message,
+        });
+      }
+    }),
+
+    deleteUser: publicProcedure
+    .input(deleteUserSchema)
+    .mutation(async({input}) => {
+        try {
+            const user = await prisma.user.update({
+                where: { id: input.id },
+                data:{
+                    is_deleted:true
+                }
+            })
+            if (!user) {
+                throw new TRPCError({
+                    code: 'FORBIDDEN',
+                    message: 'User not Found',
+                });
+            }
+            return {user}            
+        } catch (error:any) {
+            console.log('data error', error);
+
+            throw new TRPCError({
+            code: 'INTERNAL_SERVER_ERROR',
+            message: error?.message,
+            });
+        }
+    }),
 })

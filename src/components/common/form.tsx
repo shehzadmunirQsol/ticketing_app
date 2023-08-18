@@ -14,6 +14,10 @@ import {
 import { Input } from '@/ui/input';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
+import { trpc } from '~/utils/trpc';
+import { setAdminToken } from '~/utils/authToken';
+import { useToast } from "../ui/use-toast"
+import { formatTrpcError } from '~/utils/helper';
 
 const exampleFormSchema = z.object({
   username: z.string().min(2, {
@@ -73,7 +77,7 @@ const loginFormSchema = z.object({
 
 export function LoginForm() {
   const router = useRouter();
-
+  const { toast } = useToast()
   // 1. Define your form.
   const form = useForm<z.infer<typeof loginFormSchema>>({
     resolver: zodResolver(loginFormSchema),
@@ -83,13 +87,44 @@ export function LoginForm() {
     },
   });
 
+  const loginUser = trpc.user.login.useMutation({
+      onSuccess: (res: any) => {
+        console.log("return data", res);
+              
+        if(res.jwt){
+          setAdminToken(res.jwt);
+        }
+
+      },
+      onError(error) {
+        console.log( error.message,"ERROR" );
+      },
+  })
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof loginFormSchema>) {
+  async function onSubmit(values: z.infer<typeof loginFormSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    router.push('/admin/dashboard');
 
     console.log(values);
+    try {
+      const response = await loginUser.mutateAsync({ ...values });  
+      toast({
+        title: "Login successfully"
+      })  
+      console.log("Response : ",response)
+      router.push('/admin/dashboard');
+    } catch (error : any ){
+      console.log("Error ",error)
+      const errorMessage = formatTrpcError(error?.shape?.message);
+      console.log("Error : ",errorMessage)
+      // console.log()
+      toast({
+        variant: "destructive",
+        title: errorMessage,
+      }) 
+      // const errorMessage = formatTrpcError(error?.shape?.message);
+    }
+
   }
 
   return (
