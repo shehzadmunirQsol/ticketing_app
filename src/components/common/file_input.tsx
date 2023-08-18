@@ -27,7 +27,7 @@ export function FileInput(props: any) {
   return (
     <div className=" relative flex items-center justify-center w-full p-2   ">
       {image !== null ? (
-        <>
+        <div className="border-2 border-dashed w-full p-2 border-gray-600 rounded-md">
           <div
             onClick={() => handleDelete(props?.register?.name)}
             className=" absolute top-[-16px] right-[-14px] h-10 w-10 duration bg-white  hover:bg-ac-2 hover:text-black text-black rounded-full flex justify-center items-center text-center"
@@ -39,24 +39,25 @@ export function FileInput(props: any) {
             height={5000}
             src={image}
             alt="uploaded Image"
-            className="w-full h-52 mb-3 object-cover text-gray-400"
+            className="w-full h-64 mb-3 object-contain text-gray-400"
           />
-        </>
+        </div>
       ) : (
         <>
           <label
             htmlFor="dropzone-file"
-            className="flex flex-col items-center justify-center bg-white  w-full h-64 border-2 border-dashed rounded-lg cursor-pointer    dark:hover:bg-bray-800 dark:bg-gray-700  dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+            className="flex flex-col items-center justify-center bg-transparent  w-full h-64 border-2 border-dashed rounded-lg cursor-pointer      border-gray-600 "
           >
             <div className="flex flex-col items-center justify-center pt-5 pb-6">
-              <Image
+              <i className="fas fa-image text-7xl"></i>
+              {/* <Image
                 width={10}
                 height={10}
                 src={UploadImage.src}
                 alt="upload Image"
-                className="w-10 h-10 mb-3 text-gray-400"
+                className="w-14 h-14 mb-3 text-white bg-white p-1 rounded-md"
               ></Image>
-
+ */}
               <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
                 <span className="font-semibold">
                   {props?.placeholder ? props?.placeholder : 'Upload file '}

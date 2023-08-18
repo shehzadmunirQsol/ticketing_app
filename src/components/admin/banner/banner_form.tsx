@@ -307,7 +307,7 @@ export function BannerForm() {
                 lastModified: Date.now(),
               });
               // setFile(originalFile);
-              setOptimizeFile(optimizeFile);
+              setOptimizeFile(originalFile);
             }
           },
           'image/jpeg',
