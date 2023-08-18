@@ -15,13 +15,42 @@ export const createCategorySchema = z.object({
   creator_id: z.number(),
 
   en: z.object({
-    name: z.string(),
-    desc: z.string().optional(),
+    name: z
+      .string()
+      .min(2, {
+        message: 'Name must be at least 2 characters',
+      })
+      .max(24, {
+        message: 'Name must not exceed 24 characters',
+      }),
+    desc: z
+      .string()
+      .min(6, {
+        message: 'Description must be at least 2 characters',
+      })
+      .max(1000, {
+        message: 'Description must not exceed 1000 characters',
+      })
+      .optional(),
     lang_id: z.number(),
   }),
   ar: z.object({
-    name: z.string(),
-    desc: z.string().optional(),
+    name: z
+      .string()
+      .min(2, {
+        message: 'Name must be at least 2 characters',
+      })
+      .max(24, {
+        message: 'Name must not exceed 24 characters',
+      }),
+    desc: z
+      .string()
+      .min(6, {
+        message: 'Description must be at least 2 characters',
+      })
+      .max(1000, {
+        message: 'Description must not exceed 1000 characters',
+      }),
     lang_id: z.number(),
   }),
 });

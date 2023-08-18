@@ -183,6 +183,7 @@ export function BannerForm() {
       console.log(e.message);
     }
   }
+
   async function imageCompressorHandler(originalFile: any) {
     const imageFile = originalFile;
     const imageFilename = originalFile.name;
