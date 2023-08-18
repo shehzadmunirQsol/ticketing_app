@@ -14,7 +14,7 @@ function AdminLayout({ children }: DefaultLayoutProps) {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const { data } = trpc.user.me.useQuery(
+  const { data } = trpc.admin.me.useQuery(
     { isLogin },
     {
       refetchOnWindowFocus: false,

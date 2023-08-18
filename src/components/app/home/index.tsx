@@ -8,7 +8,7 @@ import BannerSlider from './banner_slider';
 import { trpc } from '~/utils/trpc';
 import { Button } from '@/ui/button';
 function Home() {
-  const registration = trpc.user.register.useMutation({
+  const registration = trpc.admin.register.useMutation({
     onSuccess: (res: any) => {
       console.log("return data", res);
     },
@@ -17,46 +17,11 @@ function Home() {
     },
   })
 
-  const loginUser = trpc.user.login.useMutation({
-    onSuccess: (res: any) => {
-      console.log("return data", res);
-    },
-    onError(error) {
-      console.log( error.message,"ERROR" );
-    },
-  })
-
-  const logoutUser = trpc.user.logout.useMutation({
-    onSuccess: (res: any) => {
-      console.log("return data", res);
-    },
-    onError(error) {
-      console.log( error.message,"ERROR" );
-    },
-  })
-
-  const updateUser = trpc.user.updateUser.useMutation({
-    onSuccess: (res: any) => {
-      console.log("return data", res);
-    },
-    onError(error) {
-      console.log( error.message,"ERROR" );
-    },
-  })
-
-  const deleteUser = trpc.user.deleteUser.useMutation({
-    onSuccess: (res: any) => {
-      console.log("return data", res);
-    },
-    onError(error) {
-      console.log( error.message,"ERROR" );
-    },
-  })
   async function register(){
     console.log("Working")
     const values={
-      name:"umair2",
-      email:"umair1.qsols@gmail.com",
+      name:"umair",
+      email:"umair.qsols@gmail.com",
       role_id:1,
       password:"umair12345"
     }
@@ -70,68 +35,8 @@ function Home() {
       
     }
   }
+  
 
-  async function login(){
-    console.log("Working")
-    const values={
-      email:"umair1.qsols@gmail.com",
-      password:"umair12345"
-    }
-    console.log("values: ",values)
-    try {
-      const response = await loginUser.mutateAsync({ ...values });  
-      console.log("Response : ",response)
-    } catch (error : any ){
-      console.log("Error ",error)
-      // const errorMessage = formatTrpcError(error?.shape?.message);
-      
-    }
-  }
-
-  async function logout(){
-    console.log("Working")
-    
-    try {
-      const response = await logoutUser.mutateAsync({});  
-      console.log("Response : ",response)
-    } catch (error : any ){
-      console.log("Error ",error)
-      // const errorMessage = formatTrpcError(error?.shape?.message);
-    }
-  }
-
-  async function update(){
-    console.log("Working")
-    const values={
-      id:4,
-      name:"umairups",
-    }
-    console.log("values: ",values)
-    try {
-      const response = await updateUser.mutateAsync({ ...values });  
-      console.log("Response : ",response)
-    } catch (error : any ){
-      console.log("Error ",error)
-      // const errorMessage = formatTrpcError(error?.shape?.message);
-      
-    }
-  }
-
-  async function delete1(){
-    console.log("Working")
-    const values={
-      id:4
-    }
-    console.log("values: ",values)
-    try {
-      const response = await deleteUser.mutateAsync({ ...values });  
-      console.log("Response : ",response)
-    } catch (error : any ){
-      console.log("Error ",error)
-      // const errorMessage = formatTrpcError(error?.shape?.message);
-      
-    }
-  }
   return (
     <div className=" flex flex-col gap-8 min-h-screen w-screen  ">
       <div className="relative top-0">

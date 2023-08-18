@@ -90,7 +90,7 @@ export function LoginForm() {
     },
   });
 
-  const loginUser = trpc.user.login.useMutation({
+  const loginUser = trpc.admin.login.useMutation({
       onSuccess: (res: any) => {
         console.log("return data", res);
               

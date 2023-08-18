@@ -12,7 +12,7 @@ const IndexPage: NextPageWithLayout = () => {
     setTheme(sysTheme);
   }
 
-  const registration = trpc.user.register.useMutation({
+  const registration = trpc.admin.register.useMutation({
     onSuccess: (res: any) => {
       console.log("return data", res);
     },

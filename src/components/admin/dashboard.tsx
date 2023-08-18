@@ -1,5 +1,5 @@
 import React from 'react';
-import ExampleForm from '~/components/common/form';
+import ExampleForm from '~/components/common/forms/form';
 
 function Dashboard() {
   return (

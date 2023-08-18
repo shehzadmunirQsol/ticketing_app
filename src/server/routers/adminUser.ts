@@ -21,7 +21,7 @@ export const adminUserRouter = router({
     
         console.log({ userData }, 'userData');
     
-        const user = await prisma.user.findUnique({
+        const user = await prisma.adminUser.findUnique({
           where: { id: userData.id },
         });
     
@@ -38,7 +38,7 @@ export const adminUserRouter = router({
     .input(loginSchema)
     .mutation(async ({ input,ctx }) => {
         try {
-            const user = await prisma.user.findFirst({
+            const user = await prisma.adminUser.findFirst({
                 where: { email: input.email},
             });
             console.log('user found: ', user);
@@ -91,11 +91,11 @@ export const adminUserRouter = router({
     .mutation(async ({ input }) => {
         console.log("INPUT :: ",input)
         try {   
-            const exists = await prisma.user.findFirst({
+            const exists:any = await prisma.adminUser.findFirst({
                 where: { email: input.email },
             });
 
-            if (exists?.is_deleted) {
+            if (exists) {
                 throw new TRPCError({
                     code: 'FORBIDDEN',
                     message: 'User already exists.',
@@ -110,7 +110,7 @@ export const adminUserRouter = router({
                 role_id: input?.role_id
             };
             console.log(paylaod, "paylaod");
-            const user = await prisma?.user?.create({
+            const user = await prisma?.adminUser?.create({
                 data: paylaod,
             });
             
@@ -152,7 +152,7 @@ export const adminUserRouter = router({
         const paylaod: any = { ...input };
         delete paylaod?.id;
 
-        const user = await prisma.user.update({
+        const user = await prisma.adminUser.update({
           where: { id: input.id },
           data: paylaod,
         });
@@ -189,7 +189,7 @@ export const adminUserRouter = router({
     .input(deleteUserSchema)
     .mutation(async({input}) => {
         try {
-            const user = await prisma.user.update({
+            const user = await prisma.adminUser.update({
                 where: { id: input.id },
                 data:{
                     is_deleted:true

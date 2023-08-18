@@ -15,14 +15,31 @@ model Role {
   name       String
   is_deleted Boolean @default(false)
 
-  created_at DateTime @default(now()) @db.Timestamp(6)
-  updated_at DateTime @default(now()) @db.Timestamp(6)
-  User       User[]
+  created_at DateTime    @default(now()) @db.Timestamp(6)
+  updated_at DateTime    @default(now()) @db.Timestamp(6)
+  User       AdminUser[]
 
   @@map("role")
 }
 
-model User {
+model Setting {
+  id         Int          @id @default(autoincrement())
+  group      SettingEnums @default(BANNER)
+  key        String
+  value      String
+  lang_id    Int          @default(1)
+  is_deleted Boolean      @default(false)
+
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+
+  Language Language @relation(fields: [lang_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([lang_id])
+  @@map("setting")
+}
+
+model AdminUser {
   id         Int     @id @default(autoincrement())
   name       String
   password   String
@@ -42,7 +59,7 @@ model User {
   CustomerDescription CustomerDescription[]
 
   @@index([role_id])
-  @@map("user")
+  @@map("admin_user")
 }
 
 model Language {
@@ -60,6 +77,7 @@ model Language {
   CategoryDescription CategoryDescription[]
   EventDescription    EventDescription[]
   EventFAQ            EventFAQ[]
+  Setting             Setting[]
 
   @@map("language")
 }
@@ -72,7 +90,7 @@ model FAQ {
   created_at DateTime @default(now()) @db.Timestamp(6)
   updated_at DateTime @default(now()) @db.Timestamp(6)
 
-  User            User             @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  User            AdminUser        @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   FAQsDescription FaqDescription[]
 
   @@index([user_id])
@@ -86,9 +104,9 @@ model FaqDescription {
   lang_id Int
   faq_id  Int
 
-  Language Language @relation(fields: [lang_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  FAQ      FAQ      @relation(fields: [faq_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  User     User?    @relation(fields: [userId], references: [id])
+  Language Language   @relation(fields: [lang_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  FAQ      FAQ        @relation(fields: [faq_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  User     AdminUser? @relation(fields: [userId], references: [id])
   userId   Int?
 
   @@index([lang_id, faq_id])
@@ -112,8 +130,8 @@ model CustomerDescription {
   lang_id Int
   user_id Int
 
-  User     User     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  Language Language @relation(fields: [lang_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  User     AdminUser @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Language Language  @relation(fields: [lang_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@index([user_id, lang_id])
   @@map("customer_description")
@@ -154,7 +172,7 @@ model Category {
   created_at DateTime @default(now()) @db.Timestamp(6)
   updated_at DateTime @default(now()) @db.Timestamp(6)
 
-  User                User                  @relation(fields: [creator_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  User                AdminUser             @relation(fields: [creator_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   Event               Event[]
   CategoryDescription CategoryDescription[]
 
@@ -186,6 +204,7 @@ model Event {
   tickets_sold      Int
   user_ticket_limit Int
   is_alt            Boolean @default(false)
+  is_enable         Boolean @default(false)
   creator_id        Int
   category_id       Int
 
@@ -196,7 +215,7 @@ model Event {
   created_at DateTime @default(now()) @db.Timestamp(6)
   updated_at DateTime @default(now()) @db.Timestamp(6)
 
-  User             User               @relation(fields: [creator_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  User             AdminUser          @relation(fields: [creator_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   Category         Category           @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   EventImages      EventImage[]
   EventFAQs        EventFAQ[]
@@ -252,6 +271,12 @@ model EventFAQ {
 
   @@index([event_id, lang_id])
   @@map("event_faq")
+}
+
+enum SettingEnums {
+  BANNER
+  WONDER
+  PAYMENT
 }
 
 // Tables
