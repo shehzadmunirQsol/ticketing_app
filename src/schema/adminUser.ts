@@ -36,5 +36,9 @@ export const deleteUserSchema = z.object({
     id: z.number(),
 });
 
+export const getAdminSchema = z.object({
+    isLogin: z.boolean(),
+  });
+  
 export type LoginInput = z.TypeOf<typeof loginSchema>;
 export type RegisterInput = z.TypeOf<typeof registerSchema>;

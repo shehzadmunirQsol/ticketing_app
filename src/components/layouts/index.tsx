@@ -6,7 +6,8 @@ import store from '~/store/store';
 import AppLayout from './app';
 import AdminLayout from './admin';
 import { useRouter } from 'next/router';
-import { Toaster } from "../ui/toaster"
+// import { Toaster } from "../ui/toaster"
+import toast, { Toaster } from 'react-hot-toast';
 type DefaultLayoutProps = { children: ReactNode };
 
 export default function DefaultLayout({ children }: DefaultLayoutProps) {
@@ -18,7 +19,9 @@ export default function DefaultLayout({ children }: DefaultLayoutProps) {
 
   return (
     <Provider store={store}>
-      <Toaster />
+      <Toaster 
+        position="top-right"
+        reverseOrder={false}/>
       <ThemeProvider attribute="class" defaultTheme="dark">
         <Head>
           <title>Winnar</title>

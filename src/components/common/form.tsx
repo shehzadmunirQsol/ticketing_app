@@ -16,8 +16,10 @@ import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import { trpc } from '~/utils/trpc';
 import { setAdminToken } from '~/utils/authToken';
-import { useToast } from "../ui/use-toast"
 import { formatTrpcError } from '~/utils/helper';
+import { useDispatch } from 'react-redux';
+import { userAdminAuth, userAdminIsLogin } from '~/store/reducers/adminAuthSlice';
+import toast from 'react-hot-toast';
 
 const exampleFormSchema = z.object({
   username: z.string().min(2, {
@@ -77,7 +79,8 @@ const loginFormSchema = z.object({
 
 export function LoginForm() {
   const router = useRouter();
-  const { toast } = useToast()
+  const dispatch = useDispatch();
+  // const { toast } = useToast()
   // 1. Define your form.
   const form = useForm<z.infer<typeof loginFormSchema>>({
     resolver: zodResolver(loginFormSchema),
@@ -107,21 +110,24 @@ export function LoginForm() {
 
     console.log(values);
     try {
-      const response = await loginUser.mutateAsync({ ...values });  
-      toast({
-        title: "Login successfully"
-      })  
-      console.log("Response : ",response)
+      const response:any = await loginUser.mutateAsync({ ...values });  
+      console.log("Response : ",response?.user)  
+      // window.localStorage.setItem("Admin-user", JSON.stringify(response?.user));    
+      dispatch(userAdminAuth(response?.user));
+      dispatch(userAdminIsLogin(true));
+      toast.success('Login Successfully!')  
+
       router.push('/admin/dashboard');
     } catch (error : any ){
       console.log("Error ",error)
       const errorMessage = formatTrpcError(error?.shape?.message);
       console.log("Error : ",errorMessage)
       // console.log()
-      toast({
-        variant: "destructive",
-        title: errorMessage,
-      }) 
+      // toast({
+      //   variant: "destructive",
+      //   title: errorMessage,
+      // }) 
+      toast.error(errorMessage)
       // const errorMessage = formatTrpcError(error?.shape?.message);
     }
 

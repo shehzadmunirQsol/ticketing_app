@@ -153,11 +153,6 @@ function Home() {
           title="UPCOMING COMPETITIONS"
         />
         <CategorySection />
-        <Button onClick={register}>Register</Button>
-        <Button onClick={login}>Login</Button>
-        <Button onClick={update}>Update</Button>
-        <Button onClick={logout}>Logout</Button>
-        <Button onClick={delete1}>Delete</Button>
         
       </div>
       <HowtoSection />

@@ -3,7 +3,9 @@ import { Button } from '@/ui/button';
 import LogoImage from '~/public/assets/logo.png';
 import Image from 'next/image';
 import { useDispatch } from 'react-redux';
+import { trpc } from '~/utils/trpc';
 import { toggleSidebar } from '~/store/reducers/admin_layout';
+import { useRouter } from 'next/router';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -34,7 +36,9 @@ import {
   UserPlus,
   Users,
 } from 'lucide-react';
-
+// import { router } from '~/server/trpc';
+import { formatTrpcError } from '~/utils/helper';
+import toast from 'react-hot-toast';
 function Header() {
   const dispatch = useDispatch();
 
@@ -56,6 +60,37 @@ function Header() {
 export default Header;
 
 export function DropdownMenuDemo() {
+  const router = useRouter()
+
+  const logout = trpc.user.logout.useMutation({
+    onSuccess: (res: any) => {
+      console.log("return data", res);
+    },
+    onError(error) {
+      console.log( error.message,"ERROR" );
+    },
+  })
+
+  async function handleLogout(){
+    console.log("Working")
+    
+    try {
+      const response = await logout.mutateAsync({});  
+      console.log("Response : ",response)
+      toast.success('Logout successfully!')
+      localStorage.removeItem('winnar-admin-token')
+      router.replace('/admin/login')
+
+    } catch (error : any ){
+      console.log("Error ",error)
+      console.log("Error ",error)
+      const errorMessage = formatTrpcError(error?.shape?.message);
+      console.log("Error : ",errorMessage)
+      toast.error(errorMessage)
+      
+    }
+  }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -139,7 +174,7 @@ export function DropdownMenuDemo() {
         <DropdownMenuSeparator />
         <DropdownMenuItem>
           <LogOut className="mr-2 h-4 w-4" />
-          <span>Log out</span>
+          <span onClick={handleLogout}>Log out</span>
           <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
         </DropdownMenuItem>
       </DropdownMenuContent>

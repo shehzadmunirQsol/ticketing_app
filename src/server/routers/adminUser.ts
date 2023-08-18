@@ -1,12 +1,39 @@
 import { router, publicProcedure } from '../trpc';
 import { TRPCError } from '@trpc/server';
-import { loginSchema, registerSchema, logoutSchema, updateUserSchema, deleteUserSchema } from '~/schema/user';
+import { loginSchema, registerSchema, logoutSchema, updateUserSchema, deleteUserSchema, getAdminSchema } from '~/schema/adminUser';
 import { prisma } from '~/server/prisma';
 import {hashPass, isSamePass} from '~/utils/hash';
 import { serialize } from 'cookie';
 import { signJWT, verifyJWT } from '~/utils/jwt';
 
-export const userRouter = router({
+export const adminUserRouter = router({
+
+    me: publicProcedure.input(getAdminSchema).query(async ({ ctx }) => {
+        const token = ctx?.req?.cookies['winnar-token'];
+        console.log({ token });
+    
+        let userData;
+        if (token) {
+          userData = await verifyJWT(token);
+        } else {
+          return null;
+        }
+    
+        console.log({ userData }, 'userData');
+    
+        const user = await prisma.user.findUnique({
+          where: { id: userData.id },
+        });
+    
+        if (!user)
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'User not found!',
+          });
+    
+        return user;
+    }),
+
     login: publicProcedure
     .input(loginSchema)
     .mutation(async ({ input,ctx }) => {
@@ -15,15 +42,21 @@ export const userRouter = router({
                 where: { email: input.email},
             });
             console.log('user found: ', user);
-            if (user.is_deleted) {
+            if (!user || user?.is_deleted ) {
                 throw new TRPCError({
                     code: 'NOT_FOUND',
                     message: 'User Not Found'
                 });
             }
+            // if (user?.is_deleted) {
+            //     throw new TRPCError({
+            //         code: 'NOT_FOUND',
+            //         message: 'User Not Found'
+            //     });
+            // } 
             console.log("Inout Pass : ",input.password)
-            console.log("User Pass : ",user.password)
-            let checkPass = await isSamePass(input.password, user.password);
+            console.log("User Pass : ",user?.password)
+            let checkPass = await isSamePass(input.password, user?.password);
             console.log("check pass", checkPass);
             
             if(!checkPass){

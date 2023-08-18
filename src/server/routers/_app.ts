@@ -3,11 +3,11 @@
  */
 import { publicProcedure, router } from '../trpc';
 // import { postRouter } from './post';
-import { userRouter } from './user';
+import { adminUserRouter } from './adminUser';
 
 export const appRouter = router({
   healthcheck: publicProcedure.query(() => 'yay!'),
-  user: userRouter,
+  user: adminUserRouter,
   // post: postRouter,
 });
 
