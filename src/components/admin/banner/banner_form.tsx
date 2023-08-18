@@ -19,7 +19,7 @@ import { FileInput } from '~/components/common/file_input';
 import { useEffect, useState } from 'react';
 import { trpc } from '~/utils/trpc';
 
-const loginFormSchema = z.object({
+const BannerFormSchema = z.object({
   thumb: z.any(),
   link: z.string(),
 
@@ -30,6 +30,47 @@ const loginFormSchema = z.object({
     description: z.string(),
     date: z.string(),
   }),
+  ar: z.object({
+    model: z.string(),
+    title: z.string(),
+    price: z.string(),
+    description: z.string(),
+    date: z.string(),
+  }),
+});
+const enFormSchema = z.object({
+  thumb: z.any(),
+  link: z.string(),
+
+  en: z.object({
+    model: z.string(),
+    title: z.string(),
+    price: z.string(),
+    description: z.string(),
+    date: z.string(),
+  }),
+  ar: z
+    .object({
+      model: z.string(),
+      title: z.string(),
+      price: z.string(),
+      description: z.string(),
+      date: z.string(),
+    })
+    .optional(),
+});
+const arFormSchema = z.object({
+  thumb: z.any(),
+  link: z.string(),
+  en: z
+    .object({
+      model: z.string(),
+      title: z.string(),
+      price: z.string(),
+      description: z.string(),
+      date: z.string(),
+    })
+    .optional(),
   ar: z.object({
     model: z.string(),
     title: z.string(),
@@ -74,6 +115,28 @@ export function BannerForm() {
       form.setValue('thumb', json_data?.thumb);
     }
   }, [isLoading, isFetched]);
+  const formValidateData =
+    BannerApiData !== undefined && index
+      ? BannerApiData[0]?.lang_id
+        ? enFormSchema
+        : BannerApiData[0]?.lang_id == 2
+        ? arFormSchema
+        : BannerFormSchema
+      : BannerFormSchema;
+
+  console.log(typeof formValidateData, 'z.infer<typeof formValidateData>');
+  const form = useForm<z.infer<typeof formValidateData>>({
+    resolver: zodResolver(
+      BannerApiData !== undefined && index
+        ? BannerApiData[0]?.lang_id == 1
+          ? enFormSchema
+          : BannerApiData[0]?.lang_id == 2
+          ? arFormSchema
+          : BannerFormSchema
+        : BannerFormSchema,
+    ),
+  });
+
   console.log({ BannerApiData });
   const nftUpload = trpc.settings.banner_create.useMutation({
     onSuccess: () => {
@@ -87,28 +150,38 @@ export function BannerForm() {
   });
 
   // 1. Define your form.
-  const form = useForm<z.infer<typeof loginFormSchema>>({
-    resolver: zodResolver(loginFormSchema),
-  });
 
   // 2. Define a submit handler.
-  async function onSubmit(values: z.infer<typeof loginFormSchema>) {
-    const payload: any = { ...values };
-    const dataPayload = [
-      {
-        lang_id: 1,
-        key: 'banner_en',
-        value: JSON.stringify({ thumb: '', link: values?.link, ...values?.ar }),
-      },
-      {
-        lang_id: 2,
-        key: 'banner_ar',
-        value: JSON.stringify({ thumb: '', link: values?.link, ...values?.ar }),
-      },
-    ];
-    const data = await nftUpload.mutateAsync(dataPayload);
+  async function onSubmit(values: z.infer<typeof formValidateData>) {
+    console.log({ values });
+    try {
+      const payload: any = { ...values };
+      const dataPayload = [
+        {
+          lang_id: 1,
+          key: 'banner_en',
+          value: JSON.stringify({
+            thumb: '',
+            link: values?.link,
+            ...values?.ar,
+          }),
+        },
+        {
+          lang_id: 2,
+          key: 'banner_ar',
+          value: JSON.stringify({
+            thumb: '',
+            link: values?.link,
+            ...values?.ar,
+          }),
+        },
+      ];
+      // const data = await nftUpload.mutateAsync(dataPayload);
 
-    console.log({ dataPayload });
+      console.log({ dataPayload });
+    } catch (e: any) {
+      console.log(e.message);
+    }
   }
   async function imageCompressorHandler(originalFile: any) {
     const imageFile = originalFile;
@@ -202,7 +275,17 @@ export function BannerForm() {
             />
           </div>
           <Tabs
-            defaultValue={index && editData?.lang_id == 1 ? 'en' : 'ar'}
+            defaultValue={
+              index &&
+              BannerApiData !== undefined &&
+              BannerApiData[0]?.lang_id == 1
+                ? 'en'
+                : index &&
+                  BannerApiData !== undefined &&
+                  BannerApiData[0]?.lang_id == 2
+                ? 'ar'
+                : 'en'
+            }
             className="w-full"
           >
             {index ? (
