@@ -61,8 +61,16 @@ export const settingRouter = router({
         const setting_banner = await prisma.setting.findMany({
           ...options,
         });
-        console.log({ setting_banner });
-        return setting_banner;
+        console.log({ setting_banner },"banner data");
+        
+        let payload:any=[]
+        setting_banner.map((item)=>{
+          const jsonPayload=JSON.parse(item.value)
+          payload.push(jsonPayload)
+        })
+        
+        console.log( payload ,"payload");
+        return payload;
       } catch (error: any) {
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',

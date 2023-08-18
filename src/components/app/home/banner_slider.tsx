@@ -10,6 +10,8 @@ import Image from 'next/image';
 import { Button } from '~/components/ui/button';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
+import { trpc } from '~/utils/trpc';
+import { renderNFTImage } from '~/utils/helper';
 
 const BannerSlider = () => {
   const { lang } = useSelector((state: RootState) => state.layout);
@@ -18,41 +20,63 @@ const BannerSlider = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showElement, setShowElement] = useState(false);
 
-  const carSlider: any = [
-    {
-      image: BgImage1,
-      text: 'ROLLS ROYCE PHANTOM 2023',
-      BannerTitle: 'WIN THIS ROLLS ROYCE',
-      BannerPrice: '1000 AED',
-      BannerPara: 'Get your dream car at a fraction of the price!',
-      BannerDate: 'WIN SUNDAY 8 PM',
-    },
-    {
-      image: BgImage2,
-      text: 'FORD MUSTANG 2023',
-      BannerTitle: 'WIN THIS FORD MUSTANG',
-      BannerPrice: '1000 AED',
-      BannerPara: 'Get your dream car at a fraction of the price!',
-      BannerDate: 'WIN SUNDAY 8 PM',
-    },
-    {
-      image: BgImage3,
-      text: 'FERARRI LAFERRARI 2014',
-      BannerTitle: 'WIN THIS FERRARI',
-      BannerPrice: '1000 AED',
-      BannerPara: 'Get your dream car at a fraction of the price!',
-      BannerDate: 'WIN SUNDAY 8 PM',
-    },
-    // {
-    //   image: BgImage4,
-    //   text: '2021 BMW X5 40D & £1000',
-    //   BannerTitle: 'WIN THIS BMW',
-    //   BannerPrice: '1000 AED',
-    //   BannerPara: 'Get your dream car at a fraction of the price!',
-    //   BannerDate: 'WIN SUNDAY 8 PM',
+  const initialOrderFilters: any = {
+    lang_id: 1,
+    rows: 10,
+    first: 0,
+    page: 0,
+  };
 
-    // },
-  ];
+  const {
+    data: carSlider,
+    refetch: BannerRefetch,
+    isFetched,
+    isLoading,
+    isError,
+  } = trpc.settings.get_banner.useQuery(initialOrderFilters, {
+    refetchOnWindowFocus: false,
+
+    // enabled: user?.id ? true : false,
+  });
+
+  // console.log({ BannerApiData }, 'BannerApiData');
+  // const carSlider: any = [
+  //   {
+  //     image: BgImage1,
+  //     text: 'ROLLS ROYCE PHANTOM 2023',
+  //     BannerTitle: 'WIN THIS ROLLS ROYCE',
+  //     BannerPrice: '1000 AED',
+  //     BannerPara: 'Get your dream car at a fraction of the price!',
+  //     BannerDate: 'WIN SUNDAY 8 PM',
+  //   },
+  //   {
+  //     image: BgImage2,
+  //     text: 'FORD MUSTANG 2023',
+  //     BannerTitle: 'WIN THIS FORD MUSTANG',
+  //     BannerPrice: '1000 AED',
+  //     BannerPara: 'Get your dream car at a fraction of the price!',
+  //     BannerDate: 'WIN SUNDAY 8 PM',
+  //   },
+  //   {
+  //     image: BgImage3,
+  //     text: 'FERARRI LAFERRARI 2014',
+  //     BannerTitle: 'WIN THIS FERRARI',
+  //     BannerPrice: '1000 AED',
+  //     BannerPara: 'Get your dream car at a fraction of the price!',
+  //     BannerDate: 'WIN SUNDAY 8 PM',
+  //   },
+  //   // {
+  //     //   image: BgImage4,
+  //     //   text: '2021 BMW X5 40D & £1000',
+  //     //   BannerTitle: 'WIN THIS BMW',
+  //     //   BannerPrice: '1000 AED',
+  //   //   BannerPara: 'Get your dream car at a fraction of the price!',
+  //   //   BannerDate: 'WIN SUNDAY 8 PM',
+
+  //   // },
+  // ];
+
+  // console.log({carSliderApi},"carSliderApi")
 
   // FOR ANIMATION IN THE
   const animateSlideChange = () => {
@@ -140,20 +164,20 @@ const BannerSlider = () => {
           } transition-all  duration-500 items-center  ease-in-out top-32 sm:top-48 h-fit mx-auto  ltr:md:ml-20 rtl:md:mr-20 text-white sm:max-w-[500px] lg:max-w-[700px]`}
         >
           <p className="px-4 text-3xl  md:text-4xl xl:text-5xl font-[900] tracking-[-2px] ">
-            {carSlider[currentIndex]?.BannerTitle}
+            {carSlider[currentIndex]?.title}
           </p>
-          {carSlider[currentIndex]?.BannerPrice ? (
+          {carSlider[currentIndex]?.price ? (
             <p className="px-4 md:text-4xl xl:text-5xl tracking-[-2px] my-3 ">
-              + {carSlider[currentIndex]?.BannerPrice} CASH
+              + {carSlider[currentIndex]?.price}
             </p>
           ) : (
             ''
           )}
           <p className="px-4 text-xl  font-normal ">
-            {carSlider[currentIndex]?.BannerPara}
+            {carSlider[currentIndex]?.description}
           </p>
           <p className="px-4 text-3xl tracking-[-2px] font-[900]  my-3">
-            {carSlider[currentIndex]?.BannerDate}
+            {carSlider[currentIndex]?.date}
           </p>
           <Button
             className="mx-4 text-black font-sans font-[900]  tracking-[-1px]"
@@ -167,7 +191,7 @@ const BannerSlider = () => {
         <div className="  absolute   mb-28 sm:mb-8 m-auto    md:top-[260px] lg:top-[240px] xl:top-[170px] ltr:right-6 rtl:left-6 md:ltr:right-2 md:rtl:left-4  z-20  w-[320px] h-[200px]  sm:max-w-[440px] sm:w-full sm:h-full  sm:max-h-[300px] md:max-w-[500px] md:max-h-[260px] lg:max-w-[680px] xl:max-w-[680px]  xl:max-h-[340px]">
           <Image
             className="    object-contain md:object-cover transform rtl:-scale-x-100 ltr:scale-100"
-            src={carSlider[currentIndex]?.image}
+            src={renderNFTImage(carSlider[currentIndex])}
             alt="/"
             fill
             quality={100}
@@ -189,13 +213,13 @@ const BannerSlider = () => {
                 } group-hover:border-primary`}
               >
                 <Image
-                  src={item.image}
+                  src={renderNFTImage(item)}
                   alt="/"
                   fill
                   className="rounded-md object-contain group-hover:rounded-none transform rtl:-scale-x-100 ltr:scale-100"
                 />
               </div>
-              <p className="mt-3">{item.text}</p>
+              <p className="mt-3">{item.model}</p>
             </div>
           ))}
         </div>
