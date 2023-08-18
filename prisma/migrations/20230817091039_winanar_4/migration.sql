@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `setting` ADD COLUMN `group` ENUM('BANNER', 'WONDER', 'PAYMENT') NOT NULL DEFAULT 'BANNER';

@@ -43,7 +43,7 @@ function Header() {
   }
 
   return (
-    <div className="sticky top-0 flex items-center bg-background border-b border-input justify-between py-2 px-4 shadow-sm">
+    <div className="sticky top-0 flex z-40 items-center bg-background border-b border-input justify-between py-2 px-4 shadow-sm">
       <Button onClick={toggleSidebarHandler} variant="outline" size="icon">
         <i className="fa-solid fa-bars" />
       </Button>
