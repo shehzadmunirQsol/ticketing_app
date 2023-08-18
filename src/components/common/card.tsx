@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import React from 'react';
-import Table from '~/components/common/table';
 import CarImage from '~/public/assets/card_image.png';
 import BottleImage from '~/public/assets/bottle.png';
 import { Progress } from '../ui/progress';
@@ -9,8 +8,9 @@ interface cardInterface {
   class?: string;
   dir?: string;
 }
+
 function ProductCard(props: cardInterface) {
-  console.log({props});
+  console.log({ props });
   return (
     <div
       dir={props?.dir}
