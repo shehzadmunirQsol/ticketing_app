@@ -20,14 +20,14 @@ function CategorySection() {
         {[...Array(2)].map((i) => (
           <div
             key={i}
-            className="mainContainer  group relative h-96  overflow-hidden cursor-pointer  "
+            className="mainContainer  group transition-all duration-300 relative h-96  overflow-hidden cursor-pointer  "
           >
-            <div className=" absolute  w-full  h-[100%] categoryClip  bg-primary opacity-40 transition-all ease-in-out "></div>
+            <div className=" absolute  w-full  h-[100%] categoryClip  bg-primary opacity-40 transition-all ease-in-out duration-300 "></div>
             <Image
               className="w-full h-full object-cover bg-white"
               src={CarImage}
               quality={100}
-              alt="Sunset in the mountains"
+              alt="car"
             />
             <div className="absolute   top-0 p-4">
               <div className="w-1/5  text-gray-200 text-5xl font-black uppercase ">
@@ -39,7 +39,7 @@ function CategorySection() {
                 Unveiling Our Automotive Giveaways
               </div>
               <div className=" text-gray-200 text-2xl font-extrabold leading-normal">
-                <i className="fa-solid fa-arrow-right -rotate-45 group-hover:text-primary group-hover:rotate-0"></i>
+                <i className="fa-solid fa-arrow-right -rotate-45 group-hover:text-primary group-hover:rotate-0 duration-300"></i>
               </div>
             </div>
           </div>

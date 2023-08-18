@@ -42,15 +42,16 @@ function ProductSection(props: producctInterface) {
         settings: {
           slidesToShow: 3,
           slidesToScroll: 2,
-          
+          initialSlide: 1,
         },
       },
       {
         breakpoint: 800,
         settings: {
           slidesToShow: 2,
-          slidesToScroll: 2,
-          initialSlide: 2,
+          slidesToScroll: 1,
+          initialSlide: 1,
+          centerMode: false,
         },
       },
 
@@ -59,16 +60,17 @@ function ProductSection(props: producctInterface) {
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
+          centerMode: false,
         },
       },
     ],
   };
   return (
     <div className="relative  w-full ">
-      <div className=" relative flex flex-col md:flex-row h-28 md:h-auto py-6 gap-2 items-center w-full md:justify-between mb-6">
-        <div className="text-gray-200 text-xl sm:text-2xl lg:text-5xl font-black uppercase  ">
+      <div className=" relative flex flex-col md:flex-row h-28 md:h-auto py-6  items-center w-full md:justify-between mb-6">
+        <p className="text-gray-200 !text-xl sm:!text-3xl lg:!text-5xl font-black uppercase  ">
           {props?.title}
-        </div>
+        </p>
         <div
           className={`${
             lang?.dir == 'rtl' ? ' flex-row-reverse' : 'md:absolute right-10'
@@ -76,7 +78,7 @@ function ProductSection(props: producctInterface) {
         >
           <Button
             variant="rounded"
-            className="button prev-btn h-14 w-14"
+            className="button prev-btn h-10 w-10 md:h-14 md:w-14"
             onClick={() => previous()}
           >
             {/* <i className="fa-solid fa-left-arrow" /> */}
@@ -84,7 +86,7 @@ function ProductSection(props: producctInterface) {
           </Button>
           <Button
             variant="rounded"
-            className="button next-btn h-14 w-14"
+            className="button next-btn h-10 w-10 md:h-14 md:w-14"
             onClick={() => next()}
           >
             <i className="fa-solid fa-chevron-right"></i>
@@ -93,18 +95,13 @@ function ProductSection(props: producctInterface) {
       </div>
       <div className="">
         <Slider ref={slide} {...settings}>
-          {['', '', '', '', '', '', '', '', '', ].map(
-            (item, index) => {
-              return (
-                <div key={index}>
-                  <ProductCard
-                    class={`${props?.class} `}
-                    dir={`${lang?.dir}`}
-                  />
-                </div>
-              );
-            },
-          )}
+          {['', '', '', '', '', '', '', '', ''].map((item, index) => {
+            return (
+              <div key={index} className="px-2">
+                <ProductCard class={`${props?.class} `} dir={`${lang?.dir}`} />
+              </div>
+            );
+          })}
         </Slider>
       </div>
     </div>

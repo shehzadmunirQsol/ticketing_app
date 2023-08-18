@@ -94,17 +94,17 @@ function Header() {
         height={140}
         className="h-4 sm:h-6 w-28 sm:w-56 "
       />
-      <div className="hidden  md:flex gap-8 items-center justify-center">
+      <div className="hidden  mdx:flex gap-8 items-center justify-center">
         <ItemMenuDemo />
         <div className="flex items-center justify-center gap-2">
-          <Button variant="outline" size="icon_square">
+          <Button variant="outline" size="icon_square" className='border-primary'>
             <i className="fa-solid fa-cart-shopping" />
           </Button>
-          <Button variant="outline" size="icon_square">
+          <Button variant="outline" size="icon_square" className='border-primary'>
             <i className="fa-solid fa-user" />
           </Button>
           <Select onValueChange={toggleLanguageHandler}>
-            <SelectTrigger className="h-10 w-10 rounded-none border-teal text-gray-200">
+            <SelectTrigger className="h-10 w-10 rounded-none border-primary text-gray-200">
               <SelectValue placeholder="EN" />
             </SelectTrigger>
             <SelectContent>
@@ -116,7 +116,7 @@ function Header() {
           </Select>
         </div>
       </div>
-      <div className="z-50 md:hidden">
+      <div className="z-50 mdx:hidden">
         <DropdownMenuDemo />
       </div>
     </div>

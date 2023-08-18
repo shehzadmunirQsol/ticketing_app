@@ -3,7 +3,7 @@ import Background from '../../../public/assets/win-banner-1_cleanup.png';
 
 import BgImage1 from '../../../public/assets/rolls.png';
 import BgImage2 from '../../../public/assets/Ford-Mustang-Yellow-PNG.png';
-import BgImage3 from '../../../public/assets/ferrari.png';
+import BgImage3 from '../../../public/assets/Ford-Mustang-PNG-File.png';
 // import BgImage4 from '../../../public/assets/Ford-Mustang-PNG-Pic.png';
 import Slant from '../../../public/assets/slants.png';
 import Image from 'next/image';
@@ -105,9 +105,12 @@ const BannerSlider = () => {
     return () => clearTimeout(animationTimeout);
   }, [currentIndex]);
 
-
   return (
-    <div className={`relative w-full h-screen sm:overflow-hidden ${lang.dir === "ltr" ? "banner_img" :"banner_img_flip"}`} >
+    <div
+      className={`relative w-full h-screen overflow-hidden ${
+        lang.dir === 'ltr' ? 'banner_img' : 'banner_img_flip'
+      }`}
+    >
       <div className="relative ">
         <Image
           src={Slant}
@@ -128,32 +131,32 @@ const BannerSlider = () => {
         />
       </div>
 
-      <div className=" w-full  flex flex-col  sm:!flex-row justify-between z-20">
+      <div className=" w-full mt-56 sm:mt-56 md:mt-0 flex flex-col-reverse  md:!flex-row justify-between z-20">
         {/* text content */}
 
         <div
           className={`relative ${
             showElement ? 'fading-animation' : ''
-          } transition-all  duration-500  ease-in-out top-32 sm:top-48 h-fit  ltr:sm:ml-20 rtl:sm:mr-20 text-white sm:max-w-[700px]`}
+          } transition-all  duration-500 items-center  ease-in-out top-32 sm:top-48 h-fit mx-auto  ltr:md:ml-20 rtl:md:mr-20 text-white sm:max-w-[500px] lg:max-w-[700px]`}
         >
-          <p className="text-5xl font-[900] tracking-[-2px] ">
+          <p className="px-4 text-3xl  md:text-4xl xl:text-5xl font-[900] tracking-[-2px] ">
             {carSlider[currentIndex]?.BannerTitle}
           </p>
           {carSlider[currentIndex]?.BannerPrice ? (
-            <p className="text-5xl tracking-[-2px] my-3 ">
+            <p className="px-4 md:text-4xl xl:text-5xl tracking-[-2px] my-3 ">
               + {carSlider[currentIndex]?.BannerPrice} CASH
             </p>
           ) : (
             ''
           )}
-          <p className="text-xl  font-normal ">
+          <p className="px-4 text-xl  font-normal ">
             {carSlider[currentIndex]?.BannerPara}
           </p>
-          <p className="text-3xl tracking-[-2px] font-[900]  my-3">
+          <p className="px-4 text-3xl tracking-[-2px] font-[900]  my-3">
             {carSlider[currentIndex]?.BannerDate}
           </p>
           <Button
-            className="text-black font-sans font-[900]  tracking-[-1px]"
+            className="mx-4 text-black font-sans font-[900]  tracking-[-1px]"
             variant="clip"
           >
             ENTER NOW
@@ -161,26 +164,27 @@ const BannerSlider = () => {
         </div>
 
         {/* text select cards */}
-        <div className="  absolute  mb-10 mx-4 top-[170px] ltr:right-6 rtl:left-6  z-20 w-full max-w-[680px] h-full max-h-[320px]">
+        <div className="  absolute   mb-28 sm:mb-8 m-auto    md:top-[260px] lg:top-[240px] xl:top-[170px] ltr:right-6 rtl:left-6 md:ltr:right-2 md:rtl:left-4  z-20  w-[320px] h-[200px]  sm:max-w-[440px] sm:w-full sm:h-full  sm:max-h-[300px] md:max-w-[500px] md:max-h-[260px] lg:max-w-[680px] xl:max-w-[680px]  xl:max-h-[340px]">
           <Image
-            className="drop-shadow-2xl   object-cover transform rtl:-scale-x-100 ltr:scale-100"
+            className="    object-contain md:object-cover transform rtl:-scale-x-100 ltr:scale-100"
             src={carSlider[currentIndex]?.image}
             alt="/"
             fill
+            quality={100}
 
             // width={750}
             // height={400}
             // sizes="(max-width: 768px) 900px 500px, (max-width: 1200px) 700px 400px"
           />
         </div>
-        <div className="relative w-fit   ltr:right-16 rtl:left-16 z-30 sm:top-[360px] items-end h-fit flex justify-between  gap-3 mx-auto sm:mx-0">
+        <div className="relative hidden    ltr:right-16 rtl:left-16 z-30  md:top-[380px]  items-end h-fit lg:flex justify-between  gap-3 mx-auto sm:mx-0">
           {carSlider.map((item: any, i: number) => (
             <div
               className="group relative top-32 max-w-[120px] text-center font-semibold hover:cursor-pointer"
               onClick={() => goToSlide(i)}
             >
               <div
-                className={`relative w-[100px] h-[60px] mx-auto border-2  ${
+                className={`relative   w-[100px] h-[60px] mx-auto border-2  ${
                   currentIndex === i ? 'border-primary' : 'border-transparent'
                 } group-hover:border-primary`}
               >
