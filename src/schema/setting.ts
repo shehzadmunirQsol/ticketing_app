@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 export const createBannerSchema = z.array(z.any());
+export const updateBannerSchema = z.any();
 export const getBannerSchema = z.object({
   startDate: z.date().nullable().optional(),
   endDate: z.date().nullable().optional(),
@@ -11,3 +12,4 @@ export const getBannerSchema = z.object({
   first: z.number(),
   rows: z.number(),
 });
+

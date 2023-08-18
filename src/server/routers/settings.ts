@@ -1,4 +1,8 @@
-import { createBannerSchema, getBannerSchema } from '~/schema/setting';
+import {
+  createBannerSchema,
+  getBannerSchema,
+  updateBannerSchema,
+} from '~/schema/setting';
 import { router, publicProcedure } from '../trpc';
 import { TRPCError } from '@trpc/server';
 import { loginSchema, otpSchema } from '~/schema/user';
@@ -56,6 +60,7 @@ export const settingRouter = router({
         const setting_banner = await prisma.setting.findMany({
           ...options,
         });
+        console.log({ setting_banner });
         return setting_banner;
       } catch (error: any) {
         throw new TRPCError({
@@ -63,5 +68,21 @@ export const settingRouter = router({
           message: error.message,
         });
       }
+    }),
+
+  banner_update: publicProcedure
+    .input(updateBannerSchema)
+    .mutation(async ({ input, ctx }) => {
+      // const payload = [...input];
+      const payload = { ...input };
+      if (input?.id) delete payload?.id;
+      console.log(input, 'inputinputinputinput');
+      const setting_banner = await prisma.setting.update({
+        where: {
+          id: input?.id,
+        },
+        data: { ...payload },
+      });
+      return setting_banner;
     }),
 });

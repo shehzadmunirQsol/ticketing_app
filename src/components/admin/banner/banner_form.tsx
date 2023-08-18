@@ -18,6 +18,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
 import { FileInput } from '~/components/common/file_input';
 import { useEffect, useState } from 'react';
 import { trpc } from '~/utils/trpc';
+import { getS3ImageUrl } from '~/service/api/s3Url.service';
+import { isValidImageType } from '~/utils/helper';
+import { useToast } from '~/components/ui/use-toast';
 
 const BannerFormSchema = z.object({
   thumb: z.any(),
@@ -81,6 +84,8 @@ const arFormSchema = z.object({
 });
 
 export function BannerForm() {
+  const { toast } = useToast();
+
   const router = useRouter();
   const [optimizeFile, setOptimizeFile] = useState<any>(null);
   const [editData, seteditData] = useState<any>(null);
@@ -109,10 +114,22 @@ export function BannerForm() {
     if (!isLoading && isFetched && BannerApiData !== undefined) {
       const data: any = { ...BannerApiData[0] };
       seteditData(data);
-      console.log({ data });
       const json_data = JSON.parse(data?.value);
       form.setValue('link', json_data?.link);
       form.setValue('thumb', json_data?.thumb);
+      if (data?.lang_id == 1) {
+        form.setValue('en.model', json_data?.model);
+        form.setValue('en.title', json_data?.title);
+        form.setValue('en.price', json_data?.price);
+        form.setValue('en.description', json_data?.description);
+        form.setValue('en.date', json_data?.date);
+      } else {
+        form.setValue('ar.model', json_data?.model);
+        form.setValue('ar.title', json_data?.title);
+        form.setValue('ar.price', json_data?.price);
+        form.setValue('ar.description', json_data?.description);
+        form.setValue('ar.date', json_data?.date);
+      }
     }
   }, [isLoading, isFetched]);
   const formValidateData =
@@ -124,7 +141,6 @@ export function BannerForm() {
         : BannerFormSchema
       : BannerFormSchema;
 
-  console.log(typeof formValidateData, 'z.infer<typeof formValidateData>');
   const form = useForm<z.infer<typeof formValidateData>>({
     resolver: zodResolver(
       BannerApiData !== undefined && index
@@ -137,8 +153,7 @@ export function BannerForm() {
     ),
   });
 
-  console.log({ BannerApiData });
-  const nftUpload = trpc.settings.banner_create.useMutation({
+  const bannerUpload = trpc.settings.banner_create.useMutation({
     onSuccess: () => {
       console.log('upload successfully');
 
@@ -148,39 +163,101 @@ export function BannerForm() {
       console.log({ error });
     },
   });
+  const bannerUpdate = trpc.settings.banner_update.useMutation({
+    onSuccess: () => {
+      console.log('upload successfully');
 
+      // router.push('/store/wallet-connect');
+    },
+    onError(error: any) {
+      console.log({ error });
+    },
+  });
   // 1. Define your form.
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formValidateData>) {
-    console.log({ values });
     try {
+      const nftSource =
+        typeof form.getValues('thumb') !== 'object'
+          ? { thumb: values?.thumb }
+          : await uploadOnS3Handler();
       const payload: any = { ...values };
-      const dataPayload = [
-        {
-          lang_id: 1,
-          key: 'banner_en',
-          value: JSON.stringify({
-            thumb: '',
-            link: values?.link,
-            ...values?.ar,
-          }),
-        },
-        {
-          lang_id: 2,
-          key: 'banner_ar',
-          value: JSON.stringify({
-            thumb: '',
-            link: values?.link,
-            ...values?.ar,
-          }),
-        },
-      ];
-      // const data = await nftUpload.mutateAsync(dataPayload);
+      if (index) {
+        let dataPayload: any;
+        if (editData?.lang_id == 1) {
+          dataPayload = {
+            id: +index,
+            lang_id: 1,
+            key: 'banner_en',
+            value: JSON.stringify({
+              ...nftSource,
+              link: values?.link,
+              ...values?.en,
+            }),
+          };
+        } else {
+          dataPayload = {
+            id: +index,
 
-      console.log({ dataPayload });
+            lang_id: 2,
+            key: 'banner_ar',
+            value: JSON.stringify({
+              ...nftSource,
+              link: values?.link,
+              ...values?.ar,
+            }),
+          };
+        }
+        const data = await bannerUpdate.mutateAsync({ ...dataPayload });
+        if (data) {
+          toast({
+            variant: 'success',
+            title: 'Banner Updated Successfully',
+          });
+          router.back();
+        } else {
+          throw new Error('Data update Error');
+        }
+      } else {
+        const dataPayload = [
+          {
+            lang_id: 1,
+            key: 'banner_en',
+            value: JSON.stringify({
+              ...nftSource,
+              link: values?.link,
+              ...values?.en,
+            }),
+          },
+          {
+            lang_id: 2,
+            key: 'banner_ar',
+            value: JSON.stringify({
+              ...nftSource,
+              link: values?.link,
+              ...values?.ar,
+            }),
+          },
+        ];
+        const data = await bannerUpload.mutateAsync(dataPayload);
+        if (data) {
+          toast({
+            variant: 'success',
+            title: 'Banner Uploaded Successfully',
+          });
+          router.back();
+        } else {
+          throw new Error('Data Create Error');
+        }
+      }
     } catch (e: any) {
-      console.log(e.message);
+      console.log(e.message, 'e.message');
+      toast({
+        variant: 'destructive',
+        title: 'Uh oh! Something went wrong.',
+        description: 'There was a problem with your request.',
+      });
     }
   }
   async function imageCompressorHandler(originalFile: any) {
@@ -243,6 +320,27 @@ export function BannerForm() {
       //debugger
       img.src = e?.target?.result as string;
     };
+  }
+  async function uploadOnS3Handler() {
+    if (optimizeFile?.name) {
+      const response = await getS3ImageUrl(optimizeFile);
+      if (!response.success)
+        return console.log('response.message', response.message);
+
+      const isImage = isValidImageType(optimizeFile?.type);
+
+      const nftSource = {
+        thumb: '',
+      };
+
+      if (isImage) {
+        nftSource.thumb = response?.data;
+      }
+
+      return nftSource;
+    } else {
+      return console.log('Please Select Image');
+    }
   }
   return (
     <Form {...form}>

@@ -2,6 +2,7 @@ import React, { ReactNode } from 'react';
 import Header from './header';
 import Sidebar from './sidebar';
 import { useRouter } from 'next/router';
+import { Toaster } from '~/components/ui/toaster';
 
 type DefaultLayoutProps = { children: ReactNode };
 
@@ -21,6 +22,7 @@ function AdminLayout({ children }: DefaultLayoutProps) {
           </div>
         </>
       )}
+      <Toaster />
     </div>
   );
 }
