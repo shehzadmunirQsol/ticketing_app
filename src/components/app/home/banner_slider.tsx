@@ -28,7 +28,7 @@ const BannerSlider = () => {
   };
 
   const {
-    data: carSlider,
+    data: BannerApiData,
     refetch: BannerRefetch,
     isFetched,
     isLoading,
@@ -39,7 +39,16 @@ const BannerSlider = () => {
     // enabled: user?.id ? true : false,
   });
 
-  // console.log({ BannerApiData }, 'BannerApiData');
+  console.log({ BannerApiData }, 'BannerApiData');
+
+  let carSlider: any = [];
+  BannerApiData?.map((item) => {
+    const jsonPayload = JSON.parse(item.value);
+    carSlider.push(jsonPayload);
+  });
+
+  console.log(carSlider, 'payload');
+
   // const carSlider: any = [
   //   {
   //     image: BgImage1,
@@ -66,10 +75,10 @@ const BannerSlider = () => {
   //     BannerDate: 'WIN SUNDAY 8 PM',
   //   },
   //   // {
-  //     //   image: BgImage4,
-  //     //   text: '2021 BMW X5 40D & £1000',
-  //     //   BannerTitle: 'WIN THIS BMW',
-  //     //   BannerPrice: '1000 AED',
+  //   //   image: BgImage4,
+  //   //   text: '2021 BMW X5 40D & £1000',
+  //   //   BannerTitle: 'WIN THIS BMW',
+  //   //   BannerPrice: '1000 AED',
   //   //   BannerPara: 'Get your dream car at a fraction of the price!',
   //   //   BannerDate: 'WIN SUNDAY 8 PM',
 
@@ -128,6 +137,7 @@ const BannerSlider = () => {
 
     return () => clearTimeout(animationTimeout);
   }, [currentIndex]);
+  console.log(carSlider[currentIndex],'carSlider[currentIndex]')
 
   return (
     <div

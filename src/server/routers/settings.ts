@@ -31,17 +31,21 @@ export const settingRouter = router({
           take: input.rows,
           where: {
             group: 'BANNER',
-            is_deleted: 0,
+            is_deleted: false,
           },
         };
         if (input?.lang_id) {
           options.where = {
             lang_id: input?.lang_id,
+            group: 'BANNER',
+            is_deleted: false,
           };
         }
         if (input?.banner_id) {
           options.where = {
             id: input?.banner_id,
+            group: 'BANNER',
+            is_deleted: false,
           };
         }
         if (input.startDate) {
@@ -61,16 +65,16 @@ export const settingRouter = router({
         const setting_banner = await prisma.setting.findMany({
           ...options,
         });
+
+
         console.log({ setting_banner },"banner data");
         
-        let payload:any=[]
-        setting_banner.map((item)=>{
-          const jsonPayload=JSON.parse(item.value)
-          payload.push(jsonPayload)
-        })
         
-        console.log( payload ,"payload");
-        return payload;
+        console.log({ options });
+        console.log({ setting_banner },"setting_banner");
+
+        return setting_banner;
+
       } catch (error: any) {
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
