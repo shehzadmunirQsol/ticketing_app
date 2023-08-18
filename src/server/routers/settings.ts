@@ -31,6 +31,7 @@ export const settingRouter = router({
           take: input.rows,
           where: {
             group: 'BANNER',
+            is_deleted: 0,
           },
         };
         if (input?.lang_id) {
