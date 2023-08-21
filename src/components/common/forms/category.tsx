@@ -13,14 +13,15 @@ import {
 import { Input } from '@/ui/input';
 import { Textarea } from '@/ui/textarea';
 import { useForm } from 'react-hook-form';
-import { createCategorySchema } from '~/schema/category';
+import { CreateCategorySchema, createCategorySchema } from '~/schema/category';
 
 export default function CategoryForm() {
   // 1. Define your form.
-  const form = useForm<z.infer<typeof createCategorySchema>>({
+  const form = useForm<CreateCategorySchema>({
     resolver: zodResolver(createCategorySchema),
     defaultValues: {
       creator_id: 1,
+      thumb: '1',
       en: {
         name: '',
         desc: '',
@@ -35,7 +36,7 @@ export default function CategoryForm() {
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof createCategorySchema>) {
+  function onSubmit(values: CreateCategorySchema) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values);

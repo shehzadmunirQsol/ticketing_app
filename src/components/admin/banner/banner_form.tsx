@@ -245,6 +245,7 @@ export function BannerForm() {
       img.src = e?.target?.result as string;
     };
   }
+
   return (
     <Form {...form}>
       <form

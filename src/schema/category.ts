@@ -58,3 +58,5 @@ export const createCategorySchema = z.object({
 export const deleteCategorySchema = z.object({
   id: z.number(),
 });
+
+export type CreateCategorySchema = z.infer<typeof createCategorySchema>;
