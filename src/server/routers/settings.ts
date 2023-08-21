@@ -62,7 +62,7 @@ export const settingRouter = router({
           options.where.AND = options?.AND ?? [];
           options.where.AND.push({ created_at: { lte: endDate } });
         }
-        const setting_banner = await prisma.setting.findMany({
+        const setting_banner = await prisma.BannerView.findMany({
           ...options,
         });
         console.log({ options });

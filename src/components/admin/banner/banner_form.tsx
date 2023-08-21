@@ -342,6 +342,7 @@ export function BannerForm() {
       return console.log('Please Select Image');
     }
   }
+  console.log(form.formState.errors, 'form.error');
   return (
     <Form {...form}>
       <form
@@ -468,75 +469,89 @@ export function BannerForm() {
               />
             </TabsContent>
             <TabsContent value="ar">
-              <FormField
-                control={form.control}
-                name="ar.model"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Modal</FormLabel>
-                    <FormControl>
-                      <Input type="text" placeholder="Enter Modal" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="ar.title"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Title</FormLabel>
-                    <FormControl>
-                      <Input type="text" placeholder="Enter Title" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="ar.price"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Price</FormLabel>
-                    <FormControl>
-                      <Input type="text" placeholder="Enter Price" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="ar.description"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>description</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="text"
-                        placeholder="Enter description"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="ar.date"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Date</FormLabel>
-                    <FormControl>
-                      <Input type="text" placeholder="Enter Date" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <div dir="rtl">
+                <FormField
+                  control={form.control}
+                  name="ar.model"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>مشروط</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="text"
+                          placeholder="أدخل مشروط"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="ar.title"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>عنوا</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="text"
+                          placeholder="أدخل العنوان"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="ar.price"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>سعر</FormLabel>
+                      <FormControl>
+                        <Input type="text" placeholder="مَشرُوع" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="ar.description"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>وصف</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="text"
+                          placeholder="أدخل الوصف"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="ar.date"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>تاريخ</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="text"
+                          placeholder="أدخل التاريخ"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
             </TabsContent>
           </Tabs>
         </div>
