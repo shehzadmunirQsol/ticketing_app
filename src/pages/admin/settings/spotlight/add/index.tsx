@@ -1,6 +1,6 @@
 import { NextPageWithLayout } from '~/pages/_app';
-import { SpotLightForm } from '~/components/admin/spotlight/spotlight_form';
+import AddSpotLight from '~/components/admin/spotlight/add';
 
-const IndexPage: NextPageWithLayout = () => <SpotLightForm />;
+const IndexPage: NextPageWithLayout = () => <AddSpotLight />;
 
 export default IndexPage;

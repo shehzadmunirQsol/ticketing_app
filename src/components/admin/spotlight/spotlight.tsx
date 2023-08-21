@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from '../../ui/button';
 import Link from 'next/link';
-import DataTableSpotLight from '~/components/common/spotlight_table';
+import DataTableSpotLight from '~/components/common/table/spotlight';
 
 function SpotLight() {
   return (

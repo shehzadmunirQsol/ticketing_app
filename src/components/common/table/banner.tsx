@@ -42,7 +42,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '../ui/select';
+} from '../../ui/select';
 import Link from 'next/link';
 
 export const columns: ColumnDef<any>[] = [

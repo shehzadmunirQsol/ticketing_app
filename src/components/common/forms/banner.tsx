@@ -343,7 +343,6 @@ export function BannerForm() {
       return console.log('Please Select Image');
     }
   }
-  console.log(form.formState.errors, 'form.error');
   return (
     <Form {...form}>
       <form
@@ -351,9 +350,6 @@ export function BannerForm() {
         className="justify-center items-center px-8 py-4 space-y-4"
       >
         <div className="space-y-4">
-          <h2 className="text-4xl font-medium">
-            {index ? 'Edit Banner' : 'Add Banner'}
-          </h2>
           <div>
             <FileInput
               register={form.register('thumb')}

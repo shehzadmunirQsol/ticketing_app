@@ -21,13 +21,62 @@ import { trpc } from '~/utils/trpc';
 import { getS3ImageUrl } from '~/service/api/s3Url.service';
 import { isValidImageType } from '~/utils/helper';
 import { useToast } from '~/components/ui/use-toast';
+import { Textarea } from '~/components/ui/textarea';
 
 const SpotLightFormSchema = z.object({
   thumb: z.any(),
   link: z.string(),
-  name: z.string(),
-});
 
+  en: z.object({
+    name: z.string(),
+    description: z.string().optional(),
+  }),
+  ar: z.object({
+    name: z.string(),
+    description: z.string().optional(),
+  }),
+});
+const enFormSchema = z.object({
+  thumb: z.any(),
+  link: z.string(),
+
+  en: z.object({
+    model: z.string(),
+    title: z.string(),
+    price: z.string(),
+    description: z.string(),
+    date: z.string(),
+  }),
+  ar: z
+    .object({
+      model: z.string(),
+      title: z.string(),
+      price: z.string(),
+      description: z.string(),
+      date: z.string(),
+    })
+    .optional(),
+});
+const arFormSchema = z.object({
+  thumb: z.any(),
+  link: z.string(),
+  en: z
+    .object({
+      model: z.string(),
+      title: z.string(),
+      price: z.string(),
+      description: z.string(),
+      date: z.string(),
+    })
+    .optional(),
+  ar: z.object({
+    model: z.string(),
+    title: z.string(),
+    price: z.string(),
+    description: z.string(),
+    date: z.string(),
+  }),
+});
 export function SpotLightForm() {
   const { toast } = useToast();
 
@@ -62,13 +111,29 @@ export function SpotLightForm() {
       const json_data = JSON.parse(data?.value);
       form.setValue('link', json_data?.link);
       form.setValue('name', json_data?.name);
+      form.setValue('description', json_data?.description);
       form.setValue('thumb', json_data?.thumb);
     }
   }, [isLoading, isFetched]);
-  const formValidateData = SpotLightFormSchema;
+  const formValidateData =
+    BannerApiData !== undefined && index
+      ? BannerApiData[0]?.lang_id
+        ? enFormSchema
+        : BannerApiData[0]?.lang_id == 2
+        ? arFormSchema
+        : SpotLightFormSchema
+      : SpotLightFormSchema;
 
   const form = useForm<z.infer<typeof formValidateData>>({
-    resolver: zodResolver(SpotLightFormSchema),
+    resolver: zodResolver(
+      BannerApiData !== undefined && index
+        ? BannerApiData[0]?.lang_id
+          ? enFormSchema
+          : BannerApiData[0]?.lang_id == 2
+          ? arFormSchema
+          : SpotLightFormSchema
+        : SpotLightFormSchema,
+    ),
   });
 
   const bannerUpload = trpc.settings.banner_create.useMutation({
@@ -111,6 +176,7 @@ export function SpotLightForm() {
             ...nftSource,
             link: values?.link,
             name: values?.name,
+            description: values?.description,
           }),
         };
 
@@ -133,7 +199,17 @@ export function SpotLightForm() {
             value: JSON.stringify({
               ...nftSource,
               link: values?.link,
-              name: values?.name,
+              ...values?.en,
+            }),
+          },
+          {
+            lang_id: 2,
+            group: 'WONDER',
+            key: 'spotlight',
+            value: JSON.stringify({
+              ...nftSource,
+              link: values?.link,
+              ...values?.ar,
             }),
           },
         ];
@@ -247,9 +323,6 @@ export function SpotLightForm() {
         className="justify-center items-center px-8 py-4 space-y-4"
       >
         <div className="space-y-4">
-          <h2 className="text-4xl font-medium">
-            {index ? 'Edit Spot Light' : 'Add Spot Light'}
-          </h2>
           <div>
             <FileInput
               register={form.register('thumb')}
@@ -280,6 +353,20 @@ export function SpotLightForm() {
                   <FormLabel>Link</FormLabel>
                   <FormControl>
                     <Input type="text" placeholder="Enter Link" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Enter Description</FormLabel>
+
+                  <FormControl>
+                    <Textarea placeholder="Enter description" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

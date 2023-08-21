@@ -36,10 +36,12 @@ export const settingRouter = router({
         };
         const select: any = {
           select: {
+            id: true,
             value: true,
             title: true,
             link: true,
             thumb: true,
+            model: true,
             price: true,
             description: true,
             date: true,
@@ -47,9 +49,13 @@ export const settingRouter = router({
         };
         if (input?.group == 'WONDER') {
           select.select = {
+            id: true,
+
             value: true,
             name: true,
             link: true,
+            description: true,
+
             thumb: true,
           };
         }

@@ -1,6 +1,6 @@
 import { NextPageWithLayout } from '~/pages/_app';
-import { BannerForm } from '~/components/admin/banner/banner_form';
+import EditSpotLight from '~/components/admin/spotlight/edit';
 
-const IndexPage: NextPageWithLayout = () => <BannerForm />;
+const IndexPage: NextPageWithLayout = () => <EditSpotLight />;
 
 export default IndexPage;

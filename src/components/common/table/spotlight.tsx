@@ -42,7 +42,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '../ui/select';
+} from '../../ui/select';
 import Link from 'next/link';
 
 export const columns: ColumnDef<any>[] = [
@@ -96,6 +96,16 @@ export const columns: ColumnDef<any>[] = [
       );
     },
   },
+  {
+    id: 'description',
+    header: 'Description',
+
+    cell: ({ row }) => {
+      const payment = row?.original?.value && JSON?.parse(row?.original?.value);
+
+      return <>{payment?.description}</>;
+    },
+  },
 
   {
     id: 'link',
@@ -111,6 +121,7 @@ export const columns: ColumnDef<any>[] = [
     enableHiding: false,
     cell: ({ row }) => {
       const payment = row?.original;
+      console.log(row?.original, 'row?.original');
 
       return (
         <DropdownMenu>
@@ -124,10 +135,9 @@ export const columns: ColumnDef<any>[] = [
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
             <DropdownMenuSeparator />
-            <Link href={`/admin/settings/banners/edit/${payment?.id}`}>
-              <DropdownMenuItem>Edit Banner</DropdownMenuItem>
+            <Link href={`/admin/settings/spotlight/edit/${payment?.id}`}>
+              <DropdownMenuItem>Edit Spot Light</DropdownMenuItem>
             </Link>
-            {/* <DropdownMenuItem>View payment details</DropdownMenuItem> */}
           </DropdownMenuContent>
         </DropdownMenu>
       );
@@ -142,7 +152,6 @@ export default function DataTableSpotLight() {
     endDate: null,
     searchQuery: '',
     group: 'WONDER',
-    lang_id: 1,
     rows: 10,
     first: 0,
     page: 0,
@@ -192,7 +201,6 @@ export default function DataTableSpotLight() {
   function toggleLanguageHandler(lang: 'en' | 'ar') {
     setOrderFilters((prevFilters: any) => ({
       ...prevFilters,
-      lang_id: lang === 'ar' ? 2 : 1,
     }));
   }
   return (
@@ -200,17 +208,6 @@ export default function DataTableSpotLight() {
       <div className="flex justify-between items-center py-4">
         <div></div>
         <div className="flex gap-2">
-          <Select onValueChange={toggleLanguageHandler}>
-            <SelectTrigger className="h-10 px-4 py-2 rounded-none ">
-              <SelectValue placeholder="EN" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem value="en">EN</SelectItem>
-                <SelectItem value="ar">AR</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="ml-auto">
@@ -265,9 +262,10 @@ export default function DataTableSpotLight() {
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
+                  className=""
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell key={cell.id} className=" p-6">
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext(),
