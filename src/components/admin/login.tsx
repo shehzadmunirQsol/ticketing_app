@@ -4,7 +4,7 @@ import { Input } from '@/ui/input';
 import { Label } from '@/ui/label';
 import { Button } from '@/ui/button';
 import React from 'react';
-import { LoginForm } from '../common/form';
+import { LoginForm } from '../common/forms/form';
 
 export default function AuthenticationPage() {
   return (

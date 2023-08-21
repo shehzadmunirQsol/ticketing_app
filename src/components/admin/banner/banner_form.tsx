@@ -260,6 +260,7 @@ export function BannerForm() {
       });
     }
   }
+
   async function imageCompressorHandler(originalFile: any) {
     const imageFile = originalFile;
     const imageFilename = originalFile.name;

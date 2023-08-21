@@ -12,6 +12,11 @@ const SIDEBAR_DATA = [
     title: 'Dashboard',
   },
   {
+    key: '/admin/category',
+    icon: <i className="fa-solid fa-home p-4 rounded-full" />,
+    title: 'Category',
+  },
+  {
     key: '/admin/events',
     icon: <i className="fa-solid fa-home p-4 rounded-full" />,
     title: 'Events',
