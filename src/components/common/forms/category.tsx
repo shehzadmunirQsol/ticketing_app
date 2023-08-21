@@ -12,7 +12,7 @@ import { Input } from '@/ui/input';
 import { Textarea } from '@/ui/textarea';
 import { useForm } from 'react-hook-form';
 import { CreateCategorySchema, createCategorySchema } from '~/schema/category';
-import { FileInput } from '../file_input';
+import { NewFileInput } from '../file_input';
 
 export default function CategoryForm() {
   // 1. Define your form.
@@ -44,12 +44,12 @@ export default function CategoryForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <FileInput
+        <NewFileInput
           register={form.register('thumb')}
           reset={form.reset}
           getValues={form.getValues}
           setValue={form.setValue}
-          imageCompressorHandler={compressImage}
+          onChange={compressImage}
           required={true}
         />
 
@@ -128,14 +128,25 @@ export default function CategoryForm() {
   );
 }
 
-async function compressImage(event: React.ChangeEvent<HTMLInputElement>) {
-  const blobImg = event?.target?.files && event?.target?.files[0];
-  const bitmap = await createImageBitmap(blobImg as File);
+async function compressImage(blobImg: File) {
+  const bitmap = await createImageBitmap(blobImg);
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
   canvas.width = bitmap.width;
   canvas.height = bitmap.height;
   ctx?.drawImage(bitmap, 0, 0);
-  const dataUrl = canvas.toDataURL('image/png', 100 / 100);
-  return dataUrl;
+  // Convert canvas content to a new Blob with reduced quality
+  const reducedBlob: Blob = await new Promise((resolve) => {
+    canvas.toBlob((blob) => resolve(blob as Blob), 'image/webp', 0.01);
+  });
+
+  // Create a new File object from the reduced Blob
+  const reducedFile = new File([reducedBlob], blobImg.name, {
+    type: 'image/webp', // Adjust the type if needed
+    lastModified: blobImg.lastModified,
+  });
+
+  console.log({ reducedFile, blobImg, bitmap });
+
+  return reducedFile;
 }

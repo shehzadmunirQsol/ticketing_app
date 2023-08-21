@@ -16,6 +16,7 @@ specifiers:
   '@radix-ui/react-select': ^1.2.2
   '@radix-ui/react-slot': ^1.0.2
   '@radix-ui/react-tabs': ^1.0.4
+  '@radix-ui/react-toast': ^1.1.4
   '@reduxjs/toolkit': ^1.9.3
   '@tanstack/react-query': ^4.18.0
   '@tanstack/react-table': ^8.9.3
@@ -41,6 +42,7 @@ specifiers:
   eslint-plugin-prettier: ^4.2.1
   eslint-plugin-react: ^7.31.11
   eslint-plugin-react-hooks: ^4.6.0
+  install: ^0.13.0
   lucide-react: ^0.127.0
   navigation-menu: ^1.0.0
   next: ^13.2.1
@@ -53,6 +55,7 @@ specifiers:
   react: ^18.2.0
   react-dom: ^18.2.0
   react-hook-form: ^7.45.4
+  react-hot-toast: ^2.4.1
   react-redux: ^8.0.5
   react-slick: ^0.29.0
   select: ^1.1.2
@@ -87,6 +90,7 @@ dependencies:
   '@radix-ui/react-select': 1.2.2_2zx2umvpluuhvlq44va5bta2da
   '@radix-ui/react-slot': 1.0.2_fan5qbzahqtxlm5dzefqlqx5ia
   '@radix-ui/react-tabs': 1.0.4_2zx2umvpluuhvlq44va5bta2da
+  '@radix-ui/react-toast': 1.1.4_2zx2umvpluuhvlq44va5bta2da
   '@reduxjs/toolkit': 1.9.3_k4ae6lp43ej6mezo3ztvx6pykq
   '@tanstack/react-query': 4.18.0_biqbaboplfbrettd7655fr4n2y
   '@tanstack/react-table': 8.9.3_biqbaboplfbrettd7655fr4n2y
@@ -100,6 +104,7 @@ dependencies:
   class-variance-authority: 0.4.0_typescript@4.8.3
   clsx: 1.2.1
   dotenv: 16.3.1
+  install: 0.13.0
   lucide-react: 0.127.0_react@18.2.0
   navigation-menu: 1.0.0_jhaguxqfxx2v4alxps2nzei754
   next: 13.2.1_biqbaboplfbrettd7655fr4n2y
@@ -108,6 +113,7 @@ dependencies:
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
   react-hook-form: 7.45.4_react@18.2.0
+  react-hot-toast: 2.4.1_biqbaboplfbrettd7655fr4n2y
   react-redux: 8.0.5_2zx2umvpluuhvlq44va5bta2da
   react-slick: 0.29.0_biqbaboplfbrettd7655fr4n2y
   select: 1.1.2
@@ -1599,6 +1605,37 @@ packages:
       '@radix-ui/react-primitive': 1.0.3_2zx2umvpluuhvlq44va5bta2da
       '@radix-ui/react-roving-focus': 1.0.4_2zx2umvpluuhvlq44va5bta2da
       '@radix-ui/react-use-controllable-state': 1.0.1_fan5qbzahqtxlm5dzefqlqx5ia
+      '@types/react': 18.0.25
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    dev: false
+
+  /@radix-ui/react-toast/1.1.4_2zx2umvpluuhvlq44va5bta2da:
+    resolution: {integrity: sha512-wf+fc8DOywrpRK3jlPlWVe+ELYGHdKDaaARJZNuUTWyWYq7+ANCFLp4rTjZ/mcGkJJQ/vZ949Zis9xxEpfq9OA==}
+    peerDependencies:
+      '@types/react': '*'
+      '@types/react-dom': '*'
+      react: ^16.8 || ^17.0 || ^18.0
+      react-dom: ^16.8 || ^17.0 || ^18.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      '@types/react-dom':
+        optional: true
+    dependencies:
+      '@babel/runtime': 7.20.7
+      '@radix-ui/primitive': 1.0.1
+      '@radix-ui/react-collection': 1.0.3_2zx2umvpluuhvlq44va5bta2da
+      '@radix-ui/react-compose-refs': 1.0.1_fan5qbzahqtxlm5dzefqlqx5ia
+      '@radix-ui/react-context': 1.0.1_fan5qbzahqtxlm5dzefqlqx5ia
+      '@radix-ui/react-dismissable-layer': 1.0.4_2zx2umvpluuhvlq44va5bta2da
+      '@radix-ui/react-portal': 1.0.3_2zx2umvpluuhvlq44va5bta2da
+      '@radix-ui/react-presence': 1.0.1_2zx2umvpluuhvlq44va5bta2da
+      '@radix-ui/react-primitive': 1.0.3_2zx2umvpluuhvlq44va5bta2da
+      '@radix-ui/react-use-callback-ref': 1.0.1_fan5qbzahqtxlm5dzefqlqx5ia
+      '@radix-ui/react-use-controllable-state': 1.0.1_fan5qbzahqtxlm5dzefqlqx5ia
+      '@radix-ui/react-use-layout-effect': 1.0.1_fan5qbzahqtxlm5dzefqlqx5ia
+      '@radix-ui/react-visually-hidden': 1.0.3_2zx2umvpluuhvlq44va5bta2da
       '@types/react': 18.0.25
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
@@ -6834,6 +6871,12 @@ packages:
     resolution: {integrity: sha512-uHJgbwAMwNFf5mLst7IWLNg14x1CkeqglJb/K3doi4dw6q2IvAAmM/Y81kevy83wP+Sst+nutFTYOGg3d1lsxg==}
     dev: true
 
+  /goober/2.1.13:
+    resolution: {integrity: sha512-jFj3BQeleOoy7t93E9rZ2de+ScC4lQICLwiAQmKMg9F6roKGaLSHoCDYKkWlSafg138jejvq/mTdvmnwDQgqoQ==}
+    peerDependencies:
+      csstype: ^3.0.10
+    dev: false
+
   /gopd/1.0.1:
     resolution: {integrity: sha512-d65bNlIadxvpb/A2abVdlqKqV563juRnZ1Wtk6s1sIR8uNsXR70xqIzVqxVf1eTqDunwT2MkczEeaezCKTZhwA==}
     dependencies:
@@ -7306,6 +7349,11 @@ packages:
       string-width: 2.1.1
       strip-ansi: 4.0.0
       through: 2.3.8
+    dev: false
+
+  /install/0.13.0:
+    resolution: {integrity: sha512-zDml/jzr2PKU9I8J/xyZBQn8rPCAY//UOYNmR01XwNwyfhEWObo2SWfSl1+0tm1u6PhxLwDnfsT/6jB7OUxqFA==}
+    engines: {node: '>= 0.10'}
     dev: false
 
   /internal-ip/1.2.0:
@@ -10514,6 +10562,20 @@ packages:
       react: ^16.8.0 || ^17 || ^18
     dependencies:
       react: 18.2.0
+    dev: false
+
+  /react-hot-toast/2.4.1_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-j8z+cQbWIM5LY37pR6uZR6D4LfseplqnuAO4co4u8917hBUvXlEqyP1ZzqVLcqoyUesZZv/ImreoCeHVDpE5pQ==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      react: '>=16'
+      react-dom: '>=16'
+    dependencies:
+      goober: 2.1.13
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    transitivePeerDependencies:
+      - csstype
     dev: false
 
   /react-is/16.13.1:

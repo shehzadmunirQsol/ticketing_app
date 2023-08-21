@@ -51,7 +51,9 @@ export const columns: ColumnDef<any>[] = [
     header: ({ table }) => (
       <Checkbox
         checked={table.getIsAllPageRowsSelected()}
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        onCheckedChange={(value: any) =>
+          table.toggleAllPageRowsSelected(!!value)
+        }
         aria-label="Select all"
       />
     ),
@@ -71,7 +73,8 @@ export const columns: ColumnDef<any>[] = [
     header: 'Title',
 
     cell: ({ row }) => {
-      const payment = JSON.parse(row.original.value);
+      const payment = row?.original?.value && JSON?.parse(row?.original?.value);
+
       return (
         <>
           <div className="flex items-center space-x-2">
@@ -98,7 +101,8 @@ export const columns: ColumnDef<any>[] = [
     header: 'Description',
 
     cell: ({ row }) => {
-      const payment = JSON.parse(row.original.value);
+      const payment = row?.original?.value && JSON?.parse(row?.original?.value);
+
       return <>{payment?.description}</>;
     },
   },
@@ -107,7 +111,8 @@ export const columns: ColumnDef<any>[] = [
     header: 'Model',
 
     cell: ({ row }) => {
-      const payment = JSON.parse(row.original.value);
+      const payment = row?.original?.value && JSON?.parse(row?.original?.value);
+
       return <>{payment?.model}</>;
     },
   },
@@ -116,7 +121,8 @@ export const columns: ColumnDef<any>[] = [
     header: 'Link',
 
     cell: ({ row }) => {
-      const payment = JSON.parse(row.original.value);
+      const payment = row?.original?.value && JSON?.parse(row?.original?.value);
+
       return <>{payment?.link}</>;
     },
   },
@@ -125,7 +131,8 @@ export const columns: ColumnDef<any>[] = [
     header: 'Price',
 
     cell: ({ row }) => {
-      const payment = JSON.parse(row.original.value);
+      const payment = row?.original?.value && JSON?.parse(row?.original?.value);
+
       return <>{payment?.price}</>;
     },
   },
@@ -134,7 +141,8 @@ export const columns: ColumnDef<any>[] = [
     header: 'Date',
 
     cell: ({ row }) => {
-      const payment = JSON.parse(row.original.value);
+      const payment = row?.original?.value && JSON.parse(row?.original?.value);
+
       return <>{payment?.date}</>;
     },
   },
@@ -143,7 +151,7 @@ export const columns: ColumnDef<any>[] = [
     id: 'actions',
     enableHiding: false,
     cell: ({ row }) => {
-      const payment = row.original;
+      const payment = row?.original;
 
       return (
         <DropdownMenu>
@@ -193,6 +201,7 @@ export default function DataTableBanner() {
 
     // enabled: user?.id ? true : false,
   });
+  console.log({ BannerApiData });
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     [],
   );
@@ -201,7 +210,10 @@ export default function DataTableBanner() {
   const [rowSelection, setRowSelection] = React.useState({});
 
   const table = useReactTable({
-    data: BannerApiData !== undefined ? BannerApiData : [],
+    data:
+      BannerApiData !== undefined && BannerApiData && isFetched && !isError
+        ? BannerApiData
+        : [],
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,

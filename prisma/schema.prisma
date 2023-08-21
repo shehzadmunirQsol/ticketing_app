@@ -8,6 +8,8 @@ datasource db {
 
 generator client {
   provider = "prisma-client-js"
+    previewFeatures = ["views"]
+
 }
 
 model Role {
@@ -26,7 +28,7 @@ model Setting {
   id         Int          @id @default(autoincrement())
   group      SettingEnums @default(BANNER)
   key        String
-  value      String
+  value      String       @db.LongText
   lang_id    Int          @default(1)
   is_deleted Boolean      @default(false)
 
@@ -272,7 +274,25 @@ model EventFAQ {
   @@index([event_id, lang_id])
   @@map("event_faq")
 }
+view BannerView {
+  id         Int           @unique
+  group      SettingEnums 
+  key        String
+  value      String
+  title      String
+  model      String
+  link       String
+  date       String?
+  price      String
+  lang_id    Int          
+  is_deleted Boolean      
 
+  created_at DateTime 
+  updated_at DateTime 
+
+
+  @@map("banner_view")
+}
 enum SettingEnums {
   BANNER
   WONDER

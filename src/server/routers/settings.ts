@@ -1,4 +1,8 @@
-import { createBannerSchema, getBannerSchema } from '~/schema/setting';
+import {
+  createBannerSchema,
+  getBannerSchema,
+  updateBannerSchema,
+} from '~/schema/setting';
 import { router, publicProcedure } from '../trpc';
 import { TRPCError } from '@trpc/server';
 import { loginSchema, otpSchema } from '~/schema/user';
@@ -27,16 +31,21 @@ export const settingRouter = router({
           take: input.rows,
           where: {
             group: 'BANNER',
+            is_deleted: false,
           },
         };
         if (input?.lang_id) {
           options.where = {
             lang_id: input?.lang_id,
+            group: 'BANNER',
+            is_deleted: false,
           };
         }
         if (input?.banner_id) {
           options.where = {
             id: input?.banner_id,
+            group: 'BANNER',
+            is_deleted: false,
           };
         }
         if (input.startDate) {
@@ -53,9 +62,10 @@ export const settingRouter = router({
           options.where.AND = options?.AND ?? [];
           options.where.AND.push({ created_at: { lte: endDate } });
         }
-        const setting_banner = await prisma.setting.findMany({
+        const setting_banner = await prisma.BannerView.findMany({
           ...options,
         });
+        console.log({ options });
         return setting_banner;
       } catch (error: any) {
         throw new TRPCError({
@@ -63,5 +73,21 @@ export const settingRouter = router({
           message: error.message,
         });
       }
+    }),
+
+  banner_update: publicProcedure
+    .input(updateBannerSchema)
+    .mutation(async ({ input, ctx }) => {
+      // const payload = [...input];
+      const payload = { ...input };
+      if (input?.id) delete payload?.id;
+      console.log(input, 'inputinputinputinput');
+      const setting_banner = await prisma.setting.update({
+        where: {
+          id: input?.id,
+        },
+        data: { ...payload },
+      });
+      return setting_banner;
     }),
 });
