@@ -13,8 +13,16 @@ import { Textarea } from '@/ui/textarea';
 import { useForm } from 'react-hook-form';
 import { CreateCategorySchema, createCategorySchema } from '~/schema/category';
 import { NewFileInput } from '../file_input';
+import { useState } from 'react';
+import { getS3ImageUrl } from '~/service/api/s3Url.service';
+import { isValidImageType } from '~/utils/helper';
+import { trpc } from '~/utils/trpc';
 
 export default function CategoryForm() {
+  const [image, setImage] = useState<File>();
+
+  const addCategory = trpc.category.create.useMutation();
+
   // 1. Define your form.
   const form = useForm<CreateCategorySchema>({
     resolver: zodResolver(createCategorySchema),
@@ -35,10 +43,38 @@ export default function CategoryForm() {
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: CreateCategorySchema) {
+  async function onSubmit(values: CreateCategorySchema) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values);
+
+    try {
+      if (typeof image === 'undefined') return alert('Please select an image');
+
+      const thumb = await uploadOnS3Handler();
+      const payload = { ...values, thumb };
+
+      const response = await addCategory.mutateAsync(payload);
+      console.log({ response });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function imageHandler(originalFile: File) {
+    const optimizedFile = await compressImage(originalFile);
+    setImage(optimizedFile);
+  }
+
+  async function uploadOnS3Handler() {
+    console.log({ image });
+    const response = await getS3ImageUrl(image);
+    if (!response.success) {
+      console.log('response.message', response.message);
+      return '';
+    } else {
+      return response.data;
+    }
   }
 
   return (
@@ -49,7 +85,8 @@ export default function CategoryForm() {
           reset={form.reset}
           getValues={form.getValues}
           setValue={form.setValue}
-          onChange={compressImage}
+          onChange={imageHandler}
+          onRemove={setImage}
           required={true}
         />
 
@@ -128,8 +165,8 @@ export default function CategoryForm() {
   );
 }
 
-async function compressImage(blobImg: File) {
-  const bitmap = await createImageBitmap(blobImg);
+async function compressImage(fileImage: File) {
+  const bitmap = await createImageBitmap(fileImage);
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
   canvas.width = bitmap.width;
@@ -141,12 +178,10 @@ async function compressImage(blobImg: File) {
   });
 
   // Create a new File object from the reduced Blob
-  const reducedFile = new File([reducedBlob], blobImg.name, {
+  const reducedFile = new File([reducedBlob], fileImage.name, {
     type: 'image/webp', // Adjust the type if needed
-    lastModified: blobImg.lastModified,
+    lastModified: fileImage.lastModified,
   });
-
-  console.log({ reducedFile, blobImg, bitmap });
 
   return reducedFile;
 }

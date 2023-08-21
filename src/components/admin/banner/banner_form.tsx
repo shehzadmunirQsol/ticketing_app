@@ -322,6 +322,7 @@ export function BannerForm() {
       img.src = e?.target?.result as string;
     };
   }
+
   async function uploadOnS3Handler() {
     if (optimizeFile?.name) {
       const response = await getS3ImageUrl(optimizeFile);
@@ -343,6 +344,7 @@ export function BannerForm() {
       return console.log('Please Select Image');
     }
   }
+
   console.log(form.formState.errors, 'form.error');
   return (
     <Form {...form}>
