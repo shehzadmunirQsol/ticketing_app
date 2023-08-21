@@ -303,14 +303,14 @@ export function BannerForm() {
           (blob) => {
             if (blob) {
               const optimizeFile = new File([blob], imageFilename, {
-                type: 'image/jpeg',
+                type: 'image/png',
                 lastModified: Date.now(),
               });
               // setFile(originalFile);
-              setOptimizeFile(originalFile);
+              setOptimizeFile(optimizeFile);
             }
           },
-          'image/jpeg',
+          'image/png',
           1,
         );
       };
@@ -350,6 +350,9 @@ export function BannerForm() {
         className="justify-center items-center px-8 py-4 space-y-4"
       >
         <div className="space-y-4">
+          <h2 className="text-4xl font-medium">
+            {index ? 'Edit Banner' : 'Add Banner'}
+          </h2>
           <div>
             <FileInput
               register={form.register('thumb')}
@@ -372,6 +375,19 @@ export function BannerForm() {
                 </FormItem>
               )}
             />
+          </div>
+          <div>
+            {form.formState.errors?.ar && form.formState.errors?.en && (
+              <>Please Fill English & Arabic form</>
+            )}
+          </div>
+          <div>
+            {form.formState.errors?.en && !form.formState.errors?.ar && (
+              <>Please Fill English form</>
+            )}
+            {!form.formState.errors?.en && form.formState.errors?.ar && (
+              <>Please Fill English form</>
+            )}
           </div>
           <Tabs
             defaultValue={
@@ -558,7 +574,7 @@ export function BannerForm() {
         <div className="flex items-center justify-between">
           <div></div>
           <Button type="submit" variant={'clip'} className="w-1/2">
-            Add Banner
+            {index ? 'Edit Banner' : 'Add Banner'}
           </Button>
         </div>
       </form>

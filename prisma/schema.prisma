@@ -279,11 +279,14 @@ view BannerView {
   group      SettingEnums 
   key        String
   value      String
-  title      String
-  model      String
-  link       String
+  title      String?
+  model      String?
+  link       String?
   date       String?
-  price      String
+  description       String?
+  price      String?
+  name      String?
+  thumb      String?
   lang_id    Int          
   is_deleted Boolean      
 

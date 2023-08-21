@@ -81,14 +81,14 @@ export const columns: ColumnDef<any>[] = [
             <Image
               className="object-cover bg-ac-2   h-10 w-10 rounded-lg"
               src={renderNFTImage(payment)}
-              alt={row?.original?.title}
+              alt={row?.original?.name}
               width={32}
               height={32}
             />
 
             <p className=" ">
               {/* {customTruncateHandler(payment?.title, 15)} */}
-              {row?.original?.title}
+              {row?.original?.name}
             </p>
             {/* <p>{nft?.name}</p> */}
           </div>
@@ -96,44 +96,13 @@ export const columns: ColumnDef<any>[] = [
       );
     },
   },
-  {
-    id: 'description',
-    header: 'Description',
 
-    cell: ({ row }) => {
-      return <>{row?.original?.description}</>;
-    },
-  },
-  {
-    id: 'model',
-    header: 'Model',
-
-    cell: ({ row }) => {
-      return <>{row?.original?.model}</>;
-    },
-  },
   {
     id: 'link',
     header: 'Link',
 
     cell: ({ row }) => {
       return <>{row?.original?.link}</>;
-    },
-  },
-  {
-    id: 'price',
-    header: 'Price',
-
-    cell: ({ row }) => {
-      return <>{row?.original?.price}</>;
-    },
-  },
-  {
-    id: 'date',
-    header: 'Date',
-
-    cell: ({ row }) => {
-      return <>{row?.original?.date}</>;
     },
   },
 
@@ -166,14 +135,13 @@ export const columns: ColumnDef<any>[] = [
   },
 ];
 
-export default function DataTableBanner() {
+export default function DataTableSpotLight() {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const initialOrderFilters: any = {
     startDate: null,
     endDate: null,
     searchQuery: '',
-    group: 'BANNER',
-
+    group: 'WONDER',
     lang_id: 1,
     rows: 10,
     first: 0,

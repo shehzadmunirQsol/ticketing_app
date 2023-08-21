@@ -30,21 +30,41 @@ export const settingRouter = router({
           skip: input.first,
           take: input.rows,
           where: {
-            group: 'BANNER',
+            group: input?.group,
             is_deleted: false,
           },
         };
+        const select: any = {
+          select: {
+            value: true,
+            title: true,
+            link: true,
+            thumb: true,
+            price: true,
+            description: true,
+            date: true,
+          },
+        };
+        if (input?.group == 'WONDER') {
+          select.select = {
+            value: true,
+            name: true,
+            link: true,
+            thumb: true,
+          };
+        }
         if (input?.lang_id) {
           options.where = {
             lang_id: input?.lang_id,
-            group: 'BANNER',
+            group: input?.group,
+
             is_deleted: false,
           };
         }
         if (input?.banner_id) {
           options.where = {
             id: input?.banner_id,
-            group: 'BANNER',
+            group: input?.group,
             is_deleted: false,
           };
         }
@@ -62,8 +82,9 @@ export const settingRouter = router({
           options.where.AND = options?.AND ?? [];
           options.where.AND.push({ created_at: { lte: endDate } });
         }
-        const setting_banner = await prisma.BannerView.findMany({
+        const setting_banner = await prisma.bannerView.findMany({
           ...options,
+          ...select,
         });
         console.log({ options });
         return setting_banner;
