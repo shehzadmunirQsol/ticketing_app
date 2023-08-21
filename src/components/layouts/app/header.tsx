@@ -54,7 +54,9 @@ interface LinkItemProps {
   icon: string;
   disable?: boolean;
 }
+
 function Header() {
+  const router = useRouter();
   const { lang } = useSelector((state: RootState) => state.layout);
 
   const dispatch = useDispatch();
@@ -71,9 +73,7 @@ function Header() {
   const [color, setColor] = useState(false);
   if (typeof window !== 'undefined') {
     const changeColor = () =>
-      window.scrollY >= 100 && window.innerWidth >= 768
-        ? setColor(true)
-        : setColor(false);
+      window.scrollY >= 100 ? setColor(true) : setColor(false);
 
     window.addEventListener('scroll', changeColor);
   }
@@ -82,6 +82,8 @@ function Header() {
   return (
     <div
       className={`fixed w-full z-50 top-0 h-[100px]  flex  items-center ${
+        router.asPath == '/' ? 'bg-transparent' : 'bg-background-footer'
+      }  ${
         color
           ? '!bg-background-footer  duration-500 shadow-xl'
           : '!bg-transparent  duration-500'
@@ -97,10 +99,18 @@ function Header() {
       <div className="hidden  mdx:flex gap-8 items-center justify-center">
         <ItemMenuDemo />
         <div className="flex items-center justify-center gap-2">
-          <Button variant="outline" size="icon_square" className='border-primary'>
+          <Button
+            variant="outline"
+            size="icon_square"
+            className="border-primary"
+          >
             <i className="fa-solid fa-cart-shopping" />
           </Button>
-          <Button variant="outline" size="icon_square" className='border-primary'>
+          <Button
+            variant="outline"
+            size="icon_square"
+            className="border-primary"
+          >
             <i className="fa-solid fa-user" />
           </Button>
           <Select onValueChange={toggleLanguageHandler}>
@@ -128,15 +138,15 @@ export default Header;
 export function DropdownMenuDemo() {
   const [click, setClick] = useState(false);
   return (
-    <DropdownMenu >
+    <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline">
           <i className="fas fa-bars"></i>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-40" side={"bottom-end"}>
+      <DropdownMenuContent className="w-40" side={'bottom-end'}>
         {/* <DropdownMenuLabel></DropdownMenuLabel> */}
-    
+
         <DropdownMenuGroup>
           <DropdownMenuItem>
             <span>Cars</span>
@@ -168,8 +178,8 @@ export function DropdownMenuDemo() {
               <Languages className="mr-2 h-4 w-4" />
               <span>Language</span>
             </DropdownMenuSubTrigger>
-            <DropdownMenuPortal >
-              <DropdownMenuSubContent className='!w-14'>
+            <DropdownMenuPortal>
+              <DropdownMenuSubContent className="!w-14">
                 <DropdownMenuItem>
                   <span>EN</span>
                 </DropdownMenuItem>

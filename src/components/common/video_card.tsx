@@ -24,7 +24,7 @@ const VideoCard = (props: cardInterface) => {
 
   return (
     <div className="relative group">
-      <Dialog>
+      <Dialog >
         <div
           onClick={openModal}
           className={` relative w-[300px] h-[400px] group-hover:cursor-pointer  rounded-sm overflow-hidden  shadow-lg bg-card flex justify-between items-start  ${props?.class}`}
@@ -54,13 +54,12 @@ const VideoCard = (props: cardInterface) => {
 
         <DialogContent>
           <iframe
-            width="560"
-            height="315"
+            className='w-full h-[360px]'
             src="https://www.youtube.com/embed/Y-x0efG1seA"
             title="YouTube video player"
-            frameborder="0"
+            // frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen
+            allowFullScreen
           ></iframe>
         </DialogContent>
       </Dialog>

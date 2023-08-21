@@ -137,7 +137,7 @@ const BannerSlider = () => {
 
     return () => clearTimeout(animationTimeout);
   }, [currentIndex]);
-  console.log(carSlider[currentIndex],'carSlider[currentIndex]')
+  console.log(carSlider[currentIndex], 'carSlider[currentIndex]');
 
   return (
     <div
@@ -165,7 +165,7 @@ const BannerSlider = () => {
         />
       </div>
 
-      <div className=" w-full mt-56 sm:mt-56 md:mt-0 flex flex-col-reverse  md:!flex-row justify-between z-20">
+      <div className=" w-full mt-52 sm:mt-56 md:mt-0 flex flex-col-reverse  md:!flex-row justify-between z-20">
         {/* text content */}
 
         <div
@@ -177,13 +177,13 @@ const BannerSlider = () => {
             {carSlider[currentIndex]?.title}
           </p>
           {carSlider[currentIndex]?.price ? (
-            <p className="px-4 md:text-4xl xl:text-5xl tracking-[-2px] my-3 ">
+            <p className="px-4 text-2xl md:text-4xl xl:text-5xl tracking-[-2px] my-3 ">
               + {carSlider[currentIndex]?.price}
             </p>
           ) : (
             ''
           )}
-          <p className="px-4 text-xl  font-normal ">
+          <p className="hidden sm:block px-4 text-xl  font-normal ">
             {carSlider[currentIndex]?.description}
           </p>
           <p className="px-4 text-3xl tracking-[-2px] font-[900]  my-3">
@@ -195,10 +195,13 @@ const BannerSlider = () => {
           >
             ENTER NOW
           </Button>
+          <div className="block sm:hidden mx-auto  w-fit h-fit">
+            <i className="fas fa-arrow-down animate-bounce text-teal-400 text-5xl my-14  "></i>
+          </div>
         </div>
 
         {/* text select cards */}
-        <div className="  absolute   mb-28 sm:mb-8 m-auto    md:top-[260px] lg:top-[240px] xl:top-[170px] ltr:right-6 rtl:left-6 md:ltr:right-2 md:rtl:left-4  z-20  w-[320px] h-[200px]  sm:max-w-[440px] sm:w-full sm:h-full  sm:max-h-[300px] md:max-w-[500px] md:max-h-[260px] lg:max-w-[680px] xl:max-w-[680px]  xl:max-h-[340px]">
+        <div className="  absolute  top-[100px]  sm:mb-8 m-auto    md:top-[260px] lg:top-[240px] xl:top-[170px] ltr:right-6 rtl:left-6 md:ltr:right-2 md:rtl:left-4  z-20  w-[320px] h-[200px]  sm:max-w-[440px] sm:w-full sm:h-full  sm:max-h-[300px] md:max-w-[500px] md:max-h-[260px] lg:max-w-[680px] xl:max-w-[680px]  xl:max-h-[340px]">
           <Image
             className="    object-contain md:object-cover transform rtl:-scale-x-100 ltr:scale-100"
             src={renderNFTImage(carSlider[currentIndex])}
