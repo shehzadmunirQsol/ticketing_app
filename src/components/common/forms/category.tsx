@@ -1,6 +1,4 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
-
 import { Button } from '@/ui/button';
 import {
   Form,
@@ -14,6 +12,7 @@ import { Input } from '@/ui/input';
 import { Textarea } from '@/ui/textarea';
 import { useForm } from 'react-hook-form';
 import { CreateCategorySchema, createCategorySchema } from '~/schema/category';
+import { FileInput } from '../file_input';
 
 export default function CategoryForm() {
   // 1. Define your form.
@@ -21,7 +20,7 @@ export default function CategoryForm() {
     resolver: zodResolver(createCategorySchema),
     defaultValues: {
       creator_id: 1,
-      thumb: '1',
+      thumb: '',
       en: {
         name: '',
         desc: '',
@@ -45,6 +44,15 @@ export default function CategoryForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <FileInput
+          register={form.register('thumb')}
+          reset={form.reset}
+          getValues={form.getValues}
+          setValue={form.setValue}
+          imageCompressorHandler={compressImage}
+          required={true}
+        />
+
         <div className="grid grid-cols-2 gap-2 w-full">
           <FormField
             control={form.control}
