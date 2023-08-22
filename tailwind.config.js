@@ -56,6 +56,10 @@ module.exports = {
         },
       },
 
+      backgroundImage: {
+        'testimonials':
+          'linear-gradient(180deg, rgba(68, 78, 85, 0.40) 0%, rgba(56, 65, 71, 0.10) 100%)',
+      },
       keyframes: {
         'accordion-down': {
           from: { height: 0 },
@@ -73,12 +77,13 @@ module.exports = {
     },
     screens: {
       xs: '340px',
+      smm: '400px',
       sm: '640px',
       // => @media (min-width: 640px) { ... }
 
       md: '768px',
       // => @media (min-width: 768px) { ... }
-
+      mdx:"992px",
       lg: '1024px',
       // => @media (min-width: 1024px) { ... }
 

@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Image, { StaticImageData } from 'next/image';
 import React from 'react';
 import CarImage from '~/public/assets/card_image.png';
 import BottleImage from '~/public/assets/bottle.png';
@@ -7,10 +7,10 @@ import { Button } from '../ui/button';
 interface cardInterface {
   class?: string;
   dir?: string;
+  cash?: StaticImageData;
 }
 
 function ProductCard(props: cardInterface) {
-  console.log({ props });
   return (
     <div
       dir={props?.dir}
@@ -22,7 +22,7 @@ function ProductCard(props: cardInterface) {
         </div>
         <Image
           className="w-full h-full object-cover bg-white"
-          src={CarImage}
+          src={props?.cash ?? CarImage}
           quality={100}
           alt="Sunset in the mountains"
         />
@@ -63,7 +63,12 @@ function ProductCard(props: cardInterface) {
           <div className="text-primary text-lg font-black leading-[18px]">
             AED 120.00
           </div>
-          <Button variant="rounded">ENTER NOW</Button>
+          <Button
+            variant="rounded"
+            className="font-[800] tracking-tight text-lg "
+          >
+            ENTER NOW
+          </Button>
         </div>
       </div>
       {/* <div className="px-6 pt-4 pb-2">

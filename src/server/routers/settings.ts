@@ -138,8 +138,16 @@ export const settingRouter = router({
           ...options,
           ...select,
         });
+
+
+        console.log({ setting_banner },"banner data");
+        
+        
         console.log({ options });
+        console.log({ setting_banner },"setting_banner");
+
         return setting_banner;
+
       } catch (error: any) {
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',

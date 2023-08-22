@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/ui/button';
 import LogoImage from '~/public/assets/logo.png';
 import Image from 'next/image';
@@ -31,6 +31,8 @@ import {
   PlusCircle,
   Settings,
   User,
+  ShoppingCart,
+  Languages,
   UserPlus,
   Users,
 } from 'lucide-react';
@@ -46,13 +48,16 @@ import {
 import { useRouter } from 'next/router';
 import { toggleLang } from '~/store/reducers/layout';
 import { RootState } from '~/store/store';
+import Link from 'next/link';
 interface LinkItemProps {
   name: string;
   link: string;
   icon: string;
   disable?: boolean;
 }
+
 function Header() {
+  const router = useRouter();
   const { lang } = useSelector((state: RootState) => state.layout);
 
   const dispatch = useDispatch();
@@ -66,26 +71,53 @@ function Header() {
 
   console.log({ lang });
 
+  const [color, setColor] = useState(false);
+  if (typeof window !== 'undefined') {
+    const changeColor = () =>
+      window.scrollY >= 100 ? setColor(true) : setColor(false);
+
+    window.addEventListener('scroll', changeColor);
+  }
+
+  const [click, setClick] = useState(false);
   return (
-    <div className="fixed w-full z-50 top-0 h-[120px]  flex  items-center !bg-transparent   justify-between py-8 px-6 ">
-      <Image
-        src={LogoImage}
-        alt="Logo Image"
-        width={150}
-        height={140}
-        className="h-4 sm:h-6 w-28 sm:w-56 "
-      />
-      <div className="  flex gap-8 items-center justify-center">
+    <div
+      className={`fixed w-full z-50 top-0 h-[100px]  flex  items-center   ${
+        router.route == '/'
+          ? color
+            ? '!bg-background-footer  duration-500 shadow-xl'
+            : '!bg-transparent  duration-500'
+          : '!bg-background-footer'
+      }   transform ease-in-out justify-between py-8 px-6 `}
+    >
+      <Link href="/">
+        <Image
+          src={LogoImage}
+          alt="Logo Image"
+          width={150}
+          height={140}
+          className="h-4 sm:h-6 w-28 sm:w-56 "
+        />
+      </Link>
+      <div className="hidden  mdx:flex gap-8 items-center justify-center">
         <ItemMenuDemo />
         <div className="flex items-center justify-center gap-2">
-          <Button variant="outline" size="icon_square">
+          <Button
+            variant="outline"
+            size="icon_square"
+            className="border-primary"
+          >
             <i className="fa-solid fa-cart-shopping" />
           </Button>
-          <Button variant="outline" size="icon_square">
+          <Button
+            variant="outline"
+            size="icon_square"
+            className="border-primary"
+          >
             <i className="fa-solid fa-user" />
           </Button>
           <Select onValueChange={toggleLanguageHandler}>
-            <SelectTrigger className="h-10 w-10 rounded-none border-teal text-gray-200">
+            <SelectTrigger className="h-10 w-10 rounded-none border-primary text-gray-200">
               <SelectValue placeholder="EN" />
             </SelectTrigger>
             <SelectContent>
@@ -97,6 +129,9 @@ function Header() {
           </Select>
         </div>
       </div>
+      <div className="z-50 mdx:hidden">
+        <DropdownMenuDemo />
+      </div>
     </div>
   );
 }
@@ -104,90 +139,61 @@ function Header() {
 export default Header;
 
 export function DropdownMenuDemo() {
+  const [click, setClick] = useState(false);
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline">Open</Button>
+        <Button variant="outline">
+          <i className="fas fa-bars"></i>
+        </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56">
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
-        <DropdownMenuSeparator />
+      <DropdownMenuContent className="w-40" side={'bottom-end'}>
+        {/* <DropdownMenuLabel></DropdownMenuLabel> */}
+
         <DropdownMenuGroup>
+          <DropdownMenuItem>
+            <Link href="/cars">Cars</Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <span>Cash</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <span>Winings</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <span>About Us</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <span>FAQ</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <ShoppingCart className="mr-2 h-4 w-4" />
+            <span>Cart</span>
+          </DropdownMenuItem>
           <DropdownMenuItem>
             <User className="mr-2 h-4 w-4" />
-            <span>Profile</span>
-            <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <CreditCard className="mr-2 h-4 w-4" />
-            <span>Billing</span>
-            <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Settings className="mr-2 h-4 w-4" />
-            <span>Settings</span>
-            <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Keyboard className="mr-2 h-4 w-4" />
-            <span>Keyboard shortcuts</span>
-            <DropdownMenuShortcut>⌘K</DropdownMenuShortcut>
+            <span>Users</span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
-        <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <Users className="mr-2 h-4 w-4" />
-            <span>Team</span>
-          </DropdownMenuItem>
           <DropdownMenuSub>
             <DropdownMenuSubTrigger>
-              <UserPlus className="mr-2 h-4 w-4" />
-              <span>Invite users</span>
+              <Languages className="mr-2 h-4 w-4" />
+              <span>Language</span>
             </DropdownMenuSubTrigger>
             <DropdownMenuPortal>
-              <DropdownMenuSubContent>
+              <DropdownMenuSubContent className="!w-14">
                 <DropdownMenuItem>
-                  <Mail className="mr-2 h-4 w-4" />
-                  <span>Email</span>
+                  <span>EN</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  <MessageSquare className="mr-2 h-4 w-4" />
-                  <span>Message</span>
+                  <span>AR</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <PlusCircle className="mr-2 h-4 w-4" />
-                  <span>More...</span>
-                </DropdownMenuItem>
               </DropdownMenuSubContent>
             </DropdownMenuPortal>
           </DropdownMenuSub>
-          <DropdownMenuItem>
-            <Plus className="mr-2 h-4 w-4" />
-            <span>New Team</span>
-            <DropdownMenuShortcut>⌘+T</DropdownMenuShortcut>
-          </DropdownMenuItem>
         </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          <Github className="mr-2 h-4 w-4" />
-          <span>GitHub</span>
-        </DropdownMenuItem>
-        <DropdownMenuItem>
-          <LifeBuoy className="mr-2 h-4 w-4" />
-          <span>Support</span>
-        </DropdownMenuItem>
-        <DropdownMenuItem disabled>
-          <Cloud className="mr-2 h-4 w-4" />
-          <span>API</span>
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          <LogOut className="mr-2 h-4 w-4" />
-          <span>Log out</span>
-          <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
-        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
@@ -195,25 +201,34 @@ export function DropdownMenuDemo() {
 
 export function ItemMenuDemo() {
   const linkItems: Array<LinkItemProps> = [
-    { name: 'Cars', link: '/', icon: 'fas fa-house' },
+    {
+      name: 'Cars',
+      // link: '/cars',
+      link: `/`,
+      icon: 'fas fa-house',
+    },
     {
       name: 'Cash',
-      link: `/#`,
+      link: `/cash`,
+      // link: `/`,
       icon: 'fa-solid fa-globe',
     },
     {
       name: 'Winners',
-      link: `/#`,
+      // link: `/winners`,
+      link: `/`,
       icon: 'fa-sharp fa-regular fa-images',
     },
     {
       name: 'About Us',
-      link: `/#`,
+      // link: `/about-us`,
+      link: `/`,
       icon: 'fa-solid fa-image',
     },
     {
       name: 'FAQ',
-      link: `/#`,
+      // link: `/faq`,
+      link: `/`,
       icon: 'fa-solid fa-users',
     },
   ];
@@ -228,7 +243,7 @@ export function ItemMenuDemo() {
             return (
               <li key={index} className="group border-b-2 border-transparent  ">
                 <a
-                  href="#"
+                  href={item?.link}
                   className="flex flex-col py-2 pl-3 pr-4 text-gray-200  hover:underline hover:bg-gray-100  md:hover:bg-transparent  dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
                 >
                   {item?.name}
