@@ -41,19 +41,13 @@ const enFormSchema = z.object({
   link: z.string(),
 
   en: z.object({
-    model: z.string(),
-    title: z.string(),
-    price: z.string(),
-    description: z.string(),
-    date: z.string(),
+    name: z.string(),
+    description: z.string().optional(),
   }),
   ar: z
     .object({
-      model: z.string(),
-      title: z.string(),
-      price: z.string(),
-      description: z.string(),
-      date: z.string(),
+      name: z.string(),
+      description: z.string().optional(),
     })
     .optional(),
 });
@@ -62,19 +56,13 @@ const arFormSchema = z.object({
   link: z.string(),
   en: z
     .object({
-      model: z.string(),
-      title: z.string(),
-      price: z.string(),
-      description: z.string(),
-      date: z.string(),
+      name: z.string(),
+      description: z.string().optional(),
     })
     .optional(),
   ar: z.object({
-    model: z.string(),
-    title: z.string(),
-    price: z.string(),
-    description: z.string(),
-    date: z.string(),
+    name: z.string(),
+    description: z.string().optional(),
   }),
 });
 export function SpotLightForm() {
@@ -110,9 +98,14 @@ export function SpotLightForm() {
       seteditData(data);
       const json_data = JSON.parse(data?.value);
       form.setValue('link', json_data?.link);
-      form.setValue('name', json_data?.name);
-      form.setValue('description', json_data?.description);
       form.setValue('thumb', json_data?.thumb);
+      if (data?.lang_id == 1) {
+        form.setValue('en.name', json_data?.name);
+        form.setValue('en.description', json_data?.description);
+      } else {
+        form.setValue('ar.name', json_data?.name);
+        form.setValue('ar.description', json_data?.description);
+      }
     }
   }, [isLoading, isFetched]);
   const formValidateData =
@@ -167,18 +160,36 @@ export function SpotLightForm() {
           : await uploadOnS3Handler();
       const payload: any = { ...values };
       if (index) {
-        const dataPayload: any = {
-          id: +index,
+        let dataPayload: any;
+        if (editData?.lang_id == 1) {
+          dataPayload = {
+            id: +index,
 
-          group: 'WONDER',
-          key: 'spotlight',
-          value: JSON.stringify({
-            ...nftSource,
-            link: values?.link,
-            name: values?.name,
-            description: values?.description,
-          }),
-        };
+            lang_id: 1,
+
+            group: 'WONDER',
+            key: 'spotlight',
+            value: JSON.stringify({
+              ...nftSource,
+              link: values?.link,
+              ...values?.en,
+            }),
+          };
+        } else {
+          dataPayload = {
+            id: +index,
+
+            lang_id: 2,
+
+            group: 'WONDER',
+            key: 'spotlight',
+            value: JSON.stringify({
+              ...nftSource,
+              link: values?.link,
+              ...values?.ar,
+            }),
+          };
+        }
 
         const data = await bannerUpdate.mutateAsync({ ...dataPayload });
         if (data) {
@@ -228,8 +239,7 @@ export function SpotLightForm() {
       console.log(e.message, 'e.message');
       toast({
         variant: 'destructive',
-        title: 'Uh oh! Something went wrong.',
-        description: 'There was a problem with your request.',
+        title: e.message,
       });
     }
   }
@@ -332,19 +342,7 @@ export function SpotLightForm() {
               imageCompressorHandler={imageCompressorHandler}
               required={true}
             />
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Name</FormLabel>
-                  <FormControl>
-                    <Input type="text" placeholder="Enter Name" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+
             <FormField
               control={form.control}
               name="link"
@@ -358,21 +356,119 @@ export function SpotLightForm() {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Enter Description</FormLabel>
-
-                  <FormControl>
-                    <Textarea placeholder="Enter description" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
           </div>
+          <div>
+            {form.formState.errors?.ar && form.formState.errors?.en && (
+              <div className="flex gap-2 items-center p-2  text-destructive bg-white bg-opacity-60 rounded-md">
+                <i className="fa-solid fa-circle-info"></i>Please Fill English &
+                Arabic form
+              </div>
+            )}
+          </div>
+          <div>
+            {form.formState.errors?.en && !form.formState.errors?.ar && (
+              <div className="flex gap-2 items-center p-2  text-destructive bg-white bg-opacity-60 rounded-md">
+                <i className="fa-solid fa-circle-info"></i>
+                <>Please Fill English form</>
+              </div>
+            )}
+            {!form.formState.errors?.en && form.formState.errors?.ar && (
+              <div className="flex gap-2 items-center p-2  text-destructive bg-white bg-opacity-60 rounded-md">
+                <i className="fa-solid fa-circle-info"></i>
+                <>Please Fill Arabic form</>
+              </div>
+            )}
+          </div>
+          <Tabs
+            defaultValue={
+              index &&
+              BannerApiData !== undefined &&
+              BannerApiData[0]?.lang_id == 1
+                ? 'en'
+                : index &&
+                  BannerApiData !== undefined &&
+                  BannerApiData[0]?.lang_id == 2
+                ? 'ar'
+                : 'en'
+            }
+            className="w-full"
+          >
+            {index ? (
+              <></>
+            ) : (
+              <>
+                <TabsList>
+                  <TabsTrigger value="en">English</TabsTrigger>
+                  <TabsTrigger value="ar">Arabic</TabsTrigger>
+                </TabsList>
+              </>
+            )}
+            <TabsContent value="en">
+              <FormField
+                control={form.control}
+                name="en.name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Name</FormLabel>
+                    <FormControl>
+                      <Input type="text" placeholder="Enter Name" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="en.description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Description</FormLabel>
+                    <FormControl>
+                      <Textarea placeholder="Enter Description..." {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </TabsContent>
+            <TabsContent value="ar">
+              <div dir="rtl">
+                <FormField
+                  control={form.control}
+                  name="ar.name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>مشروط</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="text"
+                          placeholder="أدخل مشروط"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="ar.description"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>عنوا</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          placeholder="Enter Description..."
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </TabsContent>
+          </Tabs>
         </div>
         <div className="flex items-center justify-between">
           <div></div>

@@ -43,18 +43,22 @@ export const settingRouter = router({
             thumb: true,
             model: true,
             price: true,
+            lang_id: true,
             description: true,
+            is_enabled: true,
             date: true,
           },
         };
         if (input?.group == 'WONDER') {
           select.select = {
             id: true,
+            lang_id: true,
 
             value: true,
             name: true,
             link: true,
             description: true,
+            is_enabled: true,
 
             thumb: true,
           };

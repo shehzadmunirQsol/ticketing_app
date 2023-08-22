@@ -375,15 +375,24 @@ export function BannerForm() {
           </div>
           <div>
             {form.formState.errors?.ar && form.formState.errors?.en && (
-              <>Please Fill English & Arabic form</>
+              <div className="flex gap-2 items-center p-2  text-destructive bg-white bg-opacity-60 rounded-md">
+                <i className="fa-solid fa-circle-info"></i>Please Fill English &
+                Arabic form
+              </div>
             )}
           </div>
           <div>
             {form.formState.errors?.en && !form.formState.errors?.ar && (
-              <>Please Fill English form</>
+              <div className="flex gap-2 items-center p-2  text-destructive bg-white bg-opacity-60 rounded-md">
+                <i className="fa-solid fa-circle-info"></i>
+                <>Please Fill English form</>
+              </div>
             )}
             {!form.formState.errors?.en && form.formState.errors?.ar && (
-              <>Please Fill English form</>
+              <div className="flex gap-2 items-center p-2  text-destructive bg-white bg-opacity-60 rounded-md">
+                <i className="fa-solid fa-circle-info"></i>
+                <>Please Fill English form</>
+              </div>
             )}
           </div>
           <Tabs

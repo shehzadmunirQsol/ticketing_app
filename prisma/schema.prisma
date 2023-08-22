@@ -289,7 +289,8 @@ view BannerView {
   name      String?
   thumb      String?
   lang_id    Int          
-  is_deleted Boolean      
+  is_deleted Boolean  
+  is_enabled    Boolean 
 
   created_at DateTime 
   updated_at DateTime 
