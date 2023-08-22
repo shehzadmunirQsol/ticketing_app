@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Image, { StaticImageData } from 'next/image';
 import React from 'react';
 import Table from '~/components/common/table';
 import CarImage from '~/public/assets/card_image.png';
@@ -8,6 +8,7 @@ import { Button } from '../ui/button';
 interface cardInterface {
   class?: string;
   dir?: string;
+  cash?:StaticImageData
 }
 function ProductCard(props: cardInterface) {
 
@@ -22,7 +23,7 @@ function ProductCard(props: cardInterface) {
         </div>
         <Image
           className="w-full h-full object-cover bg-white"
-          src={CarImage}
+          src={props?.cash ?? CarImage}
           quality={100}
           alt="Sunset in the mountains"
         />

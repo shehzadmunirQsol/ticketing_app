@@ -9,6 +9,7 @@ import Lines from '~/public/assets/icons/Lines_Big.png';
 import Group16 from '~/public/assets/icons/Group16.svg';
 import Group17 from '~/public/assets/icons/Group17.png';
 import Link from 'next/link';
+import Glow from '~/components/common/glow';
 
 interface LinkItemProps {
   name: string;
@@ -27,7 +28,8 @@ function Footer() {
     <footer className=" bg-background-footer h-full">
       <div className="mx-auto relative w-full max-w-screen-2xl h-full">
         <div className=" absolute  p-1 w-1/2 z-2  h-full  ">
-          <div className="absolute bottom-0 -left-16 z-2  p-2  w-1/2 h-1/3  bg-teal-400 bg-opacity-30 rounded-full blur-3xl"></div>
+          <Glow class={"-left-16"}/>
+          {/* <div className="absolute bottom-0 -left-16 z-2  p-2  w-1/2 h-1/3  bg-teal-400 bg-opacity-30 rounded-full blur-3xl"></div> */}
           {/* <div className="absolute bottom-0 -left-16 z-4  p-2  w-1/3 h-1/3  bg-teal-400 bg-opacity-10 rounded-full blur-3xl"></div> */}
           <div className="absolute top-0   p-2  w-full h-full z-4   ">
             <Image

@@ -36,7 +36,7 @@ const VideoCard = (props: cardInterface) => {
             </div>
 
             {/* <i className="fa fa-share-from-square text-white text-2xl "></i> */}
-            <DialogTrigger name='share'>
+            <DialogTrigger >
               <div
                 className=" z-50 mr-2"
                 onClick={() => {
@@ -53,7 +53,7 @@ const VideoCard = (props: cardInterface) => {
             alt=""
             className="absolute object-cover group-hover:opacity-60"
           />
-          <DialogTrigger name='play'>
+          <DialogTrigger >
             <div className="absolute h-full w-full flex justify-center mx-auto  items-center ">
               {/* <i className="fa-regular fa-circle-play text-6xl  "></i> */}
               <Image src={Play} alt="/" className="w-14 h-14" />
@@ -64,7 +64,7 @@ const VideoCard = (props: cardInterface) => {
               className="w-full h-[360px]"
               src="https://www.youtube.com/embed/Y-x0efG1seA"  //add src prop later
               title="YouTube video player"
-              frameBorder="0"
+              // frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowFullScreen
             ></iframe>
