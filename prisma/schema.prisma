@@ -229,6 +229,7 @@ model Event {
   user_ticket_limit Int
   is_alt            Boolean @default(false)
   is_enable         Boolean @default(false)
+  is_featured       Boolean @default(false)
   creator_id        Int
   category_id       Int
 
@@ -302,26 +303,24 @@ model EventFAQ {
 }
 
 view BannerView {
-  id         Int          @unique
-  group      SettingEnums
-  key        String
-  thumb      String
-  value      String
-  title      String?
-  model      String?
-  link       String?
-  date       String?
-  description       String?
-  price      String?
-  name      String?
-  lang_id    Int          
-  is_deleted Boolean  
-  is_enabled    Boolean 
+  id          Int          @unique
+  group       SettingEnums
+  key         String
+  thumb       String
+  value       String
+  title       String?
+  model       String?
+  link        String?
+  date        String?
+  description String?
+  price       String?
+  name        String?
+  lang_id     Int
+  is_deleted  Boolean
+  is_enabled  Boolean
 
-  created_at DateTime 
-  updated_at DateTime 
-
-
+  created_at DateTime
+  updated_at DateTime
 
   @@map("banner_view")
 }
