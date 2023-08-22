@@ -10,7 +10,7 @@ import { prisma } from '~/server/prisma';
 export const categoryRouter = router({
   get: publicProcedure.input(getCategorySchema).query(async ({ input }) => {
     try {
-      const where: any = { is_deleted: false };
+      const where: any = { is_deleted: false, lang_id: input.lang_id };
 
       if (input?.startDate) {
         const startDate = new Date(input?.startDate);
@@ -23,11 +23,11 @@ export const categoryRouter = router({
 
       if (input.category_id) where.id = input.category_id;
 
-      const totalCategoryPromise = prisma.category.count({
+      const totalCategoryPromise = prisma.categoryView.count({
         where: where,
       });
 
-      const categoryPromise = prisma.category.findMany({
+      const categoryPromise = prisma.categoryView.findMany({
         orderBy: { created_at: 'desc' },
         skip: input.first,
         take: input.rows,
@@ -38,14 +38,8 @@ export const categoryRouter = router({
           created_at: true,
           updated_at: true,
           _count: true,
-          CategoryDescription: {
-            where: { lang_id: input.lang_id },
-
-            select: {
-              name: true,
-              desc: true,
-            },
-          },
+          name: true,
+          desc: true,
         },
       });
 
