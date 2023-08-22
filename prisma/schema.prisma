@@ -278,6 +278,7 @@ view BannerView {
   id         Int           @unique
   group      SettingEnums 
   key        String
+  thumb      String
   value      String
   title      String
   model      String

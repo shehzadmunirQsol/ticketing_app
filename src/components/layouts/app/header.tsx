@@ -48,6 +48,7 @@ import {
 import { useRouter } from 'next/router';
 import { toggleLang } from '~/store/reducers/layout';
 import { RootState } from '~/store/store';
+import Link from 'next/link';
 interface LinkItemProps {
   name: string;
   link: string;
@@ -81,12 +82,12 @@ function Header() {
   const [click, setClick] = useState(false);
   return (
     <div
-      className={`fixed w-full z-50 top-0 h-[100px]  flex  items-center ${
-        router.asPath == '/' ? 'bg-transparent' : 'bg-background-footer'
-      }  ${
-        color
-          ? '!bg-background-footer  duration-500 shadow-xl'
-          : '!bg-transparent  duration-500'
+      className={`fixed w-full z-50 top-0 h-[100px]  flex  items-center   ${
+        router.route == '/'
+          ? color
+            ? '!bg-background-footer  duration-500 shadow-xl'
+            : '!bg-transparent  duration-500'
+          : '!bg-background-footer'
       }   transform ease-in-out justify-between py-8 px-6 `}
     >
       <Image
@@ -149,7 +150,7 @@ export function DropdownMenuDemo() {
 
         <DropdownMenuGroup>
           <DropdownMenuItem>
-            <span>Cars</span>
+            <Link href="/cars">Cars</Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
             <span>Cash</span>
@@ -198,25 +199,34 @@ export function DropdownMenuDemo() {
 
 export function ItemMenuDemo() {
   const linkItems: Array<LinkItemProps> = [
-    { name: 'Cars', link: '/', icon: 'fas fa-house' },
+    {
+      name: 'Cars',
+      // link: '/cars',
+      link: `/`,
+      icon: 'fas fa-house',
+    },
     {
       name: 'Cash',
-      link: `/#`,
+      link: `/cash`,
+      // link: `/`,
       icon: 'fa-solid fa-globe',
     },
     {
       name: 'Winners',
-      link: `/#`,
+      // link: `/winners`,
+      link: `/`,
       icon: 'fa-sharp fa-regular fa-images',
     },
     {
       name: 'About Us',
-      link: `/#`,
+      // link: `/about-us`,
+      link: `/`,
       icon: 'fa-solid fa-image',
     },
     {
       name: 'FAQ',
-      link: `/#`,
+      // link: `/faq`,
+      link: `/`,
       icon: 'fa-solid fa-users',
     },
   ];
@@ -231,7 +241,7 @@ export function ItemMenuDemo() {
             return (
               <li key={index} className="group border-b-2 border-transparent  ">
                 <a
-                  href="#"
+                  href={item?.link}
                   className="flex flex-col py-2 pl-3 pr-4 text-gray-200  hover:underline hover:bg-gray-100  md:hover:bg-transparent  dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
                 >
                   {item?.name}

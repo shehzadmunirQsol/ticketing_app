@@ -18,6 +18,7 @@ const BannerSlider = () => {
   const [select, setSelect] = useState(2);
 
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [carSlider, setCarSlider] = useState([]);
   const [showElement, setShowElement] = useState(false);
 
   const initialOrderFilters: any = {
@@ -35,17 +36,22 @@ const BannerSlider = () => {
     isError,
   } = trpc.settings.get_banner.useQuery(initialOrderFilters, {
     refetchOnWindowFocus: false,
+    onSuccess:()=>{
+      setCarSlider(BannerApiData)
+    }
 
     // enabled: user?.id ? true : false,
   });
 
-  console.log({ BannerApiData }, 'BannerApiData');
 
-  let carSlider: any = [];
-  BannerApiData?.map((item) => {
-    const jsonPayload = JSON.parse(item.value);
-    carSlider.push(jsonPayload);
-  });
+
+  // console.log({ BannerApiData }, 'BannerApiData');
+
+  // let carSlider: any = [];
+  // BannerApiData?.map((item) => {
+  //   const jsonPayload = JSON.parse(item.value);
+  //   carSlider.push(jsonPayload);
+  // });
 
   console.log(carSlider, 'payload');
 
@@ -137,7 +143,7 @@ const BannerSlider = () => {
 
     return () => clearTimeout(animationTimeout);
   }, [currentIndex]);
-  console.log(carSlider[currentIndex], 'carSlider[currentIndex]');
+  // console.log(carSlider[currentIndex], 'carSlider[currentIndex]');
 
   return (
     <div
