@@ -1,6 +1,6 @@
 import Image, { StaticImageData } from 'next/image';
 import React, { useEffect, useRef } from 'react';
-import Table from '~/components/common/table';
+// import Table from '~/components/common/table';
 import CarImage from '~/public/assets/card_image.png';
 import BottleImage from '~/public/assets/bottle.png';
 import { Progress } from '../ui/progress';

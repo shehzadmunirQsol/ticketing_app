@@ -11,7 +11,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { ChevronDown, MoreHorizontal } from 'lucide-react';
+import { ArrowUpDown, ChevronDown, MoreHorizontal } from 'lucide-react';
 
 import { Button } from '@/ui/button';
 import { Checkbox } from '@/ui/checkbox';
@@ -24,6 +24,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/ui/dropdown-menu';
+import { Input } from '@/ui/input';
 import {
   Table,
   TableBody,
@@ -32,28 +33,54 @@ import {
   TableHeader,
   TableRow,
 } from '@/ui/table';
-import { trpc } from '~/utils/trpc';
-import Image from 'next/image';
-import { renderNFTImage } from '~/utils/helper';
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '../ui/select';
-import Link from 'next/link';
 
-export const columns: ColumnDef<any>[] = [
+const data: Payment[] = [
+  {
+    id: 'm5gr84i9',
+    amount: 316,
+    status: 'success',
+    email: 'ken99@yahoo.com',
+  },
+  {
+    id: '3u1reuv4',
+    amount: 242,
+    status: 'success',
+    email: 'Abe45@gmail.com',
+  },
+  {
+    id: 'derv1ws0',
+    amount: 837,
+    status: 'processing',
+    email: 'Monserrat44@gmail.com',
+  },
+  {
+    id: '5kma53ae',
+    amount: 874,
+    status: 'success',
+    email: 'Silas22@gmail.com',
+  },
+  {
+    id: 'bhqecj4p',
+    amount: 721,
+    status: 'failed',
+    email: 'carmella@hotmail.com',
+  },
+];
+
+export type Payment = {
+  id: string;
+  amount: number;
+  status: 'pending' | 'processing' | 'success' | 'failed';
+  email: string;
+};
+
+export const columns: ColumnDef<Payment>[] = [
   {
     id: 'select',
     header: ({ table }) => (
       <Checkbox
         checked={table.getIsAllPageRowsSelected()}
-        onCheckedChange={(value: any) =>
-          table.toggleAllPageRowsSelected(!!value)
-        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
         aria-label="Select all"
       />
     ),
@@ -67,91 +94,48 @@ export const columns: ColumnDef<any>[] = [
     enableSorting: false,
     enableHiding: false,
   },
-
   {
-    id: 'title',
-    header: 'Title',
-
-    cell: ({ row }) => {
-      const payment = row?.original?.value && JSON?.parse(row?.original?.value);
-
+    accessorKey: 'status',
+    header: 'Status',
+    cell: ({ row }) => (
+      <div className="capitalize">{row.getValue('status')}</div>
+    ),
+  },
+  {
+    accessorKey: 'email',
+    header: ({ column }) => {
       return (
-        <>
-          <div className="flex items-center space-x-2">
-            <Image
-              className="object-cover bg-ac-2   h-10 w-10 rounded-lg"
-              src={renderNFTImage(payment)}
-              alt={payment?.title}
-              width={32}
-              height={32}
-            />
-
-            <p className=" ">
-              {/* {customTruncateHandler(payment?.title, 15)} */}
-              {payment?.title}
-            </p>
-            {/* <p>{nft?.name}</p> */}
-          </div>
-        </>
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Email
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
       );
     },
+    cell: ({ row }) => <div className="lowercase">{row.getValue('email')}</div>,
   },
   {
-    id: 'description',
-    header: 'Description',
-
+    accessorKey: 'amount',
+    header: () => <div className="text-right">Amount</div>,
     cell: ({ row }) => {
-      const payment = row?.original?.value && JSON?.parse(row?.original?.value);
+      const amount = parseFloat(row.getValue('amount'));
 
-      return <>{payment?.description}</>;
+      // Format the amount as a dollar amount
+      const formatted = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+      }).format(amount);
+
+      return <div className="text-right font-medium">{formatted}</div>;
     },
   },
-  {
-    id: 'model',
-    header: 'Model',
-
-    cell: ({ row }) => {
-      const payment = row?.original?.value && JSON?.parse(row?.original?.value);
-
-      return <>{payment?.model}</>;
-    },
-  },
-  {
-    id: 'link',
-    header: 'Link',
-
-    cell: ({ row }) => {
-      const payment = row?.original?.value && JSON?.parse(row?.original?.value);
-
-      return <>{payment?.link}</>;
-    },
-  },
-  {
-    id: 'price',
-    header: 'Price',
-
-    cell: ({ row }) => {
-      const payment = row?.original?.value && JSON?.parse(row?.original?.value);
-
-      return <>{payment?.price}</>;
-    },
-  },
-  {
-    id: 'date',
-    header: 'Date',
-
-    cell: ({ row }) => {
-      const payment = row?.original?.value && JSON.parse(row?.original?.value);
-
-      return <>{payment?.date}</>;
-    },
-  },
-
   {
     id: 'actions',
     enableHiding: false,
     cell: ({ row }) => {
-      const payment = row?.original;
+      const payment = row.original;
 
       return (
         <DropdownMenu>
@@ -163,12 +147,14 @@ export const columns: ColumnDef<any>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-
+            <DropdownMenuItem
+              onClick={() => navigator.clipboard.writeText(payment.id)}
+            >
+              Copy payment ID
+            </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <Link href={`/admin/settings/banners/edit/${payment?.id}`}>
-              <DropdownMenuItem>Edit Banner</DropdownMenuItem>
-            </Link>
-            {/* <DropdownMenuItem>View payment details</DropdownMenuItem> */}
+            <DropdownMenuItem>View customer</DropdownMenuItem>
+            <DropdownMenuItem>View payment details</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
@@ -176,32 +162,8 @@ export const columns: ColumnDef<any>[] = [
   },
 ];
 
-export default function DataTableBanner() {
+export default function DataTableDemo() {
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const initialOrderFilters: any = {
-    startDate: null,
-    endDate: null,
-    searchQuery: '',
-    lang_id: 1,
-    rows: 10,
-    first: 0,
-    page: 0,
-  };
-  const [orderFilters, setOrderFilters] = React.useState({
-    ...initialOrderFilters,
-  });
-  const {
-    data: BannerApiData,
-    refetch: BannerRefetch,
-    isFetched,
-    isLoading,
-    isError,
-  } = trpc.settings.get_banner.useQuery(orderFilters, {
-    refetchOnWindowFocus: false,
-
-    // enabled: user?.id ? true : false,
-  });
-  console.log({ BannerApiData });
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     [],
   );
@@ -210,10 +172,7 @@ export default function DataTableBanner() {
   const [rowSelection, setRowSelection] = React.useState({});
 
   const table = useReactTable({
-    data:
-      BannerApiData !== undefined && BannerApiData && isFetched && !isError
-        ? BannerApiData
-        : [],
+    data,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -230,55 +189,44 @@ export default function DataTableBanner() {
       rowSelection,
     },
   });
-  function toggleLanguageHandler(lang: 'en' | 'ar') {
-    setOrderFilters((prevFilters: any) => ({
-      ...prevFilters,
-      lang_id: lang === 'ar' ? 2 : 1,
-    }));
-  }
+
   return (
     <div className="w-full">
-      <div className="flex justify-between items-center py-4">
-        <div></div>
-        <div className="flex gap-2">
-          <Select onValueChange={toggleLanguageHandler}>
-            <SelectTrigger className="h-10 px-4 py-2 rounded-none ">
-              <SelectValue placeholder="EN" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem value="en">EN</SelectItem>
-                <SelectItem value="ar">AR</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="ml-auto">
-                Columns <ChevronDown className="ml-2 h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              {table
-                .getAllColumns()
-                .filter((column) => column.getCanHide())
-                .map((column) => {
-                  return (
-                    <DropdownMenuCheckboxItem
-                      key={column.id}
-                      className="capitalize"
-                      checked={column.getIsVisible()}
-                      onCheckedChange={(value) =>
-                        column.toggleVisibility(!!value)
-                      }
-                    >
-                      {column.id}
-                    </DropdownMenuCheckboxItem>
-                  );
-                })}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
+      <div className="flex items-center py-4">
+        <Input
+          placeholder="Filter emails..."
+          value={(table.getColumn('email')?.getFilterValue() as string) ?? ''}
+          onChange={(event) =>
+            table.getColumn('email')?.setFilterValue(event.target.value)
+          }
+          className="max-w-sm"
+        />
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" className="ml-auto">
+              Columns <ChevronDown className="ml-2 h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            {table
+              .getAllColumns()
+              .filter((column) => column.getCanHide())
+              .map((column) => {
+                return (
+                  <DropdownMenuCheckboxItem
+                    key={column.id}
+                    className="capitalize"
+                    checked={column.getIsVisible()}
+                    onCheckedChange={(value) =>
+                      column.toggleVisibility(!!value)
+                    }
+                  >
+                    {column.id}
+                  </DropdownMenuCheckboxItem>
+                );
+              })}
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
       <div className="rounded-md border">
         <Table>

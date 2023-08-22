@@ -1,6 +1,6 @@
 import { NextPageWithLayout } from '~/pages/_app';
-import { BannerForm } from '~/components/admin/banner/banner_form';
+import EditBanner from '~/components/admin/banner/edit';
 
-const IndexPage: NextPageWithLayout = () => <BannerForm />;
+const IndexPage: NextPageWithLayout = () => <EditBanner />;
 
 export default IndexPage;

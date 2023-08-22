@@ -23,6 +23,8 @@ const BannerSlider = () => {
 
   const initialOrderFilters: any = {
     lang_id: 1,
+    group: 'BANNER',
+    is_enabled: true,
     rows: 10,
     first: 0,
     page: 0,
@@ -36,14 +38,12 @@ const BannerSlider = () => {
     isError,
   } = trpc.settings.get_banner.useQuery(initialOrderFilters, {
     refetchOnWindowFocus: false,
-    onSuccess:()=>{
-      setCarSlider(BannerApiData)
-    }
+    onSuccess: () => {
+      setCarSlider(BannerApiData);
+    },
 
     // enabled: user?.id ? true : false,
   });
-
-
 
   // console.log({ BannerApiData }, 'BannerApiData');
 
