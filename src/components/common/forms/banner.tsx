@@ -21,6 +21,7 @@ import { trpc } from '~/utils/trpc';
 import { getS3ImageUrl } from '~/service/api/s3Url.service';
 import { isValidImageType } from '~/utils/helper';
 import { useToast } from '~/components/ui/use-toast';
+import { LoadingDialog } from '../modal/loadingModal';
 
 const BannerFormSchema = z.object({
   thumb: z.any(),
@@ -89,6 +90,7 @@ export function BannerForm() {
   const router = useRouter();
   const [optimizeFile, setOptimizeFile] = useState<any>(null);
   const [editData, seteditData] = useState<any>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { index } = router.query;
   const initialOrderFilters: any = {
     rows: 10,
@@ -178,6 +180,7 @@ export function BannerForm() {
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formValidateData>) {
     try {
+      setIsSubmitting(true);
       const nftSource =
         typeof form.getValues('thumb') !== 'object'
           ? { thumb: values?.thumb }
@@ -215,6 +218,7 @@ export function BannerForm() {
             variant: 'success',
             title: 'Banner Updated Successfully',
           });
+          setIsSubmitting(false);
           router.back();
         } else {
           throw new Error('Data update Error');
@@ -246,6 +250,7 @@ export function BannerForm() {
             variant: 'success',
             title: 'Banner Uploaded Successfully',
           });
+          setIsSubmitting(false);
           router.back();
         } else {
           throw new Error('Data Create Error');
@@ -253,6 +258,8 @@ export function BannerForm() {
       }
     } catch (e: any) {
       console.log(e.message, 'e.message');
+      setIsSubmitting(false);
+
       toast({
         variant: 'destructive',
         title: 'Uh oh! Something went wrong.',
@@ -585,6 +592,7 @@ export function BannerForm() {
           </Button>
         </div>
       </form>
+      <LoadingDialog open={isSubmitting} text={'Saving data...'} />
     </Form>
   );
 }

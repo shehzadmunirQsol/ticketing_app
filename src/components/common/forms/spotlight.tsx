@@ -22,6 +22,7 @@ import { getS3ImageUrl } from '~/service/api/s3Url.service';
 import { isValidImageType } from '~/utils/helper';
 import { useToast } from '~/components/ui/use-toast';
 import { Textarea } from '~/components/ui/textarea';
+import { LoadingDialog } from '../modal/loadingModal';
 
 const SpotLightFormSchema = z.object({
   thumb: z.any(),
@@ -71,6 +72,8 @@ export function SpotLightForm() {
   const router = useRouter();
   const [optimizeFile, setOptimizeFile] = useState<any>(null);
   const [editData, seteditData] = useState<any>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const { index } = router.query;
   const initialOrderFilters: any = {
     rows: 10,
@@ -154,6 +157,8 @@ export function SpotLightForm() {
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formValidateData>) {
     try {
+      setIsSubmitting(true);
+
       const nftSource =
         typeof form.getValues('thumb') !== 'object'
           ? { thumb: values?.thumb }
@@ -193,6 +198,8 @@ export function SpotLightForm() {
 
         const data = await bannerUpdate.mutateAsync({ ...dataPayload });
         if (data) {
+          setIsSubmitting(false);
+
           toast({
             variant: 'success',
             title: 'Banner Updated Successfully',
@@ -226,6 +233,8 @@ export function SpotLightForm() {
         ];
         const data = await bannerUpload.mutateAsync(dataPayload);
         if (data) {
+          setIsSubmitting(false);
+
           toast({
             variant: 'success',
             title: 'Banner Uploaded Successfully',
@@ -236,7 +245,8 @@ export function SpotLightForm() {
         }
       }
     } catch (e: any) {
-      console.log(e.message, 'e.message');
+      setIsSubmitting(false);
+
       toast({
         variant: 'destructive',
         title: e.message,
@@ -477,6 +487,7 @@ export function SpotLightForm() {
           </Button>
         </div>
       </form>
+      <LoadingDialog open={isSubmitting} text={'Saving data...'} />
     </Form>
   );
 }

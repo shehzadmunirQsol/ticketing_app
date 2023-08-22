@@ -124,7 +124,7 @@ export default function DataTableBanner() {
 
         return (
           <>
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 gap-2">
               <Image
                 className="object-cover bg-ac-2   h-10 w-10 rounded-lg"
                 src={renderNFTImage(payment)}
@@ -328,6 +328,7 @@ export default function DataTableBanner() {
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
+                  dir={orderFilters?.lang_id == 1 ? 'ltr' : 'rtl'}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
