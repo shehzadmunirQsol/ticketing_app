@@ -3,7 +3,7 @@ import React from 'react';
 const BannerTitle = ({ image, text }: any) => {
   return (
     <>
-      <div className="w-full relative h-[300px] lg:h-[500px] ">
+      <div className="w-full relative h-[300px] lg:h-[500px] z-40">
         <Image
           src={image}
           alt="/"
