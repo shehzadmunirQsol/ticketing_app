@@ -1,5 +1,6 @@
 import {
   createBannerSchema,
+  deleteBannerSchema,
   getBannerSchema,
   updateBannerSchema,
 } from '~/schema/setting';
@@ -46,6 +47,8 @@ export const settingRouter = router({
             lang_id: true,
             description: true,
             is_enabled: true,
+            is_deleted: true,
+
             date: true,
           },
         };
@@ -59,6 +62,7 @@ export const settingRouter = router({
             link: true,
             description: true,
             is_enabled: true,
+            is_deleted: true,
 
             thumb: true,
           };
@@ -111,6 +115,21 @@ export const settingRouter = router({
     .mutation(async ({ input, ctx }) => {
       // const payload = [...input];
       const payload = { ...input };
+      if (input?.id) delete payload?.id;
+      console.log(input, 'inputinputinputinput');
+      const setting_banner = await prisma.setting.update({
+        where: {
+          id: input?.id,
+        },
+        data: { ...payload },
+      });
+      return setting_banner;
+    }),
+  banner_delete: publicProcedure
+    .input(deleteBannerSchema)
+    .mutation(async ({ input, ctx }) => {
+      // const payload = [...input];
+      const payload: any = { ...input };
       if (input?.id) delete payload?.id;
       console.log(input, 'inputinputinputinput');
       const setting_banner = await prisma.setting.update({

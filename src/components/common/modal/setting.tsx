@@ -12,13 +12,15 @@ import {
 import { useToast } from '~/components/ui/use-toast';
 import { trpc } from '~/utils/trpc';
 interface SettingDialogInterface {
-  selectedItem: object;
+  selectedItem: any;
   isModal: boolean;
   title: string;
-  setTitle: () => void;
-  setSelectedItem: () => void;
-  setIsModal: () => void;
-  refetch: () => void;
+  setTitle: any;
+  setSelectedItem: any;
+  setIsModal: any;
+  refetch: any;
+  type: string;
+  setType: any;
 }
 export function SettingDialog(props: SettingDialogInterface) {
   const { toast } = useToast();
@@ -34,21 +36,42 @@ export function SettingDialog(props: SettingDialogInterface) {
       console.log({ error });
     },
   });
+  const bannerDelete = trpc.settings.banner_delete.useMutation({
+    onSuccess: () => {
+      console.log('upload successfully');
+
+      // router.push('/store/wallet-connect');
+    },
+    onError(error: any) {
+      console.log({ error });
+    },
+  });
   const handleClick = async () => {
     try {
       const payload: any = {
         id: props?.selectedItem?.id,
-        is_enabled: !props?.selectedItem?.is_enabled,
       };
-      console.log('hello from the other side');
-      const data = await bannerUpdate.mutateAsync({ ...payload });
+      if (props?.type == 'enabled')
+        payload.is_enabled = !props?.selectedItem?.is_enabled;
+      if (props?.type == 'delete')
+        payload.is_deleted = !props?.selectedItem?.is_deleted;
+      let data: any;
+      if (props?.type == 'delete') {
+        data = await bannerDelete.mutateAsync({ ...payload });
+      } else {
+        data = await bannerUpdate.mutateAsync({ ...payload });
+      }
       if (data) {
         props.setIsModal(false);
 
         toast({
           variant: 'success',
           title: `${props?.title} ${
-            props?.selectedItem?.is_enabled ? 'disabled' : 'enabled'
+            props?.type === 'enabled'
+              ? props?.selectedItem?.is_enabled
+                ? 'disabled'
+                : 'enabled'
+              : 'deleted'
           } Successfully`,
         });
         props?.refetch();
@@ -70,7 +93,11 @@ export function SettingDialog(props: SettingDialogInterface) {
           <DialogTitle>{props?.title}</DialogTitle>
           <DialogDescription>
             {`Are You Sure You want to ${
-              props?.selectedItem?.is_enabled ? 'disable' : 'enable'
+              props?.type === 'enabled'
+                ? props?.selectedItem?.is_enabled
+                  ? 'disable'
+                  : 'enable'
+                : 'delete'
             } this ${props?.title}`}
           </DialogDescription>
         </DialogHeader>
