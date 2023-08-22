@@ -12,9 +12,22 @@ import { Input } from '@/ui/input';
 import { Textarea } from '@/ui/textarea';
 import { useForm } from 'react-hook-form';
 import { CreateCategorySchema, createCategorySchema } from '~/schema/category';
-import { NewFileInput } from '../file_input';
+import { ImageInput } from '../file_input';
+import { useState } from 'react';
+import { getS3ImageUrl } from '~/service/api/s3Url.service';
+import { trpc } from '~/utils/trpc';
+import { useRouter } from 'next/router';
+import { compressImage } from '~/utils/helper';
+import { LoadingDialog } from '../modal/loadingModal';
 
 export default function CategoryForm() {
+  const [image, setImage] = useState<File>();
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const router = useRouter();
+
+  const addCategory = trpc.category.create.useMutation();
+
   // 1. Define your form.
   const form = useForm<CreateCategorySchema>({
     resolver: zodResolver(createCategorySchema),
@@ -35,21 +48,54 @@ export default function CategoryForm() {
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: CreateCategorySchema) {
+  async function onSubmit(values: CreateCategorySchema) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values);
+
+    try {
+      if (typeof image === 'undefined') return alert('Please select an image');
+      setLoading(true);
+
+      const thumb = await uploadOnS3Handler();
+      const payload = { ...values, thumb };
+
+      const response = await addCategory.mutateAsync(payload);
+      router.replace('/admin/category');
+      console.log({ response });
+    } catch (error) {
+      setLoading(false);
+
+      console.log(error);
+    }
+  }
+
+  async function uploadOnS3Handler() {
+    console.log({ image });
+    const response = await getS3ImageUrl(image);
+    if (!response.success) {
+      console.log('response.message', response.message);
+      return '';
+    } else {
+      return response.data;
+    }
+  }
+
+  async function imageHandler(originalFile: File) {
+    const optimizedFile = await compressImage(originalFile);
+    setImage(optimizedFile);
   }
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <NewFileInput
+        <ImageInput
           register={form.register('thumb')}
           reset={form.reset}
           getValues={form.getValues}
           setValue={form.setValue}
-          onChange={compressImage}
+          onChange={imageHandler}
+          onRemove={setImage}
           required={true}
         />
 
@@ -124,29 +170,11 @@ export default function CategoryForm() {
           </Button>
         </div>
       </form>
+
+      <LoadingDialog
+        open={addCategory.isLoading || loading}
+        text={'Saving data...'}
+      />
     </Form>
   );
-}
-
-async function compressImage(blobImg: File) {
-  const bitmap = await createImageBitmap(blobImg);
-  const canvas = document.createElement('canvas');
-  const ctx = canvas.getContext('2d');
-  canvas.width = bitmap.width;
-  canvas.height = bitmap.height;
-  ctx?.drawImage(bitmap, 0, 0);
-  // Convert canvas content to a new Blob with reduced quality
-  const reducedBlob: Blob = await new Promise((resolve) => {
-    canvas.toBlob((blob) => resolve(blob as Blob), 'image/webp', 0.01);
-  });
-
-  // Create a new File object from the reduced Blob
-  const reducedFile = new File([reducedBlob], blobImg.name, {
-    type: 'image/webp', // Adjust the type if needed
-    lastModified: blobImg.lastModified,
-  });
-
-  console.log({ reducedFile, blobImg, bitmap });
-
-  return reducedFile;
 }

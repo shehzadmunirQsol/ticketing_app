@@ -83,16 +83,15 @@ export function FileInput(props: any) {
     </div>
   );
 }
-export function NewFileInput(props: any) {
+export function ImageInput(props: any) {
   const [image, setImage] = useState<string>('');
 
   useEffect(() => {
-    if (typeof props?.getValues('thumb') !== 'object') {
-      const linkData = `${
-        process.env.NEXT_PUBLIC_CLOUD_FRONT_BASE_URL
-      }/${props?.getValues('thumb')}`;
+    const imgSrc = props?.getValues('thumb');
 
-      setImage(linkData.includes('undefined') ? '' : linkData);
+    if (imgSrc && !imgSrc?.includes('blob:http')) {
+      const linkData = `${process.env.NEXT_PUBLIC_CLOUD_FRONT_BASE_URL}/${imgSrc}`;
+      setImage(linkData);
     }
   }, [props?.getValues('thumb')]);
 
@@ -106,6 +105,7 @@ export function NewFileInput(props: any) {
 
   function handleDelete() {
     setImage('');
+    props.onRemove(undefined);
     props.setValue(props?.register?.name);
   }
 
