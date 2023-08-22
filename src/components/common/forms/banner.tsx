@@ -19,7 +19,7 @@ import { FileInput } from '~/components/common/file_input';
 import { useEffect, useState } from 'react';
 import { trpc } from '~/utils/trpc';
 import { getS3ImageUrl } from '~/service/api/s3Url.service';
-import { isValidImageType } from '~/utils/helper';
+import { compressImage, isValidImageType } from '~/utils/helper';
 import { useToast } from '~/components/ui/use-toast';
 import { LoadingDialog } from '../modal/loadingModal';
 
@@ -267,67 +267,9 @@ export function BannerForm() {
       });
     }
   }
-
-  async function imageCompressorHandler(originalFile: any) {
-    const imageFile = originalFile;
-    const imageFilename = originalFile.name;
-
-    if (!imageFile) return 'Please select image.';
-    // if (!imageFile.name.match(/\.(jpg|jpeg|png|JPG|JPEG|PNG|gif)$/))
-    //   return "Please select valid image JPG,JPEG,PNG";
-
-    const reader = new FileReader();
-    reader.readAsDataURL(imageFile);
-
-    reader.onload = (e) => {
-      const img = new Image();
-      img.onload = () => {
-        //------------- Resize img code ----------------------------------
-        const canvas = document.createElement('canvas');
-        let ctx = canvas.getContext('2d');
-        ctx?.drawImage(img, 0, 0);
-
-        const MAX_WIDTH = 437;
-        const MAX_HEIGHT = 437;
-        let width = img.width;
-        let height = img.height;
-
-        if (width > height) {
-          if (width > MAX_WIDTH) {
-            height *= MAX_WIDTH / width;
-            width = MAX_WIDTH;
-          }
-        } else {
-          if (height > MAX_HEIGHT) {
-            width *= MAX_HEIGHT / height;
-            height = MAX_HEIGHT;
-          }
-        }
-        canvas.width = width;
-        canvas.height = height;
-        ctx = canvas.getContext('2d');
-        ctx?.drawImage(img, 0, 0, width, height);
-        ctx?.canvas?.toBlob(
-          (blob) => {
-            if (blob) {
-              const optimizeFile = new File([blob], imageFilename, {
-                type: 'image/png',
-                lastModified: Date.now(),
-              });
-              // setFile(originalFile);
-              setOptimizeFile(optimizeFile);
-            }
-          },
-          'image/png',
-          1,
-        );
-      };
-      img.onerror = () => {
-        return 'Invalid image content.';
-      };
-      //debugger
-      img.src = e?.target?.result as string;
-    };
+  async function imageHandler(originalFile: File) {
+    const optimizedFile = await compressImage(originalFile);
+    setOptimizeFile(optimizedFile);
   }
 
   async function uploadOnS3Handler() {
@@ -364,7 +306,7 @@ export function BannerForm() {
               reset={form.reset}
               getValues={form.getValues}
               setValue={form.setValue}
-              imageCompressorHandler={imageCompressorHandler}
+              imageCompressorHandler={imageHandler}
               required={true}
             />
             <FormField
