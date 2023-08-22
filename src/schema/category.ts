@@ -3,11 +3,11 @@ import { z } from 'zod';
 export const getCategorySchema = z.object({
   startDate: z.date().nullable(),
   endDate: z.date().nullable(),
-  category_id: z.string(),
-  searchQuery: z.string(),
-  page: z.number(),
+  searchQuery: z.string().optional(),
+  category_id: z.number().optional(),
   first: z.number(),
   rows: z.number(),
+  lang_id: z.number(),
 });
 
 export const createCategorySchema = z.object({
@@ -59,4 +59,5 @@ export const deleteCategorySchema = z.object({
   id: z.number(),
 });
 
+export type GetCategorySchema = z.infer<typeof getCategorySchema>;
 export type CreateCategorySchema = z.infer<typeof createCategorySchema>;

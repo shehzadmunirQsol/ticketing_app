@@ -27,7 +27,7 @@ export async function compressImage(fileImage: File, fileType = 'image/webp') {
   ctx?.drawImage(bitmap, 0, 0);
   // Convert canvas content to a new Blob with reduced quality
   const reducedBlob: Blob = await new Promise((resolve) => {
-    canvas.toBlob((blob) => resolve(blob as Blob), fileType, 0.1);
+    canvas.toBlob((blob) => resolve(blob as Blob), fileType, 0.5);
   });
 
   // Create a new File object from the reduced Blob

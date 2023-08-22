@@ -1,7 +1,7 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import {
   ColumnDef,
-  ColumnFiltersState,
+  // ColumnFiltersState,
   SortingState,
   VisibilityState,
   flexRender,
@@ -33,6 +33,9 @@ import {
   TableHeader,
   TableRow,
 } from '@/ui/table';
+import LanguageSelect, { languageInterface } from '../language_select';
+import { GetCategorySchema } from '~/schema/category';
+import { trpc } from '~/utils/trpc';
 
 const data: Payment[] = [
   {
@@ -162,20 +165,26 @@ export const columns: ColumnDef<Payment>[] = [
   },
 ];
 
-export default function DataTableDemo() {
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    [],
-  );
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState({});
+export default function CategoryDataTable() {
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [filters, setFilters] = useState<GetCategorySchema>({
+    startDate: null,
+    endDate: null,
+    searchQuery: '',
+    first: 0,
+    rows: 10,
+    lang_id: 1,
+  });
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = useState({});
+
+  const { data: categoryData } = trpc.category.get.useQuery(filters);
 
   const table = useReactTable({
     data,
     columns,
     onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
+    // onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -184,49 +193,59 @@ export default function DataTableDemo() {
     onRowSelectionChange: setRowSelection,
     state: {
       sorting,
-      columnFilters,
+      // columnFilters,
       columnVisibility,
       rowSelection,
     },
   });
 
+  function languageHandler(params: languageInterface) {
+    console.log({ params });
+  }
+
+  console.log({ categoryData });
+
   return (
     <div className="w-full">
-      <div className="flex items-center py-4">
+      <div className="flex items-center justify-between py-4">
         <Input
           placeholder="Filter emails..."
-          value={(table.getColumn('email')?.getFilterValue() as string) ?? ''}
-          onChange={(event) =>
-            table.getColumn('email')?.setFilterValue(event.target.value)
-          }
+          // value={(table.getColumn('email')?.getFilterValue() as string) ?? ''}
+          // onChange={(event) =>
+          //   table.getColumn('email')?.setFilterValue(event.target.value)
+          // }
           className="max-w-sm"
         />
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
-              Columns <ChevronDown className="ml-2 h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
+
+        <div className="flex gap-x-2">
+          <LanguageSelect languageHandler={languageHandler} />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="ml-auto">
+                Columns <ChevronDown className="ml-2 h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {table
+                .getAllColumns()
+                .filter((column) => column.getCanHide())
+                .map((column) => {
+                  return (
+                    <DropdownMenuCheckboxItem
+                      key={column.id}
+                      className="capitalize"
+                      checked={column.getIsVisible()}
+                      onCheckedChange={(value) =>
+                        column.toggleVisibility(!!value)
+                      }
+                    >
+                      {column.id}
+                    </DropdownMenuCheckboxItem>
+                  );
+                })}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
       <div className="rounded-md border">
         <Table>

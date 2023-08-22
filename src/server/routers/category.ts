@@ -32,6 +32,21 @@ export const categoryRouter = router({
         skip: input.first,
         take: input.rows,
         where: where,
+        select: {
+          id: true,
+          thumb: true,
+          created_at: true,
+          updated_at: true,
+          _count: true,
+          CategoryDescription: {
+            where: { lang_id: input.lang_id },
+
+            select: {
+              name: true,
+              desc: true,
+            },
+          },
+        },
       });
 
       const [totalCategory, category] = await Promise.all([
@@ -120,5 +135,4 @@ export const categoryRouter = router({
         });
       }
     }),
-  
 });

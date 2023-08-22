@@ -6,28 +6,32 @@ import {
   SelectGroup,
   SelectValue,
 } from '@/ui/select';
-import { useDispatch } from 'react-redux';
-import { switchLanguage } from '~/store/reducers/admin_layout';
 import { trpc } from '~/utils/trpc';
 
-export default function LanguageSelect() {
+export interface languageInterface {
+  id: number;
+  code: 'en' | 'ar';
+}
+
+interface LanguageSelectInterface {
+  languageHandler: (params: languageInterface) => void;
+}
+
+export default function LanguageSelect(props: LanguageSelectInterface) {
   const { data } = trpc.language.get.useQuery();
-  const dispatch = useDispatch();
 
   function onValueChange(value: string) {
     const language = data?.data.find((lang) => lang.code === value);
 
-    dispatch(
-      switchLanguage({
-        id: language?.id as number,
-        code: language?.code as 'en' | 'ar',
-      }),
-    );
+    props.languageHandler({
+      id: language?.id as number,
+      code: language?.code as 'en' | 'ar',
+    });
   }
 
   return (
     <Select onValueChange={onValueChange}>
-      <SelectTrigger className="h-10 w-20">
+      <SelectTrigger className="bg-background h-10 w-20">
         <SelectValue placeholder="EN" />
       </SelectTrigger>
       <SelectContent>

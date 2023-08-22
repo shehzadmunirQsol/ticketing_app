@@ -58,6 +58,7 @@ model AdminUser {
   FAQs                FAQ[]
   FAQsDescription     FaqDescription[]
   CustomerDescription CustomerDescription[]
+  CategoryView        CategoryView[]
 
   @@index([role_id])
   @@map("admin_user")
@@ -152,11 +153,13 @@ model Charity {
 }
 
 model CharityDescription {
-  id         Int     @id @default(autoincrement())
+  id         Int      @id @default(autoincrement())
   name       String
-  desc       String? @db.LongText
+  desc       String?  @db.LongText
   lang_id    Int
   charity_id Int
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
 
   Charity  Charity  @relation(fields: [charity_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   Language Language @relation(fields: [lang_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
@@ -182,17 +185,36 @@ model Category {
 }
 
 model CategoryDescription {
-  id          Int     @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   name        String
-  desc        String? @db.LongText
+  desc        String?  @db.LongText
   lang_id     Int
   category_id Int
+  created_at  DateTime @default(now()) @db.Timestamp(6)
+  updated_at  DateTime @default(now()) @db.Timestamp(6)
 
   Category Category @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   Language Language @relation(fields: [lang_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@index([category_id, lang_id])
   @@map("category_description")
+}
+
+view CategoryView {
+  id         Int      @id @default(autoincrement())
+  thumb      String
+  creator_id Int
+  lang_id    Int
+  name       String
+  desc       String?  @db.LongText
+  is_deleted Boolean  @default(false)
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+
+  User  AdminUser @relation(fields: [creator_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Event Event[]
+
+  @@map("category_view")
 }
 
 model Event {
@@ -221,18 +243,22 @@ model Event {
   EventImages      EventImage[]
   EventFAQs        EventFAQ[]
   EventDescription EventDescription[]
+  CategoryView     CategoryView?      @relation(fields: [categoryViewId], references: [id])
+  categoryViewId   Int?
 
   @@index([creator_id, category_id])
   @@map("event")
 }
 
 model EventDescription {
-  id           Int     @id @default(autoincrement())
+  id           Int      @id @default(autoincrement())
   name         String
-  desc         String? @db.LongText
+  desc         String?  @db.LongText
   comp_details String?
   lang_id      Int
   event_id     Int
+  created_at   DateTime @default(now()) @db.Timestamp(6)
+  updated_at   DateTime @default(now()) @db.Timestamp(6)
 
   Event    Event    @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   Language Language @relation(fields: [lang_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
