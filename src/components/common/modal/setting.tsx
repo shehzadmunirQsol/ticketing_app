@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 import { Button } from '~/components/ui/button';
 import {
   Dialog,
@@ -11,6 +12,7 @@ import {
 } from '~/components/ui/dialog';
 import { useToast } from '~/components/ui/use-toast';
 import { trpc } from '~/utils/trpc';
+import { LoadingDialog } from './loadingModal';
 interface SettingDialogInterface {
   selectedItem: any;
   isModal: boolean;
@@ -25,6 +27,7 @@ interface SettingDialogInterface {
 export function SettingDialog(props: SettingDialogInterface) {
   const { toast } = useToast();
   const router = useRouter();
+  const [loading, setLoading] = useState<boolean>(false);
 
   const bannerUpdate = trpc.settings.banner_update.useMutation({
     onSuccess: () => {
@@ -48,6 +51,7 @@ export function SettingDialog(props: SettingDialogInterface) {
   });
   const handleClick = async () => {
     try {
+      setLoading(true);
       const payload: any = {
         id: props?.selectedItem?.id,
       };
@@ -62,6 +66,8 @@ export function SettingDialog(props: SettingDialogInterface) {
         data = await bannerUpdate.mutateAsync({ ...payload });
       }
       if (data) {
+        setLoading(false);
+
         props.setIsModal(false);
 
         toast({
@@ -79,6 +85,8 @@ export function SettingDialog(props: SettingDialogInterface) {
         throw new Error('Data update Error');
       }
     } catch (e: any) {
+      setLoading(false);
+
       props.setIsModal(false);
       toast({
         variant: 'destructive',
@@ -107,6 +115,7 @@ export function SettingDialog(props: SettingDialogInterface) {
             Save changes
           </Button>
         </DialogFooter>
+        <LoadingDialog open={loading} text={'Saving data...'} />
       </DialogContent>
     </Dialog>
   );

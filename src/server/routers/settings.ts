@@ -22,6 +22,36 @@ export const settingRouter = router({
       });
       return setting_banner;
     }),
+  banner_update: publicProcedure
+    .input(updateBannerSchema)
+    .mutation(async ({ input, ctx }) => {
+      // const payload = [...input];
+      const payload = { ...input };
+      if (input?.id) delete payload?.id;
+      console.log(input, 'inputinputinputinput');
+      const setting_banner = await prisma.setting.update({
+        where: {
+          id: input?.id,
+        },
+        data: { ...payload },
+      });
+      return setting_banner;
+    }),
+  banner_delete: publicProcedure
+    .input(deleteBannerSchema)
+    .mutation(async ({ input, ctx }) => {
+      // const payload = [...input];
+      const payload: any = { ...input };
+      if (input?.id) delete payload?.id;
+      console.log(input, 'inputinputinputinput');
+      const setting_banner = await prisma.setting.update({
+        where: {
+          id: input?.id,
+        },
+        data: { ...payload },
+      });
+      return setting_banner;
+    }),
   get_banner: publicProcedure
     .input(getBannerSchema)
     .query(async ({ input }) => {
@@ -75,6 +105,14 @@ export const settingRouter = router({
             is_deleted: false,
           };
         }
+        if (input?.is_enabled) {
+          options.where = {
+            lang_id: input?.lang_id,
+            group: input?.group,
+            is_enabled: true,
+            is_deleted: false,
+          };
+        }
         if (input?.banner_id) {
           options.where = {
             id: input?.banner_id,
@@ -108,36 +146,5 @@ export const settingRouter = router({
           message: error.message,
         });
       }
-    }),
-
-  banner_update: publicProcedure
-    .input(updateBannerSchema)
-    .mutation(async ({ input, ctx }) => {
-      // const payload = [...input];
-      const payload = { ...input };
-      if (input?.id) delete payload?.id;
-      console.log(input, 'inputinputinputinput');
-      const setting_banner = await prisma.setting.update({
-        where: {
-          id: input?.id,
-        },
-        data: { ...payload },
-      });
-      return setting_banner;
-    }),
-  banner_delete: publicProcedure
-    .input(deleteBannerSchema)
-    .mutation(async ({ input, ctx }) => {
-      // const payload = [...input];
-      const payload: any = { ...input };
-      if (input?.id) delete payload?.id;
-      console.log(input, 'inputinputinputinput');
-      const setting_banner = await prisma.setting.update({
-        where: {
-          id: input?.id,
-        },
-        data: { ...payload },
-      });
-      return setting_banner;
     }),
 });

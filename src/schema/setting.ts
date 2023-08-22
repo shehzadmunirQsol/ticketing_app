@@ -11,6 +11,7 @@ export const getBannerSchema = z.object({
   endDate: z.date().nullable().optional(),
   group: z.string().optional(),
   lang_id: z.number().optional(),
+  is_enabled: z.boolean().optional(),
   banner_id: z.number().optional(),
   searchQuery: z.string().optional(),
   page: z.number(),

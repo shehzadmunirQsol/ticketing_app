@@ -238,7 +238,7 @@ export default function DataTableSpotLight() {
 
         return (
           <>
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center  gap-2">
               <Image
                 className="object-cover bg-ac-2   h-10 w-10 rounded-lg"
                 src={renderNFTImage(payment)}
@@ -315,11 +315,11 @@ export default function DataTableSpotLight() {
               <Link href={`/admin/settings/spotlight/edit/${payment?.id}`}>
                 <DropdownMenuItem>Edit Spot Light</DropdownMenuItem>
               </Link>
-                <DropdownMenuItem
-                  onClick={() => handleEnbled(row?.original, 'delete')}
-                >
-                  Delete Banner
-                </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => handleEnbled(row?.original, 'delete')}
+              >
+                Delete Banner
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         );
@@ -399,7 +399,9 @@ export default function DataTableSpotLight() {
         </div>
       </div>
       <div className="rounded-md border">
-        <Table>
+        <Table
+        // dir={orderFilters?.lang_id == 1 ? 'ltr' : 'rtl'}
+        >
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
@@ -425,6 +427,7 @@ export default function DataTableSpotLight() {
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
                   className=""
+                  dir={orderFilters?.lang_id == 1 ? 'ltr' : 'rtl'}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id} className=" p-6">
