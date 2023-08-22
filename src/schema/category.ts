@@ -28,8 +28,8 @@ export const createCategorySchema = z.object({
       .min(6, {
         message: 'Description must be at least 2 characters',
       })
-      .max(1000, {
-        message: 'Description must not exceed 1000 characters',
+      .max(5000, {
+        message: 'Description must not exceed 5000 characters',
       })
       .optional(),
     lang_id: z.number(),
@@ -48,8 +48,8 @@ export const createCategorySchema = z.object({
       .min(6, {
         message: 'Description must be at least 2 characters',
       })
-      .max(1000, {
-        message: 'Description must not exceed 1000 characters',
+      .max(5000, {
+        message: 'Description must not exceed 5000 characters',
       }),
     lang_id: z.number(),
   }),

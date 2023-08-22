@@ -83,7 +83,7 @@ export function FileInput(props: any) {
     </div>
   );
 }
-export function NewFileInput(props: any) {
+export function ImageInput(props: any) {
   const [image, setImage] = useState<string>('');
 
   useEffect(() => {

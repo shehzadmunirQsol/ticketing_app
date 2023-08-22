@@ -7,9 +7,8 @@ datasource db {
 }
 
 generator client {
-  provider = "prisma-client-js"
-    previewFeatures = ["views"]
-
+  provider        = "prisma-client-js"
+  previewFeatures = ["views"]
 }
 
 model Role {
@@ -102,7 +101,7 @@ model FAQ {
 model FaqDescription {
   id      Int    @id @default(autoincrement())
   qustion String
-  answer  String
+  answer  String @db.LongText
   lang_id Int
   faq_id  Int
 
@@ -155,7 +154,7 @@ model Charity {
 model CharityDescription {
   id         Int     @id @default(autoincrement())
   name       String
-  desc       String?
+  desc       String? @db.LongText
   lang_id    Int
   charity_id Int
 
@@ -185,7 +184,7 @@ model Category {
 model CategoryDescription {
   id          Int     @id @default(autoincrement())
   name        String
-  desc        String?
+  desc        String? @db.LongText
   lang_id     Int
   category_id Int
 
@@ -230,7 +229,7 @@ model Event {
 model EventDescription {
   id           Int     @id @default(autoincrement())
   name         String
-  desc         String?
+  desc         String? @db.LongText
   comp_details String?
   lang_id      Int
   event_id     Int
@@ -260,7 +259,7 @@ model EventImage {
 model EventFAQ {
   id         Int     @id @default(autoincrement())
   question   String
-  answer     String
+  answer     String  @db.LongText
   lang_id    Int
   event_id   Int
   is_deleted Boolean @default(false)
@@ -274,9 +273,10 @@ model EventFAQ {
   @@index([event_id, lang_id])
   @@map("event_faq")
 }
+
 view BannerView {
-  id         Int           @unique
-  group      SettingEnums 
+  id         Int          @unique
+  group      SettingEnums
   key        String
   value      String
   title      String
@@ -284,15 +284,15 @@ view BannerView {
   link       String
   date       String?
   price      String
-  lang_id    Int          
-  is_deleted Boolean      
+  lang_id    Int
+  is_deleted Boolean
 
-  created_at DateTime 
-  updated_at DateTime 
-
+  created_at DateTime
+  updated_at DateTime
 
   @@map("banner_view")
 }
+
 enum SettingEnums {
   BANNER
   WONDER
