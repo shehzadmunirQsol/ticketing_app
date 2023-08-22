@@ -64,7 +64,7 @@ function ProductCard(props: cardInterface) {
           <div className="text-primary text-lg font-black leading-[18px]">
             AED 120.00
           </div>
-          <Button variant="rounded">ENTER NOW</Button>
+          <Button variant="rounded" className='font-[800] tracking-tight text-lg '>ENTER NOW</Button>
         </div>
       </div>
       {/* <div className="px-6 pt-4 pb-2">

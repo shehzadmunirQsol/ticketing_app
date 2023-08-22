@@ -90,13 +90,15 @@ function Header() {
           : '!bg-background-footer'
       }   transform ease-in-out justify-between py-8 px-6 `}
     >
-      <Image
-        src={LogoImage}
-        alt="Logo Image"
-        width={150}
-        height={140}
-        className="h-4 sm:h-6 w-28 sm:w-56 "
-      />
+      <Link href="/">
+        <Image
+          src={LogoImage}
+          alt="Logo Image"
+          width={150}
+          height={140}
+          className="h-4 sm:h-6 w-28 sm:w-56 "
+        />
+      </Link>
       <div className="hidden  mdx:flex gap-8 items-center justify-center">
         <ItemMenuDemo />
         <div className="flex items-center justify-center gap-2">

@@ -28,7 +28,7 @@ function Footer() {
     <footer className=" bg-background-footer h-full">
       <div className="mx-auto relative w-full max-w-screen-2xl h-full">
         <div className=" absolute  p-1 w-1/2 z-2  h-full  ">
-          <Glow class={"-left-16"}/>
+          <Glow className="absolute bottom-0 -left-16 z-20  p-2   w-1/2 h-1/3  " />
           {/* <div className="absolute bottom-0 -left-16 z-2  p-2  w-1/2 h-1/3  bg-teal-400 bg-opacity-30 rounded-full blur-3xl"></div> */}
           {/* <div className="absolute bottom-0 -left-16 z-4  p-2  w-1/3 h-1/3  bg-teal-400 bg-opacity-10 rounded-full blur-3xl"></div> */}
           <div className="absolute top-0   p-2  w-full h-full z-4   ">
