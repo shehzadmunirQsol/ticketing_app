@@ -7,6 +7,8 @@ import AppLayout from './app';
 import AdminLayout from './admin';
 import { useRouter } from 'next/router';
 
+import Icon from '~/public/assets/favicon.png';
+
 type DefaultLayoutProps = { children: ReactNode };
 
 export default function DefaultLayout({ children }: DefaultLayoutProps) {
@@ -21,7 +23,7 @@ export default function DefaultLayout({ children }: DefaultLayoutProps) {
       <ThemeProvider attribute="class" defaultTheme="dark">
         <Head>
           <title>Winnar</title>
-          <link rel="icon" href="/favicon.ico" />
+          <link rel="icon" href={Icon.src} />
         </Head>
         <Layout>
           <main>{children}</main>

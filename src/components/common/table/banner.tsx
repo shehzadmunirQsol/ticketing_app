@@ -42,139 +42,10 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '../ui/select';
+} from '../../ui/select';
 import Link from 'next/link';
-
-export const columns: ColumnDef<any>[] = [
-  {
-    id: 'select',
-    header: ({ table }) => (
-      <Checkbox
-        checked={table.getIsAllPageRowsSelected()}
-        onCheckedChange={(value: any) =>
-          table.toggleAllPageRowsSelected(!!value)
-        }
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-
-  {
-    id: 'title',
-    header: 'Title',
-
-    cell: ({ row }) => {
-      const payment = row?.original?.value && JSON?.parse(row?.original?.value);
-
-      return (
-        <>
-          <div className="flex items-center space-x-2">
-            <Image
-              className="object-cover bg-ac-2   h-10 w-10 rounded-lg"
-              src={renderNFTImage(payment)}
-              alt={payment?.title}
-              width={32}
-              height={32}
-            />
-
-            <p className=" ">
-              {/* {customTruncateHandler(payment?.title, 15)} */}
-              {payment?.title}
-            </p>
-            {/* <p>{nft?.name}</p> */}
-          </div>
-        </>
-      );
-    },
-  },
-  {
-    id: 'description',
-    header: 'Description',
-
-    cell: ({ row }) => {
-      const payment = row?.original?.value && JSON?.parse(row?.original?.value);
-
-      return <>{payment?.description}</>;
-    },
-  },
-  {
-    id: 'model',
-    header: 'Model',
-
-    cell: ({ row }) => {
-      const payment = row?.original?.value && JSON?.parse(row?.original?.value);
-
-      return <>{payment?.model}</>;
-    },
-  },
-  {
-    id: 'link',
-    header: 'Link',
-
-    cell: ({ row }) => {
-      const payment = row?.original?.value && JSON?.parse(row?.original?.value);
-
-      return <>{payment?.link}</>;
-    },
-  },
-  {
-    id: 'price',
-    header: 'Price',
-
-    cell: ({ row }) => {
-      const payment = row?.original?.value && JSON?.parse(row?.original?.value);
-
-      return <>{payment?.price}</>;
-    },
-  },
-  {
-    id: 'date',
-    header: 'Date',
-
-    cell: ({ row }) => {
-      const payment = row?.original?.value && JSON.parse(row?.original?.value);
-
-      return <>{payment?.date}</>;
-    },
-  },
-
-  {
-    id: 'actions',
-    enableHiding: false,
-    cell: ({ row }) => {
-      const payment = row?.original;
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-
-            <DropdownMenuSeparator />
-            <Link href={`/admin/settings/banners/edit/${payment?.id}`}>
-              <DropdownMenuItem>Edit Banner</DropdownMenuItem>
-            </Link>
-            {/* <DropdownMenuItem>View payment details</DropdownMenuItem> */}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
-  },
-];
+import { Switch } from '~/components/ui/switch';
+import { SettingDialog } from '../modal/setting';
 
 export default function DataTableBanner() {
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -182,6 +53,8 @@ export default function DataTableBanner() {
     startDate: null,
     endDate: null,
     searchQuery: '',
+    group: 'BANNER',
+
     lang_id: 1,
     rows: 10,
     first: 0,
@@ -192,7 +65,7 @@ export default function DataTableBanner() {
   });
   const {
     data: BannerApiData,
-    refetch: BannerRefetch,
+    refetch,
     isFetched,
     isLoading,
     isError,
@@ -201,14 +74,163 @@ export default function DataTableBanner() {
 
     // enabled: user?.id ? true : false,
   });
-  console.log({ BannerApiData });
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     [],
   );
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
+  const [selectedItem, setSelectedItem] = React.useState({});
+  const [title, setTitle] = React.useState('');
+  const [type, setType] = React.useState('');
+  const [isModal, setIsModal] = React.useState(false);
+  const handleEnbled = (data: any, type: string) => {
+    // console.log({ e, data });
+    setSelectedItem(data);
+    setTitle('Banner');
+    setType(type);
+    setIsModal(true);
+  };
+  const columns: ColumnDef<any>[] = [
+    {
+      id: 'select',
+      header: ({ table }) => (
+        <Checkbox
+          checked={table.getIsAllPageRowsSelected()}
+          onCheckedChange={(value: any) =>
+            table.toggleAllPageRowsSelected(!!value)
+          }
+          aria-label="Select all"
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          aria-label="Select row"
+        />
+      ),
+      enableSorting: false,
+      enableHiding: false,
+    },
 
+    {
+      id: 'title',
+      header: 'Title',
+
+      cell: ({ row }) => {
+        const payment =
+          row?.original?.value && JSON?.parse(row?.original?.value);
+
+        return (
+          <>
+            <div className="flex items-center space-x-2 gap-2">
+              <Image
+                className="object-cover bg-ac-2   h-10 w-10 rounded-lg"
+                src={renderNFTImage(payment)}
+                alt={row?.original?.title}
+                width={32}
+                height={32}
+              />
+
+              <p className=" ">
+                {/* {customTruncateHandler(payment?.title, 15)} */}
+                {row?.original?.title}
+              </p>
+              {/* <p>{nft?.name}</p> */}
+            </div>
+          </>
+        );
+      },
+    },
+    {
+      id: 'description',
+      header: 'Description',
+
+      cell: ({ row }) => {
+        return <>{row?.original?.description}</>;
+      },
+    },
+    {
+      id: 'model',
+      header: 'Model',
+
+      cell: ({ row }) => {
+        return <>{row?.original?.model}</>;
+      },
+    },
+    {
+      id: 'link',
+      header: 'Link',
+
+      cell: ({ row }) => {
+        return <>{row?.original?.link}</>;
+      },
+    },
+    {
+      id: 'price',
+      header: 'Price',
+
+      cell: ({ row }) => {
+        return <>{row?.original?.price}</>;
+      },
+    },
+    {
+      id: 'date',
+      header: 'Date',
+
+      cell: ({ row }) => {
+        return <>{row?.original?.date}</>;
+      },
+    },
+    {
+      id: 'is_enabled',
+      header: 'Enabled',
+
+      cell: ({ row }) => {
+        return (
+          <>
+            <Switch
+              checked={row?.original?.is_enabled}
+              onCheckedChange={(e) => handleEnbled(row?.original, 'enabled')}
+            />
+          </>
+        );
+      },
+    },
+
+    {
+      id: 'actions',
+      enableHiding: false,
+      cell: ({ row }) => {
+        const payment = row?.original;
+
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+
+              <DropdownMenuSeparator />
+              <Link href={`/admin/settings/banners/edit/${payment?.id}`}>
+                <DropdownMenuItem>Edit Banner</DropdownMenuItem>
+              </Link>
+              <DropdownMenuItem
+                onClick={() => handleEnbled(row?.original, 'delete')}
+              >
+                Delete Banner
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        );
+      },
+    },
+  ];
   const table = useReactTable({
     data:
       BannerApiData !== undefined && BannerApiData && isFetched && !isError
@@ -306,6 +328,7 @@ export default function DataTableBanner() {
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
+                  dir={orderFilters?.lang_id == 1 ? 'ltr' : 'rtl'}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
@@ -352,6 +375,17 @@ export default function DataTableBanner() {
           </Button>
         </div>
       </div>
+      <SettingDialog
+        selectedItem={selectedItem}
+        setSelectedItem={setSelectedItem}
+        title={title}
+        setTitle={setTitle}
+        isModal={isModal}
+        setIsModal={setIsModal}
+        refetch={refetch}
+        type={type}
+        setType={setType}
+      />
     </div>
   );
 }

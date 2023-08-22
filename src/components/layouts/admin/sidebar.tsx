@@ -64,6 +64,12 @@ const SIDEBAR_DATA = [
         icon: <i className="fa-solid fa-file p-4 rounded-full" />,
         title: 'Banner',
       },
+      {
+        key: '/admin/settings/spotlight',
+
+        icon: <i className="fa-solid fa-file p-4 rounded-full" />,
+        title: 'Spot Light',
+      },
     ],
   },
 ];

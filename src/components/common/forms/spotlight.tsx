@@ -19,26 +19,22 @@ import { FileInput } from '~/components/common/file_input';
 import { useEffect, useState } from 'react';
 import { trpc } from '~/utils/trpc';
 import { getS3ImageUrl } from '~/service/api/s3Url.service';
-import { isValidImageType } from '~/utils/helper';
+import { compressImage, isValidImageType } from '~/utils/helper';
 import { useToast } from '~/components/ui/use-toast';
+import { Textarea } from '~/components/ui/textarea';
+import { LoadingDialog } from '../modal/loadingModal';
 
-const BannerFormSchema = z.object({
+const SpotLightFormSchema = z.object({
   thumb: z.any(),
   link: z.string(),
 
   en: z.object({
-    model: z.string(),
-    title: z.string(),
-    price: z.string(),
-    description: z.string(),
-    date: z.string(),
+    name: z.string(),
+    description: z.string().optional(),
   }),
   ar: z.object({
-    model: z.string(),
-    title: z.string(),
-    price: z.string(),
-    description: z.string(),
-    date: z.string(),
+    name: z.string(),
+    description: z.string().optional(),
   }),
 });
 const enFormSchema = z.object({
@@ -46,19 +42,13 @@ const enFormSchema = z.object({
   link: z.string(),
 
   en: z.object({
-    model: z.string(),
-    title: z.string(),
-    price: z.string(),
-    description: z.string(),
-    date: z.string(),
+    name: z.string(),
+    description: z.string().optional(),
   }),
   ar: z
     .object({
-      model: z.string(),
-      title: z.string(),
-      price: z.string(),
-      description: z.string(),
-      date: z.string(),
+      name: z.string(),
+      description: z.string().optional(),
     })
     .optional(),
 });
@@ -67,28 +57,23 @@ const arFormSchema = z.object({
   link: z.string(),
   en: z
     .object({
-      model: z.string(),
-      title: z.string(),
-      price: z.string(),
-      description: z.string(),
-      date: z.string(),
+      name: z.string(),
+      description: z.string().optional(),
     })
     .optional(),
   ar: z.object({
-    model: z.string(),
-    title: z.string(),
-    price: z.string(),
-    description: z.string(),
-    date: z.string(),
+    name: z.string(),
+    description: z.string().optional(),
   }),
 });
-
-export function BannerForm() {
+export function SpotLightForm() {
   const { toast } = useToast();
 
   const router = useRouter();
   const [optimizeFile, setOptimizeFile] = useState<any>(null);
   const [editData, seteditData] = useState<any>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const { index } = router.query;
   const initialOrderFilters: any = {
     rows: 10,
@@ -118,17 +103,11 @@ export function BannerForm() {
       form.setValue('link', json_data?.link);
       form.setValue('thumb', json_data?.thumb);
       if (data?.lang_id == 1) {
-        form.setValue('en.model', json_data?.model);
-        form.setValue('en.title', json_data?.title);
-        form.setValue('en.price', json_data?.price);
+        form.setValue('en.name', json_data?.name);
         form.setValue('en.description', json_data?.description);
-        form.setValue('en.date', json_data?.date);
       } else {
-        form.setValue('ar.model', json_data?.model);
-        form.setValue('ar.title', json_data?.title);
-        form.setValue('ar.price', json_data?.price);
+        form.setValue('ar.name', json_data?.name);
         form.setValue('ar.description', json_data?.description);
-        form.setValue('ar.date', json_data?.date);
       }
     }
   }, [isLoading, isFetched]);
@@ -138,18 +117,18 @@ export function BannerForm() {
         ? enFormSchema
         : BannerApiData[0]?.lang_id == 2
         ? arFormSchema
-        : BannerFormSchema
-      : BannerFormSchema;
+        : SpotLightFormSchema
+      : SpotLightFormSchema;
 
   const form = useForm<z.infer<typeof formValidateData>>({
     resolver: zodResolver(
       BannerApiData !== undefined && index
-        ? BannerApiData[0]?.lang_id == 1
+        ? BannerApiData[0]?.lang_id
           ? enFormSchema
           : BannerApiData[0]?.lang_id == 2
           ? arFormSchema
-          : BannerFormSchema
-        : BannerFormSchema,
+          : SpotLightFormSchema
+        : SpotLightFormSchema,
     ),
   });
 
@@ -178,6 +157,8 @@ export function BannerForm() {
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formValidateData>) {
     try {
+      setIsSubmitting(true);
+
       const nftSource =
         typeof form.getValues('thumb') !== 'object'
           ? { thumb: values?.thumb }
@@ -188,8 +169,11 @@ export function BannerForm() {
         if (editData?.lang_id == 1) {
           dataPayload = {
             id: +index,
+
             lang_id: 1,
-            key: 'banner_en',
+
+            group: 'WONDER',
+            key: 'spotlight',
             value: JSON.stringify({
               ...nftSource,
               link: values?.link,
@@ -201,7 +185,9 @@ export function BannerForm() {
             id: +index,
 
             lang_id: 2,
-            key: 'banner_ar',
+
+            group: 'WONDER',
+            key: 'spotlight',
             value: JSON.stringify({
               ...nftSource,
               link: values?.link,
@@ -209,8 +195,11 @@ export function BannerForm() {
             }),
           };
         }
+
         const data = await bannerUpdate.mutateAsync({ ...dataPayload });
         if (data) {
+          setIsSubmitting(false);
+
           toast({
             variant: 'success',
             title: 'Banner Updated Successfully',
@@ -223,7 +212,8 @@ export function BannerForm() {
         const dataPayload = [
           {
             lang_id: 1,
-            key: 'banner_en',
+            group: 'WONDER',
+            key: 'spotlight',
             value: JSON.stringify({
               ...nftSource,
               link: values?.link,
@@ -232,7 +222,8 @@ export function BannerForm() {
           },
           {
             lang_id: 2,
-            key: 'banner_ar',
+            group: 'WONDER',
+            key: 'spotlight',
             value: JSON.stringify({
               ...nftSource,
               link: values?.link,
@@ -242,6 +233,8 @@ export function BannerForm() {
         ];
         const data = await bannerUpload.mutateAsync(dataPayload);
         if (data) {
+          setIsSubmitting(false);
+
           toast({
             variant: 'success',
             title: 'Banner Uploaded Successfully',
@@ -252,77 +245,19 @@ export function BannerForm() {
         }
       }
     } catch (e: any) {
-      console.log(e.message, 'e.message');
+      setIsSubmitting(false);
+
       toast({
         variant: 'destructive',
-        title: 'Uh oh! Something went wrong.',
-        description: 'There was a problem with your request.',
+        title: e.message,
       });
     }
   }
 
-  async function imageCompressorHandler(originalFile: any) {
-    const imageFile = originalFile;
-    const imageFilename = originalFile.name;
-
-    if (!imageFile) return 'Please select image.';
-    // if (!imageFile.name.match(/\.(jpg|jpeg|png|JPG|JPEG|PNG|gif)$/))
-    //   return "Please select valid image JPG,JPEG,PNG";
-
-    const reader = new FileReader();
-    reader.readAsDataURL(imageFile);
-
-    reader.onload = (e) => {
-      const img = new Image();
-      img.onload = () => {
-        //------------- Resize img code ----------------------------------
-        const canvas = document.createElement('canvas');
-        let ctx = canvas.getContext('2d');
-        ctx?.drawImage(img, 0, 0);
-
-        const MAX_WIDTH = 437;
-        const MAX_HEIGHT = 437;
-        let width = img.width;
-        let height = img.height;
-
-        if (width > height) {
-          if (width > MAX_WIDTH) {
-            height *= MAX_WIDTH / width;
-            width = MAX_WIDTH;
-          }
-        } else {
-          if (height > MAX_HEIGHT) {
-            width *= MAX_HEIGHT / height;
-            height = MAX_HEIGHT;
-          }
-        }
-        canvas.width = width;
-        canvas.height = height;
-        ctx = canvas.getContext('2d');
-        ctx?.drawImage(img, 0, 0, width, height);
-        ctx?.canvas?.toBlob(
-          (blob) => {
-            if (blob) {
-              const optimizeFile = new File([blob], imageFilename, {
-                type: 'image/jpeg',
-                lastModified: Date.now(),
-              });
-              // setFile(originalFile);
-              setOptimizeFile(originalFile);
-            }
-          },
-          'image/jpeg',
-          1,
-        );
-      };
-      img.onerror = () => {
-        return 'Invalid image content.';
-      };
-      //debugger
-      img.src = e?.target?.result as string;
-    };
+  async function imageHandler(originalFile: File) {
+    const optimizedFile = await compressImage(originalFile);
+    setOptimizeFile(optimizedFile);
   }
-
   async function uploadOnS3Handler() {
     if (optimizeFile?.name) {
       const response = await getS3ImageUrl(optimizeFile);
@@ -344,7 +279,6 @@ export function BannerForm() {
       return console.log('Please Select Image');
     }
   }
-
   console.log(form.formState.errors, 'form.error');
   return (
     <Form {...form}>
@@ -359,9 +293,10 @@ export function BannerForm() {
               reset={form.reset}
               getValues={form.getValues}
               setValue={form.setValue}
-              imageCompressorHandler={imageCompressorHandler}
+              imageCompressorHandler={imageHandler}
               required={true}
             />
+
             <FormField
               control={form.control}
               name="link"
@@ -369,12 +304,34 @@ export function BannerForm() {
                 <FormItem>
                   <FormLabel>Link</FormLabel>
                   <FormControl>
-                    <Input type="text" placeholder="Enter LInk" {...field} />
+                    <Input type="text" placeholder="Enter Link" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+          </div>
+          <div>
+            {form.formState.errors?.ar && form.formState.errors?.en && (
+              <div className="flex gap-2 items-center p-2  text-destructive bg-white bg-opacity-60 rounded-md">
+                <i className="fa-solid fa-circle-info"></i>Please Fill English &
+                Arabic form
+              </div>
+            )}
+          </div>
+          <div>
+            {form.formState.errors?.en && !form.formState.errors?.ar && (
+              <div className="flex gap-2 items-center p-2  text-destructive bg-white bg-opacity-60 rounded-md">
+                <i className="fa-solid fa-circle-info"></i>
+                <>Please Fill English form</>
+              </div>
+            )}
+            {!form.formState.errors?.en && form.formState.errors?.ar && (
+              <div className="flex gap-2 items-center p-2  text-destructive bg-white bg-opacity-60 rounded-md">
+                <i className="fa-solid fa-circle-info"></i>
+                <>Please Fill Arabic form</>
+              </div>
+            )}
           </div>
           <Tabs
             defaultValue={
@@ -403,38 +360,12 @@ export function BannerForm() {
             <TabsContent value="en">
               <FormField
                 control={form.control}
-                name="en.model"
+                name="en.name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Modal</FormLabel>
+                    <FormLabel>Name</FormLabel>
                     <FormControl>
-                      <Input type="text" placeholder="Enter Modal" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="en.title"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Title</FormLabel>
-                    <FormControl>
-                      <Input type="text" placeholder="Enter Title" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="en.price"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Price</FormLabel>
-                    <FormControl>
-                      <Input type="text" placeholder="Enter Price" {...field} />
+                      <Input type="text" placeholder="Enter Name" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -445,26 +376,9 @@ export function BannerForm() {
                 name="en.description"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>description</FormLabel>
+                    <FormLabel>Description</FormLabel>
                     <FormControl>
-                      <Input
-                        type="text"
-                        placeholder="Enter description"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="en.date"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Date</FormLabel>
-                    <FormControl>
-                      <Input type="text" placeholder="Enter Date" {...field} />
+                      <Textarea placeholder="Enter Description..." {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -475,7 +389,7 @@ export function BannerForm() {
               <div dir="rtl">
                 <FormField
                   control={form.control}
-                  name="ar.model"
+                  name="ar.name"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>مشروط</FormLabel>
@@ -492,61 +406,13 @@ export function BannerForm() {
                 />
                 <FormField
                   control={form.control}
-                  name="ar.title"
+                  name="ar.description"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>عنوا</FormLabel>
                       <FormControl>
-                        <Input
-                          type="text"
-                          placeholder="أدخل العنوان"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="ar.price"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>سعر</FormLabel>
-                      <FormControl>
-                        <Input type="text" placeholder="مَشرُوع" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="ar.description"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>وصف</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="text"
-                          placeholder="أدخل الوصف"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="ar.date"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>تاريخ</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="text"
-                          placeholder="أدخل التاريخ"
+                        <Textarea
+                          placeholder="Enter Description..."
                           {...field}
                         />
                       </FormControl>
@@ -561,10 +427,11 @@ export function BannerForm() {
         <div className="flex items-center justify-between">
           <div></div>
           <Button type="submit" variant={'clip'} className="w-1/2">
-            Add Banner
+            {index ? 'Edit Spot Light' : 'Add Spot Light'}
           </Button>
         </div>
       </form>
+      <LoadingDialog open={isSubmitting} text={'Saving data...'} />
     </Form>
   );
 }
