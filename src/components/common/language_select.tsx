@@ -8,13 +8,13 @@ import {
 } from '@/ui/select';
 import { trpc } from '~/utils/trpc';
 
-export interface languageInterface {
+export interface LanguageInterface {
   id: number;
   code: 'en' | 'ar';
 }
 
 interface LanguageSelectInterface {
-  languageHandler: (params: languageInterface) => void;
+  languageHandler: (params: LanguageInterface) => void;
 }
 
 export default function LanguageSelect(props: LanguageSelectInterface) {
@@ -31,7 +31,7 @@ export default function LanguageSelect(props: LanguageSelectInterface) {
 
   return (
     <Select onValueChange={onValueChange}>
-      <SelectTrigger className="bg-background h-10 w-20">
+      <SelectTrigger className="bg-background h-10 w-24">
         <SelectValue placeholder="EN" />
       </SelectTrigger>
       <SelectContent>

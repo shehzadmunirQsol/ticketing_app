@@ -2,8 +2,9 @@ import { router, publicProcedure } from '../trpc';
 import { TRPCError } from '@trpc/server';
 import {
   createCategorySchema,
-  deleteCategorySchema,
+  categoryIdSchema,
   getCategorySchema,
+  updateCategorySchema,
 } from '~/schema/category';
 import { prisma } from '~/server/prisma';
 
@@ -37,7 +38,6 @@ export const categoryRouter = router({
           thumb: true,
           created_at: true,
           updated_at: true,
-          _count: true,
           name: true,
           desc: true,
         },
@@ -60,6 +60,38 @@ export const categoryRouter = router({
         count: totalCategory,
         data: category,
       };
+    } catch (error: any) {
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: error?.message,
+      });
+    }
+  }),
+  getById: publicProcedure.input(categoryIdSchema).query(async ({ input }) => {
+    try {
+      const category = await prisma.category.findUnique({
+        where: { id: input.category_id },
+        select: {
+          id: true,
+          thumb: true,
+          CategoryDescription: {
+            select: {
+              id: true,
+              desc: true,
+              name: true,
+              lang_id: true,
+            },
+          },
+        },
+      });
+      if (!category) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Category not found',
+        });
+      }
+
+      return { message: 'Category found', data: category };
     } catch (error: any) {
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
@@ -106,12 +138,53 @@ export const categoryRouter = router({
         });
       }
     }),
+  update: publicProcedure
+    .input(updateCategorySchema)
+    .mutation(async ({ input }) => {
+      try {
+        const { category_id, en, ar, ...categoryPayload } = input;
+
+        const category = await prisma.category.update({
+          where: { id: category_id },
+          data: categoryPayload,
+        });
+        if (!category) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Category not created',
+          });
+        }
+        const categoryDescPayload = [
+          { ...en, category_id: category.id },
+          { ...ar, category_id: category.id },
+        ];
+
+        const categoryDesc = await prisma.categoryDescription.updateMany({
+          where: { id: category_id },
+          data: categoryDescPayload,
+        });
+
+        if (!categoryDesc.count) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Category Description not created',
+          });
+        }
+
+        return { data: category, message: 'Category created' };
+      } catch (error: any) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: error?.message,
+        });
+      }
+    }),
   delete: publicProcedure
-    .input(deleteCategorySchema)
+    .input(categoryIdSchema)
     .mutation(async ({ input }) => {
       try {
         const category = await prisma.category.update({
-          where: { id: input.id },
+          where: { id: input.category_id },
           data: { is_deleted: true },
         });
         if (!category) {

@@ -192,7 +192,7 @@ export default function DataTableBanner() {
           <>
             <Switch
               checked={row?.original?.is_enabled}
-              onCheckedChange={(e) => handleEnbled(row?.original, 'enabled')}
+              onCheckedChange={() => handleEnbled(row?.original, 'enabled')}
             />
           </>
         );

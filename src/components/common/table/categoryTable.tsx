@@ -33,57 +33,29 @@ import {
   TableHeader,
   TableRow,
 } from '@/ui/table';
-import LanguageSelect, { languageInterface } from '../language_select';
+import LanguageSelect, { LanguageInterface } from '../language_select';
 import { GetCategorySchema } from '~/schema/category';
 import { trpc } from '~/utils/trpc';
+import Image from 'next/image';
+import { renderNFTImage } from '~/utils/helper';
+import Link from 'next/link';
 
-const data: Payment[] = [
-  {
-    id: 'm5gr84i9',
-    amount: 316,
-    status: 'success',
-    email: 'ken99@yahoo.com',
-  },
-  {
-    id: '3u1reuv4',
-    amount: 242,
-    status: 'success',
-    email: 'Abe45@gmail.com',
-  },
-  {
-    id: 'derv1ws0',
-    amount: 837,
-    status: 'processing',
-    email: 'Monserrat44@gmail.com',
-  },
-  {
-    id: '5kma53ae',
-    amount: 874,
-    status: 'success',
-    email: 'Silas22@gmail.com',
-  },
-  {
-    id: 'bhqecj4p',
-    amount: 721,
-    status: 'failed',
-    email: 'carmella@hotmail.com',
-  },
-];
-
-export type Payment = {
-  id: string;
-  amount: number;
-  status: 'pending' | 'processing' | 'success' | 'failed';
-  email: string;
+export type Category = {
+  thumb: string;
+  name: string;
+  desc: string | null;
+  id: number;
+  created_at: Date;
+  updated_at: Date;
 };
 
-export const columns: ColumnDef<Payment>[] = [
+export const columns: ColumnDef<Category>[] = [
   {
     id: 'select',
     header: ({ table }) => (
       <Checkbox
-        checked={table.getIsAllPageRowsSelected()}
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        checked={table?.getIsAllPageRowsSelected()}
+        onCheckedChange={(value) => table?.toggleAllPageRowsSelected(!!value)}
         aria-label="Select all"
       />
     ),
@@ -98,48 +70,37 @@ export const columns: ColumnDef<Payment>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'status',
-    header: 'Status',
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue('status')}</div>
-    ),
-  },
-  {
-    accessorKey: 'email',
-    header: ({ column }) => {
+    accessorKey: 'name',
+    header: 'Name',
+    cell: ({ row }) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Email
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
+        <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
+          <Image
+            className="object-cover bg-ac-2 h-10 w-16 rounded-lg"
+            src={renderNFTImage(row.original)}
+            alt={row?.original?.name}
+            width={100}
+            height={100}
+          />
+
+          <p className="text-base font-normal">{row?.original?.name}</p>
+        </div>
       );
     },
-    cell: ({ row }) => <div className="lowercase">{row.getValue('email')}</div>,
   },
   {
-    accessorKey: 'amount',
-    header: () => <div className="text-right">Amount</div>,
-    cell: ({ row }) => {
-      const amount = parseFloat(row.getValue('amount'));
-
-      // Format the amount as a dollar amount
-      const formatted = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-      }).format(amount);
-
-      return <div className="text-right font-medium">{formatted}</div>;
-    },
+    accessorKey: 'desc',
+    header: 'Description',
+    cell: ({ row }) => (
+      <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden w-64">
+        {row.getValue('desc')}
+      </div>
+    ),
   },
   {
     id: 'actions',
     enableHiding: false,
     cell: ({ row }) => {
-      const payment = row.original;
-
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -150,14 +111,12 @@ export const columns: ColumnDef<Payment>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
-            >
-              Copy payment ID
-            </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link href={`/admin/category/edit/${row?.original?.id}`}>
+                Edit Category
+              </Link>
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
@@ -181,7 +140,7 @@ export default function CategoryDataTable() {
   const { data: categoryData } = trpc.category.get.useQuery(filters);
 
   const table = useReactTable({
-    data,
+    data: categoryData?.data || [],
     columns,
     onSortingChange: setSorting,
     // onColumnFiltersChange: setColumnFilters,
@@ -199,8 +158,9 @@ export default function CategoryDataTable() {
     },
   });
 
-  function languageHandler(params: languageInterface) {
+  function languageHandler(params: LanguageInterface) {
     console.log({ params });
+    setFilters((prevFilters) => ({ ...prevFilters, lang_id: params.id }));
   }
 
   console.log({ categoryData });
@@ -210,9 +170,9 @@ export default function CategoryDataTable() {
       <div className="flex items-center justify-between py-4">
         <Input
           placeholder="Filter emails..."
-          // value={(table.getColumn('email')?.getFilterValue() as string) ?? ''}
+          // value={(table?.getColumn('email')?.getFilterValue() as string) ?? ''}
           // onChange={(event) =>
-          //   table.getColumn('email')?.setFilterValue(event.target.value)
+          //   table?.getColumn('email')?.setFilterValue(event.target.value)
           // }
           className="max-w-sm"
         />
@@ -250,7 +210,7 @@ export default function CategoryDataTable() {
       <div className="rounded-md border">
         <Table>
           <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
+            {table?.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
@@ -268,8 +228,8 @@ export default function CategoryDataTable() {
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
+            {table?.getRowModel()?.rows?.length ? (
+              table?.getRowModel()?.rows?.map((row) => (
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
@@ -299,21 +259,21 @@ export default function CategoryDataTable() {
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of{' '}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
+          {table?.getFilteredSelectedRowModel().rows.length} of{' '}
+          {table?.getFilteredRowModel().rows.length} row(s) selected.
         </div>
         <div className="space-x-2">
           <Button
             variant="outline"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
+            onClick={() => table?.previousPage()}
+            disabled={!table?.getCanPreviousPage()}
           >
             Previous
           </Button>
           <Button
             variant="outline"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
+            onClick={() => table?.nextPage()}
+            disabled={!table?.getCanNextPage()}
           >
             Next
           </Button>
