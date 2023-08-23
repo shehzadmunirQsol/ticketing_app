@@ -86,21 +86,19 @@ export default function CategoryForm(props: CategoryFormInterface) {
     try {
       setLoading(true);
 
-      const payload = { ...values, category_id: category?.data?.id as number };
       if (values.thumb === '') {
         if (typeof image === 'undefined')
           return alert('Please select an image');
         const thumb = await uploadOnS3Handler();
-        payload.thumb = thumb;
+        values.thumb = thumb;
       }
 
       let response;
 
       if (categoryId) {
-        response = await updateCategory.mutateAsync(payload);
+        response = await updateCategory.mutateAsync({...values,category_id: +categoryId});
       } else {
-        if (payload?.category_id) delete payload.category_id;
-        response = await addCategory.mutateAsync(payload);
+        response = await addCategory.mutateAsync(values);
       }
 
       router.replace('/admin/category');

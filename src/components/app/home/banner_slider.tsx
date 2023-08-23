@@ -1,11 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import Background from '../../../public/assets/win-banner-1_cleanup.png';
 
-import BgImage1 from '../../../public/assets/rolls.png';
-import BgImage2 from '../../../public/assets/Ford-Mustang-Yellow-PNG.png';
-import BgImage3 from '../../../public/assets/Ford-Mustang-PNG-File.png';
-// import BgImage4 from '../../../public/assets/Ford-Mustang-PNG-Pic.png';
 import Slant from '../../../public/assets/slants.png';
 import Image from 'next/image';
 import { Button } from '~/components/ui/button';
@@ -42,7 +37,7 @@ const BannerSlider = () => {
     refetchOnWindowFocus: false,
     onSuccess: () => {
       console.log({ BannerApiData });
-      setCarSlider(BannerApiData);
+      setCarSlider(BannerApiData|| []);
     },
 
     // enabled: user?.id ? true : false,
@@ -178,6 +173,7 @@ const BannerSlider = () => {
           <div className="relative hidden    ltr:right-16 rtl:left-16 z-30  md:top-[380px]  items-end h-fit lg:flex justify-between  gap-3 mx-auto sm:mx-0">
             {carSlider.map((item: any, i: number) => (
               <div
+              key={i}
                 className="group relative top-32 max-w-[120px] text-center font-semibold hover:cursor-pointer"
                 onClick={() => goToSlide(i)}
               >

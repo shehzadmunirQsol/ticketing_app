@@ -31,6 +31,7 @@ specifiers:
   '@types/nodemailer': ^6.4.9
   '@types/react': ^18.0.9
   '@types/react-slick': ^0.23.10
+  '@types/uuid': ^9.0.2
   '@typescript-eslint/eslint-plugin': ^5.47.0
   '@typescript-eslint/parser': ^5.47.0
   add: ^2.0.6
@@ -138,6 +139,7 @@ devDependencies:
   '@types/node': 18.7.20
   '@types/nodemailer': 6.4.9
   '@types/react': 18.0.25
+  '@types/uuid': 9.0.2
   '@typescript-eslint/eslint-plugin': 5.47.0_jhaguxqfxx2v4alxps2nzei754
   '@typescript-eslint/parser': 5.47.0_yvgxsonm4ikac5pm5z5getdq5e
   autoprefixer: 10.4.14_postcss@8.4.21
@@ -2050,6 +2052,10 @@ packages:
   /@types/use-sync-external-store/0.0.3:
     resolution: {integrity: sha512-EwmlvuaxPNej9+T4v5AuBPJa2x2UOJVdjCtDHgcDqitUeOtjnJKJ+apYjVcAoBEMjKW1VVFGZLUb5+qqa09XFA==}
     dev: false
+
+  /@types/uuid/9.0.2:
+    resolution: {integrity: sha512-kNnC1GFBLuhImSnV7w4njQkUiJi0ZXUycu1rUaouPqiKlXkh77JKgdRnTAp1x5eBwcIwbtI+3otwzuIDEuDoxQ==}
+    dev: true
 
   /@typescript-eslint/eslint-plugin/5.47.0_jhaguxqfxx2v4alxps2nzei754:
     resolution: {integrity: sha512-AHZtlXAMGkDmyLuLZsRpH3p4G/1iARIwc/T0vIem2YB+xW6pZaXYXzCBnZSF/5fdM97R9QqZWZ+h3iW10XgevQ==}

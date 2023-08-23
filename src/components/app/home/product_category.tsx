@@ -58,8 +58,8 @@ function CategorySection() {
               />
               <div className="absolute   top-0 p-4">
                 <div className="w-1/5  text-gray-200 text-5xl font-black uppercase ">
-                    {nameList.map((name)=>(
-                      <p>{name}</p>
+                    {nameList.map((name,index)=>(
+                      <p key={index}>{name}</p>
                     ))}
                   {/* <div className=''>
                   </div> */}

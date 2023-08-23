@@ -125,9 +125,6 @@ export const columns: ColumnDef<Category>[] = [
 export default function CategoryDataTable() {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [filters, setFilters] = useState<GetCategorySchema>({
-    startDate: null,
-    endDate: null,
-    searchQuery: '',
     first: 0,
     rows: 10,
     lang_id: 1,

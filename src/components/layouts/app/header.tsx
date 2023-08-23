@@ -64,7 +64,7 @@ function Header() {
 
   function toggleLanguageHandler(lang: 'en' | 'ar') {
     const dir: 'ltr' | 'rtl' = lang === 'ar' ? 'rtl' : 'ltr';
-    const lang_id = lang === 'en' ? 1 : 2;
+    const lang_id: 1 | 2 = lang === 'en' ? 1 : 2;
     const language = { lang, dir, lang_id };
 
     dispatch(toggleLang(language));
@@ -148,7 +148,7 @@ export function DropdownMenuDemo() {
           <i className="fas fa-bars"></i>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-40" side={'bottom-end'}>
+      <DropdownMenuContent className="w-40" side={'bottom-end' as "bottom"}>
         {/* <DropdownMenuLabel></DropdownMenuLabel> */}
 
         <DropdownMenuGroup>

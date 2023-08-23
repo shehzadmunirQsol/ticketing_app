@@ -40,7 +40,7 @@ function VideoSlider(props: producctInterface) {
   } = trpc.settings.get_banner.useQuery(initialOrderFilters, {
     refetchOnWindowFocus: false,
     onSuccess: () => {
-      setVideoCardSlider(videoData);
+      setVideoCardSlider(videoData || []);
     },
 
     // enabled: user?.id ? true : false,
