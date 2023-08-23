@@ -28,7 +28,6 @@ const CashPage = () => {
     Cash,
   ];
 
-  const 
   return (
     <>
       <BannerTitle image={CashBg} text={'Cash'} />
