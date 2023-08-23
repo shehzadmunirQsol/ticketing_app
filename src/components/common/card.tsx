@@ -1,5 +1,6 @@
 import Image, { StaticImageData } from 'next/image';
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
+// import Table from '~/components/common/table';
 import CarImage from '~/public/assets/card_image.png';
 import BottleImage from '~/public/assets/bottle.png';
 import { Progress } from '../ui/progress';
@@ -7,20 +8,43 @@ import { Button } from '../ui/button';
 interface cardInterface {
   class?: string;
   dir?: string;
-  cash?: StaticImageData;
+  cash?: any;
+  nextPage?: () => void;
+  isLast?: boolean;
 }
 
 function ProductCard(props: cardInterface) {
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  /**
+   * Implement Intersection Observer to check if the last Card in the array is visible on the screen, then set a new limit
+   */
+  useEffect(() => {
+    if (!cardRef?.current) return;
+
+    const observer = new IntersectionObserver(([entry]: any) => {
+      if (props?.isLast && entry.isIntersecting) {
+        if (props.nextPage) props?.nextPage();
+        observer.unobserve(entry.target);
+      }
+    });
+
+    observer.observe(cardRef.current);
+  }, [props?.isLast]);
+
   return (
     <div
       dir={props?.dir}
       className={`   rounded-sm overflow-hidden shadow-lg bg-card h-1/5 ${props?.class}`}
+      ref={cardRef}
     >
       <div className="relative">
         <div className=" absolute top-0 w-fit p-2 z-2 bg-primary text-black text-sm">
           <span className=" font-bold">CLOSES TODAY</span> 20:00
         </div>
         <Image
+          width={150}
+          height={100}
           className="w-full h-full object-cover bg-white"
           src={props?.cash ?? CarImage}
           quality={100}
@@ -65,7 +89,7 @@ function ProductCard(props: cardInterface) {
           </div>
           <Button
             variant="rounded"
-            className="font-[800] tracking-tight text-lg "
+            className="font-[800] tracking-tight  "
           >
             ENTER NOW
           </Button>

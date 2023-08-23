@@ -7,7 +7,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import Group15 from '~/public/assets/icons/Group15.png';
 import Group14 from '~/public/assets/icons/Group14.png';
 
-import {User } from "lucide-react"
+import { User } from 'lucide-react';
 
 import Image from 'next/image';
 interface producctInterface {
@@ -73,7 +73,7 @@ function Testimonials() {
     },
   ];
   return (
-    <div className="relative flex flex-col gap-14   w-full mb-2 py-4">
+    <div className="relative flex flex-col gap-14 justify-start   w-full mb-2 py-4">
       <div className="relative w-full m-auto flex flex-col items-center justify-center">
         <div className=" z-10 h-64 w-62 ">
           <Image
@@ -97,11 +97,11 @@ function Testimonials() {
         </div>
       </div>
 
-      <div className="     grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 items-start h-fit   gap-4 px-4 ml-2 mr-2  ">
+      <div className="     grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 justify-start items-start     gap-4 px-4 mx-2  ">
         {TestimonialsData?.map((item, index) => {
           return (
             <div
-              className={`relative flex   h-fit p-6 gap-4 items-start w-full border-t border-l  border-white/20 bg-testimonials backdrop-blur-lg rounded-md bg-clip-padding backdrop-filter  bg-opacity-10  ${item?.class}`}
+              className={`relative flex   h-fit p-6 gap-x-4  w-full border-t border-l  border-white/20 bg-testimonials backdrop-blur-lg rounded-md bg-clip-padding backdrop-filter  bg-opacity-10  ${item?.class}`}
               // className="relative flex   h-fit p-4 gap-4 items-start bg-primary   backdrop-filter backdrop-blur-md bg-opacity-10 rounded-md shadow-sm  "
               key={index}
             >

@@ -58,7 +58,7 @@ export const settingRouter = router({
       try {
         const options: any = {
           orderBy: { created_at: 'desc' },
-          skip: input.first,
+          skip: input.first * input.rows,
           take: input.rows,
           where: {
             group: input?.group,
@@ -68,7 +68,6 @@ export const settingRouter = router({
         const select: any = {
           select: {
             id: true,
-            value: true,
             title: true,
             link: true,
             thumb: true,
@@ -82,6 +81,7 @@ export const settingRouter = router({
             date: true,
           },
         };
+
         if (input?.group == 'WONDER') {
           select.select = {
             id: true,
@@ -101,7 +101,6 @@ export const settingRouter = router({
           options.where = {
             lang_id: input?.lang_id,
             group: input?.group,
-
             is_deleted: false,
           };
         }
@@ -140,11 +139,11 @@ export const settingRouter = router({
         });
 
 
-        console.log({ setting_banner },"banner data");
-        
-        
+        console.log({ setting_banner }, "banner data");
+
+
         console.log({ options });
-        console.log({ setting_banner },"setting_banner");
+        console.log({ setting_banner }, "setting_banner");
 
         return setting_banner;
 

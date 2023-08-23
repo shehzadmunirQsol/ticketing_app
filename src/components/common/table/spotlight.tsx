@@ -286,7 +286,7 @@ export default function DataTableSpotLight() {
           <>
             <Switch
               checked={row?.original?.is_enabled}
-              onCheckedChange={(e) => handleEnbled(row?.original, 'enabled')}
+              onCheckedChange={() => handleEnbled(row?.original, 'enabled')}
             />
           </>
         );
