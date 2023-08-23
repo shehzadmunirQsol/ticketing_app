@@ -33,9 +33,9 @@ function Index({ children }: DefaultLayoutProps) {
 
   return (
     <div dir={lang.dir} lang={lang.lang}>
-      {/* <Header /> */}
-        {children}
-      {/* <Footer /> */}
+      <Header />
+      {children}
+      <Footer />
     </div>
   );
 }

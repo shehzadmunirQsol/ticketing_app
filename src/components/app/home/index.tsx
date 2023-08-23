@@ -9,8 +9,8 @@ import VideoSlider from './video_slider';
 
 function Home() {
   return (
-    <div className=" flex flex-col gap-8 min-h-screen w-full max-w-[1200px] mx-auto">
-    {/* // <div className=""> */}
+    <div className=" flex flex-col gap-8 min-h-screen w-full max-w-[1600px] mx-auto">
+      {/* // <div className=""> */}
       <div className="relative top-0">
         <BannerSlider />
       </div>
@@ -32,12 +32,12 @@ function Home() {
         />
         <CategorySection />
       </div>
-      {/* <HowtoSection /> */}
-      {/* <WhyChoose /> */}
-      {/* <Testimonials /> */}
+      <HowtoSection />
+      <WhyChoose />
+      <Testimonials />
 
       {/* Video section */}
-      {/* <div className="relative flex flex-col gap-8  px-6 py-12 bg-background-footer ">
+      <div className="relative flex flex-col gap-8  px-6 py-12 bg-background-footer ">
         <VideoSlider
           class="max-w-md lg:max-w-sm xl:max-w-md    "
           slidesToShow={4}
@@ -45,7 +45,7 @@ function Home() {
           title="Winnar Wonders: "
           subTitle='A Glimpse of Excellence'
         />
-      </div> */}
+      </div>
     </div>
   );
 }
