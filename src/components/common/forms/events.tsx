@@ -282,89 +282,9 @@ export function EventForm() {
           : await uploadOnS3Handler();
       const multiImage =
         typeof form.getValues('multi_image') !== 'object'
-          ? { multi_image: values?.multi_image }
+          ? { multi_image: values?.multi_image as any }
           : await uploadMultiImage();
       const payload: any = { ...values };
-      // if (index) {
-      //   let dataPayload: any;
-      //   if (editData?.lang_id == 1) {
-      //     dataPayload = {
-      //       id: +index,
-
-      //       lang_id: 1,
-
-      //       group: 'WONDER',
-      //       key: 'spotlight',
-      //       value: JSON.stringify({
-      //         ...nftSource,
-      //         link: values?.link,
-      //         ...values?.en,
-      //       }),
-      //     };
-      //   } else {
-      //     dataPayload = {
-      //       id: +index,
-
-      //       lang_id: 2,
-
-      //       group: 'WONDER',
-      //       key: 'spotlight',
-      //       value: JSON.stringify({
-      //         ...nftSource,
-      //         link: values?.link,
-      //         ...values?.ar,
-      //       }),
-      //     };
-      //   }
-
-      //   const data = await bannerUpdate.mutateAsync({ ...dataPayload });
-      //   if (data) {
-      //     setIsSubmitting(false);
-
-      //     toast({
-      //       variant: 'success',
-      //       title: 'Banner Updated Successfully',
-      //     });
-      //     router.back();
-      //   } else {
-      //     throw new Error('Data update Error');
-      //   }
-      // } else {
-      //   const dataPayload = [
-      //     {
-      //       lang_id: 1,
-      //       group: 'WONDER',
-      //       key: 'spotlight',
-      //       value: JSON.stringify({
-      //         ...nftSource,
-      //         link: values?.link,
-      //         ...values?.en,
-      //       }),
-      //     },
-      //     {
-      //       lang_id: 2,
-      //       group: 'WONDER',
-      //       key: 'spotlight',
-      //       value: JSON.stringify({
-      //         ...nftSource,
-      //         link: values?.link,
-      //         ...values?.ar,
-      //       }),
-      //     },
-      //   ];
-      //   const data = await bannerUpload.mutateAsync(dataPayload);
-      //   if (data) {
-      //     setIsSubmitting(false);
-
-      //     toast({
-      //       variant: 'success',
-      //       title: 'Banner Uploaded Successfully',
-      //     });
-      //     router.back();
-      //   } else {
-      //     throw new Error('Data Create Error');
-      //   }
-      // }
     } catch (e: any) {
       setIsSubmitting(false);
 
