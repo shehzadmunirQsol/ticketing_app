@@ -263,14 +263,14 @@ export function MultiFileInput(props: any) {
       file.type.startsWith('image/'),
     );
 
-    // if (imageFiles.length > 5) {
-    //   alert('You can only upload up to 5 images at a time.');
-    //   return;
-    // }
+    if (imageFiles.length > 8) {
+      alert('You can only upload up to 5 images at a time.');
+      return;
+    }
 
     setFiles(imageFiles);
     // setImage(URL.createObjectURL(e.target.files[0]));
-    // props.imageCompressorHandler(e.target.files[0]);
+    props.imageCompressorHandler(files, 'multiple');
 
     props.setValue(props?.register.name, e.target.files);
   };
@@ -279,14 +279,14 @@ export function MultiFileInput(props: any) {
     props.setValue(InputName, null);
   };
   useEffect(() => {
-    if (typeof props?.getValues('thumb') !== 'object') {
+    if (typeof props?.getValues(props?.register.name) !== 'object') {
       const linkData = `${
         process.env.NEXT_PUBLIC_CLOUD_FRONT_BASE_URL
-      }${props?.getValues('thumb')}`;
+      }${props?.getValues(props?.register.name)}`;
 
       setImage(linkData.includes('undefined') ? null : linkData);
     }
-  }, [props?.getValues('thumb')]);
+  }, [props?.getValues(props?.register.name)]);
   function deleteFile(e: number) {
     const newSelectedImages = files.filter((_: any, i: number) => i !== e);
     setFiles(newSelectedImages);

@@ -33,6 +33,13 @@ import { CalendarIcon } from 'lucide-react';
 import { cn } from '~/utils/cn';
 import { format } from 'date-fns';
 import { Switch } from '~/components/ui/switch';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '~/components/ui/select';
 const formSchema: any = [
   {
     type: 'image',
@@ -43,7 +50,7 @@ const formSchema: any = [
   },
   {
     type: 'image',
-    name: 'multiImage',
+    name: 'multi_image',
     label: 'Multi Image',
 
     placeholder: 'Please Select Image',
@@ -56,6 +63,13 @@ const formSchema: any = [
     placeholder: 'Please Enter Token Price',
   },
   {
+    type: 'select',
+    name: 'category_id',
+    label: 'Category ID',
+
+    placeholder: 'Please Enter Token Price',
+  },
+  {
     type: 'text',
     name: 'video_src',
     label: 'Video Source',
@@ -64,13 +78,13 @@ const formSchema: any = [
   },
   {
     type: 'number',
-    name: 'total_cap',
+    name: 'total_tickets',
     label: 'Total Cap',
     placeholder: 'Please Enter Total Cap',
   },
   {
     type: 'number',
-    name: 'per_user_cap',
+    name: 'user_ticket_limit',
     label: 'Per User Cap',
     placeholder: 'Please Enter Per User Cap',
   },
@@ -106,12 +120,15 @@ const formSchema: any = [
 ];
 const SpotLightFormSchema = z.object({
   thumb: z.any(),
+  multi_image: z.any(),
+  price: z.any(),
+  video_src: z.string(),
   link: z.string(),
+  total_tickets: z.string(),
+  user_ticket_limit: z.string(),
   is_alt: z.boolean(),
-  price: z.number().min(2, {
-    message: 'Username must be at least 2 characters.',
-  }),
   launch_date: z.date(),
+  end_date: z.date(),
 
   en: z.object({
     name: z.string(),
@@ -156,6 +173,7 @@ export function EventForm() {
 
   const router = useRouter();
   const [optimizeFile, setOptimizeFile] = useState<any>(null);
+  const [optimizeMultiFile, setOptimizeMultiFile] = useState<any>(null);
   const [editData, seteditData] = useState<any>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -241,7 +259,7 @@ export function EventForm() {
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formValidateData>) {
-    console.log({values})
+    console.log({ values });
     try {
       // setIsSubmitting(true);
 
@@ -249,6 +267,10 @@ export function EventForm() {
         typeof form.getValues('thumb') !== 'object'
           ? { thumb: values?.thumb }
           : await uploadOnS3Handler();
+      const multiImage =
+        typeof form.getValues('multi_image') !== 'object'
+          ? { multi_image: values?.multi_image }
+          : await uploadMultiImage();
       const payload: any = { ...values };
       // if (index) {
       //   let dataPayload: any;
@@ -339,9 +361,27 @@ export function EventForm() {
       });
     }
   }
+  async function uploadMultiImage() {
+    if (optimizeMultiFile) {
+    }
+  }
+  async function imageHandler(originalFile: any[], type: any) {
+    const multi_Image: any[] = [];
+    // const optimizedFile = await compressImage(originalFile);
+    for (let i = 0; i < originalFile.length; i++) {
+      const single_image = await compressImage(originalFile[i]);
+      console.log({ single_image });
+      multi_Image.push(single_image);
+    }
+    setOptimizeMultiFile(multi_Image);
 
-  async function imageHandler(originalFile: File) {
+    console.log(multi_Image, 'typeof originalFile');
+    // setOptimizeFile(optimizedFile);
+  }
+  async function singleImageHandler(originalFile: File) {
+    console.log(originalFile, 'originalFile');
     const optimizedFile = await compressImage(originalFile);
+    // console.log(type, 'typeof originalFile');
     setOptimizeFile(optimizedFile);
   }
   async function uploadOnS3Handler() {
@@ -379,12 +419,12 @@ export function EventForm() {
               reset={form.reset}
               getValues={form.getValues}
               setValue={form.setValue}
-              imageCompressorHandler={imageHandler}
+              imageCompressorHandler={singleImageHandler}
               placeholder={'Upload Single file'}
               required={true}
             />
             <MultiFileInput
-              register={form.register('thumb')}
+              register={form.register('multi_image')}
               reset={form.reset}
               getValues={form.getValues}
               setValue={form.setValue}
@@ -506,7 +546,7 @@ export function EventForm() {
             </TabsContent>
           </Tabs>
           <div>
-            <div className=" grid grid-cols-1 lg:grid-cols-2 gap-2 ">
+            <div className=" grid grid-cols-1 lg:grid-cols-2 gap-2  items-center">
               {formSchema &&
                 formSchema.map((item: any, index: number) => {
                   if (item?.type == 'text' || item?.type == 'number') {
@@ -602,6 +642,46 @@ export function EventForm() {
                       </div>
                     );
                   }
+                  if (item?.type == 'select') {
+                    return (
+                      <div key={index}>
+                        <FormField
+                          control={form.control}
+                          name={item?.name}
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>{item?.label}</FormLabel>
+                              <Select
+                                onValueChange={field.onChange}
+                                defaultValue={field.value}
+                              >
+                                <FormControl>
+                                  <SelectTrigger className=" rounded-none  ">
+                                    <SelectValue
+                                      placeholder={item?.placeholder}
+                                    />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  <SelectItem value="m@example.com">
+                                    m@example.com
+                                  </SelectItem>
+                                  <SelectItem value="m@google.com">
+                                    m@google.com
+                                  </SelectItem>
+                                  <SelectItem value="m@support.com">
+                                    m@support.com
+                                  </SelectItem>
+                                </SelectContent>
+                              </Select>
+
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                    );
+                  }
                   if (item?.type == 'switch_text') {
                     return (
                       <div key={index}>
@@ -634,7 +714,7 @@ export function EventForm() {
         <div className="flex items-center justify-between">
           <div></div>
           <Button type="submit" variant={'clip'} className="w-1/2">
-            {index ? 'Edit Spot Light' : 'Add Spot Light'}
+            {index ? 'Edit Event' : 'Add Event'}
           </Button>
         </div>
       </form>
