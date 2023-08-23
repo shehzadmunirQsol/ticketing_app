@@ -96,7 +96,10 @@ export default function CategoryForm(props: CategoryFormInterface) {
       let response;
 
       if (categoryId) {
-        response = await updateCategory.mutateAsync({...values,category_id: +categoryId});
+        response = await updateCategory.mutateAsync({
+          ...values,
+          category_id: +categoryId,
+        });
       } else {
         response = await addCategory.mutateAsync(values);
       }

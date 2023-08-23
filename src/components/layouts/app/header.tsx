@@ -3,45 +3,24 @@ import { Button } from '@/ui/button';
 import LogoImage from '~/public/assets/logo.png';
 import Image from 'next/image';
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleSidebar } from '~/store/reducers/admin_layout';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuPortal,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@/ui/dropdown-menu';
-import {
-  Cloud,
-  CreditCard,
-  Github,
-  Keyboard,
-  LifeBuoy,
-  LogOut,
-  Mail,
-  MessageSquare,
-  Plus,
-  PlusCircle,
-  Settings,
-  User,
-  ShoppingCart,
-  Languages,
-  UserPlus,
-  Users,
-} from 'lucide-react';
+import { User, ShoppingCart, Languages } from 'lucide-react';
 import {
   Select,
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from '~/components/ui/select';
@@ -148,7 +127,7 @@ export function DropdownMenuDemo() {
           <i className="fas fa-bars"></i>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-40" side={'bottom-end' as "bottom"}>
+      <DropdownMenuContent className="w-40" side={'bottom-end' as 'bottom'}>
         {/* <DropdownMenuLabel></DropdownMenuLabel> */}
 
         <DropdownMenuGroup>

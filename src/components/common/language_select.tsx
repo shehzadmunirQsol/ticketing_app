@@ -18,7 +18,9 @@ interface LanguageSelectInterface {
 }
 
 export default function LanguageSelect(props: LanguageSelectInterface) {
-  const { data } = trpc.language.get.useQuery();
+  const { data } = trpc.language.get.useQuery(undefined, {
+    refetchOnWindowFocus: false,
+  });
 
   function onValueChange(value: string) {
     const language = data?.data.find((lang) => lang.code === value);
