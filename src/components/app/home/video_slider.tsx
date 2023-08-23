@@ -65,13 +65,14 @@ function VideoSlider(props: producctInterface) {
     centerMode: false,
     arrows: false,
     slidesPerRow: 1,
+    initialSlide: 0,
     responsive: [
       {
         breakpoint: 1024,
         settings: {
           slidesToShow: 3,
           slidesToScroll: 2,
-          initialSlide: 1,
+          initialSlide: 0,
         },
       },
       {
@@ -79,7 +80,7 @@ function VideoSlider(props: producctInterface) {
         settings: {
           slidesToShow: 2,
           slidesToScroll: 1,
-          initialSlide: 1,
+          initialSlide: 0,
           centerMode: false,
         },
       },
@@ -87,6 +88,7 @@ function VideoSlider(props: producctInterface) {
       {
         breakpoint: 640,
         settings: {
+          initialSlide: 0,
           slidesToShow: 1,
           slidesToScroll: 1,
           centerMode: false,
