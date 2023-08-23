@@ -38,33 +38,40 @@ export default function CategoryForm(props: CategoryFormInterface) {
     {
       refetchOnWindowFocus: false,
       enabled: categoryId ? true : false,
+      onSuccess(categoryData) {
+        const enData = categoryData?.data.CategoryDescription.find(
+          (cat) => cat.lang_id === 1,
+        );
+        const arData = categoryData?.data.CategoryDescription.find(
+          (cat) => cat.lang_id !== 1,
+        );
+
+        form.setValue('thumb', categoryData?.data?.thumb);
+        form.setValue('en.name', enData?.name as string);
+        form.setValue('en.desc', enData?.desc as string);
+        form.setValue('ar.name', arData?.name as string);
+        form.setValue('ar.desc', arData?.desc as string);
+      },
     },
   );
 
   const addCategory = trpc.category.create.useMutation();
-  const updateCategory = trpc.category.create.useMutation();
-
-  const enData = category?.data.CategoryDescription.find(
-    (cat) => cat.lang_id === 1,
-  );
-  const arData = category?.data.CategoryDescription.find(
-    (cat) => cat.lang_id !== 1,
-  );
+  const updateCategory = trpc.category.update.useMutation();
 
   // 1. Define your form.
   const form = useForm<CreateCategorySchema>({
     resolver: zodResolver(createCategorySchema),
     defaultValues: {
       creator_id: 1,
-      thumb: category?.data.thumb,
+      thumb: category?.data?.thumb ?? '',
       en: {
-        name: enData?.name ?? '',
-        desc: enData?.desc ?? '',
+        name: '',
+        desc: '',
         lang_id: 1,
       },
       ar: {
-        name: arData?.name ?? '',
-        desc: arData?.desc ?? '',
+        name: '',
+        desc: '',
         lang_id: 2,
       },
     },
@@ -77,18 +84,23 @@ export default function CategoryForm(props: CategoryFormInterface) {
     console.log(values);
 
     try {
-      if (typeof image === 'undefined') return alert('Please select an image');
       setLoading(true);
 
-      const thumb = await uploadOnS3Handler();
-      const payload = { ...values, thumb };
+      const payload = { ...values, category_id: category?.data?.id as number };
+      if (values.thumb === '') {
+        if (typeof image === 'undefined')
+          return alert('Please select an image');
+        const thumb = await uploadOnS3Handler();
+        payload.thumb = thumb;
+      }
 
       let response;
 
       if (categoryId) {
-        response = await addCategory.mutateAsync(payload);
-      } else {
         response = await updateCategory.mutateAsync(payload);
+      } else {
+        if (payload?.category_id) delete payload.category_id;
+        response = await addCategory.mutateAsync(payload);
       }
 
       router.replace('/admin/category');
@@ -115,8 +127,6 @@ export default function CategoryForm(props: CategoryFormInterface) {
     const optimizedFile = await compressImage(originalFile);
     setImage(optimizedFile);
   }
-
-  console.log({ category });
 
   const langError =
     form.formState.errors?.en && form.formState.errors?.ar
@@ -227,7 +237,7 @@ export default function CategoryForm(props: CategoryFormInterface) {
 
       <LoadingDialog
         open={addCategory.isLoading || loading}
-        text={'Saving data...'}
+        text={`${categoryId ? 'Updating' : 'Adding'} Category...`}
       />
     </Form>
   );

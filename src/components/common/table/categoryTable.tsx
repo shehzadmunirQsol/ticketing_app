@@ -50,25 +50,25 @@ export type Category = {
 };
 
 export const columns: ColumnDef<Category>[] = [
-  {
-    id: 'select',
-    header: ({ table }) => (
-      <Checkbox
-        checked={table?.getIsAllPageRowsSelected()}
-        onCheckedChange={(value) => table?.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
+  // {
+  //   id: 'select',
+  //   header: ({ table }) => (
+  //     <Checkbox
+  //       checked={table?.getIsAllPageRowsSelected()}
+  //       onCheckedChange={(value) => table?.toggleAllPageRowsSelected(!!value)}
+  //       aria-label="Select all"
+  //     />
+  //   ),
+  //   cell: ({ row }) => (
+  //     <Checkbox
+  //       checked={row.getIsSelected()}
+  //       onCheckedChange={(value) => row.toggleSelected(!!value)}
+  //       aria-label="Select row"
+  //     />
+  //   ),
+  //   enableSorting: false,
+  //   enableHiding: false,
+  // },
   {
     accessorKey: 'name',
     header: 'Name',
@@ -112,11 +112,9 @@ export const columns: ColumnDef<Category>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <Link href={`/admin/category/edit/${row?.original?.id}`}>
-                Edit Category
-              </Link>
-            </DropdownMenuItem>
+            <Link href={`/admin/category/edit/${row?.original?.id}`}>
+              <DropdownMenuItem>Edit Category</DropdownMenuItem>
+            </Link>
           </DropdownMenuContent>
         </DropdownMenu>
       );
@@ -258,10 +256,10 @@ export default function CategoryDataTable() {
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
+        {/* <div className="flex-1 text-sm text-muted-foreground">
           {table?.getFilteredSelectedRowModel().rows.length} of{' '}
           {table?.getFilteredRowModel().rows.length} row(s) selected.
-        </div>
+        </div> */}
         <div className="space-x-2">
           <Button
             variant="outline"

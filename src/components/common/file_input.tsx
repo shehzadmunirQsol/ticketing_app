@@ -88,6 +88,7 @@ export function ImageInput(props: any) {
 
   useEffect(() => {
     const imgSrc = props?.getValues('thumb');
+    console.log({ imgSrc });
 
     if (imgSrc && !imgSrc?.includes('blob:http')) {
       const linkData = `${process.env.NEXT_PUBLIC_CLOUD_FRONT_BASE_URL}${imgSrc}`;
@@ -101,13 +102,12 @@ export function ImageInput(props: any) {
 
     setImage(imageUrl);
     props.onChange(e.target.files[0]);
-    props.setValue(props?.register.name, imageUrl);
   }
 
   function handleDelete() {
     setImage('');
     props.onRemove(undefined);
-    props.setValue(props?.register?.name);
+    props.setValue(props?.register?.name, '');
   }
 
   return (

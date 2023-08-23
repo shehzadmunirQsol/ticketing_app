@@ -151,27 +151,23 @@ export const categoryRouter = router({
         if (!category) {
           throw new TRPCError({
             code: 'BAD_REQUEST',
-            message: 'Category not created',
+            message: 'Category not updated',
           });
         }
-        const categoryDescPayload = [
-          { ...en, category_id: category.id },
-          { ...ar, category_id: category.id },
-        ];
 
-        const categoryDesc = await prisma.categoryDescription.updateMany({
-          where: { id: category_id },
-          data: categoryDescPayload,
+        const categoryEnPromise = prisma.categoryDescription.updateMany({
+          where: { category_id, lang_id: en.lang_id },
+          data: en,
         });
 
-        if (!categoryDesc.count) {
-          throw new TRPCError({
-            code: 'BAD_REQUEST',
-            message: 'Category Description not created',
-          });
-        }
+        const categoryArPromise = prisma.categoryDescription.updateMany({
+          where: { category_id, lang_id: ar.lang_id },
+          data: ar,
+        });
 
-        return { data: category, message: 'Category created' };
+        await Promise.all([categoryEnPromise, categoryArPromise]);
+
+        return { data: category, message: 'Category updated' };
       } catch (error: any) {
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
