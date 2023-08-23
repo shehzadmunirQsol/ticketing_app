@@ -472,8 +472,9 @@ export function EventForm() {
               <FormField
                 control={form.control}
                 name="en.description"
+                 className="bg-black"
                 render={({ field }) => (
-                  <FormItem className=" bg-transparent">
+                  <FormItem className=" bg-black">
                     <FormLabel>Description</FormLabel>
                     <FormControl>
                       <Editor
@@ -483,7 +484,9 @@ export function EventForm() {
                         className=" bg-black"
                         headerTemplate={header}
                         onTextChange={(e) => field.onChange(e.textValue)}
-                        style={{ height: '320px' }}
+                        theme="dark"
+                        p-editor-container="bg-black"
+                        style={{ height: '320px',backgroundColor:'black' }}
                       />
                       {/* <Textarea placeholder="Enter Description..." {...field} /> */}
                     </FormControl>
