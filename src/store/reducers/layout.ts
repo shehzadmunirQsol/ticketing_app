@@ -5,6 +5,7 @@ import { RootState } from '~/store/store';
 interface Lang {
   dir: 'rtl' | 'ltr';
   lang: 'en' | 'ar';
+  lang_id: 1 | 2;
 }
 // Define a type for the slice state
 interface LayoutState {
@@ -15,7 +16,7 @@ interface LayoutState {
 // Define the initial state using that type
 const initialState: LayoutState = {
   theme: 'dark',
-  lang: { dir: 'ltr', lang: 'en' },
+  lang: { dir: 'ltr', lang: 'en', lang_id: 1 },
 };
 
 export const layoutSlice = createSlice({

@@ -276,26 +276,24 @@ model EventFAQ {
 }
 
 view BannerView {
-  id         Int          @unique
-  group      SettingEnums
-  key        String
-  thumb      String
-  value      String
-  title      String?
-  model      String?
-  link       String?
-  date       String?
-  description       String?
-  price      String?
-  name      String?
-  lang_id    Int          
-  is_deleted Boolean  
-  is_enabled    Boolean 
+  id          Int          @unique
+  group       SettingEnums
+  key         String
+  thumb       String
+  value       String
+  title       String?
+  model       String?
+  link        String?
+  date        String?
+  description String?
+  price       String?
+  name        String?
+  lang_id     Int
+  is_deleted  Boolean
+  is_enabled  Boolean
 
-  created_at DateTime 
-  updated_at DateTime 
-
-
+  created_at DateTime
+  updated_at DateTime
 
   @@map("banner_view")
 }

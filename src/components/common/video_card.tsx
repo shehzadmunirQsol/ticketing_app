@@ -13,10 +13,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/ui/dialog';
+import { renderNFTImage } from '~/utils/helper';
 
 interface cardInterface {
   class?: string;
   dir?: string;
+  data?: any;
 }
 const VideoCard = (props: cardInterface) => {
   const openModal = () => {
@@ -24,6 +26,7 @@ const VideoCard = (props: cardInterface) => {
     // );
   };
 
+  console.log(props?.data, 'video card');
   return (
     <div className="relative group">
       <Dialog>
@@ -36,7 +39,7 @@ const VideoCard = (props: cardInterface) => {
             </div>
 
             {/* <i className="fa fa-share-from-square text-white text-2xl "></i> */}
-            <DialogTrigger >
+            <DialogTrigger>
               <div
                 className=" z-50 mr-2"
                 onClick={() => {
@@ -48,21 +51,22 @@ const VideoCard = (props: cardInterface) => {
             </DialogTrigger>
           </div>
           <Image
-            src={VideoThumb}
+            src={renderNFTImage(props?.data)}
             fill
             alt=""
             className="absolute object-cover group-hover:opacity-60"
           />
-          <DialogTrigger >
+          <DialogTrigger>
             <div className="absolute h-full w-full flex justify-center mx-auto  items-center ">
               {/* <i className="fa-regular fa-circle-play text-6xl  "></i> */}
               <Image src={Play} alt="/" className="w-14 h-14" />
             </div>
           </DialogTrigger>
-          <DialogContent >
+          <DialogContent>
             <iframe
               className="w-full h-[360px]"
-              src="https://www.youtube.com/embed/Y-x0efG1seA"  //add src prop later
+              // src="https://www.youtube.com/embed/Y-x0efG1seA" //add src prop later
+              src={`${props?.data?.link}`} //add src prop later
               title="YouTube video player"
               // frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"

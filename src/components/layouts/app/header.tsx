@@ -64,7 +64,8 @@ function Header() {
 
   function toggleLanguageHandler(lang: 'en' | 'ar') {
     const dir: 'ltr' | 'rtl' = lang === 'ar' ? 'rtl' : 'ltr';
-    const language = { lang, dir };
+    const lang_id = lang === 'en' ? 1 : 2;
+    const language = { lang, dir, lang_id };
 
     dispatch(toggleLang(language));
   }
@@ -82,7 +83,7 @@ function Header() {
   const [click, setClick] = useState(false);
   return (
     <div
-      className={`fixed w-full z-50 top-0 h-[100px]  flex  items-center   ${
+      className={`fixed w-full z-50 top-0 h-24  flex  items-center   ${
         router.route == '/'
           ? color
             ? '!bg-background-footer  duration-500 shadow-xl'
@@ -155,7 +156,7 @@ export function DropdownMenuDemo() {
             <Link href="/cars">Cars</Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <span>Cash</span>
+            <Link href="/cash">Cash</Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
             <span>Winings</span>
@@ -203,8 +204,8 @@ export function ItemMenuDemo() {
   const linkItems: Array<LinkItemProps> = [
     {
       name: 'Cars',
-      // link: '/cars',
-      link: `/`,
+      link: '/cars',
+      // link: `/`,
       icon: 'fas fa-house',
     },
     {

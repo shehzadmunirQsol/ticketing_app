@@ -1,18 +1,14 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import Slider from 'react-slick';
 
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
-
 import VideoCard from '../../common/video_card';
 import { Button } from '../../ui/button';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
-
-
-
-
+import { trpc } from '~/utils/trpc';
 
 interface producctInterface {
   class?: string;
@@ -23,6 +19,33 @@ interface producctInterface {
 }
 function VideoSlider(props: producctInterface) {
   const { lang } = useSelector((state: RootState) => state.layout);
+  const [videoCardSlider, setVideoCardSlider] = useState<Array<any>>([]);
+
+  const initialOrderFilters: any = {
+    lang_id: lang.lang_id,
+    group: 'WONDER',
+    is_enabled: true,
+    rows: 10,
+    first: 0,
+    page: 0,
+  };
+
+  const {
+    data: videoData,
+    refetch: videoDataRefetch,
+    isFetched,
+    isLoading,
+    isError,
+    isSuccess,
+  } = trpc.settings.get_banner.useQuery(initialOrderFilters, {
+    refetchOnWindowFocus: false,
+    onSuccess: () => {
+      setVideoCardSlider(videoData);
+    },
+
+    // enabled: user?.id ? true : false,
+  });
+  console.log({ videoCardSlider });
 
   const slide = useRef<any>();
   const next = () => {
@@ -75,12 +98,12 @@ function VideoSlider(props: producctInterface) {
     <div className="relative  w-full ">
       <div className=" relative flex flex-col md:flex-row h-28 md:h-auto py-6  items-center w-full md:justify-between mb-6">
         <div>
-        <p className="text-gray-200 !text-xl sm:!text-3xl lg:!text-5xl font-black uppercase  ">
-          {props?.title}
-        </p>
-        <p className="text-gray-200 !text-xl sm:!text-3xl lg:!text-5xl font-light uppercase  ">
-          {props?.subTitle}
-        </p>
+          <p className="text-gray-200 !text-xl sm:!text-3xl lg:!text-5xl font-black uppercase  ">
+            {props?.title}
+          </p>
+          <p className="text-gray-200 !text-xl sm:!text-3xl lg:!text-5xl font-light uppercase  ">
+            {props?.subTitle}
+          </p>
         </div>
         <div
           className={`${
@@ -106,13 +129,19 @@ function VideoSlider(props: producctInterface) {
       </div>
       <div className="">
         <Slider ref={slide} {...settings}>
-          {['', '', '', '', '', '', '', '', ''].map((item, index) => {
-            return (
-              <div key={index} className="">
-                <VideoCard class={`${props?.class} `} dir={`${lang?.dir}`} />
-              </div>
-            );
-          })}
+          {videoCardSlider
+            ? videoCardSlider.map((item, index) => {
+                return (
+                  <div key={index} className="cardInfo">
+                    <VideoCard
+                      class={`${props?.class} `}
+                      dir={`${lang?.dir}`}
+                      data={item}
+                    />
+                  </div>
+                );
+              })
+            : ''}
         </Slider>
       </div>
     </div>

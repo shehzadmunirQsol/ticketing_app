@@ -9,22 +9,22 @@ interface cardInterface {
   class?: string;
   dir?: string;
   cash?: any;
-  nextPage?:() =>void;
+  nextPage?: () => void;
   isLast?: boolean;
 }
+
 function ProductCard(props: cardInterface) {
+  const cardRef = useRef<HTMLDivElement>(null);
 
-  const cardRef = useRef<HTMLDivElement | null>(null);
-
-      /**
+  /**
    * Implement Intersection Observer to check if the last Card in the array is visible on the screen, then set a new limit
    */
   useEffect(() => {
     if (!cardRef?.current) return;
 
-    const observer = new IntersectionObserver(([entry]:any) => {
+    const observer = new IntersectionObserver(([entry]: any) => {
       if (props?.isLast && entry.isIntersecting) {
-        if(props.nextPage) props?.nextPage();
+        if (props.nextPage) props?.nextPage();
         observer.unobserve(entry.target);
       }
     });
@@ -89,7 +89,7 @@ function ProductCard(props: cardInterface) {
           </div>
           <Button
             variant="rounded"
-            className="font-[800] tracking-tight text-lg "
+            className="font-[800] tracking-tight  "
           >
             ENTER NOW
           </Button>

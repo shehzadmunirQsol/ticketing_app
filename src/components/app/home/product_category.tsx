@@ -1,12 +1,12 @@
-import React, { useRef } from 'react';
-import Slider from 'react-slick';
-
-import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import 'slick-carousel/slick/slick.css';
 
 import CarImage from '~/public/assets/card_image.png';
 
+import { useSelector } from 'react-redux';
 import Image from 'next/image';
+import { trpc } from '~/utils/trpc';
+import { RootState } from '~/store/store';
 interface producctInterface {
   class?: string;
   title: string;
@@ -14,6 +14,9 @@ interface producctInterface {
   slidesToShow?: number;
 }
 function CategorySection() {
+  const { lang } = useSelector((state: RootState) => state.layout);
+
+
   return (
     <div className="  w-full bg-background  py-10 ">
       <div className=" grid sm:grid-cols-1 md:grid-cols-2  ">
