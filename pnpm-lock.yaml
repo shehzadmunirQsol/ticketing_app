@@ -2,6 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@hookform/resolvers': ^3.2.0
+  '@mantine/hooks': ^6.0.19
   '@next/font': ^13.4.16
   '@playwright/test': ^1.26.1
   '@prisma/client': ^4.10.1
@@ -31,6 +32,7 @@ specifiers:
   '@types/nodemailer': ^6.4.9
   '@types/react': ^18.0.9
   '@types/react-slick': ^0.23.10
+  '@types/uuid': ^9.0.2
   '@typescript-eslint/eslint-plugin': ^5.47.0
   '@typescript-eslint/parser': ^5.47.0
   add: ^2.0.6
@@ -84,6 +86,7 @@ specifiers:
 
 dependencies:
   '@hookform/resolvers': 3.2.0_react-hook-form@7.45.4
+  '@mantine/hooks': 6.0.19_react@18.2.0
   '@next/font': 13.4.16
   '@prisma/client': 4.10.1_prisma@4.10.1
   '@radix-ui/react-accordion': 1.1.2_2zx2umvpluuhvlq44va5bta2da
@@ -146,6 +149,7 @@ devDependencies:
   '@types/node': 18.7.20
   '@types/nodemailer': 6.4.9
   '@types/react': 18.0.25
+  '@types/uuid': 9.0.2
   '@typescript-eslint/eslint-plugin': 5.47.0_jhaguxqfxx2v4alxps2nzei754
   '@typescript-eslint/parser': 5.47.0_yvgxsonm4ikac5pm5z5getdq5e
   autoprefixer: 10.4.14_postcss@8.4.21
@@ -838,6 +842,14 @@ packages:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.1
       '@jridgewell/sourcemap-codec': 1.4.15
+    dev: false
+
+  /@mantine/hooks/6.0.19_react@18.2.0:
+    resolution: {integrity: sha512-YkmuB6kmoenU1PVuE8tLBA+6RJIY9hIsGyIQG1yuPAy6SLWNFT8g2T9YvI/psqsUbVIYGaNEXg8zq42xbxnD8Q==}
+    peerDependencies:
+      react: '>=16.8.0'
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /@next/env/13.2.1:
@@ -2097,6 +2109,10 @@ packages:
   /@types/use-sync-external-store/0.0.3:
     resolution: {integrity: sha512-EwmlvuaxPNej9+T4v5AuBPJa2x2UOJVdjCtDHgcDqitUeOtjnJKJ+apYjVcAoBEMjKW1VVFGZLUb5+qqa09XFA==}
     dev: false
+
+  /@types/uuid/9.0.2:
+    resolution: {integrity: sha512-kNnC1GFBLuhImSnV7w4njQkUiJi0ZXUycu1rUaouPqiKlXkh77JKgdRnTAp1x5eBwcIwbtI+3otwzuIDEuDoxQ==}
+    dev: true
 
   /@typescript-eslint/eslint-plugin/5.47.0_jhaguxqfxx2v4alxps2nzei754:
     resolution: {integrity: sha512-AHZtlXAMGkDmyLuLZsRpH3p4G/1iARIwc/T0vIem2YB+xW6pZaXYXzCBnZSF/5fdM97R9QqZWZ+h3iW10XgevQ==}

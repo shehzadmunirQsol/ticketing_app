@@ -29,8 +29,8 @@ function Home() {
           center={true}
           title="UPCOMING COMPETITIONS"
         />
-        <CategorySection />
       </div>
+        <CategorySection />
       <HowtoSection />
       <WhyChoose />
       <Testimonials />

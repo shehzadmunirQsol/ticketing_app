@@ -1,8 +1,8 @@
 import { z } from 'zod';
 
 export const getCategorySchema = z.object({
-  startDate: z.date().nullable(),
-  endDate: z.date().nullable(),
+  startDate: z.date().optional(),
+  endDate: z.date().optional(),
   searchQuery: z.string().optional(),
   category_id: z.number().optional(),
   first: z.number(),
