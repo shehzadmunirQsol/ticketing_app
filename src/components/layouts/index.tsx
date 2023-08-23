@@ -25,9 +25,7 @@ export default function DefaultLayout({ children }: DefaultLayoutProps) {
           <title>Winnar</title>
           <link rel="icon" href={Icon.src} />
         </Head>
-        <Layout>
-          <main>{children}</main>
-        </Layout>
+        <Layout>{children}</Layout>
       </ThemeProvider>
     </Provider>
   );

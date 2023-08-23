@@ -12,11 +12,8 @@ const IndexPage: NextPageWithLayout = () => {
   }
 
   return (
-    <div className="bg-background h-auto justify-center items-center  w-screen   ">
-      <div className="">
-        {/* <Button onClick={toggleTheme}>Magic appears</Button> */}
-        <Home />
-      </div>
+    <div className="bg-background h-auto justify-center items-center     ">
+      <Home />
     </div>
   );
 };

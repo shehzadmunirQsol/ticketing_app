@@ -18,7 +18,7 @@ function AdminLayout({ children }: DefaultLayoutProps) {
           <Header />
           <div className="flex">
             <Sidebar />
-            <main className="flex-1">{children}</main>
+            <div className="flex-1">{children}</div>
           </div>
         </>
       )}
