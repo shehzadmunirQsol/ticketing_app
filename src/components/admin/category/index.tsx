@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from '../../ui/button';
 import Link from 'next/link';
-import DataTableBanner from '~/components/common/table/category';
+import DataTableBanner from '~/components/common/table/categoryTable';
 
 function Category() {
   return (

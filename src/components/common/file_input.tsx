@@ -1,4 +1,4 @@
-import { forwardRef, useEffect } from 'react';
+import { useEffect } from 'react';
 import React, { useId, useState } from 'react';
 import Image from 'next/image';
 import UploadImage from '~/public/assets/image.svg';
@@ -88,9 +88,11 @@ export function ImageInput(props: any) {
 
   useEffect(() => {
     const imgSrc = props?.getValues('thumb');
+    console.log({ imgSrc });
 
     if (imgSrc && !imgSrc?.includes('blob:http')) {
-      const linkData = `${process.env.NEXT_PUBLIC_CLOUD_FRONT_BASE_URL}/${imgSrc}`;
+      const linkData = `${process.env.NEXT_PUBLIC_CLOUD_FRONT_BASE_URL}${imgSrc}`;
+      console.log({ linkData });
       setImage(linkData);
     }
   }, [props?.getValues('thumb')]);
@@ -100,17 +102,16 @@ export function ImageInput(props: any) {
 
     setImage(imageUrl);
     props.onChange(e.target.files[0]);
-    props.setValue(props?.register.name, imageUrl);
   }
 
   function handleDelete() {
     setImage('');
     props.onRemove(undefined);
-    props.setValue(props?.register?.name);
+    props.setValue(props?.register?.name, '');
   }
 
   return (
-    <div className=" relative flex items-center justify-center w-full p-2   ">
+    <div className=" relative flex items-center justify-center w-full">
       {image ? (
         <div className="border-2 border-dashed w-full p-2 border-gray-600 rounded-md">
           <div
@@ -151,7 +152,6 @@ export function ImageInput(props: any) {
               className="sr-only"
               accept="image/*"
               required
-              // {...props?.register}
               onChange={handleChange}
             />
           </label>
