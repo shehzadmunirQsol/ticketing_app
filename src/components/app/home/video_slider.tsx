@@ -62,7 +62,7 @@ function VideoSlider(props: producctInterface) {
     speed: 500,
     slidesToShow: props?.slidesToShow,
     slidesToScroll: props?.slidesToShow,
-    centerMode: props?.center,
+    centerMode: false,
     arrows: false,
     slidesPerRow: 1,
     responsive: [

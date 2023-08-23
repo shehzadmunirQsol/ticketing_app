@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import Image from 'next/image';
 import { trpc } from '~/utils/trpc';
 import { RootState } from '~/store/store';
+import { renderNFTImage } from '~/utils/helper';
 interface producctInterface {
   class?: string;
   title: string;
@@ -16,11 +17,29 @@ interface producctInterface {
 function CategorySection() {
   const { lang } = useSelector((state: RootState) => state.layout);
 
+  const categoryFilters: any = {
+    lang_id: lang.lang_id,
+    rows: 2,
+    first: 0,
+  };
+
+  const {
+    data: categoryData,
+    refetch: categoryDataRefetch,
+    isFetched,
+    isLoading,
+    isError,
+    isSuccess,
+  } = trpc.category.get.useQuery(categoryFilters, {
+    refetchOnWindowFocus: false,
+  });
+
+  console.log({ categoryData }, 'categoryData');
 
   return (
     <div className="  w-full bg-background  py-10 ">
       <div className=" grid sm:grid-cols-1 md:grid-cols-2  ">
-        {[...Array(2)].map((i) => (
+        {[...Array(2)].map((item, i) => (
           <div
             key={i}
             className="mainContainer  group transition-all duration-300 relative h-96  overflow-hidden cursor-pointer  "
@@ -28,7 +47,9 @@ function CategorySection() {
             <div className=" absolute  w-full  h-[100%] categoryClip  bg-primary opacity-40 transition-all ease-in-out duration-300 "></div>
             <Image
               className="w-full h-full object-cover bg-white"
-              src={CarImage}
+              src={renderNFTImage(item)}
+              width={400}
+              height={300}
               quality={100}
               alt="car"
             />
