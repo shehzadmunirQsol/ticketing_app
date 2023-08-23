@@ -341,7 +341,7 @@ export function BannerForm() {
             {!form.formState.errors?.en && form.formState.errors?.ar && (
               <div className="flex gap-2 items-center p-2  text-destructive bg-white bg-opacity-60 rounded-md">
                 <i className="fa-solid fa-circle-info"></i>
-                <>Please Fill English form</>
+                <>Please Fill Arabic form</>
               </div>
             )}
           </div>

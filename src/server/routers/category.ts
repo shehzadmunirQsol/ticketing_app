@@ -5,6 +5,7 @@ import {
   categoryIdSchema,
   getCategorySchema,
   updateCategorySchema,
+  getCategoryEventSchema,
 } from '~/schema/category';
 import { prisma } from '~/server/prisma';
 
@@ -99,6 +100,32 @@ export const categoryRouter = router({
       });
     }
   }),
+  getCategory: publicProcedure
+    .input(getCategoryEventSchema)
+    .query(async ({ input }) => {
+      try {
+        const where: any = { is_deleted: false, lang_id: input.lang_id };
+
+        const categoryPromise = prisma.categoryView.findMany({
+          orderBy: { created_at: 'desc' },
+
+          where: where,
+          select: {
+            id: true,
+            name: true,
+          },
+        });
+
+        const [totalCategory] = await Promise.all([categoryPromise]);
+
+        return totalCategory;
+      } catch (error: any) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: error?.message,
+        });
+      }
+    }),
   create: publicProcedure
     .input(createCategorySchema)
     .mutation(async ({ input }) => {

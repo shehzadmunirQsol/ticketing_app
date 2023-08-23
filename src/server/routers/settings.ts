@@ -6,14 +6,12 @@ import {
 } from '~/schema/setting';
 import { router, publicProcedure } from '../trpc';
 import { TRPCError } from '@trpc/server';
-import { loginSchema, otpSchema } from '~/schema/user';
 import { prisma } from '~/server/prisma';
-import { generateOTP } from '~/utils/helper';
 
 export const settingRouter = router({
   banner_create: publicProcedure
     .input(createBannerSchema)
-    .mutation(async ({ input, ctx }) => {
+    .mutation(async ({ input }) => {
       // const payload = [...input];
       console.log(input, 'inputinputinputinput');
       const setting_banner = await prisma.setting.createMany({
@@ -24,7 +22,7 @@ export const settingRouter = router({
     }),
   banner_update: publicProcedure
     .input(updateBannerSchema)
-    .mutation(async ({ input, ctx }) => {
+    .mutation(async ({ input }) => {
       // const payload = [...input];
       const payload = { ...input };
       if (input?.id) delete payload?.id;
@@ -39,7 +37,7 @@ export const settingRouter = router({
     }),
   banner_delete: publicProcedure
     .input(deleteBannerSchema)
-    .mutation(async ({ input, ctx }) => {
+    .mutation(async ({ input }) => {
       // const payload = [...input];
       const payload: any = { ...input };
       if (input?.id) delete payload?.id;
@@ -138,15 +136,12 @@ export const settingRouter = router({
           ...select,
         });
 
-
-        console.log({ setting_banner }, "banner data");
-
+        console.log({ setting_banner }, 'banner data');
 
         console.log({ options });
-        console.log({ setting_banner }, "setting_banner");
+        console.log({ setting_banner }, 'setting_banner');
 
         return setting_banner;
-
       } catch (error: any) {
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
