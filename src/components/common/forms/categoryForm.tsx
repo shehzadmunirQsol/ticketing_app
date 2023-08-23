@@ -19,21 +19,51 @@ import { trpc } from '~/utils/trpc';
 import { useRouter } from 'next/router';
 import { compressImage } from '~/utils/helper';
 import { LoadingDialog } from '../modal/loadingModal';
+import { LanguageInterface } from '../language_select';
 
-export default function CategoryForm() {
+interface CategoryFormInterface {
+  language: LanguageInterface;
+}
+
+export default function CategoryForm(props: CategoryFormInterface) {
   const [image, setImage] = useState<File>();
   const [loading, setLoading] = useState<boolean>(false);
 
   const router = useRouter();
 
+  const { categoryId = 0 } = router.query;
+
+  const { data: category } = trpc.category.getById.useQuery(
+    { category_id: +categoryId },
+    {
+      refetchOnWindowFocus: false,
+      enabled: categoryId ? true : false,
+      onSuccess(categoryData) {
+        const enData = categoryData?.data.CategoryDescription.find(
+          (cat) => cat.lang_id === 1,
+        );
+        const arData = categoryData?.data.CategoryDescription.find(
+          (cat) => cat.lang_id !== 1,
+        );
+
+        form.setValue('thumb', categoryData?.data?.thumb);
+        form.setValue('en.name', enData?.name as string);
+        form.setValue('en.desc', enData?.desc as string);
+        form.setValue('ar.name', arData?.name as string);
+        form.setValue('ar.desc', arData?.desc as string);
+      },
+    },
+  );
+
   const addCategory = trpc.category.create.useMutation();
+  const updateCategory = trpc.category.update.useMutation();
 
   // 1. Define your form.
   const form = useForm<CreateCategorySchema>({
     resolver: zodResolver(createCategorySchema),
     defaultValues: {
       creator_id: 1,
-      thumb: '',
+      thumb: category?.data?.thumb ?? '',
       en: {
         name: '',
         desc: '',
@@ -54,13 +84,25 @@ export default function CategoryForm() {
     console.log(values);
 
     try {
-      if (typeof image === 'undefined') return alert('Please select an image');
       setLoading(true);
 
-      const thumb = await uploadOnS3Handler();
-      const payload = { ...values, thumb };
+      const payload = { ...values, category_id: category?.data?.id as number };
+      if (values.thumb === '') {
+        if (typeof image === 'undefined')
+          return alert('Please select an image');
+        const thumb = await uploadOnS3Handler();
+        payload.thumb = thumb;
+      }
 
-      const response = await addCategory.mutateAsync(payload);
+      let response;
+
+      if (categoryId) {
+        response = await updateCategory.mutateAsync(payload);
+      } else {
+        if (payload?.category_id) delete payload.category_id;
+        response = await addCategory.mutateAsync(payload);
+      }
+
       router.replace('/admin/category');
       console.log({ response });
     } catch (error) {
@@ -86,6 +128,15 @@ export default function CategoryForm() {
     setImage(optimizedFile);
   }
 
+  const langError =
+    form.formState.errors?.en && form.formState.errors?.ar
+      ? 'Kindly provide information in both English and Arabic fields.'
+      : form.formState.errors?.en && !form.formState.errors?.ar
+      ? 'Kindly provide information in English fields.'
+      : !form.formState.errors?.en && form.formState.errors?.ar
+      ? 'Kindly provide information in Arabic fields.'
+      : '';
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -99,7 +150,16 @@ export default function CategoryForm() {
           required={true}
         />
 
-        <div className="grid grid-cols-2 gap-2 w-full">
+        {langError ? (
+          <div className="flex gap-2 items-center p-2  text-destructive bg-white bg-opacity-60 rounded-md">
+            <i className="fa-solid fa-circle-info"></i>
+            {langError}
+          </div>
+        ) : (
+          ''
+        )}
+
+        <div className={props.language.code === 'en' ? 'block' : 'hidden'}>
           <FormField
             control={form.control}
             name="en.name"
@@ -117,23 +177,6 @@ export default function CategoryForm() {
           />
           <FormField
             control={form.control}
-            name="ar.name"
-            render={({ field }) => (
-              <FormItem dir="rtl">
-                <FormLabel>
-                  اسم <sup className="text-md text-red-500">*</sup>
-                </FormLabel>
-                <FormControl>
-                  <Input placeholder="Enter Category Name" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-        <div className="grid grid-cols-2 gap-2 w-full">
-          <FormField
-            control={form.control}
             name="en.desc"
             render={({ field }) => (
               <FormItem>
@@ -147,6 +190,27 @@ export default function CategoryForm() {
               </FormItem>
             )}
           />
+        </div>
+        <div
+          dir="ltr"
+          className={props.language.code === 'ar' ? 'block' : 'hidden'}
+        >
+          <FormField
+            control={form.control}
+            name="ar.name"
+            render={({ field }) => (
+              <FormItem dir="rtl">
+                <FormLabel>
+                  اسم <sup className="text-md text-red-500">*</sup>
+                </FormLabel>
+                <FormControl>
+                  <Input placeholder="Enter Category Name" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           <FormField
             control={form.control}
             name="ar.desc"
@@ -173,7 +237,7 @@ export default function CategoryForm() {
 
       <LoadingDialog
         open={addCategory.isLoading || loading}
-        text={'Saving data...'}
+        text={`${categoryId ? 'Updating' : 'Adding'} Category...`}
       />
     </Form>
   );
