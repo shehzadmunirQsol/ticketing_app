@@ -36,10 +36,17 @@ import { Switch } from '~/components/ui/switch';
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from '~/components/ui/select';
+import { Editor } from 'primereact/editor';
+//theme
+import 'primereact/resources/themes/lara-light-indigo/theme.css';
+//core
+import 'primereact/resources/primereact.min.css';
+
 const formSchema: any = [
   {
     type: 'image',
@@ -122,6 +129,7 @@ const SpotLightFormSchema = z.object({
   thumb: z.any(),
   multi_image: z.any(),
   price: z.any(),
+  category_id: z.any(),
   video_src: z.string(),
   link: z.string(),
   total_tickets: z.string(),
@@ -170,6 +178,11 @@ const arFormSchema = z.object({
 });
 export function EventForm() {
   const { toast } = useToast();
+  const [filters, setFilters] = useState<any>({
+    lang_id: 1,
+  });
+  const { data: categoryData } = trpc.category.getCategory.useQuery(filters);
+  console.log({ categoryData });
 
   const router = useRouter();
   const [optimizeFile, setOptimizeFile] = useState<any>(null);
@@ -406,6 +419,43 @@ export function EventForm() {
     }
   }
   console.log(form.formState.errors, 'form.error');
+  const renderHeader = () => {
+    return (
+      <>
+        <span className="ql-formats">
+          <select className="ql-header">
+            <option selected></option>
+            <option value="1"></option>
+            <option value="2"></option>
+            <option value="3"></option>
+          </select>
+        </span>
+        <span className="ql-formats">
+          <button className="ql-bold" aria-label="Bold"></button>
+          <button className="ql-italic" aria-label="Italic"></button>
+          <button className="ql-underline" aria-label="Underline"></button>
+        </span>
+
+        <span className="ql-formats">
+          <button className="ql-strike" aria-label="Font"></button>
+          <button className="ql-list" value="ordered"></button>
+          <button className="ql-list" value="bullet"></button>
+          <button aria-label="Link" className="ql-link"></button>
+          {/* <button aria-label="Image" className="ql-image"></button> */}
+        </span>
+        <span className="ql-formats">
+          <select className="ql-align">
+            <option selected></option>
+            <option className="ql-center" value="center"></option>
+            <option value="right">right</option>
+            <option value="justify"> justify</option>
+          </select>
+        </span>
+      </>
+    );
+  };
+
+  const header = renderHeader();
   return (
     <Form {...form}>
       <form
@@ -501,6 +551,28 @@ export function EventForm() {
                     <FormLabel>Description</FormLabel>
                     <FormControl>
                       <Textarea placeholder="Enter Description..." {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="en.description"
+                render={({ field }) => (
+                  <FormItem className=" bg-transparent">
+                    <FormLabel>Description</FormLabel>
+                    <FormControl>
+                      <Editor
+                        id={field.name}
+                        name="blog"
+                        value={field.value}
+                        className=" bg-black"
+                        headerTemplate={header}
+                        onTextChange={(e) => field.onChange(e.textValue)}
+                        style={{ height: '320px' }}
+                      />
+                      {/* <Textarea placeholder="Enter Description..." {...field} /> */}
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -622,12 +694,12 @@ export function EventForm() {
                   }
                   if (item?.type == 'switch') {
                     return (
-                      <div key={index}>
+                      <div key={index} className=" h-full">
                         <FormField
                           control={form.control}
                           name={item?.name}
                           render={({ field }) => (
-                            <FormItem className="flex items-center gap-2">
+                            <FormItem className="flex items-center justify-between h-full  gap-2">
                               <FormLabel>Alternative Selling Option</FormLabel>
                               <FormControl>
                                 <Switch
@@ -654,6 +726,7 @@ export function EventForm() {
                               <Select
                                 onValueChange={field.onChange}
                                 defaultValue={field.value}
+                                value={field.value}
                               >
                                 <FormControl>
                                   <SelectTrigger className=" rounded-none  ">
@@ -663,15 +736,22 @@ export function EventForm() {
                                   </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>
-                                  <SelectItem value="m@example.com">
-                                    m@example.com
-                                  </SelectItem>
-                                  <SelectItem value="m@google.com">
-                                    m@google.com
-                                  </SelectItem>
-                                  <SelectItem value="m@support.com">
-                                    m@support.com
-                                  </SelectItem>
+                                  <SelectGroup>
+                                    {categoryData &&
+                                      categoryData.map(
+                                        (item: any, index: number) => {
+                                          return (
+                                            <div key={index}>
+                                              <SelectItem
+                                                value={(item?.id).toString()}
+                                              >
+                                                {item?.name}
+                                              </SelectItem>
+                                            </div>
+                                          );
+                                        },
+                                      )}
+                                  </SelectGroup>
                                 </SelectContent>
                               </Select>
 

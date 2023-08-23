@@ -113,7 +113,7 @@ export function SpotLightForm() {
   }, [isLoading, isFetched]);
   const formValidateData =
     BannerApiData !== undefined && index
-      ? BannerApiData[0]?.lang_id
+      ? BannerApiData[0]?.lang_id == 1
         ? enFormSchema
         : BannerApiData[0]?.lang_id == 2
         ? arFormSchema
@@ -123,7 +123,7 @@ export function SpotLightForm() {
   const form = useForm<z.infer<typeof formValidateData>>({
     resolver: zodResolver(
       BannerApiData !== undefined && index
-        ? BannerApiData[0]?.lang_id
+        ? BannerApiData[0]?.lang_id == 1
           ? enFormSchema
           : BannerApiData[0]?.lang_id == 2
           ? arFormSchema
