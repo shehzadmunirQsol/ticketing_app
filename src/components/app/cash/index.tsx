@@ -1,15 +1,12 @@
 'use client';
-import React, { useEffect, useInsertionEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import BannerTitle from '~/components/common/banner_title';
 import CashBg from '~/public/assets/cash_bg.png';
-import Cash from '~/public/assets/cash-1.png';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
 import ProductCard from '~/components/common/card';
 import Glow from '~/components/common/glow';
-// import {}
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { useIntersection } from '@mantine/hooks';
+
 import { trpc } from '~/utils/trpc';
 
 const CashPage = () => {
@@ -56,7 +53,7 @@ const CashPage = () => {
 
   return (
     <>
-    <div className='relative pt-24'></div>
+      <div className="relative pt-24"></div>
       <BannerTitle image={CashBg} text={'Cash'} />
       <div className="h-full  px-10 py-20">
         <Glow className=" absolute  top-[560px] -right-16  p-2   w-1/5 h-[350px]  " />

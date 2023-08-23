@@ -127,7 +127,7 @@ const formSchema: any = [
 ];
 const SpotLightFormSchema = z.object({
   thumb: z.any(),
-  multi_image: z.any(),
+  multi_image: z.array(z.any()),
   price: z.any(),
   category_id: z.any(),
   video_src: z.string(),
@@ -227,14 +227,7 @@ export function EventForm() {
       }
     }
   }, [isLoading, isFetched]);
-  const formValidateData =
-    BannerApiData !== undefined && index
-      ? BannerApiData[0]?.lang_id
-        ? enFormSchema
-        : BannerApiData[0]?.lang_id == 2
-        ? arFormSchema
-        : SpotLightFormSchema
-      : SpotLightFormSchema;
+  const formValidateData = SpotLightFormSchema;
 
   const form = useForm<z.infer<typeof formValidateData>>({
     resolver: zodResolver(
