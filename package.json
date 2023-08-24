@@ -35,7 +35,6 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.2.0",
-    "@mantine/hooks": "^6.0.19",
     "@next/font": "^13.4.16",
     "@prisma/client": "^4.10.1",
     "@radix-ui/react-accordion": "^1.1.2",

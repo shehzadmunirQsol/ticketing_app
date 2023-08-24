@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from '../../ui/button';
 import Link from 'next/link';
+import EventsDataTable from '~/components/common/table/events';
 
 function EventsForm() {
   return (
@@ -13,6 +14,7 @@ function EventsForm() {
           </Button>
         </Link>
       </div>
+      <EventsDataTable />
     </div>
   );
 }

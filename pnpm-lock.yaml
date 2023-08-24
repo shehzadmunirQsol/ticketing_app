@@ -2,7 +2,6 @@ lockfileVersion: 5.4
 
 specifiers:
   '@hookform/resolvers': ^3.2.0
-  '@mantine/hooks': ^6.0.19
   '@next/font': ^13.4.16
   '@playwright/test': ^1.26.1
   '@prisma/client': ^4.10.1
@@ -86,7 +85,6 @@ specifiers:
 
 dependencies:
   '@hookform/resolvers': 3.2.0_react-hook-form@7.45.4
-  '@mantine/hooks': 6.0.19_react@18.2.0
   '@next/font': 13.4.16
   '@prisma/client': 4.10.1_prisma@4.10.1
   '@radix-ui/react-accordion': 1.1.2_2zx2umvpluuhvlq44va5bta2da
@@ -842,14 +840,6 @@ packages:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.1
       '@jridgewell/sourcemap-codec': 1.4.15
-    dev: false
-
-  /@mantine/hooks/6.0.19_react@18.2.0:
-    resolution: {integrity: sha512-YkmuB6kmoenU1PVuE8tLBA+6RJIY9hIsGyIQG1yuPAy6SLWNFT8g2T9YvI/psqsUbVIYGaNEXg8zq42xbxnD8Q==}
-    peerDependencies:
-      react: '>=16.8.0'
-    dependencies:
-      react: 18.2.0
     dev: false
 
   /@next/env/13.2.1:

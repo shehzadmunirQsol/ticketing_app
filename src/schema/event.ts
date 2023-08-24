@@ -1,12 +1,10 @@
 import { z } from 'zod';
 
 export const getEventSchema = z.object({
-  startDate: z.date().nullable(),
-  endDate: z.date().nullable(),
-  // event_id: z.string(),
+  startDate: z.date().optional(),
+  endDate: z.date().optional(),
+  searchQuery: z.string().optional(),
   category_id: z.number().optional(),
-
-  searchQuery: z.string(),
   first: z.number(),
   rows: z.number(),
   lang_id: z.number(),
@@ -97,3 +95,5 @@ export const arFormSchema = z.object({
     description: z.string().optional(),
   }),
 });
+
+export type GetEventSchema = z.infer<typeof getEventSchema>;

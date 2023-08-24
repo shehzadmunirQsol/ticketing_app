@@ -11,10 +11,9 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from 'lucide-react';
+import { ChevronDown, MoreHorizontal } from 'lucide-react';
 
 import { Button } from '@/ui/button';
-import { Checkbox } from '@/ui/checkbox';
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -24,7 +23,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/ui/dropdown-menu';
-import { Input } from '@/ui/input';
 import {
   Table,
   TableBody,
@@ -39,6 +37,7 @@ import { trpc } from '~/utils/trpc';
 import Image from 'next/image';
 import { renderNFTImage } from '~/utils/helper';
 import Link from 'next/link';
+import { GetEventSchema } from '~/schema/event';
 
 export type Category = {
   thumb: string;
@@ -103,9 +102,9 @@ export const columns: ColumnDef<Category>[] = [
   },
 ];
 
-export default function CategoryDataTable() {
+export default function EventsDataTable() {
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [filters, setFilters] = useState<GetCategorySchema>({
+  const [filters, setFilters] = useState<GetEventSchema>({
     first: 0,
     rows: 10,
     lang_id: 1,
@@ -113,13 +112,18 @@ export default function CategoryDataTable() {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
 
-  const { data: categoryData } = trpc.event.get.useQuery(filters);
+  const { data } = trpc.event.get.useQuery(filters, {
+    refetchOnWindowFocus: false,
+  });
+
+  const categoryData = React.useMemo(() => {
+    return Array.isArray(data?.data) ? data?.data : [];
+  }, [data]);
 
   const table = useReactTable({
-    data: categoryData?.data || [],
+    data: categoryData as Category[],
     columns,
     onSortingChange: setSorting,
-    // onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -128,60 +132,50 @@ export default function CategoryDataTable() {
     onRowSelectionChange: setRowSelection,
     state: {
       sorting,
-      // columnFilters,
       columnVisibility,
       rowSelection,
     },
   });
 
   function languageHandler(params: LanguageInterface) {
-    console.log({ params });
     setFilters((prevFilters) => ({ ...prevFilters, lang_id: params.id }));
   }
 
-  console.log({ categoryData });
+  function handlePagination(page: number) {
+    if (page < 0) return;
+    setFilters((prevFilters) => ({ ...prevFilters, first: page }));
+  }
 
   return (
-    <div className="w-full">
-      <div className="flex items-center justify-between py-4">
-        <Input
-          placeholder="Filter emails..."
-          // value={(table?.getColumn('email')?.getFilterValue() as string) ?? ''}
-          // onChange={(event) =>
-          //   table?.getColumn('email')?.setFilterValue(event.target.value)
-          // }
-          className="max-w-sm"
-        />
-
-        <div className="flex gap-x-2">
-          <LanguageSelect languageHandler={languageHandler} />
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="ml-auto">
-                Columns <ChevronDown className="ml-2 h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              {table
-                .getAllColumns()
-                .filter((column) => column.getCanHide())
-                .map((column) => {
-                  return (
-                    <DropdownMenuCheckboxItem
-                      key={column.id}
-                      className="capitalize"
-                      checked={column.getIsVisible()}
-                      onCheckedChange={(value) =>
-                        column.toggleVisibility(!!value)
-                      }
-                    >
-                      {column.id}
-                    </DropdownMenuCheckboxItem>
-                  );
-                })}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
+    <div className="w-full space-y-4">
+      <div className="flex items-center justify-end gap-2">
+        <LanguageSelect languageHandler={languageHandler} />
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline">
+              Columns <ChevronDown className="ml-2 h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            {table
+              .getAllColumns()
+              .filter((column) => column.getCanHide())
+              .map((column) => {
+                return (
+                  <DropdownMenuCheckboxItem
+                    key={column.id}
+                    className="capitalize"
+                    checked={column.getIsVisible()}
+                    onCheckedChange={(value) =>
+                      column.toggleVisibility(!!value)
+                    }
+                  >
+                    {column.id}
+                  </DropdownMenuCheckboxItem>
+                );
+              })}
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
       <div className="rounded-md border">
         <Table>
@@ -234,22 +228,18 @@ export default function CategoryDataTable() {
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
-        {/* <div className="flex-1 text-sm text-muted-foreground">
-          {table?.getFilteredSelectedRowModel().rows.length} of{' '}
-          {table?.getFilteredRowModel().rows.length} row(s) selected.
-        </div> */}
         <div className="space-x-2">
           <Button
             variant="outline"
-            onClick={() => table?.previousPage()}
-            disabled={!table?.getCanPreviousPage()}
+            onClick={() => handlePagination(filters.first - 1)}
+            disabled={filters.first === 0}
           >
             Previous
           </Button>
           <Button
             variant="outline"
-            onClick={() => table?.nextPage()}
-            disabled={!table?.getCanNextPage()}
+            onClick={() => handlePagination(filters.first + 1)}
+            disabled={(filters.first + 1) * filters.rows > (data?.count || 0)}
           >
             Next
           </Button>

@@ -6,7 +6,6 @@ import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
 import ProductCard from '~/components/common/card';
 import Glow from '~/components/common/glow';
-
 import { trpc } from '~/utils/trpc';
 
 const CashPage = () => {
@@ -21,15 +20,7 @@ const CashPage = () => {
     group: 'WONDER',
   });
 
-  console.log(filters, 'filters');
-  const {
-    data: prductsList,
-    isFetched,
-    isFetching,
-    isLoading,
-    isSuccess,
-    isError,
-  } = trpc.settings.get_banner.useQuery(filters, {
+  const { data: prductsList } = trpc.settings.get_banner.useQuery(filters, {
     refetchOnWindowFocus: false,
   });
 
@@ -47,9 +38,6 @@ const CashPage = () => {
       setFilters({ ...filters, first: 1 + filters.first });
     }
   }
-
-  console.log({ prductsList }, 'prductsList');
-  console.log({ products }, 'products');
 
   return (
     <>
