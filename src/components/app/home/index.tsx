@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import ProductSection from './product_section';
 import CategorySection from './product_category';
 import HowtoSection from './how_to_play';
@@ -6,8 +6,43 @@ import WhyChoose from './why_choose';
 import Testimonials from './testimonials';
 import BannerSlider from './banner_slider';
 import VideoSlider from './video_slider';
+import { useSelector } from 'react-redux';
+import { RootState } from '~/store/store';
+import { trpc } from '~/utils/trpc';
 
 function Home() {
+  const { lang } = useSelector((state: RootState) => state.layout);
+
+  const [filters, setFilters] = useState({
+    lang_id: lang.lang_id,
+    first: 0,
+    rows: 9,
+  });
+
+  const todayDate = new Date();
+  console.log(todayDate,"todayDate")
+  
+  const endingDate = new Date();
+  endingDate.setDate(endingDate.getDate() + 7);
+  console.log(endingDate,"endingDate")
+
+  // const {
+  //   data: upcomingList,
+  //   isFetched,
+  //   isLoading,
+  //   isError,
+  // } = trpc.event.getUpcomimg.useQuery(
+  //   {
+  //     lang_id: lang.lang_id,
+  //     date: todayDate,
+  //   },
+  //   {
+  //     refetchOnWindowFocus: false,
+  //   },
+  // );
+
+  // console.log(upcomingList?.data,"ip")
+
   return (
     <div className=" flex flex-col gap-8 min-h-screen w-full max-w-[1600px] mx-auto">
       {/* // <div className=""> */}
@@ -43,7 +78,7 @@ function Home() {
           slidesToShow={4}
           center={false}
           title="Winnar Wonders: "
-          subTitle='A Glimpse of Excellence'
+          subTitle="A Glimpse of Excellence"
         />
       </div>
     </div>

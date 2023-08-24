@@ -1,13 +1,35 @@
 import { z } from 'zod';
 
 export const getEventSchema = z.object({
-  startDate: z.date().nullable(),
-  endDate: z.date().nullable(),
-  event_id: z.string(),
-  searchQuery: z.string(),
-  page: z.number(),
+  startDate: z.date().optional(),
+  endDate: z.date().optional(),
+  searchQuery: z.string().optional(),
+  category_id: z.number().optional(),
+  event_id: z.number().optional(),
   first: z.number(),
   rows: z.number(),
+  lang_id: z.number(),
+});
+export const getUpcoming = z.object({
+  startDate: z.date().optional(),
+  endDate: z.date().optional(),
+  category_id: z.number().optional(),
+  event_id: z.number().optional(),
+  first: z.number().optional(),
+  rows: z.number().optional(),
+  lang_id: z.number(),
+  date: z.date(),
+});
+
+export const getClosingSoon = z.object({
+  startDate: z.date().optional(),
+  endDate: z.date().optional(),
+  category_id: z.number().optional(),
+  event_id: z.number().optional(),
+  first: z.number().optional(),
+  rows: z.number().optional(),
+  lang_id: z.number(),
+  date: z.date(),
 });
 
 export const createEventSchema = z.object({

@@ -32,9 +32,10 @@ function Index({ children }: DefaultLayoutProps) {
   };
 
   return (
-    <div dir={lang.dir} lang={lang.lang}>
+    <div dir={lang.dir} lang={lang.lang} >
       <Header />
       {children}
+      
       <Footer />
     </div>
   );

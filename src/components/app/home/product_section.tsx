@@ -13,6 +13,7 @@ interface producctInterface {
   class?: string;
   title: string;
   center: boolean;
+  data?:any;
   slidesToShow?: number;
 }
 function ProductSection(props: producctInterface) {
