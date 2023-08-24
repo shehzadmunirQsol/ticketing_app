@@ -45,85 +45,85 @@ import 'primereact/resources/themes/lara-light-indigo/theme.css';
 //core
 import 'primereact/resources/primereact.min.css';
 
+const formSchema: any = [
+  {
+    type: 'image',
+    name: 'thumb',
+    label: 'Image',
+
+    placeholder: 'Please Select Image',
+  },
+  {
+    type: 'image',
+    name: 'multi_image',
+    label: 'Multi Image',
+
+    placeholder: 'Please Select Image',
+  },
+  {
+    type: 'number',
+    name: 'price',
+    label: 'Token Price',
+
+    placeholder: 'Please Enter Token Price',
+  },
+  {
+    type: 'select',
+    name: 'category_id',
+    label: 'Category ID',
+
+    placeholder: 'Please Enter Token Price',
+  },
+  {
+    type: 'text',
+    name: 'video_src',
+    label: 'Video Source',
+
+    placeholder: 'Please Enter Video Source',
+  },
+  {
+    type: 'number',
+    name: 'total_tickets',
+    label: 'Total Cap',
+    placeholder: 'Please Enter Total Cap',
+  },
+  {
+    type: 'number',
+    name: 'user_ticket_limit',
+    label: 'Per User Cap',
+    placeholder: 'Please Enter Per User Cap',
+  },
+
+  {
+    type: 'date',
+    name: 'launch_date',
+    label: 'Launch Date',
+
+    placeholder: 'Please Enter Price',
+  },
+  {
+    type: 'date',
+    name: 'end_date',
+    label: 'End Date',
+
+    placeholder: 'Please Enter Price',
+  },
+  {
+    type: 'switch',
+    name: 'is_alt',
+    label: 'Alternative Selling Option',
+
+    placeholder: 'Please Enter Price',
+  },
+  {
+    type: 'switch_text',
+    name: 'cash_alt',
+    label: 'Alternative Selling Option',
+
+    placeholder: 'Please Enter Price',
+  },
+];
 export default function EventForm() {
-  const formSchema: any = [
-    {
-      type: 'image',
-      name: 'thumb',
-      label: 'Image',
-
-      placeholder: 'Please Select Image',
-    },
-    {
-      type: 'image',
-      name: 'multi_image',
-      label: 'Multi Image',
-
-      placeholder: 'Please Select Image',
-    },
-    {
-      type: 'number',
-      name: 'price',
-      label: 'Token Price',
-
-      placeholder: 'Please Enter Token Price',
-    },
-    {
-      type: 'select',
-      name: 'category_id',
-      label: 'Category ID',
-
-      placeholder: 'Please Enter Token Price',
-    },
-    {
-      type: 'text',
-      name: 'video_src',
-      label: 'Video Source',
-
-      placeholder: 'Please Enter Video Source',
-    },
-    {
-      type: 'number',
-      name: 'total_tickets',
-      label: 'Total Cap',
-      placeholder: 'Please Enter Total Cap',
-    },
-    {
-      type: 'number',
-      name: 'user_ticket_limit',
-      label: 'Per User Cap',
-      placeholder: 'Please Enter Per User Cap',
-    },
-
-    {
-      type: 'date',
-      name: 'launch_date',
-      label: 'Launch Date',
-
-      placeholder: 'Please Enter Price',
-    },
-    {
-      type: 'date',
-      name: 'end_date',
-      label: 'End Date',
-
-      placeholder: 'Please Enter Price',
-    },
-    {
-      type: 'switch',
-      name: 'is_alt',
-      label: 'Alternative Selling Option',
-
-      placeholder: 'Please Enter Price',
-    },
-    {
-      type: 'switch_text',
-      name: 'is_alternative_option',
-      label: 'Alternative Selling Option',
-
-      placeholder: 'Please Enter Price',
-    },
-  ];
   const { toast } = useToast();
   const [filters, setFilters] = useState<any>({
     lang_id: 1,
@@ -148,16 +148,9 @@ export default function EventForm() {
 
   const form = useForm<z.infer<typeof formValidateData>>({
     resolver: zodResolver(EventFormSchema),
-    // BannerApiData !== undefined && index
-    //     ? BannerApiData[0]?.lang_id
-    //       ? enFormSchema
-    //       : BannerApiData[0]?.lang_id == 2
-    //       ? arFormSchema
-    //       : SpotLightFormSchema
-    //     : SpotLightFormSchema,
   });
 
-  const bannerUpload = trpc.settings.banner_create.useMutation({
+  const eventUpload = trpc.event.create.useMutation({
     onSuccess: () => {
       console.log('upload successfully');
 
@@ -183,17 +176,27 @@ export default function EventForm() {
   async function onSubmit(values: z.infer<typeof formValidateData>) {
     console.log({ values });
     try {
-      // setIsSubmitting(true);
-
+       setIsSubmitting(true);
       const nftSource =
         typeof form.getValues('thumb') !== 'object'
           ? { thumb: values?.thumb }
-          : await uploadOnS3Handler();
+          : await uploadOnS3Handler(optimizeFile);
       const multiImage =
         typeof form.getValues('multi_image') !== 'object'
           ? { multi_image: values?.multi_image as any }
           : await uploadMultiImage();
-      const payload: any = { ...values };
+      const payload: any = { ...values, multi_image: multiImage, ...nftSource };
+      const data = await eventUpload.mutateAsync(payload);
+      if (data) {
+        toast({
+          variant: 'success',
+          title: 'Banner Uploaded Successfully',
+        });
+        setIsSubmitting(false);
+        router.back();
+      } else {
+        throw new Error('Data Create Error');
+      }
     } catch (e: any) {
       setIsSubmitting(false);
 
@@ -204,21 +207,22 @@ export default function EventForm() {
     }
   }
   async function uploadMultiImage() {
-    if (optimizeMultiFile) {
+    const data: any[] = [];
+    if (optimizeMultiFile !== null) {
+      for (let i = 0; i < optimizeMultiFile.length; i++) {
+        const upload_string = await uploadOnS3Handler(optimizeMultiFile[i]);
+        data.push(upload_string?.thumb);
+      }
     }
+    return data;
   }
   async function imageHandler(originalFile: any[], type: any) {
     const multi_Image: any[] = [];
-    // const optimizedFile = await compressImage(originalFile);
     for (let i = 0; i < originalFile.length; i++) {
       const single_image = await compressImage(originalFile[i]);
-      console.log({ single_image });
       multi_Image.push(single_image);
     }
     setOptimizeMultiFile(multi_Image);
-
-    console.log(multi_Image, 'typeof originalFile');
-    // setOptimizeFile(optimizedFile);
   }
   async function singleImageHandler(originalFile: File) {
     console.log(originalFile, 'originalFile');
@@ -226,13 +230,13 @@ export default function EventForm() {
     // console.log(type, 'typeof originalFile');
     setOptimizeFile(optimizedFile);
   }
-  async function uploadOnS3Handler() {
-    if (optimizeFile?.name) {
-      const response = await getS3ImageUrl(optimizeFile);
+  async function uploadOnS3Handler(originalFile: any) {
+    if (originalFile?.name) {
+      const response = await getS3ImageUrl(originalFile);
       if (!response.success)
         return console.log('response.message', response.message);
 
-      const isImage = isValidImageType(optimizeFile?.type);
+      const isImage = isValidImageType(originalFile?.type);
 
       const nftSource = {
         thumb: '',
@@ -366,7 +370,7 @@ export default function EventForm() {
                 />
                 <FormField
                   control={form.control}
-                  name="en.description"
+                  name="en.desc"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Description</FormLabel>
@@ -382,10 +386,10 @@ export default function EventForm() {
                 />
                 <FormField
                   control={form.control}
-                  name="en.description"
+                  name="en.comp_details"
                   render={({ field }) => (
                     <FormItem className=" bg-black">
-                      <FormLabel>Description</FormLabel>
+                      <FormLabel>Competiton Details</FormLabel>
                       <FormControl>
                         <Editor
                           id={field.name}
@@ -425,7 +429,7 @@ export default function EventForm() {
                   />
                   <FormField
                     control={form.control}
-                    name="ar.description"
+                    name="ar.desc"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>عنوا</FormLabel>
@@ -434,6 +438,34 @@ export default function EventForm() {
                             placeholder="Enter Description..."
                             {...field}
                           />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="ar.comp_details"
+                    render={({ field }) => (
+                      <FormItem className=" bg-black">
+                        <FormLabel>Competiton Details</FormLabel>
+                        <FormControl>
+                          <div dir="rtl">
+                            <Editor
+                              id={field.name}
+                              name="blog"
+                              value={field.value}
+                              className=" bg-black"
+                              headerTemplate={header}
+                              onTextChange={(e) => field.onChange(e.textValue)}
+                              // p-editor-container="bg-black"
+                              style={{
+                                height: '320px',
+                                backgroundColor: 'black',
+                              }}
+                            />
+                          </div>
+                          {/* <Textarea placeholder="Enter Description..." {...field} /> */}
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -471,48 +503,19 @@ export default function EventForm() {
                     if (item?.type == 'date') {
                       return (
                         <div key={i}>
-                          <FormField
-                            control={form.control}
-                            name={item?.name}
-                            render={({ field }) => (
-                              <>
-                                {/* <FormItem className=" flex flex-col gap-2 mt-2 w-full">
-                                  <FormLabel>{item?.label}</FormLabel>
-                                  <FormControl>
-                                    <Popover>
-                                      <PopoverTrigger asChild>
-                                        <Button
-                                          variant={'outline'}
-                                          className={`w-full   justify-start text-left font-normal 
-                              `}
-                                        >
-                                          <CalendarIcon className="mr-2 h-4 w-4" />
-                                          {field.value ? (
-                                            format(field.value, 'PPP')
-                                          ) : (
-                                            <span>Pick a date</span>
-                                          )}
-                                        </Button>
-                                      </PopoverTrigger>
-                                      <PopoverContent className="w-auto p-0">
-                                        <Calendar
-                                          mode="single"
-                                          selected={field.value}
-                                          onSelect={field.onChange}
-                                          disabled={(date) =>
-                                            date < new Date() ||
-                                            date < new Date('1900-01-01')
-                                          }
-                                          initialFocus
-                                        />
-                                      </PopoverContent>
-                                    </Popover>
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem> */}
-                              </>
-                            )}
-                          />
+                          <FormItem className=" flex flex-col gap-2 mt-2 w-full">
+                            <FormLabel>{item?.label}</FormLabel>
+                            <FormControl>
+                              <Input
+                                type={item?.type}
+                                placeholder={item?.placeholder}
+                                {...form.register(item?.name, {
+                                  valueAsDate: true,
+                                })}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
                         </div>
                       );
                     }
@@ -594,7 +597,7 @@ export default function EventForm() {
                           {form.watch('is_alt') && (
                             <FormField
                               control={form.control}
-                              name="link"
+                              name={item?.name}
                               render={({ field }) => (
                                 <FormItem>
                                   <FormLabel>{item?.label}</FormLabel>

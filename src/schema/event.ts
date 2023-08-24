@@ -44,12 +44,12 @@ export const deleteEventSchema = z.object({
 
 export const EventFormSchema = z.object({
   thumb: z.any(),
-  multi_image: z.array(z.any()),
+  multi_image: z.any(),
   price: z.any(),
   category_id: z.any(),
   video_src: z.string(),
-  link: z.string(),
   total_tickets: z.string(),
+  cash_alt: z.string(),
   user_ticket_limit: z.string(),
   is_alt: z.boolean(),
   launch_date: z.date(),
@@ -57,11 +57,13 @@ export const EventFormSchema = z.object({
 
   en: z.object({
     name: z.string(),
-    description: z.string().optional(),
+    desc: z.string().optional(),
+    comp_details: z.string().optional(),
   }),
   ar: z.object({
     name: z.string(),
-    description: z.string().optional(),
+    desc: z.string().optional(),
+    comp_details: z.string().optional(),
   }),
 });
 export const enFormSchema = z.object({

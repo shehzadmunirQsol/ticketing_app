@@ -1,6 +1,7 @@
 import { router, publicProcedure } from '../trpc';
 import { TRPCError } from '@trpc/server';
 import {
+  EventFormSchema,
   createEventSchema,
   deleteEventSchema,
   getEventSchema,
@@ -58,45 +59,58 @@ export const eventRouter = router({
       });
     }
   }),
-  create: publicProcedure
-    .input(createEventSchema)
-    .mutation(async ({ input }) => {
-      try {
-        const { en, ar, ...eventPayload } = input;
+  create: publicProcedure.input(EventFormSchema).mutation(async ({ input }) => {
+    try {
+      const { en, ar, multi_image, ...eventPayload } = input;
+      const createPayload: any = {
+        is_alt: eventPayload?.is_alt,
+        thumb: eventPayload?.thumb,
+        video_src: eventPayload?.video_src,
+        category_id: +eventPayload?.category_id,
+        price: +eventPayload?.price,
+        total_tickets: +eventPayload?.total_tickets,
+        user_ticket_limit: +eventPayload?.user_ticket_limit,
+        cash_alt: +eventPayload?.cash_alt,
+        launch_date: eventPayload?.launch_date,
+        end_date: eventPayload?.end_date,
+      };
+      const event = await prisma.event.create({
+        data: {
+          ...createPayload,
+        },
+      });
 
-        const event = await prisma.event.create({ data: eventPayload });
-
-        if (!event) {
-          throw new TRPCError({
-            code: 'BAD_REQUEST',
-            message: 'Event not created',
-          });
-        }
-
-        const eventDescPayload = [
-          { ...en, event_id: event.id },
-          { ...ar, event_id: event.id },
-        ];
-
-        const eventDesc = await prisma.eventDescription.createMany({
-          data: eventDescPayload,
-        });
-
-        if (!eventDesc.count) {
-          throw new TRPCError({
-            code: 'BAD_REQUEST',
-            message: 'Event Description not created',
-          });
-        }
-
-        return { data: event, message: 'Event created' };
-      } catch (error: any) {
+      if (!event) {
         throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: error?.message,
+          code: 'BAD_REQUEST',
+          message: 'Event not created',
         });
       }
-    }),
+
+      const eventDescPayload = [
+        { ...en, event_id: event.id, lang_id: 1 },
+        { ...ar, event_id: event.id, lang_id: 2 },
+      ];
+
+      const eventDesc = await prisma.eventDescription.createMany({
+        data: eventDescPayload,
+      });
+
+      if (!eventDesc.count) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Event Description not created',
+        });
+      }
+
+      return { data: event, message: 'Event created' };
+    } catch (error: any) {
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: error?.message,
+      });
+    }
+  }),
   delete: publicProcedure
     .input(deleteEventSchema)
     .mutation(async ({ input }) => {
