@@ -11,7 +11,7 @@ import { prisma } from '~/server/prisma';
 export const eventRouter = router({
   get: publicProcedure.input(getEventSchema).query(async ({ input }) => {
     try {
-      const where: any = { is_deleted: false };
+      const where: any = { is_deleted: false, lang_id: input.lang_id };
 
       if (input?.startDate) {
         const startDate = new Date(input?.startDate);
@@ -21,14 +21,15 @@ export const eventRouter = router({
         const endDate = new Date(input?.endDate);
         where.created_at = { lte: endDate };
       }
+      if (input.category_id) where.id = input.category_id;
 
-      if (input.event_id) where.id = input.event_id;
+      // if (input.event_id) where.id = input.event_id;
 
-      const totalEventPromise = prisma.event.count({
+      const totalEventPromise = prisma.eventView.count({
         where: where,
       });
 
-      const eventPromise = prisma.event.findMany({
+      const eventPromise = prisma.eventView.findMany({
         orderBy: { created_at: 'desc' },
         skip: input.first,
         take: input.rows,
@@ -65,6 +66,7 @@ export const eventRouter = router({
       const createPayload: any = {
         is_alt: eventPayload?.is_alt,
         thumb: eventPayload?.thumb,
+        creator_id: 1,
         video_src: eventPayload?.video_src,
         category_id: +eventPayload?.category_id,
         price: +eventPayload?.price,
@@ -100,6 +102,20 @@ export const eventRouter = router({
         throw new TRPCError({
           code: 'BAD_REQUEST',
           message: 'Event Description not created',
+        });
+      }
+      const myImages = multi_image.map((str: string, index: number) => ({
+        thumb: str,
+        event_id: event.id,
+      }));
+      const eventImages = await prisma.eventImage.createMany({
+        data: myImages,
+      });
+
+      if (!eventImages.count) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Event Images not created',
         });
       }
 
