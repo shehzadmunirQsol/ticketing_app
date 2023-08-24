@@ -22,6 +22,7 @@ const BannerSlider = () => {
 
   const initialOrderFilters: any = {
     lang_id: 1,
+    group:'BANNER',
     rows: 10,
     first: 0,
     page: 0,

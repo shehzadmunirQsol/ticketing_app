@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from '../../ui/button';
 import Link from 'next/link';
-import DataTableBanner from '~/components/common/banner_table';
+import DataTableBanner from '~/components/common/table/banner';
 
 function Banner() {
   return (

@@ -2,6 +2,7 @@ import { NextPageWithLayout } from '~/pages/_app';
 import { Button } from '@/ui/button';
 import { useTheme } from 'next-themes';
 import Home from '~/components/app/home';
+// import Home from '~/components/app/LoginSignup/LoginSignup';
 
 const IndexPage: NextPageWithLayout = () => {
   const { theme, setTheme } = useTheme();

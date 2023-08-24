@@ -38,7 +38,7 @@ function Home() {
       {/* Video section */}
       <div className="relative flex flex-col gap-8  px-6 py-12 bg-background-footer ">
         <VideoSlider
-          class="max-w-md lg:max-w-sm xl:max-w-md    "
+          class="max-w-md lg:max-w-sm xl:max-w-md"
           slidesToShow={4}
           center={false}
           title="Winnar Wonders: "
