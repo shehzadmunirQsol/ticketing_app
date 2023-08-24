@@ -44,6 +44,10 @@ export type Category = {
   name: string;
   desc: string | null;
   id: number;
+  price: number;
+  total_tickets: number;
+  tickets_sold: number;
+  user_ticket_limit: number;
   created_at: Date;
   updated_at: Date;
 };
@@ -74,6 +78,48 @@ export const columns: ColumnDef<Category>[] = [
     cell: ({ row }) => (
       <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden w-64">
         {row.getValue('desc')}
+      </div>
+    ),
+  },
+  {
+    accessorKey: 'price',
+    header: 'Token Price',
+    cell: ({ row }) => (
+      <div className="capitalize text-ellipsis whitespace-nowrap ">
+        ${(row?.original?.price).toFixed(2)}
+      </div>
+    ),
+  },
+  {
+    accessorKey: 'total_tickets',
+    header: 'Token Cap',
+    cell: ({ row }) => (
+      <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
+        {row?.original?.total_tickets}
+        &nbsp;
+        <sub>qty</sub>
+      </div>
+    ),
+  },
+  {
+    accessorKey: 'tickets_sold',
+    header: 'Token Purchased',
+    cell: ({ row }) => (
+      <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
+        {row?.original?.tickets_sold}
+        &nbsp;
+        <sub>qty</sub>
+      </div>
+    ),
+  },
+  {
+    accessorKey: 'user_ticket_limit',
+    header: 'Per User Purchased',
+    cell: ({ row }) => (
+      <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
+        {row?.original?.user_ticket_limit}
+        &nbsp;
+        <sub>qty</sub>
       </div>
     ),
   },
@@ -115,7 +161,7 @@ export default function EventsDataTable() {
   const { data } = trpc.event.get.useQuery(filters, {
     refetchOnWindowFocus: false,
   });
-
+  console.log({ data });
   const categoryData = React.useMemo(() => {
     return Array.isArray(data?.data) ? data?.data : [];
   }, [data]);

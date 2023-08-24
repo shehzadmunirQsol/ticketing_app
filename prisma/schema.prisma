@@ -336,6 +336,7 @@ view EventView {
   total_tickets     Int
   tickets_sold      Int
   user_ticket_limit Int
+  lang_id           Int
   is_alt            Boolean @default(false)
   is_enable         Boolean @default(false)
   is_featured       Boolean @default(false)
