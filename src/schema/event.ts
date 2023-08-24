@@ -41,3 +41,55 @@ export const createEventSchema = z.object({
 export const deleteEventSchema = z.object({
   id: z.number(),
 });
+
+export const EventFormSchema = z.object({
+  thumb: z.any(),
+  multi_image: z.array(z.any()),
+  price: z.any(),
+  category_id: z.any(),
+  video_src: z.string(),
+  link: z.string(),
+  total_tickets: z.string(),
+  user_ticket_limit: z.string(),
+  is_alt: z.boolean(),
+  launch_date: z.date(),
+  end_date: z.date(),
+
+  en: z.object({
+    name: z.string(),
+    description: z.string().optional(),
+  }),
+  ar: z.object({
+    name: z.string(),
+    description: z.string().optional(),
+  }),
+});
+export const enFormSchema = z.object({
+  thumb: z.any(),
+  link: z.string(),
+
+  en: z.object({
+    name: z.string(),
+    description: z.string().optional(),
+  }),
+  ar: z
+    .object({
+      name: z.string(),
+      description: z.string().optional(),
+    })
+    .optional(),
+});
+export const arFormSchema = z.object({
+  thumb: z.any(),
+  link: z.string(),
+  en: z
+    .object({
+      name: z.string(),
+      description: z.string().optional(),
+    })
+    .optional(),
+  ar: z.object({
+    name: z.string(),
+    description: z.string().optional(),
+  }),
+});
