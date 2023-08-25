@@ -17,3 +17,8 @@ export const loginCustomerSchema = z.object({
 });
 export type loginCustomerInput = z.TypeOf<typeof loginCustomerSchema>;
 
+export const forgotPasswordCustomerSchema = z.object({
+    email: z.string().email(),
+});
+export type forgotPasswordCustomerSchemaInput = z.TypeOf<typeof forgotPasswordCustomerSchema>;
+

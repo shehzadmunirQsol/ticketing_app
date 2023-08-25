@@ -2,6 +2,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  console.log(req.body,"req.body.email")
     
     const options:any = {
         method: 'POST',
@@ -13,12 +14,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         body: JSON.stringify({
           sender: {name: 'Winnar', email: 'no-reply@winnar.com'},
         //   params: {FNAME: 'HASSAN', LNAME: 'SHAN'},
-          to: [{email: req.body.email}],
-          subject: 'winnar test',
-          templateId: 1
+          to: [{email: req.body.to}],
+          subject: req.body.subject,
+          templateId: req.body.template_id,
+          params:{link:req.body.link}
         })
       };
-      
       fetch('https://api.brevo.com/v3/smtp/email', options)
         .then(response => response.json())
         .then(response => console.log(response))

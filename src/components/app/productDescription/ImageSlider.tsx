@@ -47,7 +47,7 @@ const ImageSlider = () => {
                 <span className=" font-black mr-1 text-primary">AED 1000</span>
               </p>
               <p className=" lg:text-2xl text-xl sm:pl-10 pl-0 text-primary font-black ">
-                AED {price.toFixed(2)}
+                AED {price.tofi}
               </p>
             </div>
             <div className="w-full relative">

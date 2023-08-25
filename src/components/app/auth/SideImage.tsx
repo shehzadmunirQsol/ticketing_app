@@ -26,9 +26,9 @@ import CarImage from '../../../public/assets/CarLogin.svg';
 const SideImage = () => {
   const form = useForm<any>();
   return (
-    <div className='relative'>
-      <div>
-        <Image src={CarImage} alt="image" />
+    <div className='relative h-4/5'>
+        <Image src={CarImage.src} width={51500} height={51500} alt="image" className='w-full h-full   object-contain' />
+      <div className=' max-w-full h-full bg-white'>
       </div>
       <div className='absolute left-0 top-0 px-5 pt-10'>
         <p className='text-3xl w-72 '>Unlock Your Journey Login or Register for</p>

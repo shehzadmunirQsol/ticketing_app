@@ -1,24 +1,6 @@
 import { NextPageWithLayout } from '~/pages/_app';
-import { Button } from '@/ui/button';
-import { useTheme } from 'next-themes';
-import LoginAndSignup from '~/components/app/LoginSignup/LoginSignup';
+import LoginAndSignup from '~/components/app/auth/LoginSignup';
 
-const IndexPage: NextPageWithLayout = () => {
-  const { theme, setTheme } = useTheme();
-
-  function toggleTheme() {
-    const sysTheme: string = theme === 'dark' ? 'light' : 'dark';
-    setTheme(sysTheme);
-  }
-
-  return (
-    <div className="bg-background h-auto justify-center items-center  w-screen   ">
-      <div className="">
-        {/* <Button onClick={toggleTheme}>Magic appears</Button> */}
-        <LoginAndSignup />
-      </div>
-    </div>
-  );
-};
+const IndexPage: NextPageWithLayout = () => <LoginAndSignup />
 
 export default IndexPage;

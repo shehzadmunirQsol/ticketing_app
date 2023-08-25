@@ -6,7 +6,7 @@ import LiveDraw from './LiveDraw';
 import CompititionDetail from './CompititionDetail';
 import Tabs from './Tabs';
 import AccordianFaqs from './Faqs';
-import LoginSignup from '../LoginSignup/LoginSignup';
+import LoginSignup from '../auth/LoginSignup';
 
 const ProductDetail = () => {
   return (
