@@ -18,8 +18,13 @@
   :root {
     --background: 206, 37%, 4%, 1;
     --background-footer: 206, 18%, 8%, 1;
+    --background-card: 206, 18%, 8%, 1;  
+    --background-entires: 0, 0%, 16%, 1;   
     --foreground: 0 0% 95%;
     --card: 206, 18%, 8%, 1;
+    --light-text: 0, 0%, 92%, 0.75;
+    --card-gray: 0, 0%, 50%, 1;
+    --texts-gray: 0, 0%, 92%, 1;
     --card-foreground: 210, 7%, 11%, 1;
     --popover: 0 0% 9%;
     --popover-foreground: 0 0% 95%;
@@ -121,4 +126,19 @@
   100% {
     opacity: 1;
   }
+}
+
+
+
+
+.range-slider-container {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.range-slider {
+  width: 100%;
+  background-color: blue;
 }

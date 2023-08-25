@@ -24,6 +24,11 @@ module.exports = {
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
         background: 'hsl(var(--background))',
+        backgroundDark: 'hsl(var(--background-card))',
+        lightColor: 'hsl(var(--light-text))',
+        cardGray: 'hsl(var(--card-gray))',
+        backgroundEntires: 'hsl(var(--background-entires))',
+        grayColor: 'hsl(var(--texts-gray))',
         'background-footer': 'hsl(var(--background-footer))',
         foreground: 'hsl(var(--foreground))',
         primary: {

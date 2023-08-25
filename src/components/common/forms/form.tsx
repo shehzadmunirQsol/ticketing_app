@@ -14,6 +14,12 @@ import {
 import { Input } from '@/ui/input';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
+import { trpc } from '~/utils/trpc';
+import { setAdminToken } from '~/utils/authToken';
+import { formatTrpcError } from '~/utils/helper';
+import { useDispatch } from 'react-redux';
+import { userAdminAuth, userAdminIsLogin } from '~/store/reducers/adminAuthSlice';
+import toast from 'react-hot-toast';
 
 const exampleFormSchema = z.object({
   username: z.string().min(2, {
@@ -73,7 +79,8 @@ const loginFormSchema = z.object({
 
 export function LoginForm() {
   const router = useRouter();
-
+  const dispatch = useDispatch();
+  // const { toast } = useToast()
   // 1. Define your form.
   const form = useForm<z.infer<typeof loginFormSchema>>({
     resolver: zodResolver(loginFormSchema),
@@ -83,13 +90,47 @@ export function LoginForm() {
     },
   });
 
+  const loginUser = trpc.admin.login.useMutation({
+      onSuccess: (res: any) => {
+        console.log("return data", res);
+              
+        if(res.jwt){
+          setAdminToken(res.jwt);
+        }
+
+      },
+      onError(error) {
+        console.log( error.message,"ERROR" );
+      },
+  })
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof loginFormSchema>) {
+  async function onSubmit(values: z.infer<typeof loginFormSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    router.push('/admin/dashboard');
 
     console.log(values);
+    try {
+      const response:any = await loginUser.mutateAsync({ ...values });  
+      console.log("Response : ",response?.user)  
+      // window.localStorage.setItem("Admin-user", JSON.stringify(response?.user));    
+      dispatch(userAdminAuth(response?.user));
+      dispatch(userAdminIsLogin(true));
+      toast.success('Login Successfully!')  
+
+      router.push('/admin/dashboard');
+    } catch (error : any ){
+      console.log("Error ",error)
+      const errorMessage = formatTrpcError(error?.shape?.message);
+      console.log("Error : ",errorMessage)
+      // console.log()
+      // toast({
+      //   variant: "destructive",
+      //   title: errorMessage,
+      // }) 
+      toast.error(errorMessage)
+      // const errorMessage = formatTrpcError(error?.shape?.message);
+    }
+
   }
 
   return (

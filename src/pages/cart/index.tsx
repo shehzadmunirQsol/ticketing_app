@@ -1,12 +1,9 @@
 import React from 'react';
-import CarsPage from '~/components/app/cars';
+import { NextPageWithLayout } from '~/pages/_app';
+import CartPage from '~/components/app/cart';
 
-const index = () => {
-  return (
-    <div className="bg-background h-auto justify-center items-center  w-screen   ">
-      <CarsPage />
-    </div>
-  );
+const index: NextPageWithLayout = () => {
+  return <CartPage />;
 };
 
 export default index;
