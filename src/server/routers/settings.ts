@@ -70,6 +70,8 @@ export const settingRouter = router({
             link: true,
             thumb: true,
             model: true,
+            value: true,
+
             price: true,
             lang_id: true,
             description: true,

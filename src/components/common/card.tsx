@@ -30,7 +30,7 @@ function ProductCard(props: cardInterface) {
 
     const observer = new IntersectionObserver(([entry]: any) => {
       if (props?.isLast && entry.isIntersecting) {
-        if (props.nextPage) props?.nextPage();
+        if (props?.nextPage) props?.nextPage();
         observer.unobserve(entry.target);
       }
     });

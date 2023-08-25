@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
 import { trpc } from '~/utils/trpc';
 
-function Home() {
+export default function Home() {
   const { lang } = useSelector((state: RootState) => state.layout);
 
   const [filters, setFilters] = useState({
@@ -20,26 +20,11 @@ function Home() {
   });
 
   const todayDate = new Date();
-  console.log(todayDate,"todayDate")
-  
+  console.log(todayDate, 'todayDate');
+
   const endingDate = new Date();
   endingDate.setDate(endingDate.getDate() + 7);
-  console.log(endingDate,"endingDate")
-
-  // const {
-  //   data: upcomingList,
-  //   isFetched,
-  //   isLoading,
-  //   isError,
-  // } = trpc.event.getUpcomimg.useQuery(
-  //   {
-  //     lang_id: lang.lang_id,
-  //     date: todayDate,
-  //   },
-  //   {
-  //     refetchOnWindowFocus: false,
-  //   },
-  // );
+  console.log(endingDate, 'endingDate');
 
   // console.log(upcomingList?.data,"ip")
 
@@ -57,6 +42,7 @@ function Home() {
           slidesToShow={4}
           center={true}
           title={'ENDING SOON COMPETITIONS'}
+          type="closing"
         />
         {/* product section 2 */}
         <ProductSection
@@ -64,6 +50,7 @@ function Home() {
           slidesToShow={3}
           center={true}
           title="UPCOMING COMPETITIONS"
+          type="upcomming"
         />
         <CategorySection />
       </div>
@@ -85,4 +72,4 @@ function Home() {
   );
 }
 
-export default Home;
+// export default Home;

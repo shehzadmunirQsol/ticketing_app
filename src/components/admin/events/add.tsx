@@ -1,4 +1,4 @@
-import { EventForm } from '~/components/common/forms/events';
+import EventForm from "~/components/common/forms/events";
 
 export default function AddEvents() {
   return (
