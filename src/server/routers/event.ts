@@ -66,9 +66,10 @@ export const eventRouter = router({
     try {
       const { en, ar, multi_image, ...eventPayload } = input;
       const createPayload: any = {
-        is_alt: eventPayload?.is_alt,
+        is_cash_alt: eventPayload?.is_alt,
         thumb: eventPayload?.thumb,
-        creator_id: 1,
+        user_id: 1,
+        charity_id: 1,
         video_src: eventPayload?.video_src,
         category_id: +eventPayload?.category_id,
         price: +eventPayload?.price,

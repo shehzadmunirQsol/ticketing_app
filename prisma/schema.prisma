@@ -442,10 +442,10 @@ view EventView {
   tickets_sold      Int
   user_ticket_limit Int
   lang_id           Int
-  is_alt            Boolean @default(false)
+  is_cash_alt            Boolean @default(false)
   is_enable         Boolean @default(false)
   is_featured       Boolean @default(false)
-  creator_id        Int
+
   category_id       Int
 
   launch_date DateTime? @default(now()) @db.Timestamp(6)
@@ -457,7 +457,7 @@ view EventView {
 
 
 
-  @@index([creator_id, category_id])
+  @@index([ category_id])
   @@map("event_view")
 }
 view CategoryView {
