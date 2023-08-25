@@ -62,7 +62,7 @@ export default function CategoryForm(props: CategoryFormInterface) {
   const form = useForm<CreateCategorySchema>({
     resolver: zodResolver(createCategorySchema),
     defaultValues: {
-      creator_id: 1,
+      user_id: 1,
       thumb: category?.data?.thumb ?? '',
       en: {
         name: '',

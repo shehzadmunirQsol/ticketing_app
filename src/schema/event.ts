@@ -21,7 +21,7 @@ export const createEventSchema = z.object({
   tickets_sold: z.number(),
   launch_date: z.date().optional(),
   end_date: z.date().optional(),
-  creator_id: z.number(),
+  user_id: z.number(),
   category_id: z.number(),
 
   en: z.object({
