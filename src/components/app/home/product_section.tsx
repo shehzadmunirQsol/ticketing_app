@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Slider from 'react-slick';
 
 import 'slick-carousel/slick/slick.css';
@@ -21,13 +21,13 @@ interface producctInterface {
 function ProductSection(props: producctInterface) {
   const { lang } = useSelector((state: RootState) => state.layout);
   const todayDate = new Date();
+  const [products, setProducts] = useState<Array<any>>([]);
 
   const [filters, setFilters] = useState({
     lang_id: +lang.lang_id,
     first: 0,
     rows: 9,
     type: props?.type,
-    category_id: 1,
   });
 
   const {
@@ -39,14 +39,24 @@ function ProductSection(props: producctInterface) {
     refetchOnWindowFocus: false,
   });
 
-  console.log({ prductsList });
+  console.log({ prductsList }, 'array of somthing:', props?.type);
+  console.log({ products }, 'products', props?.type);
   function nextPage() {
     console.log('Next page emitted');
-    // if (products.length % filters.rows === 0) {
-    //   setFilters({ ...filters, first: 1 + filters.first });
-    // }
+    if (prductsList && prductsList?.data?.length % filters.rows === 0) {
+      setFilters({ ...filters, first: 1 + filters.first });
+    }
   }
   const slide = useRef<any>();
+
+  useEffect(() => {
+    if (filters.first > 0 && prductsList?.data?.length) {
+      setProducts([...products, ...prductsList.data]);
+    } else if (prductsList?.data?.length) {
+      setProducts(prductsList.data);
+    }
+  }, [prductsList]);
+
   const next = () => {
     slide?.current.slickNext();
   };
@@ -57,7 +67,7 @@ function ProductSection(props: producctInterface) {
     className: 'center slider variable-width ',
 
     dots: false,
-    infinite: props?.center,
+    infinite: false,
     speed: 500,
     slidesToShow: props?.slidesToShow,
     slidesToScroll: props?.slidesToShow,
@@ -121,16 +131,19 @@ function ProductSection(props: producctInterface) {
           </Button>
         </div>
       </div>
+
       <div className="relative z-10">
+        {/* glow */}
         <div className="absolute bottom-10 right-0  z-2  w-1/5 h-3/5  bg-teal-400 bg-opacity-50 rounded-full blur-3xl"></div>
 
         <Slider ref={slide} {...settings}>
-          {['', '', '', '', '', '', '', '', ''].map((item, index) => {
+          {prductsList?.data.map((item, index) => {
             return (
-              <div key={index} className="px-2">
+              <div key={index} className="">
                 <ProductCard
-                  isLast={false}
+                  isLast={index === prductsList.data.length - 1}
                   nextPage={nextPage}
+                  data={item}
                   class={`${props?.class} `}
                   dir={`${lang?.dir}`}
                 />

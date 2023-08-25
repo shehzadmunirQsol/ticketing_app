@@ -40,7 +40,7 @@ export default function Home() {
         <ProductSection
           class="max-w-sm lg:max-w-xs"
           slidesToShow={4}
-          center={true}
+          center={false}
           title={'ENDING SOON COMPETITIONS'}
           type="closing"
         />
@@ -48,7 +48,7 @@ export default function Home() {
         <ProductSection
           class="max-w-md lg:max-w-sm xl:max-w-md ml-2   "
           slidesToShow={3}
-          center={true}
+          center={false}
           title="UPCOMING COMPETITIONS"
           type="upcomming"
         />
