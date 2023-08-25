@@ -10,7 +10,6 @@ export const getCategorySchema = z.object({
   lang_id: z.number(),
 });
 export const getCategoryEventSchema = z.object({
-
   category_id: z.number().optional(),
 
   lang_id: z.number(),
