@@ -43,7 +43,7 @@ function ProductSection(props: producctInterface) {
   console.log({ products }, 'products', props?.type);
   function nextPage() {
     console.log('Next page emitted');
-    if (prductsList && prductsList?.data?.length % filters.rows === 0) {
+    if (products.length % filters.rows === 0) {
       setFilters({ ...filters, first: 1 + filters.first });
     }
   }

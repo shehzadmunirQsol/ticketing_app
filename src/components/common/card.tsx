@@ -18,7 +18,6 @@ interface cardInterface {
 }
 
 function ProductCard(props: cardInterface) {
-  console.log(props.data,"incards")
   const cardRef = useRef<HTMLDivElement>(null);
   const {lang}=useSelector((state:RootState)=>state.layout)
 

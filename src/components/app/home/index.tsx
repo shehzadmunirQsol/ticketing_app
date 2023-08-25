@@ -13,12 +13,6 @@ import { trpc } from '~/utils/trpc';
 export default function Home() {
   const { lang } = useSelector((state: RootState) => state.layout);
 
-  const [filters, setFilters] = useState({
-    lang_id: lang.lang_id,
-    first: 0,
-    rows: 9,
-  });
-
   const todayDate = new Date();
   console.log(todayDate, 'todayDate');
 
@@ -37,6 +31,7 @@ export default function Home() {
 
       {/* product section 1 */}
       <div className="relative flex flex-col gap-8  px-6 py-2 ">
+        {/* 13 cards */}
         <ProductSection
           class="max-w-sm lg:max-w-xs"
           slidesToShow={4}
@@ -45,6 +40,7 @@ export default function Home() {
           type="closing"
         />
         {/* product section 2 */}
+        {/* 11 cards */}
         <ProductSection
           class="max-w-md lg:max-w-sm xl:max-w-md ml-2   "
           slidesToShow={3}
