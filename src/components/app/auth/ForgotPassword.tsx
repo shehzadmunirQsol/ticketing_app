@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import { Button } from '~/components/ui/button';
+import { Input } from '~/components/ui/input';
 import {
   Dialog,
   DialogContent,
@@ -21,10 +22,9 @@ import {
 import { useForm } from 'react-hook-form';
 import { useToast } from '~/components/ui/use-toast';
 import { trpc } from '~/utils/trpc';
-import { Input } from '~/components/ui/input';
 interface ForgotPasswordDialogInterface {
   isModal: boolean;
-  setIsModal: () => void;
+  setIsModal: () => any;
 }
 export function ForgotPasswordDailog(props: ForgotPasswordDialogInterface) {
   const { toast } = useToast();
@@ -33,27 +33,23 @@ export function ForgotPasswordDailog(props: ForgotPasswordDialogInterface) {
   // Handle Forgot Password
   const formForgotPassword = useForm<any>();
 
-    // register customer
-    const customerForgotPassword = trpc.customer.forgotPasswordCustomer.useMutation({
-        onSuccess: (res: any) => {
-          console.log(res, 'res');
-        },
-        onError: (err) => {
-          console.log(err.message, 'err');
-          // toast({
-          //   variant: 'success',
-          //   title: err.message,
-          // });
-          // console.log(err.message, 'login err');
-        },
-      });
+  // forgot password
+  const customerForgotPassword =
+    trpc.customer.forgotPasswordCustomer.useMutation({
+      onSuccess: async (res: any) => {
+        props.setIsModal(false);
+      },
+      onError: (err) => {
+        console.log(err.message, 'err');
+      },
+    });
 
-      console.log(customerForgotPassword,"customerForgotPassword")
-  
+  console.log(customerForgotPassword, 'customerForgotPassword');
+
   const onSubmit = async (values: any) => {
     console.log(values, 'onSubmit');
-    const resp = await customerForgotPassword.mutateAsync(values)
-    console.log(resp,"final res")
+    const resp = await customerForgotPassword.mutateAsync(values);
+    console.log(resp, 'final res');
   };
 
   return (
@@ -87,7 +83,7 @@ export function ForgotPasswordDailog(props: ForgotPasswordDialogInterface) {
                   )}
                 />
                 <Button
-                  className="  lg:w-52 md:w-52 w-full     text-black font-sans font-[900]   text-xl tracking-[-1px]"
+                  className="w-full     text-black font-sans font-[900]   text-xl tracking-[-1px]"
                   variant="clip"
                 >
                   Submit
@@ -96,7 +92,6 @@ export function ForgotPasswordDailog(props: ForgotPasswordDialogInterface) {
             </Form>
           </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4"></div>
       </DialogContent>
     </Dialog>
   );

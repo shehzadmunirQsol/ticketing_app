@@ -27,7 +27,7 @@ import Link from 'next/link';
 import { ForgotPasswordDailog } from './ForgotPassword';
 
 export default function LoginSignup() {
-  const toast = useToast();
+  const {toast} = useToast();
   const router = useRouter();
 
   const formSignup = useForm<signupCustomerInput>();
@@ -36,36 +36,45 @@ export default function LoginSignup() {
 
   // Handle Forget Password Modal
   const [isModal, setIsModal] = React.useState(false);
+  const [defaultValue, setDefaultValue] = React.useState('signup');
 
   // register customer
   const registerCustomer = trpc.customer.register.useMutation({
     onSuccess: (res: any) => {
       console.log(res, 'res');
+      toast({
+        variant: 'success',
+        title: "User Register Successfully",
+      });
+      // router.push('/login')
+      setDefaultValue('login')
     },
     onError: (err) => {
       console.log(err.message, 'err');
-      // toast({
-      //   variant: 'success',
-      //   title: err.message,
-      // });
-      // console.log(err.message, 'login err');
+      toast({
+        variant: 'destructive',
+        title: err.message,
+      });
     },
   });
 
   // register customer
   const loginCustomer = trpc.customer.loginCustomer.useMutation({
     onSuccess: (res: any) => {
-      console.log(res, 'res');
+      // console.log(res, 'res');
+      toast({
+        variant: 'success',
+        title: "User Login Successfully ",
+      });
       router.push('/')
 
     },
     onError: (err) => {
       console.log(err.message, 'err');
-      // toast({
-      //   variant: 'success',
-      //   title: err.message,
-      // });
-      // console.log(err.message, 'login err');
+      toast({
+        variant: 'destructive',
+        title: err.message,
+      });
     },
   });
 
@@ -90,12 +99,12 @@ export default function LoginSignup() {
           <SideImage />
         </div>
         <Tabs
-          defaultValue={'signup'}
+          defaultValue={defaultValue}
           className="flex flex-col flex-wrap   lg:w-2/2 md:w-full  lg:text-left  rounded-none border-none  lg:mr-6 bg-card"
         >
           <>
             <TabsList className=" w-full rounded-none border-none py-4 ">
-              <TabsTrigger
+              <TabsTrigger  
                 value="login"
                 className="w-full font-black text-md -mt-1rounded-none border-none m-0  "
               >
@@ -142,7 +151,7 @@ export default function LoginSignup() {
                         </FormLabel>
                         <FormControl>
                           <Input
-                            type="text"
+                            type="password"
                             placeholder="Enter Your Password"
                             {...field}
                           />
@@ -221,7 +230,7 @@ export default function LoginSignup() {
                         </FormLabel>
                         <FormControl>
                           <Input
-                            type="text"
+                            type="password"
                             placeholder="Enter your password"
                             {...field}
                           />
