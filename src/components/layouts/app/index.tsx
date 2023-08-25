@@ -8,7 +8,6 @@ import Footer from './footer';
 type DefaultLayoutProps = { children: ReactNode };
 
 function Index({ children }: DefaultLayoutProps) {
-
   const { lang } = useSelector((state: RootState) => state.layout);
 
   const handleClick = async () => {
@@ -32,15 +31,11 @@ function Index({ children }: DefaultLayoutProps) {
     }
   };
 
-
   return (
-    <div
-      dir={lang.dir}
-      lang={lang.lang}
-      className="relative w-full overflow-x-hidden"
-    >
+    <div dir={lang.dir} lang={lang.lang} >
       <Header />
-      <div className="w-full ">{children}</div>
+      {children}
+      
       <Footer />
     </div>
   );

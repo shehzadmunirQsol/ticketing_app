@@ -4,11 +4,9 @@ import CashPage from '~/components/app/cash'
 
 const IndexPage: NextPageWithLayout = () => {
   return (
-    <div className="bg-background h-auto justify-center items-center  w-screen   ">
-      <div className="">
+    <>
         <CashPage />
-      </div>
-    </div>
+    </>
   )
 }
 

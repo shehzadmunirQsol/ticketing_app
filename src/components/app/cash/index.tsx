@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import BannerTitle from '~/components/common/banner_title';
 import CashBg from '~/public/assets/cash_bg.png';
+import Cash from '~/public/assets/cash-1.png';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
 import ProductCard from '~/components/common/card';
@@ -13,22 +14,25 @@ const CashPage = () => {
   const [products, setProducts] = useState<Array<any>>([]);
   const [filters, setFilters] = useState({
     lang_id: lang.lang_id,
-    page: 0,
     first: 0,
-    rows: 4,
-    is_enabled: true,
-    group: 'WONDER',
+    rows: 9,
+    category_id: 2,
   });
 
-  const { data: prductsList } = trpc.settings.get_banner.useQuery(filters, {
+  const {
+    data: prductsList,
+    isFetched,
+    isLoading,
+    isError,
+  } = trpc.event.getByCategoryId.useQuery(filters, {
     refetchOnWindowFocus: false,
   });
 
   useEffect(() => {
-    if (filters.first > 0 && prductsList?.length) {
-      setProducts([...products, ...prductsList]);
-    } else if (prductsList?.length) {
-      setProducts(prductsList);
+    if (filters.first > 0 && prductsList?.data?.length) {
+      setProducts([...products, ...prductsList?.data]);
+    } else if (prductsList?.data?.length) {
+      setProducts(prductsList?.data);
     }
   }, [prductsList]);
 
@@ -54,7 +58,7 @@ const CashPage = () => {
                   isLast={i === products.length - 1}
                   nextPage={nextPage}
                   dir={lang.dir}
-                  cash={itemList?.src}
+                  cash={Cash}
                   class="z-50 h-full max-w-sm lg:max-w-2xl md:scale-95  w-full  "
                 />
               </div>

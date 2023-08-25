@@ -222,13 +222,13 @@ export function ItemMenuDemo() {
           linkItems?.map((item, index) => {
             return (
               <li key={index} className="group border-b-2 border-transparent  ">
-                <a
+                <Link
                   href={item?.link}
                   className="flex flex-col py-2 pl-3 pr-4 text-gray-200  hover:underline hover:bg-gray-100  md:hover:bg-transparent  dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
                 >
                   {item?.name}
                   <span className="w-full h-1 bg-transparent group-hover:bg-teal mt-1 rounded-sm  "></span>
-                </a>
+                </Link>
               </li>
             );
           })}
