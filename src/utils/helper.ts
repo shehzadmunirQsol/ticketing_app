@@ -25,7 +25,6 @@ export function renderNFTImage(nft: any) {
     : `${process.env.NEXT_PUBLIC_CLOUD_FRONT_BASE_URL}${nft?.thumb}`;
 }
 
-
 export function isValidImageType(type: any) {
   const isImage = type?.includes('image/') && type !== 'image/gif';
   return isImage;

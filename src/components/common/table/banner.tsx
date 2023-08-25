@@ -82,11 +82,13 @@ export default function DataTableBanner() {
   const [rowSelection, setRowSelection] = React.useState({});
   const [selectedItem, setSelectedItem] = React.useState({});
   const [title, setTitle] = React.useState('');
+  const [type, setType] = React.useState('');
   const [isModal, setIsModal] = React.useState(false);
-  const handleEnbled = (e: boolean, data: any) => {
-    console.log({ e, data });
+  const handleEnbled = (data: any, type: string) => {
+    // console.log({ e, data });
     setSelectedItem(data);
     setTitle('Banner');
+    setType(type);
     setIsModal(true);
   };
   const columns: ColumnDef<any>[] = [
@@ -122,7 +124,7 @@ export default function DataTableBanner() {
 
         return (
           <>
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 gap-2">
               <Image
                 className="object-cover bg-ac-2   h-10 w-10 rounded-lg"
                 src={renderNFTImage(payment)}
@@ -190,7 +192,7 @@ export default function DataTableBanner() {
           <>
             <Switch
               checked={row?.original?.is_enabled}
-              onCheckedChange={(e) => handleEnbled(e, row?.original)}
+              onCheckedChange={() => handleEnbled(row?.original, 'enabled')}
             />
           </>
         );
@@ -218,7 +220,11 @@ export default function DataTableBanner() {
               <Link href={`/admin/settings/banners/edit/${payment?.id}`}>
                 <DropdownMenuItem>Edit Banner</DropdownMenuItem>
               </Link>
-              {/* <DropdownMenuItem>View payment details</DropdownMenuItem> */}
+              <DropdownMenuItem
+                onClick={() => handleEnbled(row?.original, 'delete')}
+              >
+                Delete Banner
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         );
@@ -322,6 +328,7 @@ export default function DataTableBanner() {
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
+                  dir={orderFilters?.lang_id == 1 ? 'ltr' : 'rtl'}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
@@ -376,6 +383,8 @@ export default function DataTableBanner() {
         isModal={isModal}
         setIsModal={setIsModal}
         refetch={refetch}
+        type={type}
+        setType={setType}
       />
     </div>
   );

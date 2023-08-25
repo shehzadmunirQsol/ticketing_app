@@ -37,7 +37,7 @@ export const customerRouter = router({
 
           // CustomerData Payload
           const payload = {
-            user_name: input.username,
+            username: input.username,
             email: input.email,
             password: hashPassword,
             first_name: input.firstname,
@@ -45,12 +45,12 @@ export const customerRouter = router({
           };
           console.log(payload, 'payload');
 
-          // const customer = await prisma.customer?.create({
-          //   data: payload,
-          // });
+          const customer = await prisma.customer?.create({
+            data: payload,
+          });
 
-          // console.log(customer, 'user');
-          return payload;
+          console.log(customer, 'user');
+          // return customer;
         }
       } catch (error: any) {
         throw new TRPCError({
@@ -76,15 +76,15 @@ export const customerRouter = router({
         }
         console.log('Inout Pass : ', input.password);
         console.log('User Pass : ', user?.password);
-        // let checkPass = await isSamePass(input.password, user?.password);
-        // console.log('check pass', checkPass);
+        let checkPass = await isSamePass(input.password, user?.password);
+        console.log('check pass', checkPass);
 
-        // if (!checkPass) {
-        //   throw new TRPCError({
-        //     code: 'BAD_REQUEST',
-        //     message: 'Password is incorrect',
-        //   });
-        // }
+        if (!checkPass) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Password is incorrect',
+          });
+        }
         const jwt = signJWT({ email: user.email, id: user.id });
         const serialized = serialize('winnar-token', jwt, {
           httpOnly: true,
@@ -126,12 +126,25 @@ export const customerRouter = router({
           template_id: 2,
           from: 'muzammil.devqsols@gmail.com',
           to: input.email,
-          subject: 'Sign up request to Build My Token',
-     
+          subject: 'Forgot Password request to Winnar',
             link: `Hello, 
-          Here is the OTP: ${respCode}.`,
+          Your Forget Password Verfication Link Here :http://localhost:3000/reset-password?verification_code=${respCode}.`,
         };
+        const updateResponse = await prisma.customer?.update({
+          where : {
+            id: user.id,
+          },
+          data : {
+            otp: respCode,
+          }
+        });
+
         const mailResponse = await sendEmail(mailOptions);
+
+        
+
+
+
         console.log('mailResponse', mailResponse);
 
         return mailResponse;

@@ -3,51 +3,31 @@ import { Button } from '@/ui/button';
 import LogoImage from '~/public/assets/logo.png';
 import Image from 'next/image';
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleSidebar } from '~/store/reducers/admin_layout';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuPortal,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@/ui/dropdown-menu';
-import {
-  Cloud,
-  CreditCard,
-  Github,
-  Keyboard,
-  LifeBuoy,
-  LogOut,
-  Mail,
-  MessageSquare,
-  Plus,
-  PlusCircle,
-  Settings,
-  User,
-  ShoppingCart,
-  Languages,
-  UserPlus,
-  Users,
-} from 'lucide-react';
+import { User, ShoppingCart, Languages } from 'lucide-react';
 import {
   Select,
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from '~/components/ui/select';
 import { useRouter } from 'next/router';
 import { toggleLang } from '~/store/reducers/layout';
 import { RootState } from '~/store/store';
+import Link from 'next/link';
 interface LinkItemProps {
   name: string;
   link: string;
@@ -63,7 +43,8 @@ function Header() {
 
   function toggleLanguageHandler(lang: 'en' | 'ar') {
     const dir: 'ltr' | 'rtl' = lang === 'ar' ? 'rtl' : 'ltr';
-    const language = { lang, dir };
+    const lang_id: 1 | 2 = lang === 'en' ? 1 : 2;
+    const language = { lang, dir, lang_id };
 
     dispatch(toggleLang(language));
   }
@@ -81,21 +62,23 @@ function Header() {
   const [click, setClick] = useState(false);
   return (
     <div
-      className={`fixed w-full z-50 top-0 h-[100px]  flex  items-center ${
-        router.asPath == '/' ? 'bg-transparent' : 'bg-background-footer'
-      }  ${
-        color
-          ? '!bg-background-footer  duration-500 shadow-xl'
-          : '!bg-transparent  duration-500'
+      className={`fixed w-full z-50 top-0 h-24  flex  items-center   ${
+        router.route == '/'
+          ? color
+            ? '!bg-background-footer  duration-500 shadow-xl'
+            : '!bg-transparent  duration-500'
+          : '!bg-background-footer'
       }   transform ease-in-out justify-between py-8 px-6 `}
     >
-      <Image
-        src={LogoImage}
-        alt="Logo Image"
-        width={150}
-        height={140}
-        className="h-4 sm:h-6 w-28 sm:w-56 "
-      />
+      <Link href="/">
+        <Image
+          src={LogoImage}
+          alt="Logo Image"
+          width={150}
+          height={140}
+          className="h-4 sm:h-6 w-28 sm:w-56 "
+        />
+      </Link>
       <div className="hidden  mdx:flex gap-8 items-center justify-center">
         <ItemMenuDemo />
         <div className="flex items-center justify-center gap-2">
@@ -144,15 +127,15 @@ export function DropdownMenuDemo() {
           <i className="fas fa-bars"></i>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-40" side={'bottom-end'}>
+      <DropdownMenuContent className="w-40" side={'bottom-end' as 'bottom'}>
         {/* <DropdownMenuLabel></DropdownMenuLabel> */}
 
         <DropdownMenuGroup>
           <DropdownMenuItem>
-            <span>Cars</span>
+            <Link href="/cars">Cars</Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <span>Cash</span>
+            <Link href="/cash">Cash</Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
             <span>Winings</span>
@@ -198,25 +181,34 @@ export function DropdownMenuDemo() {
 
 export function ItemMenuDemo() {
   const linkItems: Array<LinkItemProps> = [
-    { name: 'Cars', link: '/', icon: 'fas fa-house' },
+    {
+      name: 'Cars',
+      link: '/cars',
+      // link: `/`,
+      icon: 'fas fa-house',
+    },
     {
       name: 'Cash',
-      link: `/#`,
+      link: `/cash`,
+      // link: `/`,
       icon: 'fa-solid fa-globe',
     },
     {
       name: 'Winners',
-      link: `/#`,
+      // link: `/winners`,
+      link: `/`,
       icon: 'fa-sharp fa-regular fa-images',
     },
     {
       name: 'About Us',
-      link: `/#`,
+      // link: `/about-us`,
+      link: `/`,
       icon: 'fa-solid fa-image',
     },
     {
       name: 'FAQ',
-      link: `/#`,
+      // link: `/faq`,
+      link: `/`,
       icon: 'fa-solid fa-users',
     },
   ];
@@ -231,7 +223,7 @@ export function ItemMenuDemo() {
             return (
               <li key={index} className="group border-b-2 border-transparent  ">
                 <a
-                  href="#"
+                  href={item?.link}
                   className="flex flex-col py-2 pl-3 pr-4 text-gray-200  hover:underline hover:bg-gray-100  md:hover:bg-transparent  dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
                 >
                   {item?.name}

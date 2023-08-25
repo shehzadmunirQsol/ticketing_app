@@ -3,6 +3,7 @@ import React from 'react';
 import VideoThumb from '~/public/assets/video_thumb.png';
 import LogoThumb from '~/public/assets/logo_video.png';
 import Play from '~/public/assets/play.png';
+import Share from '~/public/assets/icons/send.svg';
 
 import {
   Dialog,
@@ -12,21 +13,24 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/ui/dialog';
+import { renderNFTImage } from '~/utils/helper';
 
 interface cardInterface {
   class?: string;
   dir?: string;
+  data?: any;
 }
 const VideoCard = (props: cardInterface) => {
   const openModal = () => {
-    console.log('it me');
+    // return (
+    // );
   };
 
+  console.log(props?.data, 'video card');
   return (
     <div className="relative group">
-      <Dialog >
+      <Dialog>
         <div
-          onClick={openModal}
           className={` relative w-[300px] h-[400px] group-hover:cursor-pointer  rounded-sm overflow-hidden  shadow-lg bg-card flex justify-between items-start  ${props?.class}`}
         >
           <div className="absolute flex mt-2  justify-between items-center w-full  z-30">
@@ -34,15 +38,23 @@ const VideoCard = (props: cardInterface) => {
               <Image src={LogoThumb} alt="/" fill />
             </div>
 
-            <div className=" z-40">
-              <i className="fa fa-share-from-square text-white text-2xl mr-2"></i>
-            </div>
+            {/* <i className="fa fa-share-from-square text-white text-2xl "></i> */}
+            <DialogTrigger>
+              <div
+                className=" z-50 mr-2"
+                onClick={() => {
+                  console.log('in sharing');
+                }}
+              >
+                <Image src={Share} alt="/" width={30} height={30} />
+              </div>
+            </DialogTrigger>
           </div>
           <Image
-            src={VideoThumb}
+            src={renderNFTImage(props?.data)}
             fill
             alt=""
-            className="absolute object-cover group-hover:opacity-5"
+            className="absolute object-cover group-hover:opacity-60"
           />
           <DialogTrigger>
             <div className="absolute h-full w-full flex justify-center mx-auto  items-center ">
@@ -50,18 +62,18 @@ const VideoCard = (props: cardInterface) => {
               <Image src={Play} alt="/" className="w-14 h-14" />
             </div>
           </DialogTrigger>
+          <DialogContent>
+            <iframe
+              className="w-full h-[360px]"
+              // src="https://www.youtube.com/embed/Y-x0efG1seA" //add src prop later
+              src={`${props?.data?.link}`} //add src prop later
+              title="YouTube video player"
+              // frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+            ></iframe>
+          </DialogContent>
         </div>
-
-        <DialogContent>
-          <iframe
-            className='w-full h-[360px]'
-            src="https://www.youtube.com/embed/Y-x0efG1seA"
-            title="YouTube video player"
-            // frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen
-          ></iframe>
-        </DialogContent>
       </Dialog>
     </div>
   );

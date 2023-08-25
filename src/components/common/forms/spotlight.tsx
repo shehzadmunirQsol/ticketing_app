@@ -19,9 +19,10 @@ import { FileInput } from '~/components/common/file_input';
 import { useEffect, useState } from 'react';
 import { trpc } from '~/utils/trpc';
 import { getS3ImageUrl } from '~/service/api/s3Url.service';
-import { isValidImageType } from '~/utils/helper';
+import { compressImage, isValidImageType } from '~/utils/helper';
 import { useToast } from '~/components/ui/use-toast';
 import { Textarea } from '~/components/ui/textarea';
+import { LoadingDialog } from '../modal/loadingModal';
 
 const SpotLightFormSchema = z.object({
   thumb: z.any(),
@@ -71,6 +72,8 @@ export function SpotLightForm() {
   const router = useRouter();
   const [optimizeFile, setOptimizeFile] = useState<any>(null);
   const [editData, seteditData] = useState<any>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const { index } = router.query;
   const initialOrderFilters: any = {
     rows: 10,
@@ -110,7 +113,7 @@ export function SpotLightForm() {
   }, [isLoading, isFetched]);
   const formValidateData =
     BannerApiData !== undefined && index
-      ? BannerApiData[0]?.lang_id
+      ? BannerApiData[0]?.lang_id == 1
         ? enFormSchema
         : BannerApiData[0]?.lang_id == 2
         ? arFormSchema
@@ -120,7 +123,7 @@ export function SpotLightForm() {
   const form = useForm<z.infer<typeof formValidateData>>({
     resolver: zodResolver(
       BannerApiData !== undefined && index
-        ? BannerApiData[0]?.lang_id
+        ? BannerApiData[0]?.lang_id == 1
           ? enFormSchema
           : BannerApiData[0]?.lang_id == 2
           ? arFormSchema
@@ -154,6 +157,8 @@ export function SpotLightForm() {
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formValidateData>) {
     try {
+      setIsSubmitting(true);
+
       const nftSource =
         typeof form.getValues('thumb') !== 'object'
           ? { thumb: values?.thumb }
@@ -193,6 +198,8 @@ export function SpotLightForm() {
 
         const data = await bannerUpdate.mutateAsync({ ...dataPayload });
         if (data) {
+          setIsSubmitting(false);
+
           toast({
             variant: 'success',
             title: 'Banner Updated Successfully',
@@ -226,6 +233,8 @@ export function SpotLightForm() {
         ];
         const data = await bannerUpload.mutateAsync(dataPayload);
         if (data) {
+          setIsSubmitting(false);
+
           toast({
             variant: 'success',
             title: 'Banner Uploaded Successfully',
@@ -236,73 +245,18 @@ export function SpotLightForm() {
         }
       }
     } catch (e: any) {
-      console.log(e.message, 'e.message');
+      setIsSubmitting(false);
+
       toast({
         variant: 'destructive',
         title: e.message,
       });
     }
   }
-  async function imageCompressorHandler(originalFile: any) {
-    const imageFile = originalFile;
-    const imageFilename = originalFile.name;
 
-    if (!imageFile) return 'Please select image.';
-    // if (!imageFile.name.match(/\.(jpg|jpeg|png|JPG|JPEG|PNG|gif)$/))
-    //   return "Please select valid image JPG,JPEG,PNG";
-
-    const reader = new FileReader();
-    reader.readAsDataURL(imageFile);
-
-    reader.onload = (e) => {
-      const img = new Image();
-      img.onload = () => {
-        //------------- Resize img code ----------------------------------
-        const canvas = document.createElement('canvas');
-        let ctx = canvas.getContext('2d');
-        ctx?.drawImage(img, 0, 0);
-
-        const MAX_WIDTH = 437;
-        const MAX_HEIGHT = 437;
-        let width = img.width;
-        let height = img.height;
-
-        if (width > height) {
-          if (width > MAX_WIDTH) {
-            height *= MAX_WIDTH / width;
-            width = MAX_WIDTH;
-          }
-        } else {
-          if (height > MAX_HEIGHT) {
-            width *= MAX_HEIGHT / height;
-            height = MAX_HEIGHT;
-          }
-        }
-        canvas.width = width;
-        canvas.height = height;
-        ctx = canvas.getContext('2d');
-        ctx?.drawImage(img, 0, 0, width, height);
-        ctx?.canvas?.toBlob(
-          (blob) => {
-            if (blob) {
-              const optimizeFile = new File([blob], imageFilename, {
-                type: 'image/png',
-                lastModified: Date.now(),
-              });
-              // setFile(originalFile);
-              setOptimizeFile(optimizeFile);
-            }
-          },
-          'image/png',
-          1,
-        );
-      };
-      img.onerror = () => {
-        return 'Invalid image content.';
-      };
-      //debugger
-      img.src = e?.target?.result as string;
-    };
+  async function imageHandler(originalFile: File) {
+    const optimizedFile = await compressImage(originalFile);
+    setOptimizeFile(optimizedFile);
   }
   async function uploadOnS3Handler() {
     if (optimizeFile?.name) {
@@ -339,7 +293,7 @@ export function SpotLightForm() {
               reset={form.reset}
               getValues={form.getValues}
               setValue={form.setValue}
-              imageCompressorHandler={imageCompressorHandler}
+              imageCompressorHandler={imageHandler}
               required={true}
             />
 
@@ -477,6 +431,7 @@ export function SpotLightForm() {
           </Button>
         </div>
       </form>
+      <LoadingDialog open={isSubmitting} text={'Saving data...'} />
     </Form>
   );
 }
