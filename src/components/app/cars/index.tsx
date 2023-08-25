@@ -12,30 +12,29 @@ import FeaturedCars from './featured_cars';
 const CarsPage = () => {
   const { lang } = useSelector((state: RootState) => state.layout);
   const [products, setProducts] = useState<Array<any>>([]);
+
   const [filters, setFilters] = useState({
     lang_id: lang.lang_id,
-    page: 0,
     first: 0,
-    rows: 4,
-    is_enabled: true,
-    group: 'WONDER',
+    rows: 9,
+    category_id: 1,
   });
 
-  console.log(filters, 'filters');
   const {
     data: prductsList,
     isFetched,
     isLoading,
     isError,
-  } = trpc.settings.get_banner.useQuery(filters, {
+  } = trpc.event.getByCategoryId.useQuery(filters, {
     refetchOnWindowFocus: false,
+
   });
 
   useEffect(() => {
-    if (filters.first > 0 && prductsList?.length) {
-      setProducts([...products, ...prductsList]);
-    } else if (prductsList?.length) {
-      setProducts(prductsList);
+    if (filters.first > 0 && prductsList?.data?.length) {
+      setProducts([...products, ...prductsList.data]);
+    } else if (prductsList?.data?.length) {
+      setProducts(prductsList.data);
     }
   }, [prductsList]);
 
@@ -46,13 +45,15 @@ const CarsPage = () => {
     }
   }
 
+
   console.log({ prductsList }, 'prductsList');
   console.log({ products }, 'products');
+  console.log({ filters }, 'filters');
   return (
-    <>
-    {/* this div below ↓ it to add spacing to avoid header */}
-    <div className='relative pt-24'></div>
-    <FeaturedCars/>
+    <div className="mx-auto max-w-[1600px] w-full">
+      {/* this div below ↓ it to add spacing to avoid header */}
+      <div className="relative pt-24"></div>
+      <FeaturedCars />
       <div className="block sm:hidden">
         <BannerTitle image={CarsBg} text={'Cars'} />
       </div>
@@ -60,8 +61,9 @@ const CarsPage = () => {
         CARS COMPETITION
       </p>
       <div className="h-full  px-10 pb-20 ">
-        <Glow className=" absolute  top-[560px] -right-16  p-2   w-1/5 h-[350px]  " />
-        <Glow className=" absolute  bottom-96 -right-16  w-1/5 h-[350px] " />
+        <Glow className=" absolute  top-[560px] -right-16     w-1/5 h-[350px] overflow-hidden " />
+
+        <Glow className=" absolute  bottom-96 -right-16  w-1/5 h-[350px] overflow-x-hidden" />
         <div className=" grid grid-cols-1 md:grid-cols-2     lg:grid-cols-3   justify-between max-w-[1300px] mx-auto ">
           {products?.map((itemList, i) => {
             return (
@@ -70,7 +72,7 @@ const CarsPage = () => {
                   isLast={i === products.length - 1}
                   nextPage={nextPage}
                   dir={lang.dir}
-                  cash={itemList?.src}
+                  data={itemList}
                   class="z-50 h-full max-w-sm lg:max-w-2xl md:scale-95  w-full  "
                 />
               </div>
@@ -85,7 +87,7 @@ const CarsPage = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

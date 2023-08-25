@@ -142,3 +142,7 @@
   width: 100%;
   background-color: blue;
 }
+ .ql-editor {
+  background-color: black;
+  color: white;
+}

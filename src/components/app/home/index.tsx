@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import ProductSection from './product_section';
 import CategorySection from './product_category';
 import HowtoSection from './how_to_play';
@@ -6,40 +6,31 @@ import WhyChoose from './why_choose';
 import Testimonials from './testimonials';
 import BannerSlider from './banner_slider';
 import VideoSlider from './video_slider';
+import { useSelector } from 'react-redux';
+import { RootState } from '~/store/store';
 import { trpc } from '~/utils/trpc';
-import { Button } from '@/ui/button';
-function Home() {
-  const registration = trpc.admin.register.useMutation({
-    onSuccess: (res: any) => {
-      console.log("return data", res);
-    },
-    onError(error) {
-      console.log( error.message,"ERROR" );
-    },
-  })
 
-  async function register(){
-    console.log("Working")
-    const values={
-      name:"umair",
-      email:"umair.qsols@gmail.com",
-      role_id:1,
-      password:"umair12345"
-    }
-    console.log("values: ",values)
-    try {
-      const response = await registration.mutateAsync({ ...values });  
-      console.log("Response : ",response)
-    } catch (error : any ){
-      console.log("Error ",error)
-      // const errorMessage = formatTrpcError(error?.shape?.message);
-      
-    }
-  }
-  
+export default function Home() {
+  const { lang } = useSelector((state: RootState) => state.layout);
+
+  const [filters, setFilters] = useState({
+    lang_id: lang.lang_id,
+    first: 0,
+    rows: 9,
+  });
+
+  const todayDate = new Date();
+  console.log(todayDate, 'todayDate');
+
+  const endingDate = new Date();
+  endingDate.setDate(endingDate.getDate() + 7);
+  console.log(endingDate, 'endingDate');
+
+  // console.log(upcomingList?.data,"ip")
 
   return (
-    <div className=" flex flex-col gap-8 min-h-screen w-full max-w-[1600px] mx-auto  ">
+    <div className=" flex flex-col gap-8 min-h-screen w-full max-w-[1600px] mx-auto">
+      {/* // <div className=""> */}
       <div className="relative top-0">
         <BannerSlider />
       </div>
@@ -49,18 +40,20 @@ function Home() {
         <ProductSection
           class="max-w-sm lg:max-w-xs"
           slidesToShow={4}
-          center={true}
+          center={false}
           title={'ENDING SOON COMPETITIONS'}
+          type="closing"
         />
         {/* product section 2 */}
         <ProductSection
           class="max-w-md lg:max-w-sm xl:max-w-md ml-2   "
           slidesToShow={3}
-          center={true}
+          center={false}
           title="UPCOMING COMPETITIONS"
+          type="upcomming"
         />
-      </div>
         <CategorySection />
+      </div>
       <HowtoSection />
       <WhyChoose />
       <Testimonials />
@@ -72,11 +65,11 @@ function Home() {
           slidesToShow={4}
           center={false}
           title="Winnar Wonders: "
-          subTitle='A Glimpse of Excellence'
+          subTitle="A Glimpse of Excellence"
         />
       </div>
     </div>
   );
 }
 
-export default Home;
+// export default Home;

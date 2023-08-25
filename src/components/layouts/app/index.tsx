@@ -9,7 +9,6 @@ import { Toaster } from '~/components/ui/toaster';
 type DefaultLayoutProps = { children: ReactNode };
 
 function Index({ children }: DefaultLayoutProps) {
-
   const { lang } = useSelector((state: RootState) => state.layout);
 
 
@@ -21,7 +20,8 @@ function Index({ children }: DefaultLayoutProps) {
     >
       <Toaster />
       <Header />
-      <div className="w-full ">{children}</div>
+      {children}
+      
       <Footer />
 
     </div>

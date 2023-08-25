@@ -7,8 +7,12 @@ import CompititionDetail from './CompititionDetail';
 import Tabs from './Tabs';
 import AccordianFaqs from './Faqs';
 import LoginSignup from '../auth/LoginSignup';
+import { useRouter } from 'next/router';
 
 const ProductDetail = () => {
+    const router = useRouter();
+  const { id } = router.query;
+  console.log(id,"i am id work")
   return (
     <div>
       <Tabs />
