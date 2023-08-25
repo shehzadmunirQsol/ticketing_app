@@ -9,6 +9,7 @@ interface cardInterface {
   class?: string;
   dir?: string;
   cash?: any;
+  data?: any;
   nextPage?: () => void;
   isLast?: boolean;
 }
@@ -87,10 +88,7 @@ function ProductCard(props: cardInterface) {
           <div className="text-primary text-lg font-black leading-[18px]">
             AED 120.00
           </div>
-          <Button
-            variant="rounded"
-            className="font-[800] tracking-tight  "
-          >
+          <Button variant="rounded" className="font-[800] tracking-tight  ">
             ENTER NOW
           </Button>
         </div>

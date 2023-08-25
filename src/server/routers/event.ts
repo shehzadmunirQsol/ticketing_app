@@ -3,7 +3,9 @@ import { TRPCError } from '@trpc/server';
 import {
   createEventSchema,
   deleteEventSchema,
+  getClosingSoon,
   getEventSchema,
+  getUpcoming,
 } from '~/schema/event';
 import { prisma } from '~/server/prisma';
 
@@ -58,6 +60,163 @@ export const eventRouter = router({
       });
     }
   }),
+  
+  getByCategoryId: publicProcedure.input(getEventSchema).query(async ({ input }) => {
+    try {
+      console.log({ input }, "event input ")
+      const where: any = { is_deleted: false };
+
+      if (input?.startDate) {
+        const startDate = new Date(input?.startDate);
+        where.created_at = { gte: startDate };
+      }
+      if (input?.endDate) {
+        const endDate = new Date(input?.endDate);
+        where.created_at = { lte: endDate };
+      }
+
+      if (input.category_id) where.category_id = input.category_id;
+
+      const totalEventPromise = prisma.event.count({
+        where: where,
+      });
+
+      const eventPromise = prisma.event.findMany({
+        orderBy: { created_at: 'asc' },
+        skip: input.first * input.rows,
+        take: input.rows,
+        where: where,
+      });
+
+      const [totalEvent, event] = await Promise.all([
+        totalEventPromise,
+        eventPromise,
+      ]);
+
+      if (!event?.length) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Events not found',
+        });
+      }
+
+      console.log(totalEvent, event, "event data")
+      return {
+        message: 'Events found',
+        count: totalEvent,
+        data: event,
+      };
+    } catch (error: any) {
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: error?.message,
+      });
+    }
+  }),
+
+  getUpcomimg: publicProcedure.input(getUpcoming).query(async ({ input }) => {
+    try {
+      const where: any = { is_deleted: false };
+
+
+      if (input?.startDate) {
+        const startDate = new Date(input?.startDate);
+        where.created_at = { gte: startDate };
+      }
+      if (input?.endDate) {
+        const endDate = new Date(input?.endDate);
+        where.created_at = { lte: endDate };
+      }
+
+      
+      // upcoming means its going to start
+      if (input.date) where.launch_date = { gte: input.date };
+
+      const totalEventPromise = prisma.event.count({
+        where: where,
+      });
+
+      const eventPromise = prisma.event.findMany({
+        orderBy: { created_at: 'asc' },
+        where: where,
+      });
+
+      const [totalEvent, event] = await Promise.all([
+        totalEventPromise,
+        eventPromise,
+      ]);
+
+      if (!event?.length) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Events not found',
+        });
+      }
+      console.log({event},"events up")
+      return {
+        message: 'events found',
+        count: totalEvent,
+        data: event,
+      };
+    } catch (error: any) {
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: error?.message,
+      });
+    }
+  }),
+
+  getClosingSoon: publicProcedure.input(getClosingSoon).query(async ({ input }) => {
+    try {
+      const where: any = { is_deleted: false };
+
+      if (input?.startDate) {
+        const startDate = new Date(input?.startDate);
+        where.created_at = { gte: startDate };
+      }
+      if (input?.endDate) {
+        const endDate = new Date(input?.endDate);
+        where.created_at = { lte: endDate };
+      }
+
+      if (input.event_id) where.id = input.event_id;
+
+      const totalEventPromise = prisma.event.count({
+        where: where,
+      });
+
+      const eventPromise = prisma.event.findMany({
+        orderBy: { created_at: 'desc' },
+        skip: input.first,
+        take: input.rows,
+        where: where,
+      });
+
+      const [totalEvent, event] = await Promise.all([
+        totalEventPromise,
+        eventPromise,
+      ]);
+
+      if (!event?.length) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Events not found',
+        });
+      }
+
+      return {
+        message: 'events found',
+        count: totalEvent,
+        data: event,
+      };
+    } catch (error: any) {
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: error?.message,
+      });
+    }
+  }),
+  
   create: publicProcedure
     .input(createEventSchema)
     .mutation(async ({ input }) => {

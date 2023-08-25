@@ -13,6 +13,7 @@ interface producctInterface {
   class?: string;
   title: string;
   center: boolean;
+  data?:any;
   slidesToShow?: number;
 }
 function ProductSection(props: producctInterface) {
@@ -66,7 +67,7 @@ function ProductSection(props: producctInterface) {
     ],
   };
   return (
-    <div className="relative  w-full ">
+    <div className="   w-full ">
       <div className=" relative flex flex-col md:flex-row h-28 md:h-auto py-6  items-center w-full md:justify-between mb-6">
         <p className="text-gray-200 !text-xl sm:!text-3xl lg:!text-5xl font-black uppercase  ">
           {props?.title}

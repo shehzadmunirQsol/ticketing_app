@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import ProductSection from './product_section';
 import CategorySection from './product_category';
 import HowtoSection from './how_to_play';
@@ -6,40 +6,46 @@ import WhyChoose from './why_choose';
 import Testimonials from './testimonials';
 import BannerSlider from './banner_slider';
 import VideoSlider from './video_slider';
+import { useSelector } from 'react-redux';
+import { RootState } from '~/store/store';
 import { trpc } from '~/utils/trpc';
-import { Button } from '@/ui/button';
-function Home() {
-  const registration = trpc.admin.register.useMutation({
-    onSuccess: (res: any) => {
-      console.log("return data", res);
-    },
-    onError(error) {
-      console.log( error.message,"ERROR" );
-    },
-  })
 
-  async function register(){
-    console.log("Working")
-    const values={
-      name:"umair",
-      email:"umair.qsols@gmail.com",
-      role_id:1,
-      password:"umair12345"
-    }
-    console.log("values: ",values)
-    try {
-      const response = await registration.mutateAsync({ ...values });  
-      console.log("Response : ",response)
-    } catch (error : any ){
-      console.log("Error ",error)
-      // const errorMessage = formatTrpcError(error?.shape?.message);
-      
-    }
-  }
-  
+function Home() {
+  const { lang } = useSelector((state: RootState) => state.layout);
+
+  const [filters, setFilters] = useState({
+    lang_id: lang.lang_id,
+    first: 0,
+    rows: 9,
+  });
+
+  const todayDate = new Date();
+  console.log(todayDate, 'todayDate');
+
+  const endingDate = new Date();
+  endingDate.setDate(endingDate.getDate() + 7);
+  console.log(endingDate, 'endingDate');
+
+  // const {
+  //   data: upcomingList,
+  //   isFetched,
+  //   isLoading,
+  //   isError,
+  // } = trpc.event.getUpcomimg.useQuery(
+  //   {
+  //     lang_id: lang.lang_id,
+  //     date: todayDate,
+  //   },
+  //   {
+  //     refetchOnWindowFocus: false,
+  //   },
+  // );
+
+  // console.log(upcomingList?.data,"ip")
 
   return (
-    <div className=" flex flex-col gap-8 min-h-screen w-full max-w-[1600px] mx-auto  ">
+    <div className=" flex flex-col gap-8 min-h-screen w-full max-w-[1600px] mx-auto">
+      {/* // <div className=""> */}
       <div className="relative top-0">
         <BannerSlider />
       </div>
@@ -59,8 +65,8 @@ function Home() {
           center={true}
           title="UPCOMING COMPETITIONS"
         />
-      </div>
         <CategorySection />
+      </div>
       <HowtoSection />
       <WhyChoose />
       <Testimonials />
@@ -72,7 +78,7 @@ function Home() {
           slidesToShow={4}
           center={false}
           title="Winnar Wonders: "
-          subTitle='A Glimpse of Excellence'
+          subTitle="A Glimpse of Excellence"
         />
       </div>
     </div>

@@ -25,8 +25,6 @@ const VideoCard = (props: cardInterface) => {
     // return (
     // );
   };
-
-  console.log(props?.data, 'video card');
   return (
     <div className="relative group">
       <Dialog>

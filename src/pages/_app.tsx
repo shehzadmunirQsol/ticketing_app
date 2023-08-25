@@ -5,8 +5,6 @@ import Layout from '~/components/layouts';
 import { trpc } from '~/utils/trpc';
 import '~/styles/globals.css';
 
-
-
 export type NextPageWithLayout<
   TProps = Record<string, unknown>,
   TInitialProps = TProps,
