@@ -224,7 +224,7 @@ export const eventRouter = router({
       try {
         const where: any = {
           is_deleted: false,
-          // EventDescription: { lang_id: { some: input?.lang_id } },
+          EventDescription: { some: { lang_id: input?.lang_id } },
         };
         const todayDate = new Date();
         const endingDate = new Date();
@@ -247,7 +247,11 @@ export const eventRouter = router({
           where: where,
           include: {
             EventDescription: {
+              where: {
+                lang_id: input?.lang_id,
+              },
               select: {
+                id: true,
                 lang_id: true,
                 desc: true,
                 comp_details: true,
