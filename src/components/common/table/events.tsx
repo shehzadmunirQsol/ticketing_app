@@ -52,102 +52,6 @@ export type Category = {
   updated_at: Date;
 };
 
-export const columns: ColumnDef<Category>[] = [
-  {
-    accessorKey: 'name',
-    header: 'Name',
-    cell: ({ row }) => {
-      return (
-        <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
-          <Image
-            className="object-cover bg-ac-2 h-10 w-16 rounded-lg"
-            src={renderNFTImage(row.original)}
-            alt={row?.original?.name}
-            width={100}
-            height={100}
-          />
-
-          <p className="text-base font-normal">{row?.original?.name}</p>
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: 'desc',
-    header: 'Description',
-    cell: ({ row }) => (
-      <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden w-64">
-        {row.getValue('desc')}
-      </div>
-    ),
-  },
-  {
-    accessorKey: 'price',
-    header: 'Token Price',
-    cell: ({ row }) => (
-      <div className="capitalize text-ellipsis whitespace-nowrap ">
-        ${(row?.original?.price).toFixed(2)}
-      </div>
-    ),
-  },
-  {
-    accessorKey: 'total_tickets',
-    header: 'Token Cap',
-    cell: ({ row }) => (
-      <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
-        {row?.original?.total_tickets}
-        &nbsp;
-        <sub>qty</sub>
-      </div>
-    ),
-  },
-  {
-    accessorKey: 'tickets_sold',
-    header: 'Token Purchased',
-    cell: ({ row }) => (
-      <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
-        {row?.original?.tickets_sold}
-        &nbsp;
-        <sub>qty</sub>
-      </div>
-    ),
-  },
-  {
-    accessorKey: 'user_ticket_limit',
-    header: 'Per User Purchased',
-    cell: ({ row }) => (
-      <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
-        {row?.original?.user_ticket_limit}
-        &nbsp;
-        <sub>qty</sub>
-      </div>
-    ),
-  },
-  {
-    id: 'actions',
-    enableHiding: false,
-    cell: ({ row }) => {
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <Link href={`/admin/category/edit/${row?.original?.id}`}>
-              <DropdownMenuItem>Edit Category</DropdownMenuItem>
-            </Link>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
-  },
-];
-
 export default function EventsDataTable() {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [filters, setFilters] = useState<GetEventSchema>({
@@ -165,7 +69,101 @@ export default function EventsDataTable() {
   const categoryData = React.useMemo(() => {
     return Array.isArray(data?.data) ? data?.data : [];
   }, [data]);
+  const columns: ColumnDef<Category>[] = [
+    {
+      accessorKey: 'name',
+      header: 'Name',
+      cell: ({ row }) => {
+        return (
+          <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
+            <Image
+              className="object-cover bg-ac-2 h-10 w-16 rounded-lg"
+              src={renderNFTImage(row.original)}
+              alt={row?.original?.name}
+              width={100}
+              height={100}
+            />
 
+            <p className="text-base font-normal">{row?.original?.name}</p>
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: 'desc',
+      header: 'Description',
+      cell: ({ row }) => (
+        <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden w-64">
+          {row.getValue('desc')}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'price',
+      header: 'Token Price',
+      cell: ({ row }) => (
+        <div className="capitalize text-ellipsis whitespace-nowrap ">
+          ${(row?.original?.price).toFixed(2)}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'total_tickets',
+      header: 'Token Cap',
+      cell: ({ row }) => (
+        <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
+          {row?.original?.total_tickets}
+          &nbsp;
+          <sub>qty</sub>
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'tickets_sold',
+      header: 'Token Purchased',
+      cell: ({ row }) => (
+        <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
+          {row?.original?.tickets_sold}
+          &nbsp;
+          <sub>qty</sub>
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'user_ticket_limit',
+      header: 'Per User Purchased',
+      cell: ({ row }) => (
+        <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
+          {row?.original?.user_ticket_limit}
+          &nbsp;
+          <sub>qty</sub>
+        </div>
+      ),
+    },
+    {
+      id: 'actions',
+      enableHiding: false,
+      cell: ({ row }) => {
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <Link href={`/admin/category/edit/${row?.original?.id}`}>
+                <DropdownMenuItem>Edit Category</DropdownMenuItem>
+              </Link>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        );
+      },
+    },
+  ];
   const table = useReactTable({
     data: categoryData as Category[],
     columns,
