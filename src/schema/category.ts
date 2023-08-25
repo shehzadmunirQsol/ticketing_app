@@ -16,7 +16,7 @@ export const getCategoryEventSchema = z.object({
 });
 export const createCategorySchema = z.object({
   thumb: z.string(),
-  creator_id: z.number(),
+  user_id: z.number(),
 
   en: z.object({
     name: z
@@ -61,7 +61,7 @@ export const createCategorySchema = z.object({
 export const updateCategorySchema = z.object({
   category_id: z.number(),
   thumb: z.string(),
-  creator_id: z.number(),
+  user_id: z.number(),
 
   en: z.object({
     name: z
