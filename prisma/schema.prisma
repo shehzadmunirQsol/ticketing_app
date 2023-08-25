@@ -28,14 +28,14 @@ model Setting {
   group      SettingEnums @default(BANNER)
   key        String
   value      String       @db.LongText
-  lang_id    Int          @default(1)
+  lang_id    Int?         @default(1)
   is_deleted Boolean      @default(false)
   is_enabled Boolean      @default(false)
 
   created_at DateTime @default(now()) @db.Timestamp(6)
   updated_at DateTime @default(now()) @db.Timestamp(6)
 
-  Language Language @relation(fields: [lang_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Language Language? @relation(fields: [lang_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@index([lang_id])
   @@map("setting")
@@ -54,90 +54,33 @@ model AdminUser {
 
   Role Role @relation(fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
-  Post                Category[]
-  Event               Event[]
-  FAQs                FAQ[]
-  FAQsDescription     FaqDescription[]
-  CustomerDescription CustomerDescription[]
-  CategoryView        CategoryView[]
+  Post         Category[]
+  Event        Event[]
+  CategoryView CategoryView[]
+  CMS          CMS[]
 
   @@index([role_id])
   @@map("admin_user")
 }
 
 model Language {
-  id         Int     @id @default(autoincrement())
+  id         Int           @id @default(autoincrement())
   name       String
   code       String
-  is_default Boolean @default(false)
-  is_deleted Boolean @default(false)
+  dir        LanguageEnums @default(ltr)
+  is_default Boolean       @default(false)
+  is_deleted Boolean       @default(false)
 
   created_at          DateTime              @default(now()) @db.Timestamp(6)
   updated_at          DateTime              @default(now()) @db.Timestamp(6)
-  FAQsDescription     FaqDescription[]
-  CustomerDescription CustomerDescription[]
   CharityDescription  CharityDescription[]
   CategoryDescription CategoryDescription[]
   EventDescription    EventDescription[]
   EventFAQ            EventFAQ[]
   Setting             Setting[]
+  CMSDescription      CMSDescription[]
 
   @@map("language")
-}
-
-model FAQ {
-  id         Int     @id @default(autoincrement())
-  user_id    Int
-  is_deleted Boolean @default(false)
-
-  created_at DateTime @default(now()) @db.Timestamp(6)
-  updated_at DateTime @default(now()) @db.Timestamp(6)
-
-  User            AdminUser        @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  FAQsDescription FaqDescription[]
-
-  @@index([user_id])
-  @@map("faq")
-}
-
-model FaqDescription {
-  id      Int    @id @default(autoincrement())
-  qustion String
-  answer  String @db.LongText
-  lang_id Int
-  faq_id  Int
-
-  Language Language   @relation(fields: [lang_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  FAQ      FAQ        @relation(fields: [faq_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  User     AdminUser? @relation(fields: [userId], references: [id])
-  userId   Int?
-
-  @@index([lang_id, faq_id])
-  @@map("faq_description")
-}
-
-model Customer {
-  id         Int     @id @default(autoincrement())
-  email      String  @unique
-  is_deleted Boolean @default(false)
-
-  created_at DateTime @default(now()) @db.Timestamp(6)
-  updated_at DateTime @default(now()) @db.Timestamp(6)
-
-  @@map("customer")
-}
-
-model CustomerDescription {
-  id      Int    @id @default(autoincrement())
-  name    String
-  lang_id Int
-  user_id Int
-
-  User     AdminUser @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  Language Language  @relation(fields: [lang_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-
-  @@index([user_id, lang_id])
-  @@map("customer_description")
 }
 
 model Charity {
@@ -149,6 +92,7 @@ model Charity {
   created_at         DateTime             @default(now()) @db.Timestamp(6)
   updated_at         DateTime             @default(now()) @db.Timestamp(6)
   CharityDescription CharityDescription[]
+  Event              Event[]
 
   @@map("charity")
 }
@@ -172,16 +116,16 @@ model CharityDescription {
 model Category {
   id         Int      @id @default(autoincrement())
   thumb      String
-  creator_id Int
+  user_id    Int
   is_deleted Boolean  @default(false)
   created_at DateTime @default(now()) @db.Timestamp(6)
   updated_at DateTime @default(now()) @db.Timestamp(6)
 
-  User                AdminUser             @relation(fields: [creator_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  User                AdminUser             @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   Event               Event[]
   CategoryDescription CategoryDescription[]
 
-  @@index([creator_id])
+  @@index([user_id])
   @@map("category")
 }
 
@@ -201,25 +145,8 @@ model CategoryDescription {
   @@map("category_description")
 }
 
-view CategoryView {
-  id         Int      @id @default(autoincrement())
-  thumb      String
-  creator_id Int
-  lang_id    Int
-  name       String
-  desc       String?  @db.LongText
-  is_deleted Boolean  @default(false)
-  created_at DateTime @default(now()) @db.Timestamp(6)
-  updated_at DateTime @default(now()) @db.Timestamp(6)
-
-  User  AdminUser @relation(fields: [creator_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  Event Event[]
-
-  @@map("category_view")
-}
-
 model Event {
-  id                Int     @id @default(autoincrement())
+  id                Int       @id @default(autoincrement())
   thumb             String
   video_src         String?
   price             Int
@@ -227,28 +154,29 @@ model Event {
   total_tickets     Int
   tickets_sold      Int
   user_ticket_limit Int
-  is_alt            Boolean @default(false)
-  is_enable         Boolean @default(false)
-  is_featured       Boolean @default(false)
-  creator_id        Int
+  is_cash_alt       Boolean   @default(false)
+  is_enabled        Boolean   @default(false)
+  is_featured       Boolean   @default(false)
+  user_id           Int
   category_id       Int
+  charity_id        Int
+  launch_date       DateTime? @default(now()) @db.Timestamp(6)
+  end_date          DateTime? @default(now()) @db.Timestamp(6)
+  created_at        DateTime  @default(now()) @db.Timestamp(6)
+  updated_at        DateTime  @default(now()) @db.Timestamp(6)
+  is_deleted        Boolean   @default(false)
 
-  launch_date DateTime? @default(now()) @db.Timestamp(6)
-  end_date    DateTime? @default(now()) @db.Timestamp(6)
-  is_deleted  Boolean   @default(false)
+  User              AdminUser           @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Category          Category            @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Charity           Charity             @relation(fields: [charity_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  EventImages       EventImage[]
+  EventFAQs         EventFAQ[]
+  EventDescription  EventDescription[]
+  OrderEvent        OrderEvent[]
+  OrderSubscription OrderSubscription[]
+  Winner            Winner[]
 
-  created_at DateTime @default(now()) @db.Timestamp(6)
-  updated_at DateTime @default(now()) @db.Timestamp(6)
-
-  User             AdminUser          @relation(fields: [creator_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  Category         Category           @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  EventImages      EventImage[]
-  EventFAQs        EventFAQ[]
-  EventDescription EventDescription[]
-  CategoryView     CategoryView?      @relation(fields: [categoryViewId], references: [id])
-  categoryViewId   Int?
-
-  @@index([creator_id, category_id])
+  @@index([user_id, category_id])
   @@map("event")
 }
 
@@ -302,6 +230,183 @@ model EventFAQ {
   @@map("event_faq")
 }
 
+model Customer {
+  id          Int      @id @default(autoincrement())
+  email       String   @unique
+  user_name   String   @unique
+  password    String
+  is_approved Boolean  @default(false)
+  otp         String   @default("")
+  first_name  String
+  profile_pic String?
+  last_name   String
+  dob         DateTime
+  is_deleted  Boolean  @default(false)
+
+  created_at        DateTime            @default(now()) @db.Timestamp(6)
+  updated_at        DateTime            @default(now()) @db.Timestamp(6)
+  Order             Order[]
+  CustomerAddress   CustomerAddress[]
+  OrderSubscription OrderSubscription[]
+  Winner            Winner[]
+
+  @@map("customer")
+}
+
+model CustomerAddress {
+  id               Int     @id @default(autoincrement())
+  customer_id      Int
+  street_address_1 String
+  street_address_2 String?
+  country          String
+  state            String
+  city             String
+  phone_number     String
+  postal_code      Int
+  is_deleted       Boolean @default(false)
+
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+
+  Customer Customer @relation(fields: [customer_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([customer_id])
+  @@map("customer_address")
+}
+
+model Order {
+  id               Int        @id @default(autoincrement())
+  total_amount     Int
+  status           OrderEnums @default(pending)
+  first_name       String
+  parent_order_id  Int?
+  customer_id      Int
+  last_name        String
+  email            String
+  dob              DateTime
+  street_address_1 String
+  street_address_2 String?
+  country          String
+  state            String
+  city             String
+  phone_number     String
+  postal_code      Int
+  is_deleted       Boolean    @default(false)
+
+  Customer    Customer @relation(fields: [customer_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  ParentOrder Order?   @relation(name: "ParentOrder", fields: [parent_order_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  created_at        DateTime            @default(now()) @db.Timestamp(6)
+  updated_at        DateTime            @default(now()) @db.Timestamp(6)
+  OrderEvent        OrderEvent[]
+  Order             Order[]             @relation("ParentOrder")
+  OrderSubscription OrderSubscription[]
+
+  @@index([customer_id])
+  @@map("order")
+}
+
+model OrderEvent {
+  id              Int     @id @default(autoincrement())
+  order_id        Int
+  event_id        Int
+  ticket_price    Int
+  quantity        Int
+  subscription_id Int?
+  is_deleted      Boolean @default(false)
+
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+
+  Order             Order              @relation(fields: [order_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Event             Event              @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  OrderSubscription OrderSubscription? @relation(fields: [subscription_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([order_id, event_id])
+  @@map("order_event")
+}
+
+model OrderSubscription {
+  id                    Int                @id @default(autoincrement())
+  ticket_price          Int
+  quantity              Int
+  customer_id           Int
+  order_id              Int
+  event_id              Int
+  total_subscription_id Int?
+  subscription_type     SubscriptionEnums? @default(weekly)
+  is_deleted            Boolean            @default(false)
+
+  next_date  DateTime     @default(now()) @db.Timestamp(6)
+  created_at DateTime     @default(now()) @db.Timestamp(6)
+  updated_at DateTime     @default(now()) @db.Timestamp(6)
+  OrderEvent OrderEvent[]
+
+  Customer Customer @relation(fields: [customer_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Order    Order    @relation(fields: [order_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Event    Event    @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([customer_id, order_id, event_id])
+  @@map("order_subscription")
+}
+
+model Winner {
+  id          Int     @id @default(autoincrement())
+  customer_id Int
+  event_id    Int
+  ticket_num  Int
+  is_cash_alt Boolean @default(false)
+  is_enabled  Boolean @default(false)
+  is_deleted  Boolean @default(false)
+
+  draw_date  DateTime? @default(now()) @db.Timestamp(6)
+  created_at DateTime  @default(now()) @db.Timestamp(6)
+  updated_at DateTime  @default(now()) @db.Timestamp(6)
+
+  Customer Customer @relation(fields: [customer_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Event    Event    @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([customer_id, event_id])
+  @@map("winner")
+}
+
+model CMS {
+  id         Int      @id @default(autoincrement())
+  user_id    Int
+  slug       String
+  type       CMSEnums @default(static)
+  is_deleted Boolean  @default(false)
+
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+
+  User           AdminUser        @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  CMSDescription CMSDescription[]
+
+  @@index([user_id])
+  @@map("cms")
+}
+
+model CMSDescription {
+  id            Int     @id @default(autoincrement())
+  cms_id        Int
+  title         String
+  desc          String
+  meta_keywords String
+  lang_id       Int
+  content       String  @db.LongText
+  is_deleted    Boolean @default(false)
+
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+
+  CMS      CMS      @relation(fields: [cms_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Language Language @relation(fields: [lang_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([lang_id])
+  @@map("cms_description")
+}
+
 view BannerView {
   id          Int          @unique
   group       SettingEnums
@@ -325,10 +430,48 @@ view BannerView {
   @@map("banner_view")
 }
 
+view CategoryView {
+  id         Int      @id @default(autoincrement())
+  thumb      String
+  user_id    Int
+  lang_id    Int
+  name       String
+  desc       String?  @db.LongText
+  is_deleted Boolean  @default(false)
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+
+  User AdminUser @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("category_view")
+}
+
 enum SettingEnums {
   BANNER
   WONDER
   PAYMENT
+}
+
+enum LanguageEnums {
+  rtl
+  ltr
+}
+
+enum SubscriptionEnums {
+  weekly
+  monthly
+  quarterly
+}
+
+enum CMSEnums {
+  faqs
+  static
+}
+
+enum OrderEnums {
+  pending
+  paid
+  rejected
 }
 
 // Tables
