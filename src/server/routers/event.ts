@@ -208,55 +208,69 @@ export const eventRouter = router({
       }
     }),
 
-  getUpcomimg: publicProcedure.input(getUpcoming).query(async ({ input }) => {
-    try {
-      const where: any = { is_deleted: false };
+  getUpcomimg: publicProcedure
+    .input(getClosingSoon)
+    .query(async ({ input }) => {
+      try {
+        const where: any = {
+          is_deleted: false,
+          // EventDescription: { lang_id: { some: input?.lang_id } },
+        };
+        const todayDate = new Date();
+        const endingDate = new Date();
+        endingDate.setDate(endingDate.getDate() + 7);
 
-      if (input?.startDate) {
-        const startDate = new Date(input?.startDate);
-        where.created_at = { gte: startDate };
-      }
-      if (input?.endDate) {
-        const endDate = new Date(input?.endDate);
-        where.created_at = { lte: endDate };
-      }
+        // upcoming means its going to start
+        if (input?.type == 'upcomming') where.launch_date = { gte: todayDate };
+        if (input?.type == 'closing') {
+          where.launch_date = { lte: todayDate };
+          where.end_date = { gte: todayDate, lte: endingDate };
+        }
+        const totalEventPromise = prisma.event.count({
+          where: where,
+        });
 
-      // upcoming means its going to start
-      if (input.date) where.launch_date = { gte: input.date };
+        const eventPromise = prisma.event.findMany({
+          orderBy: { created_at: 'asc' },
+          skip: input.first * input.rows,
+          take: input.rows,
+          where: where,
+          include: {
+            EventDescription: {
+              select: {
+                lang_id: true,
+                desc: true,
+                comp_details: true,
+              },
+            },
+          },
+        });
 
-      const totalEventPromise = prisma.event.count({
-        where: where,
-      });
+        const [totalEvent, event] = await Promise.all([
+          totalEventPromise,
+          eventPromise,
+        ]);
 
-      const eventPromise = prisma.event.findMany({
-        orderBy: { created_at: 'asc' },
-        where: where,
-      });
+        if (!event?.length) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Events not found',
+          });
+        }
 
-      const [totalEvent, event] = await Promise.all([
-        totalEventPromise,
-        eventPromise,
-      ]);
-
-      if (!event?.length) {
+        console.log(totalEvent, event, 'event data');
+        return {
+          message: 'Events found',
+          count: totalEvent,
+          data: event,
+        };
+      } catch (error: any) {
         throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'Events not found',
+          code: 'INTERNAL_SERVER_ERROR',
+          message: error?.message,
         });
       }
-      console.log({ event }, 'events up');
-      return {
-        message: 'events found',
-        count: totalEvent,
-        data: event,
-      };
-    } catch (error: any) {
-      throw new TRPCError({
-        code: 'INTERNAL_SERVER_ERROR',
-        message: error?.message,
-      });
-    }
-  }),
+    }),
 
   getClosingSoon: publicProcedure
     .input(getClosingSoon)

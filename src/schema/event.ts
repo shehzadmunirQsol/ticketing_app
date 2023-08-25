@@ -18,7 +18,8 @@ export const getUpcoming = z.object({
   first: z.number().optional(),
   rows: z.number().optional(),
   lang_id: z.number(),
-  date: z.date(),
+  date: z.date().optional(),
+  type: z.string(),
 });
 
 export const getClosingSoon = z.object({
@@ -26,10 +27,11 @@ export const getClosingSoon = z.object({
   endDate: z.date().optional(),
   category_id: z.number().optional(),
   event_id: z.number().optional(),
-  first: z.number().optional(),
-  rows: z.number().optional(),
+  first: z.number(),
+  rows: z.number(),
   lang_id: z.number(),
-  date: z.date(),
+  launc_date: z.date().optional(),
+  type: z.string(),
 });
 
 export const createEventSchema = z.object({

@@ -443,7 +443,7 @@ view EventView {
   user_ticket_limit Int
   lang_id           Int
   is_cash_alt            Boolean @default(false)
-  is_enable         Boolean @default(false)
+  is_enabled         Boolean @default(false)
   is_featured       Boolean @default(false)
 
   category_id       Int

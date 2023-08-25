@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import Slider from 'react-slick';
 
 import 'slick-carousel/slick/slick.css';
@@ -9,16 +9,43 @@ import ProductCard from '../../common/card';
 import { Button } from '../../ui/button';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
+import { trpc } from '~/utils/trpc';
 interface producctInterface {
   class?: string;
   title: string;
   center: boolean;
-  data?:any;
+  data?: any;
   slidesToShow?: number;
+  type: string;
 }
 function ProductSection(props: producctInterface) {
   const { lang } = useSelector((state: RootState) => state.layout);
+  const todayDate = new Date();
 
+  const [filters, setFilters] = useState({
+    lang_id: +lang.lang_id,
+    first: 0,
+    rows: 9,
+    type: props?.type,
+    category_id: 1,
+  });
+
+  const {
+    data: prductsList,
+    isFetched,
+    isLoading,
+    isError,
+  } = trpc.event.getUpcomimg.useQuery(filters, {
+    refetchOnWindowFocus: false,
+  });
+
+  console.log({ prductsList });
+  function nextPage() {
+    console.log('Next page emitted');
+    // if (products.length % filters.rows === 0) {
+    //   setFilters({ ...filters, first: 1 + filters.first });
+    // }
+  }
   const slide = useRef<any>();
   const next = () => {
     slide?.current.slickNext();
@@ -101,7 +128,12 @@ function ProductSection(props: producctInterface) {
           {['', '', '', '', '', '', '', '', ''].map((item, index) => {
             return (
               <div key={index} className="px-2">
-                <ProductCard class={`${props?.class} `} dir={`${lang?.dir}`} />
+                <ProductCard
+                  isLast={false}
+                  nextPage={nextPage}
+                  class={`${props?.class} `}
+                  dir={`${lang?.dir}`}
+                />
               </div>
             );
           })}
