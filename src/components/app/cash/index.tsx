@@ -59,6 +59,7 @@ const CashPage = () => {
                   nextPage={nextPage}
                   dir={lang.dir}
                   cash={Cash}
+                  data={itemList}
                   class="z-50 h-full max-w-sm lg:max-w-2xl md:scale-95  w-full  "
                 />
               </div>
