@@ -233,7 +233,7 @@ model EventFAQ {
 model Customer {
   id          Int      @id @default(autoincrement())
   email       String   @unique
-  user_name   String   @unique
+  username    String   @unique
   password    String
   is_approved Boolean  @default(false)
   otp         String   @default("")
