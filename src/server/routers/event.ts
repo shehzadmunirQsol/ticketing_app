@@ -60,7 +60,7 @@ export const eventRouter = router({
       });
     }
   }),
-  
+
   getByCategoryId: publicProcedure.input(getEventSchema).query(async ({ input }) => {
     try {
       console.log({ input }, "event input ")
@@ -86,6 +86,37 @@ export const eventRouter = router({
         skip: input.first * input.rows,
         take: input.rows,
         where: where,
+        select: {
+          id: true,
+          thumb: true,
+          video_src: true,
+          price: true,
+          cash_alt: true,
+          total_tickets: true,
+          tickets_sold: true,
+          user_ticket_limit: true,
+          // is_cash_alt: true,
+          // is_enabled: true,
+          is_featured: true,
+          // user_id: true,
+          category_id: true,
+          // charity_id: true,
+          launch_date: true,
+          end_date: true,
+          created_at: true,
+          updated_at: true,
+          is_deleted: true,
+          EventDescription: {
+            where: {
+              lang_id: input.lang_id
+            },
+            select: {
+              name: true,
+              desc: true,
+              lang_id: true,
+            }
+          },
+        }
       });
 
       const [totalEvent, event] = await Promise.all([
@@ -128,7 +159,7 @@ export const eventRouter = router({
         where.created_at = { lte: endDate };
       }
 
-      
+
       // upcoming means its going to start
       if (input.date) where.launch_date = { gte: input.date };
 
@@ -152,7 +183,7 @@ export const eventRouter = router({
           message: 'Events not found',
         });
       }
-      console.log({event},"events up")
+      console.log({ event }, "events up")
       return {
         message: 'events found',
         count: totalEvent,
@@ -216,7 +247,7 @@ export const eventRouter = router({
       });
     }
   }),
-  
+
   create: publicProcedure
     .input(createEventSchema)
     .mutation(async ({ input }) => {

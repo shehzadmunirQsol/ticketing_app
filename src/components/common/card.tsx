@@ -5,6 +5,9 @@ import CarImage from '~/public/assets/card_image.png';
 import BottleImage from '~/public/assets/bottle.png';
 import { Progress } from '../ui/progress';
 import { Button } from '../ui/button';
+import { renderNFTImage } from '~/utils/helper';
+import { useSelector } from 'react-redux';
+import { RootState } from '~/store/store';
 interface cardInterface {
   class?: string;
   dir?: string;
@@ -15,7 +18,9 @@ interface cardInterface {
 }
 
 function ProductCard(props: cardInterface) {
+  console.log(props.data,"incards")
   const cardRef = useRef<HTMLDivElement>(null);
+  const {lang}=useSelector((state:RootState)=>state.layout)
 
   /**
    * Implement Intersection Observer to check if the last Card in the array is visible on the screen, then set a new limit
@@ -47,7 +52,7 @@ function ProductCard(props: cardInterface) {
           width={150}
           height={100}
           className="w-full h-full object-cover bg-white"
-          src={props?.cash ?? CarImage}
+          src={props?.cash ?? renderNFTImage(props.data) ?? CarImage}
           quality={100}
           alt="Sunset in the mountains"
         />
@@ -66,13 +71,12 @@ function ProductCard(props: cardInterface) {
           <Progress value={80} className="w-full" />
         </div>
         <div className="font-bold text-3xl mb-2">
-          <span className="text-gray-200  font-black leading-loose">WIN </span>
-          <span className="text-gray-200 font-normal leading-loose">
-            Hyundai Aura
+          <span className="text-gray-200  font-semibold leading-loose">
+            {props?.data?.EventDescription[0]?.name}
           </span>
         </div>
         <div className="opacity-75 text-gray-200  text-lg font-normal leading-normal">
-          Buy Evian Water Bottle and make it yours!
+          {props?.data?.EventDescription[0]?.desc}
         </div>
         <hr className=" opacity-20 mt-4" />
         <div className=" mt-2">
