@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import ProductSection from './product_section';
 import CategorySection from './product_category';
 import HowtoSection from './how_to_play';
@@ -6,22 +6,17 @@ import WhyChoose from './why_choose';
 import Testimonials from './testimonials';
 import BannerSlider from './banner_slider';
 import VideoSlider from './video_slider';
-import { useSelector } from 'react-redux';
-import { RootState } from '~/store/store';
-import { trpc } from '~/utils/trpc';
 import Glow from '~/components/common/glow';
 
 export default function Home() {
-  const { lang } = useSelector((state: RootState) => state.layout);
-
   const todayDate = new Date();
   console.log(todayDate, 'todayDate');
 
   const endingDate = new Date();
   endingDate.setDate(endingDate.getDate() + 7);
   console.log(endingDate, 'endingDate');
-  const slide1=useRef<any>()
-  const slide2=useRef<any>()
+  const slide1 = useRef<any>();
+  const slide2 = useRef<any>();
 
   // console.log(upcomingList?.data,"ip")
 
@@ -73,5 +68,3 @@ export default function Home() {
     </div>
   );
 }
-
-// export default Home;

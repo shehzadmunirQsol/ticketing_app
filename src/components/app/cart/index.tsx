@@ -3,46 +3,64 @@ import CarImage from '~/public/assets/Ford-Mustang-PNG-Pic.png';
 import BottleImage from '~/public/assets/bottle.png';
 import { Button } from '~/components/ui/button';
 import { Switch } from '~/components/ui/switch';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Input } from '~/components/ui/input';
+import ProductSection from '../home/product_section';
+import Glow from '~/components/common/glow';
 
 export default function CartPage() {
+  const slide1 = useRef<any>();
+
   return (
-    <div className="">
-      <div className="relative pt-24"></div>
-      <div className="bg-background py-14 px-8 space-y-14">
+    <div className="relative">
+      <div className="pt-24"></div>
+      <div className="relative bg-background py-16 px-14 space-y-14">
         <h2 className="text-5xl font-bold uppercase">Basket</h2>
         <div data-name="cards" className="w-full border-b border-white/40">
           {[...Array(3)].map((_, i) => (
             <CartItem key={Math.random() * i} />
           ))}
         </div>
-        <div className="space-y-4 w-1/3 ml-auto">
+        <div className="bg-background space-y-4 w-1/3 ml-auto">
           <div className="flex bg-card border border-border">
             <Input
               placeholder="Coupon code"
-              className="px-4 flex-1 bg-transparent border-none"
+              className="px-4 flex-1 bg-transparent border-none z-10 "
             />
             <Button
               variant={'ghost'}
-              className="text-primary border-l border-border"
+              className="text-primary border-l border-border z-10 "
             >
               Apply Coupon
             </Button>
           </div>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between z-10 ">
             <p className="text-lg">Total:</p>
             <p className="text-xl text-primary font-bold">AED: 240.00</p>
           </div>
           <Button
             variant={'clip'}
             size={'full'}
-            className="uppercase text-lg font-bold"
+            className="uppercase text-lg font-bold z-10 "
           >
             Proceed to Checkout
           </Button>
         </div>
+        <Glow className="absolute right-0 bottom-0 w-1/5 h-40 overflow-hidden -z-10" />
       </div>
+
+      <div className="py-10 pl-14 pr-4">
+        {/* 13 cards */}
+        <ProductSection
+          class="max-w-sm lg:max-w-sm"
+          slidesToShow={3}
+          center={false}
+          title={'Last chance offer'}
+          type="closing"
+          slide={slide1}
+        />
+      </div>
+      <Glow className="absolute right-0 bottom-0 w-1/5 h-60 overflow-hidden" />
     </div>
   );
 }

@@ -17,7 +17,7 @@ interface producctInterface {
   data?: any;
   slidesToShow?: number;
   type: string;
-  slide: React.Ref<HTML>;
+  slide: React.Ref<HTMLElement>;
 }
 function ProductSection(props: producctInterface) {
   const { lang } = useSelector((state: RootState) => state.layout);
@@ -148,11 +148,15 @@ function ProductSection(props: producctInterface) {
 
       <div className="relative z-10">
         {/* glow */}
-        <div
-          className={`absolute bottom-10 ${
-            props.type == 'closing' ? 'right-0' : 'left-0'
-          }  z-2  w-1/5 h-3/5  bg-teal-400 bg-opacity-50 rounded-full blur-3xl`}
-        ></div>
+        {/* {props.type === 'no-glow' ? (
+          ''
+        ) : (
+          <div
+            className={`absolute bottom-10 ${
+              props.type == 'closing' ? 'right-0' : 'left-0'
+            }  z-2  w-1/5 h-3/5  bg-teal-400 bg-opacity-50 rounded-full blur-3xl`}
+          ></div>
+        )} */}
 
         <Slider ref={props.slide} {...settings}>
           {products.map((item, index) => {
