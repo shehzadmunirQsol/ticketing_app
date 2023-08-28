@@ -27,45 +27,58 @@ import Link from 'next/link';
 import { ForgotPasswordDailog } from './ForgotPassword';
 
 export default function LoginSignup() {
-  const toast = useToast();
+  const { toast } = useToast();
   const router = useRouter();
 
   const formSignup = useForm<signupCustomerInput>();
   const formLogin = useForm<loginCustomerInput>();
 
-
   // Handle Forget Password Modal
   const [isModal, setIsModal] = React.useState(false);
-
+  const [defaultValue, setDefaultValue] = React.useState('login');
+  console.log(defaultValue, 'defaultValue');
   // register customer
   const registerCustomer = trpc.customer.register.useMutation({
     onSuccess: (res: any) => {
       console.log(res, 'res');
+      toast({
+        variant: 'success',
+        title: 'User Register Successfully',
+      });
+      // router.push('/login')
+      setDefaultValue('login');
+      formSignup.setValue("username", "")
+      formSignup.setValue("email", "")
+      formSignup.setValue("password", "")
+      formSignup.setValue("firstname", "")
+      formSignup.setValue("lastname", "")
     },
     onError: (err) => {
       console.log(err.message, 'err');
-      // toast({
-      //   variant: 'success',
-      //   title: err.message,
-      // });
-      // console.log(err.message, 'login err');
+      toast({
+        variant: 'destructive',
+        title: err.message,
+      });
     },
   });
 
-  // register customer
+  // login customer
   const loginCustomer = trpc.customer.loginCustomer.useMutation({
     onSuccess: (res: any) => {
-      console.log(res, 'res');
-      router.push('/')
-
+      toast({
+        variant: 'success',
+        title: 'User Login Successfully ',
+      });
+      router.push('/');
+      formLogin.setValue("email", "")
+      formLogin.setValue("password", "")
     },
     onError: (err) => {
       console.log(err.message, 'err');
-      // toast({
-      //   variant: 'success',
-      //   title: err.message,
-      // });
-      // console.log(err.message, 'login err');
+      toast({
+        variant: 'destructive',
+        title: err.message,
+      });
     },
   });
 
@@ -90,7 +103,7 @@ export default function LoginSignup() {
           <SideImage />
         </div>
         <Tabs
-          defaultValue={'signup'}
+          defaultValue={defaultValue === "login" ? "login" : "signup"}
           className="flex flex-col flex-wrap   lg:w-2/2 md:w-full  lg:text-left  rounded-none border-none  lg:mr-6 bg-card"
         >
           <>
@@ -142,7 +155,7 @@ export default function LoginSignup() {
                         </FormLabel>
                         <FormControl>
                           <Input
-                            type="text"
+                            type="password"
                             placeholder="Enter Your Password"
                             {...field}
                           />
@@ -153,7 +166,10 @@ export default function LoginSignup() {
                   />
                 </div>
                 <div className="flex  flex-col lg:flex-row md:flex-row  lg:flex justify-end items-center gap-6 ">
-                  <p className="underline text-xs lg:text-base md:text-base cursor-pointer" onClick={()=>setIsModal(true)}>
+                  <p
+                    className="underline text-xs lg:text-base md:text-base cursor-pointer"
+                    onClick={() => setIsModal(true)}
+                  >
                     Forgot Password?
                   </p>
                   <Button
@@ -221,7 +237,7 @@ export default function LoginSignup() {
                         </FormLabel>
                         <FormControl>
                           <Input
-                            type="text"
+                            type="password"
                             placeholder="Enter your password"
                             {...field}
                           />
@@ -288,14 +304,8 @@ export default function LoginSignup() {
         </Tabs>
         {/* </div> */}
       </div>
-        
-        <ForgotPasswordDailog
-        
-    
-        isModal={isModal}
-        setIsModal={setIsModal}
-        />
 
+      <ForgotPasswordDailog isModal={isModal} setIsModal={setIsModal} />
     </section>
   );
 }

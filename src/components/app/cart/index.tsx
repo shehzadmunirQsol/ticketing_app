@@ -3,14 +3,12 @@ import CarImage from '~/public/assets/Ford-Mustang-PNG-Pic.png';
 import BottleImage from '~/public/assets/bottle.png';
 import { Button } from '~/components/ui/button';
 import { Switch } from '~/components/ui/switch';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { Input } from '~/components/ui/input';
 import ProductSection from '../home/product_section';
 import Glow from '~/components/common/glow';
 
 export default function CartPage() {
-  const slide1 = useRef<any>();
-
   return (
     <div className="relative">
       <div className="pt-24"></div>
@@ -46,7 +44,7 @@ export default function CartPage() {
             Proceed to Checkout
           </Button>
         </div>
-        <Glow className="absolute right-0 bottom-0 w-1/5 h-40 overflow-hidden -z-10" />
+        <Glow className="absolute right-0 bottom-0 w-1/5 h-40 overflow-hidden" />
       </div>
 
       <div className="py-10 pl-14 pr-4">
@@ -56,11 +54,10 @@ export default function CartPage() {
           slidesToShow={3}
           center={false}
           title={'Last chance offer'}
-          type="closing"
-          slide={slide1}
+          type="no-glow"
         />
       </div>
-      <Glow className="absolute right-0 bottom-0 w-1/5 h-60 overflow-hidden" />
+      <Glow className="absolute right-0 bottom-0 w-1/5 h-40 overflow-hidden -z-10" />
     </div>
   );
 }

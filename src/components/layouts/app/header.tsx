@@ -196,8 +196,8 @@ export function ItemMenuDemo() {
     },
     {
       name: 'Winners',
-      // link: `/winners`,
-      link: `/`,
+      link: `/winners`,
+      // link: `/`,
       icon: 'fa-sharp fa-regular fa-images',
     },
     {

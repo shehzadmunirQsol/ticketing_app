@@ -5,6 +5,7 @@ import {
   signupCustomerSchema,
   loginCustomerSchema,
   forgotPasswordCustomerSchema,
+  resetPasswordCustomerSchema,
 } from '~/schema/customer';
 import { hashPass, isSamePass } from '~/utils/hash';
 import { signJWT } from '~/utils/jwt';
@@ -32,7 +33,7 @@ export const customerRouter = router({
           if (isExist) {
             return isExist;
           }
-          let hashPassword = await hashPass(input.password);
+          const hashPassword = await hashPass(input.password);
           console.log('HASH Pass : ', hashPassword);
 
           // CustomerData Payload
@@ -76,7 +77,7 @@ export const customerRouter = router({
         }
         console.log('Inout Pass : ', input.password);
         console.log('User Pass : ', user?.password);
-        let checkPass = await isSamePass(input.password, user?.password);
+        const checkPass = await isSamePass(input.password, user?.password);
         console.log('check pass', checkPass);
 
         if (!checkPass) {
@@ -124,30 +125,81 @@ export const customerRouter = router({
         const respCode = await generateOTP(4);
         const mailOptions = {
           template_id: 2,
-          from: 'muzammil.devqsols@gmail.com',
+          from: 'shehzadmunir.qsols@gmail.com',
           to: input.email,
           subject: 'Forgot Password request to Winnar',
-            link: `Hello, 
-          Your Forget Password Verfication Link Here :http://localhost:3000/reset-password?verification_code=${respCode}.`,
+          link: `:http://localhost:3000/reset-password?verification_code=${respCode}&email=${user.email}`,
         };
+        const mailResponse = await sendEmail(mailOptions);
         const updateResponse = await prisma.customer?.update({
-          where : {
+          where: {
             id: user.id,
           },
-          data : {
+          data: {
             otp: respCode,
-          }
+          },
         });
+        console.log(updateResponse, 'updateResponse');
+        return updateResponse;
+      } catch (error: any) {
+        console.log({ error });
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: error.message,
+        });
+      }
+    }),
 
-        const mailResponse = await sendEmail(mailOptions);
+  resetPasswordCustomer: publicProcedure
+    .input(resetPasswordCustomerSchema)
+    .mutation(async ({ ctx, input }) => {
+      try {
+        const user = await prisma.customer.findFirst({
+          where: { email: input?.email },
+        });
+        if (!user || user?.is_deleted) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'User Not Found',
+          });
+        }
+        if (user.otp === input?.otp) {
+          const updateResponse = await prisma.customer?.update({
+            where: {
+              id: user.id,
+            },
+            data: {
+              otp: '',
+            },
+          });
+          console.log(updateResponse, 'updateResponse');
+        } else {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'please try again',
+          });
+        }
 
-        
+        if (input.password !== input.confirmPassword) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Password are not Matching',
+          });
+        }
 
+        const hashPassword = await hashPass(input.password);
+        console.log('HASH Pass : ', hashPassword);
+        const updateResponse = await prisma.customer?.update({
+          where: {
+            id: user.id,
+          },
+          data: {
+            password: hashPassword,
+          },
+        });
+        console.log(updateResponse, 'userCode');
 
-
-        console.log('mailResponse', mailResponse);
-
-        return mailResponse;
+        return updateResponse;
       } catch (error: any) {
         console.log({ error });
         throw new TRPCError({
