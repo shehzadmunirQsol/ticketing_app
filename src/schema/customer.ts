@@ -12,7 +12,7 @@ export type signupCustomerInput = z.TypeOf<typeof signupCustomerSchema>;
 
 
 export const loginCustomerSchema = z.object({
-    email: z.string().email(),
+    user: z.string(),
     password: z.string()
 });
 export type loginCustomerInput = z.TypeOf<typeof loginCustomerSchema>;

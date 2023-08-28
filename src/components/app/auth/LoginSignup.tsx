@@ -47,11 +47,11 @@ export default function LoginSignup() {
       });
       // router.push('/login')
       setDefaultValue('login');
-      formSignup.setValue("username", "")
-      formSignup.setValue("email", "")
-      formSignup.setValue("password", "")
-      formSignup.setValue("firstname", "")
-      formSignup.setValue("lastname", "")
+      formSignup.setValue('username', '');
+      formSignup.setValue('email', '');
+      formSignup.setValue('password', '');
+      formSignup.setValue('firstname', '');
+      formSignup.setValue('lastname', '');
     },
     onError: (err) => {
       console.log(err.message, 'err');
@@ -70,8 +70,8 @@ export default function LoginSignup() {
         title: 'User Login Successfully ',
       });
       router.push('/');
-      formLogin.setValue("email", "")
-      formLogin.setValue("password", "")
+      formLogin.setValue('user', '');
+      formLogin.setValue('password', '');
     },
     onError: (err) => {
       console.log(err.message, 'err');
@@ -90,8 +90,8 @@ export default function LoginSignup() {
   };
 
   // Login
+
   const onSubmitLogin = async (values: any) => {
-    console.log(values, 'Working');
     const loginResult = await loginCustomer.mutateAsync(values);
     console.log(loginResult, 'loginResult');
   };
@@ -103,7 +103,7 @@ export default function LoginSignup() {
           <SideImage />
         </div>
         <Tabs
-          defaultValue={defaultValue === "login" ? "login" : "signup"}
+          defaultValue={defaultValue === 'login' ? 'login' : 'signup'}
           className="flex flex-col flex-wrap   lg:w-2/2 md:w-full  lg:text-left  rounded-none border-none  lg:mr-6 bg-card"
         >
           <>
@@ -128,7 +128,7 @@ export default function LoginSignup() {
                 <div>
                   <FormField
                     control={formLogin.control}
-                    name="email"
+                    name="user"
                     render={({ field }) => (
                       <FormItem className="mb-6">
                         <FormLabel className="text-xs font-thin text-grayColor">

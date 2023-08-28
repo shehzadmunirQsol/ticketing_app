@@ -75,5 +75,12 @@ export async function compressImage(fileImage: File, fileType = 'image/webp') {
 }
 
 
+export function isValidEmail(email:any) {
+  console.log(email,"email found")
+  const pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  return pattern.test(email);
+}
+
+
 
 

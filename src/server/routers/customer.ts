@@ -10,7 +10,7 @@ import {
 import { hashPass, isSamePass } from '~/utils/hash';
 import { signJWT } from '~/utils/jwt';
 import { serialize } from 'cookie';
-import { generateOTP, sendEmail } from '~/utils/helper';
+import { generateOTP, isValidEmail, sendEmail } from '~/utils/helper';
 
 export const customerRouter = router({
   register: publicProcedure
@@ -65,8 +65,12 @@ export const customerRouter = router({
     .input(loginCustomerSchema)
     .mutation(async ({ ctx, input }) => {
       try {
+        const validity = isValidEmail(input.user)
+          ? { email: input.user }
+          : { username: input.user };
+
         const user = await prisma.customer.findFirst({
-          where: { email: input.email },
+          where: validity,
         });
         console.log('user found: ', user);
         if (!user || user?.is_deleted) {
@@ -75,11 +79,7 @@ export const customerRouter = router({
             message: 'User Not Found',
           });
         }
-        console.log('Inout Pass : ', input.password);
-        console.log('User Pass : ', user?.password);
         const checkPass = await isSamePass(input.password, user?.password);
-        console.log('check pass', checkPass);
-
         if (!checkPass) {
           throw new TRPCError({
             code: 'BAD_REQUEST',

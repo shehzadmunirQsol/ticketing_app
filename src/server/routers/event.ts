@@ -347,23 +347,7 @@ export const eventRouter = router({
         console.log("ICONSOLE>LOGPSKSJS")
         console.log(input,"MEINHNNSSA")
         console.log(input.id,"MEINHNNSSA IDDD")
-        // const where: any = { id: input.id,lang_id: 1, };
-
-        // if (input?.startDate) {
-        //   const startDate = new Date(input?.startDate);
-        //   where.created_at = { gte: startDate };
-        // }
-        // if (input?.endDate) {
-        //   const endDate = new Date(input?.endDate);
-        //   where.created_at = { lte: endDate };
-        // }
-
-        // if (input.event_id) where.id = input.event_id;
-
-        // const totalEventPromise = prisma.event.count({
-        //   where: where,
-        // });
-
+       
         const eventPromise = await prisma.event.findUnique({
           where: {
             id: input.id,
