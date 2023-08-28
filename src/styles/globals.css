@@ -127,6 +127,10 @@
     opacity: 1;
   }
 }
+ .ql-editor {
+  background-color: black;
+  color: white;
+}
 
 
 

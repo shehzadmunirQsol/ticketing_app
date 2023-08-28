@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
 import { trpc } from '~/utils/trpc';
 import { renderNFTImage } from '~/utils/helper';
+import Link from 'next/link';
 
 const BannerSlider = () => {
   const { lang } = useSelector((state: RootState) => state.layout);
@@ -21,7 +22,7 @@ const BannerSlider = () => {
     lang_id: lang.lang_id,
     group: 'BANNER',
     is_enabled: true,
-    rows: 10,
+    rows: 4,
     first: 0,
     page: 0,
   };
@@ -37,13 +38,12 @@ const BannerSlider = () => {
     refetchOnWindowFocus: false,
     onSuccess: () => {
       console.log({ BannerApiData });
-      setCarSlider(BannerApiData|| []);
+      setCarSlider(BannerApiData || []);
     },
 
     // enabled: user?.id ? true : false,
   });
 
-  console.log(carSlider, 'payload');
 
   // FOR ANIMATION IN THE
   const animateSlideChange = () => {
@@ -145,12 +145,14 @@ const BannerSlider = () => {
             <p className="px-4 text-3xl tracking-[-2px] font-[900]  my-3">
               {carSlider[currentIndex]?.date}
             </p>
-            <Button
-              className="mx-4 text-black font-sans font-[900]  tracking-[-1px]"
-              variant="clip"
-            >
-              ENTER NOW
-            </Button>
+            <Link href="/cars">
+              <Button
+                className="mx-4 text-black font-sans font-[900]  tracking-[-1px]"
+                variant="clip"
+              >
+                ENTER NOW
+              </Button>
+            </Link>
             <div className="block sm:hidden mx-auto  w-fit h-fit">
               <i className="fas fa-arrow-down animate-bounce text-teal-400 text-5xl my-14  "></i>
             </div>
@@ -173,7 +175,7 @@ const BannerSlider = () => {
           <div className="relative hidden    ltr:right-16 rtl:left-16 z-30  md:top-[380px]  items-end h-fit lg:flex justify-between  gap-3 mx-auto sm:mx-0">
             {carSlider.map((item: any, i: number) => (
               <div
-              key={i}
+                key={i}
                 className="group relative top-32 max-w-[120px] text-center font-semibold hover:cursor-pointer"
                 onClick={() => goToSlide(i)}
               >

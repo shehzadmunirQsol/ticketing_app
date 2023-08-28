@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -10,9 +10,10 @@ import { RootState } from '~/store/store';
 import ImageSlider from '~/public/assets/cars_gallery.png';
 import ImageSlider2 from '~/public/assets/cars_gallery_1.png';
 import Image from 'next/image';
+import { trpc } from '~/utils/trpc';
+import { renderNFTImage } from '~/utils/helper';
 
 const FeaturedCars = () => {
-  const { lang } = useSelector((state: RootState) => state.layout);
   const settings = {
     dots: false,
     infinite: true,
@@ -23,6 +24,25 @@ const FeaturedCars = () => {
   };
   const slide = useRef<any>();
   const slide2 = useRef<any>();
+
+  const { lang } = useSelector((state: RootState) => state.layout);
+  const [products, setProducts] = useState<Array<any>>([]);
+
+  const [filters, setFilters] = useState({
+    lang_id: lang.lang_id,
+    first: 0,
+    rows: 9,
+    is_featured: 1,
+  });
+
+  const {
+    data: prductsList,
+    isFetched,
+    isLoading,
+    isError,
+  } = trpc.event.getFeatured.useQuery(filters, {
+    refetchOnWindowFocus: false,
+  });
 
   const next = () => {
     slide?.current.slickNext();
@@ -40,19 +60,11 @@ const FeaturedCars = () => {
     slide2?.current?.slickPrev();
   };
 
-  const Images = [
-    {
-      image: ImageSlider,
-    },
-    {
-      image: ImageSlider2,
-    },
-  ];
 
   return (
     <div className="hidden sm:flex sm:flex-col">
-      <div className="flex ">
-        <div className="w-full xl:max-w-[1000px] 2xl:max-w-[1200px]  h-[510px] relative">
+      <div className="flex max-h-[490px]">
+        <div className="w-full xl:max-w-[1000px] 2xl:max-w-[1200px]   relative">
           {/* buttons */}
           <div className="px-4 absolute w-full h-full flex justify-between items-center my-auto z-10">
             <Button
@@ -71,17 +83,17 @@ const FeaturedCars = () => {
             </Button>
           </div>
           {/* slider */}
-          <div className=" h-[510px] ">
+          <div className=" h-full overflow-hidden">
             <Slider {...settings} ref={slide}>
-              {Images.map((item, i) => (
-                <div className="relative w-full h-full" key={i}>
+              {prductsList?.data[0]?.EventImages.map((item, i) => (
+                <div className="relative " key={i}>
                   <Image
-                    src={item.image}
+                    src={renderNFTImage(item)}
                     alt="/"
                     width={1300}
-                    height={510}
+                    height={400}
                     quality={100}
-                    className="object-cover"
+                    className="object-contain"
                   />
                 </div>
               ))}
@@ -89,23 +101,30 @@ const FeaturedCars = () => {
           </div>
         </div>
 
+
+        {/* product cards */}
         <div className="w-full max-w-2xl">
           <ProductCard
-            class={`w-full h-fit max-w-sm lg:max-w-2xl`}
+            class={`w-full h-full max-w-sm lg:max-w-2xl`}
             dir={`${lang?.dir}`}
+            data={prductsList?.data[0]}
           />
         </div>
       </div>
 
-      <div className="flex ">
+
+      <div className="flex max-h-[490px]">
+        {/* product cards */}
         <div className="w-full max-w-2xl">
           <ProductCard
-            class={`w-full h-fit max-w-sm lg:max-w-2xl`}
+            class={`w-full h-full max-w-sm lg:max-w-2xl`}
             dir={`${lang?.dir}`}
+            data={prductsList?.data[1]}
           />
         </div>
 
-        <div className="w-full xl:max-w-[1000px] 2xl:max-w-[1200px]  h-[510px] relative">
+        
+        <div className="w-full xl:max-w-[1000px] 2xl:max-w-[1200px]   relative">
           {/* buttons */}
           <div className="px-4 absolute w-full h-full flex justify-between items-center my-auto z-10">
             <Button
@@ -124,24 +143,29 @@ const FeaturedCars = () => {
             </Button>
           </div>
           {/* slider */}
-          <div className=" h-[510px] overflow-hidden">
+          <div className=" h-full overflow-hidden">
             <Slider {...settings} ref={slide2}>
-              {Images.map((item, i) => (
-                <div className="relative w-full h-full" key={i}>
+              {prductsList?.data[1]?.EventImages.map((item, i) => (
+                <div className="relative  " key={i}>
                   <Image
-                    src={item.image}
+                    src={renderNFTImage(item)}
                     alt="/"
                     width={1300}
-                    height={510}
+                    height={300}
                     quality={100}
-                    className="object-cover"
+                    className="object-contain"
                   />
                 </div>
               ))}
             </Slider>
           </div>
         </div>
+
+
+        
       </div>
+
+      
     </div>
   );
 };

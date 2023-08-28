@@ -18,7 +18,8 @@ export const getUpcoming = z.object({
   first: z.number().optional(),
   rows: z.number().optional(),
   lang_id: z.number(),
-  date: z.date(),
+  date: z.date().optional(),
+  type: z.string(),
 });
 
 export const getClosingSoon = z.object({
@@ -26,10 +27,21 @@ export const getClosingSoon = z.object({
   endDate: z.date().optional(),
   category_id: z.number().optional(),
   event_id: z.number().optional(),
-  first: z.number().optional(),
-  rows: z.number().optional(),
+  first: z.number(),
+  rows: z.number(),
   lang_id: z.number(),
-  date: z.date(),
+  launc_date: z.date().optional(),
+  type: z.string(),
+});
+
+export const getFeatured = z.object({
+  startDate: z.date().optional(),
+  endDate: z.date().optional(),
+  is_featured: z.number().optional(),
+  event_id: z.number().optional(),
+  first: z.number(),
+  rows: z.number(),
+  lang_id: z.number(),
 });
 
 export const createEventSchema = z.object({
@@ -63,3 +75,59 @@ export const createEventSchema = z.object({
 export const deleteEventSchema = z.object({
   id: z.number(),
 });
+
+export const EventFormSchema = z.object({
+  thumb: z.any(),
+  multi_image: z.any(),
+  price: z.any(),
+  category_id: z.any(),
+  video_src: z.string(),
+  total_tickets: z.string(),
+  cash_alt: z.string(),
+  user_ticket_limit: z.string(),
+  is_alt: z.boolean(),
+  launch_date: z.date(),
+  end_date: z.date(),
+
+  en: z.object({
+    name: z.string(),
+    desc: z.string().optional(),
+    comp_details: z.string().optional(),
+  }),
+  ar: z.object({
+    name: z.string(),
+    desc: z.string().optional(),
+    comp_details: z.string().optional(),
+  }),
+});
+export const enFormSchema = z.object({
+  thumb: z.any(),
+  link: z.string(),
+
+  en: z.object({
+    name: z.string(),
+    description: z.string().optional(),
+  }),
+  ar: z
+    .object({
+      name: z.string(),
+      description: z.string().optional(),
+    })
+    .optional(),
+});
+export const arFormSchema = z.object({
+  thumb: z.any(),
+  link: z.string(),
+  en: z
+    .object({
+      name: z.string(),
+      description: z.string().optional(),
+    })
+    .optional(),
+  ar: z.object({
+    name: z.string(),
+    description: z.string().optional(),
+  }),
+});
+
+export type GetEventSchema = z.infer<typeof getEventSchema>;

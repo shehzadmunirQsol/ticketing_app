@@ -57,7 +57,7 @@ export function ForgotPasswordDailog(props: ForgotPasswordDialogInterface) {
   };
 
   return (
-    <Dialog open={props?.isModal} onOpenChange={(e) => props.setIsModal(e)}>
+    <Dialog open={props?.isModal} onOpenChange={(e:any):any => props.setIsModal(e)}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Forgot Password</DialogTitle>

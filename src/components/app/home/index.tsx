@@ -9,15 +9,10 @@ import VideoSlider from './video_slider';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
 import { trpc } from '~/utils/trpc';
+import Glow from '~/components/common/glow';
 
-function Home() {
+export default function Home() {
   const { lang } = useSelector((state: RootState) => state.layout);
-
-  const [filters, setFilters] = useState({
-    lang_id: lang.lang_id,
-    first: 0,
-    rows: 9,
-  });
 
   const todayDate = new Date();
   console.log(todayDate, 'todayDate');
@@ -25,26 +20,13 @@ function Home() {
   const endingDate = new Date();
   endingDate.setDate(endingDate.getDate() + 7);
   console.log(endingDate, 'endingDate');
-
-  // const {
-  //   data: upcomingList,
-  //   isFetched,
-  //   isLoading,
-  //   isError,
-  // } = trpc.event.getUpcomimg.useQuery(
-  //   {
-  //     lang_id: lang.lang_id,
-  //     date: todayDate,
-  //   },
-  //   {
-  //     refetchOnWindowFocus: false,
-  //   },
-  // );
+  const slide1=useRef<any>()
+  const slide2=useRef<any>()
 
   // console.log(upcomingList?.data,"ip")
 
   return (
-    <div className=" flex flex-col gap-8 min-h-screen w-full max-w-[1600px] mx-auto">
+    <div className=" flex flex-col min-h-screen w-full max-w-[1600px] mx-auto">
       {/* // <div className=""> */}
       <div className="relative top-0">
         <BannerSlider />
@@ -52,22 +34,29 @@ function Home() {
 
       {/* product section 1 */}
       <div className="relative flex flex-col gap-8  px-6 py-2 ">
+        {/* 13 cards */}
         <ProductSection
           class="max-w-sm lg:max-w-xs"
           slidesToShow={4}
-          center={true}
+          center={false}
           title={'ENDING SOON COMPETITIONS'}
+          type="closing"
+          slide={slide1}
         />
         {/* product section 2 */}
+        {/* 11 cards */}
         <ProductSection
           class="max-w-md lg:max-w-sm xl:max-w-md ml-2   "
           slidesToShow={3}
-          center={true}
+          center={false}
           title="UPCOMING COMPETITIONS"
+          type="upcomming"
+          slide={slide2}
         />
-        <CategorySection />
       </div>
+      <CategorySection />
       <HowtoSection />
+      <Glow className=" absolute  top-[660px] right-0 bottom-0      w-1/5 h-[350px] overflow-hidden " />
       <WhyChoose />
       <Testimonials />
 
@@ -85,4 +74,4 @@ function Home() {
   );
 }
 
-export default Home;
+// export default Home;

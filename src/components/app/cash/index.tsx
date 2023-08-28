@@ -43,6 +43,7 @@ const CashPage = () => {
     }
   }
 
+
   return (
     <>
       <div className="relative pt-24"></div>
@@ -59,6 +60,7 @@ const CashPage = () => {
                   nextPage={nextPage}
                   dir={lang.dir}
                   cash={Cash}
+                  data={itemList}
                   class="z-50 h-full max-w-sm lg:max-w-2xl md:scale-95  w-full  "
                 />
               </div>
@@ -66,24 +68,19 @@ const CashPage = () => {
           })}
         </div>
 
-        {/* {filters.first > 0 && isSuccess ? (
-          ''
-        ) : (
+        
+
+        {/* doudt should it load more on action or automatically */}
+        {products.length != prductsList?.count ? (
           <div className="w-fit mx-auto">
             <div className="text-center my-4">
               <p className="tracking-tight font-bold">Load More</p>
               <i className="fas fa-arrow-down  text-teal-400 text-5xl my-2  "></i>
             </div>
           </div>
-        )} */}
-
-        {/* doudt should it load more on action or automatically */}
-        <div className="w-fit mx-auto">
-          <div className="text-center my-4">
-            <p className="tracking-tight font-bold">Load More</p>
-            <i className="fas fa-arrow-down  text-teal-400 text-5xl my-2  "></i>
-          </div>
-        </div>
+        ) : (
+          ''
+        )}
       </div>
     </>
   );

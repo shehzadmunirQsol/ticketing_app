@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Slider from 'react-slick';
 
 import 'slick-carousel/slick/slick.css';
@@ -9,34 +9,85 @@ import ProductCard from '../../common/card';
 import { Button } from '../../ui/button';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
+import { trpc } from '~/utils/trpc';
 interface producctInterface {
   class?: string;
   title: string;
   center: boolean;
-  data?:any;
+  data?: any;
   slidesToShow?: number;
+  type: string;
+  slide: React.Ref<HTML>;
 }
 function ProductSection(props: producctInterface) {
   const { lang } = useSelector((state: RootState) => state.layout);
+  const todayDate = new Date();
+  const [products, setProducts] = useState<Array<any>>([]);
 
-  const slide = useRef<any>();
+  const orderfilters = {
+    lang_id: lang.lang_id,
+  };
+
+  const [filters, setFilters] = useState({
+    first: 0,
+    rows: 9,
+    type: props?.type,
+    category_id: 1,
+  });
+
+  const {
+    data: prductsList,
+    isFetched,
+    refetch,
+    isLoading,
+    isError,
+  } = trpc.event.getUpcomimg.useQuery(
+    { ...orderfilters, ...filters },
+    {
+      refetchOnWindowFocus: false,
+    },
+  );
+
+  console.log({ prductsList }, 'array of somthing:', props?.type);
+  console.log({ products }, 'products', props?.type);
+
+  function nextPage() {
+    console.log('Next page emitted');
+    if (products.length % filters.rows === 0) {
+      setFilters({ ...filters, first: 1 + filters.first });
+    }
+  }
+  // const  = useRef<any>();
+
+  useEffect(() => {
+    if (filters.first > 0 && prductsList?.data?.length) {
+      setProducts([...products, ...prductsList.data]);
+    } else if (prductsList?.data?.length) {
+      setProducts(prductsList?.data);
+    }
+  }, [prductsList]);
+
+  useEffect(() => {
+    setProducts([]);
+  }, [lang.lang_id]);
+
   const next = () => {
-    slide?.current.slickNext();
+    props.slide?.current?.slickNext();
   };
   const previous = () => {
-    slide?.current?.slickPrev();
+    props.slide?.current?.slickPrev();
   };
   const settings = {
     className: 'center slider variable-width ',
 
     dots: false,
-    infinite: props?.center,
+    // infinite: false,
     speed: 500,
     slidesToShow: props?.slidesToShow,
     slidesToScroll: props?.slidesToShow,
-    centerMode: props?.center,
+    // centerMode: false,
     arrows: false,
-    slidesPerRow: 1,
+    // slidesPerRow: 1,
     responsive: [
       {
         breakpoint: 1024,
@@ -94,17 +145,36 @@ function ProductSection(props: producctInterface) {
           </Button>
         </div>
       </div>
-      <div className="relative z-10">
-        <div className="absolute bottom-10 right-0  z-2  w-1/5 h-3/5  bg-teal-400 bg-opacity-50 rounded-full blur-3xl"></div>
 
-        <Slider ref={slide} {...settings}>
-          {['', '', '', '', '', '', '', '', ''].map((item, index) => {
+      <div className="relative z-10">
+        {/* glow */}
+        <div
+          className={`absolute bottom-10 ${
+            props.type == 'closing' ? 'right-0' : 'left-0'
+          }  z-2  w-1/5 h-3/5  bg-teal-400 bg-opacity-50 rounded-full blur-3xl`}
+        ></div>
+
+        <Slider ref={props.slide} {...settings}>
+          {products.map((item, index) => {
             return (
-              <div key={index} className="px-2">
-                <ProductCard class={`${props?.class} `} dir={`${lang?.dir}`} />
+              <div key={index} className="">
+                <ProductCard
+                  isLast={index === products.length - 1}
+                  nextPage={nextPage}
+                  data={item}
+                  class={`${props?.class} `}
+                  dir={`${lang?.dir}`}
+                />
               </div>
             );
           })}
+          {products.length === 0 ? (
+            <div className="text-center w-full py-10 text-lg">
+              Coming Soon...
+            </div>
+          ) : (
+            ''
+          )}
         </Slider>
       </div>
     </div>

@@ -151,6 +151,7 @@ export default function DataTableBanner() {
         return <>{row?.original?.description}</>;
       },
     },
+
     {
       id: 'model',
       header: 'Model',

@@ -301,14 +301,16 @@ export function BannerForm() {
       >
         <div className="space-y-4">
           <div>
-            <FileInput
-              register={form.register('thumb')}
-              reset={form.reset}
-              getValues={form.getValues}
-              setValue={form.setValue}
-              imageCompressorHandler={imageHandler}
-              required={true}
-            />
+            {!index && (
+              <FileInput
+                register={form.register('thumb')}
+                reset={form.reset}
+                getValues={form.getValues}
+                setValue={form.setValue}
+                imageCompressorHandler={imageHandler}
+                required={true}
+              />
+            )}
             <FormField
               control={form.control}
               name="link"
