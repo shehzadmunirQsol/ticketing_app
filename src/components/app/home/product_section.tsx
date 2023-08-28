@@ -17,6 +17,7 @@ interface producctInterface {
   data?: any;
   slidesToShow?: number;
   type: string;
+  // slide: React.Ref<null>;
 }
 function ProductSection(props: producctInterface) {
   const { lang } = useSelector((state: RootState) => state.layout);
@@ -56,7 +57,7 @@ function ProductSection(props: producctInterface) {
       setFilters({ ...filters, first: 1 + filters.first });
     }
   }
-  const slide = useRef<any>();
+  const slide  = useRef<any>(null);
 
   useEffect(() => {
     if (filters.first > 0 && prductsList?.data?.length) {
@@ -125,7 +126,7 @@ function ProductSection(props: producctInterface) {
         <div
           className={`${
             lang?.dir == 'rtl' ? ' flex-row-reverse' : 'md:absolute right-10'
-          }  flex gap-2 items-center justify-center `}
+          }  flex gap-2 z-10 items-center justify-center `}
         >
           <Button
             variant="rounded"
@@ -150,7 +151,7 @@ function ProductSection(props: producctInterface) {
         <div
           className={`absolute bottom-10 ${
             props.type == 'closing' ? 'right-0' : 'left-0'
-          }  z-2  w-1/5 h-3/5  bg-teal-400 bg-opacity-50 rounded-full blur-3xl`}
+          }    w-1/5 h-3/5  bg-teal-400 bg-opacity-50 rounded-full blur-3xl`}
         ></div>
 
         <Slider ref={slide} {...settings}>

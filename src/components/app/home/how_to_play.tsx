@@ -9,6 +9,7 @@ import Frame12 from '~/public/assets/icons/Frame12.svg';
 import Frame13 from '~/public/assets/icons/Frame13.svg';
 
 import Image from 'next/image';
+import Glow from '~/components/common/glow';
 interface producctInterface {
   class?: string;
   title: string;
@@ -34,7 +35,7 @@ function HowtoSection() {
     },
   ];
   return (
-    <div className="w-full mb-16 bg-primary ">
+    <div className="w-full mb-16 bg-primary relative">
       <div className="relative top-0      grid grid-cols-1 lg:grid-cols-2  p-4 ">
         <div className=" my-auto   w-full ">
           <p className="m-auto px-6 py-4 md:py-0 text-left !w-full md:!max-w-[460px] text-black font-[1000] tracking-[-4px] !text-6xl   md:!text-6xl lg:!text-8xl   uppercase">
@@ -70,6 +71,8 @@ function HowtoSection() {
           })}
         </div>
       </div>
+
+      <Glow className="absolute   -bottom-32 right-0      w-1/5 h-[350px] overflow-hidden " />
     </div>
   );
 }

@@ -34,6 +34,16 @@ export const getClosingSoon = z.object({
   type: z.string(),
 });
 
+export const getFeatured = z.object({
+  startDate: z.date().optional(),
+  endDate: z.date().optional(),
+  is_featured: z.number().optional(),
+  event_id: z.number().optional(),
+  first: z.number(),
+  rows: z.number(),
+  lang_id: z.number(),
+});
+
 export const createEventSchema = z.object({
   thumb: z.string(),
   video_src: z.string().optional(),

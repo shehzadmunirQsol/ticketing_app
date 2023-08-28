@@ -144,6 +144,14 @@ function VideoSlider(props: producctInterface) {
                 );
               })
             : ''}
+
+          {videoCardSlider.length === 0 ? (
+            <div className="text-center w-full py-10 text-lg">
+              Coming Soon...
+            </div>
+          ) : (
+            ''
+          )}
         </Slider>
       </div>
     </div>

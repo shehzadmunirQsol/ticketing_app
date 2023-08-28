@@ -1,13 +1,13 @@
-import React from 'react'
-import { NextPageWithLayout } from '../_app'
-import CashPage from '~/components/app/cash'
+import React from 'react';
+import { NextPageWithLayout } from '../_app';
+import CashPage from '~/components/app/cash';
 
 const IndexPage: NextPageWithLayout = () => {
   return (
     <>
-        <CashPage />
+      <CashPage />
     </>
-  )
-}
+  );
+};
 
-export default IndexPage
+export default IndexPage;

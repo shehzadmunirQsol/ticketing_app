@@ -21,9 +21,8 @@ function Index({ children }: DefaultLayoutProps) {
       <Toaster />
       <Header />
       {children}
-      
-      <Footer />
 
+      <Footer />
     </div>
   );
 }
