@@ -1,12 +1,6 @@
 import { NextPageWithLayout } from '~/pages/_app';
 import Home from '~/components/app/home';
 
-const IndexPage: NextPageWithLayout = () => {
-  return (
-    <>
-      <Home />
-    </>
-  );
-};
+const IndexPage: NextPageWithLayout = () => <Home />;
 
 export default IndexPage;
