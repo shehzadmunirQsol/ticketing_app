@@ -8,11 +8,37 @@ import {
   resetPasswordCustomerSchema,
 } from '~/schema/customer';
 import { hashPass, isSamePass } from '~/utils/hash';
-import { signJWT } from '~/utils/jwt';
+import { signJWT, verifyJWT } from '~/utils/jwt';
 import { serialize } from 'cookie';
 import { generateOTP, sendEmail } from '~/utils/helper';
 
 export const customerRouter = router({
+  get: publicProcedure.query(async ({ ctx }) => {
+    const token = ctx?.req?.cookies['winnar-token'];
+    console.log({ token });
+
+    let userData;
+    if (token) {
+      userData = await verifyJWT(token);
+    } else {
+      return null;
+    }
+
+    console.log({ userData }, 'userData');
+
+    const user = await prisma.customer.findUnique({
+      where: { id: userData.id },
+    });
+
+    if (!user)
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: 'User not found!',
+      });
+
+    return { data: user };
+  }),
+
   register: publicProcedure
     .input(signupCustomerSchema)
     .mutation(async ({ input }) => {

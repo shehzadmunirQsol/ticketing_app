@@ -11,5 +11,5 @@ export const addToCartSchema = z.object({
   event_id: z.number(),
   quantity: z.number(),
   is_subscribe: z.boolean().default(false),
-  subscription_type: z.enum(['weekly', 'monthly', 'quarterly']).optional(),
+  subscription_type: z.enum(['weekly', 'monthly', 'quarterly']).nullable(),
 });

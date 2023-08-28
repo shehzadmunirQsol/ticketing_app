@@ -1,8 +1,13 @@
-import React, { useState } from 'react';
-import { Slider } from '~/components/ui/slider';
 import { Button } from '~/components/ui/button';
 import TokenRange from './TokenRange';
 import CounterStyle from './CounterStyle';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '~/store/store';
+import { useRouter } from 'next/router';
+import { trpc } from '~/utils/trpc';
+import { useToast } from '~/components/ui/use-toast';
+import { addToCart } from '~/store/reducers/cart';
+import { useRef } from 'react';
 
 interface CounterProps {
   range: number[];
@@ -14,6 +19,49 @@ const Counter: React.FC<CounterProps> = ({
   setRange,
   user_ticket_limit,
 }) => {
+  const { user } = useSelector((state: RootState) => state.auth);
+  const { cart } = useSelector((state: RootState) => state.cart);
+
+  const { toast } = useToast();
+  const { query } = useRouter();
+  const dispatch = useDispatch();
+
+  const ticketInBasket = useRef<number>(range[0] ?? 0);
+
+  const addToBasket = trpc.cart.addToCart.useMutation();
+
+  async function addToBasketHandler() {
+    const cartItem = cart?.cartItems?.find(
+      (item) => item.event_id === +(query?.id ?? 0),
+    );
+    const payload = {
+      subscription_type: cartItem?.subscription_type ?? null,
+      cart_item_id: cartItem?.id ?? 0,
+      customer_id: user?.id,
+      cart_id: cart?.id ?? 0,
+      event_id: +(query?.id ?? 0),
+      is_subscribe: cartItem?.is_subscribe ?? false,
+      quantity: range[0] ?? 0,
+    };
+
+    try {
+      const response = await addToBasket.mutateAsync(payload);
+      console.log({ response });
+      dispatch(addToCart(response.data));
+
+      ticketInBasket.current = payload.quantity;
+
+      toast({
+        variant: 'success',
+        title: 'Item added successfully!',
+      });
+
+      console.log({ response });
+    } catch (error: any) {
+      console.log({ error });
+    }
+  }
+
   return (
     <div className="bg-backgroundDark p-4 z-auto ">
       <p className="text-lg text-white">How many tickets?</p>
@@ -38,6 +86,8 @@ const Counter: React.FC<CounterProps> = ({
         <Button
           className="w-full  text-black font-sans font-[900]  text-xl tracking-[-1px]"
           variant="clip"
+          onClick={addToBasketHandler}
+          disabled={ticketInBasket.current === range[0]}
         >
           ADD TICKETS TO BASKET
         </Button>

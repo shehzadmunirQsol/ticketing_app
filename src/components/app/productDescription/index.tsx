@@ -6,14 +6,13 @@ import LiveDraw from './LiveDraw';
 import CompititionDetail from './compitition_detail';
 import Tabs from './Tabs';
 import AccordianFaqs from './Faqs';
-import LoginSignup from '../auth/LoginSignup';
 import { useRouter } from 'next/router';
 import { trpc } from '~/utils/trpc';
 
 const ProductDetail = () => {
   const router = useRouter();
   const id = Number(router.query.id);
-  const { data, refetch } = trpc.event.getEventsById.useQuery(
+  const { data } = trpc.event.getEventsById.useQuery(
     { id },
     {
       refetchOnWindowFocus: false,

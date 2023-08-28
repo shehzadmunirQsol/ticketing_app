@@ -11,13 +11,6 @@ export const cartRouter = router({
         include: { CartItems: true },
       });
 
-      if (!cart) {
-        throw new TRPCError({
-          code: 'BAD_REQUEST',
-          message: 'Invalid cart data',
-        });
-      }
-
       return { message: 'Cart found', data: cart };
     } catch (error: any) {
       throw new TRPCError({
@@ -63,7 +56,13 @@ export const cartRouter = router({
           });
         }
 
-        return { message: 'Cart added successfully!' };
+        const cartResponse = {
+          id: cartItemPayload.cart_id,
+          customer_id: input.customer_id,
+          cartItem: cartItem,
+        };
+
+        return { message: 'Cart added successfully!', data: cartResponse };
       } catch (error: any) {
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
