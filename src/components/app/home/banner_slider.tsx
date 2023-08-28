@@ -22,7 +22,7 @@ const BannerSlider = () => {
     lang_id: lang.lang_id,
     group: 'BANNER',
     is_enabled: true,
-    rows: 10,
+    rows: 4,
     first: 0,
     page: 0,
   };

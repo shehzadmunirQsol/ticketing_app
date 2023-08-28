@@ -20,6 +20,8 @@ export default function Home() {
   const endingDate = new Date();
   endingDate.setDate(endingDate.getDate() + 7);
   console.log(endingDate, 'endingDate');
+  const slide1=useRef<any>()
+  const slide2=useRef<any>()
 
   // console.log(upcomingList?.data,"ip")
 
@@ -39,6 +41,7 @@ export default function Home() {
           center={false}
           title={'ENDING SOON COMPETITIONS'}
           type="closing"
+          slide={slide1}
         />
         {/* product section 2 */}
         {/* 11 cards */}
@@ -48,6 +51,7 @@ export default function Home() {
           center={false}
           title="UPCOMING COMPETITIONS"
           type="upcomming"
+          slide={slide2}
         />
       </div>
       <CategorySection />
