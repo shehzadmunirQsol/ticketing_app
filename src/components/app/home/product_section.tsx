@@ -23,16 +23,18 @@ function ProductSection(props: producctInterface) {
   const todayDate = new Date();
   const [products, setProducts] = useState<Array<any>>([]);
 
-  const [filters, setFilters] = useState({
-    lang_id: +lang.lang_id,
+  const filters = {
+    lang_id: lang.lang_id,
     first: 0,
     rows: 9,
     type: props?.type,
-  });
+    category_id: 1,
+  };
 
   const {
     data: prductsList,
     isFetched,
+    refetch,
     isLoading,
     isError,
   } = trpc.event.getUpcomimg.useQuery(filters, {

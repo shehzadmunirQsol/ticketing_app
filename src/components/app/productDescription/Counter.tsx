@@ -4,7 +4,7 @@ import { Button } from '~/components/ui/button';
 import TokenRange from './TokenRange';
 import CounterStyle from './CounterStyle';
 
-const Counter = ({range, setRange}) => {
+const Counter = ({range, setRange,user_ticket_limit}) => {
 
 
   return (
@@ -12,10 +12,10 @@ const Counter = ({range, setRange}) => {
       <p className="text-lg text-white">How many tickets?</p>
       {/* <input type="range" name="range" id="range" className="appearance-white w-full h-3  rounded-full thumb:bg-primary" /> */}
       <div>
-        <TokenRange range={range} setRange={setRange} min={1} max={100}/>
+        <TokenRange range={range} setRange={setRange} min={1} max={user_ticket_limit}/>
       </div>
       <div>
-        <CounterStyle range={range} setRange={setRange} min={1} max={100}/>
+        <CounterStyle range={range} setRange={setRange} min={1} max={user_ticket_limit}/>
       </div>
       <div className='mt-6'>
         <Button

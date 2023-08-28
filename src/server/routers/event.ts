@@ -225,7 +225,7 @@ export const eventRouter = router({
       try {
         const where: any = {
           is_deleted: false,
-          // EventDescription: { lang_id: { some: input?.lang_id } },
+          EventDescription: { some: { lang_id: input?.lang_id } },
         };
         const todayDate = new Date();
         const endingDate = new Date();
@@ -248,7 +248,11 @@ export const eventRouter = router({
           where: where,
           include: {
             EventDescription: {
+              where: {
+                lang_id: input?.lang_id,
+              },
               select: {
+                id: true,
                 lang_id: true,
                 desc: true,
                 comp_details: true,
@@ -343,7 +347,7 @@ export const eventRouter = router({
         console.log("ICONSOLE>LOGPSKSJS")
         console.log(input,"MEINHNNSSA")
         console.log(input.id,"MEINHNNSSA IDDD")
-        const where: any = { id: input.id,lang_id: 1, };
+        // const where: any = { id: input.id,lang_id: 1, };
 
         // if (input?.startDate) {
         //   const startDate = new Date(input?.startDate);
@@ -364,11 +368,24 @@ export const eventRouter = router({
           where: {
             id: input.id,
           },
-          include:{
-            EventDescription:true
-          }
+          include: {
+            EventDescription: {
+              where: {
+                lang_id: 1,
+              },
+              select: {
+                id: true,
+                lang_id: true,
+                name:true,
+                desc: true,
+                comp_details: true,
+              },
+            },
+            EventImages:true
+          },
+          
         });
-        console.log(eventPromise,"eventPromise")
+        console.log(eventPromise,"BJSAJSAKDHDHJSSHSH")
 
         // if (!eventPromise?.length) {
         //   throw new TRPCError({

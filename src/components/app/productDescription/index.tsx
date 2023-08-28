@@ -26,11 +26,11 @@ const ProductDetail = () => {
   );
 
   console.log(id, typeof id, 'i am id work');
-  console.log(data, 'i am data work');
+  console.log(data?.data, 'i am data work');
   return (
     <div>
       <Tabs />
-      <ImageSlider data={data.data} />
+      <ImageSlider data={data?.data} />
       <div className="lg:px-10 md:px-10 px-6">
         <EntiresDetail />
         <VideoSection />

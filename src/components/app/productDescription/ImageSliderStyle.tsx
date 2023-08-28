@@ -7,23 +7,25 @@ import { RootState } from '~/store/store';
 import CarImage from '../../../public/assets/card_image.png';
 import CarImage1 from '../../../public/assets/car_image.png';
 import CarImage2 from '../../../public/assets/ferrari.png';
+import { renderNFTImage } from '~/utils/helper';
 
-const BannerSlider = () => {
+const BannerSlider = ({data}) => {
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showElement, setShowElement] = useState(false);
+  console.log(currentIndex,"currentIndexcurrentIndexcurrentIndex")
 
-  const data: any = [
-    {
-      image: CarImage,
-    },
-    {
-      image: CarImage1,
-    },
-    {
-      image: CarImage2,
-    },
-  ];
+  // const data: any = [
+  //   {
+  //     image: CarImage,
+  //   },
+  //   {
+  //     image: CarImage1,
+  //   },
+  //   {
+  //     image: CarImage2,
+  //   },
+  // ];
 
 
   // FOR ANIMATION IN THE
@@ -74,7 +76,6 @@ const BannerSlider = () => {
 
     return () => clearTimeout(animationTimeout);
   }, [currentIndex]);
-  console.log(data[currentIndex], 'carSlider[currentIndex]');
 
   return (
     <div className="relative">
@@ -90,7 +91,7 @@ const BannerSlider = () => {
         <div className="relative h-[18rem] lg:h-[38rem]  w-full lg:px-6 md:px-6 ">
           <Image
             alt="feature"
-            src={data[currentIndex].image.src}
+            src={renderNFTImage(data?.EventImages[currentIndex])}
             width={5000}
             height={5000}
             className=" object-contain object-center h-full w-full "
@@ -107,13 +108,14 @@ const BannerSlider = () => {
           variant="rounded"
           className="button next-btn h-10 w-10 md:h-14 md:w-14 absolute top-58 right-0  z-40"
           onClick={() => setCurrentIndex(currentIndex + 1)}
-          disabled={data?.length - 1 === currentIndex}
+          disabled={data?.EventImages?.length - 1 === currentIndex}
         >
           <i className="fa-solid fa-chevron-right"></i>
         </Button>
       </div>
       <div className="flex flex-row gap-2 mt-4 lg:px-6 md:px-6 ">
-        {data.map((item, i) => {
+        {data?.EventImages?.map((item, i) => {
+          console.log(item,"HKSHSSHHSSHA")
           return (
             <div
               className="flex flex-row gap-2"
@@ -125,7 +127,7 @@ const BannerSlider = () => {
                 className="h-20 w-24"
                 width={100}
                 height={100}
-                src={item.image}
+                src={renderNFTImage(item)}
               />
             </div>
           );
