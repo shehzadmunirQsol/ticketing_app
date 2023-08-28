@@ -27,27 +27,31 @@ import Link from 'next/link';
 import { ForgotPasswordDailog } from './ForgotPassword';
 
 export default function LoginSignup() {
-  const {toast} = useToast();
+  const { toast } = useToast();
   const router = useRouter();
 
   const formSignup = useForm<signupCustomerInput>();
   const formLogin = useForm<loginCustomerInput>();
 
-
   // Handle Forget Password Modal
   const [isModal, setIsModal] = React.useState(false);
-  const [defaultValue, setDefaultValue] = React.useState('signup');
-
+  const [defaultValue, setDefaultValue] = React.useState('login');
+  console.log(defaultValue, 'defaultValue');
   // register customer
   const registerCustomer = trpc.customer.register.useMutation({
     onSuccess: (res: any) => {
       console.log(res, 'res');
       toast({
         variant: 'success',
-        title: "User Register Successfully",
+        title: 'User Register Successfully',
       });
       // router.push('/login')
-      setDefaultValue('login')
+      setDefaultValue('login');
+      formSignup.setValue("username", "")
+      formSignup.setValue("email", "")
+      formSignup.setValue("password", "")
+      formSignup.setValue("firstname", "")
+      formSignup.setValue("lastname", "")
     },
     onError: (err) => {
       console.log(err.message, 'err');
@@ -58,16 +62,16 @@ export default function LoginSignup() {
     },
   });
 
-  // register customer
+  // login customer
   const loginCustomer = trpc.customer.loginCustomer.useMutation({
     onSuccess: (res: any) => {
-      // console.log(res, 'res');
       toast({
         variant: 'success',
-        title: "User Login Successfully ",
+        title: 'User Login Successfully ',
       });
-      router.push('/')
-
+      router.push('/');
+      formLogin.setValue("email", "")
+      formLogin.setValue("password", "")
     },
     onError: (err) => {
       console.log(err.message, 'err');
@@ -99,12 +103,12 @@ export default function LoginSignup() {
           <SideImage />
         </div>
         <Tabs
-          defaultValue={defaultValue}
+          defaultValue={defaultValue === "login" ? "login" : "signup"}
           className="flex flex-col flex-wrap   lg:w-2/2 md:w-full  lg:text-left  rounded-none border-none  lg:mr-6 bg-card"
         >
           <>
             <TabsList className=" w-full rounded-none border-none py-4 ">
-              <TabsTrigger  
+              <TabsTrigger
                 value="login"
                 className="w-full font-black text-md -mt-1rounded-none border-none m-0  "
               >
@@ -162,7 +166,10 @@ export default function LoginSignup() {
                   />
                 </div>
                 <div className="flex  flex-col lg:flex-row md:flex-row  lg:flex justify-end items-center gap-6 ">
-                  <p className="underline text-xs lg:text-base md:text-base cursor-pointer" onClick={()=>setIsModal(true)}>
+                  <p
+                    className="underline text-xs lg:text-base md:text-base cursor-pointer"
+                    onClick={() => setIsModal(true)}
+                  >
                     Forgot Password?
                   </p>
                   <Button
@@ -297,14 +304,8 @@ export default function LoginSignup() {
         </Tabs>
         {/* </div> */}
       </div>
-        
-        <ForgotPasswordDailog
-        
-    
-        isModal={isModal}
-        setIsModal={setIsModal}
-        />
 
+      <ForgotPasswordDailog isModal={isModal} setIsModal={setIsModal} />
     </section>
   );
 }

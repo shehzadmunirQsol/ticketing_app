@@ -173,14 +173,14 @@ export const customerRouter = router({
             },
           });
           console.log(updateResponse, 'updateResponse');
-        }  else {
+        } else {
           throw new TRPCError({
             code: 'NOT_FOUND',
             message: 'please try again',
           });
         }
 
-        if(input.password !== input.confirmPassword){
+        if (input.password !== input.confirmPassword) {
           throw new TRPCError({
             code: 'NOT_FOUND',
             message: 'Password are not Matching',

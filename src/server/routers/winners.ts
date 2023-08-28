@@ -1,7 +1,7 @@
 import { router, publicProcedure } from '../trpc';
 import { TRPCError } from '@trpc/server';
 import { prisma } from '~/server/prisma';
-import { getWinnersByIdSchema } from '~/schema/winners.ts';
+import { getWinnersByIdSchema } from '~/schema/winners';
 import { hashPass, isSamePass } from '~/utils/hash';
 import { signJWT } from '~/utils/jwt';
 import { serialize } from 'cookie';

@@ -38,6 +38,10 @@ export function ForgotPasswordDailog(props: ForgotPasswordDialogInterface) {
     trpc.customer.forgotPasswordCustomer.useMutation({
       onSuccess: async (res: any) => {
         props.setIsModal(false);
+        toast({
+          variant: 'success',
+          title: 'please check your email ',
+        });
       },
       onError: (err) => {
         console.log(err.message, 'err');

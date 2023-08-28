@@ -18,24 +18,23 @@ import { trpc } from '~/utils/trpc';
 export default function ResetPassword() {
   const { toast } = useToast();
   const router = useRouter();
-  const query = router.query
-  console.log(router.query,"i am router query")
+  const query = router.query;
+  console.log(router.query, 'i am router query');
 
   // Handle Reset Password
   const formResetPassword = useForm<any>();
 
-
   // Reset Password Customer
-  const customerResetPassword =
-    trpc.customer.resetPasswordCustomer.useMutation({
+  const customerResetPassword = trpc.customer.resetPasswordCustomer.useMutation(
+    {
       onSuccess: async (res: any) => {
         console.log(res);
         toast({
           variant: 'success',
           title: 'Reset Password Successfully',
         });
-        router.push('/login')
-      },  
+        router.push('/login');
+      },
       onError: (err) => {
         console.log(err.message, 'err');
         toast({
@@ -43,24 +42,31 @@ export default function ResetPassword() {
           title: err.message,
         });
       },
-    });
+    },
+  );
 
   const onSubmit = async (values: any) => {
     console.log(values, 'onSubmit');
-    const payload:any = {
-      email: query.email,
-      otp: query.verification_code,
-      password:values.password,
-      confirmPassword:values.confirmPassword
-
-    };
-    console.log(payload,"payload")
-    const resp:any = await customerResetPassword.mutateAsync(payload);
-    console.log(resp, 'final res');
+    if (values.confirmPassword !== values.password) {
+      toast({
+        variant: 'destructive',
+        title: 'Password are not matching ',
+      });
+    } else {
+      const payload: any = {
+        email: query.email,
+        otp: query.verification_code,
+        password: values.password,
+        confirmPassword: values.confirmPassword,
+      };
+      console.log(payload, 'payload');
+      const resp: any = await customerResetPassword.mutateAsync(payload);
+      console.log(resp, 'final res');
+    }
   };
 
   return (
-    <div className="w-2/3 mt-36 mb-20 mx-auto bg-card py-10 px-10">
+    <div className="w-full  lg:w-2/3 md:w-2/3  mt-36 mb-20 mx-auto bg-card py-10 px-5 lg:px-10 md:px-10">
       <p className="text-3xl text-primary font-black">Reset Password</p>
       <Form {...formResetPassword}>
         <form

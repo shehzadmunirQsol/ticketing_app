@@ -16,5 +16,17 @@ export function middleware(request: NextRequest, requestHeaders: Headers) {
     if (!isProtecedAdminRoutes && !token)
       return NextResponse.redirect(new URL('/admin/login', request.url));
   }
+  // if (request.nextUrl.pathname.startsWith('/')) {
+  //   const isProtecedAdminRoutes = ['/login','/','/cash','/cars'].includes(
+  //     request.nextUrl.pathname,
+  //   );
+  //   const token = getAdminToken(storeRequestHeaders);
+  //   console.log("TOken: ",token)
+  //   if (isProtecedAdminRoutes && token)
+  //     return NextResponse.redirect(new URL('/', request.url));
+  //   if (!isProtecedAdminRoutes && !token)
+  //     return NextResponse.redirect(new URL('/', request.url));
+  // }
+  
   return NextResponse.next();
 }
