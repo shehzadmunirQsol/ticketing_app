@@ -9,6 +9,7 @@ import VideoSlider from './video_slider';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
 import { trpc } from '~/utils/trpc';
+import Glow from '~/components/common/glow';
 
 export default function Home() {
   const { lang } = useSelector((state: RootState) => state.layout);
@@ -23,7 +24,7 @@ export default function Home() {
   // console.log(upcomingList?.data,"ip")
 
   return (
-    <div className=" flex flex-col gap-8 min-h-screen w-full max-w-[1600px] mx-auto">
+    <div className=" flex flex-col min-h-screen w-full max-w-[1600px] mx-auto">
       {/* // <div className=""> */}
       <div className="relative top-0">
         <BannerSlider />
@@ -48,9 +49,10 @@ export default function Home() {
           title="UPCOMING COMPETITIONS"
           type="upcomming"
         />
-        <CategorySection />
       </div>
+      <CategorySection />
       <HowtoSection />
+      <Glow className=" absolute  top-[660px] right-0 bottom-0      w-1/5 h-[350px] overflow-hidden " />
       <WhyChoose />
       <Testimonials />
 

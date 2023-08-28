@@ -19,7 +19,7 @@ interface cardInterface {
 
 function ProductCard(props: cardInterface) {
   const cardRef = useRef<HTMLDivElement>(null);
-  const {lang}=useSelector((state:RootState)=>state.layout)
+  const { lang } = useSelector((state: RootState) => state.layout);
 
   /**
    * Implement Intersection Observer to check if the last Card in the array is visible on the screen, then set a new limit
@@ -71,11 +71,11 @@ function ProductCard(props: cardInterface) {
         </div>
         <div className="font-bold text-3xl mb-2">
           <span className="text-gray-200  font-semibold leading-loose">
-            {props?.data?.EventDescription[0]?.name}
+            {`${props?.data?.id} ${props?.data?.EventDescription[0]?.desc}`}
           </span>
         </div>
         <div className="opacity-75 text-gray-200  text-lg font-normal leading-normal">
-          {props?.data?.EventDescription[0]?.desc}
+          {props?.data?.EventDescription[0]?.comp_details}
         </div>
         <hr className=" opacity-20 mt-4" />
         <div className=" mt-2">
@@ -96,17 +96,6 @@ function ProductCard(props: cardInterface) {
           </Button>
         </div>
       </div>
-      {/* <div className="px-6 pt-4 pb-2">
-        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-          #photography
-        </span>
-        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-          #travel
-        </span>
-        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-          #winter
-        </span>
-      </div> */}
     </div>
   );
 }

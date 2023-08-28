@@ -40,13 +40,16 @@ function ProductSection(props: producctInterface) {
     refetch,
     isLoading,
     isError,
-  } = trpc.event.getUpcomimg.useQuery({...orderfilters,...filters}, {
-    refetchOnWindowFocus: false,
-  });
+  } = trpc.event.getUpcomimg.useQuery(
+    { ...orderfilters, ...filters },
+    {
+      refetchOnWindowFocus: false,
+    },
+  );
 
   console.log({ prductsList }, 'array of somthing:', props?.type);
   console.log({ products }, 'products', props?.type);
-  
+
   function nextPage() {
     console.log('Next page emitted');
     if (products.length % filters.rows === 0) {
@@ -63,9 +66,9 @@ function ProductSection(props: producctInterface) {
     }
   }, [prductsList]);
 
-  useEffect(()=>{
-    setProducts([])
-  },[lang.lang_id])
+  useEffect(() => {
+    setProducts([]);
+  }, [lang.lang_id]);
 
   const next = () => {
     slide?.current?.slickNext();
@@ -144,7 +147,11 @@ function ProductSection(props: producctInterface) {
 
       <div className="relative z-10">
         {/* glow */}
-        <div className="absolute bottom-10 right-0  z-2  w-1/5 h-3/5  bg-teal-400 bg-opacity-50 rounded-full blur-3xl"></div>
+        <div
+          className={`absolute bottom-10 ${
+            props.type == 'closing' ? 'right-0' : 'left-0'
+          }  z-2  w-1/5 h-3/5  bg-teal-400 bg-opacity-50 rounded-full blur-3xl`}
+        ></div>
 
         <Slider ref={slide} {...settings}>
           {products.map((item, index) => {
@@ -160,6 +167,13 @@ function ProductSection(props: producctInterface) {
               </div>
             );
           })}
+          {products.length === 0 ? (
+            <div className="text-center w-full py-10 text-lg">
+              Coming Soon...
+            </div>
+          ) : (
+            ''
+          )}
         </Slider>
       </div>
     </div>
