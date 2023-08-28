@@ -20,8 +20,8 @@ export default function Home() {
   const endingDate = new Date();
   endingDate.setDate(endingDate.getDate() + 7);
   console.log(endingDate, 'endingDate');
-  const slide1=useRef<any>()
-  const slide2=useRef<any>()
+  const slide1=useRef<any>(null)
+  const slide2=useRef<any>(null)
 
   // console.log(upcomingList?.data,"ip")
 
