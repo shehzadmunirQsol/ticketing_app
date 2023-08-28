@@ -7,6 +7,7 @@ import {
   getClosingSoon,
   getEventSchema,
   getUpcoming,
+  getEventsByIdSchema,
 } from '~/schema/event';
 import { prisma } from '~/server/prisma';
 
@@ -42,9 +43,6 @@ export const eventRouter = router({
         totalEventPromise,
         eventPromise,
       ]);
-
-
-
 
       if (!event?.length) {
         throw new TRPCError({
@@ -183,16 +181,16 @@ export const eventRouter = router({
           skip: input.first * input.rows,
           take: input.rows,
           where: where,
-          include:{
-            EventDescription:{
-              select:{
-                comp_details:true,
-                lang_id:true,
-                name:true,
-                desc:true
-              }
-            }
-          }
+          include: {
+            EventDescription: {
+              select: {
+                comp_details: true,
+                lang_id: true,
+                name: true,
+                desc: true,
+              },
+            },
+          },
         });
 
         const [totalEvent, event] = await Promise.all([
@@ -339,49 +337,49 @@ export const eventRouter = router({
     }),
 
   getEventsById: publicProcedure
-    .input(getClosingSoon)
+    .input(getEventsByIdSchema)
     .query(async ({ input }) => {
       try {
-        const where: any = { is_deleted: false };
+        console.log("ICONSOLE>LOGPSKSJS")
+        console.log(input,"MEINHNNSSA")
+        console.log(input.id,"MEINHNNSSA IDDD")
+        const where: any = { id: input.id,lang_id: 1, };
 
-        if (input?.startDate) {
-          const startDate = new Date(input?.startDate);
-          where.created_at = { gte: startDate };
-        }
-        if (input?.endDate) {
-          const endDate = new Date(input?.endDate);
-          where.created_at = { lte: endDate };
-        }
+        // if (input?.startDate) {
+        //   const startDate = new Date(input?.startDate);
+        //   where.created_at = { gte: startDate };
+        // }
+        // if (input?.endDate) {
+        //   const endDate = new Date(input?.endDate);
+        //   where.created_at = { lte: endDate };
+        // }
 
-        if (input.event_id) where.id = input.event_id;
+        // if (input.event_id) where.id = input.event_id;
 
-        const totalEventPromise = prisma.event.count({
-          where: where,
+        // const totalEventPromise = prisma.event.count({
+        //   where: where,
+        // });
+
+        const eventPromise = await prisma.event.findUnique({
+          where: {
+            id: input.id,
+          },
+          include:{
+            EventDescription:true
+          }
         });
+        console.log(eventPromise,"eventPromise")
 
-        const eventPromise = prisma.event.findMany({
-          orderBy: { created_at: 'desc' },
-          skip: input.first,
-          take: input.rows,
-          where: where,
-        });
-
-        const [totalEvent, event] = await Promise.all([
-          totalEventPromise,
-          eventPromise,
-        ]);
-
-        if (!event?.length) {
-          throw new TRPCError({
-            code: 'NOT_FOUND',
-            message: 'Events not found',
-          });
-        }
+        // if (!eventPromise?.length) {
+        //   throw new TRPCError({
+        //     code: 'NOT_FOUND',
+        //     message: 'Events not found',
+        //   });
+        // }
 
         return {
           message: 'events found',
-          count: totalEvent,
-          data: event,
+          data: eventPromise,
         };
       } catch (error: any) {
         throw new TRPCError({

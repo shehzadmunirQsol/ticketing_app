@@ -6,12 +6,12 @@ import { Progress } from '../../ui/progress';
 import Counter from './Counter';
 import ImageSliderStyle from './ImageSliderStyle';
 
-const ImageSlider = () => {
+const ImageSlider = ({data}) => {
   const [range, setRange] = useState<number[]>([1]);
 
   const price = range * 10 
 
-  console.log(price,"price")
+  console.log(data,"dataHAKSHANJHA")
 
   return (
     <section className="text-gray-600 body-font">
@@ -26,7 +26,7 @@ const ImageSlider = () => {
             </div>
             <div className="flex-grow w-full">
               <div className="flex flex-col gap-2">
-                <span className=" text-xs ">955 Sold out of 1850</span>
+                <span className=" text-xs ">{data.tickets_sold} Sold out of {data.total_tickets}</span>
                 <Progress value={80} className="w-full" />
               </div>
             </div>
