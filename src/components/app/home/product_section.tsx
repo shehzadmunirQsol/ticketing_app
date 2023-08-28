@@ -126,7 +126,7 @@ function ProductSection(props: producctInterface) {
         <div
           className={`${
             lang?.dir == 'rtl' ? ' flex-row-reverse' : 'md:absolute right-10'
-          }  flex gap-2 items-center justify-center `}
+          }  flex gap-2 z-10 items-center justify-center `}
         >
           <Button
             variant="rounded"

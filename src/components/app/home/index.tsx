@@ -56,7 +56,6 @@ export default function Home() {
       </div>
       <CategorySection />
       <HowtoSection />
-      <Glow className=" absolute  top-[660px] right-0 bottom-0      w-1/5 h-[350px] overflow-hidden " />
       <WhyChoose />
       <Testimonials />
 
