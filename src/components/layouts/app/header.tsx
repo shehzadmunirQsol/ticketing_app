@@ -59,7 +59,6 @@ function Header() {
     window.addEventListener('scroll', changeColor);
   }
 
-  const [click, setClick] = useState(false);
   return (
     <div
       className={`fixed w-full z-50 top-0 h-24  flex  items-center   ${
@@ -82,13 +81,15 @@ function Header() {
       <div className="hidden  mdx:flex gap-8 items-center justify-center">
         <ItemMenuDemo />
         <div className="flex items-center justify-center gap-2">
-          <Button
-            variant="outline"
-            size="icon_square"
-            className="border-primary"
-          >
-            <i className="fa-solid fa-cart-shopping" />
-          </Button>
+          <Link href="/cart">
+            <Button
+              variant="outline"
+              size="icon_square"
+              className="border-primary"
+            >
+              <i className="fa-solid fa-cart-shopping" />
+            </Button>
+          </Link>
           <Button
             variant="outline"
             size="icon_square"
@@ -218,20 +219,19 @@ export function ItemMenuDemo() {
       id="navbar-sticky"
     >
       <ul className="flex flex-col p-4 md:p-0  text-small font-normal  border  rounded-lg bg-transparent md:flex-row md:space-x-4 md:mt-0 md:border-0 md:bg-white dark:bg-transparent ">
-        {linkItems &&
-          linkItems?.map((item, index) => {
-            return (
-              <li key={index} className="group border-b-2 border-transparent  ">
-                <Link
-                  href={item?.link}
-                  className="flex flex-col py-2 pl-3 pr-4 text-gray-200  hover:underline hover:bg-gray-100  md:hover:bg-transparent  dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-                >
-                  {item?.name}
-                  <span className="w-full h-1 bg-transparent group-hover:bg-teal mt-1 rounded-sm  "></span>
-                </Link>
-              </li>
-            );
-          })}
+        {linkItems?.map((item, index) => {
+          return (
+            <li key={index} className="group border-b-2 border-transparent  ">
+              <Link
+                href={item?.link}
+                className="flex flex-col py-2 pl-3 pr-4 text-gray-200  hover:underline hover:bg-gray-100  md:hover:bg-transparent  dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+              >
+                {item?.name}
+                <span className="w-full h-1 bg-transparent group-hover:bg-teal mt-1 rounded-sm  "></span>
+              </Link>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
