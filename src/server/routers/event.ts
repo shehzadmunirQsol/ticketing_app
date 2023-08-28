@@ -6,6 +6,7 @@ import {
   deleteEventSchema,
   getClosingSoon,
   getEventSchema,
+  getFeatured,
   getUpcoming,
 } from '~/schema/event';
 import { prisma } from '~/server/prisma';
@@ -180,13 +181,13 @@ export const eventRouter = router({
           skip: input.first * input.rows,
           take: input.rows,
           where: where,
-          include:{
-            EventDescription:{
-              select:{
-                comp_details:true,
-                lang_id:true,
-                name:true,
-                desc:true
+          include: {
+            EventDescription: {
+              select: {
+                comp_details: true,
+                lang_id: true,
+                name: true,
+                desc: true
               }
             }
           }
@@ -328,6 +329,63 @@ export const eventRouter = router({
 
         return {
           message: 'events found',
+          count: totalEvent,
+          data: event,
+        };
+      } catch (error: any) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: error?.message,
+        });
+      }
+    }),
+
+  getFeatured: publicProcedure
+    .input(getFeatured)
+    .query(async ({ input }) => {
+      try {
+        const where: any = {
+          is_deleted: false,
+          EventDescription: { some: { lang_id: input?.lang_id } },
+        };
+
+
+        // upcoming means its going to start
+        if (input?.is_featured == 1) where.is_featured = true;
+
+        const totalEventPromise = prisma.event.count({
+          where: where,
+        });
+
+        const eventPromise = prisma.event.findMany({
+          orderBy: { created_at: 'asc' },
+          skip: input.first * input.rows,
+          take: input.rows,
+          where: where,
+          include: {
+            EventImages: {
+            },
+            EventDescription: {
+            },
+          },
+          
+        });
+
+        const [totalEvent, event] = await Promise.all([
+          totalEventPromise,
+          eventPromise,
+        ]);
+
+        if (!event?.length) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Events not found',
+          });
+        }
+
+        console.log(totalEvent, event, 'event data');
+        return {
+          message: 'Events found',
           count: totalEvent,
           data: event,
         };
