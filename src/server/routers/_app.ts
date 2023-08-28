@@ -10,6 +10,7 @@ import { languageRouter } from './language';
 import { settingRouter } from './settings';
 import { customerRouter } from './customer';
 import { adminUserRouter } from './adminUser';
+import { winnerRouter } from './winners';
 
 export const appRouter = router({
   admin: adminUserRouter,
@@ -18,6 +19,7 @@ export const appRouter = router({
   language: languageRouter,
   settings: settingRouter,
   customer: customerRouter,
+  winner: winnerRouter,
 });
 
 export type AppRouter = typeof appRouter;

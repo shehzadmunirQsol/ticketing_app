@@ -22,3 +22,11 @@ export const forgotPasswordCustomerSchema = z.object({
 });
 export type forgotPasswordCustomerSchemaInput = z.TypeOf<typeof forgotPasswordCustomerSchema>;
 
+export const resetPasswordCustomerSchema = z.object({
+    email: z.string(),
+    otp: z.string(),
+    password: z.string(),
+    confirmPassword: z.string(),
+});
+export type resetPasswordCustomerSchemaInput = z.TypeOf<typeof resetPasswordCustomerSchema>;
+

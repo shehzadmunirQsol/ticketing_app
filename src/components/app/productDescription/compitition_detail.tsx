@@ -3,8 +3,6 @@ import React from 'react';
 const CompititionDetail = () => {
   return (
     <section id="CompititionDetail">
-
- 
     <div>
       <div className="w-30 ">
         <p className="lg:text-5xl md:text-4xl text-3xl  font-black ">Competition Details</p>

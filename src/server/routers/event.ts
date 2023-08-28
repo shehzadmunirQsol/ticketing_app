@@ -8,6 +8,7 @@ import {
   getEventSchema,
   getFeatured,
   getUpcoming,
+  getEventsByIdSchema,
 } from '~/schema/event';
 import { prisma } from '~/server/prisma';
 
@@ -154,6 +155,7 @@ export const eventRouter = router({
         });
       }
     }),
+
   getByCategoryId: publicProcedure
     .input(getEventSchema)
     .query(async ({ input }) => {
@@ -368,7 +370,7 @@ export const eventRouter = router({
             EventDescription: {
             },
           },
-          
+
         });
 
         const [totalEvent, event] = await Promise.all([
@@ -388,6 +390,49 @@ export const eventRouter = router({
           message: 'Events found',
           count: totalEvent,
           data: event,
+        };
+      } catch (error: any) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: error?.message,
+        });
+      }
+    }),
+
+  getEventsById: publicProcedure
+    .input(getEventsByIdSchema)
+    .query(async ({ input }) => {
+      try {
+        console.log("ICONSOLE>LOGPSKSJS")
+        console.log(input, "MEINHNNSSA")
+        console.log(input.id, "MEINHNNSSA IDDD")
+
+        const eventPromise = await prisma.event.findUnique({
+          where: {
+            id: input.id,
+          },
+          include: {
+            EventDescription: {
+              where: {
+                lang_id: 1,
+              },
+              select: {
+                id: true,
+                lang_id: true,
+                name: true,
+                desc: true,
+                comp_details: true,
+              },
+            },
+            EventImages: true
+          },
+
+        });
+        console.log(eventPromise, "BJSAJSAKDHDHJSSHSH")
+
+        return {
+          message: 'events found',
+          data: eventPromise,
         };
       } catch (error: any) {
         throw new TRPCError({

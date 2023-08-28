@@ -131,3 +131,9 @@ export const arFormSchema = z.object({
 });
 
 export type GetEventSchema = z.infer<typeof getEventSchema>;
+
+
+
+export const getEventsByIdSchema = z.object({
+  id: z.number(),
+});

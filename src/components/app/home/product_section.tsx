@@ -17,7 +17,7 @@ interface producctInterface {
   data?: any;
   slidesToShow?: number;
   type: string;
-  slide: React.Ref<HTMLDivElement>;
+  // slide: React.Ref<null>;
 }
 function ProductSection(props: producctInterface) {
   const { lang } = useSelector((state: RootState) => state.layout);
@@ -57,7 +57,7 @@ function ProductSection(props: producctInterface) {
       setFilters({ ...filters, first: 1 + filters.first });
     }
   }
-  // const  = useRef<any>();
+  const slide  = useRef<any>(null);
 
   useEffect(() => {
     if (filters.first > 0 && prductsList?.data?.length) {
@@ -72,10 +72,10 @@ function ProductSection(props: producctInterface) {
   }, [lang.lang_id]);
 
   const next = () => {
-    props.slide?.current?.slickNext();
+    slide?.current?.slickNext();
   };
   const previous = () => {
-    props.slide?.current?.slickPrev();
+    slide?.current?.slickPrev();
   };
   const settings = {
     className: 'center slider variable-width ',
@@ -154,7 +154,7 @@ function ProductSection(props: producctInterface) {
           }    w-1/5 h-3/5  bg-teal-400 bg-opacity-50 rounded-full blur-3xl`}
         ></div>
 
-        <Slider ref={props.slide} {...settings}>
+        <Slider ref={slide} {...settings}>
           {products.map((item, index) => {
             return (
               <div key={index} className="">
