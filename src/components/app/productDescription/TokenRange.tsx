@@ -4,18 +4,18 @@ import { Button } from '~/components/ui/button';
 import { cn } from '~/utils/cn';
 import { Maximize2 } from 'lucide-react';
 interface token {
-  range: number[];
+  range: any;
   setRange: any;
   min: number;
   max: number;
-  data:object
+
 }
-const TokenRange = ({ range, setRange, min, max,data }: token) => {
+const TokenRange = ({ range, setRange, min, max }: token) => {
   console.log({ range });
   const totalValue = 500; // Total value
 const currentValue = 100; // Current dynamic value
 
-const percentage = (range[0] / max) * 100;
+const percentage:any = ((range && range.length ? range[0]:1) / max) * 100;
 console.log({percentage})
 // cons
   return (

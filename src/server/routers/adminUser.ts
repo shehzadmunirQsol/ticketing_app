@@ -56,7 +56,7 @@ export const adminUserRouter = router({
             // } 
             console.log("Inout Pass : ",input.password)
             console.log("User Pass : ",user?.password)
-            let checkPass = await isSamePass(input.password, user?.password);
+            const checkPass = await isSamePass(input.password, user?.password);
             console.log("check pass", checkPass);
             
             if(!checkPass){
@@ -101,7 +101,7 @@ export const adminUserRouter = router({
                     message: 'User already exists.',
                 });
             }
-            let hashPassword = await hashPass(input.password)
+            const hashPassword = await hashPass(input.password)
             console.log("HASH Pass : ",hashPassword)
             const paylaod: any = {
                 email: input.email,

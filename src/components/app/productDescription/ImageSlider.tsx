@@ -6,10 +6,10 @@ import { Progress } from '../../ui/progress';
 import Counter from './Counter';
 import ImageSliderStyle from './ImageSliderStyle';
 
-const ImageSlider = ({data}) => {
+const ImageSlider = ({data}:any) => {
   const [range, setRange] = useState<number[]>([1]);
 
-  const price = range * data?.price 
+  const price =  +(range[0] as number) * data?.price 
   const percentageSold = (data?.tickets_sold / data?.total_tickets) * 100;
 
   console.log(data,"dataHAKSHANJHA")

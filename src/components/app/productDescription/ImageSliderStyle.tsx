@@ -9,7 +9,7 @@ import CarImage1 from '../../../public/assets/car_image.png';
 import CarImage2 from '../../../public/assets/ferrari.png';
 import { renderNFTImage } from '~/utils/helper';
 
-const BannerSlider = ({data}) => {
+const BannerSlider = ({data}:any) => {
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showElement, setShowElement] = useState(false);
@@ -114,7 +114,7 @@ const BannerSlider = ({data}) => {
         </Button>
       </div>
       <div className="flex flex-row gap-2 mt-4 lg:px-6 md:px-6 ">
-        {data?.EventImages?.map((item, i) => {
+        {data?.EventImages?.map((item:any, i:any) => {
           console.log(item,"HKSHSSHHSSHA")
           return (
             <div

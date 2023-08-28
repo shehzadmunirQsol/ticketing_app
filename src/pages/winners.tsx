@@ -1,6 +1,6 @@
 import { NextPageWithLayout } from '~/pages/_app';
-import winnars from '~/components/app/';
+import {Winners} from '~/components/app/winnars/index';
 
-const IndexPage: NextPageWithLayout = () => <winnars />
+const IndexPage: NextPageWithLayout = () => <Winners/>
 
 export default IndexPage;

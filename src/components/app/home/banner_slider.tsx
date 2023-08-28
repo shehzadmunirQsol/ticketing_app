@@ -44,7 +44,6 @@ const BannerSlider = () => {
     // enabled: user?.id ? true : false,
   });
 
-  console.log(carSlider, 'payload');
 
   // FOR ANIMATION IN THE
   const animateSlideChange = () => {

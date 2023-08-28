@@ -24,7 +24,7 @@ import { useToast } from '~/components/ui/use-toast';
 import { trpc } from '~/utils/trpc';
 interface ForgotPasswordDialogInterface {
   isModal: boolean;
-  setIsModal: () => any;
+  setIsModal: (e:any) => void;
 }
 export function ForgotPasswordDailog(props: ForgotPasswordDialogInterface) {
   const { toast } = useToast();

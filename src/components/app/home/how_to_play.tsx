@@ -34,8 +34,8 @@ function HowtoSection() {
     },
   ];
   return (
-    <div className="relative   w-full mb-2 py-4">
-      <div className="   bg-primary   grid grid-cols-1 lg:grid-cols-2   ">
+    <div className="w-full mb-16 bg-primary ">
+      <div className="relative top-0      grid grid-cols-1 lg:grid-cols-2  p-4 ">
         <div className=" my-auto   w-full ">
           <p className="m-auto px-6 py-4 md:py-0 text-left !w-full md:!max-w-[460px] text-black font-[1000] tracking-[-4px] !text-6xl   md:!text-6xl lg:!text-8xl   uppercase">
             HOW TO PLAY?
@@ -50,6 +50,7 @@ function HowtoSection() {
                   <Image
                     className="w-full h-full object-cover "
                     src={item?.icon}
+                    height={400}
                     quality={100}
                     alt="Sunset in the mountains"
                   />

@@ -33,7 +33,7 @@ export const customerRouter = router({
           if (isExist) {
             return isExist;
           }
-          let hashPassword = await hashPass(input.password);
+          const hashPassword = await hashPass(input.password);
           console.log('HASH Pass : ', hashPassword);
 
           // CustomerData Payload
@@ -77,7 +77,7 @@ export const customerRouter = router({
         }
         console.log('Inout Pass : ', input.password);
         console.log('User Pass : ', user?.password);
-        let checkPass = await isSamePass(input.password, user?.password);
+        const checkPass = await isSamePass(input.password, user?.password);
         console.log('check pass', checkPass);
 
         if (!checkPass) {
@@ -187,7 +187,7 @@ export const customerRouter = router({
           });
         }
 
-        let hashPassword = await hashPass(input.password);
+        const hashPassword = await hashPass(input.password);
         console.log('HASH Pass : ', hashPassword);
         const updateResponse = await prisma.customer?.update({
           where: {

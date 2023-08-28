@@ -47,7 +47,7 @@ export default function ResetPassword() {
 
   const onSubmit = async (values: any) => {
     console.log(values, 'onSubmit');
-    const payload = {
+    const payload:any = {
       email: query.email,
       otp: query.verification_code,
       password:values.password,
@@ -55,7 +55,7 @@ export default function ResetPassword() {
 
     };
     console.log(payload,"payload")
-    const resp = await customerResetPassword.mutateAsync(payload);
+    const resp:any = await customerResetPassword.mutateAsync(payload);
     console.log(resp, 'final res');
   };
 

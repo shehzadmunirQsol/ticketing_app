@@ -68,7 +68,7 @@ function Header() {
             ? '!bg-background-footer  duration-500 shadow-xl'
             : '!bg-transparent  duration-500'
           : '!bg-background-footer'
-      }   transform ease-in-out justify-between py-8 px-6 `}
+      }   transform ease-in-out justify-between py-8 px-14 `}
     >
       <Link href="/">
         <Image

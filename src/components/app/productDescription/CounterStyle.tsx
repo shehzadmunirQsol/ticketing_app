@@ -4,13 +4,20 @@ import { Button } from '~/components/ui/button';
 import Image from 'next/image';
 import increment from '../../../public/assets/increment.svg';
 import decrement from '../../../public/assets/decrement.svg';
+interface token {
+  range: number[];
+  setRange: any;
+  min: number;
+  max: number;
 
-const CounterStyle = ({ range, setRange, min, max }) => {
-  const handlerCounter = (type: String) => {
-    if (type == 'a' && range[0] <= max) {
-      setRange([range[0] + 1]);
-    } else if (type == 'b' && range[0] > min) {
-      setRange([range[0] - 1]);
+}
+const CounterStyle = ({ range, setRange, min, max }:token) => {
+  const rangeType:any = range && range?.length ? range[0]:1
+  const handlerCounter = (type: string) => {
+    if (type == 'a' && rangeType <= max) {
+      setRange([rangeType + 1]);
+    } else if (type == 'b' && rangeType > min) {
+      setRange([rangeType - 1]);
     }
   };
 

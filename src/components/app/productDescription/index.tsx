@@ -3,7 +3,7 @@ import ImageSlider from './ImageSlider';
 import EntiresDetail from './EntiresDetail';
 import VideoSection from './VideoSection';
 import LiveDraw from './LiveDraw';
-import CompititionDetail from './CompititionDetail';
+import CompititionDetail from './compitition_detail';
 import Tabs from './Tabs';
 import AccordianFaqs from './Faqs';
 import LoginSignup from '../auth/LoginSignup';

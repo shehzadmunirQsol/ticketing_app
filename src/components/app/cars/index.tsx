@@ -27,7 +27,6 @@ const CarsPage = () => {
     isError,
   } = trpc.event.getByCategoryId.useQuery(filters, {
     refetchOnWindowFocus: false,
-
   });
 
   useEffect(() => {
@@ -45,10 +44,11 @@ const CarsPage = () => {
     }
   }
 
-
   console.log({ prductsList }, 'prductsList');
   console.log({ products }, 'products');
   console.log({ filters }, 'filters');
+  console.log(products.length, prductsList?.count ,"check load more")
+
   return (
     <div className="mx-auto max-w-[1600px] w-full">
       {/* this div below ↓ it to add spacing to avoid header */}
@@ -80,12 +80,16 @@ const CarsPage = () => {
           })}
         </div>
 
-        <div className="w-fit mx-auto">
-          <div className="text-center my-4">
-            <p className="tracking-tight font-bold">Load More</p>
-            <i className="fas fa-arrow-down  text-teal-400 text-5xl my-2  "></i>
+        {products.length != prductsList?.count ? (
+          <div className="w-fit mx-auto">
+            <div className="text-center my-4">
+              <p className="tracking-tight font-bold">Load More</p>
+              <i className="fas fa-arrow-down  text-teal-400 text-5xl my-2  "></i>
+            </div>
           </div>
-        </div>
+        ) : (
+          ''
+        )}
       </div>
     </div>
   );
