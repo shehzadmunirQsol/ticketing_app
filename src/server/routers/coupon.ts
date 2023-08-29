@@ -7,7 +7,7 @@ import { prisma } from '~/server/prisma';
 export const couponRouter = router({
   applyCoupon: publicProcedure
     .input(applyCouponSchema)
-    .query(async ({ input }) => {
+    .mutation(async ({ input }) => {
       try {
         const coupon = await prisma.coupon.findFirst({
           where: {
@@ -28,10 +28,12 @@ export const couponRouter = router({
             coupon_code: input?.coupon_code,
             is_enabled: true,
             is_deleted: false,
-            start_date: { gte: todayDate },
-            end_date: { lte: todayDate },
+            start_date: { lte: todayDate },
+            end_date: { gte: todayDate },
+           
           },
         });
+        console.log({ couponExpiry });
         if (!couponExpiry) {
           throw new TRPCError({
             code: 'NOT_FOUND',

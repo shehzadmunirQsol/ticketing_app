@@ -14,7 +14,44 @@ import { CartItemInterface, addToCart } from '~/store/reducers/cart';
 import { renderNFTImage } from '~/utils/helper';
 
 export default function CartPage() {
+  const { toast } = useToast();
+
   const { cart } = useSelector((state: RootState) => state.cart);
+  const [code, setCode] = useState('');
+
+  const couponApply = trpc.coupon.applyCoupon.useMutation({
+    onSuccess: () => {
+      console.log('upload successfully');
+
+      // router.push('/store/wallet-connect');
+    },
+    onError(error: any) {
+      console.log({ error });
+    },
+  });
+  const handleApply = async () => {
+    try {
+      if (code !== '') {
+        const payload: any = {
+          cart_id: cart?.id,
+          customer_id: cart?.customer_id,
+          coupon_code: code,
+        };
+        const data = await couponApply.mutateAsync({ ...payload });
+        if (data) {
+          toast({
+            variant: 'success',
+            title: 'Coupon Applied!',
+          });
+        }
+      }
+    } catch (e: any) {
+      toast({
+        variant: 'destructive',
+        title: e.message,
+      });
+    }
+  };
 
   return (
     <div className="relative">
@@ -35,10 +72,13 @@ export default function CartPage() {
           <div className="flex bg-card border border-border">
             <Input
               placeholder="Coupon code"
+              type="text"
+              onChange={(e: any) => setCode(e.target.value)}
               className="px-4 flex-1 bg-transparent border-none z-10 "
             />
             <Button
               variant={'ghost'}
+              onClick={() => handleApply()}
               className="text-primary border-l border-border z-10 "
             >
               Apply Coupon
