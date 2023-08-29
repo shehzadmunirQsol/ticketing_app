@@ -22,6 +22,11 @@ const SIDEBAR_DATA = [
     title: 'Events',
   },
   {
+    key: '/admin/customers',
+    icon: <i className="fa-solid fa-users p-4 rounded-full" />,
+    title: 'Customers',
+  },
+  {
     key: '/client',
     icon: <i className="fa-solid fa-users p-4 rounded-full" />,
     title: 'Clients',
