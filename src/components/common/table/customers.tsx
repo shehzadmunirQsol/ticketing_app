@@ -35,89 +35,129 @@ import LanguageSelect, { LanguageInterface } from '../language_select';
 import { GetCategorySchema } from '~/schema/category';
 import { trpc } from '~/utils/trpc';
 import Image from 'next/image';
-import { renderNFTImage } from '~/utils/helper';
+import { customEmailTruncateHandler, renderNFTImage } from '~/utils/helper';
 import Link from 'next/link';
+import { getCustomerSchema } from '~/schema/customer';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '~/components/ui/tooltip';
+import { Switch } from '~/components/ui/switch';
+import { CustomerDialog } from '../modal/customers';
+import { useToast } from '~/components/ui/use-toast';
 
 export type Category = {
-  thumb: string;
-  name: string;
-  desc: string | null;
+  email: string;
+  username: string | null;
+  first_name: string;
+  last_name: string;
+  is_approved: boolean;
   id: number;
+  dob: Date;
   created_at: Date;
   updated_at: Date;
 };
 
-export const columns: ColumnDef<Category>[] = [
-  {
-    accessorKey: 'name',
-    header: 'Name',
-    cell: ({ row }) => {
-      return (
-        <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
-          {/* <Image
-            className="object-cover bg-ac-2 h-10 w-16 rounded-lg"
-            src={renderNFTImage(row.original)}
-            alt={row?.original?.name}
-            width={100}
-            height={100}
-          /> */}
-
-          <p className="text-base font-normal">{row?.original?.name}</p>
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: 'desc',
-    header: 'Description',
-    cell: ({ row }) => (
-      <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden w-64">
-        {row.getValue('desc')}
-      </div>
-    ),
-  },
-  {
-    id: 'actions',
-    enableHiding: false,
-    cell: ({ row }) => {
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <Link href={`/admin/category/edit/${row?.original?.id}`}>
-              <DropdownMenuItem>Edit Category</DropdownMenuItem>
-            </Link>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
-  },
-];
-
 export default function CustomersDataTable() {
+  // use toast
+  const { toast } = useToast();
+
+  // use states
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [filters, setFilters] = useState<GetCategorySchema>({
+  const [filters, setFilters] = useState<getCustomerSchema>({
     first: 0,
     rows: 10,
-    lang_id: 1,
   });
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
+  const [selectedItem, setSelectedItem] = React.useState({});
+  const [title, setTitle] = React.useState('');
+  const [type, setType] = React.useState('');
+  const [isModal, setIsModal] = React.useState(false);
 
-  const { data } = trpc.category.get.useQuery(filters, {
+  // APi
+  const { data, refetch } = trpc.customer.get.useQuery(filters, {
     refetchOnWindowFocus: false,
   });
 
   const categoryData = React.useMemo(() => {
     return Array.isArray(data?.data) ? data?.data : [];
   }, [data]);
+
+  // handle modal
+  const handleEnbled = (data: any, type: string) => {
+    if (!data?.is_approved) {
+      setSelectedItem(data);
+      setTitle('Customer');
+      setType(type);
+      setIsModal(true);
+    }else{
+      toast({
+        variant: 'success',
+        title: `Customer is Already Approved!`,
+      });
+    }
+  };
+  // columns
+  const columns: ColumnDef<Category>[] = [
+    {
+      accessorKey: 'email',
+      header: 'Email',
+      cell: ({ row }) => {
+        return (
+          <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  {customEmailTruncateHandler(row?.original?.email)}
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="text-base font-normal">
+                    {row?.original?.email}
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: 'username',
+      header: 'User Name',
+      cell: ({ row }) => (
+        <div className="capitalize text-ellipsis whitespace-nowrap ">
+          {row.getValue('username')}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'first_name',
+      header: 'Name',
+      cell: ({ row }) => (
+        <div className="capitalize text-ellipsis whitespace-nowrap ">
+          {row?.original?.first_name + ' ' + row?.original?.last_name}
+        </div>
+      ),
+    },
+    {
+      id: 'is_approved',
+      header: 'Approved Status',
+
+      cell: ({ row }) => {
+        return (
+          <div>
+            <Switch
+              checked={row?.original?.is_approved}
+              onCheckedChange={() => handleEnbled(row?.original, 'enabled')}
+            />
+          </div>
+        );
+      },
+    },
+  ];
 
   const table = useReactTable({
     data: categoryData as Category[],
@@ -136,10 +176,6 @@ export default function CustomersDataTable() {
     },
   });
 
-  function languageHandler(params: LanguageInterface) {
-    setFilters((prevFilters) => ({ ...prevFilters, lang_id: params.id }));
-  }
-
   function handlePagination(page: number) {
     if (page < 0) return;
     setFilters((prevFilters) => ({ ...prevFilters, first: page }));
@@ -148,7 +184,6 @@ export default function CustomersDataTable() {
   return (
     <div className="w-full space-y-4">
       <div className="flex items-center justify-end gap-2">
-        <LanguageSelect languageHandler={languageHandler} />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline">
@@ -244,6 +279,17 @@ export default function CustomersDataTable() {
           </Button>
         </div>
       </div>
+      <CustomerDialog
+        selectedItem={selectedItem}
+        setSelectedItem={setSelectedItem}
+        title={title}
+        setTitle={setTitle}
+        isModal={isModal}
+        setIsModal={setIsModal}
+        refetch={refetch}
+        type={type}
+        setType={setType}
+      />
     </div>
   );
 }

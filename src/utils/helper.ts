@@ -75,5 +75,15 @@ export async function compressImage(fileImage: File, fileType = 'image/webp') {
 }
 
 
+export function customTruncateHandler(str = '', n = 15) {
+  return str?.length > n ? str?.slice(0, n) + '...' : str;
+}
+export function customEmailTruncateHandler(str = '', n = 15) {
+  const myArray: any = str.split('@');
+  return myArray[0]?.length > n
+    ? myArray[0]?.slice(0, n) + '***@' + myArray[1]
+    : str;
+}
+
 
 

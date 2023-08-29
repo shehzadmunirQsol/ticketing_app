@@ -6,6 +6,8 @@ import {
   loginCustomerSchema,
   forgotPasswordCustomerSchema,
   resetPasswordCustomerSchema,
+  getCustomerSchema,
+  updateCustomerSchema,
 } from '~/schema/customer';
 import { hashPass, isSamePass } from '~/utils/hash';
 import { signJWT } from '~/utils/jwt';
@@ -207,5 +209,67 @@ export const customerRouter = router({
           message: error.message,
         });
       }
+    }),
+  get: publicProcedure.input(getCustomerSchema).query(async ({ input }) => {
+    try {
+      const where: any = { is_deleted: false };
+
+      if (input?.startDate) {
+        const startDate = new Date(input?.startDate);
+        where.created_at = { gte: startDate };
+      }
+      if (input?.endDate) {
+        const endDate = new Date(input?.endDate);
+        where.created_at = { lte: endDate };
+      }
+
+      const totalCategoryPromise = prisma.customer.count({
+        where: where,
+      });
+
+      const categoryPromise = prisma.customer.findMany({
+        orderBy: { created_at: 'asc' },
+        skip: input.first * input.rows,
+        take: input.rows,
+        where: where,
+      });
+
+      const [totalCustomers, customer] = await Promise.all([
+        totalCategoryPromise,
+        categoryPromise,
+      ]);
+
+      if (!customer?.length) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Categories not found',
+        });
+      }
+
+      return {
+        message: 'categories found',
+        count: totalCustomers,
+        data: customer,
+      };
+    } catch (error: any) {
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: error?.message,
+      });
+    }
+  }),
+  update: publicProcedure
+    .input(updateCustomerSchema)
+    .mutation(async ({ input }) => {
+      // const payload = [...input];
+      const payload: any = { ...input };
+      if (input?.id) delete payload?.id;
+      const customer = await prisma.customer.update({
+        where: {
+          id: input?.id,
+        },
+        data: { ...payload },
+      });
+      return customer;
     }),
 });
