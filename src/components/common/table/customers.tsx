@@ -78,7 +78,7 @@ export default function CustomersDataTable() {
   const [isModal, setIsModal] = React.useState(false);
 
   // APi
-  const { data, refetch } = trpc.customer.get.useQuery(filters, {
+  const { data, refetch } = trpc.customer.getCustomers.useQuery(filters, {
     refetchOnWindowFocus: false,
   });
 

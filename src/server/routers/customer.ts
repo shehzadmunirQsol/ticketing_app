@@ -236,7 +236,7 @@ export const customerRouter = router({
         });
       }
     }),
-  get: publicProcedure.input(getCustomerSchema).query(async ({ input }) => {
+  getCustomers: publicProcedure.input(getCustomerSchema).query(async ({ input }) => {
     try {
       const where: any = { is_deleted: false };
 
