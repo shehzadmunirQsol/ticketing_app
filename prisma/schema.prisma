@@ -175,6 +175,7 @@ model Event {
   OrderEvent        OrderEvent[]
   OrderSubscription OrderSubscription[]
   Winner            Winner[]
+  CartItem          CartItem[]
 
   @@index([user_id, category_id])
   @@map("event")
@@ -249,6 +250,7 @@ model Customer {
   CustomerAddress   CustomerAddress[]
   OrderSubscription OrderSubscription[]
   Winner            Winner[]
+  Cart              Cart[]
 
   @@map("customer")
 }
@@ -272,6 +274,40 @@ model CustomerAddress {
 
   @@index([customer_id])
   @@map("customer_address")
+}
+
+model Cart {
+  id          Int     @id @default(autoincrement())
+  customer_id Int
+  is_deleted  Boolean @default(false)
+
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+
+  Customer  Customer   @relation(fields: [customer_id], references: [id])
+  CartItems CartItem[]
+
+  @@index([customer_id])
+  @@map("cart")
+}
+
+model CartItem {
+  id                Int                @id @default(autoincrement())
+  cart_id           Int
+  event_id          Int
+  quantity          Int
+  is_subscribe      Boolean            @default(false)
+  subscription_type SubscriptionEnums?
+  is_deleted        Boolean            @default(false)
+
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+
+  Cart  Cart  @relation(fields: [cart_id], references: [id])
+  Event Event @relation(fields: [event_id], references: [id])
+
+  @@index([cart_id, event_id])
+  @@map("cart_item")
 }
 
 model Order {
@@ -333,7 +369,7 @@ model OrderSubscription {
   customer_id           Int
   order_id              Int
   event_id              Int
-  total_subscription_id Int?
+  total_subscription_id String?
   subscription_type     SubscriptionEnums? @default(weekly)
   is_deleted            Boolean            @default(false)
 

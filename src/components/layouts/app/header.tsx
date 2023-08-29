@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from '@/ui/button';
 import LogoImage from '~/public/assets/logo.png';
 import Image from 'next/image';
@@ -28,6 +28,7 @@ import { useRouter } from 'next/router';
 import { toggleLang } from '~/store/reducers/layout';
 import { RootState } from '~/store/store';
 import Link from 'next/link';
+import { useToast } from '~/components/ui/use-toast';
 interface LinkItemProps {
   name: string;
   link: string;
@@ -37,9 +38,23 @@ interface LinkItemProps {
 
 function Header() {
   const router = useRouter();
-  const { lang } = useSelector((state: RootState) => state.layout);
+  const { isLogin } = useSelector((state: RootState) => state.auth);
+
+  const [color, setColor] = useState(false);
 
   const dispatch = useDispatch();
+  const { toast } = useToast();
+
+  useEffect(() => {
+    const changeColor = () =>
+      window.scrollY >= 100 ? setColor(true) : setColor(false);
+
+    window.addEventListener('scroll', changeColor);
+
+    return () => {
+      window.removeEventListener('scroll', changeColor);
+    };
+  }, []);
 
   function toggleLanguageHandler(lang: 'en' | 'ar') {
     const dir: 'ltr' | 'rtl' = lang === 'ar' ? 'rtl' : 'ltr';
@@ -49,17 +64,18 @@ function Header() {
     dispatch(toggleLang(language));
   }
 
-  console.log({ lang });
+  function routeHandler(route: string) {
+    if (!isLogin) {
+      toast({
+        variant: 'destructive',
+        title: 'Login to your account first!',
+      });
+      return;
+    }
 
-  const [color, setColor] = useState(false);
-  if (typeof window !== 'undefined') {
-    const changeColor = () =>
-      window.scrollY >= 100 ? setColor(true) : setColor(false);
-
-    window.addEventListener('scroll', changeColor);
+    router.push(route);
   }
 
-  const [click, setClick] = useState(false);
   return (
     <div
       className={`fixed w-full z-50 top-0 h-24  flex  items-center   ${
@@ -86,16 +102,19 @@ function Header() {
             variant="outline"
             size="icon_square"
             className="border-primary"
+            onClick={() => routeHandler('/cart')}
           >
             <i className="fa-solid fa-cart-shopping" />
           </Button>
-          <Button
-            variant="outline"
-            size="icon_square"
-            className="border-primary"
-          >
-            <i className="fa-solid fa-user" />
-          </Button>
+          <Link href={isLogin ? '/account' : '/login'}>
+            <Button
+              variant="outline"
+              size="icon_square"
+              className="border-primary"
+            >
+              <i className="fa-solid fa-user" />
+            </Button>
+          </Link>
           <Select onValueChange={toggleLanguageHandler}>
             <SelectTrigger className="h-10 w-10 rounded-none border-primary text-gray-200">
               <SelectValue placeholder="EN" />
@@ -218,20 +237,19 @@ export function ItemMenuDemo() {
       id="navbar-sticky"
     >
       <ul className="flex flex-col p-4 md:p-0  text-small font-normal  border  rounded-lg bg-transparent md:flex-row md:space-x-4 md:mt-0 md:border-0 md:bg-white dark:bg-transparent ">
-        {linkItems &&
-          linkItems?.map((item, index) => {
-            return (
-              <li key={index} className="group border-b-2 border-transparent  ">
-                <Link
-                  href={item?.link}
-                  className="flex flex-col py-2 pl-3 pr-4 text-gray-200  hover:underline hover:bg-gray-100  md:hover:bg-transparent  dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-                >
-                  {item?.name}
-                  <span className="w-full h-1 bg-transparent group-hover:bg-teal mt-1 rounded-sm  "></span>
-                </Link>
-              </li>
-            );
-          })}
+        {linkItems?.map((item, index) => {
+          return (
+            <li key={index} className="group border-b-2 border-transparent  ">
+              <Link
+                href={item?.link}
+                className="flex flex-col py-2 pl-3 pr-4 text-gray-200  hover:underline hover:bg-gray-100  md:hover:bg-transparent  dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+              >
+                {item?.name}
+                <span className="w-full h-1 bg-transparent group-hover:bg-teal mt-1 rounded-sm  "></span>
+              </Link>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );

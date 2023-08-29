@@ -2,7 +2,7 @@
  * This file contains the root router of your tRPC-backend
  */
 
-  // post: postRouter,
+// post: postRouter,
 import { router } from '../trpc';
 import { categoryRouter } from './category';
 import { eventRouter } from './event';
@@ -10,6 +10,7 @@ import { languageRouter } from './language';
 import { settingRouter } from './settings';
 import { customerRouter } from './customer';
 import { adminUserRouter } from './adminUser';
+import { cartRouter } from './cart';
 import { winnerRouter } from './winners';
 
 export const appRouter = router({
@@ -19,6 +20,7 @@ export const appRouter = router({
   language: languageRouter,
   settings: settingRouter,
   customer: customerRouter,
+  cart: cartRouter,
   winner: winnerRouter,
 });
 

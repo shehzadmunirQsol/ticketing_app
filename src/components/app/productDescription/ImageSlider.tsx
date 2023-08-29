@@ -1,18 +1,32 @@
-import React, { useEffect, useState } from 'react';
-import Image from 'next/image';
-import CarImage from '../../../public/assets/card_image.png';
-// import { Progress } from '@radix-ui/react-progress';
+import React, { useEffect, useRef, useState } from 'react';
 import { Progress } from '../../ui/progress';
 import Counter from './Counter';
 import ImageSliderStyle from './ImageSliderStyle';
+import { useSelector } from 'react-redux';
+import { RootState } from '~/store/store';
+import { useRouter } from 'next/router';
 
-const ImageSlider = ({data}:any) => {
+const ImageSlider = ({ data }: any) => {
+  const { cart } = useSelector((state: RootState) => state.cart);
+
   const [range, setRange] = useState<number[]>([1]);
+  const { query } = useRouter();
 
-  const price =  +(range[0] as number) * data?.price 
+  const ticketInBasket = useRef<number>(0);
+
+  const cartItem = cart?.cartItems?.find(
+    (item) => item.event_id === +(query?.id ?? 0),
+  );
+
+  useEffect(() => {
+    if (cartItem) {
+      ticketInBasket.current = cartItem.quantity ?? 0;
+      setRange([cartItem.quantity ?? 0]);
+    }
+  }, [cartItem]);
+
+  const price = +(range[0] as number) * data?.price;
   const percentageSold = (data?.tickets_sold / data?.total_tickets) * 100;
-
-  console.log(data,"dataHAKSHANJHA")
 
   return (
     <section className="text-gray-600 body-font">
@@ -27,13 +41,16 @@ const ImageSlider = ({data}:any) => {
             </div>
             <div className="flex-grow w-full">
               <div className="flex flex-col gap-2">
-                <span className=" text-xs ">{data?.tickets_sold} Sold out of {data?.total_tickets}</span>
+                <span className=" text-xs ">
+                  {data?.tickets_sold} Sold out of {data?.total_tickets}
+                </span>
                 <Progress value={percentageSold} className="w-full" />
               </div>
             </div>
             <div>
               <p className="mt-6 text-2xl  md:text-4xl xl:text-5xl font-normal tracking-[-2px] text-white  ">
-                <span className=" font-black mr-1">WIN </span>{data?.EventDescription[0]?.name}
+                <span className=" font-black mr-1">WIN </span>
+                {data?.EventDescription[0]?.name}
               </p>
             </div>
             <div>
@@ -44,7 +61,9 @@ const ImageSlider = ({data}:any) => {
             <div className="flex flex-col lg:flex-row  py-6 mb-12 justify-between  w-full">
               <p className=" text-white text-xl  lg:text-2xl mb-2">
                 Cash Alternative <span color=""></span>{' '}
-                <span className=" font-black mr-1 text-primary">AED {data?.cash_alt.toFixed(2)}</span>
+                <span className=" font-black mr-1 text-primary">
+                  AED {data?.cash_alt.toFixed(2)}
+                </span>
               </p>
               <p className=" lg:text-2xl text-xl sm:pl-10 pl-0 text-primary font-black ">
                 AED {price.toFixed(2)}
@@ -52,7 +71,12 @@ const ImageSlider = ({data}:any) => {
             </div>
             <div className="w-full relative">
               <div className="z-50">
-                <Counter range={range} setRange={setRange} user_ticket_limit={data?.user_ticket_limit} />
+                <Counter
+                  range={range}
+                  ticketInBasket={ticketInBasket}
+                  setRange={setRange}
+                  user_ticket_limit={data?.user_ticket_limit}
+                />
               </div>
               {/* <div className="absolute bottom-10 -right-10  z-10  w-1/5 h-3/5  bg-teal-400 bg-opacity-50 rounded-full blur-3xl"></div> */}
             </div>
