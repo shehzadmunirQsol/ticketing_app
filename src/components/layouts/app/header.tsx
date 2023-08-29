@@ -138,10 +138,10 @@ export function DropdownMenuDemo() {
             <Link href="/cash">Cash</Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <span>Winings</span>
+          <Link href="/winners">Winners</Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <span>About Us</span>
+            <span>About Us</span>   
           </DropdownMenuItem>
           <DropdownMenuItem>
             <span>FAQ</span>

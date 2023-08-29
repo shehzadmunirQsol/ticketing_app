@@ -20,11 +20,12 @@ import { trpc } from '~/utils/trpc';
 import { getS3ImageUrl } from '~/service/api/s3Url.service';
 import { isValidImageType } from '~/utils/helper';
 // import { useToast } from '~/components/ui/use-toast';
-import SideImage from './SideImage';
+import SideImage from '../../common/SideImage';
 import { signupCustomerInput, loginCustomerInput } from '~/schema/customer';
 import { useToast } from '~/components/ui/use-toast';
 import Link from 'next/link';
 import { ForgotPasswordDailog } from './ForgotPassword';
+import CarImage from '../../../public/assets/CarLogin.svg';
 
 export default function LoginSignup() {
   const { toast } = useToast();
@@ -100,7 +101,7 @@ export default function LoginSignup() {
     <section className="body-font  ">
       <div className="px-5 pt-16 pb-5 lg:pb-0 md:pb-0 lg:py-24 md:py-24 mx-auto flex flex-col-reverse lg:flex-row md:flex-row gap-14 mt-6 ">
         <div className="lg:w-2/3 md:w-2/3 w-full h-full mb-5 lg:mb-0 rounded-lg hidden  lg:block  ">
-          <SideImage />
+          <SideImage image={CarImage} text={"Unlock Your Journey Login or Register for"} text2={"Exclusive Access"} />
         </div>
         <Tabs
           defaultValue={defaultValue === 'login' ? 'login' : 'signup'}

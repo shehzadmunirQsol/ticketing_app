@@ -3,6 +3,7 @@ import { Slider } from '~/components/ui/slider';
 import { Button } from '~/components/ui/button';
 import TokenRange from './TokenRange';
 import CounterStyle from './CounterStyle';
+import Glow from '~/components/common/glow';
 
 interface CounterProps {
   range: number[];
@@ -15,7 +16,8 @@ const Counter: React.FC<CounterProps> = ({
   user_ticket_limit,
 }) => {
   return (
-    <div className="bg-backgroundDark p-4 z-auto ">
+    <div className="relative bg-backgroundDark p-4  ">
+
       <p className="text-lg text-white">How many tickets?</p>
       {/* <input type="range" name="range" id="range" className="appearance-white w-full h-3  rounded-full thumb:bg-primary" /> */}
       <div>
@@ -42,6 +44,7 @@ const Counter: React.FC<CounterProps> = ({
           ADD TICKETS TO BASKET
         </Button>
       </div>
+
     </div>
   );
 };

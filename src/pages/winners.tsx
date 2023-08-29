@@ -1,5 +1,5 @@
 import { NextPageWithLayout } from '~/pages/_app';
-import {Winners} from '~/components/app/winnars/index';
+import {Winners} from '~/components/app/winners/index';
 
 const IndexPage: NextPageWithLayout = () => <Winners/>
 

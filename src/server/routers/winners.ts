@@ -12,16 +12,52 @@ export const winnerRouter = router({
     .input(getWinnersByIdSchema)
     .query(async ({ ctx, input }) => {
       try {
-        const winners = await prisma.winner.findMany({
-          where: { customer_id: 2 },
+        const winnersPromise = await prisma.winner.findMany({
+          skip: input.first * input.rows,
+          take: input.rows,
           include: {
             Customer: true,
+            Event: {
+              select: {
+                EventDescription: {
+                  where: {
+                    lang_id: 1,
+                  },
+                  select: {
+                    id: true,
+                    lang_id: true,
+                    name: true,
+                    desc: true,
+                    comp_details: true,
+                  },
+                },
+              },
+            },
           },
-          
         });
-        console.log(winners,"WINNERS")
 
-        return winners;
+        const totalWinnersPromise = prisma.winner.count({
+          where: {
+            is_deleted: false,
+          },
+        });
+        
+        const [totalWinners, winners] = await Promise.all([
+          totalWinnersPromise,
+          winnersPromise,
+        ]);
+
+
+        console.log(totalWinners, winners,"totalWinners, winners")
+
+        // console.log(winners, 'WINNERS');
+      //  le.log(totalEventPromise, 'totalEventPromise');
+
+      return {
+        message: 'Events found',
+        count: totalWinners,
+        data: winners,
+      };
       } catch (error: any) {
         console.log({ error });
         throw new TRPCError({
