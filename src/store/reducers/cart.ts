@@ -7,8 +7,15 @@ interface Cart {
   customer_id: number | null;
 }
 
-interface CartItemInterface {
+export interface CartItemInterface {
   id: number;
+  Event: {
+    thumb: string;
+    price: number;
+    EventDescription: {
+      name: string;
+    }[];
+  };
   subscription_type: 'weekly' | 'monthly' | 'quarterly' | null;
   cart_id: number;
   event_id: number;

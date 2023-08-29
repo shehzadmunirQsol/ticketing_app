@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from '@/ui/button';
 import LogoImage from '~/public/assets/logo.png';
 import Image from 'next/image';
@@ -28,6 +28,7 @@ import { useRouter } from 'next/router';
 import { toggleLang } from '~/store/reducers/layout';
 import { RootState } from '~/store/store';
 import Link from 'next/link';
+import { useToast } from '~/components/ui/use-toast';
 interface LinkItemProps {
   name: string;
   link: string;
@@ -37,9 +38,23 @@ interface LinkItemProps {
 
 function Header() {
   const router = useRouter();
-  const { lang } = useSelector((state: RootState) => state.layout);
+  const { isLogin } = useSelector((state: RootState) => state.auth);
+
+  const [color, setColor] = useState(false);
 
   const dispatch = useDispatch();
+  const { toast } = useToast();
+
+  useEffect(() => {
+    const changeColor = () =>
+      window.scrollY >= 100 ? setColor(true) : setColor(false);
+
+    window.addEventListener('scroll', changeColor);
+
+    return () => {
+      window.removeEventListener('scroll', changeColor);
+    };
+  }, []);
 
   function toggleLanguageHandler(lang: 'en' | 'ar') {
     const dir: 'ltr' | 'rtl' = lang === 'ar' ? 'rtl' : 'ltr';
@@ -49,14 +64,16 @@ function Header() {
     dispatch(toggleLang(language));
   }
 
-  console.log({ lang });
+  function routeHandler(route: string) {
+    if (!isLogin) {
+      toast({
+        variant: 'destructive',
+        title: 'Login to your account first!',
+      });
+      return;
+    }
 
-  const [color, setColor] = useState(false);
-  if (typeof window !== 'undefined') {
-    const changeColor = () =>
-      window.scrollY >= 100 ? setColor(true) : setColor(false);
-
-    window.addEventListener('scroll', changeColor);
+    router.push(route);
   }
 
   return (
@@ -81,22 +98,23 @@ function Header() {
       <div className="hidden  mdx:flex gap-8 items-center justify-center">
         <ItemMenuDemo />
         <div className="flex items-center justify-center gap-2">
-          <Link href="/cart">
+          <Button
+            variant="outline"
+            size="icon_square"
+            className="border-primary"
+            onClick={() => routeHandler('/cart')}
+          >
+            <i className="fa-solid fa-cart-shopping" />
+          </Button>
+          <Link href={isLogin ? '/account' : '/login'}>
             <Button
               variant="outline"
               size="icon_square"
               className="border-primary"
             >
-              <i className="fa-solid fa-cart-shopping" />
+              <i className="fa-solid fa-user" />
             </Button>
           </Link>
-          <Button
-            variant="outline"
-            size="icon_square"
-            className="border-primary"
-          >
-            <i className="fa-solid fa-user" />
-          </Button>
           <Select onValueChange={toggleLanguageHandler}>
             <SelectTrigger className="h-10 w-10 rounded-none border-primary text-gray-200">
               <SelectValue placeholder="EN" />

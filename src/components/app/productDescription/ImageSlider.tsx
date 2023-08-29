@@ -1,10 +1,29 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Progress } from '../../ui/progress';
 import Counter from './Counter';
 import ImageSliderStyle from './ImageSliderStyle';
+import { useSelector } from 'react-redux';
+import { RootState } from '~/store/store';
+import { useRouter } from 'next/router';
 
 const ImageSlider = ({ data }: any) => {
+  const { cart } = useSelector((state: RootState) => state.cart);
+
   const [range, setRange] = useState<number[]>([1]);
+  const { query } = useRouter();
+
+  const ticketInBasket = useRef<number>(0);
+
+  const cartItem = cart?.cartItems?.find(
+    (item) => item.event_id === +(query?.id ?? 0),
+  );
+
+  useEffect(() => {
+    if (cartItem) {
+      ticketInBasket.current = cartItem.quantity ?? 0;
+      setRange([cartItem.quantity ?? 0]);
+    }
+  }, [cartItem]);
 
   const price = +(range[0] as number) * data?.price;
   const percentageSold = (data?.tickets_sold / data?.total_tickets) * 100;
@@ -54,6 +73,7 @@ const ImageSlider = ({ data }: any) => {
               <div className="z-50">
                 <Counter
                   range={range}
+                  ticketInBasket={ticketInBasket}
                   setRange={setRange}
                   user_ticket_limit={data?.user_ticket_limit}
                 />

@@ -7,30 +7,37 @@ import { useRouter } from 'next/router';
 import { trpc } from '~/utils/trpc';
 import { useToast } from '~/components/ui/use-toast';
 import { addToCart } from '~/store/reducers/cart';
-import { useRef } from 'react';
 
 interface CounterProps {
   range: number[];
   setRange: React.Dispatch<React.SetStateAction<number[]>>;
   user_ticket_limit: number;
+  ticketInBasket: { current: number };
 }
 const Counter: React.FC<CounterProps> = ({
   range,
   setRange,
   user_ticket_limit,
+  ticketInBasket,
 }) => {
-  const { user } = useSelector((state: RootState) => state.auth);
+  const { user, isLogin } = useSelector((state: RootState) => state.auth);
   const { cart } = useSelector((state: RootState) => state.cart);
 
   const { toast } = useToast();
   const { query } = useRouter();
   const dispatch = useDispatch();
 
-  const ticketInBasket = useRef<number>(range[0] ?? 0);
-
   const addToBasket = trpc.cart.addToCart.useMutation();
 
   async function addToBasketHandler() {
+    if (!isLogin) {
+      toast({
+        variant: 'destructive',
+        title: 'Login to your account first!',
+      });
+      return;
+    }
+
     const cartItem = cart?.cartItems?.find(
       (item) => item.event_id === +(query?.id ?? 0),
     );

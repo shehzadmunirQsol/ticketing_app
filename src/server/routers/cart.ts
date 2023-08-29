@@ -8,7 +8,25 @@ export const cartRouter = router({
     try {
       const cart = await prisma.cart.findFirst({
         where: { customer_id: input.customer_id, is_deleted: false },
-        include: { CartItems: true },
+        include: {
+          CartItems: {
+            include: {
+              Event: {
+                select: {
+                  thumb: true,
+                  price: true,
+
+                  EventDescription: {
+                    where: { lang_id: 1 },
+                    select: {
+                      name: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
       });
 
       return { message: 'Cart found', data: cart };
@@ -47,6 +65,20 @@ export const cartRouter = router({
           create: cartItemPayload,
           update: cartItemPayload,
           where: { id: cart_item_id },
+          include: {
+            Event: {
+              select: {
+                thumb: true,
+                price: true,
+                EventDescription: {
+                  where: { lang_id: 1 },
+                  select: {
+                    name: true,
+                  },
+                },
+              },
+            },
+          },
         });
 
         if (!cartItem) {
