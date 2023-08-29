@@ -40,7 +40,7 @@ function Index({ children }: DefaultLayoutProps) {
           cartItems: data.data?.CartItems ?? [],
         };
 
-        dispatch(addCart({ cart }));
+        dispatch(addCart({ cart, count: 0, totalAmount: 0 }));
       },
       onError(error) {
         console.log({ error });

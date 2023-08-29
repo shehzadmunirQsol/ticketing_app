@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useToast } from '~/components/ui/use-toast';
 import { CartItemInterface, addToCart } from '~/store/reducers/cart';
 import { renderNFTImage } from '~/utils/helper';
+import { RemoveItemDialog } from '~/components/common/modal/cartModal';
 
 export default function CartPage() {
   const { cart } = useSelector((state: RootState) => state.cart);
@@ -85,6 +86,8 @@ type SubscriptionType = 'weekly' | 'monthly' | 'quarterly' | null;
 function CartItem(props: CartItemProp) {
   const { cart_id, customer_id, cartItem } = props;
   const [isSubscribe, setIsSubscribe] = useState(cartItem?.is_subscribe);
+  const [isModal, setIsModal] = useState(false);
+
   const [subscriptionType, setSubscriptionType] = useState<SubscriptionType>(
     cartItem?.subscription_type,
   );
@@ -226,9 +229,18 @@ function CartItem(props: CartItemProp) {
               </div>
             ) : null}
           </div>
-          <i className="fas fa-times cursor-pointer text-white/40 text-sm border w-6 h-6 inline-flex items-center justify-center rounded-full" />
+          <i
+            onClick={() => setIsModal((preModal) => !preModal)}
+            className="fas fa-times cursor-pointer text-white/40 text-sm border w-6 h-6 inline-flex items-center justify-center rounded-full"
+          />
         </div>
       </div>
+      <RemoveItemDialog
+        isModal={isModal}
+        openChangeHandler={() => setIsModal((preModal) => !preModal)}
+        cart_item_id={cartItem.id}
+        item_name={cartItem?.Event?.EventDescription[0]?.name ?? ''}
+      />
     </div>
   );
 }
