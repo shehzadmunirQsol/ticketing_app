@@ -30,7 +30,6 @@ import { checkoutSchemaInput, createCheckoutSchema } from '~/schema/checkout';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 const Checkout = () => {
-  //   const form = useForm<checkoutSchemaInput>();
 
   // 1. Define your form.
   const form = useForm<checkoutSchemaInput>({
@@ -43,23 +42,24 @@ const Checkout = () => {
 
   const data = [
     {
-      country: 'asdjklsad',
+      country: 'United Arab Emirates',
     },
+  ];
+  const States = [
     {
-      country: 'asdsadadsad',
-    },
-    {
-      country: 'sadsad',
-    },
-    {
-      country: 'asdsad',
-    },
-    {
-      country: 'adssadsad',
+      state: 'United Arab Emirates',
     },
   ];
 
   const product = [
+    {
+      name: 'Win This 800BHP Ferrari E63s Night Edition + AED 1,000 Cash!',
+      price: 120,
+    },
+    {
+      name: 'Win This 800BHP Ferrari E63s Night Edition + AED 1,000 Cash!',
+      price: 120,
+    },
     {
       name: 'Win This 800BHP Ferrari E63s Night Edition + AED 1,000 Cash!',
       price: 120,
@@ -224,9 +224,9 @@ const Checkout = () => {
                             </FormControl>
                             <SelectContent>
                               <SelectGroup>
-                                {data?.map((item, i) => (
-                                  <SelectItem key={i} value={item.country}>
-                                    {item?.country?.toUpperCase()}
+                                {States?.map((item, i) => (
+                                  <SelectItem key={i} value={item.state}>
+                                    {item?.state?.toUpperCase()}
                                   </SelectItem>
                                 ))}
                               </SelectGroup>
@@ -388,9 +388,11 @@ const Checkout = () => {
                 </p>
                 <p className="text-sm lg:text-base">Have a coupon code?</p>
               </div>
+
+              <div className=" h-[300px] overflow-x-auto" >
               {product.map((item, i) => {
                 return (
-                  <div className="flex flex-row justify-between mb-10" key={i}>
+                  <div className="flex flex-row justify-between mb-10 " key={i} >
                     <p className="lg:text-2xl md:lg:text-xl   w-[60%]">
                       {item.name}
                     </p>
@@ -400,6 +402,7 @@ const Checkout = () => {
                   </div>
                 );
               })}
+              </div>
 
               <div className="flex flex-row justify-between mb-10">
                 <p className="lg:text-2xl md:lg:text-xl font-black">Total:</p>
