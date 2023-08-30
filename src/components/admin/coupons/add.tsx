@@ -18,7 +18,7 @@ export default function AddCoupon() {
   return (
     <div className="p-8 space-y-8">
       <div className="flex items-center justify-between">
-        <h2 className="text-4xl font-medium">Add Category</h2>
+        <h2 className="text-4xl font-medium">Add Coupon</h2>
         {/* <LanguageSelect languageHandler={languageHandler} /> */}
       </div>
       <CouponForm language={language} />
