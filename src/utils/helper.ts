@@ -82,3 +82,13 @@ export function customEmailTruncateHandler(str = '', n = 15) {
     ? myArray[0]?.slice(0, n) + '***@' + myArray[1]
     : str;
 }
+
+export const displayDate = (payload = '' as any) => {
+  if (!payload) return 'N/A';
+  const date = new Date(payload);
+  const ye = new Intl.DateTimeFormat('en', { year: 'numeric' })?.format(date);
+  const mo = new Intl.DateTimeFormat('en', { month: 'short' })?.format(date);
+  const da = new Intl.DateTimeFormat('en', { day: '2-digit' })?.format(date);
+  const formattedDate = `${da}-${mo}-${ye}`;
+  return formattedDate;
+};

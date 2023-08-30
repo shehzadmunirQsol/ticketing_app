@@ -114,8 +114,6 @@ export const couponRouter = router({
         where.created_at = { lte: endDate };
       }
 
-      if (input.category_id) where.id = input.category_id;
-
       const totalCategoryPromise = prisma.coupon.count({
         where: where,
       });
