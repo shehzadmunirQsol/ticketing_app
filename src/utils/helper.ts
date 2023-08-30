@@ -22,7 +22,7 @@ export function formatTrpcError(trpcError = 'Something went wrong!' as string) {
 export function renderNFTImage(nft: any) {
   return nft?.media_type === 'audio/mp3' || nft?.thumb === ''
     ? ''
-    : `${process.env.NEXT_PUBLIC_CLOUD_FRONT_BASE_URL}${nft?.thumb}`;
+    : `${process.env.NEXT_PUBLIC_MEDIA_BASE_URL}${nft?.thumb}`;
 }
 
 export function isValidImageType(type: any) {

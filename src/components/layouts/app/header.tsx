@@ -93,8 +93,10 @@ function Header() {
             variant="outline"
             size="icon_square"
             className="border-primary"
+            onClick={()=>router.push("/account")}
           >
-            <i className="fa-solid fa-user" />
+              <i className="fa-solid fa-user" />
+            
           </Button>
           <Select onValueChange={toggleLanguageHandler}>
             <SelectTrigger className="h-10 w-10 rounded-none border-primary text-gray-200">
