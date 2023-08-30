@@ -5,7 +5,8 @@ import { Separator } from '~/components/ui/separator';
 import Current from '~/public/assets/not-current-entrie.png';
 
 const grid = ['', ''];
-const AccountView = ({ control }: { control: Function }) => {
+// { control: Function }
+const AccountView = ({ control }: any) => {
   return (
     <div className="py-4 px-6 text-[#eaeaea]">
       <p className="mb-3">

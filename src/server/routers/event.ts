@@ -185,6 +185,9 @@ export const eventRouter = router({
           where: where,
           include: {
             EventDescription: {
+              where: {
+                lang_id: input?.lang_id,
+              },
               select: {
                 comp_details: true,
                 lang_id: true,

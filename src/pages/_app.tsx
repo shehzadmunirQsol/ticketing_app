@@ -1,9 +1,10 @@
 import type { NextPage } from 'next';
 import type { AppType, AppProps } from 'next/app';
-import type { ReactElement, ReactNode } from 'react';
+import { useState, type ReactElement, type ReactNode, useEffect } from 'react';
 import Layout from '~/components/layouts';
 import { trpc } from '~/utils/trpc';
 import '~/styles/globals.css';
+
 
 export type NextPageWithLayout<
   TProps = Record<string, unknown>,
