@@ -10,7 +10,15 @@ import {
   FormLabel,
   FormMessage,
 } from '@/ui/form';
-
+import {
+  Select,
+  SelectItem,
+  SelectTrigger,
+  SelectContent,
+  SelectGroup,
+  SelectValue,
+} from '@/ui/select';
+import { Textarea } from '~/components/ui/textarea';
 import { Input } from '@/ui/input';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
@@ -21,80 +29,53 @@ import { getS3ImageUrl } from '~/service/api/s3Url.service';
 import { isValidImageType } from '~/utils/helper';
 // import { useToast } from '~/components/ui/use-toast';
 import SideImage from '../../common/SideImage';
-import { signupCustomerInput, loginCustomerInput } from '~/schema/customer';
+import { contactSchema, contactSchemaInput } from '~/schema/contact';
 import { useToast } from '~/components/ui/use-toast';
 import Link from 'next/link';
 // import { ForgotPasswordDailog } from './ForgotPassword';
 import ContactImage from '../../../public/assets/contact-us.svg';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 export default function Contact() {
   const { toast } = useToast();
   const router = useRouter();
 
-  const formSignup = useForm<signupCustomerInput>();
-  const formLogin = useForm<loginCustomerInput>();
+  // 1. Define your form.
+  const form = useForm<contactSchemaInput>({
+    resolver: zodResolver(contactSchema),
+  });
 
-  // Handle Forget Password Modal
-  const [isModal, setIsModal] = React.useState(false);
-  const [defaultValue, setDefaultValue] = React.useState('login');
-  console.log(defaultValue, 'defaultValue');
-  // register customer
-  const registerCustomer = trpc.customer.register.useMutation({
-    onSuccess: (res: any) => {
-      console.log(res, 'res');
+  // Handle Contact us
+  const contactUs = trpc.contact.contact.useMutation({
+    onSuccess: async (res: any) => {
+      console.log(res,"res")
+      // props.setIsModal(false);
       toast({
         variant: 'success',
-        title: 'User Register Successfully',
+        title: 'please check your email ',
       });
-      // router.push('/login')
-      setDefaultValue('login');
-      formSignup.setValue('username', '');
-      formSignup.setValue('email', '');
-      formSignup.setValue('password', '');
-      formSignup.setValue('firstname', '');
-      formSignup.setValue('lastname', '');
+      // form.setValue('name', '');
+      // form.setValue('email', '');
+      // form.setValue('code', '');
+      // form.setValue('number', '');
+      // form.setValue('message', '');
     },
     onError: (err) => {
       console.log(err.message, 'err');
-      toast({
-        variant: 'destructive',
-        title: err.message,
-      });
     },
   });
 
-  // login customer
-  const loginCustomer = trpc.customer.loginCustomer.useMutation({
-    onSuccess: (res: any) => {
-      toast({
-        variant: 'success',
-        title: 'User Login Successfully ',
-      });
-      router.push('/');
-      formLogin.setValue('user', '');
-      formLogin.setValue('password', '');
+  const countryCode = [
+    {
+      code: '+971',
     },
-    onError: (err) => {
-      console.log(err.message, 'err');
-      toast({
-        variant: 'destructive',
-        title: err.message,
-      });
-    },
-  });
+  ];
 
-  // Signup
-  const onSubmitSignup = async (values: any) => {
+  // Contact
+  const onSubmitContact = async (values: any) => {
     console.log(values, 'Working');
-    const signupResult = await registerCustomer.mutateAsync(values);
-    console.log(signupResult, 'signupResult');
-  };
-
-  // Login
-
-  const onSubmitLogin = async (values: any) => {
-    const loginResult = await loginCustomer.mutateAsync(values);
-    console.log(loginResult, 'loginResult');
+    const resp = await contactUs.mutateAsync(values);
+    console.log(resp,"customer resp")
   };
 
   return (
@@ -108,28 +89,28 @@ export default function Contact() {
           />
         </div>
         <div className="flex flex-col flex-wrap   lg:w-2/2 md:w-full  lg:text-left  rounded-none border-none  lg:mr-6 bg-card">
-          <div className='font-black  py-4 '>
-            <p className='text-xl pl-6'>Contact Us</p>
+          <div className="font-black  py-4 ">
+            <p className="text-xl pl-6">Contact Us</p>
             <hr className=" opacity-20 mt-4" />
           </div>
-          <Form {...formSignup}>
+          <Form {...form}>
             <form
-              onSubmit={formSignup.handleSubmit(onSubmitSignup)}
+              onSubmit={form.handleSubmit(onSubmitContact)}
               className="justify-center items-center px-2 lg:px-8 py-4 space-y-4"
             >
               <div className="w-full">
                 <FormField
-                  control={formSignup.control}
-                  name="username"
+                  control={form.control}
+                  name="name"
                   render={({ field }) => (
                     <FormItem className="mb-6 lg:mb-10 md:mb-10">
                       <FormLabel className="text-xs font-thin  text-grayColor">
-                        Username*
+                        Your Name*
                       </FormLabel>
-                      <FormControl>
+                      <FormControl className="rounded-md bg-inputColor">
                         <Input
                           type="text"
-                          placeholder="Enter Your Username "
+                          placeholder="Enter Your name "
                           {...field}
                         />
                       </FormControl>
@@ -138,17 +119,17 @@ export default function Contact() {
                   )}
                 />
                 <FormField
-                  control={formSignup.control}
+                  control={form.control}
                   name="email"
                   render={({ field }) => (
                     <FormItem className="mb-6 lg:mb-10 md:mb-10">
                       <FormLabel className="text-xs  font-thin text-grayColor">
                         Email Address*
                       </FormLabel>
-                      <FormControl>
+                      <FormControl className="rounded-md bg-inputColor mb-6">
                         <Input
                           type="text"
-                          placeholder="Enter Your Email Address"
+                          placeholder="Enter your email address"
                           {...field}
                         />
                       </FormControl>
@@ -156,56 +137,75 @@ export default function Contact() {
                     </FormItem>
                   )}
                 />
+
+                <div className=" w-full ">
+                  <p className="text-xs font-thin text-grayColor  mb-3 ">
+                    Phone Number
+                  </p>
+                  <div className="flex flex-row gap-2 ">
+                    <FormField
+                      control={form.control}
+                      name="code"
+                      render={({ field }) => (
+                        <FormItem>
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                            value={field.value}
+                          >
+                            <FormControl className="rounded-md bg-inputColor">
+                              <SelectTrigger className=" rounded-none  ">
+                                <SelectValue placeholder="+971" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              <SelectGroup>
+                                {countryCode?.map((item, i) => (
+                                  <SelectItem key={i} value={item.code}>
+                                    {item?.code}
+                                  </SelectItem>
+                                ))}
+                              </SelectGroup>
+                            </SelectContent>
+                          </Select>
+
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="number"
+                      render={({ field }) => (
+                        <FormItem className=" w-full mb-8">
+                          {/* <FormLabel className="text-xs font-thin text-grayColor">
+                            Email
+                          </FormLabel> */}
+                          <FormControl className="rounded-md bg-inputColor">
+                            <Input
+                              type="text"
+                              placeholder="Enter your phone number"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                </div>
+
                 <FormField
-                  control={formSignup.control}
-                  name="password"
+                  control={form.control}
+                  name="message"
                   render={({ field }) => (
                     <FormItem className="mb-6 lg:mb-10 md:mb-10">
-                      <FormLabel className="text-xs font-thin text-grayColor">
-                        Password*
+                      <FormLabel className="text-xs  font-thin text-grayColor">
+                        Message*
                       </FormLabel>
-                      <FormControl>
-                        <Input
-                          type="password"
-                          placeholder="Enter your password"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={formSignup.control}
-                  name="firstname"
-                  render={({ field }) => (
-                    <FormItem className="mb-6 lg:mb-10 md:mb-10">
-                      <FormLabel className="text-xs font-thin text-grayColor">
-                        First Name*
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          type="text"
-                          placeholder="Enter your first name"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={formSignup.control}
-                  name="lastname"
-                  render={({ field }) => (
-                    <FormItem className="mb-6 lg:mb-28 md:mb-28">
-                      <FormLabel className="text-xs font-thin text-grayColor">
-                        Last Name*
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          type="text"
-                          placeholder="Enter your last name"
+                      <FormControl className="rounded-md bg-inputColor">
+                        <Textarea
+                          placeholder="Type your message here..."
                           {...field}
                         />
                       </FormControl>
@@ -214,7 +214,7 @@ export default function Contact() {
                   )}
                 />
               </div>
-              <div className="flex flex-col lg:flex-row md:flex-row justify-between items-center gap-6 mt-44">
+              <div className="flex flex-col lg:flex-row md:flex-row justify-between items-center gap-6 mt-56">
                 <p className="text-lightColor font-extralight text-xs w-full lg:w-96  md:w-96">
                   Your personal data will be used to process your order, support
                   your experience throughout this website, and for other
@@ -224,7 +224,7 @@ export default function Contact() {
                   className="  lg:w-52 md:w-52 w-full     text-black font-sans font-[900]   text-xl tracking-[-1px]"
                   variant="clip"
                 >
-                  Register
+                  SEND MESSAGE
                 </Button>
               </div>
             </form>

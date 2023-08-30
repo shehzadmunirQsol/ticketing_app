@@ -6,6 +6,7 @@ import {
   loginCustomerSchema,
   forgotPasswordCustomerSchema,
   resetPasswordCustomerSchema,
+  verificationOtpCustomerSchema,
 } from '~/schema/customer';
 import { hashPass, isSamePass } from '~/utils/hash';
 import { signJWT } from '~/utils/jwt';
@@ -33,6 +34,9 @@ export const customerRouter = router({
           if (isExist) {
             return isExist;
           }
+
+          const respCode = await generateOTP(4);
+
           const hashPassword = await hashPass(input.password);
           console.log('HASH Pass : ', hashPassword);
 
@@ -43,6 +47,7 @@ export const customerRouter = router({
             password: hashPassword,
             first_name: input.firstname,
             last_name: input.lastname,
+            otp: respCode,
           };
           console.log(payload, 'payload');
 
@@ -50,8 +55,21 @@ export const customerRouter = router({
             data: payload,
           });
 
+          const mailOptions: any = {
+            template_id: 2,
+            from: 'shehzadmunir.qsols@gmail.com',
+            to: input.email,
+            subject: 'Email Verification OTP CODE',
+            params: {
+              otp: respCode,
+              first_name: input?.firstname,
+            },
+          };
+          const mailResponse = await sendEmail(mailOptions);
+          console.log(mailResponse, 'mailResponse');
+
           console.log(customer, 'user');
-          // return customer;
+          return customer;
         }
       } catch (error: any) {
         throw new TRPCError({
@@ -200,6 +218,44 @@ export const customerRouter = router({
         console.log(updateResponse, 'userCode');
 
         return updateResponse;
+      } catch (error: any) {
+        console.log({ error });
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: error.message,
+        });
+      }
+    }),
+
+  verificationOtpCustomer: publicProcedure
+    .input(verificationOtpCustomerSchema)
+    .mutation(async ({ ctx, input }) => {
+      try {
+        const otpCode = `${input.otp_1}${input.otp_2}${input.otp_3}${input.otp_4}`;
+
+        const user: any = await prisma.customer.findFirst({
+          where: { email: input.email, otp: otpCode },
+        });
+
+        console.log(user, 'user');
+        if (user.otp !== otpCode) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Invalid Otp',
+          });
+        } else {
+          const updateResponse = await prisma.customer?.update({
+            where: {
+              id: user.id,
+            },
+            data: {
+              is_verified:true,
+              otp: '',
+            },
+          });
+          console.log(updateResponse, 'updateResponse');
+        }
+        return { message: 'otp', status: true };
       } catch (error: any) {
         console.log({ error });
         throw new TRPCError({

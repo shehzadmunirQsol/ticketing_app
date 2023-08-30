@@ -26,6 +26,7 @@ import { useToast } from '~/components/ui/use-toast';
 import Link from 'next/link';
 import { ForgotPasswordDailog } from './ForgotPassword';
 import CarImage from '../../../public/assets/CarLogin.svg';
+import { OtpVerificationDailog } from './otp-verification';
 
 export default function LoginSignup() {
   const { toast } = useToast();
@@ -36,11 +37,13 @@ export default function LoginSignup() {
 
   // Handle Forget Password Modal
   const [isModal, setIsModal] = React.useState(false);
+  const [otpIsModal, setOtpIsModal] = React.useState(false);
   const [defaultValue, setDefaultValue] = React.useState('login');
   console.log(defaultValue, 'defaultValue');
   // register customer
   const registerCustomer = trpc.customer.register.useMutation({
     onSuccess: (res: any) => {
+      const localStorageData = localStorage.setItem("customer",JSON.stringify(res.email));
       console.log(res, 'res');
       toast({
         variant: 'success',
@@ -53,6 +56,7 @@ export default function LoginSignup() {
       formSignup.setValue('password', '');
       formSignup.setValue('firstname', '');
       formSignup.setValue('lastname', '');
+      setOtpIsModal(true)
     },
     onError: (err) => {
       console.log(err.message, 'err');
@@ -86,6 +90,8 @@ export default function LoginSignup() {
   // Signup
   const onSubmitSignup = async (values: any) => {
     console.log(values, 'Working');
+    setOtpIsModal(true)
+
     const signupResult = await registerCustomer.mutateAsync(values);
     console.log(signupResult, 'signupResult');
   };
@@ -307,6 +313,7 @@ export default function LoginSignup() {
       </div>
 
       <ForgotPasswordDailog isModal={isModal} setIsModal={setIsModal} />
+      <OtpVerificationDailog otpIsModal={otpIsModal} setOtpIsModal={setOtpIsModal} />
     </section>
   );
 }

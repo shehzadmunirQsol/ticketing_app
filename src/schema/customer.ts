@@ -30,3 +30,11 @@ export const resetPasswordCustomerSchema = z.object({
 });
 export type resetPasswordCustomerSchemaInput = z.TypeOf<typeof resetPasswordCustomerSchema>;
 
+export const verificationOtpCustomerSchema = z.object({
+    email:z.string().email(),
+    otp_1: z.number(),
+    otp_2: z.number(),
+    otp_3: z.number(),
+    otp_4: z.number(),
+});
+
