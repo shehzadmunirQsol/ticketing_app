@@ -27,7 +27,7 @@ const SIDEBAR_DATA = [
     title: 'Customers',
   },
   {
-    key: '/admin/customers',
+    key: '/admin/coupons',
     icon: <i className="fa-solid fa-tag p-4 rounded-full" />,
     title: 'Coupon',
   },

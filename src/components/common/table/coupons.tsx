@@ -60,7 +60,7 @@ export type Category = {
   updated_at: Date;
 };
 
-export default function CustomersDataTable() {
+export default function CouponsDataTable() {
   // use toast
   const { toast } = useToast();
 
@@ -93,7 +93,7 @@ export default function CustomersDataTable() {
       setTitle('Customer');
       setType(type);
       setIsModal(true);
-    }else{
+    } else {
       toast({
         variant: 'success',
         title: `Customer is Already Approved!`,

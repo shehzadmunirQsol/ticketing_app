@@ -23,7 +23,7 @@ export const customerRouter = router({
     if (token) {
       userData = await verifyJWT(token);
     } else {
-      return null;
+      return {data:null};
     }
 
     console.log({ userData }, 'userData');

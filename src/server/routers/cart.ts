@@ -13,6 +13,13 @@ export const cartRouter = router({
       const cart = await prisma.cart.findFirst({
         where: { customer_id: input.customer_id, is_deleted: false },
         include: {
+          CouponApply: {
+            where: { is_deleted: false },
+            select: {
+              discount: true,
+              is_percentage: true,
+            },
+          },
           CartItems: {
             include: {
               Event: {

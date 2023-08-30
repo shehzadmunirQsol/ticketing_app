@@ -15,12 +15,53 @@ import { renderNFTImage } from '~/utils/helper';
 import { RemoveItemDialog } from '~/components/common/modal/cartModal';
 
 export default function CartPage() {
-  const { cart } = useSelector((state: RootState) => state.cart);
+  const { toast } = useToast();
+
+  const { cart, totalAmount } = useSelector((state: RootState) => state.cart);
+  const [code, setCode] = useState('');
+
+  const couponApply = trpc.coupon.applyCoupon.useMutation({
+    onSuccess: () => {
+      console.log('upload successfully');
+
+      // router.push('/store/wallet-connect');
+    },
+    onError(error: any) {
+      console.log({ error });
+    },
+  });
+  const handleApply = async () => {
+    try {
+      if (code !== '') {
+        const payload = {
+          cart_id: cart?.id ?? 0,
+          customer_id: cart?.customer_id ?? 0,
+          coupon_code: code,
+        };
+        const data = await couponApply.mutateAsync(payload);
+        if (data) {
+          toast({
+            variant: 'success',
+            title: 'Coupon Applied!',
+          });
+        }
+      }
+    } catch (e: any) {
+      toast({
+        variant: 'destructive',
+        title: e.message,
+      });
+    }
+  };
+  console.log({ cart });
+  const discountAmount = cart.isPercentage
+    ? totalAmount * (cart.discount / 100)
+    : cart.discount;
 
   return (
     <div className="relative">
       <div className="pt-24"></div>
-      <div className="relative bg-background py-16 px-14 space-y-14">
+      <div className="relative bg-background py-6 px-4 space-y-10 md:py-16 md:px-14 md:space-y-14">
         <h2 className="text-5xl font-bold uppercase">Basket</h2>
         <div data-name="cards" className="w-full border-b border-white/40">
           {cart?.cartItems?.map((cartItem) => (
@@ -36,18 +77,39 @@ export default function CartPage() {
           <div className="flex bg-card border border-border">
             <Input
               placeholder="Coupon code"
+              type="text"
+              onChange={(e: any) => setCode(e.target.value)}
+              disabled={cart.isDiscount}
               className="px-4 flex-1 bg-transparent border-none z-10 "
             />
             <Button
               variant={'ghost'}
+              onClick={handleApply}
+              disabled={!code || cart.isDiscount}
               className="text-primary border-l border-border z-10 "
             >
-              Apply Coupon
+              {cart.isDiscount ? 'Coupon Applied' : 'Apply Coupon'}
             </Button>
           </div>
+          {cart.isDiscount ? (
+            <>
+              <div className="flex items-center justify-between z-10 ">
+                <p className="text-white/40  text-lg">Sub Total:</p>
+                <p className="text-xl">AED {totalAmount?.toFixed(2)}</p>
+              </div>
+              <div className="flex items-center justify-between z-10 ">
+                <p className="text-white/40  text-lg">Discount:</p>
+                <p className="text-xl"> - AED {discountAmount.toFixed(2)}</p>
+              </div>
+            </>
+          ) : null}
+          <div className="h-[1px] bg-white/40" />
+
           <div className="flex items-center justify-between z-10 ">
             <p className="text-lg">Total:</p>
-            <p className="text-xl text-primary font-bold">AED: 240.00</p>
+            <p className="text-xl text-primary font-bold">
+              AED {(totalAmount - discountAmount)?.toFixed(2)}
+            </p>
           </div>
           <Button
             variant={'clip'}
@@ -100,10 +162,6 @@ function CartItem(props: CartItemProp) {
   async function addToBasketHandler(
     type: 'increment' | 'decrement' | 'unsubscribe' | 'update_cart',
   ) {
-    if (!isSubscribe) {
-      setIsSubscribe((prevValue) => !prevValue);
-      return;
-    }
     const quantity =
       type === 'increment'
         ? cartItem?.quantity + 1
@@ -128,6 +186,7 @@ function CartItem(props: CartItemProp) {
       console.log({ response });
       dispatch(addToCart(response.data));
       setIsSubscribe(isSubscription);
+      setSubscriptionType(isSubscription ? subscriptionType : null);
 
       toast({
         variant: 'success',
@@ -140,38 +199,57 @@ function CartItem(props: CartItemProp) {
     }
   }
 
+  function toggleSwitch() {
+    if (isSubscribe && subscriptionType) addToBasketHandler('unsubscribe');
+    else setIsSubscribe((prevValue) => !prevValue);
+  }
+
   return (
-    <div data-name="card" className="card py-8 border-t border-white/40">
-      <div className="flex items-start gap-16">
-        <div className="relative w-44 h-28">
+    <div
+      data-name="card"
+      className="card py-3 mdx:py-6 border-t border-white/40"
+    >
+      <div className="mb-2 flex items-center justify-between mdx:hidden">
+        <p className="text-xl font-bold">
+          {cartItem?.Event?.EventDescription[0]?.name}
+          {/* Win This 800BHP Ferrari E63s Night Edition + AED 1,000 Cash! */}
+        </p>
+        <i
+          onClick={() => setIsModal((preModal) => !preModal)}
+          className="fas fa-times cursor-pointer text-white/40 text-sm border min-w-[24px] min-h-[24px] inline-flex items-center justify-center rounded-full"
+        />
+      </div>
+
+      <div className="flex items-start justify-between space-y-4">
+        <div className="relative mr-10 min-w-[140px] min-h-[90px] mdx:min-w-[176px] mdx:min-h-[112px]">
           <Image
             src={renderNFTImage({ thumb: cartItem.Event.thumb })}
             fill
             alt={'car image'}
-            className="absolute object-contain"
+            className="w-full h-full absolute object-contain"
           />
           <div className="p-1 w-12 h-12 rounded-full overflow-hidden absolute top-[30%] -right-6 bg-gradient-to-b from-primary to-neutral-900">
             <Image
               src={BottleImage}
               alt={'car image'}
-              className="w-full h-full object-cover  rounded-full bg-white"
+              className="w-12 h-12 object-cover  rounded-full bg-white"
             />
           </div>
         </div>
-        <div className="py-4 flex-1 flex items-start justify-between gap-16">
-          <p className="text-2xl flex-1">
+        <div className="flex-1 flex items-start justify-between space-x-4">
+          <p className="hidden mdx:block text-xl xl:text-2xl ">
             {cartItem?.Event?.EventDescription[0]?.name}
             {/* Win This 800BHP Ferrari E63s Night Edition + AED 1,000 Cash! */}
           </p>
-          <div className="flex flex-col w-1/2">
-            <div className="flex justify-between items-start ">
+          <div className="flex flex-col space-y-2">
+            <div className="flex justify-between items-start min-w-[450px] w-1/2 max-w-[550px]">
               <div className="bg-card flex items-center justify-between overflow-hidden ">
                 <Button
                   className="p-2 bg-primary text-background"
                   disabled={cartItem?.quantity === 1 || addToBasket.isLoading}
                   onClick={() => addToBasketHandler('decrement')}
                 >
-                  <i className="fas fa-minus text-2xl font-extrabold" />
+                  <i className="fas fa-minus text-xl xl:text-2xl font-extrabold" />
                 </Button>
                 <p className="w-16 text-center text-xl">{cartItem?.quantity}</p>
                 <Button
@@ -179,7 +257,7 @@ function CartItem(props: CartItemProp) {
                   disabled={addToBasket.isLoading}
                   onClick={() => addToBasketHandler('increment')}
                 >
-                  <i className="fas fa-plus text-2xl font-extrabold" />
+                  <i className="fas fa-plus text-xl xl:text-2xl font-extrabold" />
                 </Button>
               </div>
               <p className="text-xl text-white font-bold">
@@ -192,7 +270,7 @@ function CartItem(props: CartItemProp) {
                   </p>
                   <Switch
                     disabled={addToBasket.isLoading}
-                    onClick={() => addToBasketHandler('unsubscribe')}
+                    onClick={toggleSwitch}
                     checked={isSubscribe}
                   />
                 </div>
@@ -200,7 +278,7 @@ function CartItem(props: CartItemProp) {
             </div>
 
             {isSubscribe ? (
-              <div className="w-1/2 self-end grid grid-cols-2 gap-2">
+              <div className="self-end grid grid-cols-2 gap-2">
                 {['Weekly', 'Monthly', 'Quarterly'].map((frequency) => (
                   <Button
                     key={frequency}
@@ -231,7 +309,7 @@ function CartItem(props: CartItemProp) {
           </div>
           <i
             onClick={() => setIsModal((preModal) => !preModal)}
-            className="fas fa-times cursor-pointer text-white/40 text-sm border w-6 h-6 inline-flex items-center justify-center rounded-full"
+            className="hidden mdx:inline-flex fas fa-times cursor-pointer text-white/40 text-sm border min-w-[24px] min-h-[24px]  items-center justify-center rounded-full"
           />
         </div>
       </div>

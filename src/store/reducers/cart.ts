@@ -5,6 +5,9 @@ import { RootState } from '~/store/store';
 interface Cart {
   id: number | null;
   customer_id: number | null;
+  isDiscount: boolean;
+  discount: number;
+  isPercentage: boolean;
 }
 
 export interface CartItemInterface {
@@ -34,11 +37,16 @@ const initialState: CartState = {
   cart: {
     id: null,
     customer_id: null,
+    isDiscount: false,
+    discount: 0,
+    isPercentage: false,
     cartItems: [],
   },
   count: 0,
   totalAmount: 0,
 };
+
+type AddToCartType = Pick<Cart, 'id' | 'customer_id'>;
 
 export const cartSlice = createSlice({
   name: 'cart',
@@ -52,7 +60,7 @@ export const cartSlice = createSlice({
     },
     addToCart: (
       state,
-      action: PayloadAction<Cart & { cartItem: CartItemInterface }>,
+      action: PayloadAction<AddToCartType & { cartItem: CartItemInterface }>,
     ) => {
       const cartItems = [...(state.cart?.cartItems ?? [])];
 

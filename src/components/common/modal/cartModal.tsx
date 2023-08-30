@@ -60,7 +60,7 @@ export function RemoveItemDialog(props: SettingDialogInterface) {
         </DialogHeader>
         <DialogFooter>
           <Button
-            variant={'ghost'}
+            variant={'secondary'}
             type="button"
             onClick={props.openChangeHandler}
             disabled={removeCartItem.isLoading}
