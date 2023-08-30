@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Button } from '@/ui/button';
@@ -21,14 +21,7 @@ import { compressImage, isValidImageType } from '~/utils/helper';
 import { useToast } from '~/components/ui/use-toast';
 import { Textarea } from '~/components/ui/textarea';
 import { LoadingDialog } from '../modal/loadingModal';
-import { Calendar } from '~/components/ui/calender';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '~/components/ui/popover';
-import { CalendarIcon } from 'lucide-react';
-import { format } from 'date-fns';
+
 import { Switch } from '~/components/ui/switch';
 import {
   Select,
@@ -133,7 +126,6 @@ export default function EventForm() {
   const router = useRouter();
   const [optimizeFile, setOptimizeFile] = useState<any>(null);
   const [optimizeMultiFile, setOptimizeMultiFile] = useState<any>(null);
-  const [editData, seteditData] = useState<any>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { index } = router.query;
@@ -160,23 +152,14 @@ export default function EventForm() {
       console.log({ error });
     },
   });
-  const bannerUpdate = trpc.settings.banner_update.useMutation({
-    onSuccess: () => {
-      console.log('upload successfully');
-
-      // router.push('/store/wallet-connect');
-    },
-    onError(error: any) {
-      console.log({ error });
-    },
-  });
+ 
   // 1. Define your form.
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formValidateData>) {
     console.log({ values });
     try {
-       setIsSubmitting(true);
+      setIsSubmitting(true);
       const nftSource =
         typeof form.getValues('thumb') !== 'object'
           ? { thumb: values?.thumb }

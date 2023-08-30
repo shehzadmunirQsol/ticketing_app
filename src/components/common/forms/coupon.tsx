@@ -9,9 +9,7 @@ import {
   FormMessage,
 } from '@/ui/form';
 import { Input } from '@/ui/input';
-import { Textarea } from '@/ui/textarea';
 import { useForm } from 'react-hook-form';
-import { ImageInput } from '../file_input';
 import { useEffect, useState } from 'react';
 import { getS3ImageUrl } from '~/service/api/s3Url.service';
 import { trpc } from '~/utils/trpc';
@@ -29,11 +27,9 @@ import {
   SelectValue,
 } from '~/components/ui/select';
 
-interface CategoryFormInterface {
-  language: LanguageInterface;
-}
 
-export default function CouponForm(props: CategoryFormInterface) {
+
+export default function CouponForm() {
   const [image, setImage] = useState<File>();
   const [loading, setLoading] = useState<boolean>(false);
   const [endDate, setEndDate] = useState<any>(
@@ -57,7 +53,6 @@ export default function CouponForm(props: CategoryFormInterface) {
   );
 
   const addCategory = trpc.category.create.useMutation();
-  const updateCategory = trpc.category.update.useMutation();
 
   // 1. Define your form.
   const form = useForm<createCouponSchema>({
@@ -84,21 +79,9 @@ export default function CouponForm(props: CategoryFormInterface) {
     }
   }
 
-  async function uploadOnS3Handler() {
-    console.log({ image });
-    const response = await getS3ImageUrl(image);
-    if (!response.success) {
-      console.log('response.message', response.message);
-      return '';
-    } else {
-      return response.data;
-    }
-  }
 
-  async function imageHandler(originalFile: File) {
-    const optimizedFile = await compressImage(originalFile);
-    setImage(optimizedFile);
-  }
+
+
   useEffect(() => {
     try {
       setEndDate(
@@ -117,7 +100,6 @@ export default function CouponForm(props: CategoryFormInterface) {
     }
   }, [form.watch('start_date')]);
 
-  console.log(endDate, 'end_date');
 
   return (
     <Form {...form}>
