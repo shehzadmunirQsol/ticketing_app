@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from '../../ui/button';
 import Link from 'next/link';
-import CustomersDataTable from '~/components/common/table/customers';
+import CouponsDataTable from '~/components/common/table/coupons';
 
 function Coupons() {
   return (
@@ -14,7 +14,7 @@ function Coupons() {
           </Button>
         </Link>
       </div>
-      <CustomersDataTable />
+      <CouponsDataTable />
     </div>
   );
 }

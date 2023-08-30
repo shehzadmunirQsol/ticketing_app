@@ -15,3 +15,12 @@ export const addToCartSchema = z.object({
   is_subscribe: z.boolean().default(false),
   subscription_type: z.enum(['weekly', 'monthly', 'quarterly']).nullable(),
 });
+
+export const getCouponSchema = z.object({
+  startDate: z.date().optional(),
+  endDate: z.date().optional(),
+  searchQuery: z.string().optional(),
+  category_id: z.number().optional(),
+  first: z.number(),
+  rows: z.number(),
+});

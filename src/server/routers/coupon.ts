@@ -1,7 +1,7 @@
 import { router, publicProcedure } from '../trpc';
 import { TRPCError } from '@trpc/server';
 import { addToCartSchema, getCartSchema } from '~/schema/cart';
-import { applyCouponSchema } from '~/schema/coupon';
+import { applyCouponSchema, getCouponSchema } from '~/schema/coupon';
 import { prisma } from '~/server/prisma';
 
 export const couponRouter = router({
@@ -100,4 +100,55 @@ export const couponRouter = router({
         });
       }
     }),
+  get: publicProcedure.input(getCouponSchema).query(async ({ input }) => {
+    try {
+      const where: any = { is_deleted: false };
+
+      if (input?.startDate) {
+        const startDate = new Date(input?.startDate);
+        where.created_at = { gte: startDate };
+      }
+
+      if (input?.endDate) {
+        const endDate = new Date(input?.endDate);
+        where.created_at = { lte: endDate };
+      }
+
+      if (input.category_id) where.id = input.category_id;
+
+      const totalCategoryPromise = prisma.coupon.count({
+        where: where,
+      });
+
+      const categoryPromise = prisma.coupon.findMany({
+        orderBy: { created_at: 'asc' },
+        skip: input.first * input.rows,
+        take: input.rows,
+        where: where,
+      });
+
+      const [totalCategory, category] = await Promise.all([
+        totalCategoryPromise,
+        categoryPromise,
+      ]);
+
+      if (!category?.length) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Categories not found',
+        });
+      }
+
+      return {
+        message: 'categories found',
+        count: totalCategory,
+        data: category,
+      };
+    } catch (error: any) {
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: error?.message,
+      });
+    }
+  }),
 });
