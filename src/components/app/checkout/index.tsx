@@ -28,8 +28,11 @@ import Image from 'next/image';
 import Glow from '~/components/common/glow';
 import { checkoutSchemaInput, createCheckoutSchema } from '~/schema/checkout';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { CouponModal } from './Coupon';
 
 const Checkout = () => {
+  // Handle Coupon Dailog
+  const [isModal, setIsModal] = React.useState(false);
 
   // 1. Define your form.
   const form = useForm<checkoutSchemaInput>({
@@ -386,22 +389,25 @@ const Checkout = () => {
                 <p className="lg:text-2xl md:lg:text-xlfont-bold">
                   Order Summary
                 </p>
-                <p className="text-sm lg:text-base">Have a coupon code?</p>
+                <p className="text-sm lg:text-base cursor-pointer" onClick={() => setIsModal(true)}>Have a coupon code?</p>
               </div>
 
-              <div className=" h-[300px] overflow-x-auto" >
-              {product.map((item, i) => {
-                return (
-                  <div className="flex flex-row justify-between mb-10 " key={i} >
-                    <p className="lg:text-2xl md:lg:text-xl   w-[60%]">
-                      {item.name}
-                    </p>
-                    <p className="font-black text-lg lg:text-xl ">{`AED ${item.price.toFixed(
-                      2,
-                    )}`}</p>
-                  </div>
-                );
-              })}
+              <div className=" h-[300px] overflow-x-auto">
+                {product.map((item, i) => {
+                  return (
+                    <div
+                      className="flex flex-row justify-between mb-10 "
+                      key={i}
+                    >
+                      <p className="lg:text-2xl md:lg:text-xl   w-[60%]">
+                        {item.name}
+                      </p>
+                      <p className="font-black text-lg lg:text-xl ">{`AED ${item.price.toFixed(
+                        2,
+                      )}`}</p>
+                    </div>
+                  );
+                })}
               </div>
 
               <div className="flex flex-row justify-between mb-10">
@@ -447,6 +453,7 @@ const Checkout = () => {
           </div>
         </form>
       </Form>
+      <CouponModal isModal={isModal} setIsModal={setIsModal} />
     </div>
   );
 };
