@@ -67,7 +67,7 @@ export async function getS3ImageUrl(file: any) {
     }
     const imageUrl = s3Data.url
       .split('?')[0]
-      .replace('https://s3.amazonaws.com/media.xoltanmarketplace.com/', '');
+      .replace('https://winnar-media.s3.amazonaws.com/', '');
     // const imageUrl = s3Data.url.split('?')[0];
 
     response.data = imageUrl;

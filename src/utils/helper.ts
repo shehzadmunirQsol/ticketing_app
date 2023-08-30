@@ -1,23 +1,23 @@
 export function generateOTP(otp_length = 0) {
-    const digits = '0123456789';
-    let OTP = '';
-    for (let i = 0; i < otp_length; i++) {
-        OTP += digits[Math.floor(Math.random() * 10)];
-    }
-    return OTP;
+  const digits = '0123456789';
+  let OTP = '';
+  for (let i = 0; i < otp_length; i++) {
+    OTP += digits[Math.floor(Math.random() * 10)];
+  }
+  return OTP;
 }
 
 export function formatTrpcError(trpcError = 'Something went wrong!' as string) {
-    if (trpcError?.includes('[\n  {\n  ')) {
-      const formattedError = JSON.parse(trpcError);
-      const msgError =
-        formattedError?.length > 0
-          ? formattedError[0].message
-          : 'Internal server error';
-      return msgError;
-    } else {
-      return trpcError;
-    }
+  if (trpcError?.includes('[\n  {\n  ')) {
+    const formattedError = JSON.parse(trpcError);
+    const msgError =
+      formattedError?.length > 0
+        ? formattedError[0].message
+        : 'Internal server error';
+    return msgError;
+  } else {
+    return trpcError;
+  }
 }
 export function renderNFTImage(nft: any) {
   return nft?.media_type === 'audio/mp3' || nft?.thumb === ''
@@ -30,9 +30,8 @@ export function isValidImageType(type: any) {
   return isImage;
 }
 
-
-export const sendEmail = async (mailOptions:any) => {
-  console.log(mailOptions,"mailOptions")
+export const sendEmail = async (mailOptions: any) => {
+  console.log(mailOptions, 'mailOptions');
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/email/mailer`,
     {
@@ -41,7 +40,7 @@ export const sendEmail = async (mailOptions:any) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        ...mailOptions
+        ...mailOptions,
       }),
     },
   );
@@ -51,7 +50,7 @@ export const sendEmail = async (mailOptions:any) => {
     console.log(error.response, error.response.body, 'api brevo error');
     return;
   }
-}
+};
 
 export async function compressImage(fileImage: File, fileType = 'image/webp') {
   const bitmap = await createImageBitmap(fileImage);
@@ -74,6 +73,12 @@ export async function compressImage(fileImage: File, fileType = 'image/webp') {
   return reducedFile;
 }
 
-
-
-
+export function customTruncateHandler(str = '', n = 15) {
+  return str?.length > n ? str?.slice(0, n) + '...' : str;
+}
+export function customEmailTruncateHandler(str = '', n = 15) {
+  const myArray: any = str.split('@');
+  return myArray[0]?.length > n
+    ? myArray[0]?.slice(0, n) + '***@' + myArray[1]
+    : str;
+}

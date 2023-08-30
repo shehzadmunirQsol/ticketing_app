@@ -3,8 +3,6 @@ import Slider from 'react-slick';
 
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import DataCard from '../../common/card';
-import { Card } from '../../ui/card';
 import ProductCard from '../../common/card';
 import { Button } from '../../ui/button';
 import { useSelector } from 'react-redux';
@@ -21,7 +19,6 @@ interface producctInterface {
 }
 function ProductSection(props: producctInterface) {
   const { lang } = useSelector((state: RootState) => state.layout);
-  const todayDate = new Date();
   const [products, setProducts] = useState<Array<any>>([]);
 
   const orderfilters = {
@@ -35,13 +32,7 @@ function ProductSection(props: producctInterface) {
     category_id: 1,
   });
 
-  const {
-    data: prductsList,
-    isFetched,
-    refetch,
-    isLoading,
-    isError,
-  } = trpc.event.getUpcomimg.useQuery(
+  const { data: prductsList } = trpc.event.getUpcomimg.useQuery(
     { ...orderfilters, ...filters },
     {
       refetchOnWindowFocus: false,
@@ -57,7 +48,7 @@ function ProductSection(props: producctInterface) {
       setFilters({ ...filters, first: 1 + filters.first });
     }
   }
-  const slide  = useRef<any>(null);
+  const slide = useRef<any>(null);
 
   useEffect(() => {
     if (filters.first > 0 && prductsList?.data?.length) {
@@ -148,11 +139,15 @@ function ProductSection(props: producctInterface) {
 
       <div className="relative z-10">
         {/* glow */}
-        <div
-          className={`absolute bottom-10 ${
-            props.type == 'closing' ? 'right-0' : 'left-0'
-          }    w-1/5 h-3/5  bg-teal-400 bg-opacity-50 rounded-full blur-3xl`}
-        ></div>
+        {props.type === 'no-glow' ? (
+          ''
+        ) : (
+          <div
+            className={`absolute bottom-10 ${
+              props.type == 'closing' ? 'right-0' : 'left-0'
+            }  z-2  w-1/5 h-3/5  bg-teal-400 bg-opacity-50 rounded-full blur-3xl`}
+          ></div>
+        )}
 
         <Slider ref={slide} {...settings}>
           {products.map((item, index) => {

@@ -58,6 +58,7 @@ model AdminUser {
   Event        Event[]
   CategoryView CategoryView[]
   CMS          CMS[]
+  Coupon       Coupon[]
 
   @@index([role_id])
   @@map("admin_user")
@@ -111,6 +112,46 @@ model CharityDescription {
 
   // @@index([charity_id, lang_id])
   @@map("charity_description")
+}
+
+model Coupon {
+  id            Int           @id @default(autoincrement())
+  user_id       Int
+  name          String
+  coupon_code   String        @unique @db.VarChar(6)
+  discount      Int
+  coupon_limit  Int?
+  is_percentage Boolean       @default(false)
+  is_limited    Boolean       @default(false)
+  is_enabled    Boolean       @default(false)
+  is_deleted    Boolean       @default(false)
+  start_date    DateTime?
+  end_date      DateTime?
+  created_at    DateTime      @default(now()) @db.Timestamp(6)
+  updated_at    DateTime      @default(now()) @db.Timestamp(6)
+  User          AdminUser     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  CouponApply   CouponApply[]
+
+  @@index([user_id])
+  @@map("coupon")
+}
+
+model CouponApply {
+  id            Int      @id @default(autoincrement())
+  customer_id   Int
+  cart_id       Int
+  coupon_id     Int
+  discount      Int
+  is_percentage Boolean  @default(false)
+  is_deleted    Boolean  @default(false)
+  created_at    DateTime @default(now()) @db.Timestamp(6)
+  updated_at    DateTime @default(now()) @db.Timestamp(6)
+  Customer      Customer @relation(fields: [customer_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Cart          Cart     @relation(fields: [cart_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Coupon        Coupon   @relation(fields: [coupon_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([customer_id, cart_id, coupon_id])
+  @@map("coupon_apply")
 }
 
 model Category {
@@ -175,6 +216,7 @@ model Event {
   OrderEvent        OrderEvent[]
   OrderSubscription OrderSubscription[]
   Winner            Winner[]
+  CartItem          CartItem[]
 
   @@index([user_id, category_id])
   @@map("event")
@@ -249,6 +291,8 @@ model Customer {
   CustomerAddress   CustomerAddress[]
   OrderSubscription OrderSubscription[]
   Winner            Winner[]
+  Cart              Cart[]
+  CouponApply       CouponApply[]
 
   @@map("customer")
 }
@@ -272,6 +316,41 @@ model CustomerAddress {
 
   @@index([customer_id])
   @@map("customer_address")
+}
+
+model Cart {
+  id          Int     @id @default(autoincrement())
+  customer_id Int
+  is_deleted  Boolean @default(false)
+
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+
+  Customer    Customer      @relation(fields: [customer_id], references: [id])
+  CartItems   CartItem[]
+  CouponApply CouponApply[]
+
+  @@index([customer_id])
+  @@map("cart")
+}
+
+model CartItem {
+  id                Int                @id @default(autoincrement())
+  cart_id           Int
+  event_id          Int
+  quantity          Int
+  is_subscribe      Boolean            @default(false)
+  subscription_type SubscriptionEnums?
+  is_deleted        Boolean            @default(false)
+
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+
+  Cart  Cart  @relation(fields: [cart_id], references: [id])
+  Event Event @relation(fields: [event_id], references: [id])
+
+  @@index([cart_id, event_id])
+  @@map("cart_item")
 }
 
 model Order {
@@ -333,7 +412,7 @@ model OrderSubscription {
   customer_id           Int
   order_id              Int
   event_id              Int
-  total_subscription_id Int?
+  total_subscription_id String?
   subscription_type     SubscriptionEnums? @default(weekly)
   is_deleted            Boolean            @default(false)
 
@@ -429,11 +508,12 @@ view BannerView {
 
   @@map("banner_view")
 }
+
 view EventView {
   id                Int     @id @default(autoincrement())
   thumb             String
   name              String
-  desc              String?  @db.LongText
+  desc              String? @db.LongText
   comp_details      String?
   video_src         String?
   price             Int
@@ -442,11 +522,11 @@ view EventView {
   tickets_sold      Int
   user_ticket_limit Int
   lang_id           Int
-  is_cash_alt            Boolean @default(false)
-  is_enabled         Boolean @default(false)
+  is_cash_alt       Boolean @default(false)
+  is_enabled        Boolean @default(false)
   is_featured       Boolean @default(false)
 
-  category_id       Int
+  category_id Int
 
   launch_date DateTime? @default(now()) @db.Timestamp(6)
   end_date    DateTime? @default(now()) @db.Timestamp(6)
@@ -455,11 +535,10 @@ view EventView {
   created_at DateTime @default(now()) @db.Timestamp(6)
   updated_at DateTime @default(now()) @db.Timestamp(6)
 
-
-
-  @@index([ category_id])
+  @@index([category_id])
   @@map("event_view")
 }
+
 view CategoryView {
   id         Int      @id @default(autoincrement())
   thumb      String
@@ -502,6 +581,11 @@ enum OrderEnums {
   pending
   paid
   rejected
+}
+
+enum CouponEnums {
+  percentage
+  fixed
 }
 
 // Tables

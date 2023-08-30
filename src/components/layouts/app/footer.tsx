@@ -1,14 +1,9 @@
 import React from 'react';
 import { Button } from '@/ui/button';
-import LogoImage from '~/public/assets/logo.png';
 import Image from 'next/image';
-import { useDispatch } from 'react-redux';
-import { toggleSidebar } from '~/store/reducers/admin_layout';
-
 import Lines from '~/public/assets/icons/Lines_Big.png';
 import Group16 from '~/public/assets/icons/Group16.svg';
 import Group17 from '~/public/assets/icons/Group17.png';
-import Link from 'next/link';
 import Glow from '~/components/common/glow';
 
 interface LinkItemProps {
@@ -18,14 +13,8 @@ interface LinkItemProps {
   disable?: boolean;
 }
 function Footer() {
-  const dispatch = useDispatch();
-
-  function toggleSidebarHandler() {
-    dispatch(toggleSidebar());
-  }
-
   return (
-    <footer className=" bg-background-footer h-full">
+    <footer className="bg-background-footer h-full">
       <div className="mx-auto relative w-full max-w-screen h-full">
         <div className=" absolute  p-1 w-1/2 z-2  h-full  ">
           <Glow className="absolute bottom-0 -left-16 z-20  p-2   w-1/2 h-1/3  " />
