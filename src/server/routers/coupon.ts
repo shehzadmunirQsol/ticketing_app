@@ -30,7 +30,6 @@ export const couponRouter = router({
             is_deleted: false,
             start_date: { lte: todayDate },
             end_date: { gte: todayDate },
-           
           },
         });
         console.log({ couponExpiry });
@@ -65,6 +64,35 @@ export const couponRouter = router({
 
           return { message: 'Coupon Applied', data: createCouponApplied };
         }
+      } catch (error: any) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: error?.message,
+        });
+      }
+    }),
+  getCoupon: publicProcedure
+    .input(applyCouponSchema)
+    .query(async ({ input }) => {
+      try {
+        const coupon = await prisma.couponApply.findFirst({
+          where: {
+            customer_id: input?.customer_id,
+            cart_id: input?.cart_id,
+            is_deleted: false,
+          },
+          include: {
+            Coupon: true,
+          },
+        });
+        if (!coupon) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Invalid Coupon',
+          });
+        }
+
+        return { message: 'Coupon Applied', data: coupon };
       } catch (error: any) {
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',

@@ -7,7 +7,7 @@ export const s3Upload = async (file: any) => {
   try {
     const params: any = {
       Bucket: process.env.AWS_BUCKET_NAME,
-      Key: `uploads/${uuidv4()}-${file.originalname}`,
+      Key: `upload/${uuidv4()}-${file.originalname}`,
       Body: file.buffer,
       // ACL: "public-read",
     };
@@ -49,7 +49,7 @@ export async function generateUploadUrl(req: any, res: any) {
   try {
     const isImage = isValidImageType(req.body?.fileType);
 
-    const direcoryName = isImage ? 'uploads' : 'temp';
+    const direcoryName = isImage ? 'upload' : 'temp';
     const fileName = `${direcoryName}/${uuidv4()}-${req.body.fileName}`;
 
     const params = {
@@ -59,6 +59,7 @@ export async function generateUploadUrl(req: any, res: any) {
     };
 
     const uploadUrl = await s3.getSignedUrlPromise('putObject', params);
+    console.log({ uploadUrl });
     return res.status(200).send({ url: uploadUrl });
   } catch (err: any) {
     res.status(500).send({ message: err.message as string });
