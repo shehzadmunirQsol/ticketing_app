@@ -26,7 +26,7 @@ export function CustomerDialog(props: SettingDialogInterface) {
   const { toast } = useToast();
   const [loading, setLoading] = useState<boolean>(false);
 
-  const bannerUpdate = trpc.customer.update.useMutation({
+  const bannerUpdate:any = trpc.customer.update.useMutation({
     onSuccess: () => {
       console.log('upload successfully');
 
