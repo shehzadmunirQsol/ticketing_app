@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
-import { Input } from '~/components/ui/input';
+
 
 const AddressesView = () => {
-  const [isEdit, setEdit] = useState(true);
+  const [isEdit, setEdit] = useState(false);
+  const handleChange = () => setEdit(!isEdit);
 
   const data1 = undefined;
   const data = {
     name: 'Hassan Shan',
     pobox: '9966',
     street: 'Al Qouz',
-    number:"+971 50 446 2752",
+    number: '+971 50 446 2752',
     city: 'Dubai', //dropdown
   };
   return (
@@ -38,17 +39,35 @@ const AddressesView = () => {
 
           <div className="w-full h-full font-light text-[#eaeaea] flex flex-col pt-3 text-sm">
             {data == undefined && (
-              <p className=" ">
-                You have not set up this type of address yet.
-              </p>
+              <p className=" ">You have not set up this type of address yet.</p>
             )}
             {data ? (
-              <div className='h-fit '>
-                <input className='bg-primary-foreground p-1' value={data.name} type="text"/>
-                <input className='bg-primary-foreground p-1' value={`P.O Box ${data.pobox}`} type="text"/>
-                <input className='bg-primary-foreground p-1' value={data.street} type="text"/>
-                <input className='bg-primary-foreground p-1' value={data.number} type="tel" />
-                <input className='bg-primary-foreground p-1' value={data.city} type="text"/>
+              <div className="h-fit ">
+                <input
+                  className="bg-primary-foreground p-1"
+                  value={data.name}
+                  type="text"
+                />
+                <input
+                  className="bg-primary-foreground p-1"
+                  value={`P.O Box ${data.pobox}`}
+                  type="text"
+                />
+                <input
+                  className="bg-primary-foreground p-1"
+                  value={data.street}
+                  type="text"
+                />
+                <input
+                  className="bg-primary-foreground p-1"
+                  value={data.number}
+                  type="tel"
+                />
+                <input
+                  className="bg-primary-foreground p-1"
+                  value={data.city}
+                  type="text"
+                />
               </div>
             ) : (
               ''
