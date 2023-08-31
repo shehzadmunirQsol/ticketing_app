@@ -10,6 +10,8 @@ import {
   getCustomerSchema,
   updateCustomerSchema,
   resendOtpCustomerSchema,
+  accountsDetailSchema,
+  passwordChangeSchema,
 } from '~/schema/customer';
 import { hashPass, isSamePass } from '~/utils/hash';
 import { signJWT, verifyJWT } from '~/utils/jwt';
@@ -434,4 +436,60 @@ export const customerRouter = router({
         });
       }
     }),
+
+  addAndUpdateAccountCustomerDetail: publicProcedure
+    .input(accountsDetailSchema)
+    .mutation(async ({ ctx, input }) => {
+      try {
+        console.log(input, 'SJAHHSJSHJA');
+        console.log(input.email, 'HJDJDHDDN');
+        const user: any = await prisma.customer.findFirst({
+          where: { email: input.email },
+        });
+        console.log(user, 'user HJDJDHDDN');
+
+        if (!user) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'User not found',
+          });
+        } else {
+          console.log('else HJDJDHDDN');
+          const respCode = await generateOTP(4);
+          const updateResponse = await prisma.customer?.update({
+            where: {
+              id: user.id,
+            },
+            data: {
+              otp: respCode,
+            },
+          });
+          console.log(updateResponse, 'updateResponse');
+          const mailOptions: any = {
+            template_id: 2,
+            from: 'shehzadmunir.qsols@gmail.com',
+            to: input.email,
+            subject: 'Email Verification OTP CODE',
+            params: {
+              otp: respCode,
+              first_name: input?.email,
+            },
+          };
+          const mailResponse = await sendEmail(mailOptions);
+          console.log(mailResponse, 'mailResponse');
+        }
+
+        return { user: user, status: true };
+      } catch (error: any) {
+        console.log({ error });
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: error.message,
+        });
+      }
+    }),
+
+    
+
+
 });

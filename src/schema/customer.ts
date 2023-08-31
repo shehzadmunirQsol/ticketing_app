@@ -83,3 +83,57 @@ export const verificationOtpCustomerSchema = z.object({
 export const resendOtpCustomerSchema = z.object({
   email: z.string().email(),
 });
+
+
+
+export const accountsDetailSchema = z.object({
+  name: z.string(),
+  lastname: z.string(),
+  email: z.string().email(),
+  dateofbirth: z.string(),
+});
+
+export const accountsDetailSchemaInput = z.object({
+  name: z
+      .string()
+      .min(2, {
+        message: 'Name must be at least 2 characters',
+      })
+      .max(24, {
+        message: 'Name must not exceed 24 characters',
+      }),
+      lastname: z.string(),
+      email: z.string().email(),
+      dateofbirth: z.string(),
+});
+
+export type accountsDetailSchemaInput = z.infer<typeof accountsDetailSchemaInput>;
+
+
+export const passwordChangeSchema = z.object({
+  currentPassword: z.string(),
+  newPassword: z.string(),
+  confirmPassword: z.string().email(),
+});
+
+export const passwordChangeSchemaInput = z.object({
+  currentPassword: z.string(),
+  newPassword: z
+      .string()
+      .min(6, {
+        message: 'Password must be at least 6 characters',
+      })
+      .max(30, {
+        message: 'Password must not exceed 30 characters',
+      }),
+  confirmPassword: z
+      .string()
+      .min(6, {
+        message: 'Confirm Password must be at least 6 characters',
+      })
+      .max(30, {
+        message: 'Confirm Password must not exceed 30 characters',
+      }),
+});
+
+export type passwordChangeSchemaInput = z.infer<typeof passwordChangeSchemaInput>;
