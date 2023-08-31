@@ -83,12 +83,6 @@ export function customEmailTruncateHandler(str = '', n = 15) {
     : str;
 }
 
-export function isValidEmail(email:any) {
-  console.log(email,"email found")
-  const pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  return pattern.test(email);
-}
-
 export const displayDate = (payload = '' as any) => {
   if (!payload) return 'N/A';
   const date = new Date(payload);
@@ -98,5 +92,12 @@ export const displayDate = (payload = '' as any) => {
   const formattedDate = `${da}-${mo}-${ye}`;
   return formattedDate;
 };
+export function isValidEmail(email:any) {
+  console.log(email,"email found")
+  const pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  return pattern.test(email);
+}
+
+
 
 

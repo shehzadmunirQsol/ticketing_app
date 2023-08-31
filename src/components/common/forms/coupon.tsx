@@ -9,10 +9,8 @@ import {
   FormMessage,
 } from '@/ui/form';
 import { Input } from '@/ui/input';
-import { Textarea } from '@/ui/textarea';
 import { useForm } from 'react-hook-form';
-import { ImageInput } from '../file_input';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getS3ImageUrl } from '~/service/api/s3Url.service';
 import { trpc } from '~/utils/trpc';
 import { useRouter } from 'next/router';
@@ -29,13 +27,14 @@ import {
   SelectValue,
 } from '~/components/ui/select';
 
-interface CategoryFormInterface {
-  language: LanguageInterface;
-}
 
-export default function CouponForm(props: CategoryFormInterface) {
+
+export default function CouponForm() {
   const [image, setImage] = useState<File>();
   const [loading, setLoading] = useState<boolean>(false);
+  const [endDate, setEndDate] = useState<any>(
+    new Date().toISOString().split('T')[0],
+  );
 
   const router = useRouter();
 
@@ -54,7 +53,6 @@ export default function CouponForm(props: CategoryFormInterface) {
   );
 
   const addCategory = trpc.category.create.useMutation();
-  const updateCategory = trpc.category.update.useMutation();
 
   // 1. Define your form.
   const form = useForm<createCouponSchema>({
@@ -62,8 +60,7 @@ export default function CouponForm(props: CategoryFormInterface) {
     defaultValues: {
       user_id: 1,
       is_percentage: '1',
-      start_date: null,
-      end_date: null,
+      is_limited: '0',
     },
   });
 
@@ -82,25 +79,27 @@ export default function CouponForm(props: CategoryFormInterface) {
     }
   }
 
-  async function uploadOnS3Handler() {
-    console.log({ image });
-    const response = await getS3ImageUrl(image);
-    if (!response.success) {
-      console.log('response.message', response.message);
-      return '';
-    } else {
-      return response.data;
-    }
-  }
 
-  async function imageHandler(originalFile: File) {
-    const optimizedFile = await compressImage(originalFile);
-    setImage(optimizedFile);
-  }
-  console.log(
-    form.watch('start_date') !== null ? new Date(form.watch('start_date').getDate() + 1) : '',
-    "form.watch('start_date')",
-  );
+
+
+  useEffect(() => {
+    try {
+      setEndDate(
+        form.watch('start_date') !== null
+          ? new Date(
+              form
+                .watch('start_date')
+                ?.setDate(form.watch('start_date')?.getDate() + 1),
+            )
+              .toISOString()
+              .split('T')[0]
+          : new Date().toISOString().split('T')[0],
+      );
+    } catch (e) {
+      setEndDate(new Date().toISOString().split('T')[0]);
+    }
+  }, [form.watch('start_date')]);
+
 
   return (
     <Form {...form}>
@@ -185,6 +184,8 @@ export default function CouponForm(props: CategoryFormInterface) {
                 <FormControl>
                   <Input
                     type={'number'}
+                    min={1}
+                    max={form.watch('is_percentage') == '1'?100:100000}
                     placeholder={'Enter Discount '}
                     {...form.register('discount', {
                       valueAsNumber: true,
@@ -232,11 +233,7 @@ export default function CouponForm(props: CategoryFormInterface) {
                   <Input
                     type={'date'}
                     placeholder={'End Date'}
-                    min={
-                      form.watch('start_date') !== null
-                        ? form.watch('start_date').toISOString().split('T')[0]
-                        : new Date().toISOString().split('T')[0]
-                    }
+                    min={endDate}
                     {...form.register('end_date', {
                       valueAsDate: true,
                     })}

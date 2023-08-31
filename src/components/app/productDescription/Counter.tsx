@@ -1,7 +1,6 @@
 import { Button } from '~/components/ui/button';
 import TokenRange from './TokenRange';
 import CounterStyle from './CounterStyle';
-import Glow from '~/components/common/glow';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
 import { useRouter } from 'next/router';

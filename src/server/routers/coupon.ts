@@ -1,6 +1,5 @@
 import { router, publicProcedure } from '../trpc';
 import { TRPCError } from '@trpc/server';
-import { addToCartSchema, getCartSchema } from '~/schema/cart';
 import { applyCouponSchema, getCouponSchema } from '~/schema/coupon';
 import { prisma } from '~/server/prisma';
 

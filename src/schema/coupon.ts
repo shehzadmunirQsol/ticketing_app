@@ -39,8 +39,8 @@ export const createCouponSchema = z.object({
   is_limited: z.string(),
   limit: z.number().optional(),
   discount: z.number(),
-  start_date: z.any(),
-  end_date: z.any(),
+  start_date: z.date(),
+  end_date: z.date(),
 });
 
 export type createCouponSchema = z.infer<typeof createCouponSchema>;

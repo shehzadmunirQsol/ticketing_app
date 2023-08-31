@@ -5,7 +5,6 @@ import { Button } from '@/ui/button';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -86,10 +85,8 @@ export function SpotLightForm() {
   });
   const {
     data: BannerApiData,
-    refetch: BannerRefetch,
     isFetched,
     isLoading,
-    isError,
   } = trpc.settings.get_banner.useQuery(orderFilters, {
     refetchOnWindowFocus: false,
 
@@ -110,7 +107,7 @@ export function SpotLightForm() {
         form.setValue('ar.description', json_data?.description);
       }
     }
-  }, [isLoading, isFetched]);
+  }, [isLoading, isFetched, BannerApiData]);
   const formValidateData =
     BannerApiData !== undefined && index
       ? BannerApiData[0]?.lang_id == 1

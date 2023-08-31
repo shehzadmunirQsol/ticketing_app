@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { Button } from '~/components/ui/button';
 import {
@@ -8,7 +7,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '~/components/ui/dialog';
 import { useToast } from '~/components/ui/use-toast';
 import { trpc } from '~/utils/trpc';
@@ -26,7 +24,6 @@ interface SettingDialogInterface {
 }
 export function SettingDialog(props: SettingDialogInterface) {
   const { toast } = useToast();
-  const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
 
   const bannerUpdate = trpc.settings.banner_update.useMutation({

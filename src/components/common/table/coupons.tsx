@@ -11,16 +11,13 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { ChevronDown, MoreHorizontal } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 
 import { Button } from '@/ui/button';
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/ui/dropdown-menu';
 import {
@@ -31,16 +28,9 @@ import {
   TableHeader,
   TableRow,
 } from '@/ui/table';
-import LanguageSelect, { LanguageInterface } from '../language_select';
-import { GetCategorySchema } from '~/schema/category';
+
 import { trpc } from '~/utils/trpc';
-import Image from 'next/image';
-import {
-  customEmailTruncateHandler,
-  displayDate,
-  renderNFTImage,
-} from '~/utils/helper';
-import Link from 'next/link';
+import { customEmailTruncateHandler, displayDate } from '~/utils/helper';
 import { getCustomerSchema } from '~/schema/customer';
 import {
   Tooltip,
