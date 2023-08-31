@@ -12,6 +12,8 @@ import {
   resendOtpCustomerSchema,
   accountsDetailSchema,
   passwordChangeSchema,
+  deleteMyAccountCustomerSchema,
+
 } from '~/schema/customer';
 import { hashPass, isSamePass } from '~/utils/hash';
 import { signJWT, verifyJWT } from '~/utils/jwt';
@@ -506,6 +508,31 @@ export const customerRouter = router({
           },
         });
         console.log(updatePasswordResult, 'userCode');
+        return { user: user, status: true };
+      } catch (error: any) {
+        console.log({ error });
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: error.message,
+        });
+      }
+    }),
+  deleteMyAccountCustomer: publicProcedure
+    .input(deleteMyAccountCustomerSchema)
+    .mutation(async ({ ctx, input }) => {
+      try {
+        console.log(input, 'input');
+        const user: any = await prisma.customer.findFirst({
+          where: { email: input.email },
+        });
+
+        const payload:any = {...input}
+        if(payload.email) delete input?.email
+
+        const customer = await prisma.customer?.create({
+          data: payload,
+        });
+        console.log(customer),"customer"
         return { user: user, status: true };
       } catch (error: any) {
         console.log({ error });

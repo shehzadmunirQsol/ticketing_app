@@ -6,7 +6,7 @@ import {
   passwordChangeSchema,
   passwordChangeSchemaInput,
   deleteMyAccountCustomerSchema,
-  deleteMyAccountCustomerSchemaInput
+  deleteMyAccountCustomerSchemaInput,
 } from '~/schema/customer';
 
 import {
@@ -184,7 +184,7 @@ const AccountDetails = () => {
       </div>
       <div>
         <PasswordChange email={user.email} />
-        <DeleteAccount />
+        <DeleteAccount email={user.email} />
       </div>
     </div>
   );
@@ -193,8 +193,7 @@ const AccountDetails = () => {
 export default AccountDetails;
 
 // Password Change
-function PasswordChange({email}:any) {
-
+function PasswordChange({ email }: any) {
   const { toast } = useToast();
 
   // 1. Define your form.
@@ -202,32 +201,31 @@ function PasswordChange({email}:any) {
     resolver: zodResolver(passwordChangeSchema),
   });
 
-
   // handle password update
   const updateCustomerPassword =
-  trpc.customer.updateCustomerPassword.useMutation({
-    onSuccess: async (res: any) => {
-      console.log(res, 'updateCustomerPassword res');
-      toast({
-        variant: 'success',
-        title: 'Your Account Password Updated Successfully ',
-      });
-    },
-    onError: (err) => {
-      console.log(err.message, 'err');
-    },
-  });
+    trpc.customer.updateCustomerPassword.useMutation({
+      onSuccess: async (res: any) => {
+        console.log(res, 'updateCustomerPassword res');
+        toast({
+          variant: 'success',
+          title: 'Your Account Password Updated Successfully ',
+        });
+      },
+      onError: (err) => {
+        console.log(err.message, 'err');
+      },
+    });
 
   // handle account detail
   async function onSubmitAccountPassword(values: any) {
-    console.log("i am inner MAINSU")
+    console.log('i am inner MAINSU');
     try {
-      const payload:any = {
-        email:email,
-        ...values
-      }
+      const payload: any = {
+        email: email,
+        ...values,
+      };
       const resp = await updateCustomerPassword.mutateAsync(payload);
-      console.log(resp,"HSSHJSJJAKAJ MAINSU")
+      console.log(resp, 'HSSHJSJJAKAJ MAINSU');
     } catch (e: any) {
       toast({
         variant: 'destructive',
@@ -322,19 +320,44 @@ function PasswordChange({email}:any) {
 
 // Delete Account
 // Password Change
-function DeleteAccount() {
+function DeleteAccount({ email }: any) {
+  const { toast } = useToast();
+
+
+
   // 1. Define your form.
   const form = useForm<deleteMyAccountCustomerSchemaInput>({
     resolver: zodResolver(deleteMyAccountCustomerSchema),
   });
+  const [reason, setReason] = useState<any>([]);
 
-  const [reason,setReason] = useState<any>([])
+
+  const deleteAccountRequestCustomer =
+  trpc.customer.deleteMyAccountCustomer.useMutation({
+    onSuccess: async (res: any) => {
+      console.log(res, 'updateCustomerAccountDetail res');
+      toast({
+        variant: 'success',
+        title: 'Your Account Info Update Successfully ',
+      });
+    },
+    onError: (err) => {
+      console.log(err.message, 'err');
+    },
+  });
 
   // handle account detail
-  async function onSubmitAccountPassword(values: any) {
+  async function onSubmitDeleteAccountRequest(values: any) {
+    const payload: any = {
+      email: email,
+      ...values,
+    };
+    const resp = await deleteAccountRequestCustomer.mutateAsync(payload);
+
     console.log(values, 'values account');
   }
-console.log(reason,"reason")
+
+  console.log(reason, 'reason');
   const accountArgumentsOptions = [
     {
       text: 'I’m not interested in competitions anymore',
@@ -356,18 +379,15 @@ console.log(reason,"reason")
     },
   ];
 
-
   const handleDivClick = (itemText: string) => {
-    setReason((previous:any) => {
+    setReason((previous: any) => {
       if (previous.includes(itemText)) {
-        return previous.filter((reason:any) => reason !== itemText);
+        return previous.filter((reason: any) => reason !== itemText);
       } else {
         return [...previous, itemText];
       }
     });
   };
-
-
 
   return (
     <div className="py-4 px-6 text-[#eaeaea]">
@@ -383,12 +403,16 @@ console.log(reason,"reason")
       <div>
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(onSubmitAccountPassword)}
+            onSubmit={form.handleSubmit(onSubmitDeleteAccountRequest)}
             className="justify-center items-center  py-4"
           >
             <div className="flex flex-row gap-2 justify-start w-full  items-center">
               <div>
-                <Input type="checkbox" className="accent-white text-2xl "required />
+                <Input
+                  type="checkbox"
+                  className="accent-white text-2xl "
+                  required
+                />
               </div>
               <p className="text-sm">
                 I understand that I will lose all data (including tickets)
@@ -409,7 +433,11 @@ console.log(reason,"reason")
                   onClick={() => handleDivClick(item.text)}
                 >
                   <div>
-                    <Input type="checkbox" className="accent-white text-2xl " checked={reason.includes(item?.text)} />
+                    <Input
+                      type="checkbox"
+                      className="accent-white text-2xl "
+                      checked={reason.includes(item?.text)}
+                    />
                   </div>
                   <p className="text-lightTextColor text-sm">{item.text}</p>
                 </div>
