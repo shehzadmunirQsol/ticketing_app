@@ -5,16 +5,17 @@ import ProductSection from '../home/product_section';
 import Glow from '~/components/common/glow';
 import { trpc } from '~/utils/trpc';
 import { RootState } from '~/store/store';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useToast } from '~/components/ui/use-toast';
 import Link from 'next/link';
 import CartItem from './cartItem';
+import { addDiscount } from '~/store/reducers/cart';
 
 export default function CartPage() {
-  const { toast } = useToast();
-
   const { cart, totalAmount } = useSelector((state: RootState) => state.cart);
   const [code, setCode] = useState('');
+  const { toast } = useToast();
+  const dispatch = useDispatch();
 
   const couponApply = trpc.coupon.applyCoupon.useMutation({
     onSuccess: () => {
@@ -26,21 +27,29 @@ export default function CartPage() {
       console.log({ error });
     },
   });
-  const handleApply = async () => {
+
+  async function handleApply() {
     try {
-      if (code !== '') {
-        const payload = {
-          cart_id: cart?.id ?? 0,
-          customer_id: cart?.customer_id ?? 0,
-          coupon_code: code,
-        };
-        const data = await couponApply.mutateAsync(payload);
-        if (data) {
-          toast({
-            variant: 'success',
-            title: 'Coupon Applied!',
-          });
-        }
+      if (!code) return;
+      const payload = {
+        cart_id: cart?.id ?? 0,
+        customer_id: cart?.customer_id ?? 0,
+        coupon_code: code,
+      };
+      const data = await couponApply.mutateAsync(payload);
+
+      const response = {
+        isDiscount: true,
+        discount: data?.data?.discount ?? 0,
+        isPercentage: data?.data?.is_percentage ?? false,
+      };
+
+      dispatch(addDiscount(response));
+      if (data) {
+        toast({
+          variant: 'success',
+          title: 'Coupon Applied!',
+        });
       }
     } catch (e: any) {
       toast({
@@ -48,7 +57,7 @@ export default function CartPage() {
         title: e.message,
       });
     }
-  };
+  }
 
   const discountAmount = cart.isPercentage
     ? totalAmount * (cart.discount / 100)
@@ -76,13 +85,13 @@ export default function CartPage() {
               placeholder="Coupon code"
               type="text"
               onChange={(e: any) => setCode(e.target.value)}
-              // disabled={cart.isDiscount}
+              disabled={cart.isDiscount}
               className="px-4 flex-1 bg-transparent border-none z-10 "
             />
             <Button
               variant={'ghost'}
               onClick={handleApply}
-              // disabled={!code || cart.isDiscount}
+              disabled={!code || cart.isDiscount}
               className="text-primary border-l border-border z-10 "
             >
               {cart.isDiscount ? 'Coupon Applied' : 'Apply Coupon'}

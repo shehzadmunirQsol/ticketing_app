@@ -41,7 +41,7 @@ export const createCheckoutSchema = z.object({
   email: z.string().email(),
   code: z.string(),
   number: z.string(),
-  dob: z.string(),
+  dob: z.date(),
 });
 
 export type checkoutSchemaInput = z.infer<typeof createCheckoutSchema>;

@@ -97,7 +97,7 @@ export function BannerForm() {
     page: 0,
   };
   if (index) initialOrderFilters.banner_id = +index;
- 
+
   const {
     data: BannerApiData,
     isFetched,
@@ -256,8 +256,7 @@ export function BannerForm() {
 
       toast({
         variant: 'destructive',
-        title: 'Uh oh! Something went wrong.',
-        description: 'There was a problem with your request.',
+        title: e?.message,
       });
     }
   }

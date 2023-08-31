@@ -14,6 +14,7 @@ import { cartRouter } from './cart';
 import { winnerRouter } from './winners';
 import { contactRouter } from './contact';
 import { couponRouter } from './coupon';
+import { paymentRouter } from './payment';
 
 export const appRouter = router({
   admin: adminUserRouter,
@@ -26,6 +27,7 @@ export const appRouter = router({
   winner: winnerRouter,
 contact: contactRouter,
   coupon: couponRouter,
+  payment: paymentRouter,
 });
 
 export type AppRouter = typeof appRouter;
