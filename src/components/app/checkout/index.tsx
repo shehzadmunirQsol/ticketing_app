@@ -17,37 +17,32 @@ import {
 } from '@/ui/select';
 import { Input } from '@/ui/input';
 import { useForm } from 'react-hook-form';
-import { useRouter } from 'next/router';
-import { trpc } from '~/utils/trpc';
-// import PhoneNumber from './phone-number';
 import Group17 from '~/public/assets/icons/Group17.png';
 import Image from 'next/image';
 import Glow from '~/components/common/glow';
-import { checkoutSchemaInput, createCheckoutSchema } from '~/schema/checkout';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { CouponModal } from './Coupon';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
+import { CheckoutDialog } from '~/components/common/modal/checkout';
 
 function Checkout() {
   const { cart, totalAmount } = useSelector((state: RootState) => state.cart);
 
   // Handle Coupon Dailog
-  const [isModal, setIsModal] = useState(false);
+  const [isModal, setIsModal] = React.useState(false);
+  const [selectedItem, setSelectedItem] = React.useState({});
+  const [title, setTitle] = React.useState('Enter Card Detail');
+  const [type, setType] = React.useState('');
+  const [isCardModal, setIsCardModal] = React.useState(false);
 
   // 1. Define your form.
-  const form = useForm<checkoutSchemaInput>({
-    resolver: zodResolver(createCheckoutSchema),
-    defaultValues: {
-      country: countries[0]?.country,
-      state: states[0]?.state,
-      code: countryCode[0]?.code,
-    },
+  const form = useForm<any>({
+    // resolver: zodResolver(createCheckoutSchema),
   });
 
   const onSubmitCheckout = async (values: any) => {
-    console.log(values, 'loginResult');
+    setIsCardModal(true);
   };
 
   const discountAmount = cart.isPercentage
@@ -473,6 +468,16 @@ function Checkout() {
         setIsModal={setIsModal}
         customer_id={cart?.customer_id ?? 0}
         cart_id={cart?.id ?? 0}
+      />
+      <CheckoutDialog
+        selectedItem={selectedItem}
+        setSelectedItem={setSelectedItem}
+        title={title}
+        setTitle={setTitle}
+        isModal={isCardModal}
+        setIsModal={setIsCardModal}
+        type={type}
+        setType={setType}
       />
     </div>
   );

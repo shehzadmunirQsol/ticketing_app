@@ -51,10 +51,12 @@ function CategorySection() {
               <Link href={i == 0 ? `/cars` : i == 1 ? '/cash' : '/'}>
                 <div className=" absolute  w-full  h-[100%] categoryClip  bg-primary opacity-40 transition-all ease-in-out duration-300 "></div>
                 <Image
-                  className="object-cover bg-white opacity-30 "
+                  className=" bg-white opacity-30 "
                   src={renderNFTImage(item)}
                   width={640}
-                  height={500}
+                  height={800}
+                  // fill
+                  
                   quality={100}
                   alt="car"
                 />
