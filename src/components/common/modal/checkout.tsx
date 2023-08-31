@@ -56,7 +56,9 @@ export function CheckoutDialog(props: SettingDialogInterface) {
     ? createPaymentSchema
     : createFormPaymentSchema;
   const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(
+      user?.total_customer_id ? createPaymentSchema : createFormPaymentSchema,
+    ),
   });
 
   const bannerUpdate = trpc.payment.createPayment.useMutation({
@@ -70,11 +72,21 @@ export function CheckoutDialog(props: SettingDialogInterface) {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       console.log(values, 'onSubmit');
-      const data = await bannerUpdate.mutateAsync({
-        ...values,
+      let payload: any = {
         price: 90,
         registrationId: user?.total_customer_id,
         customer_id: user?.id,
+      };
+      if (!user?.total_customer_id) {
+        payload = {
+          ...values,
+          price: 90,
+          registrationId: user?.total_customer_id,
+          customer_id: user?.id,
+        };
+      }
+      const data = await bannerUpdate.mutateAsync({
+        ...payload,
       });
       if (data?.user) {
         dispatch(userAuth(data?.user));
@@ -260,7 +272,6 @@ export function CheckoutDialog(props: SettingDialogInterface) {
                   </div>
                 </DialogDescription>
               </DialogHeader>
-              <div className=" py-2"></div>
               <DialogFooter>
                 <Button type="submit">Make Payment</Button>
               </DialogFooter>

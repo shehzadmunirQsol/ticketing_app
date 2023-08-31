@@ -3,7 +3,6 @@ import { TRPCError } from '@trpc/server';
 import { createPaymentSchema } from '~/schema/payment';
 import { prisma } from '~/server/prisma';
 import https from 'https';
-import querystring from 'querystring';
 export const paymentRouter = router({
   createPayment: publicProcedure
     .input(createPaymentSchema)
