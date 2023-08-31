@@ -102,7 +102,7 @@ export function CustomerDialog(props: SettingDialogInterface) {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-          <LoadingDialog open={loading} text={'Saving data...'} />
+      <LoadingDialog open={loading} text={'Saving data...'} />
     </>
   );
 }
