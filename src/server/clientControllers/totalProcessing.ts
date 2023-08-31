@@ -1,4 +1,4 @@
-export async function totalProcessingPayment(req, res) {
+export async function totalProcessingPayment(req: any, res: any) {
   const input = { ...req.query };
   delete input.routes;
 

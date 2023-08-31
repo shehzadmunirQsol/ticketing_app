@@ -29,8 +29,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from '~/components/ui/select';
-import { createPaymentSchema } from '~/schema/payment';
+import { createFormPaymentSchema, createPaymentSchema } from '~/schema/payment';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '~/store/store';
+import { z } from 'zod';
+import { userAuth } from '~/store/reducers/auth';
 interface SettingDialogInterface {
   selectedItem: any;
   isModal: boolean;
@@ -42,26 +46,50 @@ interface SettingDialogInterface {
   setType: any;
 }
 export function CheckoutDialog(props: SettingDialogInterface) {
+  const { user } = useSelector((state: RootState) => state.auth);
+  console.log(user?.total_customer_id);
+  const dispatch = useDispatch();
+
   const { toast } = useToast();
   const [loading, setLoading] = useState<boolean>(false);
-  const form = useForm<createPaymentSchema>({
-    resolver: zodResolver(createPaymentSchema),
+  const formSchema = user?.total_customer_id
+    ? createPaymentSchema
+    : createFormPaymentSchema;
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
   });
 
   const bannerUpdate = trpc.payment.createPayment.useMutation({
     onSuccess: () => {
       console.log('upload successfully');
-
-      // router.push('/store/wallet-connect');
     },
     onError(error: any) {
       console.log({ error });
     },
   });
-  const onSubmit = async (values: createPaymentSchema) => {
-    console.log(values, 'onSubmit');
-    const data = await bannerUpdate.mutateAsync({ ...values, price: 90 });
-    console.log({ data });
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    try {
+      console.log(values, 'onSubmit');
+      const data = await bannerUpdate.mutateAsync({
+        ...values,
+        price: 90,
+        registrationId: user?.total_customer_id,
+        customer_id: user?.id,
+      });
+      if (data?.user) {
+        dispatch(userAuth(data?.user));
+      }
+      console.log({ data });
+      toast({
+        variant: 'success',
+        title: 'Payment Successfully',
+      });
+    } catch (e: any) {
+      toast({
+        variant: 'destructive',
+        title: e?.message,
+      });
+    }
   };
 
   function formatCardNum(v: any) {
@@ -73,7 +101,6 @@ export function CheckoutDialog(props: SettingDialogInterface) {
         .trim() as string,
     );
   }
-  console.log(form.formState.errors, "form.watch('card_num')");
   return (
     <>
       <Dialog open={props?.isModal} onOpenChange={(e) => props.setIsModal(e)}>
@@ -92,7 +119,7 @@ export function CheckoutDialog(props: SettingDialogInterface) {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className="text-xs font-thin text-grayColor">
-                          Country/ Region
+                          Card Type
                         </FormLabel>
                         <Select
                           onValueChange={field.onChange}

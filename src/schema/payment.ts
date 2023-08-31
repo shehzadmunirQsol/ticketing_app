@@ -11,6 +11,8 @@ export const createFormPaymentSchema = z.object({
   paymentBrand: z.string(),
   registrationId: z.string().optional(),
   price: z.number().optional(),
+  customer_id: z.number().optional(),
+
   cart: z.any(),
 });
 export const createPaymentSchema = z.object({
@@ -23,9 +25,11 @@ export const createPaymentSchema = z.object({
       cvv: z.string(),
     })
     .optional(),
-  paymentBrand: z.string(),
-  registrationId: z.string().optional(),
+  paymentBrand: z.string().optional(),
+  registrationId: z.string().optional().nullable(),
   price: z.number().optional(),
+  customer_id: z.number().optional(),
   cart: z.any(),
 });
 export type createPaymentSchema = z.infer<typeof createPaymentSchema>;
+export type createFormPaymentSchema = z.infer<typeof createFormPaymentSchema>;

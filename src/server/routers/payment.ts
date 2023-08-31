@@ -11,7 +11,7 @@ export const paymentRouter = router({
       // const payload = [...input];
       const payload = { ...input };
 
-      const apiRes = await CreatePayment(payload)
+      const apiRes: any = await CreatePayment(payload)
         .then((response: any) => {
           if (!response?.result?.parameterErrors) {
             return { data: response, success: true };
@@ -21,10 +21,20 @@ export const paymentRouter = router({
         .catch((error) => {
           throw new Error(error.message);
         });
+        console.log(apiRes, 'apiRes?.registrationId');
+      let user;
       if (!input?.registrationId) {
+        user = await prisma.customer?.update({
+          where: {
+            id: input?.customer_id,
+          },
+          data: {
+            total_customer_id: apiRes?.data?.registrationId as string,
+          },
+        });
       }
 
-      return apiRes;
+      return { apiRes, user, success: true };
     }),
 });
 

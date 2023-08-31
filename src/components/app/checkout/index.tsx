@@ -44,7 +44,6 @@ function Checkout() {
 
   const onSubmitCheckout = async (values: any) => {
     setIsCardModal(true);
-    console.log(values, 'loginResult');
   };
 
   const discountAmount = cart.isPercentage
