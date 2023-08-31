@@ -13,7 +13,6 @@ export const paymentRouter = router({
 
       const apiRes = await CreatePayment(payload)
         .then((response: any) => {
-       
           if (!response?.result?.parameterErrors) {
             return { data: response, success: true };
           }
@@ -22,10 +21,8 @@ export const paymentRouter = router({
         .catch((error) => {
           throw new Error(error.message);
         });
-        if(!input?.registrationId)
-        {
-
-        }
+      if (!input?.registrationId) {
+      }
 
       return apiRes;
     }),
@@ -52,11 +49,12 @@ async function CreatePayment(APidata: createPaymentSchema) {
           currency: 'AED',
           paymentBrand: 'VISA',
           paymentType: 'DB',
-          'card.number': +APidata?.card?.number.replaceAll(' ', ''),
-          'card.holder': APidata?.card?.holder,
-          'card.expiryMonth': APidata?.card?.expiryMonth,
-          'card.expiryYear': APidata?.card?.expiryYear,
-          'card.cvv': +APidata?.card?.cvv,
+          'card.number':
+            APidata?.card && +APidata?.card?.number.replaceAll(' ', ''),
+          'card.holder': APidata?.card && APidata?.card?.holder,
+          'card.expiryMonth': APidata?.card && APidata?.card?.expiryMonth,
+          'card.expiryYear': APidata?.card && APidata?.card?.expiryYear,
+          'card.cvv': APidata?.card && +APidata?.card?.cvv,
           'standingInstruction.mode': 'INITIAL',
           'standingInstruction.source': 'CIT',
           createRegistration: 'true',
