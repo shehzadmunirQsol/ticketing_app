@@ -13,7 +13,7 @@
     "dev": "pnpm next dev ",
     "prebuild": "run-s generate migrate",
     "build": "next build",
-    "start": "next start",
+    "start": "next build && next start -p $PORT",
     "lint": "eslint --ext \".js,.ts,.tsx\" --report-unused-disable-directives --report-unused-disable-directives src",
     "lint-fix": "pnpm lint --fix",
     "migrate-dev": "prisma migrate dev",
