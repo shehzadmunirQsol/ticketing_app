@@ -273,18 +273,19 @@ model EventFAQ {
 }
 
 model Customer {
-  id          Int       @id @default(autoincrement())
-  email       String    @unique
-  username    String    @unique
-  password    String
-  is_approved Boolean   @default(false)
-  otp         String    @default("")
-  first_name  String
-  profile_pic String?
-  last_name   String
-  dob         DateTime?
-  is_deleted  Boolean     @default(false)
-  is_verified  Boolean    @default(false)
+  id              Int       @id @default(autoincrement())
+  email           String    @unique
+  username        String    @unique
+  password        String
+  is_approved     Boolean   @default(false)
+  otp             String    @default("")
+  first_name      String
+  profile_pic     String?
+  last_name       String
+  dob             DateTime?
+  is_deleted      Boolean   @default(false)
+  is_verified     Boolean   @default(false)
+  total_customer_id String?   @db.LongText
 
   created_at        DateTime            @default(now()) @db.Timestamp(6)
   updated_at        DateTime            @default(now()) @db.Timestamp(6)

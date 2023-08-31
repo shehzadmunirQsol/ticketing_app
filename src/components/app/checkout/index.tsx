@@ -4,7 +4,6 @@ import { Button } from '@/ui/button';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -20,26 +19,28 @@ import {
 } from '@/ui/select';
 import { Input } from '@/ui/input';
 import { useForm } from 'react-hook-form';
-import { useRouter } from 'next/router';
-import { trpc } from '~/utils/trpc';
-// import PhoneNumber from './phone-number';
 import Group17 from '~/public/assets/icons/Group17.png';
 import Image from 'next/image';
 import Glow from '~/components/common/glow';
-import { checkoutSchemaInput, createCheckoutSchema } from '~/schema/checkout';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CouponModal } from './Coupon';
+import { CheckoutDialog } from '~/components/common/modal/checkout';
 
 const Checkout = () => {
   // Handle Coupon Dailog
   const [isModal, setIsModal] = React.useState(false);
+  const [selectedItem, setSelectedItem] = React.useState({});
+  const [title, setTitle] = React.useState('Enter Card Detail');
+  const [type, setType] = React.useState('');
+  const [isCardModal, setIsCardModal] = React.useState(false);
 
   // 1. Define your form.
-  const form = useForm<checkoutSchemaInput>({
-    resolver: zodResolver(createCheckoutSchema),
+  const form = useForm<any>({
+    // resolver: zodResolver(createCheckoutSchema),
   });
 
   const onSubmitCheckout = async (values: any) => {
+    setIsCardModal(true);
     console.log(values, 'loginResult');
   };
 
@@ -389,7 +390,12 @@ const Checkout = () => {
                 <p className="lg:text-2xl md:lg:text-xlfont-bold">
                   Order Summary
                 </p>
-                <p className="text-sm lg:text-base cursor-pointer" onClick={() => setIsModal(true)}>Have a coupon code?</p>
+                <p
+                  className="text-sm lg:text-base cursor-pointer"
+                  onClick={() => setIsModal(true)}
+                >
+                  Have a coupon code?
+                </p>
               </div>
 
               <div className=" h-[300px] overflow-x-auto">
@@ -453,6 +459,16 @@ const Checkout = () => {
           </div>
         </form>
       </Form>
+      <CheckoutDialog
+        selectedItem={selectedItem}
+        setSelectedItem={setSelectedItem}
+        title={title}
+        setTitle={setTitle}
+        isModal={isCardModal}
+        setIsModal={setIsCardModal}
+        type={type}
+        setType={setType}
+      />
       <CouponModal isModal={isModal} setIsModal={setIsModal} />
     </div>
   );
