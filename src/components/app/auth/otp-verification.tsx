@@ -24,7 +24,7 @@ import { useToast } from '~/components/ui/use-toast';
 import { trpc } from '~/utils/trpc';
 import OtpImage from '~/public/assets/otp-screen.svg';
 import Image from 'next/image';
-import { useRef,useEffect, useState } from 'react';
+import { useRef, useEffect, useState } from 'react';
 interface OtpVerificationDailogInterface {
   otpIsModal: boolean;
   setOtpIsModal: (e: any) => void;
@@ -32,34 +32,57 @@ interface OtpVerificationDailogInterface {
 export function OtpVerificationDailog(props: OtpVerificationDailogInterface) {
   const { toast } = useToast();
   const router = useRouter();
-  const inputOne = useRef<HTMLInputElement>(null);
-  const inputTwo = useRef<HTMLInputElement>(null);
-  const inputThree = useRef<HTMLInputElement>(null);
-  const inputFour = useRef<HTMLInputElement>(null);
-
+  const inputOne: any = useRef<HTMLInputElement>(null);
+  const inputTwo: any = useRef<HTMLInputElement>(null);
+  const inputThree: any = useRef<HTMLInputElement>(null);
+  const inputFour: any = useRef<HTMLInputElement>(null);
 
   // state
-  const [user,setUser] = useState("")
+  const [user, setUser] = useState('');
 
-
+  interface CustomerLoginData {
+    customer: string;
+  }
 
   useEffect(() => {
-    const customerLoginData = JSON.parse(localStorage.getItem("customer"));
-    setUser(customerLoginData)
-  }, [])
-  
+    const customerLoginDataJSON = localStorage.getItem('customer');
+    if (customerLoginDataJSON !== null) {
+      const parsedData: CustomerLoginData = JSON.parse(customerLoginDataJSON);
+      console.log(parsedData, 'parsedData');
+      setUser(parsedData.customer);
+    }
+  }, []);
 
   // Response OTP Verification
   const otpVerification = trpc.customer.verificationOtpCustomer.useMutation({
     onSuccess: (res: any) => {
       console.log(res, 'mein hun res');
-      // toast({
-      //   variant: 'success',
-      //   title: 'User Login Successfully ',
-      // });
-      // router.push('/');
-      // formLogin.setValue('user', '');
-      // formLogin.setValue('password', '');
+      toast({
+        variant: 'success',
+        title: 'Your Otp is Verified please wait admin verification ',
+      });
+      props.setOtpIsModal(false);
+      router.push('/login');
+    },
+    onError: (err) => {
+      console.log(err.message, 'err');
+      toast({
+        variant: 'destructive',
+        title: err.message,
+      });
+    },
+  });
+
+  // Response OTP Verification
+  const resendOtpCustomer = trpc.customer.resendOtpCustomer.useMutation({
+    onSuccess: (res: any) => {
+      console.log(res, 'mein hun res');
+      toast({
+        variant: 'success',
+        title: 'Please check your email',
+      });
+      // props.setOtpIsModal(false)
+      // router.push('/login');
     },
     onError: (err) => {
       console.log(err.message, 'err');
@@ -75,7 +98,7 @@ export function OtpVerificationDailog(props: OtpVerificationDailogInterface) {
     const pattern = /^-?\d+(\.\d+)?$/;
     return pattern.test(value);
   };
-  console.log(user,"State")
+  console.log(user, 'State');
 
   // Handle Forgot Password
   function inputChangeHandler(event: React.ChangeEvent<HTMLInputElement>) {
@@ -128,19 +151,37 @@ export function OtpVerificationDailog(props: OtpVerificationDailogInterface) {
     }
   }
 
-  async function onSubmit (event: React.FormEvent<HTMLFormElement>) {
+  async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    console.log(user)
-    const result: any = {
-      email:user,
-      otp_1: +inputOne.current?.value,
-      otp_2: +inputTwo.current?.value,
-      otp_3: +inputThree.current?.value,
-      otp_4: +inputFour.current?.value,
-    };
-    console.log(otp,"otp Hun mein ")
-    const otpResult = await otpVerification.mutateAsync(result);
-    console.log(otpResult,"otpResult")
+
+    const storedData: string | null = localStorage?.getItem('customer');
+
+    if (storedData !== null) {
+      const userData: any = JSON.parse(storedData);
+      const result: any = {
+        email: userData,
+        otp_1: +inputOne.current.value,
+        otp_2: +inputTwo.current.value,
+        otp_3: +inputThree.current.value,
+        otp_4: +inputFour.current.value,
+      };
+      console.log(result, 'otp Hun mein ');
+      const otpResult = await otpVerification.mutateAsync(result);
+      console.log(otpResult, 'otpResult');
+      console.log(otpResult, 'otpResult');
+    }
+  }
+
+  async function handleResendOtp() {
+    const storedData: string | null = localStorage?.getItem('customer');
+
+    if (storedData !== null) {
+      const userData: any = JSON.parse(storedData);
+      const otpResult = await resendOtpCustomer.mutateAsync({
+        email: userData,
+      });
+      console.log(otpResult, 'otpResult');
+    }
   }
 
   return (
@@ -199,7 +240,10 @@ export function OtpVerificationDailog(props: OtpVerificationDailogInterface) {
                   className="bg-transparent text-center py-8 "
                 />
               </div>
-              <div className="flex flex-row justify-center items-center  ">
+              <div
+                className="flex flex-row justify-center items-center  "
+                onClick={handleResendOtp}
+              >
                 <p className="text-center text-grayColor text-xs pr-4 underline">
                   Didn’t receive an OTP?{' '}
                 </p>

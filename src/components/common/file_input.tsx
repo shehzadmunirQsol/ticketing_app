@@ -18,7 +18,7 @@ export function FileInput(props: any) {
   useEffect(() => {
     if (typeof props?.getValues('thumb') !== 'object') {
       const linkData = `${
-        process.env.NEXT_PUBLIC_CLOUD_FRONT_BASE_URL
+        process.env.NEXT_PUBLIC_MEDIA_BASE_URL
       }${props?.getValues('thumb')}`;
 
       setImage(linkData.includes('undefined') ? null : linkData);
@@ -91,7 +91,7 @@ export function ImageInput(props: any) {
     console.log({ imgSrc });
 
     if (imgSrc && !imgSrc?.includes('blob:http')) {
-      const linkData = `${process.env.NEXT_PUBLIC_CLOUD_FRONT_BASE_URL}${imgSrc}`;
+      const linkData = `${process.env.NEXT_PUBLIC_MEDIA_BASE_URL}${imgSrc}`;
       console.log({ linkData });
       setImage(linkData);
     }
@@ -177,7 +177,7 @@ export function FileInput2(props: any) {
   useEffect(() => {
     if (typeof props?.getValues(props?.register.name) !== 'object') {
       const linkData = `${
-        process.env.NEXT_PUBLIC_CLOUD_FRONT_BASE_URL
+        process.env.NEXT_PUBLIC_MEDIA_BASE_URL
       }/${props?.getValues(props?.register.name)}`;
 
       setImage(linkData.includes('undefined') ? null : linkData);
@@ -281,7 +281,7 @@ export function MultiFileInput(props: any) {
   useEffect(() => {
     if (typeof props?.getValues(props?.register.name) !== 'object') {
       const linkData = `${
-        process.env.NEXT_PUBLIC_CLOUD_FRONT_BASE_URL
+        process.env.NEXT_PUBLIC_MEDIA_BASE_URL
       }${props?.getValues(props?.register.name)}`;
 
       setImage(linkData.includes('undefined') ? null : linkData);
@@ -389,7 +389,7 @@ export function SeoImage(props: any) {
   };
   // useEffect(() => {
   //   console.log(props?.imageState, 'props?.imageState');
-  //   const linkData = `${process.env.NEXT_PUBLIC_CLOUD_FRONT_BASE_URL}/${props?.imageState}`;
+  //   const linkData = `${process.env.NEXT_PUBLIC_MEDIA_BASE_URL}/${props?.imageState}`;
   //   setImage(
   //     linkData.includes('undefined') || props?.imageState == ''
   //       ? null
@@ -400,7 +400,7 @@ export function SeoImage(props: any) {
   useEffect(() => {
     if (typeof props?.getValues(props?.register.name) !== 'object') {
       const linkData = `${
-        process.env.NEXT_PUBLIC_CLOUD_FRONT_BASE_URL
+        process.env.NEXT_PUBLIC_MEDIA_BASE_URL
       }/${props?.getValues(props?.register.name)}`;
 
       setImage(linkData.includes('undefined') ? null : linkData);

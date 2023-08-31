@@ -22,6 +22,16 @@ const SIDEBAR_DATA = [
     title: 'Events',
   },
   {
+    key: '/admin/customers',
+    icon: <i className="fa-solid fa-users p-4 rounded-full" />,
+    title: 'Customers',
+  },
+  {
+    key: '/admin/coupons',
+    icon: <i className="fa-solid fa-tag p-4 rounded-full" />,
+    title: 'Coupon',
+  },
+  {
     key: '/client',
     icon: <i className="fa-solid fa-users p-4 rounded-full" />,
     title: 'Clients',

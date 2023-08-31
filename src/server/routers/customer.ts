@@ -7,13 +7,57 @@ import {
   forgotPasswordCustomerSchema,
   resetPasswordCustomerSchema,
   verificationOtpCustomerSchema,
+  getCustomerSchema,
+  updateCustomerSchema,
+  resendOtpCustomerSchema,
 } from '~/schema/customer';
 import { hashPass, isSamePass } from '~/utils/hash';
-import { signJWT } from '~/utils/jwt';
+import { signJWT, verifyJWT } from '~/utils/jwt';
 import { serialize } from 'cookie';
 import { generateOTP, isValidEmail, sendEmail } from '~/utils/helper';
 
 export const customerRouter = router({
+  get: publicProcedure.query(async ({ ctx }) => {
+    const token = ctx?.req?.cookies['winnar-token'];
+    console.log({ token });
+
+    let userData;
+    if (token) {
+      userData = await verifyJWT(token);
+    } else {
+      return null;
+    }
+
+    console.log({ userData }, 'userData');
+
+    const user = await prisma.customer.findUnique({
+      where: { id: userData.id },
+    });
+
+    if (!user)
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: 'User not found!',
+      });
+
+    return { data: user };
+  }),
+
+  update: publicProcedure
+    .input(updateCustomerSchema)
+    .mutation(async ({ input }) => {
+      // const payload = [...input];
+      const payload: any = { ...input };
+      if (input?.id) delete payload?.id;
+      const customer = await prisma.customer.update({
+        where: {
+          id: input?.id,
+        },
+        data: { ...payload },
+      });
+      return customer;
+    }),
+
   register: publicProcedure
     .input(signupCustomerSchema)
     .mutation(async ({ input }) => {
@@ -25,14 +69,29 @@ export const customerRouter = router({
             message: 'Customer not registered!',
           });
         } else {
-          const isExist = await prisma.customer?.findFirst({
+          
+          const isEmailExist = await prisma.customer?.findFirst({
             where: {
               email: input.email,
             },
           });
+          const isUsernameExist = await prisma.customer?.findFirst({
+            where: {
+              username: input.username,
+            },
+          });
 
-          if (isExist) {
-            return isExist;
+          if (isEmailExist) {
+            throw new TRPCError({
+              code: 'FORBIDDEN',
+              message: 'Email Already Exists!',
+            });
+          }
+          if (isUsernameExist) {
+            throw new TRPCError({
+              code: 'FORBIDDEN',
+              message: 'Username Already Exists!',
+            });
           }
 
           const respCode = await generateOTP(4);
@@ -97,6 +156,12 @@ export const customerRouter = router({
             message: 'User Not Found',
           });
         }
+        if (!user.is_approved) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Please Wait for Admin Verification',
+          });
+        }
         const checkPass = await isSamePass(input.password, user?.password);
         if (!checkPass) {
           throw new TRPCError({
@@ -142,11 +207,13 @@ export const customerRouter = router({
 
         const respCode = await generateOTP(4);
         const mailOptions = {
-          template_id: 2,
+          template_id: 5,
           from: 'shehzadmunir.qsols@gmail.com',
           to: input.email,
           subject: 'Forgot Password request to Winnar',
-          link: `:http://localhost:3000/reset-password?verification_code=${respCode}&email=${user.email}`,
+          params: {
+            link: `${process.env.NEXT_PUBLIC_BASE_URL}reset-password?verification_code=${respCode}&email=${user.email}`,
+          },
         };
         const mailResponse = await sendEmail(mailOptions);
         const updateResponse = await prisma.customer?.update({
@@ -231,31 +298,85 @@ export const customerRouter = router({
     .input(verificationOtpCustomerSchema)
     .mutation(async ({ ctx, input }) => {
       try {
+        console.log(input, 'SJAHHSJSHJA');
         const otpCode = `${input.otp_1}${input.otp_2}${input.otp_3}${input.otp_4}`;
-
+        console.log(otpCode, input.email, 'HJDJDHDDN');
         const user: any = await prisma.customer.findFirst({
-          where: { email: input.email, otp: otpCode },
+          where: { otp: otpCode },
         });
+        console.log(user, 'user HJDJDHDDN');
 
-        console.log(user, 'user');
         if (user.otp !== otpCode) {
           throw new TRPCError({
             code: 'NOT_FOUND',
             message: 'Invalid Otp',
           });
         } else {
+          console.log('else HJDJDHDDN');
           const updateResponse = await prisma.customer?.update({
             where: {
               id: user.id,
             },
             data: {
-              is_verified:true,
+              is_verified: true,
               otp: '',
             },
           });
           console.log(updateResponse, 'updateResponse');
         }
         return { message: 'otp', status: true };
+      } catch (error: any) {
+        console.log({ error });
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: error.message,
+        });
+      }
+    }),
+
+  resendOtpCustomer: publicProcedure
+    .input(resendOtpCustomerSchema)
+    .mutation(async ({ ctx, input }) => {
+      try {
+        console.log(input, 'SJAHHSJSHJA');
+        console.log(input.email, 'HJDJDHDDN');
+        const user: any = await prisma.customer.findFirst({
+          where: { email: input.email },
+        });
+        console.log(user, 'user HJDJDHDDN');
+
+        if (!user) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'User not found',
+          });
+        } else {
+          console.log('else HJDJDHDDN');
+          const respCode = await generateOTP(4);
+          const updateResponse = await prisma.customer?.update({
+            where: {
+              id: user.id,
+            },
+            data: {
+              otp: respCode,
+            },
+          });
+          console.log(updateResponse, 'updateResponse');
+          const mailOptions: any = {
+            template_id: 2,
+            from: 'shehzadmunir.qsols@gmail.com',
+            to: input.email,
+            subject: 'Email Verification OTP CODE',
+            params: {
+              otp: respCode,
+              first_name: input?.email,
+            },
+          };
+          const mailResponse = await sendEmail(mailOptions);
+          console.log(mailResponse, 'mailResponse');
+        }
+
+        return { user: user, status: true };
       } catch (error: any) {
         console.log({ error });
         throw new TRPCError({

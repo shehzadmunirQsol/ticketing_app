@@ -22,15 +22,16 @@ export const contactRouter = router({
         };
         if (payload?.code) delete payload.code;
         const mailOptions = {
-          template_id: 2,
+          template_id: 4,
           from: 'shehzadmunir.qsols@gmail.com',
           to: 'muzammil.devqsols@gmail.com',
-          subject: 'Contact us  request to Winnar ',
-          link: `:User Name : ${payload.name}
-          User Email : ${payload.email}
-          User Number : ${payload.number}
-          User Message : ${payload.message}
-          `,
+          subject: 'Contact us request to Winnar ',
+          params :{
+            user_name:payload.name,
+            user_email:payload.email,
+            mobile:payload.number,
+            message:payload.message,
+          }
         };
 
         const mailResponse = await sendEmail(mailOptions);

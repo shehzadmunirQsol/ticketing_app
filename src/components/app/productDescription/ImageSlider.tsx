@@ -1,19 +1,32 @@
-import React, { useEffect, useState } from 'react';
-import Image from 'next/image';
-import CarImage from '../../../public/assets/card_image.png';
-// import { Progress } from '@radix-ui/react-progress';
+import React, { useEffect, useRef, useState } from 'react';
 import { Progress } from '../../ui/progress';
 import Counter from './Counter';
 import ImageSliderStyle from './ImageSliderStyle';
-import Glow from '~/components/common/glow';
+import { useSelector } from 'react-redux';
+import { RootState } from '~/store/store';
+import { useRouter } from 'next/router';
 
 const ImageSlider = ({ data }: any) => {
+  const { cart } = useSelector((state: RootState) => state.cart);
+
   const [range, setRange] = useState<number[]>([1]);
+  const { query } = useRouter();
+
+  const ticketInBasket = useRef<number>(0);
+
+  const cartItem = cart?.cartItems?.find(
+    (item) => item.event_id === +(query?.id ?? 0),
+  );
+
+  useEffect(() => {
+    if (cartItem) {
+      ticketInBasket.current = cartItem.quantity ?? 0;
+      setRange([cartItem.quantity ?? 0]);
+    }
+  }, [cartItem]);
 
   const price = +(range[0] as number) * data?.price;
   const percentageSold = (data?.tickets_sold / data?.total_tickets) * 100;
-
-  console.log(data, 'dataHAKSHANJHA');
 
   return (
     <section className="text-gray-600 body-font">
@@ -56,13 +69,16 @@ const ImageSlider = ({ data }: any) => {
                 AED {price.toFixed(2)}
               </p>
             </div>
-            <div className="w-full h-full  relative bg-white">
-            <Glow className=" absolute  -bottom-[100px] -right-16  p-2   w-1/5 h-[350px]  -z-9 " />
+            <div className="w-full relative">
+              <div className="z-50">
                 <Counter
                   range={range}
+                  ticketInBasket={ticketInBasket}
                   setRange={setRange}
                   user_ticket_limit={data?.user_ticket_limit}
                 />
+              </div>
+              {/* <div className="absolute bottom-10 -right-10  z-10  w-1/5 h-3/5  bg-teal-400 bg-opacity-50 rounded-full blur-3xl"></div> */}
             </div>
           </div>
         </div>
