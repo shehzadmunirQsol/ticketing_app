@@ -7,7 +7,29 @@ export const signupCustomerSchema = z.object({
   firstname: z.string(),
   lastname: z.string(),
 });
-export type signupCustomerInput = z.TypeOf<typeof signupCustomerSchema>;
+export const signupCustomerSchemaInput = z.object({
+  username: z
+    .string()
+    .min(2, {
+      message: 'Username must be at least 2 characters',
+    })
+    .max(24, {
+      message: 'Username must not exceed 24 characters',
+    }),
+  email: z.string().email(),
+  password: z
+    .string()
+    .min(6, {
+      message: 'Password must be at least 6 characters',
+    })
+    .max(30, {
+      message: 'Password must not exceed 30 characters',
+    }),
+  firstname: z.string(),
+  lastname: z.string(),
+});
+export type signupCustomerInput = z.TypeOf<typeof signupCustomerSchemaInput>;
+
 export const getCustomerSchema = z.object({
   startDate: z.date().optional(),
   endDate: z.date().optional(),
@@ -23,10 +45,15 @@ export const updateCustomerSchema = z.object({
 export type getCustomerSchema = z.TypeOf<typeof getCustomerSchema>;
 
 export const loginCustomerSchema = z.object({
-    user: z.string(),
-    password: z.string()
+  user: z.string(),
+  password: z.string(),
 });
-export type loginCustomerInput = z.TypeOf<typeof loginCustomerSchema>;
+export const loginCustomerSchemaInput = z.object({
+  user: z.string(),
+  password: z.string(),
+});
+
+export type loginCustomerInput = z.TypeOf<typeof loginCustomerSchemaInput>;
 
 export const forgotPasswordCustomerSchema = z.object({
   email: z.string().email(),
@@ -44,3 +71,15 @@ export const resetPasswordCustomerSchema = z.object({
 export type resetPasswordCustomerSchemaInput = z.TypeOf<
   typeof resetPasswordCustomerSchema
 >;
+
+export const verificationOtpCustomerSchema = z.object({
+  email: z.string().email(),
+  otp_1: z.number(),
+  otp_2: z.number(),
+  otp_3: z.number(),
+  otp_4: z.number(),
+});
+
+export const resendOtpCustomerSchema = z.object({
+  email: z.string().email(),
+});

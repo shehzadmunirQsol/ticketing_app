@@ -12,6 +12,7 @@ import { customerRouter } from './customer';
 import { adminUserRouter } from './adminUser';
 import { cartRouter } from './cart';
 import { winnerRouter } from './winners';
+import { contactRouter } from './contact';
 import { couponRouter } from './coupon';
 import { paymentRouter } from './payment';
 
@@ -24,6 +25,7 @@ export const appRouter = router({
   customer: customerRouter,
   cart: cartRouter,
   winner: winnerRouter,
+contact: contactRouter,
   coupon: couponRouter,
   payment: paymentRouter,
 });

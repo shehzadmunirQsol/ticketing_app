@@ -72,7 +72,7 @@ function ProductCard(props: cardInterface) {
         </div>
         <div className="font-bold text-3xl mb-2">
           <span className="text-gray-200  font-semibold leading-loose">
-            {`${props?.data?.id} ${props?.data?.EventDescription[0]?.desc}`}
+            {`${props?.data?.EventDescription[0]?.desc}`}
           </span>
         </div>
         <div className="opacity-75 text-gray-200  text-lg font-normal leading-normal">

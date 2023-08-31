@@ -19,7 +19,9 @@ function Index({ children }: DefaultLayoutProps) {
   trpc.customer.get.useQuery(undefined, {
     refetchOnWindowFocus: false,
     onSuccess(data) {
-      dispatch(userAuth(data?.data));
+      if (data?.data) {
+        dispatch(userAuth(data?.data));
+      }
       console.log({ data });
     },
     onError(error) {
@@ -37,10 +39,13 @@ function Index({ children }: DefaultLayoutProps) {
         const cart = {
           id: data.data?.id ?? null,
           customer_id: user?.id ?? null,
+          isDiscount: data?.data?.CouponApply?.length ? true : false,
+          discount: data?.data?.CouponApply[0]?.discount ?? 0,
+          isPercentage: data?.data?.CouponApply[0]?.is_percentage ?? false,
           cartItems: data.data?.CartItems ?? [],
         };
 
-        dispatch(addCart({ cart }));
+        dispatch(addCart({ cart, count: 0, totalAmount: 0 }));
       },
       onError(error) {
         console.log({ error });

@@ -12,13 +12,20 @@ import FeaturedCars from './featured_cars';
 const CarsPage = () => {
   const { lang } = useSelector((state: RootState) => state.layout);
   const [products, setProducts] = useState<Array<any>>([]);
-
-  const [filters, setFilters] = useState({
-    lang_id: lang.lang_id,
+  const eventFilters = {
+    lang_id: lang?.lang_id,
     first: 0,
     rows: 9,
-    category_id: 1,
+    category_id: 2,
+  };
+  const [filters, setFilters] = useState({
+    ...eventFilters,
   });
+
+  useEffect(() => {
+    setFilters({ ...filters, lang_id: lang.lang_id, first: 0 });
+    setProducts([]);
+  }, [lang.lang_id]);
 
   const {
     data: prductsList,
@@ -40,14 +47,14 @@ const CarsPage = () => {
   function nextPage() {
     console.log('Next page emitted');
     if (products.length % filters.rows === 0) {
-      setFilters({ ...filters, first: 1 + filters.first });
+      setFilters({ ...filters, first: ++filters.first });
     }
   }
 
   console.log({ prductsList }, 'prductsList');
   console.log({ products }, 'products');
   console.log({ filters }, 'filters');
-  console.log(products.length, prductsList?.count ,"check load more")
+  console.log(products.length, prductsList?.count, 'check load more');
 
   return (
     <div className="mx-auto max-w-[1600px] w-full">
@@ -61,7 +68,7 @@ const CarsPage = () => {
         CARS COMPETITION
       </p>
       <div className="h-full  px-10 pb-20 ">
-        <Glow className=" absolute  top-[560px] -right-16     w-1/5 h-[350px] overflow-hidden " />
+        <Glow className=" absolute  top-[760px] -right-16     w-1/5 h-[350px] overflow-hidden " />
 
         <Glow className=" absolute  bottom-96 -right-16  w-1/5 h-[350px] overflow-x-hidden" />
         <div className=" grid grid-cols-1 md:grid-cols-2     lg:grid-cols-3   justify-between max-w-[1300px] mx-auto ">
@@ -80,7 +87,7 @@ const CarsPage = () => {
           })}
         </div>
 
-        {products.length != prductsList?.count ? (
+        {prductsList && products.length < prductsList?.count ? (
           <div className="w-fit mx-auto">
             <div className="text-center my-4">
               <p className="tracking-tight font-bold">Load More</p>

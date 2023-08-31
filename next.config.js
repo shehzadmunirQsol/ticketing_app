@@ -33,7 +33,7 @@ module.exports = getConfig({
       'images.unsplash.com',
       'gateway.pinata.cloud',
       'dfmin6ewnkm30.cloudfront.net',
-      'media.winnar.com',
+      "media.winnar.com"
     ],
   },
   /** We run eslint as a separate task in CI */

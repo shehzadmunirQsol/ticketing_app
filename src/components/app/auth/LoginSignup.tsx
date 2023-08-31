@@ -21,26 +21,45 @@ import { getS3ImageUrl } from '~/service/api/s3Url.service';
 import { isValidImageType } from '~/utils/helper';
 // import { useToast } from '~/components/ui/use-toast';
 import SideImage from '../../common/SideImage';
-import { signupCustomerInput, loginCustomerInput } from '~/schema/customer';
+import {
+  signupCustomerInput,
+  loginCustomerInput,
+  signupCustomerSchema,
+} from '~/schema/customer';
 import { useToast } from '~/components/ui/use-toast';
 import Link from 'next/link';
 import { ForgotPasswordDailog } from './ForgotPassword';
 import CarImage from '../../../public/assets/CarLogin.svg';
+import { userAuth } from '~/store/reducers/auth';
+import { useDispatch } from 'react-redux';
+import { OtpVerificationDailog } from './otp-verification';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 export default function LoginSignup() {
   const { toast } = useToast();
   const router = useRouter();
+  const dispatch = useDispatch();
 
-  const formSignup = useForm<signupCustomerInput>();
+  // const formSignup = useForm<signupCustomerInput>();
+
+  // 1. Define your form.
+  const formSignup = useForm<signupCustomerInput>({
+    resolver: zodResolver(signupCustomerSchema),
+  });
   const formLogin = useForm<loginCustomerInput>();
 
   // Handle Forget Password Modal
   const [isModal, setIsModal] = React.useState(false);
+  const [otpIsModal, setOtpIsModal] = React.useState(false);
   const [defaultValue, setDefaultValue] = React.useState('login');
   console.log(defaultValue, 'defaultValue');
   // register customer
   const registerCustomer = trpc.customer.register.useMutation({
     onSuccess: (res: any) => {
+      const localStorageData = localStorage.setItem(
+        'customer',
+        JSON.stringify({ email: res.email, id: res.id }),
+      );
       console.log(res, 'res');
       toast({
         variant: 'success',
@@ -65,53 +84,73 @@ export default function LoginSignup() {
 
   // login customer
   const loginCustomer = trpc.customer.loginCustomer.useMutation({
-    onSuccess: (res: any) => {
+    onSuccess: (response) => {
       toast({
         variant: 'success',
         title: 'User Login Successfully ',
       });
+      dispatch(userAuth(response?.user));
+
       router.push('/');
       formLogin.setValue('user', '');
       formLogin.setValue('password', '');
     },
     onError: (err) => {
       console.log(err.message, 'err');
-      toast({
-        variant: 'destructive',
-        title: err.message,
-      });
     },
   });
 
   // Signup
   const onSubmitSignup = async (values: any) => {
-    console.log(values, 'Working');
-    const signupResult = await registerCustomer.mutateAsync(values);
-    console.log(signupResult, 'signupResult');
+    try {
+      console.log(values, 'Working');
+
+      const signupResult = await registerCustomer.mutateAsync(values);
+      setOtpIsModal(true);
+
+      console.log(signupResult, 'signupResult');
+    } catch (e: any) {
+      setOtpIsModal(false);
+      toast({
+        variant: 'destructive',
+        title: e.message,
+      });
+    }
   };
 
   // Login
 
   const onSubmitLogin = async (values: any) => {
-    const loginResult = await loginCustomer.mutateAsync(values);
-    console.log(loginResult, 'loginResult');
+    try {
+      const loginResult = await loginCustomer.mutateAsync(values);
+      console.log(loginResult, 'loginResult');
+    } catch (e: any) {
+      toast({
+        variant: 'destructive',
+        title: e.message,
+      });
+    }
   };
 
   return (
     <section className="body-font  ">
-      <div className="px-5 pt-16 pb-5 lg:pb-0 md:pb-0 lg:py-24 md:py-24 mx-auto flex flex-col-reverse lg:flex-row md:flex-row gap-14 mt-6 ">
+      <div className="px-5 pt-24 pb-5 lg:pb-0 md:pb-0 lg:py-24 md:py-24 mx-auto flex flex-col-reverse lg:flex-row md:flex-row gap-14 mt-6 ">
         <div className="lg:w-2/3 md:w-2/3 w-full h-full mb-5 lg:mb-0 rounded-lg hidden  lg:block  ">
-          <SideImage image={CarImage} text={"Unlock Your Journey Login or Register for"} text2={"Exclusive Access"} />
+          <SideImage
+            image={CarImage}
+            text={'Unlock Your Journey Login or Register for'}
+            text2={'Exclusive Access'}
+          />
         </div>
         <Tabs
           defaultValue={defaultValue === 'login' ? 'login' : 'signup'}
           className="flex flex-col flex-wrap   lg:w-2/2 md:w-full  lg:text-left  rounded-none border-none  lg:mr-6 bg-card"
         >
           <>
-            <TabsList className=" w-full rounded-none border-none py-4 ">
+            <TabsList className=" w-full rounded-none border-none py-4">
               <TabsTrigger
                 value="login"
-                className="w-full font-black text-md -mt-1rounded-none border-none m-0  "
+                className="w-full font-black text-md -mt-1 rounded-none border-none m-0  "
               >
                 Login
               </TabsTrigger>
@@ -307,6 +346,10 @@ export default function LoginSignup() {
       </div>
 
       <ForgotPasswordDailog isModal={isModal} setIsModal={setIsModal} />
+      <OtpVerificationDailog
+        otpIsModal={otpIsModal}
+        setOtpIsModal={setOtpIsModal}
+      />
     </section>
   );
 }

@@ -17,7 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           to: [{email: req.body.to}],
           subject: req.body.subject,
           templateId: req.body.template_id,
-          params:{link:req.body.link}
+          params:{...req.body.params}
         })
       };
       fetch('https://api.brevo.com/v3/smtp/email', options)
