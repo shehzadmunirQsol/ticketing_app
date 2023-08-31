@@ -20,7 +20,7 @@ export const paymentRouter = router({
         .catch((error) => {
           throw new Error(error.message);
         });
-        console.log(apiRes, 'apiRes?.registrationId');
+      console.log(apiRes, 'apiRes?.registrationId');
       let user;
       if (!input?.registrationId) {
         user = await prisma.customer?.update({
@@ -50,6 +50,8 @@ async function CreatePayment(APidata: createPaymentSchema) {
           currency: 'AED',
           paymentType: 'DB',
           'standingInstruction.source': 'CIT',
+          wpwlOptions: JSON.stringify(APidata?.cart),
+
           'standingInstruction.type': 'UNSCHEDULED',
         }
       : {
@@ -58,14 +60,19 @@ async function CreatePayment(APidata: createPaymentSchema) {
           currency: 'AED',
           paymentBrand: 'VISA',
           paymentType: 'DB',
+
           'card.number':
-            APidata?.card && +APidata?.card?.number.replaceAll(' ', ''),
-          'card.holder': APidata?.card && APidata?.card?.holder,
-          'card.expiryMonth': APidata?.card && APidata?.card?.expiryMonth,
-          'card.expiryYear': APidata?.card && APidata?.card?.expiryYear,
-          'card.cvv': APidata?.card && +APidata?.card?.cvv,
+            APidata?.card?.number && +APidata?.card?.number.replaceAll(' ', ''),
+          'card.holder': APidata?.card?.holder && APidata?.card?.holder,
+          'card.expiryMonth':
+            APidata?.card?.expiryMonth && APidata?.card?.expiryMonth,
+          'card.expiryYear':
+            APidata?.card?.expiryYear && APidata?.card?.expiryYear,
+          'card.cvv': APidata?.card?.cvv && +APidata?.card?.cvv,
           'standingInstruction.mode': 'INITIAL',
           'standingInstruction.source': 'CIT',
+          wpwlOptions: JSON.stringify(APidata?.cart),
+
           createRegistration: 'true',
         };
 

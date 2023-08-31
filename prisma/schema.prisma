@@ -294,8 +294,23 @@ model Customer {
   Winner            Winner[]
   Cart              Cart[]
   CouponApply       CouponApply[]
+  DeleteRequest     DeleteRequest[]
 
   @@map("customer")
+}
+
+model DeleteRequest {
+  id          Int      @id @default(autoincrement())
+  customer_id Int
+  reason      String?  @db.LongText
+  comment     String?  @db.LongText
+  is_deleted  Boolean? @default(false)
+  created_at  DateTime @default(now()) @db.Timestamp(6)
+  updated_at  DateTime @default(now()) @db.Timestamp(6)
+  Customer    Customer @relation(fields: [customer_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([customer_id])
+  @@map("delete_request")
 }
 
 model CustomerAddress {
