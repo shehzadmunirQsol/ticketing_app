@@ -20,11 +20,12 @@ import { trpc } from '~/utils/trpc';
 import { getS3ImageUrl } from '~/service/api/s3Url.service';
 import { isValidImageType } from '~/utils/helper';
 // import { useToast } from '~/components/ui/use-toast';
-import SideImage from './SideImage';
+import SideImage from '../../common/SideImage';
 import { signupCustomerInput, loginCustomerInput } from '~/schema/customer';
 import { useToast } from '~/components/ui/use-toast';
 import Link from 'next/link';
 import { ForgotPasswordDailog } from './ForgotPassword';
+import CarImage from '../../../public/assets/CarLogin.svg';
 
 export default function LoginSignup() {
   const { toast } = useToast();
@@ -47,11 +48,11 @@ export default function LoginSignup() {
       });
       // router.push('/login')
       setDefaultValue('login');
-      formSignup.setValue("username", "")
-      formSignup.setValue("email", "")
-      formSignup.setValue("password", "")
-      formSignup.setValue("firstname", "")
-      formSignup.setValue("lastname", "")
+      formSignup.setValue('username', '');
+      formSignup.setValue('email', '');
+      formSignup.setValue('password', '');
+      formSignup.setValue('firstname', '');
+      formSignup.setValue('lastname', '');
     },
     onError: (err) => {
       console.log(err.message, 'err');
@@ -70,8 +71,8 @@ export default function LoginSignup() {
         title: 'User Login Successfully ',
       });
       router.push('/');
-      formLogin.setValue("email", "")
-      formLogin.setValue("password", "")
+      formLogin.setValue('user', '');
+      formLogin.setValue('password', '');
     },
     onError: (err) => {
       console.log(err.message, 'err');
@@ -90,8 +91,8 @@ export default function LoginSignup() {
   };
 
   // Login
+
   const onSubmitLogin = async (values: any) => {
-    console.log(values, 'Working');
     const loginResult = await loginCustomer.mutateAsync(values);
     console.log(loginResult, 'loginResult');
   };
@@ -100,11 +101,11 @@ export default function LoginSignup() {
     <section className="body-font  ">
       <div className="px-5 pt-16 pb-5 lg:pb-0 md:pb-0 lg:py-24 md:py-24 mx-auto flex flex-col-reverse lg:flex-row md:flex-row gap-14 mt-6 ">
         <div className="lg:w-2/3 md:w-2/3 w-full h-full mb-5 lg:mb-0 rounded-lg hidden  lg:block  ">
-          <SideImage />
+          <SideImage image={CarImage} text={"Unlock Your Journey Login or Register for"} text2={"Exclusive Access"} />
         </div>
         <Tabs
-          defaultValue={defaultValue === "login" ? "login" : "signup"}
-          className="flex flex-col flex-wrap    lg:w-2/2 md:w-full  lg:text-left  rounded-none border-none  lg:mr-6 bg-card"
+          defaultValue={defaultValue === 'login' ? 'login' : 'signup'}
+          className="flex flex-col flex-wrap   lg:w-2/2 md:w-full  lg:text-left  rounded-none border-none  lg:mr-6 bg-card"
         >
           <>
             <TabsList className=" w-full rounded-none border-none py-4">
@@ -128,7 +129,7 @@ export default function LoginSignup() {
                 <div>
                   <FormField
                     control={formLogin.control}
-                    name="email"
+                    name="user"
                     render={({ field }) => (
                       <FormItem className="mb-6">
                         <FormLabel className="text-xs font-thin text-grayColor">

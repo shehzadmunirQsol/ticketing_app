@@ -283,7 +283,8 @@ model Customer {
   profile_pic String?
   last_name   String
   dob         DateTime?
-  is_deleted  Boolean   @default(false)
+  is_deleted  Boolean     @default(false)
+  is_verified  Boolean    @default(false)
 
   created_at        DateTime            @default(now()) @db.Timestamp(6)
   updated_at        DateTime            @default(now()) @db.Timestamp(6)

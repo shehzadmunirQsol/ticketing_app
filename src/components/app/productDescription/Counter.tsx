@@ -70,7 +70,8 @@ const Counter: React.FC<CounterProps> = ({
   }
 
   return (
-    <div className="bg-backgroundDark p-4 z-auto ">
+    <div className="relative bg-backgroundDark p-4  ">
+
       <p className="text-lg text-white">How many tickets?</p>
       {/* <input type="range" name="range" id="range" className="appearance-white w-full h-3  rounded-full thumb:bg-primary" /> */}
       <div>
@@ -99,6 +100,7 @@ const Counter: React.FC<CounterProps> = ({
           ADD TICKETS TO BASKET
         </Button>
       </div>
+
     </div>
   );
 };

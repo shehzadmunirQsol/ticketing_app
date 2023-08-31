@@ -1,4 +1,5 @@
 import React from 'react';
+import Glow from '~/components/common/glow';
 import {
   Accordion,
   AccordionContent,
@@ -8,12 +9,12 @@ import {
 
 const AccordianFaqs = () => {
   return (
-    <section id="AccordianFaqs">
-      <div className="mt-10 mb-10">
+    <section id="AccordianFaqs" className="relative">
+      <div className="mt-10 mb-10 relative pb-20 ">
         <p className="text-5xl font-black ">FAQs</p>
         <div className="border-b-4 w-16 border-primary mt-4"></div>
-        <div>
-          <Accordion type="single" collapsible className="w-full">
+        <div className="relative">
+          <Accordion type="single" collapsible className="w-full z-50">
             <AccordionItem value="item-1">
               <AccordionTrigger className="hover:no-underline focus-visible:text-green py-6">
                 <p className="lg:text-3xl  text-xl ">Competition Rules</p>
@@ -41,6 +42,7 @@ const AccordianFaqs = () => {
               </AccordionContent>
             </AccordionItem>
           </Accordion>
+          {/* <Glow className=" absolute  -bottom-[100px] -right-16  p-2   w-1/5 h-[350px] " /> */}
         </div>
       </div>
     </section>

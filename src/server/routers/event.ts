@@ -2,12 +2,10 @@ import { router, publicProcedure } from '../trpc';
 import { TRPCError } from '@trpc/server';
 import {
   EventFormSchema,
-  createEventSchema,
   deleteEventSchema,
   getClosingSoon,
   getEventSchema,
   getFeatured,
-  getUpcoming,
   getEventsByIdSchema,
 } from '~/schema/event';
 import { prisma } from '~/server/prisma';
@@ -109,7 +107,7 @@ export const eventRouter = router({
           message: 'Event Description not created',
         });
       }
-      const myImages = multi_image.map((str: string, index: number) => ({
+      const myImages = multi_image.map((str: string, ) => ({
         thumb: str,
         event_id: event.id,
       }));
