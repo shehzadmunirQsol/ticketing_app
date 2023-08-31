@@ -5,7 +5,6 @@ import { Button } from '@/ui/button';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -98,16 +97,12 @@ export function BannerForm() {
     page: 0,
   };
   if (index) initialOrderFilters.banner_id = +index;
-  const [orderFilters, setOrderFilters] = useState({
-    ...initialOrderFilters,
-  });
+ 
   const {
     data: BannerApiData,
-    refetch: BannerRefetch,
     isFetched,
     isLoading,
-    isError,
-  } = trpc.settings.get_banner.useQuery(orderFilters, {
+  } = trpc.settings.get_banner.useQuery(initialOrderFilters, {
     refetchOnWindowFocus: false,
 
     enabled: index ? true : false,
@@ -133,7 +128,7 @@ export function BannerForm() {
         form.setValue('ar.date', json_data?.date);
       }
     }
-  }, [isLoading, isFetched]);
+  }, [isLoading, isFetched, BannerApiData]);
   const formValidateData =
     BannerApiData !== undefined && index
       ? BannerApiData[0]?.lang_id
@@ -185,7 +180,6 @@ export function BannerForm() {
         typeof form.getValues('thumb') !== 'object'
           ? { thumb: values?.thumb }
           : await uploadOnS3Handler();
-      const payload: any = { ...values };
       if (index) {
         let dataPayload: any;
         if (editData?.lang_id == 1) {

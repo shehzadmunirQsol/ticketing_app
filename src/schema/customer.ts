@@ -23,8 +23,8 @@ export const updateCustomerSchema = z.object({
 export type getCustomerSchema = z.TypeOf<typeof getCustomerSchema>;
 
 export const loginCustomerSchema = z.object({
-  email: z.string().email(),
-  password: z.string(),
+    user: z.string(),
+    password: z.string()
 });
 export type loginCustomerInput = z.TypeOf<typeof loginCustomerSchema>;
 

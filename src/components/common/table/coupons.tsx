@@ -11,16 +11,13 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { ChevronDown, MoreHorizontal } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 
 import { Button } from '@/ui/button';
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/ui/dropdown-menu';
 import {
@@ -31,12 +28,9 @@ import {
   TableHeader,
   TableRow,
 } from '@/ui/table';
-import LanguageSelect, { LanguageInterface } from '../language_select';
-import { GetCategorySchema } from '~/schema/category';
+
 import { trpc } from '~/utils/trpc';
-import Image from 'next/image';
-import { customEmailTruncateHandler, renderNFTImage } from '~/utils/helper';
-import Link from 'next/link';
+import { customEmailTruncateHandler, displayDate } from '~/utils/helper';
 import { getCustomerSchema } from '~/schema/customer';
 import {
   Tooltip,
@@ -49,14 +43,18 @@ import { CustomerDialog } from '../modal/customers';
 import { useToast } from '~/components/ui/use-toast';
 
 export type Category = {
-  email: string;
-  username: string | null;
-  first_name: string;
-  last_name: string;
-  is_approved: boolean;
   id: number;
-  dob: Date;
+  is_enabled: boolean;
+  name: string;
+  coupon_code: string;
+  discount: number;
+  coupon_limit: number;
+
+  is_limited: boolean;
+  is_percentage: boolean;
   created_at: Date;
+  start_date: Date;
+  end_date: Date;
   updated_at: Date;
 };
 
@@ -78,7 +76,7 @@ export default function CouponsDataTable() {
   const [isModal, setIsModal] = React.useState(false);
 
   // APi
-  const { data, refetch } = trpc.customer.getCustomers.useQuery(filters, {
+  const { data, refetch } = trpc.coupon.get.useQuery(filters, {
     refetchOnWindowFocus: false,
   });
 
@@ -103,20 +101,18 @@ export default function CouponsDataTable() {
   // columns
   const columns: ColumnDef<Category>[] = [
     {
-      accessorKey: 'email',
-      header: 'Email',
+      accessorKey: 'name',
+      header: 'Name',
       cell: ({ row }) => {
         return (
           <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger>
-                  {customEmailTruncateHandler(row?.original?.email)}
+                  {customEmailTruncateHandler(row?.original?.name)}
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p className="text-base font-normal">
-                    {row?.original?.email}
-                  </p>
+                  <p className="text-base font-normal">{row?.original?.name}</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
@@ -125,37 +121,76 @@ export default function CouponsDataTable() {
       },
     },
     {
-      accessorKey: 'username',
-      header: 'User Name',
+      accessorKey: 'coupon_code',
+      header: 'Coupon Code',
       cell: ({ row }) => (
         <div className="capitalize text-ellipsis whitespace-nowrap ">
-          {row.getValue('username')}
+          {row.getValue('coupon_code')}
         </div>
       ),
     },
     {
-      accessorKey: 'first_name',
-      header: 'Name',
+      accessorKey: 'discount',
+      header: 'Discount',
       cell: ({ row }) => (
         <div className="capitalize text-ellipsis whitespace-nowrap ">
-          {row?.original?.first_name + ' ' + row?.original?.last_name}
+          {(row?.original?.discount).toFixed(2)}{' '}
+          <sub>{row?.original?.is_percentage ? '%' : 'AED'}</sub>
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'is_percentage',
+      header: 'Type',
+      cell: ({ row }) => (
+        <div className="capitalize text-ellipsis whitespace-nowrap ">
+          {row?.original?.is_percentage ? 'percentage' : 'fixed'}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'is_limited',
+      header: 'Limit',
+      cell: ({ row }) => (
+        <div className="capitalize text-ellipsis whitespace-nowrap ">
+          {row?.original?.is_limited
+            ? row?.original?.coupon_limit
+            : 'unlimited'}
         </div>
       ),
     },
     {
       id: 'is_approved',
-      header: 'Approved Status',
+      header: 'Enabled',
 
       cell: ({ row }) => {
         return (
           <div>
             <Switch
-              checked={row?.original?.is_approved}
+              checked={row?.original?.is_enabled}
               onCheckedChange={() => handleEnbled(row?.original, 'enabled')}
             />
           </div>
         );
       },
+    },
+    {
+      accessorKey: 'start_date',
+      header: 'Start Date',
+      cell: ({ row }) => (
+        <div className="capitalize text-ellipsis whitespace-nowrap ">
+          {displayDate(row?.original?.start_date)}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'end_date',
+      header: 'End Date',
+      cell: ({ row }) => (
+        <div className="capitalize text-ellipsis whitespace-nowrap ">
+          {displayDate(row?.original?.end_date)}
+        </div>
+      ),
     },
   ];
 

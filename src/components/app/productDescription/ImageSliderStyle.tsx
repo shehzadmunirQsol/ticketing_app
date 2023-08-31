@@ -28,16 +28,17 @@ const BannerSlider = ({ data }: any) => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % data.length);
   };
 
-  // 1.useEffect to change the current index
-  useEffect(() => {
-    const interval = setInterval(() => {
-      nextSlide();
-    }, 4000);
 
-    return function () {
-      clearTimeout(interval);
-    };
-  });
+  // 1.useEffect to change the current index
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     nextSlide();
+  //   }, 4000);
+
+  //   return function () {
+  //     clearTimeout(interval);
+  //   };
+  // });
 
   // 1.useEffect for handling animation
   useEffect(() => {
@@ -58,6 +59,7 @@ const BannerSlider = ({ data }: any) => {
     return () => clearTimeout(animationTimeout);
   }, [currentIndex]);
 
+  console.log(data?.EventImages?.length > 0  ? data?.EventImages[currentIndex] : data?.thumb,"SBDJASDHSADJSAJDHSAD")
   return (
     <div className="relative">
       <div className="flex items-center">
@@ -72,7 +74,7 @@ const BannerSlider = ({ data }: any) => {
         <div className="relative h-[18rem] lg:h-[38rem]  w-full lg:px-6 md:px-6 ">
           <Image
             alt="feature"
-            src={renderNFTImage(data?.EventImages[currentIndex])}
+            src={renderNFTImage(data?.EventImages?.length > 0  ? data?.EventImages[currentIndex] : data?.thumb)}
             width={5000}
             height={5000}
             className=" object-contain object-center h-full w-full "

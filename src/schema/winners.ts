@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
-
 export const getWinnersByIdSchema = z.object({
-  customer_id: z.number(),
+  first: z.number(),
+  rows: z.number(),
+  lang_id: z.number(),
 });

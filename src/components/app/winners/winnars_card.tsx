@@ -1,14 +1,8 @@
 import Image, { StaticImageData } from 'next/image';
 import React, { useEffect, useRef } from 'react';
-// import Table from '~/components/common/table';
-import CarImage from '~/public/assets/card_image.png';
-import BottleImage from '~/public/assets/bottle.png';
-// import { Progress } from '../ui/progress';
-// import { Button } from '../ui/button';
-import { renderNFTImage } from '~/utils/helper';
+import WinnerImage from '~/public/assets/winner.svg';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
-import Link from 'next/link';
 interface cardInterface {
   class?: string;
   dir?: string;
@@ -19,6 +13,7 @@ interface cardInterface {
 }
 
 function WinnarsCard(props: cardInterface) {
+  console.log(props.data, 'props.data');
   const cardRef = useRef<HTMLDivElement>(null);
   const { lang } = useSelector((state: RootState) => state.layout);
 
@@ -38,50 +33,56 @@ function WinnarsCard(props: cardInterface) {
     observer.observe(cardRef.current);
   }, [props?.isLast]);
 
+  // date handle
+  const actualDate = new Date(props?.data?.draw_date);
+  const options: any = { year: 'numeric', month: '2-digit', day: '2-digit' };
+  const formattedDate = actualDate.toLocaleDateString('en-US', options);
+
+  console.log(formattedDate, 'formattedDate'); // Output: 08/28/2023
+
   return (
     <div
       dir={props?.dir}
       className={`   rounded-sm overflow-hidden shadow-lg bg-card h-1/5 ${props?.class}`}
       ref={cardRef}
     >
-      <div >
+      <div>
         <Image
           width={150}
           height={100}
           className="w-full h-full object-cover bg-white"
-          src={props?.cash ?? renderNFTImage(props.data) ?? CarImage}
+          src={WinnerImage}
           quality={100}
           alt="Sunset in the mountains"
         />
-       
       </div>
 
-      <div className="px-6 mt-6 py-4">
-        <div className=" text-3xl mb-2">
-          <span className="text-gray-200   font-semibold leading-loose">
-            {`${props?.data?.id} ${props?.data?.EventDescription[0]?.desc}`}
-          </span>
-          <span className="text-gray-200  leading-loose">
-            {`${props?.data?.id} ${props?.data?.EventDescription[0]?.desc}`}
-          </span>
+      <div className="px-4 mt-6 py-4">
+        <div className=" text-lg md:text-2xl lg:text-3xl mb-2">
+          <p className="text-gray-200   font-extrabold leading-loose">
+            {`${props.data.id} ${props.data.Customer.first_name} Won`}
+          </p>
+          <p className="text-gray-200  leading-loose lg:-mt-5 md:-mt-5 -mt-2">
+            {`${props?.data?.Event?.EventDescription[0]?.name}`}
+          </p>
         </div>
-        <div className="opacity-75 text-gray-200  text-lg font-normal leading-normal">
+        <div className="opacity-75 text-gray-200  lg:text-lg md:text-lg text-sm font-normal leading-normal">
           <p>
-            winning tickets{' '}
-            <span className="text-primary text-lg font-black leading-[18px] ml-6 ">
-              #11611
+            Winning ticket{' '}
+            <span className="text-primary lg:text-lg md:text-lg text-sm font-black leading-[18px] ml-6 ">
+              {`#${props?.data?.ticket_num}`}
             </span>
           </p>
           <p>
-            draw date
-            <span className="text-primary text-lg font-black leading-[18px] ml-16 ">
-              06/08/2023
+            Draw date
+            <span className="text-primary lg:text-lg md:text-lg text-smfont-black leading-[18px] ml-16 ">
+              {formattedDate}
             </span>
           </p>
         </div>
         <hr className=" opacity-20 mt-4" />
         <div className=" mt-2">
-          <p className='text-sm opacity-75 text-gray-200'>
+          <p className="text-sm opacity-75 text-gray-200">
             Carl Courtenage Won a Lamborghini Aventador and opted for the cash
             alternative!
           </p>

@@ -1,6 +1,5 @@
 import { router, publicProcedure } from '../trpc';
 import { TRPCError } from '@trpc/server';
-import { addToCartSchema, getCartSchema } from '~/schema/cart';
 import { applyCouponSchema, getCouponSchema } from '~/schema/coupon';
 import { prisma } from '~/server/prisma';
 
@@ -113,8 +112,6 @@ export const couponRouter = router({
         const endDate = new Date(input?.endDate);
         where.created_at = { lte: endDate };
       }
-
-      if (input.category_id) where.id = input.category_id;
 
       const totalCategoryPromise = prisma.coupon.count({
         where: where,

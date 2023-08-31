@@ -1,6 +1,6 @@
 import { NextPageWithLayout } from '~/pages/_app';
-import AddCategory from '~/components/admin/category/add';
+import AddCoupon from '~/components/admin/coupons/add';
 
-const IndexPage: NextPageWithLayout = () => <AddCategory />;
+const IndexPage: NextPageWithLayout = () => <AddCoupon />;
 
 export default IndexPage;

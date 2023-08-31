@@ -5,7 +5,7 @@ import CashBg from '~/public/assets/cash_bg.png';
 import Cash from '~/public/assets/cash-1.png';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
-import WinnarsCard from '~/components/app/winnars/winnars_card';
+import WinnarsCard from '~/components/app/winners/winnars_card';
 import Glow from '~/components/common/glow';
 import { trpc } from '~/utils/trpc';
 
@@ -16,66 +16,42 @@ export const Winners = () => {
     lang_id: lang.lang_id,
     first: 0,
     rows: 9,
-    category_id: 2,
   });
 
-  // const {
-  //   data: prductsList,
-  //   isFetched,
-  //   isLoading,
-  //   isError,
-  // } = trpc.event.getByCategoryId.useQuery(filters, {
-  //   refetchOnWindowFocus: false,
-  // });
-
-  // const {
-  //   data: winnerList,
-  //   // isFetched,
-  //   // isLoading,
-  //   // isError,
-  // } = trpc.winner.getWinnersById.useQuery({2}, {
-  //   refetchOnWindowFocus: false,
-  // });
-
-const customer_id  =2;
-  const { data, refetch } = trpc.winner.getWinnersById.useQuery(
-    { customer_id },
+  const { data:winnersList, refetch } = trpc.winner.getWinnersById.useQuery(
+    filters ,
     {
       refetchOnWindowFocus: false,
-      onSuccess: () => {
-        console.log({ data });
-        // setCarSlider(BannerApiData || []);
-      },
       // enabled: user?.id ? true : false,
     },
   );
-  console.log(data,"winnerList")
+  console.log(winnersList,"winnerList")
 
 
 
-  // useEffect(() => {
-  //   if (filters.first > 0 && prductsList?.data?.length) {
-  //     setProducts([...products, ...prductsList?.data]);
-  //   } else if (prductsList?.data?.length) {
-  //     setProducts(prductsList?.data);
-  //   }
-  // }, [prductsList]);
+  useEffect(() => {
+    if (filters.first > 0 && winnersList?.data?.length) {
+      setProducts([...products, ...winnersList?.data]);
+    } else if (winnersList?.data?.length) {
+      setProducts(winnersList?.data);
+    }
+  }, [winnersList]);
 
-  // function nextPage() {
-  //   console.log('Next page emitted');
-  //   if (products.length % filters.rows === 0) {
-  //     setFilters({ ...filters, first: 1 + filters.first });
-  //   }
-  // }
-
+  function nextPage() {
+    console.log('Next page emitted');
+    if (products.length % filters.rows === 0) {
+      setFilters({ ...filters, first: 1 + filters.first });
+    }
+  }
+console.log(products,"state")
   return (
     <div>
-      <div className="relative pt-24"></div>
+      <div className="relative pt-24 "></div>
       <BannerTitle image={WinnarsBg} text={'winners'} />
-      <div className="h-full  px-10 py-20">
-        <Glow className=" absolute  top-[560px] -right-16  p-2   w-1/5 h-[350px]  " />
-        <Glow className=" absolute  bottom-96 -right-16  w-1/5 h-[350px] " />
-        {/* <div className=" grid grid-cols-1 md:grid-cols-2     lg:grid-cols-3   justify-between max-w-[1300px] mx-auto ">
+      <div className="h-full px-10 py-20">
+        <Glow className=" absolute  top-[560px] -left-16  p-2   w-1/5 h-[350px]  " />
+        <Glow className=" absolute bottom-[750px]  lg:bottom-[440px] md:bottom-[440px] -right-16  w-1/5 h-[350px] -z-2 " />
+        <div className=" grid grid-cols-1 md:grid-cols-2     lg:grid-cols-3   justify-between max-w-[1500px] mx-auto ">
           {products?.map((itemList, i) => {
             return (
               <div className="mx-auto py-2 md:py-0" key={i}>
@@ -90,10 +66,10 @@ const customer_id  =2;
               </div>
             );
           })}
-        </div> */}
+        </div>
 
         {/* doudt should it load more on action or automatically */}
-        {/* {products.length != prductsList?.count ? (
+        {products.length != winnersList?.count ? (
           <div className="w-fit mx-auto">
             <div className="text-center my-4">
               <p className="tracking-tight font-bold">Load More</p>
@@ -102,7 +78,7 @@ const customer_id  =2;
           </div>
         ) : (
           ''
-        )} */}
+        )}
       </div>
     </div>
   );
