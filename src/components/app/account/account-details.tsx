@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from '~/components/ui/button';
 import {
   accountsDetailSchema,
   accountsDetailSchemaInput,
   passwordChangeSchema,
   passwordChangeSchemaInput,
+  deleteMyAccountCustomerSchema,
+  deleteMyAccountCustomerSchemaInput
 } from '~/schema/customer';
 
 import {
@@ -20,17 +22,61 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '~/components/ui/input';
 import { Textarea } from '~/components/ui/textarea';
+import { useSelector } from 'react-redux';
+import { RootState } from '~/store/store';
+import { trpc } from '~/utils/trpc';
+import { useToast } from '~/components/ui/use-toast';
 
 const AccountDetails = () => {
+  const { toast } = useToast();
+  const { user, isLogin } = useSelector((state: RootState) => state.auth);
+  console.log(user, 'HSDKDHJSHS');
   // 1. Define your form.
   const form = useForm<accountsDetailSchemaInput>({
-    resolver: zodResolver(accountsDetailSchema),
+    resolver: zodResolver(accountsDetailSchemaInput),
   });
+
+  useEffect(() => {
+    if (user) {
+      form.setValue('email', user?.email);
+      form.setValue('first_name', user?.first_name);
+      form.setValue('last_name', user?.last_name);
+      form.setValue('dob', user?.dob);
+    }
+  }, [user]);
+
+  const updateCustomerAccountDetail =
+    trpc.customer.updateCustomerAccountDetail.useMutation({
+      onSuccess: async (res: any) => {
+        console.log(res, 'updateCustomerAccountDetail res');
+        toast({
+          variant: 'success',
+          title: 'Your Account Info Update Successfully ',
+        });
+      },
+      onError: (err) => {
+        console.log(err.message, 'err');
+      },
+    });
 
   // handle account detail
   async function onSubmitAccountDetail(values: any) {
+    if (
+      user.email !== values.email ||
+      user.first_name !== values.first_name ||
+      user.last_name !== values.last_name ||
+      user.dob !== values.dob
+    ) {
+      console.log('condition true');
+      const resp = await updateCustomerAccountDetail.mutateAsync(values);
+      console.log(resp, 'update res updateCustomerAccountDetail');
+    } else {
+      console.log('condition false');
+    }
+
     console.log(values, 'values account');
   }
+  console.log(form.formState.errors, 'form.formState.errors');
 
   return (
     <div className="py-4 px-6 text-[#eaeaea] ">
@@ -43,11 +89,11 @@ const AccountDetails = () => {
           >
             <FormField
               control={form.control}
-              name="name"
+              name="first_name"
               render={({ field }) => (
                 <FormItem className=" w-full ">
                   <FormLabel className="text-xs font-thin text-grayColor">
-                    Name
+                    Name*
                   </FormLabel>
                   <FormControl className="rounded-md bg-inputColor">
                     <Input
@@ -62,7 +108,7 @@ const AccountDetails = () => {
             />
             <FormField
               control={form.control}
-              name="lastname"
+              name="last_name"
               render={({ field }) => (
                 <FormItem className=" w-full ">
                   <FormLabel className="text-xs font-thin text-grayColor">
@@ -90,6 +136,7 @@ const AccountDetails = () => {
                   <FormControl className="rounded-md bg-inputColor">
                     <Input
                       type="text"
+                      disabled
                       placeholder="Enter your email address"
                       {...field}
                     />
@@ -100,23 +147,27 @@ const AccountDetails = () => {
             />
             <FormField
               control={form.control}
-              name="dateofbirth"
+              name="dob"
               render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormLabel className="text-xs font-thin text-grayColor">
-                    Date of Birth
+                <FormItem className=" flex flex-col gap-2 mt-2 w-full">
+                  <FormLabel>
+                    Date of Birth*
+                    {/* <sup className="text-md text-red-500">*</sup> */}
                   </FormLabel>
                   <FormControl className="rounded-md bg-inputColor">
                     <Input
-                      type="date"
-                      placeholder="Enter your email address"
-                      {...field}
+                      type={'date'}
+                      placeholder={'Start Date'}
+                      {...form.register('dob', {
+                        valueAsDate: true,
+                      })}
                     />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+
             <div className=" flex items-center justify-end">
               <Button
                 className="align-center  rounded-full px-5 text-base   text-black font-sans font-[900]   tracking-[-1px]"
@@ -132,7 +183,7 @@ const AccountDetails = () => {
         <hr className=" opacity-20 mt-4" />
       </div>
       <div>
-        <PasswordChange />
+        <PasswordChange email={user.email} />
         <DeleteAccount />
       </div>
     </div>
@@ -142,15 +193,47 @@ const AccountDetails = () => {
 export default AccountDetails;
 
 // Password Change
-function PasswordChange() {
+function PasswordChange({email}:any) {
+
+  const { toast } = useToast();
+
   // 1. Define your form.
   const form = useForm<passwordChangeSchemaInput>({
     resolver: zodResolver(passwordChangeSchema),
   });
 
+
+  // handle password update
+  const updateCustomerPassword =
+  trpc.customer.updateCustomerPassword.useMutation({
+    onSuccess: async (res: any) => {
+      console.log(res, 'updateCustomerPassword res');
+      toast({
+        variant: 'success',
+        title: 'Your Account Password Updated Successfully ',
+      });
+    },
+    onError: (err) => {
+      console.log(err.message, 'err');
+    },
+  });
+
   // handle account detail
   async function onSubmitAccountPassword(values: any) {
-    console.log(values, 'values account');
+    console.log("i am inner MAINSU")
+    try {
+      const payload:any = {
+        email:email,
+        ...values
+      }
+      const resp = await updateCustomerPassword.mutateAsync(payload);
+      console.log(resp,"HSSHJSJJAKAJ MAINSU")
+    } catch (e: any) {
+      toast({
+        variant: 'destructive',
+        title: e.message,
+      });
+    }
   }
 
   return (
@@ -241,15 +324,17 @@ function PasswordChange() {
 // Password Change
 function DeleteAccount() {
   // 1. Define your form.
-  const form = useForm<passwordChangeSchemaInput>({
-    resolver: zodResolver(passwordChangeSchema),
+  const form = useForm<deleteMyAccountCustomerSchemaInput>({
+    resolver: zodResolver(deleteMyAccountCustomerSchema),
   });
+
+  const [reason,setReason] = useState<any>([])
 
   // handle account detail
   async function onSubmitAccountPassword(values: any) {
     console.log(values, 'values account');
   }
-
+console.log(reason,"reason")
   const accountArgumentsOptions = [
     {
       text: 'I’m not interested in competitions anymore',
@@ -271,6 +356,19 @@ function DeleteAccount() {
     },
   ];
 
+
+  const handleDivClick = (itemText: string) => {
+    setReason((previous:any) => {
+      if (previous.includes(itemText)) {
+        return previous.filter((reason:any) => reason !== itemText);
+      } else {
+        return [...previous, itemText];
+      }
+    });
+  };
+
+
+
   return (
     <div className="py-4 px-6 text-[#eaeaea]">
       <p className=" font-bold text-2xl text-white">
@@ -290,9 +388,9 @@ function DeleteAccount() {
           >
             <div className="flex flex-row gap-2 justify-start w-full  items-center">
               <div>
-                <Input type="checkbox" className="accent-white text-2xl " />
+                <Input type="checkbox" className="accent-white text-2xl "required />
               </div>
-              <p className="text-lightTextColor text-sm">
+              <p className="text-sm">
                 I understand that I will lose all data (including tickets)
                 related to my account
               </p>
@@ -305,11 +403,13 @@ function DeleteAccount() {
             {accountArgumentsOptions?.map((item, i) => {
               return (
                 <div
-                  className="flex flex-row gap-2 justify-start w-full  items-center"
+                  className="flex flex-row gap-2 justify-start w-full  items-center cursor-pointer"
                   key={i}
+                  // onChange={(e:any)=>setReason((previous:any)=>[...previous,item?.text])}
+                  onClick={() => handleDivClick(item.text)}
                 >
                   <div>
-                    <Input type="checkbox" className="accent-white text-2xl " />
+                    <Input type="checkbox" className="accent-white text-2xl " checked={reason.includes(item?.text)} />
                   </div>
                   <p className="text-lightTextColor text-sm">{item.text}</p>
                 </div>
@@ -322,7 +422,7 @@ function DeleteAccount() {
               render={({ field }) => (
                 <FormItem className="mb-6 lg:mb-10 md:mb-10">
                   <FormLabel className="text-xs  font-thin text-grayColor">
-                  Add your comment:
+                    Add your comment:
                   </FormLabel>
                   <FormControl className="rounded-md bg-inputColor">
                     <Textarea

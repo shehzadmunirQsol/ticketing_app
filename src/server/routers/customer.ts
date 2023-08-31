@@ -438,47 +438,25 @@ export const customerRouter = router({
       }
     }),
 
-  addAndUpdateAccountCustomerDetail: publicProcedure
+  updateCustomerAccountDetail: publicProcedure
     .input(accountsDetailSchema)
     .mutation(async ({ ctx, input }) => {
       try {
-        console.log(input, 'SJAHHSJSHJA');
-        console.log(input.email, 'HJDJDHDDN');
+        console.log(input, 'input');
         const user: any = await prisma.customer.findFirst({
           where: { email: input.email },
         });
-        console.log(user, 'user HJDJDHDDN');
+        const payload = { ...input };
+        if (!payload?.dob) delete payload?.dob;
 
-        if (!user) {
-          throw new TRPCError({
-            code: 'NOT_FOUND',
-            message: 'User not found',
-          });
-        } else {
-          console.log('else HJDJDHDDN');
-          const respCode = await generateOTP(4);
-          const updateResponse = await prisma.customer?.update({
-            where: {
-              id: user.id,
-            },
-            data: {
-              otp: respCode,
-            },
-          });
-          console.log(updateResponse, 'updateResponse');
-          const mailOptions: any = {
-            template_id: 2,
-            from: 'shehzadmunir.qsols@gmail.com',
-            to: input.email,
-            subject: 'Email Verification OTP CODE',
-            params: {
-              otp: respCode,
-              first_name: input?.email,
-            },
-          };
-          const mailResponse = await sendEmail(mailOptions);
-          console.log(mailResponse, 'mailResponse');
-        }
+        const updateResponse = await prisma.customer?.update({
+          where: {
+            id: user.id,
+          },
+          data: {
+            ...payload,
+          },
+        });
 
         return { user: user, status: true };
       } catch (error: any) {
@@ -490,7 +468,51 @@ export const customerRouter = router({
       }
     }),
 
-    
+  updateCustomerPassword: publicProcedure
+    .input(passwordChangeSchema)
+    .mutation(async ({ ctx, input }) => {
+      try {
+        console.log(input, 'input');
+        const user: any = await prisma.customer.findFirst({
+          where: { email: input.email },
+        });
 
+        const checkPass = await isSamePass(
+          input.currentPassword,
+          user?.password,
+        );
+        if (!checkPass) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Old Password is incorrect',
+          });
+        }
 
+        if (input.newPassword !== input.confirmPassword) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Password are not Matching',
+          });
+        }
+
+        const hashPassword = await hashPass(input.newPassword);
+        console.log('HASH Pass : ', hashPassword);
+        const updatePasswordResult = await prisma.customer?.update({
+          where: {
+            id: user.id,
+          },
+          data: {
+            password: hashPassword,
+          },
+        });
+        console.log(updatePasswordResult, 'userCode');
+        return { user: user, status: true };
+      } catch (error: any) {
+        console.log({ error });
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: error.message,
+        });
+      }
+    }),
 });
