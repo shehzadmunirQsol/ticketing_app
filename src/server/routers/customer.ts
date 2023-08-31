@@ -10,6 +10,7 @@ import {
   getCustomerSchema,
   updateCustomerSchema,
   resendOtpCustomerSchema,
+  addCustomerAddress,
 } from '~/schema/customer';
 import { hashPass, isSamePass } from '~/utils/hash';
 import { signJWT, verifyJWT } from '~/utils/jwt';
@@ -425,6 +426,49 @@ export const customerRouter = router({
           const mailResponse = await sendEmail(mailOptions);
           console.log(mailResponse, 'mailResponse');
         }
+
+        return { user: user, status: true };
+      } catch (error: any) {
+        console.log({ error });
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: error.message,
+        });
+      }
+    }),
+
+  addAddress: publicProcedure
+    .input(addCustomerAddress)
+    .mutation(async ({ ctx, input }) => {
+      try {
+        const user: any = await prisma.customer.findFirst({
+          where: { id: input.customer_id },
+        });
+        console.log(user, 'user backend');
+
+        if (!user) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'User not found',
+          });
+        } else {
+          // here u will do the mutation
+
+          const payload = {
+            postal_code: input.po_box,
+            phone_number: input.number,
+            street_address_1: input.street,
+            state: "",
+            street_address_2: "",
+            ...input,
+          }
+          console.log({ payload }, "payload bk")
+          const customer: any = await prisma.customerAddress.create(
+            { data: payload }
+          )
+
+        }
+
 
         return { user: user, status: true };
       } catch (error: any) {

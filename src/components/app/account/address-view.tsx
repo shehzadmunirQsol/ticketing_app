@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 
-
 const AddressesView = () => {
-  const [isEdit, setEdit] = useState(false);
-  const handleChange = () => setEdit(!isEdit);
+  const [isEdit, setEdit] = useState(true);
 
   const data1 = undefined;
   const data = {
@@ -21,7 +19,7 @@ const AddressesView = () => {
 
       <div className="mt-4 flex ">
         <div
-          className={`w-64 h-48 rounded-md border-[1px] p-4 ${
+          className={`w-64 h-48  rounded-md border-[1px] p-4 ${
             data ? 'border-primary' : 'border-[#808080]'
           }  flex flex-col`}
         >
@@ -29,7 +27,10 @@ const AddressesView = () => {
             <p className="text-md font-bold tracking-tight lead">
               Billing Address
             </p>
-            <div className="px-2 py-1.5 bg-primary text-sm text-[#101417] font-extrabold tracking-tight leading-tight w-fit rounded-full flex justify-center gap-1 hover:cursor-pointer hover:opacity-90">
+            <div
+              onClick={() => setEdit(!isEdit)}
+              className="px-2 py-1.5 bg-primary text-sm text-[#101417] font-extrabold tracking-tight leading-tight w-fit rounded-full flex justify-center gap-1 hover:cursor-pointer hover:opacity-90"
+            >
               <span>
                 <i className={`fas ${data ? 'fa-pencil' : 'fa-plus'} `}></i>
               </span>
@@ -41,8 +42,16 @@ const AddressesView = () => {
             {data == undefined && (
               <p className=" ">You have not set up this type of address yet.</p>
             )}
-            {data ? (
+            {data && !isEdit ? (
               <div className="h-fit ">
+                <p>{data.name}</p>
+                <p>P.O Box {data.pobox}</p>
+                <p>{data.street}</p>
+                <p>{data.number}</p>
+                <p>{data.city}</p>
+              </div>
+            ) : data && isEdit ? (
+              <form className="h-fit ">
                 <input
                   className="bg-primary-foreground p-1"
                   value={data.name}
@@ -68,7 +77,7 @@ const AddressesView = () => {
                   value={data.city}
                   type="text"
                 />
-              </div>
+              </form>
             ) : (
               ''
             )}

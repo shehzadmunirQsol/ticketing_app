@@ -83,3 +83,14 @@ export const verificationOtpCustomerSchema = z.object({
 export const resendOtpCustomerSchema = z.object({
   email: z.string().email(),
 });
+
+
+export const addCustomerAddress = z.object({
+  customer_id: z.number(),
+  name:z.string(),
+  street:z.string(),
+  city:z.string(),
+  country:z.string(),
+  number:z.string(),
+  po_box:z.number(),
+})
