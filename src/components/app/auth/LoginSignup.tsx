@@ -55,7 +55,7 @@ export default function LoginSignup() {
     onSuccess: (res: any) => {
       const localStorageData = localStorage.setItem(
         'customer',
-        JSON.stringify(res.email),
+        JSON.stringify({ email: res.email, id: res.id }),
       );
       console.log(res, 'res');
       toast({
@@ -69,7 +69,6 @@ export default function LoginSignup() {
       formSignup.setValue('password', '');
       formSignup.setValue('firstname', '');
       formSignup.setValue('lastname', '');
-
     },
     onError: (err) => {
       console.log(err.message, 'err');

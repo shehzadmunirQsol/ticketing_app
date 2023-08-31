@@ -159,7 +159,7 @@ export function OtpVerificationDailog(props: OtpVerificationDailogInterface) {
     if (storedData !== null) {
       const userData: any = JSON.parse(storedData);
       const result: any = {
-        email: userData,
+        email: userData.email,
         otp_1: +inputOne.current.value,
         otp_2: +inputTwo.current.value,
         otp_3: +inputThree.current.value,
@@ -178,7 +178,7 @@ export function OtpVerificationDailog(props: OtpVerificationDailogInterface) {
     if (storedData !== null) {
       const userData: any = JSON.parse(storedData);
       const otpResult = await resendOtpCustomer.mutateAsync({
-        email: userData,
+        email: userData.email,
       });
       console.log(otpResult, 'otpResult');
     }

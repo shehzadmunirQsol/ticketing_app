@@ -4,9 +4,11 @@ import BackgroundImage from '~/public/assets/account.png';
 import AccountView from '~/components/app/account/account-view';
 import AddressesView from './address-view';
 import AccountDetails from './account-details';
+import { trpc } from '~/utils/trpc';
 
 const Account = () => {
   const [counter, setCounter] = useState(0);
+  
   const navigation = [
     {
       tab: 'Dashboard',
@@ -38,7 +40,7 @@ const Account = () => {
     <>
       <div className="relative pt-24"></div>
       <BannerTitle image={BackgroundImage} text={navigation[counter]?.title} />
-      <div className=" py-10 max-w-[1000px] mx-2 sm:mx-auto  flex  flex-col sm:flex-row justify-start sm:justify-between gap-8 items-start">
+      <div className=" py-10 max-w-[1600px] md:px-16 px-4 mx-2 sm:mx-auto  flex  flex-col sm:flex-row justify-start sm:justify-between gap-8 items-start">
         <ul className="bg-[#101417]   w-full sm:w-96   rounded-lg overflow-hidden ">
           {navigation.map((item, i) => (
             <li

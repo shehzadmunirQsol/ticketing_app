@@ -3,14 +3,19 @@ import React, { useState } from 'react';
 import { Button } from '~/components/ui/button';
 import { Separator } from '~/components/ui/separator';
 import Current from '~/public/assets/not-current-entrie.png';
+import { trpc } from '~/utils/trpc';
 
 const grid = ['', ''];
 // { control: Function }
 const AccountView = ({ control }: any) => {
+  const { data: customer, isLoading } = trpc.customer.get.useQuery();
+  console.log({ customer }, 'customer');
+
   return (
     <div className="py-4 px-6 text-[#eaeaea]">
       <p className="mb-3">
-        Hello <span className="font-bold">Hussain (later change)</span>
+        Hello{' '}
+        <span className="font-bold">{`${customer?.data.first_name} ${customer?.data.last_name}`}</span>
       </p>
       <p>
         From your account dashboard you can view your recent orders, manage your{' '}
@@ -56,12 +61,12 @@ function CurrentandPast(data: any) {
   return (
     <>
       <div className={`flex  z-10 `}>
-        <div className="flex w-fit ">
+        <div className="flex w-fit  ">
           <div
             onClick={() => setSelect(0)}
-            className={`p-4 border-2 rounded-none text-lg font-black ${
+            className={`p-4 border-[1px] rounded-none text-lg font-black ${
               select == 0
-                ? 'border-[#808080]  border-b-transparent text-primary'
+                ? 'border-[#808080]  border-b-transparent text-primary rounded-t-md'
                 : 'border-transparent border-b-[#808080] text-[#808080]'
             } `}
           >
@@ -69,21 +74,20 @@ function CurrentandPast(data: any) {
           </div>
           <div
             onClick={() => setSelect(1)}
-            className={`p-4 text-center rounded-none border-2 text-lg font-black overflow-hidden ${
+            className={`p-4 text-center rounded-none border-[1px] text-lg font-black overflow-hidden ${
               select == 1
-                ? 'border-[#808080]  border-b-transparent text-primary'
+                ? 'border-[#808080]  border-b-transparent rounded-t-md text-primary'
                 : 'border-transparent border-b-[#808080] text-[#808080]'
             } `}
           >
             Part
-            {/* <p className=''></p> */}
           </div>
         </div>
 
-        <div className="border-2 border-b-[#808080] w-full border-transparent "></div>
+        <div className="border-[1px] border-b-[#808080] w-full border-transparent "></div>
       </div>
 
-      <div className="w-full py-4 border-2 border-t-0 border-[#808080] h-72 rounded-b-sm">
+      <div className="w-full py-4 border-[1px] border-t-0 border-[#808080] h-72 rounded-b-md">
         {data.length != 0 ? (
           <div className="flex flex-col my-auto h-full items-center justify-center">
             <Image src={Current} alt="/" />
