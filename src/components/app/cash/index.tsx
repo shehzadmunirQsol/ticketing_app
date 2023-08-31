@@ -12,12 +12,20 @@ import { trpc } from '~/utils/trpc';
 const CashPage = () => {
   const { lang } = useSelector((state: RootState) => state.layout);
   const [products, setProducts] = useState<Array<any>>([]);
-  const [filters, setFilters] = useState({
-    lang_id: lang.lang_id,
+  const eventFilters = {
+    lang_id: lang?.lang_id,
     first: 0,
     rows: 9,
     category_id: 2,
+  };
+  const [filters, setFilters] = useState({
+    ...eventFilters,
   });
+
+  useEffect(() => {
+    setFilters({ ...filters, lang_id: lang.lang_id, first:0 });
+    setProducts([]);
+  }, [lang.lang_id]);
 
   const {
     data: prductsList,
@@ -43,6 +51,11 @@ const CashPage = () => {
     }
   }
 
+  console.log({ prductsList }, 'prductsList');
+  console.log({ products }, 'products');
+  console.log({ filters }, 'filters');
+  console.log(products.length, prductsList?.count, 'check load more');
+  console.log(lang, 'check load more');
 
   return (
     <>
@@ -68,10 +81,8 @@ const CashPage = () => {
           })}
         </div>
 
-        
-
         {/* doudt should it load more on action or automatically */}
-        {products.length != prductsList?.count ? (
+        {prductsList && products.length < prductsList?.count ? (
           <div className="w-fit mx-auto">
             <div className="text-center my-4">
               <p className="tracking-tight font-bold">Load More</p>

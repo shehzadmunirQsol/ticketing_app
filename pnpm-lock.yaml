@@ -16,6 +16,7 @@ specifiers:
   '@radix-ui/react-popover': ^1.0.6
   '@radix-ui/react-progress': ^1.0.3
   '@radix-ui/react-select': ^1.2.2
+  '@radix-ui/react-separator': ^1.0.3
   '@radix-ui/react-slider': ^1.1.2
   '@radix-ui/react-slot': ^1.0.2
   '@radix-ui/react-switch': ^1.0.3
@@ -59,6 +60,7 @@ specifiers:
   navigation-menu: ^1.0.0
   next: ^13.2.1
   next-themes: ^0.2.1
+  nextjs-cors: ^2.1.2
   nodemailer: ^6.9.4
   npm-run-all: ^4.1.5
   postcss: ^8.4.21
@@ -105,6 +107,7 @@ dependencies:
   '@radix-ui/react-popover': 1.0.6_2zx2umvpluuhvlq44va5bta2da
   '@radix-ui/react-progress': 1.0.3_2zx2umvpluuhvlq44va5bta2da
   '@radix-ui/react-select': 1.2.2_2zx2umvpluuhvlq44va5bta2da
+  '@radix-ui/react-separator': 1.0.3_2zx2umvpluuhvlq44va5bta2da
   '@radix-ui/react-slider': 1.1.2_2zx2umvpluuhvlq44va5bta2da
   '@radix-ui/react-slot': 1.0.2_fan5qbzahqtxlm5dzefqlqx5ia
   '@radix-ui/react-switch': 1.0.3_2zx2umvpluuhvlq44va5bta2da
@@ -135,6 +138,7 @@ dependencies:
   navigation-menu: 1.0.0_jhaguxqfxx2v4alxps2nzei754
   next: 13.2.1_biqbaboplfbrettd7655fr4n2y
   next-themes: 0.2.1_qgtcjgzkkjtbiyvnx7d32fl5vu
+  nextjs-cors: 2.1.2_next@13.2.1
   nodemailer: 6.9.4
   primereact: 9.6.2_2zx2umvpluuhvlq44va5bta2da
   quill: 1.3.7
@@ -1680,6 +1684,26 @@ packages:
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       react-remove-scroll: 2.5.5_fan5qbzahqtxlm5dzefqlqx5ia
+    dev: false
+
+  /@radix-ui/react-separator/1.0.3_2zx2umvpluuhvlq44va5bta2da:
+    resolution: {integrity: sha512-itYmTy/kokS21aiV5+Z56MZB54KrhPgn6eHDKkFeOLR34HMN2s8PaN47qZZAGnvupcjxHaFZnW4pQEh0BvvVuw==}
+    peerDependencies:
+      '@types/react': '*'
+      '@types/react-dom': '*'
+      react: ^16.8 || ^17.0 || ^18.0
+      react-dom: ^16.8 || ^17.0 || ^18.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      '@types/react-dom':
+        optional: true
+    dependencies:
+      '@babel/runtime': 7.22.11
+      '@radix-ui/react-primitive': 1.0.3_2zx2umvpluuhvlq44va5bta2da
+      '@types/react': 18.0.25
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
     dev: false
 
   /@radix-ui/react-slider/1.1.2_2zx2umvpluuhvlq44va5bta2da:
@@ -4656,6 +4680,14 @@ packages:
 
   /core-util-is/1.0.2:
     resolution: {integrity: sha512-3lqz5YjWTYnW6dlDa5TLaTCcShfar1e40rmcJVwCBJC6mWlFuj0eCHIElmG1g5kyuJ/GD+8Wn4FFCcz4gJPfaQ==}
+    dev: false
+
+  /cors/2.8.5:
+    resolution: {integrity: sha512-KIHbLJqu73RGr/hnbrO9uBeixNGuvSQjul/jdFvS/KFSIH1hWVd1ng7zOHx+YrEfInLG7q4n6GHQ9cDtxv/P6g==}
+    engines: {node: '>= 0.10'}
+    dependencies:
+      object-assign: 4.1.1
+      vary: 1.1.2
     dev: false
 
   /cosmiconfig/2.2.2:
@@ -9497,6 +9529,15 @@ packages:
     transitivePeerDependencies:
       - '@babel/core'
       - babel-plugin-macros
+    dev: false
+
+  /nextjs-cors/2.1.2_next@13.2.1:
+    resolution: {integrity: sha512-2yOVivaaf2ILe4f/qY32hnj3oC77VCOsUQJQfhVMGsXE/YMEWUY2zy78sH9FKUCM7eG42/l3pDofIzMD781XGA==}
+    peerDependencies:
+      next: ^8.1.1-canary.54 || ^9.0.0 || ^10.0.0-0 || ^11.0.0 || ^12.0.0 || ^13.0.0
+    dependencies:
+      cors: 2.8.5
+      next: 13.2.1_biqbaboplfbrettd7655fr4n2y
     dev: false
 
   /nice-try/1.0.5:

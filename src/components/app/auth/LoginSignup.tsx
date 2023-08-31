@@ -143,10 +143,10 @@ export default function LoginSignup() {
           className="flex flex-col flex-wrap   lg:w-2/2 md:w-full  lg:text-left  rounded-none border-none  lg:mr-6 bg-card"
         >
           <>
-            <TabsList className=" w-full rounded-none border-none py-4 ">
+            <TabsList className=" w-full rounded-none border-none py-4">
               <TabsTrigger
                 value="login"
-                className="w-full font-black text-md -mt-1rounded-none border-none m-0  "
+                className="w-full font-black text-md -mt-1 rounded-none border-none m-0  "
               >
                 Login
               </TabsTrigger>

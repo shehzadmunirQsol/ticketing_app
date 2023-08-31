@@ -163,6 +163,7 @@ function ProductSection(props: producctInterface) {
               </div>
             );
           })}
+          
           {products.length === 0 ? (
             <div className="text-center w-full py-10 text-lg">
               Coming Soon...
