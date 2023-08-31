@@ -47,6 +47,8 @@ interface SettingDialogInterface {
 }
 export function CheckoutDialog(props: SettingDialogInterface) {
   const { user } = useSelector((state: RootState) => state.auth);
+  const { cart, totalAmount } = useSelector((state: RootState) => state.cart);
+
   console.log(user?.total_customer_id);
   const dispatch = useDispatch();
 
@@ -55,8 +57,11 @@ export function CheckoutDialog(props: SettingDialogInterface) {
   const formSchema = user?.total_customer_id
     ? createPaymentSchema
     : createFormPaymentSchema;
+  console.log({ formSchema });
   const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(
+      user?.total_customer_id ? createPaymentSchema : createFormPaymentSchema,
+    ),
   });
 
   const bannerUpdate = trpc.payment.createPayment.useMutation({
@@ -70,11 +75,23 @@ export function CheckoutDialog(props: SettingDialogInterface) {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       console.log(values, 'onSubmit');
-      const data = await bannerUpdate.mutateAsync({
-        ...values,
+      let payload: any = {
         price: 90,
         registrationId: user?.total_customer_id,
         customer_id: user?.id,
+        // cart: cart?.cartItems,
+      };
+      if (!user?.total_customer_id) {
+        payload = {
+          ...values,
+          price: 90,
+          registrationId: user?.total_customer_id,
+          customer_id: user?.id,
+          // cart: cart?.cartItems,
+        };
+      }
+      const data = await bannerUpdate.mutateAsync({
+        ...payload,
       });
       if (data?.user) {
         dispatch(userAuth(data?.user));
@@ -113,154 +130,165 @@ export function CheckoutDialog(props: SettingDialogInterface) {
               <DialogHeader>
                 <DialogTitle>{props?.title}</DialogTitle>
                 <DialogDescription className=" flex flex-col gap-2 ">
-                  <FormField
-                    control={form.control}
-                    name="paymentBrand"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-xs font-thin text-grayColor">
-                          Card Type
-                        </FormLabel>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                          value={field.value}
-                        >
-                          <FormControl>
-                            <SelectTrigger className=" rounded-none  ">
-                              <SelectValue placeholder="Select Card Type" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            <SelectGroup>
-                              <SelectItem value={'VISA'}>VISA</SelectItem>
-                              <SelectItem value={'Master'}>Master</SelectItem>
-                            </SelectGroup>
-                          </SelectContent>
-                        </Select>
+                  {user?.total_customer_id ? (
+                    <div className="p-2 rounded-md text-center border mt-2">
+                      Pay With Previous Bank Details
+                    </div>
+                  ) : (
+                    <>
+                      <FormField
+                        control={form.control}
+                        name="paymentBrand"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-xs font-thin text-grayColor">
+                              Card Type
+                            </FormLabel>
+                            <Select
+                              onValueChange={field.onChange}
+                              defaultValue={field.value}
+                              value={field.value}
+                            >
+                              <FormControl>
+                                <SelectTrigger className=" rounded-none  ">
+                                  <SelectValue placeholder="Select Card Type" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                <SelectGroup>
+                                  <SelectItem value={'VISA'}>VISA</SelectItem>
+                                  <SelectItem value={'Master'}>
+                                    Master
+                                  </SelectItem>
+                                </SelectGroup>
+                              </SelectContent>
+                            </Select>
 
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <div className="grid grid-cols-3 gap-2">
-                    <FormField
-                      control={form.control}
-                      name="card.number"
-                      render={({ field }) => (
-                        <FormItem className="mb-6 text-start col-span-2">
-                          <FormLabel className="text-xs text-start font-thin text-grayColor">
-                            Card Number
-                          </FormLabel>
-                          <FormControl>
-                            <Input
-                              type="text"
-                              maxLength={24}
-                              placeholder="Enter Card Number"
-                              {...form.register('card.number', {
-                                pattern: /^(\d{4} ){4}\d{3}$/i,
-                              })}
-                              onChange={(e) => formatCardNum(e.target.value)}
-                              // {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="card.cvv"
-                      render={({ field }) => (
-                        <FormItem className="mb-6 text-start col-span-1">
-                          <FormLabel className="text-xs text-start font-thin text-grayColor">
-                            Card CVV
-                          </FormLabel>
-                          <FormControl>
-                            <Input
-                              type="text"
-                              maxLength={3}
-                              placeholder="Enter Cvv"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                  <div className="grid grid-cols-1 mdx:grid-cols-2 gap-2">
-                    <div className=" grid grid-cols-1 mdx:grid-cols-2 gap-2">
-                      <FormField
-                        control={form.control}
-                        name="card.expiryMonth"
-                        render={({ field }) => (
-                          <FormItem className=" text-start ">
-                            <FormLabel className="text-xs text-start font-thin text-grayColor">
-                              Expiry Month
-                            </FormLabel>
-                            <FormControl>
-                              <Input
-                                type="text"
-                                maxLength={2}
-                                placeholder="Expiry Month"
-                                autoComplete="cc-number"
-                                {...field}
-                              />
-                            </FormControl>
                             <FormMessage />
                           </FormItem>
                         )}
                       />
-                      <FormField
-                        control={form.control}
-                        name="card.expiryYear"
-                        render={({ field }) => (
-                          <FormItem className=" text-start ">
-                            <FormLabel className="text-xs text-start font-thin text-grayColor">
-                              Expiry Year
-                            </FormLabel>
-                            <FormControl>
-                              <Input
-                                type="text"
-                                maxLength={4}
-                                placeholder="Expiry Year"
-                                autoComplete="cc-number"
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-                    <div>
-                      <FormField
-                        control={form.control}
-                        name="card.holder"
-                        render={({ field }) => (
-                          <FormItem className=" text-start ">
-                            <FormLabel className="text-xs text-start font-thin text-grayColor">
-                              Card Holder
-                            </FormLabel>
-                            <FormControl>
-                              <Input
-                                type="text"
-                                maxLength={38}
-                                placeholder="Card Holder"
-                                autoComplete="cc-number"
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-                  </div>
+                      <div className="grid grid-cols-3 gap-2">
+                        <FormField
+                          control={form.control}
+                          name="card.number"
+                          render={({ field }) => (
+                            <FormItem className="mb-6 text-start col-span-2">
+                              <FormLabel className="text-xs text-start font-thin text-grayColor">
+                                Card Number
+                              </FormLabel>
+                              <FormControl>
+                                <Input
+                                  type="text"
+                                  maxLength={24}
+                                  placeholder="Enter Card Number"
+                                  {...form.register('card.number', {
+                                    pattern: /^(\d{4} ){4}\d{3}$/i,
+                                  })}
+                                  onChange={(e) =>
+                                    formatCardNum(e.target.value)
+                                  }
+                                  // {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="card.cvv"
+                          render={({ field }) => (
+                            <FormItem className="mb-6 text-start col-span-1">
+                              <FormLabel className="text-xs text-start font-thin text-grayColor">
+                                Card CVV
+                              </FormLabel>
+                              <FormControl>
+                                <Input
+                                  type="text"
+                                  maxLength={3}
+                                  placeholder="Enter Cvv"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      <div className="grid grid-cols-1 mdx:grid-cols-2 gap-2">
+                        <div className=" grid grid-cols-1 mdx:grid-cols-2 gap-2">
+                          <FormField
+                            control={form.control}
+                            name="card.expiryMonth"
+                            render={({ field }) => (
+                              <FormItem className=" text-start ">
+                                <FormLabel className="text-xs text-start font-thin text-grayColor">
+                                  Expiry Month
+                                </FormLabel>
+                                <FormControl>
+                                  <Input
+                                    type="text"
+                                    maxLength={2}
+                                    placeholder="Expiry Month"
+                                    autoComplete="cc-number"
+                                    {...field}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={form.control}
+                            name="card.expiryYear"
+                            render={({ field }) => (
+                              <FormItem className=" text-start ">
+                                <FormLabel className="text-xs text-start font-thin text-grayColor">
+                                  Expiry Year
+                                </FormLabel>
+                                <FormControl>
+                                  <Input
+                                    type="text"
+                                    maxLength={4}
+                                    placeholder="Expiry Year"
+                                    autoComplete="cc-number"
+                                    {...field}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                        <div>
+                          <FormField
+                            control={form.control}
+                            name="card.holder"
+                            render={({ field }) => (
+                              <FormItem className=" text-start ">
+                                <FormLabel className="text-xs text-start font-thin text-grayColor">
+                                  Card Holder
+                                </FormLabel>
+                                <FormControl>
+                                  <Input
+                                    type="text"
+                                    maxLength={38}
+                                    placeholder="Card Holder"
+                                    autoComplete="cc-number"
+                                    {...field}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                      </div>
+                    </>
+                  )}
                 </DialogDescription>
               </DialogHeader>
-              <div className=" py-2"></div>
               <DialogFooter>
                 <Button type="submit">Make Payment</Button>
               </DialogFooter>

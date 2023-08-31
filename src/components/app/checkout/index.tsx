@@ -32,7 +32,7 @@ function Checkout() {
   // Handle Coupon Dailog
   const [isModal, setIsModal] = React.useState(false);
   const [selectedItem, setSelectedItem] = React.useState({});
-  const [title, setTitle] = React.useState('Enter Card Detail');
+  const [title, setTitle] = React.useState('Enter Payment Detail');
   const [type, setType] = React.useState('');
   const [isCardModal, setIsCardModal] = React.useState(false);
 
