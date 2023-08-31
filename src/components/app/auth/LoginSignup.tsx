@@ -30,12 +30,15 @@ import { useToast } from '~/components/ui/use-toast';
 import Link from 'next/link';
 import { ForgotPasswordDailog } from './ForgotPassword';
 import CarImage from '../../../public/assets/CarLogin.svg';
+import { userAuth } from '~/store/reducers/auth';
+import { useDispatch } from 'react-redux';
 import { OtpVerificationDailog } from './otp-verification';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 export default function LoginSignup() {
   const { toast } = useToast();
   const router = useRouter();
+  const dispatch = useDispatch();
 
   // const formSignup = useForm<signupCustomerInput>();
 
@@ -69,7 +72,6 @@ export default function LoginSignup() {
       formSignup.setValue('password', '');
       formSignup.setValue('firstname', '');
       formSignup.setValue('lastname', '');
-
     },
     onError: (err) => {
       console.log(err.message, 'err');
@@ -82,11 +84,13 @@ export default function LoginSignup() {
 
   // login customer
   const loginCustomer = trpc.customer.loginCustomer.useMutation({
-    onSuccess: (res: any) => {
+    onSuccess: (response) => {
       toast({
         variant: 'success',
         title: 'User Login Successfully ',
       });
+      dispatch(userAuth(response?.user));
+
       router.push('/');
       formLogin.setValue('user', '');
       formLogin.setValue('password', '');

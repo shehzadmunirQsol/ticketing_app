@@ -1,6 +1,10 @@
 import { router, publicProcedure } from '../trpc';
 import { TRPCError } from '@trpc/server';
-import { addToCartSchema, getCartSchema } from '~/schema/cart';
+import {
+  addToCartSchema,
+  getCartSchema,
+  removeCartItemSchema,
+} from '~/schema/cart';
 import { prisma } from '~/server/prisma';
 
 export const cartRouter = router({
@@ -9,6 +13,13 @@ export const cartRouter = router({
       const cart = await prisma.cart.findFirst({
         where: { customer_id: input.customer_id, is_deleted: false },
         include: {
+          CouponApply: {
+            where: { is_deleted: false },
+            select: {
+              discount: true,
+              is_percentage: true,
+            },
+          },
           CartItems: {
             include: {
               Event: {
@@ -95,6 +106,20 @@ export const cartRouter = router({
         };
 
         return { message: 'Cart added successfully!', data: cartResponse };
+      } catch (error: any) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: error?.message,
+        });
+      }
+    }),
+  removeFromCart: publicProcedure
+    .input(removeCartItemSchema)
+    .mutation(async ({ input }) => {
+      try {
+        await prisma.cartItem.delete({ where: { id: input.cart_item_id } });
+
+        return { message: 'Item removed' };
       } catch (error: any) {
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',

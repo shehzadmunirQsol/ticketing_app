@@ -3,6 +3,9 @@ import { z } from 'zod';
 export const getCartSchema = z.object({
   customer_id: z.number(),
 });
+export const removeCartItemSchema = z.object({
+  cart_item_id: z.number(),
+});
 
 export const addToCartSchema = z.object({
   cart_id: z.number().default(0),

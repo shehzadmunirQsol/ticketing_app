@@ -1,10 +1,7 @@
-'use client';
-import React, { useEffect, useState } from 'react';
 import { Button } from '@/ui/button';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -29,80 +26,58 @@ import Glow from '~/components/common/glow';
 import { checkoutSchemaInput, createCheckoutSchema } from '~/schema/checkout';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CouponModal } from './Coupon';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '~/store/store';
 
-const Checkout = () => {
+function Checkout() {
+  const { cart, totalAmount } = useSelector((state: RootState) => state.cart);
+
   // Handle Coupon Dailog
-  const [isModal, setIsModal] = React.useState(false);
+  const [isModal, setIsModal] = useState(false);
 
   // 1. Define your form.
   const form = useForm<checkoutSchemaInput>({
     resolver: zodResolver(createCheckoutSchema),
+    defaultValues: {
+      country: countries[0]?.country,
+      state: states[0]?.state,
+      code: countryCode[0]?.code,
+    },
   });
 
   const onSubmitCheckout = async (values: any) => {
     console.log(values, 'loginResult');
   };
 
-  const data = [
-    {
-      country: 'United Arab Emirates',
-    },
-  ];
-  const States = [
-    {
-      state: 'United Arab Emirates',
-    },
-  ];
-
-  const product = [
-    {
-      name: 'Win This 800BHP Ferrari E63s Night Edition + AED 1,000 Cash!',
-      price: 120,
-    },
-    {
-      name: 'Win This 800BHP Ferrari E63s Night Edition + AED 1,000 Cash!',
-      price: 120,
-    },
-    {
-      name: 'Win This 800BHP Ferrari E63s Night Edition + AED 1,000 Cash!',
-      price: 120,
-    },
-    {
-      name: 'Win This 800BHP Ferrari E63s Night Edition + AED 1,000 Cash!',
-      price: 120,
-    },
-  ];
-
-  const countryCode = [
-    {
-      code: '+971',
-    },
-  ];
+  const discountAmount = cart.isPercentage
+    ? totalAmount * (cart.discount / 100)
+    : cart.discount;
 
   return (
-    <div className="my-40 px-4 md:px-14 lg:px-16">
+    <div className="relative mt-20 bg-background py-6 px-4 space-y-10 md:py-16 md:px-14 md:space-y-14">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmitCheckout)}
-          className="justify-center items-center  py-4 space-y-4"
+          className="justify-center items-center  py-4"
         >
-          <div>
-            <p className="lg:text-5xl md:text-4xl text-2xl font-black uppercase mb-10">
-              Checkout
-            </p>
-          </div>
+          <h2 className="lg:text-5xl md:text-4xl text-2xl font-black uppercase mb-6">
+            Checkout
+          </h2>
           <div className="flex flex-col gap-8 lg:flex-row md:flex-row justify-between w-full ">
-            <div className="flex-1">
-              <p className="text-xl font-black">Billing Details</p>
-              <div>
+            <div className="flex-[0.55] space-y-6">
+              <h3 className="text-lg md:text-xl lg:text-2xl font-bold ">
+                Billing Details
+              </h3>
+              <div className="space-y-6">
                 <div className="flex flex-col lg:flex-row md:flex-row gap-2  w-full justify-between">
                   <FormField
                     control={form.control}
-                    name="firstname"
+                    name="first_name"
                     render={({ field }) => (
-                      <FormItem className=" w-full mb-6">
-                        <FormLabel className="text-xs font-thin text-grayColor">
-                          Name
+                      <FormItem className=" w-full ">
+                        <FormLabel className="text-sm text-cardGray ">
+                          Name <sup className="text-red-500">*</sup>
                         </FormLabel>
                         <FormControl className="rounded-md bg-inputColor">
                           <Input
@@ -117,11 +92,11 @@ const Checkout = () => {
                   />
                   <FormField
                     control={form.control}
-                    name="lastname"
+                    name="last_name"
                     render={({ field }) => (
-                      <FormItem className=" w-full mb-6">
-                        <FormLabel className="text-xs font-thin text-grayColor">
-                          Last Name
+                      <FormItem className=" w-full ">
+                        <FormLabel className="text-sm text-cardGray">
+                          Last Name <sup className="text-red-500">*</sup>
                         </FormLabel>
                         <FormControl className="rounded-md bg-inputColor">
                           <Input
@@ -135,50 +110,55 @@ const Checkout = () => {
                     )}
                   />
                 </div>
-                <FormField
-                  control={form.control}
-                  name="street"
-                  render={({ field }) => (
-                    <FormItem className="w-full mb-6">
-                      <FormLabel className="text-xs font-thin text-grayColor">
-                        Street Address
-                      </FormLabel>
-                      <FormControl className="rounded-md bg-inputColor">
-                        <Input
-                          type="text"
-                          placeholder="House number and street name"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="apartment"
-                  render={({ field }) => (
-                    <FormItem className="w-full mb-6">
-                      <FormControl className="rounded-md bg-inputColor">
-                        <Input
-                          type="text"
-                          placeholder="Apartment, suit, unit etc. (Optional) "
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+
+                <div className="flex flex-col gap-y-3">
+                  <FormField
+                    control={form.control}
+                    name="street_address"
+                    render={({ field }) => (
+                      <FormItem className="w-full ">
+                        <FormLabel className="text-sm text-cardGray">
+                          Street Address <sup className="text-red-500">*</sup>
+                        </FormLabel>
+                        <FormControl className="rounded-md bg-inputColor">
+                          <Input
+                            type="text"
+                            placeholder="House number and street name"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="apartment"
+                    render={({ field }) => (
+                      <FormItem className="w-full ">
+                        <FormControl className="rounded-md bg-inputColor">
+                          <Input
+                            type="text"
+                            placeholder="Apartment, suit, unit etc. (Optional) "
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
                 <div className="flex flex-col lg:flex-row md:flex-row gap-2  w-full justify-between">
-                  <div className="w-full mb-6">
+                  <div className="w-full ">
                     <FormField
                       control={form.control}
                       name="country"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-xs font-thin text-grayColor">
-                            Country/ Region
+                          <FormLabel className="text-sm text-cardGray">
+                            Country/ Region{' '}
+                            <sup className="text-red-500">*</sup>
                           </FormLabel>
                           <Select
                             onValueChange={field.onChange}
@@ -192,7 +172,7 @@ const Checkout = () => {
                             </FormControl>
                             <SelectContent>
                               <SelectGroup>
-                                {data?.map((item, i) => (
+                                {countries?.map((item, i) => (
                                   <SelectItem key={i} value={item.country}>
                                     {item?.country?.toUpperCase()}
                                   </SelectItem>
@@ -206,14 +186,14 @@ const Checkout = () => {
                       )}
                     />
                   </div>
-                  <div className="w-full mb-6">
+                  <div className="w-full ">
                     <FormField
                       control={form.control}
                       name="state"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-xs font-thin text-grayColor">
-                            State
+                          <FormLabel className="text-sm text-cardGray">
+                            State <sup className="text-red-500">*</sup>
                           </FormLabel>
                           <Select
                             onValueChange={field.onChange}
@@ -227,7 +207,7 @@ const Checkout = () => {
                             </FormControl>
                             <SelectContent>
                               <SelectGroup>
-                                {States?.map((item, i) => (
+                                {states?.map((item, i) => (
                                   <SelectItem key={i} value={item.state}>
                                     {item?.state?.toUpperCase()}
                                   </SelectItem>
@@ -247,9 +227,9 @@ const Checkout = () => {
                     control={form.control}
                     name="city"
                     render={({ field }) => (
-                      <FormItem className=" w-full mb-6">
-                        <FormLabel className="text-xs font-thin text-grayColor">
-                          Town/City
+                      <FormItem className=" w-full ">
+                        <FormLabel className="text-sm text-cardGray">
+                          Town/City <sup className="text-red-500">*</sup>
                         </FormLabel>
                         <FormControl className="rounded-md bg-inputColor">
                           <Input
@@ -264,11 +244,11 @@ const Checkout = () => {
                   />
                   <FormField
                     control={form.control}
-                    name="postcode"
+                    name="postal_code"
                     render={({ field }) => (
-                      <FormItem className=" w-full mb-6">
-                        <FormLabel className="text-xs font-thin text-grayColor">
-                          Postcode
+                      <FormItem className=" w-full ">
+                        <FormLabel className="text-sm text-cardGray">
+                          Postcode <sup className="text-red-500">*</sup>
                         </FormLabel>
                         <FormControl className="rounded-md bg-inputColor">
                           <Input
@@ -286,13 +266,13 @@ const Checkout = () => {
                   control={form.control}
                   name="email"
                   render={({ field }) => (
-                    <FormItem className="mb-6 w-full">
-                      <FormLabel className="text-xs font-thin text-grayColor">
-                        Email
+                    <FormItem className=" w-full">
+                      <FormLabel className="text-sm text-cardGray">
+                        Email <sup className="text-red-500">*</sup>
                       </FormLabel>
                       <FormControl className="rounded-md bg-inputColor">
                         <Input
-                          type="text"
+                          type="email"
                           placeholder="Enter your email address"
                           {...field}
                         />
@@ -304,9 +284,7 @@ const Checkout = () => {
 
                 <div className="flex flex-col items-center   md:flex-row gap-2  w-full justify-between">
                   <div className=" w-full ">
-                    <p className="text-xs font-thin text-grayColor  mb-3 ">
-                      Phone Number
-                    </p>
+                    <p className="text-sm text-cardGray  mb-3 ">Phone Number</p>
                     <div className="flex flex-row gap-2 ">
                       <FormField
                         control={form.control}
@@ -343,11 +321,12 @@ const Checkout = () => {
                         name="number"
                         render={({ field }) => (
                           <FormItem className=" w-full">
-                            {/* <FormLabel className="text-xs font-thin text-grayColor">
-                            Email
+                            {/* <FormLabel className="text-sm text-cardGray">
+                            Email  <sup className="text-red-500">*</sup>
                           </FormLabel> */}
                             <FormControl className="rounded-md bg-inputColor">
                               <Input
+                                maxLength={9}
                                 type="text"
                                 placeholder="Enter your phone number"
                                 {...field}
@@ -362,11 +341,11 @@ const Checkout = () => {
                   <div className="flex-1 w-full ">
                     <FormField
                       control={form.control}
-                      name="dateofbirth"
+                      name="dob"
                       render={({ field }) => (
                         <FormItem className="mb-2 w-full">
-                          <FormLabel className="text-xs font-thin text-grayColor">
-                            Date of Birth
+                          <FormLabel className="text-sm text-cardGray">
+                            Date of Birth <sup className="text-red-500">*</sup>
                           </FormLabel>
                           <FormControl className="rounded-md bg-inputColor">
                             <Input
@@ -384,56 +363,83 @@ const Checkout = () => {
               </div>
             </div>
             <div className="border-r border-lightColorBorder  mx-4"></div>
-            <div className="flex-1 ">
-              <div className="flex flex-row justify-between items-center mb-6">
-                <p className="lg:text-2xl md:lg:text-xlfont-bold">
+            <div className="flex-[0.45] space-y-12">
+              <div className="flex flex-row justify-between items-center">
+                <h3 className="text-lg md:text-xl lg:text-2xl font-bold">
                   Order Summary
-                </p>
-                <p className="text-sm lg:text-base cursor-pointer" onClick={() => setIsModal(true)}>Have a coupon code?</p>
+                </h3>
+                {!cart.isDiscount ? (
+                  <p
+                    className="text-white/40 text-sm lg:text-base cursor-pointer"
+                    onClick={() => setIsModal(true)}
+                  >
+                    Have a coupon code?
+                  </p>
+                ) : null}
               </div>
-
-              <div className=" h-[300px] overflow-x-auto">
-                {product.map((item, i) => {
-                  return (
-                    <div
-                      className="flex flex-row justify-between mb-10 "
-                      key={i}
-                    >
-                      <p className="lg:text-2xl md:lg:text-xl   w-[60%]">
-                        {item.name}
-                      </p>
-                      <p className="font-black text-lg lg:text-xl ">{`AED ${item.price.toFixed(
-                        2,
-                      )}`}</p>
-                    </div>
-                  );
-                })}
-              </div>
-
-              <div className="flex flex-row justify-between mb-10">
-                <p className="lg:text-2xl md:lg:text-xl font-black">Total:</p>
-                <p className="font-black text-lg lg:text-xl text-primary">
-                  AED 120.00
-                </p>
-              </div>
-              <p className="text-lightTextColor mb-6 lg:text-base md:text-sm text-xs">
-                Your personal data will be used to process your order, support
-                your experience throughout this website, and for other purposes
-                described in our{' '}
-                <span className="text-white"> privacy policy</span>.
-              </p>
-              <div className="flex flex-row gap-2 justify-start w-full  lg:w-[60%] md:w-[60%] items-center mb-20">
-                <div>
-                  <Input type="checkbox" className="accent-white text-2xl " />
+              <div className="space-y-8">
+                <div className=" max-h-[300px] overflow-x-auto space-y-8">
+                  {cart?.cartItems.map((item) => {
+                    return (
+                      <div
+                        className="flex flex-row justify-between "
+                        key={item.id}
+                      >
+                        <p className="lg:text-2xl md:lg:text-xl   w-[60%]">
+                          {item?.Event?.EventDescription[0]?.name}
+                        </p>
+                        <p className="font-black text-lg lg:text-xl ">
+                          AED{' '}
+                          {(item?.Event?.price * item?.quantity)?.toFixed(2)}
+                        </p>
+                      </div>
+                    );
+                  })}
                 </div>
-                <p className="text-lightTextColor text-sm">
-                  I’m 18 years old or over and i have read and agree to the
-                  website
-                  <span className="text-white"> Terms & Conditions</span>.
+                {cart.isDiscount ? (
+                  <div className="space-y-6">
+                    <div className="h-[1px] bg-white/40" />
+
+                    <div className="flex items-center justify-between z-10 ">
+                      <p className="text-white/40  text-lg">Sub Total:</p>
+                      <p className="text-xl">AED {totalAmount?.toFixed(2)}</p>
+                    </div>
+                    <div className="flex items-center justify-between z-10 ">
+                      <p className="text-white/40  text-lg">Discount:</p>
+                      <p className="text-xl">
+                        {' '}
+                        - AED {discountAmount.toFixed(2)}
+                      </p>
+                    </div>
+                  </div>
+                ) : null}
+
+                <div className="flex flex-row justify-between py-6 border-t border-b border-white/40">
+                  <p className="lg:text-2xl md:lg:text-xl font-black">Total:</p>
+                  <p className="font-black text-lg lg:text-xl text-primary">
+                    AED {discountAmount?.toFixed(2)}
+                  </p>
+                </div>
+                <p className="lg:text-base md:text-sm text-sm text-cardGray">
+                  Your personal data will be used to process your order, support
+                  your experience throughout this website, and for other
+                  purposes described in our{' '}
+                  <span className="text-white"> privacy policy</span>.
                 </p>
+                <div className="flex flex-row gap-2 justify-start w-full  lg:w-[60%] md:w-[60%] items-center">
+                  <div>
+                    <Input type="checkbox" className="accent-white text-2xl " />
+                  </div>
+                  <p className="text-sm text-cardGray">
+                    I’m 18 years old or over and i have read and agree to the
+                    website
+                    <span className="text-white"> Terms & Conditions</span>.
+                  </p>
+                </div>
               </div>
+
               <div className="flex flex-row gap-4 justify-center ">
-                <p className="text-sm">We accept</p>
+                <p className="text-sm text-cardGray">We accept</p>
                 <Image
                   className="w-64 object-contain  "
                   src={Group17}
@@ -456,6 +462,23 @@ const Checkout = () => {
       <CouponModal isModal={isModal} setIsModal={setIsModal} />
     </div>
   );
-};
+}
 
 export default Checkout;
+
+const countries = [
+  {
+    country: 'United Arab Emirates',
+  },
+];
+const states = [
+  {
+    state: 'United Arab Emirates',
+  },
+];
+
+const countryCode = [
+  {
+    code: '+971',
+  },
+];

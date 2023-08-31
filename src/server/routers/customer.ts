@@ -27,7 +27,7 @@ export const customerRouter = router({
     if (token) {
       userData = await verifyJWT(token);
     } else {
-      return null;
+      return { data: null };
     }
 
     console.log({ userData }, 'userData');
@@ -60,10 +60,12 @@ export const customerRouter = router({
       return customer;
     }),
 
-    getCustomers: publicProcedure.input(getCustomerSchema).query(async ({ input }) => {
+  getCustomers: publicProcedure
+    .input(getCustomerSchema)
+    .query(async ({ input }) => {
       try {
         const where: any = { is_deleted: false };
-  
+
         if (input?.startDate) {
           const startDate = new Date(input?.startDate);
           where.created_at = { gte: startDate };
@@ -72,30 +74,30 @@ export const customerRouter = router({
           const endDate = new Date(input?.endDate);
           where.created_at = { lte: endDate };
         }
-  
+
         const totalCategoryPromise = prisma.customer.count({
           where: where,
         });
-  
+
         const categoryPromise = prisma.customer.findMany({
           orderBy: { created_at: 'asc' },
           skip: input.first * input.rows,
           take: input.rows,
           where: where,
         });
-  
+
         const [totalCustomers, customer] = await Promise.all([
           totalCategoryPromise,
           categoryPromise,
         ]);
-  
+
         if (!customer?.length) {
           throw new TRPCError({
             code: 'NOT_FOUND',
             message: 'Categories not found',
           });
         }
-  
+
         return {
           message: 'categories found',
           count: totalCustomers,
@@ -120,7 +122,6 @@ export const customerRouter = router({
             message: 'Customer not registered!',
           });
         } else {
-          
           const isEmailExist = await prisma.customer?.findFirst({
             where: {
               email: input.email,

@@ -16,25 +16,32 @@ export const checkoutSchema = z.object({
 });
 
 export const createCheckoutSchema = z.object({
-    firstname: z
-      .string()
-      .min(2, {
-        message: 'Name must be at least 2 characters',
-      })
-      .max(24, {
-        message: 'Name must not exceed 24 characters',
-      }),
-      lastname: z.string().optional(),
-      street: z.string(),
-      apartment: z.string().optional(),
-      country: z.string(),
-      state: z.string(),
-      city: z.string(),
-      postcode: z.string(),
-      email: z.string().email(),
-      code: z.string(),
-      number: z.string(),
-      dateofbirth: z.string(),
+  first_name: z
+    .string()
+    .min(2, {
+      message: 'Name must be at least 2 characters',
+    })
+    .max(24, {
+      message: 'Name must not exceed 24 characters',
+    }),
+  last_name: z
+    .string()
+    .min(2, {
+      message: 'Name must be at least 2 characters',
+    })
+    .max(24, {
+      message: 'Name must not exceed 24 characters',
+    }),
+  street_address: z.string(),
+  apartment: z.string().optional(),
+  country: z.string(),
+  state: z.string(),
+  city: z.string(),
+  postal_code: z.string(),
+  email: z.string().email(),
+  code: z.string(),
+  number: z.string(),
+  dob: z.string(),
 });
 
 export type checkoutSchemaInput = z.infer<typeof createCheckoutSchema>;
