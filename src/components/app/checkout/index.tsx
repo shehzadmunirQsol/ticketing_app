@@ -25,9 +25,13 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
 import { CheckoutDialog } from '~/components/common/modal/checkout';
+import { CreateCheckoutSchema, createCheckoutSchema } from '~/schema/order';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { trpc } from '~/utils/trpc';
 
 function Checkout() {
   const { cart, totalAmount } = useSelector((state: RootState) => state.cart);
+  const { user } = useSelector((state: RootState) => state.auth);
 
   // Handle Coupon Dailog
   const [isModal, setIsModal] = React.useState(false);
@@ -36,18 +40,49 @@ function Checkout() {
   const [type, setType] = React.useState('');
   const [isCardModal, setIsCardModal] = React.useState(false);
 
+  const orderCheckout = trpc.order.checkout.useMutation();
+
   // 1. Define your form.
-  const form = useForm<any>({
-    // resolver: zodResolver(createCheckoutSchema),
+  const form = useForm<CreateCheckoutSchema>({
+    resolver: zodResolver(createCheckoutSchema),
+    defaultValues: {
+      cart_id: cart.id ?? 0,
+      customer_id: cart.customer_id ?? 0,
+      first_name: user?.first_name,
+      last_name: user?.last_name,
+      apartment: user?.apartment,
+      street_address: user?.street_address,
+      city: user?.city,
+      code: user?.code,
+      country: user?.country,
+      dob: user?.dob,
+      email: user?.email,
+      phone_number: user?.phone_number,
+      postal_code: user?.postal_code,
+      state: user?.state,
+    },
   });
 
   const onSubmitCheckout = async (values: any) => {
-    setIsCardModal(true);
+    console.log({ values });
+    try {
+      // setIsCardModal(true);
+      await orderCheckout.mutateAsync(values);
+
+      console.log('order success');
+      // setIsCardModal(false);
+    } catch (error: any) {
+      // setIsCardModal(false);
+
+      console.log(error);
+    }
   };
 
   const discountAmount = cart.isPercentage
     ? totalAmount * (cart.discount / 100)
     : cart.discount;
+
+  console.log(form.formState.errors, 'form.getValues()');
 
   return (
     <div className="relative mt-20 bg-background py-6 px-4 space-y-10 md:py-16 md:px-14 md:space-y-14">
@@ -322,7 +357,7 @@ function Checkout() {
                       />
                       <FormField
                         control={form.control}
-                        name="number"
+                        name="phone_number"
                         render={({ field }) => (
                           <FormItem className=" w-full">
                             {/* <FormLabel className="text-sm text-cardGray">
