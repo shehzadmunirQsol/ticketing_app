@@ -26,10 +26,13 @@ import { useToast } from '~/components/ui/use-toast';
 import Link from 'next/link';
 import { ForgotPasswordDailog } from './ForgotPassword';
 import CarImage from '../../../public/assets/CarLogin.svg';
+import { userAuth } from '~/store/reducers/auth';
+import { useDispatch } from 'react-redux';
 
 export default function LoginSignup() {
   const { toast } = useToast();
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const formSignup = useForm<signupCustomerInput>();
   const formLogin = useForm<loginCustomerInput>();
@@ -65,11 +68,13 @@ export default function LoginSignup() {
 
   // login customer
   const loginCustomer = trpc.customer.loginCustomer.useMutation({
-    onSuccess: (res: any) => {
+    onSuccess: (response) => {
       toast({
         variant: 'success',
         title: 'User Login Successfully ',
       });
+      dispatch(userAuth(response?.user));
+
       router.push('/');
       formLogin.setValue('user', '');
       formLogin.setValue('password', '');
@@ -101,7 +106,11 @@ export default function LoginSignup() {
     <section className="body-font  ">
       <div className="px-5 pt-16 pb-5 lg:pb-0 md:pb-0 lg:py-24 md:py-24 mx-auto flex flex-col-reverse lg:flex-row md:flex-row gap-14 mt-6 ">
         <div className="lg:w-2/3 md:w-2/3 w-full h-full mb-5 lg:mb-0 rounded-lg hidden  lg:block  ">
-          <SideImage image={CarImage} text={"Unlock Your Journey Login or Register for"} text2={"Exclusive Access"} />
+          <SideImage
+            image={CarImage}
+            text={'Unlock Your Journey Login or Register for'}
+            text2={'Exclusive Access'}
+          />
         </div>
         <Tabs
           defaultValue={defaultValue === 'login' ? 'login' : 'signup'}
