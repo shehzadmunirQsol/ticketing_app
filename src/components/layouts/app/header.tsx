@@ -84,7 +84,7 @@ function Header() {
             ? '!bg-background-footer  duration-500 shadow-xl'
             : '!bg-transparent  duration-500'
           : '!bg-background-footer'
-      }   transform ease-in-out justify-between py-8 px-14 `}
+      }   transform ease-in-out justify-between py-8 px-4 md:px-14 `}
     >
       <Link href="/">
         <Image
@@ -157,10 +157,10 @@ export function DropdownMenuDemo() {
             <Link href="/cash">Cash</Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <span>Winings</span>
+          <Link href="/winners">Winners</Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <span>About Us</span>
+            <span>About Us</span>   
           </DropdownMenuItem>
           <DropdownMenuItem>
             <span>FAQ</span>

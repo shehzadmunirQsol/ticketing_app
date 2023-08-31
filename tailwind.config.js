@@ -30,6 +30,9 @@ module.exports = {
         backgroundEntires: 'hsl(var(--background-entires))',
         primaryLight: 'hsl(var(--primary-light))',
         grayColor: 'hsl(var(--texts-gray))',
+        inputColor: 'hsl(var(--input-card))',
+        lightColorBorder: 'hsl(var(--light-color))',
+        lightTextColor: 'hsl(var(--light-text-color))',
         'background-footer': 'hsl(var(--background-footer))',
         foreground: 'hsl(var(--foreground))',
         primary: {
