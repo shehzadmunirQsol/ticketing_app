@@ -86,11 +86,15 @@ export const resendOtpCustomerSchema = z.object({
 
 
 export const addCustomerAddress = z.object({
+  customer_id: z.number().optional(),
+  name: z.string().optional(),
+  street: z.string().optional(),
+  city: z.string().optional(),
+  country: z.string().optional(),
+  number: z.string().optional(),
+  po_box: z.number().optional(),
+})
+
+export const getCustomerAddress = z.object({
   customer_id: z.number(),
-  name:z.string(),
-  street:z.string(),
-  city:z.string(),
-  country:z.string(),
-  number:z.string(),
-  po_box:z.number(),
 })
