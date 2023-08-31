@@ -172,8 +172,11 @@ function Checkout() {
                             </FormControl>
                             <SelectContent>
                               <SelectGroup>
-                                {countries?.map((item, i) => (
-                                  <SelectItem key={i} value={item.country}>
+                                {countries?.map((item) => (
+                                  <SelectItem
+                                    key={item.country}
+                                    value={item.country}
+                                  >
                                     {item?.country?.toUpperCase()}
                                   </SelectItem>
                                 ))}
@@ -207,8 +210,11 @@ function Checkout() {
                             </FormControl>
                             <SelectContent>
                               <SelectGroup>
-                                {states?.map((item, i) => (
-                                  <SelectItem key={i} value={item.state}>
+                                {states?.map((item) => (
+                                  <SelectItem
+                                    key={item.state}
+                                    value={item.state}
+                                  >
                                     {item?.state?.toUpperCase()}
                                   </SelectItem>
                                 ))}
@@ -303,8 +309,11 @@ function Checkout() {
                               </FormControl>
                               <SelectContent>
                                 <SelectGroup>
-                                  {countryCode?.map((item, i) => (
-                                    <SelectItem key={i} value={item.code}>
+                                  {countryCode?.map((item) => (
+                                    <SelectItem
+                                      key={item.code}
+                                      value={item.code}
+                                    >
                                       {item?.code}
                                     </SelectItem>
                                   ))}
@@ -342,7 +351,7 @@ function Checkout() {
                     <FormField
                       control={form.control}
                       name="dob"
-                      render={({ field }) => (
+                      render={() => (
                         <FormItem className="mb-2 w-full">
                           <FormLabel className="text-sm text-cardGray">
                             Date of Birth <sup className="text-red-500">*</sup>
@@ -351,7 +360,7 @@ function Checkout() {
                             <Input
                               type="date"
                               placeholder="Enter your email address"
-                              {...field}
+                              {...form.register('dob', { valueAsDate: true })}
                             />
                           </FormControl>
                           <FormMessage />
@@ -363,7 +372,7 @@ function Checkout() {
               </div>
             </div>
             <div className="border-r border-lightColorBorder  mx-4"></div>
-            <div className="flex-[0.45] space-y-12">
+            <div className=" flex-[0.45] space-y-12 z-10">
               <div className="flex flex-row justify-between items-center">
                 <h3 className="text-lg md:text-xl lg:text-2xl font-bold">
                   Order Summary
@@ -378,7 +387,7 @@ function Checkout() {
                 ) : null}
               </div>
               <div className="space-y-8">
-                <div className=" max-h-[300px] overflow-x-auto space-y-8">
+                <div className=" max-h-60 overflow-x-auto space-y-8">
                   {cart?.cartItems.map((item) => {
                     return (
                       <div
@@ -417,7 +426,7 @@ function Checkout() {
                 <div className="flex flex-row justify-between py-6 border-t border-b border-white/40">
                   <p className="lg:text-2xl md:lg:text-xl font-black">Total:</p>
                   <p className="font-black text-lg lg:text-xl text-primary">
-                    AED {discountAmount?.toFixed(2)}
+                    AED {(totalAmount - discountAmount)?.toFixed(2)}
                   </p>
                 </div>
                 <p className="lg:text-base md:text-sm text-sm text-cardGray">
@@ -459,7 +468,12 @@ function Checkout() {
           </div>
         </form>
       </Form>
-      <CouponModal isModal={isModal} setIsModal={setIsModal} />
+      <CouponModal
+        isModal={isModal}
+        setIsModal={setIsModal}
+        customer_id={cart?.customer_id ?? 0}
+        cart_id={cart?.id ?? 0}
+      />
     </div>
   );
 }

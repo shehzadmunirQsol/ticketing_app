@@ -273,18 +273,18 @@ model EventFAQ {
 }
 
 model Customer {
-  id          Int       @id @default(autoincrement())
-  email       String    @unique
-  username    String    @unique
-  password    String
-  is_approved Boolean   @default(false)
-  otp         String    @default("")
-  first_name  String
-  profile_pic String?
-  last_name   String
-  dob         DateTime?
-  is_deleted  Boolean     @default(false)
-  is_verified  Boolean    @default(false)
+  id                Int                 @id @default(autoincrement())
+  email             String              @unique
+  username          String              @unique
+  password          String
+  is_approved       Boolean             @default(false)
+  otp               String              @default("")
+  first_name        String
+  profile_pic       String?
+  last_name         String
+  dob               DateTime?
+  is_deleted        Boolean             @default(false)
+  is_verified       Boolean             @default(false)
   created_at        DateTime            @default(now()) @db.Timestamp(6)
   updated_at        DateTime            @default(now()) @db.Timestamp(6)
   Order             Order[]
@@ -355,6 +355,8 @@ model CartItem {
 
 model Order {
   id               Int        @id @default(autoincrement())
+  sub_total_amount Int
+  discount_amount  Int
   total_amount     Int
   status           OrderEnums @default(pending)
   first_name       String
@@ -363,8 +365,8 @@ model Order {
   last_name        String
   email            String
   dob              DateTime
-  street_address_1 String
-  street_address_2 String?
+  street_address   String
+  apartment        String?
   country          String
   state            String
   city             String
