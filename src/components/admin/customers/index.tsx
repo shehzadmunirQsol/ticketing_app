@@ -1,6 +1,4 @@
 import React from 'react';
-import { Button } from '../../ui/button';
-import Link from 'next/link';
 import CustomersDataTable from '~/components/common/table/customers';
 
 function Customers() {

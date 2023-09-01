@@ -468,14 +468,12 @@ export const customerRouter = router({
             ...input,
           }
           console.log({ payload }, "payload bk")
-          const customer: any = await prisma.customerAddress.create(
-            { data: payload }
-          )
+          const customer_address = await prisma.customerAddress?.create({
+            data: payload,
+          })
 
+          return { customer_address: customer_address, status: true };
         }
-
-
-        return { user: user, status: true };
       } catch (error: any) {
         console.log({ error });
         throw new TRPCError({

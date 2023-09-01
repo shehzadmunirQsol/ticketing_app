@@ -210,7 +210,6 @@ const AddressesView = () => {
                     {...register('phone_number')}
                     placeholder="Mobile"
                     type="text"
-                    prefix="05"
                     maxLength={9}
                     required
                   />
