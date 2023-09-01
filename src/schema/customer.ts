@@ -145,13 +145,13 @@ export type passwordChangeSchemaInput = z.infer<
 export const deleteMyAccountCustomerSchema = z.object({
   email: z.string().email().optional(),
   message: z.string().optional(),
-  reasons: z.array(z.object({})).optional(),
+  reasons: z.array(z.string()).optional(),
 });
 
 export const deleteMyAccountCustomerSchemaInput = z.object({
   email: z.string().email().optional(),
   message: z.string().optional(),
-  reasons: z.array(z.object({})).optional(),
+  reasons: z.array(z.string()).optional(),
 });
 
 export type deleteMyAccountCustomerSchemaInput = z.infer<

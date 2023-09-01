@@ -13,7 +13,6 @@ import {
   accountsDetailSchema,
   passwordChangeSchema,
   deleteMyAccountCustomerSchema,
-
 } from '~/schema/customer';
 import { hashPass, isSamePass } from '~/utils/hash';
 import { signJWT, verifyJWT } from '~/utils/jwt';
@@ -521,18 +520,23 @@ export const customerRouter = router({
     .input(deleteMyAccountCustomerSchema)
     .mutation(async ({ ctx, input }) => {
       try {
-        console.log(input, 'input');
+        console.log(input, 'HSJGHSGHSJGSH');
         const user: any = await prisma.customer.findFirst({
           where: { email: input.email },
         });
 
-        const payload:any = {...input}
-        if(payload.email) delete input?.email
+        const reason = JSON.stringify(input.reasons);
+        const payload: any = {
+          customer_id: user.id,
+          is_deleted: true,
+          reason: reason,
+          comment: input.message,
+        };
 
-        const customer = await prisma.customer?.create({
+        const customer = await prisma.deleteRequest.create({
           data: payload,
         });
-        console.log(customer),"customer"
+        console.log(customer), 'customer';
         return { user: user, status: true };
       } catch (error: any) {
         console.log({ error });

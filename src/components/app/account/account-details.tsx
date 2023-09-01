@@ -323,38 +323,43 @@ function PasswordChange({ email }: any) {
 function DeleteAccount({ email }: any) {
   const { toast } = useToast();
 
-
-
   // 1. Define your form.
   const form = useForm<deleteMyAccountCustomerSchemaInput>({
     resolver: zodResolver(deleteMyAccountCustomerSchema),
   });
   const [reason, setReason] = useState<any>([]);
 
-
   const deleteAccountRequestCustomer =
-  trpc.customer.deleteMyAccountCustomer.useMutation({
-    onSuccess: async (res: any) => {
-      console.log(res, 'updateCustomerAccountDetail res');
-      toast({
-        variant: 'success',
-        title: 'Your Account Info Update Successfully ',
-      });
-    },
-    onError: (err) => {
-      console.log(err.message, 'err');
-    },
-  });
+    trpc.customer.deleteMyAccountCustomer.useMutation({
+      onSuccess: async (res: any) => {
+        console.log(res, 'updateCustomerAccountDetail res');
+        toast({
+          variant: 'success',
+          title: 'Your Account is Deleted Successfully ',
+        });
+      },
+      onError: (err) => {
+        console.log(err.message, 'err');
+      },
+    });
 
   // handle account detail
   async function onSubmitDeleteAccountRequest(values: any) {
-    const payload: any = {
-      email: email,
-      ...values,
-    };
-    const resp = await deleteAccountRequestCustomer.mutateAsync(payload);
+    try {
+      const payload: any = {
+        email: email,
+        reasons: reason,
+        ...values,
+      };
+      const resp = await deleteAccountRequestCustomer.mutateAsync(payload);
 
-    console.log(values, 'values account');
+      console.log(resp, 'values account');
+    } catch (e: any) {
+      toast({
+        variant: 'destructive',
+        title: e.message,
+      });
+    }
   }
 
   console.log(reason, 'reason');
