@@ -10,6 +10,9 @@ import {
   getCustomerSchema,
   updateCustomerSchema,
   resendOtpCustomerSchema,
+  accountsDetailSchema,
+  passwordChangeSchema,
+  deleteMyAccountCustomerSchema,
 } from '~/schema/customer';
 import { hashPass, isSamePass } from '~/utils/hash';
 import { signJWT, verifyJWT } from '~/utils/jwt';
@@ -426,6 +429,114 @@ export const customerRouter = router({
           console.log(mailResponse, 'mailResponse');
         }
 
+        return { user: user, status: true };
+      } catch (error: any) {
+        console.log({ error });
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: error.message,
+        });
+      }
+    }),
+
+  updateCustomerAccountDetail: publicProcedure
+    .input(accountsDetailSchema)
+    .mutation(async ({ ctx, input }) => {
+      try {
+        console.log(input, 'input');
+        const user: any = await prisma.customer.findFirst({
+          where: { email: input.email },
+        });
+        const payload = { ...input };
+        if (!payload?.dob) delete payload?.dob;
+
+        const updateResponse = await prisma.customer?.update({
+          where: {
+            id: user.id,
+          },
+          data: {
+            ...payload,
+          },
+        });
+
+        return { user: user, status: true };
+      } catch (error: any) {
+        console.log({ error });
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: error.message,
+        });
+      }
+    }),
+
+  updateCustomerPassword: publicProcedure
+    .input(passwordChangeSchema)
+    .mutation(async ({ ctx, input }) => {
+      try {
+        console.log(input, 'input');
+        const user: any = await prisma.customer.findFirst({
+          where: { email: input.email },
+        });
+
+        const checkPass = await isSamePass(
+          input.currentPassword,
+          user?.password,
+        );
+        if (!checkPass) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Old Password is incorrect',
+          });
+        }
+
+        if (input.newPassword !== input.confirmPassword) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Password are not Matching',
+          });
+        }
+
+        const hashPassword = await hashPass(input.newPassword);
+        console.log('HASH Pass : ', hashPassword);
+        const updatePasswordResult = await prisma.customer?.update({
+          where: {
+            id: user.id,
+          },
+          data: {
+            password: hashPassword,
+          },
+        });
+        console.log(updatePasswordResult, 'userCode');
+        return { user: user, status: true };
+      } catch (error: any) {
+        console.log({ error });
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: error.message,
+        });
+      }
+    }),
+  deleteMyAccountCustomer: publicProcedure
+    .input(deleteMyAccountCustomerSchema)
+    .mutation(async ({ ctx, input }) => {
+      try {
+        console.log(input, 'HSJGHSGHSJGSH');
+        const user: any = await prisma.customer.findFirst({
+          where: { email: input.email },
+        });
+
+        const reason = JSON.stringify(input.reasons);
+        const payload: any = {
+          customer_id: user.id,
+          is_deleted: true,
+          reason: reason,
+          comment: input.message,
+        };
+
+        const customer = await prisma.deleteRequest.create({
+          data: payload,
+        });
+        console.log(customer), 'customer';
         return { user: user, status: true };
       } catch (error: any) {
         console.log({ error });

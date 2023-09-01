@@ -83,3 +83,77 @@ export const verificationOtpCustomerSchema = z.object({
 export const resendOtpCustomerSchema = z.object({
   email: z.string().email(),
 });
+
+export const accountsDetailSchema = z.object({
+  first_name: z.string(),
+  last_name: z.string(),
+  email: z.string().email(),
+  dob: z.date().optional().nullable(),
+});
+
+export const accountsDetailSchemaInput = z.object({
+  first_name: z
+    .string()
+    .min(2, {
+      message: 'Name must be at least 2 characters',
+    })
+    .max(24, {
+      message: 'Name must not exceed 24 characters',
+    }),
+  last_name: z.string(),
+  email: z.string().email(),
+  dob: z.date().optional().nullable(),
+});
+
+export type accountsDetailSchemaInput = z.infer<
+  typeof accountsDetailSchemaInput
+>;
+
+export const passwordChangeSchema = z.object({
+  email: z.string().email().optional(),
+  currentPassword: z.string(),
+  newPassword: z.string(),
+  confirmPassword: z.string(),
+});
+
+export const passwordChangeSchemaInput = z.object({
+  email: z.string().email().optional(),
+  currentPassword: z.string(),
+  newPassword: z
+    .string()
+    .min(6, {
+      message: 'Password must be at least 6 characters',
+    })
+    .max(30, {
+      message: 'Password must not exceed 30 characters',
+    }),
+  confirmPassword: z
+    .string()
+    .min(6, {
+      message: 'Confirm Password must be at least 6 characters',
+    })
+    .max(30, {
+      message: 'Confirm Password must not exceed 30 characters',
+    }),
+});
+
+export type passwordChangeSchemaInput = z.infer<
+  typeof passwordChangeSchemaInput
+>;
+
+
+export const deleteMyAccountCustomerSchema = z.object({
+  email: z.string().email().optional(),
+  message: z.string().optional(),
+  reasons: z.array(z.string()).optional(),
+});
+
+export const deleteMyAccountCustomerSchemaInput = z.object({
+  email: z.string().email().optional(),
+  message: z.string().optional(),
+  reasons: z.array(z.string()).optional(),
+});
+
+export type deleteMyAccountCustomerSchemaInput = z.infer<
+  typeof deleteMyAccountCustomerSchemaInput
+>;
