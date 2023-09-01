@@ -473,7 +473,7 @@ function DeleteAccount({ email }: any) {
                 className="align-center  rounded-full px-5 text-base   text-black font-sans font-[900]   tracking-[-1px]"
                 variant="clip"
               >
-                SAVE CHANGES
+                DELETE MY ACCOUNT
               </Button>
             </div>
           </form>

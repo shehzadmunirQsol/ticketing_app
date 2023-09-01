@@ -215,6 +215,13 @@ export const customerRouter = router({
             message: 'Please Wait for Admin Verification',
           });
         }
+        
+        if (user?.is_disabled) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Your Account is Disabled Kindly Contact From Admin Thankyou!',
+          });
+        }
         const checkPass = await isSamePass(input.password, user?.password);
         if (!checkPass) {
           throw new TRPCError({
@@ -255,6 +262,13 @@ export const customerRouter = router({
           throw new TRPCError({
             code: 'NOT_FOUND',
             message: 'User Not Found',
+          });
+        }
+
+        if (user?.is_disabled) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Your Account is Disabled Kindly Contact From Admin Thankyou!',
           });
         }
 
@@ -535,6 +549,14 @@ export const customerRouter = router({
 
         const customer = await prisma.deleteRequest.create({
           data: payload,
+        });
+        const updateResponse = await prisma.customer?.update({
+          where: {
+            id: user.id,
+          },
+          data: {
+            is_disabled: true,
+          },
         });
         console.log(customer), 'customer';
         return { user: user, status: true };
