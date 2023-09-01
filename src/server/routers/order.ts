@@ -30,6 +30,7 @@ export const orderRouter = router({
                     id: true,
                     price: true,
                     tickets_sold: true,
+                    end_date: true,
                   },
                 },
               },
@@ -60,6 +61,8 @@ export const orderRouter = router({
             ? subTotalAmount * (discount / 100)
             : discount
           : 0;
+
+        // Total Processing Initial Payment Process
         const paymentPayload: any = {
           ...input,
           sub_total_amount: subTotalAmount,
@@ -68,7 +71,7 @@ export const orderRouter = router({
           cartItem: cart?.CartItems,
         };
         if (input?.values) delete paymentPayload?.values;
-        const apiRes: any = await CreatePayment({
+        const paymentRes: any = await CreatePayment({
           ...paymentPayload,
         })
           .then((response: any) => {
@@ -80,20 +83,20 @@ export const orderRouter = router({
           .catch((error) => {
             throw new Error(error.message);
           });
-        console.log(apiRes, 'apiRes?.registrationId');
+        console.log(paymentRes, 'apiRes?.registrationId');
         let user;
         if (!input?.registrationId) {
           user = await prisma.customer?.update({
             where: {
-              id: input?.customer_id,
+              id: input?.values?.customer_id,
             },
             data: {
-              total_customer_id: apiRes?.data?.registrationId as string,
+              total_customer_id: paymentRes?.data?.registrationId as string,
             },
           });
         }
 
-        const totalPaymentId = apiRes?.data?.id; // from total payment gateway
+        const totalPaymentId = paymentRes?.data?.id; // from total payment gateway
 
         const orderPayload: any = {
           ...input?.values,
@@ -115,41 +118,53 @@ export const orderRouter = router({
           is_subscribe: item.is_subscribe,
         }));
 
-        const orderSubscriptionPayload = cart?.CartItems.filter(
-          (item) => item.is_subscribe,
-        ).map(async (item) => {
-          // logic for payment schedule
-          const paymentPayload: any = {
-            ...input,
-            sub_total_amount: subTotalAmount,
-            discount_amount: discountAmount,
-            total_amount: subTotalAmount - discountAmount,
-            cartItem: { ...item },
-          };
-          if (input?.values) delete paymentPayload?.values;
-          const apiRes: any = await CreatePayment({
-            ...paymentPayload,
-          })
-            .then((response: any) => {
-              if (!response?.result?.parameterErrors) {
-                return { data: response, success: true };
-              }
-              throw new Error(response?.result?.parameterErrors[0].message);
-            })
-            .catch((error) => {
-              throw new Error(error.message);
-            });
-          const totalSubscriptionId = 'totalSubscriptionId';
+        const orderSubscriptionPayload = await Promise.all(
+          cart?.CartItems.filter((item) => item.is_subscribe).map(
+            async (item) => {
+              // logic for payment schedule
+              // Total Processing Subscription Process
+              const subPayload: any = {
+                ...input,
+                registrationId: input?.registrationId
+                  ? input?.registrationId
+                  : paymentRes?.data?.registrationId,
 
-          return {
-            event_id: item.Event.id,
-            ticket_price: item.Event.price,
-            quantity: item.quantity,
-            customer_id: cart.customer_id,
-            total_subscription_id: totalSubscriptionId,
-            subscription_type: item.subscription_type,
-          };
-        });
+                total_amount: +(+item.Event.price * +item.quantity),
+                event_id: item.Event.id,
+                ticket_price: item.Event.price,
+                quantity: item.quantity,
+                customer_id: input?.values?.customer_id,
+                subscription_type: item.subscription_type,
+                end_date: item.Event.end_date,
+                cartItem: { ...item },
+              };
+              if (input?.values) delete subPayload?.values;
+              const apiRes: any = await CreateSubscription({
+                ...subPayload,
+              })
+                .then((response: any) => {
+                  console.log(response?.result, 'response?.resultsdaasdasd');
+
+                  if (!response?.result?.parameterErrors) {
+                    return { data: response, success: true };
+                  }
+                  throw new Error(response?.result?.parameterErrors[0].message);
+                })
+                .catch((error) => {
+                  throw new Error(error.message);
+                });
+              const totalSubscriptionId = apiRes?.data?.id;
+              return {
+                event_id: item.Event.id,
+                ticket_price: item.Event.price,
+                quantity: item.quantity,
+                customer_id: input?.values?.customer_id,
+                total_subscription_id: totalSubscriptionId,
+                subscription_type: item.subscription_type,
+              };
+            },
+          ),
+        );
 
         await prisma.order.create({
           data: {
@@ -276,21 +291,43 @@ async function CreatePayment(APidata: any) {
 }
 async function CreateSubscription(APidata: any) {
   try {
+    console.log(
+      APidata?.subscription_type,
+      "APidata?.end_date.toISOString().split('T')[0]",
+    );
+
     const path = '/scheduling/v1/schedules';
-    const apiDate: any = {
+    const subType: any = {};
+    if (APidata?.subscription_type == 'weekly') subType['job.dayOfWeek'] = '1';
+    if (APidata?.subscription_type == 'monthly') {
+      subType['job.month'] = '*';
+      subType['job.dayOfMonth'] = '1';
+    }
+    if (APidata?.subscription_type == 'quarterly') {
+      subType['job.month'] = '6';
+      subType['job.dayOfMonth'] = '1';
+    }
+    if (APidata?.subscription_type == 'yearly') subType['job.year'] = '*';
+    const payloadData: any = {
       entityId: process.env.TOTAN_ENTITY_ID,
       amount: APidata?.total_amount,
       registrationId: APidata?.registrationId,
       currency: 'AED',
       paymentType: 'DB',
       'standingInstruction.type': 'RECURRING',
-      'job.dayOfWeek': '1',
+      ...subType,
+      'job.endDate': new Date(APidata?.end_date)
+        .toISOString()
+        .slice(0, 19)
+        .replace('T', ' '),
       'customParameters[payload]': JSON.stringify({
         ...APidata,
       }),
-      'job.endDate': APidata?.end_date,
     };
-    const data = new URLSearchParams(apiDate).toString();
+
+    console.log({ payloadData });
+
+    const data = new URLSearchParams(payloadData).toString();
     const options = {
       port: 443,
       host: 'eu-test.oppwa.com',
