@@ -9,7 +9,7 @@ import { signJWT, verifyJWT } from '~/utils/jwt';
 export const adminUserRouter = router({
 
     me: publicProcedure.input(getAdminSchema).query(async ({ ctx }) => {
-        const token = ctx?.req?.cookies['winnar-token'];
+        const token = ctx?.req?.cookies['winnar-admin-token'];
         console.log({ token });
     
         let userData;
@@ -66,11 +66,11 @@ export const adminUserRouter = router({
                 });
             }
             const jwt = signJWT({ email: user.email, id: user.id });
-            const serialized = serialize('winnar-token', jwt, {
-                httpOnly: true,
-                path: '/',
-                sameSite: 'strict'
-              });
+            const serialized = serialize('winnar-admin-token', jwt, {
+              httpOnly: true,
+              path: '/',
+              sameSite: 'strict',
+            });
             
             ctx?.res?.setHeader('Set-Cookie', serialized);
       
@@ -127,7 +127,7 @@ export const adminUserRouter = router({
     .input(logoutSchema)
     .mutation(async ({ ctx }) => {
         try {
-          const serialized = serialize('winnar-token', '', {
+          const serialized = serialize('winnar-admin-token', '', {
             httpOnly: true,
             path: '/',
             sameSite: 'strict',
@@ -165,7 +165,7 @@ export const adminUserRouter = router({
         }
         const jwt = signJWT({ email: user.email, id: user.id });
 
-        const serialized = serialize('winnar-token', jwt, {
+        const serialized = serialize('winnar-admin-token', jwt, {
           httpOnly: true,
           path: '/',
           sameSite: 'strict',
