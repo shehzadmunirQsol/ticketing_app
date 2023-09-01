@@ -4,11 +4,13 @@ import { useSelector } from 'react-redux';
 import { useToast } from '~/components/ui/use-toast';
 import { RootState } from '~/store/store';
 import { trpc } from '~/utils/trpc';
+import { addAddressInput } from '~/schema/customer';
 
 const AddressesView = () => {
   const { toast } = useToast();
   const { user } = useSelector((state: RootState) => state.auth);
-  const { handleSubmit, register, setValue, getValues } = useForm<any>();
+  const { handleSubmit, register, setValue, getValues } =
+    useForm<addAddressInput>();
   console.log({ user }, 'user');
   const [isEdit, setEdit] = useState(false);
 
@@ -23,7 +25,7 @@ const AddressesView = () => {
     },
   });
 
-  const handleChange = (e:any) => {
+  const handleChange = (e: any) => {
     e.preventDefault();
     console.log({ isEdit, action }, 'check states before', action.adding.text);
     setEdit(!isEdit);
@@ -47,6 +49,7 @@ const AddressesView = () => {
       },
     );
 
+  console.log({ data }, 'refetching this now');
   const createAddress = trpc.customer.addAddress.useMutation({
     onSuccess: (res) => {
       console.log(res);
@@ -54,6 +57,7 @@ const AddressesView = () => {
         variant: 'success',
         title: 'Address Added Successfully',
       });
+      setEdit(false);
     },
     onError(error) {
       console.log(error);
@@ -70,6 +74,7 @@ const AddressesView = () => {
         variant: 'success',
         title: 'Address Updated Successfully',
       });
+      setEdit(false);
     },
     onError(error) {
       console.log(error);
@@ -80,18 +85,30 @@ const AddressesView = () => {
     },
   });
 
-  async function onSubmit(values:any) {
+  async function onSubmit(values: any) {
     console.log({ values }, 'values');
 
     try {
       const payload = {
-        ...values,
         customer_id: user.id,
-        name: user.first_name + ' ' + user.last_name,
+        postal_code: Number(+values.postal_code),
+        ...values,
       };
+      console.log(payload.postal_code, typeof payload.postal_code);
       console.log({ payload }, 'create payload');
-      const response: any = await createAddress.mutateAsync(payload);
-      // : await updateAdminUser.mutateAsync({ id: props.id, ...payload });
+      const response: any =
+        data === null
+          ? await createAddress.mutateAsync(payload)
+          : await updateAddress.mutateAsync({
+              id: data.id,
+              customer_id: data.customer_id,
+              ...payload,
+            });
+
+      if (response) {
+        console.log({ response }, 'creatded');
+        refetch();
+      }
     } catch (error: any) {}
   }
   console.log({ isEdit, action }, 'check states after', action.adding.text);
@@ -165,6 +182,7 @@ const AddressesView = () => {
                     className="bg-primary-foreground p-0.5 font-sans  "
                     value={user.first_name + ' ' + user.last_name}
                     placeholder="Name"
+                    
                     type="text"
                     readOnly
                   />
@@ -172,8 +190,11 @@ const AddressesView = () => {
                     className="bg-primary-foreground p-0.5 font-sans"
                     defaultValue={data?.postal_code}
                     placeholder="P.O Box"
-                    {...register('postal_code')}
+                    {...register('postal_code', {
+                      valueAsNumber: true,
+                    })}
                     type="number"
+                    required
                   />
                   <input
                     className="bg-primary-foreground p-0.5 font-sans"
@@ -181,15 +202,17 @@ const AddressesView = () => {
                     placeholder="Street Address"
                     {...register('street_address_1')}
                     type="text"
+                    required
                   />
                   <input
                     className="bg-primary-foreground p-0.5 font-sans"
                     defaultValue={data?.phone_number}
                     {...register('phone_number')}
                     placeholder="Mobile"
-                    type="number"
+                    type="text"
                     prefix="05"
                     maxLength={9}
+                    required
                   />
                   <input
                     className="bg-primary-foreground p-0.5 font-sans"
@@ -197,6 +220,7 @@ const AddressesView = () => {
                     placeholder="City"
                     {...register('city')}
                     type="text"
+                    required
                   />
                   <input
                     className="bg-primary-foreground p-0.5 font-sans"
@@ -204,6 +228,7 @@ const AddressesView = () => {
                     placeholder="Country"
                     {...register('country')}
                     type="text"
+                    required
                   />
                 </div>
               ) : (

@@ -492,7 +492,7 @@ export const customerRouter = router({
         // here u will do the mutation
 
         const payload = {
-
+          postal_code: Number(input.postal_code),
           state: "",
           street_address_2: "",
           ...input,
@@ -500,7 +500,7 @@ export const customerRouter = router({
         console.log({ payload }, "payload update bk")
         const customer: any = await prisma.customerAddress.update({
           where: {
-            id: input.customer_id
+            id: input.id,
           },
           data: payload
         })
