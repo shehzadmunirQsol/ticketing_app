@@ -79,7 +79,6 @@ export function CheckoutDialog(props: SettingDialogInterface) {
         price: 90,
         registrationId: user?.total_customer_id,
         customer_id: user?.id,
-        // cart: cart?.cartItems,
       };
       if (!user?.total_customer_id) {
         payload = {
@@ -87,7 +86,6 @@ export function CheckoutDialog(props: SettingDialogInterface) {
           price: 90,
           registrationId: user?.total_customer_id,
           customer_id: user?.id,
-          // cart: cart?.cartItems,
         };
       }
       const data = await bannerUpdate.mutateAsync({

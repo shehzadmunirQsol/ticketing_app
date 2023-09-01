@@ -50,7 +50,12 @@ async function CreatePayment(APidata: createPaymentSchema) {
           currency: 'AED',
           paymentType: 'DB',
           'standingInstruction.source': 'CIT',
-          wpwlOptions: JSON.stringify(APidata?.cart),
+          // wpwlOptions: JSON.stringify(APidata?.cart),
+          'customParameters[payload]': JSON.stringify({
+            registrationId: '8ac7a49f8a4ae6c0018a4b56f6a9161b',
+            price: 90,
+            customer_id: 13,
+          }),
 
           'standingInstruction.type': 'UNSCHEDULED',
         }
@@ -58,7 +63,7 @@ async function CreatePayment(APidata: createPaymentSchema) {
           entityId: process.env.TOTAN_ENTITY_ID,
           amount: APidata?.price,
           currency: 'AED',
-          paymentBrand: 'VISA',
+          paymentBrand: APidata?.paymentBrand,
           paymentType: 'DB',
 
           'card.number':
@@ -71,7 +76,11 @@ async function CreatePayment(APidata: createPaymentSchema) {
           'card.cvv': APidata?.card?.cvv && +APidata?.card?.cvv,
           'standingInstruction.mode': 'INITIAL',
           'standingInstruction.source': 'CIT',
-          wpwlOptions: JSON.stringify(APidata?.cart),
+          'customParameters[payload]': JSON.stringify({
+            registrationId: '8ac7a49f8a4ae6c0018a4b56f6a9161b',
+            price: 90,
+            customer_id: 13,
+          }),
 
           createRegistration: 'true',
         };
