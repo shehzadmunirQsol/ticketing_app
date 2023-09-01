@@ -56,17 +56,20 @@ export const orderRouter = router({
             : discount
           : 0;
 
-        const totalPaymentId = 0; // from total payment gateway
+        const totalPaymentId = '0'; // from total payment gateway
 
-        const orderPayload = {
+        const orderPayload: any = {
           ...input,
+          phone_number: input?.code + input?.phone_number,
 
           sub_total_amount: subTotalAmount,
           discount_amount: discountAmount,
           total_amount: subTotalAmount - discountAmount,
           total_payment_id: totalPaymentId,
-          postal_code: 0,
+          postal_code: '0',
         };
+        if (input?.code) delete orderPayload?.code;
+        if (input?.cart_id) delete orderPayload?.cart_id;
 
         const orderEventPayload = cart?.CartItems.map((item) => ({
           event_id: item.Event.id,

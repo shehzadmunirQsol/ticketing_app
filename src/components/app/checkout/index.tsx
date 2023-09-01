@@ -66,13 +66,14 @@ function Checkout() {
   const onSubmitCheckout = async (values: any) => {
     console.log({ values });
     try {
-      // setIsCardModal(true);
-      await orderCheckout.mutateAsync(values);
+      setIsCardModal(true);
+      setSelectedItem({ ...values });
+      // await orderCheckout.mutateAsync(values);
 
       console.log('order success');
       // setIsCardModal(false);
     } catch (error: any) {
-      // setIsCardModal(false);
+      setIsCardModal(false);
 
       console.log(error);
     }
@@ -382,7 +383,7 @@ function Checkout() {
                       control={form.control}
                       name="dob"
                       render={() => (
-                        <FormItem className="mb-2 w-full">
+                        <FormItem className=" w-full">
                           <FormLabel className="text-sm text-cardGray">
                             Date of Birth <sup className="text-red-500">*</sup>
                           </FormLabel>
