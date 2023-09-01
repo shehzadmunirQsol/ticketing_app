@@ -58,7 +58,12 @@ export default function LoginSignup() {
     onSuccess: (res: any) => {
       const localStorageData = localStorage.setItem(
         'customer',
-        JSON.stringify({ email: res.email, id: res.id }),
+        JSON.stringify({
+          email: res.email,
+          id: res.id,
+          first_name: res.first_name,
+          last_name: res.last_name,
+        }),
       );
       console.log(res, 'res');
       toast({
