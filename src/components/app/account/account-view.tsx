@@ -15,7 +15,10 @@ const AccountView = ({ control }: any) => {
     <div className="py-4 px-6 text-[#eaeaea]">
       <p className="mb-3">
         Hello{' '}
-        <span className="font-bold">{`${customer?.data?.first_name} ${customer?.data?.last_name}`}</span>
+        <span className="font-bold">
+          {customer &&
+            `${customer?.data?.first_name} ${customer?.data?.last_name}`}
+        </span>
       </p>
       <p>
         From your account dashboard you can view your recent orders, manage your{' '}

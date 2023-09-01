@@ -84,6 +84,22 @@ export const resendOtpCustomerSchema = z.object({
   email: z.string().email(),
 });
 
+
+export const addCustomerAddress = z.object({
+  id: z.number().optional(),
+  customer_id: z.number(),
+  street_address_1: z.string().optional(),
+  city: z.string().optional(),
+  country: z.string().optional(),
+  phone_number: z.string().optional(),
+  postal_code: z.number().optional(),
+})
+
+export const getCustomerAddress = z.object({
+  customer_id: z.number(),
+})
+
+
 export const accountsDetailSchema = z.object({
   first_name: z.string(),
   last_name: z.string(),
@@ -157,3 +173,5 @@ export const deleteMyAccountCustomerSchemaInput = z.object({
 export type deleteMyAccountCustomerSchemaInput = z.infer<
   typeof deleteMyAccountCustomerSchemaInput
 >;
+
+export type addAddressInput = z.TypeOf<typeof addCustomerAddress>;
