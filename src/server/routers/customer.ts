@@ -198,7 +198,7 @@ export const customerRouter = router({
         const validity = isValidEmail(input.user)
           ? { email: input.user }
           : { username: input.user };
-
+        console.log(validity, 'validity');
         const user = await prisma.customer.findFirst({
           where: validity,
         });
