@@ -371,21 +371,24 @@ model CartItem {
 
 model Order {
   id               Int        @id @default(autoincrement())
+  sub_total_amount Int
+  discount_amount  Int
   total_amount     Int
   status           OrderEnums @default(pending)
   first_name       String
   parent_order_id  Int?
   customer_id      Int
+  total_payment_id String
   last_name        String
   email            String
   dob              DateTime
-  street_address_1 String
-  street_address_2 String?
+  street_address   String
+  apartment        String?
   country          String
   state            String
   city             String
   phone_number     String
-  postal_code      Int
+  postal_code      String
   is_deleted       Boolean    @default(false)
 
   Customer    Customer @relation(fields: [customer_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
@@ -402,20 +405,19 @@ model Order {
 }
 
 model OrderEvent {
-  id              Int     @id @default(autoincrement())
-  order_id        Int
-  event_id        Int
-  ticket_price    Int
-  quantity        Int
-  subscription_id Int?
-  is_deleted      Boolean @default(false)
+  id           Int     @id @default(autoincrement())
+  order_id     Int
+  event_id     Int
+  ticket_price Int
+  quantity     Int
+  is_subscribe Boolean @default(false)
+  is_deleted   Boolean @default(false)
 
   created_at DateTime @default(now()) @db.Timestamp(6)
   updated_at DateTime @default(now()) @db.Timestamp(6)
 
-  Order             Order              @relation(fields: [order_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  Event             Event              @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  OrderSubscription OrderSubscription? @relation(fields: [subscription_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Order Order @relation(fields: [order_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Event Event @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@index([order_id, event_id])
   @@map("order_event")
@@ -432,10 +434,9 @@ model OrderSubscription {
   subscription_type     SubscriptionEnums? @default(weekly)
   is_deleted            Boolean            @default(false)
 
-  next_date  DateTime     @default(now()) @db.Timestamp(6)
-  created_at DateTime     @default(now()) @db.Timestamp(6)
-  updated_at DateTime     @default(now()) @db.Timestamp(6)
-  OrderEvent OrderEvent[]
+  next_date  DateTime @default(now()) @db.Timestamp(6)
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
 
   Customer Customer @relation(fields: [customer_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   Order    Order    @relation(fields: [order_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
