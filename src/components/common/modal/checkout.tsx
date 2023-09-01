@@ -64,7 +64,7 @@ export function CheckoutDialog(props: SettingDialogInterface) {
     ),
   });
 
-  const bannerUpdate = trpc.payment.createPayment.useMutation({
+  const bannerUpdate = trpc.order.checkout.useMutation({
     onSuccess: () => {
       console.log('upload successfully');
     },
@@ -79,13 +79,14 @@ export function CheckoutDialog(props: SettingDialogInterface) {
         price: 90,
         registrationId: user?.total_customer_id,
         customer_id: user?.id,
+        values: props?.selectedItem,
       };
       if (!user?.total_customer_id) {
         payload = {
           ...values,
-          price: 90,
           registrationId: user?.total_customer_id,
           customer_id: user?.id,
+          values: props?.selectedItem,
         };
       }
       const data = await bannerUpdate.mutateAsync({
