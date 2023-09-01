@@ -91,6 +91,18 @@ export const cartSlice = createSlice({
       state.totalAmount = getTotalAmount(cartItems);
       state.cart.cartItems = cartItems;
     },
+    addDiscount: (
+      state,
+      action: PayloadAction<{
+        isDiscount: boolean;
+        discount: number;
+        isPercentage: boolean;
+      }>,
+    ) => {
+      state.cart.isDiscount = action.payload.isDiscount;
+      state.cart.discount = action.payload.discount;
+      state.cart.isPercentage = action.payload.isPercentage;
+    },
   },
 });
 
@@ -103,19 +115,17 @@ function getTotalCount(cartItems: CartItemInterface[]): number {
   return totalCount;
 }
 function getTotalAmount(cartItems: CartItemInterface[]): number {
-  console.log('cartItems', cartItems);
   const totalAmount = cartItems.reduce(
     (accumulator, current) =>
       accumulator + current.quantity * current.Event.price,
     0,
   );
 
-  console.log('totalAmount', totalAmount);
-
   return totalAmount;
 }
 
-export const { addCart, addToCart, removeFromCart } = cartSlice.actions;
+export const { addCart, addToCart, removeFromCart, addDiscount } =
+  cartSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectCount = (state: RootState) => state.cart;

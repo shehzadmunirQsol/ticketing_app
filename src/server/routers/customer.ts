@@ -10,6 +10,14 @@ import {
   getCustomerSchema,
   updateCustomerSchema,
   resendOtpCustomerSchema,
+  addCustomerAddress,
+  getCustomerAddress,
+
+
+
+  accountsDetailSchema,
+  passwordChangeSchema,
+  deleteMyAccountCustomerSchema,
 } from '~/schema/customer';
 import { hashPass, isSamePass } from '~/utils/hash';
 import { signJWT, verifyJWT } from '~/utils/jwt';
@@ -426,6 +434,218 @@ export const customerRouter = router({
           console.log(mailResponse, 'mailResponse');
         }
 
+        return { user: user, status: true };
+      } catch (error: any) {
+        console.log({ error });
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: error.message,
+        });
+      }
+    }),
+
+  addAddress: publicProcedure
+    .input(addCustomerAddress)
+    .mutation(async ({ ctx, input }) => {
+      try {
+        const user: any = await prisma.customer.findFirst({
+          where: { id: input.customer_id },
+        });
+        console.log(user, 'user backend');
+
+        if (!user) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'User not found',
+          });
+        } else {
+          // here u will do the mutation
+
+          const payload = {
+
+            state: "",
+            street_address_2: "",
+            ...input,
+          }
+          console.log({ payload }, "payload bk")
+          const customer_address = await prisma.customerAddress?.create({
+            data: payload,
+          })
+
+          return { customer_address: customer_address, status: true };
+        }
+      } catch (error: any) {
+        console.log({ error });
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: error.message,
+        });
+      }
+    }),
+  updateAddress: publicProcedure
+    .input(addCustomerAddress)
+    .mutation(async ({ ctx, input }) => {
+      try {
+
+        // here u will do the mutation
+
+        const payload = {
+          postal_code: Number(input.postal_code),
+          state: "",
+          street_address_2: "",
+          ...input,
+        }
+        console.log({ payload }, "payload update bk")
+        const customer: any = await prisma.customerAddress.update({
+          where: {
+            id: input.id,
+          },
+          data: payload
+        })
+
+
+        return { customer: customer, status: true };
+
+      } catch (error: any) {
+        console.log({ error });
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: error.message,
+        });
+      }
+    }),
+  getAddress: publicProcedure
+    .input(getCustomerAddress)
+    .query(async ({ ctx, input }) => {
+      try {
+        const user: any = await prisma.customer.findFirst({
+          where: { id: input.customer_id },
+        });
+        console.log(user, 'user backend');
+
+        if (!user) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'User not found',
+          });
+
+        } else {
+          // here u will do the mutation
+          const customer: any = await prisma.customerAddress.findFirst({
+            where: { customer_id: input.customer_id },
+            include: { Customer: {} }
+          })
+
+          return customer;
+        }
+
+      } catch (error: any) {
+        console.log({ error });
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: error.message,
+        });
+      }
+    }),
+
+  updateCustomerAccountDetail: publicProcedure
+    .input(accountsDetailSchema)
+    .mutation(async ({ ctx, input }) => {
+      try {
+        console.log(input, 'input');
+        const user: any = await prisma.customer.findFirst({
+          where: { email: input.email },
+        });
+        const payload = { ...input };
+        if (!payload?.dob) delete payload?.dob;
+
+        const updateResponse = await prisma.customer?.update({
+          where: {
+            id: user.id,
+          },
+          data: {
+            ...payload,
+          },
+        });
+
+        return { user: user, status: true };
+      } catch (error: any) {
+        console.log({ error });
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: error.message,
+        });
+      }
+    }),
+
+  updateCustomerPassword: publicProcedure
+    .input(passwordChangeSchema)
+    .mutation(async ({ ctx, input }) => {
+      try {
+        console.log(input, 'input');
+        const user: any = await prisma.customer.findFirst({
+          where: { email: input.email },
+        });
+
+        const checkPass = await isSamePass(
+          input.currentPassword,
+          user?.password,
+        );
+        if (!checkPass) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Old Password is incorrect',
+          });
+        }
+
+        if (input.newPassword !== input.confirmPassword) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Password are not Matching',
+          });
+        }
+
+        const hashPassword = await hashPass(input.newPassword);
+        console.log('HASH Pass : ', hashPassword);
+        const updatePasswordResult = await prisma.customer?.update({
+          where: {
+            id: user.id,
+          },
+          data: {
+            password: hashPassword,
+          },
+        });
+        console.log(updatePasswordResult, 'userCode');
+        return { user: user, status: true };
+      } catch (error: any) {
+        console.log({ error });
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: error.message,
+        });
+      }
+    }),
+  deleteMyAccountCustomer: publicProcedure
+    .input(deleteMyAccountCustomerSchema)
+    .mutation(async ({ ctx, input }) => {
+      try {
+        console.log(input, 'HSJGHSGHSJGSH');
+        const user: any = await prisma.customer.findFirst({
+          where: { email: input.email },
+        });
+
+        const reason = JSON.stringify(input.reasons);
+        const payload: any = {
+          customer_id: user.id,
+          is_deleted: true,
+          reason: reason,
+          comment: input.message,
+        };
+
+        const customer = await prisma.deleteRequest.create({
+          data: payload,
+        });
+        console.log(customer), 'customer';
         return { user: user, status: true };
       } catch (error: any) {
         console.log({ error });

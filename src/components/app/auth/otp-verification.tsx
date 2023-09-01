@@ -37,22 +37,7 @@ export function OtpVerificationDailog(props: OtpVerificationDailogInterface) {
   const inputThree: any = useRef<HTMLInputElement>(null);
   const inputFour: any = useRef<HTMLInputElement>(null);
 
-  // state
-  const [user, setUser] = useState('');
-
-  interface CustomerLoginData {
-    customer: string;
-  }
-
-  useEffect(() => {
-    const customerLoginDataJSON = localStorage.getItem('customer');
-    if (customerLoginDataJSON !== null) {
-      const parsedData: CustomerLoginData = JSON.parse(customerLoginDataJSON);
-      console.log(parsedData, 'parsedData');
-      setUser(parsedData.customer);
-    }
-  }, []);
-
+  
   // Response OTP Verification
   const otpVerification = trpc.customer.verificationOtpCustomer.useMutation({
     onSuccess: (res: any) => {
@@ -98,7 +83,7 @@ export function OtpVerificationDailog(props: OtpVerificationDailogInterface) {
     const pattern = /^-?\d+(\.\d+)?$/;
     return pattern.test(value);
   };
-  console.log(user, 'State');
+  // console.log(user, 'State');
 
   // Handle Forgot Password
   function inputChangeHandler(event: React.ChangeEvent<HTMLInputElement>) {
