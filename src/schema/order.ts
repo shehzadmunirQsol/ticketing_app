@@ -1,20 +1,5 @@
 import { z } from 'zod';
 
-export const checkoutSchema = z.object({
-  firstname: z.string(),
-  lastname: z.string(),
-  email: z.string().email(),
-  dateofbirth: z.string(),
-  number: z.string(),
-  code: z.string(),
-  postcode: z.string(),
-  state: z.string(),
-  city: z.string(),
-  street: z.string(),
-  country: z.string(),
-  apartment: z.string(),
-});
-
 export const createCheckoutSchema = z.object({
   first_name: z
     .string()
@@ -40,8 +25,10 @@ export const createCheckoutSchema = z.object({
   postal_code: z.string(),
   email: z.string().email(),
   code: z.string(),
-  number: z.string(),
+  phone_number: z.string(),
   dob: z.date(),
+  cart_id: z.number(),
+  customer_id: z.number(),
 });
 
-export type checkoutSchemaInput = z.infer<typeof createCheckoutSchema>;
+export type CreateCheckoutSchema = z.infer<typeof createCheckoutSchema>;
