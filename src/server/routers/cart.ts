@@ -6,12 +6,22 @@ import {
   removeCartItemSchema,
 } from '~/schema/cart';
 import { prisma } from '~/server/prisma';
+import { verifyJWT } from '~/utils/jwt';
 
 export const cartRouter = router({
-  get: publicProcedure.input(getCartSchema).query(async ({ input }) => {
+  get: publicProcedure.input(getCartSchema).query(async ({ ctx }) => {
     try {
+      const token = ctx?.req?.cookies['winnar-token'];
+
+      let userData;
+      if (token) {
+        userData = await verifyJWT(token);
+      } else {
+        return { data: null };
+      }
+
       const cart = await prisma.cart.findFirst({
-        where: { customer_id: input.customer_id, is_deleted: false },
+        where: { customer_id: userData.id, is_deleted: false },
         include: {
           CouponApply: {
             where: { is_deleted: false },

@@ -55,6 +55,7 @@ specifiers:
   eslint-plugin-prettier: ^4.2.1
   eslint-plugin-react: ^7.31.11
   eslint-plugin-react-hooks: ^4.6.0
+  https: ^1.0.0
   jsonwebtoken: ^9.0.1
   lucide-react: ^0.127.0
   navigation-menu: ^1.0.0
@@ -133,6 +134,7 @@ dependencies:
   cookie: 0.5.0
   date-fns: 2.30.0
   dotenv: 16.3.1
+  https: 1.0.0
   jsonwebtoken: 9.0.1
   lucide-react: 0.127.0_react@18.2.0
   navigation-menu: 1.0.0_jhaguxqfxx2v4alxps2nzei754
@@ -7615,6 +7617,10 @@ packages:
       debug: 4.3.4
     transitivePeerDependencies:
       - supports-color
+    dev: false
+
+  /https/1.0.0:
+    resolution: {integrity: sha512-4EC57ddXrkaF0x83Oj8sM6SLQHAWXw90Skqu2M4AEWENZ3F02dFJE/GARA8igO79tcgYqGrD7ae4f5L3um2lgg==}
     dev: false
 
   /human-signals/2.1.0:

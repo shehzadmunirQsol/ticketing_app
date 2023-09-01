@@ -23,14 +23,14 @@ const AddressesView = () => {
     },
   });
 
-  const handleChange = (e) => {
+  const handleChange = (e:any) => {
     e.preventDefault();
     console.log({ isEdit, action }, 'check states before', action.adding.text);
     setEdit(!isEdit);
   };
   const { data, isFetching, isRefetching, isFetched, isLoading, refetch } =
     trpc.customer.getAddress.useQuery(
-      { customer_id: user.id },
+      { customer_id: user?.id },
       {
         refetchOnWindowFocus: false,
         onSuccess: (data) => {
@@ -80,7 +80,7 @@ const AddressesView = () => {
     },
   });
 
-  async function onSubmit(values) {
+  async function onSubmit(values:any) {
     console.log({ values }, 'values');
 
     try {
@@ -89,7 +89,7 @@ const AddressesView = () => {
         customer_id: user.id,
         name: user.first_name + ' ' + user.last_name,
       };
-      console.log({payload},"create payload")
+      console.log({ payload }, 'create payload');
       const response: any = await createAddress.mutateAsync(payload);
       // : await updateAdminUser.mutateAsync({ id: props.id, ...payload });
     } catch (error: any) {}
