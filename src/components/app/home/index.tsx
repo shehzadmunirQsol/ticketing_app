@@ -9,14 +9,6 @@ import VideoSlider from './video_slider';
 import Glow from '~/components/common/glow';
 
 export default function Home() {
-  const todayDate = new Date();
-  console.log(todayDate, 'todayDate');
-
-  const endingDate = new Date();
-  endingDate.setDate(endingDate.getDate() + 7);
-  console.log(endingDate, 'endingDate');
-  // console.log(upcomingList?.data,"ip")
-
   return (
     <div className=" flex flex-col min-h-screen w-full max-w-[1600px] mx-auto">
       {/* // <div className=""> */}
