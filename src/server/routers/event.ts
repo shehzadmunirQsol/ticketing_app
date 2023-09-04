@@ -402,7 +402,7 @@ export const eventRouter = router({
         console.log(input, 'MEINHNNSSA');
         console.log(input.id, 'MEINHNNSSA IDDD');
 
-        const eventPromise = await prisma.event.findUnique({
+        const event = await prisma.event.findUnique({
           where: {
             id: input.id,
           },
@@ -422,11 +422,17 @@ export const eventRouter = router({
             EventImages: true,
           },
         });
-        console.log(eventPromise, 'BJSAJSAKDHDHJSSHSH');
+
+        const customerLimit = await prisma.orderEvent.groupBy({
+          where: { event_id: input.id, customer_id: input.values.customer_id },
+          by: ['event_id', 'customer_id'],
+          _sum: { quantity: true },
+        });
 
         return {
           message: 'events found',
-          data: eventPromise,
+          data: event,
+          ticketSold: customerLimit,
         };
       } catch (error: any) {
         throw new TRPCError({

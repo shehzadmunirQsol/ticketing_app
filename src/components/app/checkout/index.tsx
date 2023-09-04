@@ -21,26 +21,23 @@ import Group17 from '~/public/assets/icons/Group17.png';
 import Image from 'next/image';
 import Glow from '~/components/common/glow';
 import { CouponModal } from './Coupon';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
 import { CheckoutDialog } from '~/components/common/modal/checkout';
 import { CreateCheckoutSchema, createCheckoutSchema } from '~/schema/order';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { trpc } from '~/utils/trpc';
 
 function Checkout() {
   const { cart, totalAmount } = useSelector((state: RootState) => state.cart);
   const { user } = useSelector((state: RootState) => state.auth);
 
   // Handle Coupon Dailog
-  const [isModal, setIsModal] = React.useState(false);
-  const [selectedItem, setSelectedItem] = React.useState({});
-  const [title, setTitle] = React.useState('Enter Payment Detail');
-  const [type, setType] = React.useState('');
-  const [isCardModal, setIsCardModal] = React.useState(false);
-
-  const orderCheckout = trpc.order.checkout.useMutation();
+  const [isModal, setIsModal] = useState(false);
+  const [selectedItem, setSelectedItem] = useState({});
+  const [title, setTitle] = useState('Enter Payment Detail');
+  const [type, setType] = useState('');
+  const [isCardModal, setIsCardModal] = useState(false);
 
   // 1. Define your form.
   const form = useForm<CreateCheckoutSchema>({
@@ -64,26 +61,17 @@ function Checkout() {
   });
 
   const onSubmitCheckout = async (values: any) => {
-    console.log({ values });
     try {
       setIsCardModal(true);
       setSelectedItem({ ...values });
-      // await orderCheckout.mutateAsync(values);
-
-      console.log('order success');
-      // setIsCardModal(false);
-    } catch (error: any) {
+    } catch (err) {
       setIsCardModal(false);
-
-      console.log(error);
     }
   };
 
   const discountAmount = cart.isPercentage
     ? totalAmount * (cart.discount / 100)
     : cart.discount;
-
-  console.log(form.formState.errors, 'form.getValues()');
 
   return (
     <div className="relative mt-20 bg-background py-6 px-4 space-y-10 md:py-16 md:px-14 md:space-y-14">

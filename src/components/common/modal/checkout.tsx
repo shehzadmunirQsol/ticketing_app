@@ -118,21 +118,16 @@ export function CheckoutDialog(props: SettingDialogInterface) {
       if (data) {
         toast({
           variant: 'success',
-          title: 'Payment Successfully',
+          title: 'Order Successful! 🎉',
         });
-        // dispatch(userAuth(data?.user));
         dispatch(
           addCart({
-            cart: {
-              id: null,
-              customer_id: null,
-              isDiscount: false,
-              discount: 0,
-              isPercentage: false,
-              cartItems: [],
-            },
-            count: 0,
-            totalAmount: 0,
+            id: null,
+            customer_id: null,
+            isDiscount: false,
+            discount: 0,
+            isPercentage: false,
+            cartItems: [],
           }),
         );
         setLoading(false);
