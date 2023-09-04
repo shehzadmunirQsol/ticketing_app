@@ -419,24 +419,28 @@ function Checkout() {
               </div>
               <div className="space-y-8">
                 <div className=" max-h-60 overflow-x-auto space-y-8">
-                  {cart?.cartItems.map((item) => {
-                    return (
-                      <div
-                        className="flex flex-row justify-between "
-                        key={item.id}
-                      >
-                        <p className="lg:text-2xl md:lg:text-xl   w-[60%]">
-                          {item?.Event?.EventDescription[0]?.name}
-                        </p>
-                        <p className="font-black text-lg lg:text-xl ">
-                          AED{' '}
-                          {(item?.Event?.price * item?.quantity)?.toFixed(2)}
-                        </p>
-                      </div>
-                    );
-                  })}
+                  {cart?.cartItems?.length
+                    ? cart?.cartItems?.map((item) => {
+                        return (
+                          <div
+                            className="flex flex-row justify-between "
+                            key={item.id}
+                          >
+                            <p className="lg:text-2xl md:lg:text-xl   w-[60%]">
+                              {item?.Event?.EventDescription[0]?.name}
+                            </p>
+                            <p className="font-black text-lg lg:text-xl ">
+                              AED{' '}
+                              {(item?.Event?.price * item?.quantity)?.toFixed(
+                                2,
+                              )}
+                            </p>
+                          </div>
+                        );
+                      })
+                    : null}
                 </div>
-                {cart.isDiscount ? (
+                {cart?.isDiscount ? (
                   <div className="space-y-6">
                     <div className="h-[1px] bg-white/40" />
 
@@ -448,7 +452,7 @@ function Checkout() {
                       <p className="text-white/40  text-lg">Discount:</p>
                       <p className="text-xl">
                         {' '}
-                        - AED {discountAmount.toFixed(2)}
+                        - AED {discountAmount?.toFixed(2)}
                       </p>
                     </div>
                   </div>

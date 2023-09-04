@@ -45,7 +45,7 @@ export const orderRouter = router({
           });
         }
 
-        const isDiscount = cart?.CouponApply?.length ? true : false;
+        const isDiscount = cart?.CouponApply?.length > 0;
         const discount = cart?.CouponApply[0]?.discount ?? 0;
         const isPercentage = cart?.CouponApply[0]?.is_percentage ?? false;
 
@@ -56,11 +56,10 @@ export const orderRouter = router({
             0,
           ) ?? 0;
 
-        const discountAmount = isDiscount
-          ? isPercentage
+        const discountAmount =
+          isDiscount && isPercentage
             ? subTotalAmount * (discount / 100)
-            : discount
-          : 0;
+            : discount;
 
         // Total Processing Initial Payment Process
         const paymentPayload: any = {
@@ -105,7 +104,6 @@ export const orderRouter = router({
           discount_amount: discountAmount,
           total_amount: subTotalAmount - discountAmount,
           total_payment_id: totalPaymentId,
-          postal_code: '0',
         };
         if (input?.values?.code) delete orderPayload?.code;
         if (input?.values?.cart_id) delete orderPayload?.cart_id;

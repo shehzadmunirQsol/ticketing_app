@@ -36,6 +36,7 @@ export const cartRouter = router({
                 select: {
                   thumb: true,
                   price: true,
+                  end_date: true,
 
                   EventDescription: {
                     where: { lang_id: 1 },
@@ -91,6 +92,7 @@ export const cartRouter = router({
               select: {
                 thumb: true,
                 price: true,
+                end_date: true,
                 EventDescription: {
                   where: { lang_id: 1 },
                   select: {
