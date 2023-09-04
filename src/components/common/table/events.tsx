@@ -38,6 +38,7 @@ import Image from 'next/image';
 import { renderNFTImage } from '~/utils/helper';
 import Link from 'next/link';
 import { GetEventSchema } from '~/schema/event';
+import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 
 export type Category = {
   thumb: string;
@@ -222,6 +223,10 @@ export default function EventsDataTable() {
         </DropdownMenu>
       </div>
       <div className="rounded-md border">
+      <ScrollArea  className='w-full '>
+        <ScrollBar orientation="horizontal">
+
+        </ScrollBar>
         <Table>
           <TableHeader>
             {table?.getHeaderGroups().map((headerGroup) => (
@@ -270,6 +275,7 @@ export default function EventsDataTable() {
             )}
           </TableBody>
         </Table>
+        </ScrollArea>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="space-x-2">

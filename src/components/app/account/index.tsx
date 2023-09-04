@@ -5,10 +5,45 @@ import AccountView from '~/components/app/account/account-view';
 import AddressesView from './address-view';
 import AccountDetails from './account-details';
 import { trpc } from '~/utils/trpc';
+import { useToast } from '~/components/ui/use-toast';
+import { useRouter } from 'next/router';
 
 const Account = () => {
+  const { toast } = useToast();
+  const router = useRouter();
+
   const [counter, setCounter] = useState(0);
-  
+
+  const logout = trpc.customer.logout.useMutation({
+    onSuccess: (res: any) => {
+      console.log('return data', res);
+    },
+    onError(error) {
+      console.log(error.message, 'ERROR');
+    },
+  });
+
+  async function handleLogout() {
+    console.log('Logout Working');
+    try {
+      const response = await logout.mutateAsync({});
+      console.log('Response : ', response);
+      toast({
+        variant: 'success',
+        title: 'Logout successfully! ',
+      });
+      localStorage.removeItem('winnar-token');
+      localStorage.removeItem('customer');
+      router.replace('/login');
+    } catch (error: any) {
+      console.log('Error ', error);
+      toast({
+        variant: 'destructive',
+        title: error.message,
+      });
+    }
+  }
+
   const navigation = [
     {
       tab: 'Dashboard',
@@ -50,7 +85,9 @@ const Account = () => {
                   ? 'bg-[#1B1D1F]  border-l-primary text-primary '
                   : 'border-l-transparent'
               } `}
-              onClick={() => setCounter(i)}
+              onClick={() =>
+                item.tab === 'Logout' ? handleLogout() : setCounter(i)
+              }
             >
               <div
                 className={`${

@@ -13,6 +13,7 @@ import {
   accountsDetailSchema,
   passwordChangeSchema,
   deleteMyAccountCustomerSchema,
+  logoutSchema
 } from '~/schema/customer';
 import { hashPass, isSamePass } from '~/utils/hash';
 import { signJWT, verifyJWT } from '~/utils/jwt';
@@ -568,4 +569,28 @@ export const customerRouter = router({
         });
       }
     }),
+
+
+    logout: publicProcedure
+    .input(logoutSchema)
+    .mutation(async ({ ctx }) => {
+        try {
+          const serialized = serialize('winnar-token', '', {
+            httpOnly: true,
+            path: '/',
+            sameSite: 'strict',
+            // secure: process.env.NODE_ENV !== "development",
+          });
+          console.log("Serialized :: ",serialized)
+          ctx?.res?.setHeader('Set-Cookie', serialized);
+          return { message: 'Logout successfully!' };
+        } catch (error: any) {
+          throw new TRPCError({
+            code: 'INTERNAL_SERVER_ERROR',
+            message: error?.message,
+          });
+        }
+    }),
+
+
 });

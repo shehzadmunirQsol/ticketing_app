@@ -157,3 +157,5 @@ export const deleteMyAccountCustomerSchemaInput = z.object({
 export type deleteMyAccountCustomerSchemaInput = z.infer<
   typeof deleteMyAccountCustomerSchemaInput
 >;
+
+export const logoutSchema = z.object({});

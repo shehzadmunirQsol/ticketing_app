@@ -65,7 +65,7 @@ export default function LoginSignup() {
       console.log(res, 'res');
       toast({
         variant: 'success',
-        title: 'User Register Successfully',
+        title: 'User Register Successfully Please Check your Email',
       });
       // router.push('/login')
       setDefaultValue('login');
