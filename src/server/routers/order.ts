@@ -3,6 +3,8 @@ import { TRPCError } from '@trpc/server';
 import {
   createCheckoutPaymentSchema,
   createCheckoutSchema,
+  getByIDSchema,
+  getOrderSchema,
 } from '~/schema/order';
 import https from 'https';
 
@@ -205,6 +207,102 @@ export const orderRouter = router({
         });
       }
     }),
+  get: publicProcedure.input(getOrderSchema).query(async ({ input }) => {
+    try {
+      const where: any = { is_deleted: false };
+
+      if (input?.startDate) {
+        const startDate = new Date(input?.startDate);
+        where.created_at = { gte: startDate };
+      }
+      if (input?.endDate) {
+        const endDate = new Date(input?.endDate);
+        where.created_at = { lte: endDate };
+      }
+      // if (input.category_id) where.id = input.category_id;
+
+      // if (input.event_id) where.id = input.event_id;
+
+      const totalEventPromise = prisma.order.count({
+        where: where,
+      });
+
+      const eventPromise = prisma.order.findMany({
+        orderBy: { created_at: 'desc' },
+        skip: input.first * input.rows,
+        take: input.rows,
+        where: where,
+        include: {
+          Customer: {
+            select: {
+              email: true,
+              first_name: true,
+              last_name: true,
+            },
+          },
+        },
+      });
+
+      const [totalEvent, event] = await Promise.all([
+        totalEventPromise,
+        eventPromise,
+      ]);
+
+      if (!event?.length) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Events not found',
+        });
+      }
+
+      return {
+        message: 'events found',
+        count: totalEvent,
+        data: event,
+      };
+    } catch (error: any) {
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: error?.message,
+      });
+    }
+  }),
+  getByID: publicProcedure.input(getByIDSchema).query(async ({ input }) => {
+    try {
+      const where: any = { is_deleted: false, id: input?.order_id };
+
+      const eventPromise = prisma.order.findFirst({
+        orderBy: { created_at: 'desc' },
+
+        where: where,
+        include: {
+          Customer: {
+            select: {
+              email: true,
+              first_name: true,
+              last_name: true,
+            },
+          },
+        },
+      });
+      const [event] = await Promise.all([eventPromise]);
+      if (!event) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Events not found',
+        });
+      }
+      return {
+        message: 'events found',
+        data: event,
+      };
+    } catch (error: any) {
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: error?.message,
+      });
+    }
+  }),
 });
 
 async function CreatePayment(APidata: any) {
