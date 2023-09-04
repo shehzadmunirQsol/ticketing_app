@@ -1,17 +1,23 @@
-import React, { ReactNode,useEffect } from 'react';
+import React, { ReactNode, useEffect } from 'react';
 import Header from './header';
 import Sidebar from './sidebar';
 import { useRouter } from 'next/router';
 import { Toaster } from '~/components/ui/toaster';
 import { RootState } from '~/store/store';
-import { useDispatch,useSelector } from 'react-redux';
-import { userAdminAuth, userAdminIsLogin } from '~/store/reducers/adminAuthSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  userAdminAuth,
+  userAdminIsLogin,
+} from '~/store/reducers/adminAuthSlice';
 import { trpc } from '~/utils/trpc';
 
 type DefaultLayoutProps = { children: ReactNode };
 
 function AdminLayout({ children }: DefaultLayoutProps) {
   const { isLogin } = useSelector((state: RootState) => state.adminAuth);
+  const { isSidebarOpen } = useSelector(
+    (state: RootState) => state.adminLayout,
+  );
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -24,7 +30,7 @@ function AdminLayout({ children }: DefaultLayoutProps) {
   );
 
   useEffect(() => {
-    console.log("Data: ",data)
+    console.log('Data: ', data);
     if (data?.id) {
       dispatch(userAdminAuth(data as any));
       dispatch(userAdminIsLogin(true));
@@ -33,16 +39,16 @@ function AdminLayout({ children }: DefaultLayoutProps) {
   }, [dispatch, data]);
 
   return (
-    <div className="relative grid min-h-screen w-screen">
+    <div className="relative">
       {router.asPath === '/admin/login' ? (
         <main className="flex-1 m-auto">{children}</main>
       ) : (
         <>
           <Header />
-          
+
           <div className="flex">
             <Sidebar />
-            <main className="flex-1 w-full">{children}</main>
+            <main className={`flex-1 w-full ${isSidebarOpen ?'w-[calc(100vw-15%)]':'w-[calc(100vw-80px)]'}`}>{children}</main>
           </div>
         </>
       )}

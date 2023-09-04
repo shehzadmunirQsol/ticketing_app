@@ -10,7 +10,7 @@ export function middleware(request: NextRequest, requestHeaders: Headers) {
       request.nextUrl.pathname,
     );
     const token = getAdminToken(storeRequestHeaders);
-    console.log("TOken: ",token)
+    console.log('TOken: ', token);
     if (isProtecedAdminRoutes && token)
       return NextResponse.redirect(new URL('/admin/dashboard', request.url));
     if (!isProtecedAdminRoutes && !token)
@@ -27,6 +27,6 @@ export function middleware(request: NextRequest, requestHeaders: Headers) {
   //   if (!isProtecedAdminRoutes && !token)
   //     return NextResponse.redirect(new URL('/', request.url));
   // }
-  
+
   return NextResponse.next();
 }

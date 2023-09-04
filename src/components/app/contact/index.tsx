@@ -48,7 +48,7 @@ export default function Contact() {
   // Handle Contact us
   const contactUs = trpc.contact.contact.useMutation({
     onSuccess: async (res: any) => {
-      console.log(res,"res")
+      console.log(res, 'res');
       // props.setIsModal(false);
       toast({
         variant: 'success',
@@ -75,7 +75,7 @@ export default function Contact() {
   const onSubmitContact = async (values: any) => {
     console.log(values, 'Working');
     const resp = await contactUs.mutateAsync(values);
-    console.log(resp,"customer resp")
+    console.log(resp, 'customer resp');
   };
 
   return (
@@ -84,8 +84,8 @@ export default function Contact() {
         <div className="lg:w-2/3 md:w-2/3 w-full h-full mb-5 lg:mb-0 rounded-lg hidden  lg:block  ">
           <SideImage
             image={ContactImage}
-            text={'Unlock Your Journey Login or Register for'}
-            text2={'Exclusive Access'}
+            text={'Connect with Us for '}
+            text2={'Support, Questions'}
           />
         </div>
         <div className="flex flex-col flex-wrap   lg:w-2/2 md:w-full  lg:text-left  rounded-none border-none  lg:mr-6 bg-card">
