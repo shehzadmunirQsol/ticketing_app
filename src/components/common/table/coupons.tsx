@@ -39,9 +39,10 @@ import {
   TooltipTrigger,
 } from '~/components/ui/tooltip';
 import { Switch } from '~/components/ui/switch';
-import { CustomerDialog } from '../modal/customers';
 import { useToast } from '~/components/ui/use-toast';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
+import { CouponDialog } from '../modal/coupon';
+import { LoadingDialog } from '../modal/loadingModal';
 
 export type Category = {
   id: number;
@@ -77,7 +78,7 @@ export default function CouponsDataTable() {
   const [isModal, setIsModal] = React.useState(false);
 
   // APi
-  const { data, refetch } = trpc.coupon.get.useQuery(filters, {
+  const { data, refetch,isLoading } = trpc.coupon.get.useQuery(filters, {
     refetchOnWindowFocus: false,
   });
 
@@ -89,7 +90,7 @@ export default function CouponsDataTable() {
   const handleEnbled = (data: any, type: string) => {
     if (!data?.is_approved) {
       setSelectedItem(data);
-      setTitle('Customer');
+      setTitle('Coupon');
       setType(type);
       setIsModal(true);
     } else {
@@ -248,61 +249,58 @@ export default function CouponsDataTable() {
         </DropdownMenu>
       </div>
       <div className="rounded-md border ">
-      <ScrollArea  className='w-full '>
-        <ScrollBar orientation="horizontal">
+        <ScrollArea className="w-full ">
+          <ScrollBar orientation="horizontal"></ScrollBar>
 
-        </ScrollBar>
-
-        <Table className='w-full overflow-x-scroll'>
-          <TableHeader>
-            {table?.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table?.getRowModel()?.rows?.length ? (
-              table?.getRowModel()?.rows?.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && 'selected'}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
-                    </TableCell>
-                  ))}
+          <Table className="w-full overflow-x-scroll">
+            <TableHeader>
+              {table?.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <TableHead key={header.id}>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext(),
+                            )}
+                      </TableHead>
+                    );
+                  })}
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </ScrollArea>
-
+              ))}
+            </TableHeader>
+            <TableBody>
+              {table?.getRowModel()?.rows?.length ? (
+                table?.getRowModel()?.rows?.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && 'selected'}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext(),
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-24 text-center"
+                  >
+                    No results.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </ScrollArea>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="space-x-2">
@@ -322,7 +320,7 @@ export default function CouponsDataTable() {
           </Button>
         </div>
       </div>
-      <CustomerDialog
+      <CouponDialog
         selectedItem={selectedItem}
         setSelectedItem={setSelectedItem}
         title={title}
@@ -333,6 +331,7 @@ export default function CouponsDataTable() {
         type={type}
         setType={setType}
       />
+      <LoadingDialog open={isLoading} text={'Loading data...'} />
     </div>
   );
 }

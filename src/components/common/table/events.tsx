@@ -35,10 +35,11 @@ import LanguageSelect, { LanguageInterface } from '../language_select';
 import { GetCategorySchema } from '~/schema/category';
 import { trpc } from '~/utils/trpc';
 import Image from 'next/image';
-import { renderNFTImage } from '~/utils/helper';
+import { displayDate, renderNFTImage } from '~/utils/helper';
 import Link from 'next/link';
 import { GetEventSchema } from '~/schema/event';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
+import { LoadingDialog } from '../modal/loadingModal';
 
 export type Category = {
   thumb: string;
@@ -49,6 +50,8 @@ export type Category = {
   total_tickets: number;
   tickets_sold: number;
   user_ticket_limit: number;
+  launch_date: Date;
+  end_date: Date;
   created_at: Date;
   updated_at: Date;
 };
@@ -63,7 +66,7 @@ export default function EventsDataTable() {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
 
-  const { data } = trpc.event.get.useQuery(filters, {
+  const { data, isLoading } = trpc.event.get.useQuery(filters, {
     refetchOnWindowFocus: false,
   });
   console.log({ data });
@@ -104,7 +107,7 @@ export default function EventsDataTable() {
       header: 'Token Price',
       cell: ({ row }) => (
         <div className="capitalize text-ellipsis whitespace-nowrap ">
-          ${(row?.original?.price).toFixed(2)}
+          AED{(row?.original?.price).toFixed(2)}
         </div>
       ),
     },
@@ -142,6 +145,24 @@ export default function EventsDataTable() {
       ),
     },
     {
+      accessorKey: 'launch_date',
+      header: 'Launch Date',
+      cell: ({ row }) => (
+        <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
+          {displayDate(row?.original?.launch_date)}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'end_date',
+      header: 'End Date',
+      cell: ({ row }) => (
+        <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
+          {displayDate(row?.original?.end_date)}
+        </div>
+      ),
+    },
+    {
       id: 'actions',
       enableHiding: false,
       cell: ({ row }) => {
@@ -156,8 +177,8 @@ export default function EventsDataTable() {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <Link href={`/admin/category/edit/${row?.original?.id}`}>
-                <DropdownMenuItem>Edit Category</DropdownMenuItem>
+              <Link href={`/admin/events/edit/${row?.original?.id}`}>
+                <DropdownMenuItem>Edit Event</DropdownMenuItem>
               </Link>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -223,58 +244,56 @@ export default function EventsDataTable() {
         </DropdownMenu>
       </div>
       <div className="rounded-md border">
-      <ScrollArea  className='w-full '>
-        <ScrollBar orientation="horizontal">
-
-        </ScrollBar>
-        <Table>
-          <TableHeader>
-            {table?.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table?.getRowModel()?.rows?.length ? (
-              table?.getRowModel()?.rows?.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && 'selected'}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
-                    </TableCell>
-                  ))}
+        <ScrollArea className="w-full ">
+          <ScrollBar orientation="horizontal"></ScrollBar>
+          <Table>
+            <TableHeader>
+              {table?.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <TableHead key={header.id}>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext(),
+                            )}
+                      </TableHead>
+                    );
+                  })}
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+              ))}
+            </TableHeader>
+            <TableBody>
+              {table?.getRowModel()?.rows?.length ? (
+                table?.getRowModel()?.rows?.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && 'selected'}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext(),
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-24 text-center"
+                  >
+                    No results.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
         </ScrollArea>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
@@ -295,6 +314,8 @@ export default function EventsDataTable() {
           </Button>
         </div>
       </div>
+            <LoadingDialog open={isLoading} text={'Loading data...'} />
+
     </div>
   );
 }

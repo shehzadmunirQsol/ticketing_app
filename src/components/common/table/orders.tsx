@@ -37,6 +37,7 @@ import { trpc } from '~/utils/trpc';
 import Link from 'next/link';
 import { GetEventSchema } from '~/schema/event';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
+import { LoadingDialog } from '../modal/loadingModal';
 
 export type Category = {
   id: number;
@@ -63,7 +64,7 @@ export default function OrdersDataTable() {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
 
-  const { data } = trpc.order.get.useQuery(filters, {
+  const { data, isLoading } = trpc.order.get.useQuery(filters, {
     refetchOnWindowFocus: false,
   });
   console.log({ data });
@@ -293,6 +294,7 @@ export default function OrdersDataTable() {
           </Button>
         </div>
       </div>
+      <LoadingDialog open={isLoading} text={'Loading data...'} />
     </div>
   );
 }

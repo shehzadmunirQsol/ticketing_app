@@ -10,7 +10,7 @@ export const couponRouter = router({
       try {
         const coupon = await prisma.coupon.findFirst({
           where: {
-            coupon_code: input?.coupon_code,
+            coupon_code: { contains: input?.coupon_code },
             is_enabled: true,
             is_deleted: false,
           },

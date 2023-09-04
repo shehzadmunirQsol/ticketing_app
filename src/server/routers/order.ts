@@ -283,6 +283,11 @@ export const orderRouter = router({
               last_name: true,
             },
           },
+          OrderEvent: {
+            include: {
+              Event: true,
+            },
+          },
         },
       });
       const [event] = await Promise.all([eventPromise]);
@@ -391,10 +396,6 @@ async function CreatePayment(APidata: any) {
 }
 async function CreateSubscription(APidata: any) {
   try {
-    console.log(
-      APidata?.subscription_type,
-      "APidata?.end_date.toISOString().split('T')[0]",
-    );
     const payload = { ...APidata };
 
     if (payload?.card) delete payload?.card;

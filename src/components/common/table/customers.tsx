@@ -17,7 +17,6 @@ import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
- 
   DropdownMenuTrigger,
 } from '@/ui/dropdown-menu';
 import {
@@ -40,6 +39,7 @@ import {
 import { Switch } from '~/components/ui/switch';
 import { CustomerDialog } from '../modal/customers';
 import { useToast } from '~/components/ui/use-toast';
+import { LoadingDialog } from '../modal/loadingModal';
 
 export type Category = {
   email: string;
@@ -47,6 +47,7 @@ export type Category = {
   first_name: string;
   last_name: string;
   is_approved: boolean;
+  is_verified: boolean;
   id: number;
   dob: Date;
   created_at: Date;
@@ -71,7 +72,7 @@ export default function CustomersDataTable() {
   const [isModal, setIsModal] = React.useState(false);
 
   // APi
-  const { data, refetch } = trpc.customer.getCustomers.useQuery(filters, {
+  const { data, refetch,isLoading } = trpc.customer.getCustomers.useQuery(filters, {
     refetchOnWindowFocus: false,
   });
 
@@ -86,7 +87,7 @@ export default function CustomersDataTable() {
       setTitle('Customer');
       setType(type);
       setIsModal(true);
-    }else{
+    } else {
       toast({
         variant: 'success',
         title: `Customer is Already Approved!`,
@@ -135,6 +136,23 @@ export default function CustomersDataTable() {
         </div>
       ),
     },
+    {
+      id: 'is_verified',
+      header: 'Verified Status',
+
+      cell: ({ row }) => {
+        return (
+          <div>
+            <Switch
+              checked={row?.original?.is_verified}
+              disabled={true}
+              // onCheckedChange={() => handleEnbled(row?.original, 'enabled')}
+            />
+          </div>
+        );
+      },
+    },
+
     {
       id: 'is_approved',
       header: 'Approved Status',
@@ -205,58 +223,56 @@ export default function CustomersDataTable() {
         </DropdownMenu>
       </div>
       <div className="rounded-md border">
-      <ScrollArea  className='w-full '>
-        <ScrollBar orientation="horizontal">
-
-        </ScrollBar>
-        <Table>
-          <TableHeader>
-            {table?.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table?.getRowModel()?.rows?.length ? (
-              table?.getRowModel()?.rows?.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && 'selected'}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
-                    </TableCell>
-                  ))}
+        <ScrollArea className="w-full ">
+          <ScrollBar orientation="horizontal"></ScrollBar>
+          <Table>
+            <TableHeader>
+              {table?.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <TableHead key={header.id}>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext(),
+                            )}
+                      </TableHead>
+                    );
+                  })}
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+              ))}
+            </TableHeader>
+            <TableBody>
+              {table?.getRowModel()?.rows?.length ? (
+                table?.getRowModel()?.rows?.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && 'selected'}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext(),
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-24 text-center"
+                  >
+                    No results.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
         </ScrollArea>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
@@ -288,6 +304,8 @@ export default function CustomersDataTable() {
         type={type}
         setType={setType}
       />
+      <LoadingDialog open={isLoading} text={'Loading data...'} />
+
     </div>
   );
 }

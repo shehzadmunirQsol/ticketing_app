@@ -21,12 +21,12 @@ const SIDEBAR_DATA = [
   },
   {
     key: '/admin/category',
-    icon: <i className="fa-solid fa-home p-4 rounded-full" />,
+    icon: <i className="fa-solid fa-images p-4 rounded-full"></i>,
     title: 'Category',
   },
   {
     key: '/admin/events',
-    icon: <i className="fa-solid fa-home p-4 rounded-full" />,
+    icon: <i className="fa-solid fa-calendar-days p-4 rounded-full"></i>,
     title: 'Events',
   },
   {
