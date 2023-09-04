@@ -74,4 +74,10 @@ export const createCheckoutPaymentSchema = z.object({
   registrationId: z.string().optional().nullable(),
   customer_id: z.number().optional(),
 });
+
+
+export const getOrder = z.object({
+  id: z.number(),
+  lang_id: z.number()
+})
 export type CreateCheckoutSchema = z.infer<typeof createCheckoutSchema>;

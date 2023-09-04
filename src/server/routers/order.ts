@@ -3,6 +3,7 @@ import { TRPCError } from '@trpc/server';
 import {
   createCheckoutPaymentSchema,
   createCheckoutSchema,
+  getOrder,
 } from '~/schema/order';
 import https from 'https';
 
@@ -191,6 +192,55 @@ export const orderRouter = router({
         });
       }
     }),
+
+  getOrders: publicProcedure.input(getOrder).query(async ({ input, ctx }) => {
+    try {
+      const orders = await prisma.order.findMany({
+        where: {
+          customer_id: input.id,
+        },
+        include: {
+          OrderEvent: {
+            include: {
+              Event: {
+                include:{
+                  EventDescription:{
+                    where:{
+                      lang_id:input.lang_id
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      })
+
+
+      console.log({ orders }, "ordersorders")
+
+      const todayDate = new Date()
+
+      let ret: any = { current: [], past: [] };
+
+      for (let i = 0; i < orders.length; i++) {
+        
+
+          if (orders[i].OrderEvent[0].Event?.end_date < todayDate) {
+            ret.past.push(orders[i])
+          } else {
+            ret.current.push(orders[i])
+  
+          }
+        
+      }
+
+      return ret
+
+    } catch (error) {
+
+    }
+  })
 });
 
 async function CreatePayment(APidata: any) {
@@ -202,41 +252,41 @@ async function CreatePayment(APidata: any) {
     if (payload?.card) delete payload?.card;
     const apiDate: any = APidata?.registrationId
       ? {
-          entityId: process.env.TOTAN_ENTITY_ID,
-          amount: +APidata?.total_amount,
-          currency: 'AED',
-          paymentType: 'DB',
-          'standingInstruction.source': 'CIT',
-          // wpwlOptions: JSON.stringify(APidata?.cart),
-          'customParameters[payload]': JSON.stringify({
-            ...payload,
-          }),
+        entityId: process.env.TOTAN_ENTITY_ID,
+        amount: +APidata?.total_amount,
+        currency: 'AED',
+        paymentType: 'DB',
+        'standingInstruction.source': 'CIT',
+        // wpwlOptions: JSON.stringify(APidata?.cart),
+        'customParameters[payload]': JSON.stringify({
+          ...payload,
+        }),
 
-          'standingInstruction.type': 'UNSCHEDULED',
-        }
+        'standingInstruction.type': 'UNSCHEDULED',
+      }
       : {
-          entityId: process.env.TOTAN_ENTITY_ID,
-          amount: APidata?.total_amount,
-          currency: 'AED',
-          paymentBrand: APidata?.paymentBrand,
-          paymentType: 'DB',
+        entityId: process.env.TOTAN_ENTITY_ID,
+        amount: APidata?.total_amount,
+        currency: 'AED',
+        paymentBrand: APidata?.paymentBrand,
+        paymentType: 'DB',
 
-          'card.number':
-            APidata?.card?.number && +APidata?.card?.number.replaceAll(' ', ''),
-          'card.holder': APidata?.card?.holder && APidata?.card?.holder,
-          'card.expiryMonth':
-            APidata?.card?.expiryMonth && APidata?.card?.expiryMonth,
-          'card.expiryYear':
-            APidata?.card?.expiryYear && APidata?.card?.expiryYear,
-          'card.cvv': APidata?.card?.cvv && +APidata?.card?.cvv,
-          'standingInstruction.mode': 'INITIAL',
-          'standingInstruction.source': 'CIT',
-          'customParameters[payload]': JSON.stringify({
-            ...payload,
-          }),
+        'card.number':
+          APidata?.card?.number && +APidata?.card?.number.replaceAll(' ', ''),
+        'card.holder': APidata?.card?.holder && APidata?.card?.holder,
+        'card.expiryMonth':
+          APidata?.card?.expiryMonth && APidata?.card?.expiryMonth,
+        'card.expiryYear':
+          APidata?.card?.expiryYear && APidata?.card?.expiryYear,
+        'card.cvv': APidata?.card?.cvv && +APidata?.card?.cvv,
+        'standingInstruction.mode': 'INITIAL',
+        'standingInstruction.source': 'CIT',
+        'customParameters[payload]': JSON.stringify({
+          ...payload,
+        }),
 
-          createRegistration: 'true',
-        };
+        createRegistration: 'true',
+      };
 
     const data = new URLSearchParams(apiDate).toString();
     const options = {
