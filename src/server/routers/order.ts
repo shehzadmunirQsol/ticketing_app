@@ -395,6 +395,10 @@ async function CreateSubscription(APidata: any) {
       APidata?.subscription_type,
       "APidata?.end_date.toISOString().split('T')[0]",
     );
+    const payload = { ...APidata };
+
+    if (payload?.card) delete payload?.card;
+    if (payload?.values) delete payload?.values;
 
     const path = '/scheduling/v1/schedules';
     const subType: any = {};
@@ -421,7 +425,7 @@ async function CreateSubscription(APidata: any) {
         .slice(0, 19)
         .replace('T', ' '),
       'customParameters[payload]': JSON.stringify({
-        ...APidata,
+        ...payload,
       }),
     };
 
