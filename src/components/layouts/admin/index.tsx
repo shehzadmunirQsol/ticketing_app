@@ -39,7 +39,7 @@ function AdminLayout({ children }: DefaultLayoutProps) {
   }, [dispatch, data]);
 
   return (
-    <div className="relative ">
+    <div className="relative">
       {router.asPath === '/admin/login' ? (
         <main className="flex-1 m-auto">{children}</main>
       ) : (
@@ -48,7 +48,7 @@ function AdminLayout({ children }: DefaultLayoutProps) {
 
           <div className="flex">
             <Sidebar />
-            <main className={`flex-1 w-full ${isSidebarOpen ?'w-[calc(100vw-256px)]':'w-[calc(100vw-80px)]'}`}>{children}</main>
+            <main className={`flex-1 w-full ${isSidebarOpen ?'w-[calc(100vw-15%)]':'w-[calc(100vw-80px)]'}`}>{children}</main>
           </div>
         </>
       )}

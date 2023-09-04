@@ -61,7 +61,7 @@ function Header() {
     <div className="sticky top-0 flex z-40 items-center bg-background border-b border-input justify-between py-2 px-4 shadow-sm">
       <div className="z-50">
         {/* Conditionally render DrawerFunction */}
-        <div className="md:hidden">
+        <div className="xl:hidden">
           <DrawerFunction />
         </div>
 
@@ -70,7 +70,7 @@ function Header() {
           onClick={toggleSidebarHandler}
           variant="outline"
           size="icon"
-          className="md:inline hidden"
+          className="xl:inline hidden"
         >
           <i className="fa-solid fa-bars" />
         </Button>

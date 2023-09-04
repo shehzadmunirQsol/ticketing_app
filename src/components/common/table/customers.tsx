@@ -205,7 +205,7 @@ export default function CustomersDataTable() {
         </DropdownMenu>
       </div>
       <div className="rounded-md border">
-      <ScrollArea  className='w-full '>
+      <ScrollArea  className='w-full'>
         <ScrollBar orientation="horizontal">
 
         </ScrollBar>
