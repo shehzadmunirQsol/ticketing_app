@@ -94,7 +94,7 @@ export function CheckoutDialog(props: SettingDialogInterface) {
               : user?.id,
         },
       };
-      if (!user?.total_customer_id) {
+      if (true) {
         payload = {
           ...values,
           registrationId: user?.total_customer_id,
@@ -115,12 +115,12 @@ export function CheckoutDialog(props: SettingDialogInterface) {
       const data = await bannerUpdate.mutateAsync({
         ...payload,
       });
-      if (data?.user) {
+      if (data) {
         toast({
           variant: 'success',
           title: 'Payment Successfully',
         });
-        dispatch(userAuth(data?.user));
+        // dispatch(userAuth(data?.user));
         dispatch(
           addCart({
             cart: {

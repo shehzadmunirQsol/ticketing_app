@@ -70,7 +70,6 @@ export const orderRouter = router({
           total_amount: subTotalAmount - discountAmount,
           cartItem: cart?.CartItems,
         };
-        if (input?.values) delete paymentPayload?.values;
         const paymentRes: any = await CreatePayment({
           ...paymentPayload,
         })
@@ -214,7 +213,10 @@ async function CreatePayment(APidata: any) {
       ? `/v1/registrations/${APidata?.registrationId}/payments`
       : '/v1/payments';
     const payload = { ...APidata };
+    console.log(APidata, 'APidata?.paymentBrandsss');
+
     if (payload?.card) delete payload?.card;
+    if (payload?.values) delete payload?.values;
     const apiDate: any = APidata?.registrationId
       ? {
           entityId: process.env.TOTAN_ENTITY_ID,
@@ -233,8 +235,8 @@ async function CreatePayment(APidata: any) {
           entityId: process.env.TOTAN_ENTITY_ID,
           amount: APidata?.total_amount,
           currency: 'AED',
-          paymentBrand: APidata?.paymentBrand,
           paymentType: 'DB',
+          paymentBrand: APidata?.paymentBrand,
 
           'card.number':
             APidata?.card?.number && +APidata?.card?.number.replaceAll(' ', ''),
