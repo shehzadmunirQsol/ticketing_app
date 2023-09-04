@@ -12,7 +12,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { ChevronDown, MoreHorizontal } from 'lucide-react';
-
+import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 import { Button } from '@/ui/button';
 import { Checkbox } from '@/ui/checkbox';
 import {
@@ -304,6 +304,10 @@ export default function DataTableBanner() {
         </div>
       </div>
       <div className="rounded-md border">
+      <ScrollArea  className='w-full '>
+        <ScrollBar orientation="horizontal">
+
+        </ScrollBar>
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -353,6 +357,7 @@ export default function DataTableBanner() {
             )}
           </TableBody>
         </Table>
+        </ScrollArea>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="flex-1 text-sm text-muted-foreground">

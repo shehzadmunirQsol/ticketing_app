@@ -18,6 +18,7 @@ import {
   accountsDetailSchema,
   passwordChangeSchema,
   deleteMyAccountCustomerSchema,
+  logoutSchema
 } from '~/schema/customer';
 import { hashPass, isSamePass } from '~/utils/hash';
 import { signJWT, verifyJWT } from '~/utils/jwt';
@@ -203,7 +204,7 @@ export const customerRouter = router({
         const validity = isValidEmail(input.user)
           ? { email: input.user }
           : { username: input.user };
-
+        console.log(validity, 'validity');
         const user = await prisma.customer.findFirst({
           where: validity,
         });
@@ -218,6 +219,13 @@ export const customerRouter = router({
           throw new TRPCError({
             code: 'NOT_FOUND',
             message: 'Please Wait for Admin Verification',
+          });
+        }
+        
+        if (user?.is_disabled) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Your Account is Disabled Kindly Contact From Admin Thankyou!',
           });
         }
         const checkPass = await isSamePass(input.password, user?.password);
@@ -260,6 +268,13 @@ export const customerRouter = router({
           throw new TRPCError({
             code: 'NOT_FOUND',
             message: 'User Not Found',
+          });
+        }
+
+        if (user?.is_disabled) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Your Account is Disabled Kindly Contact From Admin Thankyou!',
           });
         }
 
@@ -645,6 +660,14 @@ export const customerRouter = router({
         const customer = await prisma.deleteRequest.create({
           data: payload,
         });
+        const updateResponse = await prisma.customer?.update({
+          where: {
+            id: user.id,
+          },
+          data: {
+            is_disabled: true,
+          },
+        });
         console.log(customer), 'customer';
         return { user: user, status: true };
       } catch (error: any) {
@@ -655,4 +678,28 @@ export const customerRouter = router({
         });
       }
     }),
+
+
+    logout: publicProcedure
+    .input(logoutSchema)
+    .mutation(async ({ ctx }) => {
+        try {
+          const serialized = serialize('winnar-token', '', {
+            httpOnly: true,
+            path: '/',
+            sameSite: 'strict',
+            // secure: process.env.NODE_ENV !== "development",
+          });
+          console.log("Serialized :: ",serialized)
+          ctx?.res?.setHeader('Set-Cookie', serialized);
+          return { message: 'Logout successfully!' };
+        } catch (error: any) {
+          throw new TRPCError({
+            code: 'INTERNAL_SERVER_ERROR',
+            message: error?.message,
+          });
+        }
+    }),
+
+
 });

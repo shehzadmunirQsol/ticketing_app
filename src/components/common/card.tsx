@@ -41,7 +41,7 @@ function ProductCard(props: cardInterface) {
   return (
     <div
       dir={props?.dir}
-      className={`   rounded-sm overflow-hidden shadow-lg bg-card h-1/5 ${props?.class}`}
+      className={`   rounded-sm shadow-lg bg-card ${props?.class}`}
       ref={cardRef}
     >
       <div className="relative">
@@ -70,7 +70,7 @@ function ProductCard(props: cardInterface) {
           <span className=" text-xs ">955 Sold out of 1850</span>
           <Progress value={80} className="w-full" />
         </div>
-        <div className="font-bold text-3xl mb-2">
+        <div className="font-bold text-xl lg:text-2xl xl:text-3xl ">
           <span className="text-gray-200  font-semibold leading-loose">
             {`${props?.data?.EventDescription[0]?.desc}`}
           </span>
@@ -80,23 +80,23 @@ function ProductCard(props: cardInterface) {
         </div>
         <hr className=" opacity-20 mt-4" />
         <div className=" mt-2">
-          <span className="text-gray-200 text-lg font-normal leading-[18px]">
+          <span className="text-gray-200 text-md xl:text-lg font-normal leading-[18px]">
             Cash Alternative
           </span>
-          <span className="text-primary text-lg font-black leading-[18px]">
+          <span className="text-primary text-md xl:text-lg font-black leading-[18px]">
             {' '}
             AED 45000
           </span>
         </div>
-        <div className="flex  justify-between items-center mt-6">
-          <div className="text-primary text-lg font-black leading-[18px]">
+        <div className="flex  justify-between items-center mt-6 gap-4">
+          <div className="text-primary text-md xl:text-lg font-black leading-[18px]">
             AED 120.00
           </div>
-            <Link href={`/product-detail/${props?.data?.id}`}>
-          <Button variant="rounded" className="font-[800] tracking-tight  ">
-            ENTER NOW
-          </Button>
-            </Link>
+          <Link href={`/product-detail/${props?.data?.id}`}>
+            <Button variant="rounded" className="font-[800] tracking-tight text-md xl:text-lg ">
+              ENTER NOW
+            </Button>
+          </Link>
         </div>
       </div>
     </div>

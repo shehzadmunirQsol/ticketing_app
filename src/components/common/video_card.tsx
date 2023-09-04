@@ -62,7 +62,7 @@ const VideoCard = (props: cardInterface) => {
           </DialogTrigger>
           <DialogContent>
             <iframe
-              className="w-full h-[360px]"
+              className="w-full h-[360px] p-2"
               // src="https://www.youtube.com/embed/Y-x0efG1seA" //add src prop later
               src={`${props?.data?.link}`} //add src prop later
               title="YouTube video player"

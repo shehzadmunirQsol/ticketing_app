@@ -34,12 +34,14 @@ import { userAuth } from '~/store/reducers/auth';
 import { useDispatch } from 'react-redux';
 import { OtpVerificationDailog } from './otp-verification';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { LoadingDialog } from '~/components/common/modal/loadingModal';
 
 export default function LoginSignup() {
   const { toast } = useToast();
   const router = useRouter();
   const dispatch = useDispatch();
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
   // const formSignup = useForm<signupCustomerInput>();
 
   // 1. Define your form.
@@ -68,7 +70,7 @@ export default function LoginSignup() {
       console.log(res, 'res');
       toast({
         variant: 'success',
-        title: 'User Register Successfully',
+        title: 'User Register Successfully Please Check your Email',
       });
       // router.push('/login')
       setDefaultValue('login');
@@ -77,6 +79,7 @@ export default function LoginSignup() {
       formSignup.setValue('password', '');
       formSignup.setValue('firstname', '');
       formSignup.setValue('lastname', '');
+      setIsSubmitting(false);
     },
     onError: (err) => {
       console.log(err.message, 'err');
@@ -108,13 +111,15 @@ export default function LoginSignup() {
   // Signup
   const onSubmitSignup = async (values: any) => {
     try {
+      setIsSubmitting(true);
       console.log(values, 'Working');
-
       const signupResult = await registerCustomer.mutateAsync(values);
       setOtpIsModal(true);
+      setIsSubmitting(false);
 
       console.log(signupResult, 'signupResult');
     } catch (e: any) {
+      setIsSubmitting(false);
       setOtpIsModal(false);
       toast({
         variant: 'destructive',
@@ -127,9 +132,11 @@ export default function LoginSignup() {
 
   const onSubmitLogin = async (values: any) => {
     try {
+      setIsSubmitting(true);
       const loginResult = await loginCustomer.mutateAsync(values);
       console.log(loginResult, 'loginResult');
     } catch (e: any) {
+      setIsSubmitting(false);
       toast({
         variant: 'destructive',
         title: e.message,
@@ -227,6 +234,7 @@ export default function LoginSignup() {
               </form>
             </Form>
           </TabsContent>
+          <LoadingDialog open={isSubmitting} text={'Loading...'} />
           <TabsContent value="signup">
             <Form {...formSignup}>
               <form

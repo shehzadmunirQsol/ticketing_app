@@ -6,6 +6,15 @@ import { useDispatch } from 'react-redux';
 import { trpc } from '~/utils/trpc';
 import { toggleSidebar } from '~/store/reducers/admin_layout';
 import { useRouter } from 'next/router';
+import * as Collapsible from '@radix-ui/react-collapsible';
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '~/components/ui/sheet';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -39,6 +48,8 @@ import {
 // import { router } from '~/server/trpc';
 import { formatTrpcError } from '~/utils/helper';
 import toast from 'react-hot-toast';
+import Link from 'next/link';
+import Content from './content';
 function Header() {
   const dispatch = useDispatch();
 
@@ -48,10 +59,24 @@ function Header() {
 
   return (
     <div className="sticky top-0 flex z-40 items-center bg-background border-b border-input justify-between py-2 px-4 shadow-sm">
-      <Button onClick={toggleSidebarHandler} variant="outline" size="icon">
-        <i className="fa-solid fa-bars" />
-      </Button>
-      <Image src={LogoImage} alt="Logo Image" width={150} height={140} />
+      <div className="z-50">
+        {/* Conditionally render DrawerFunction */}
+        <div className="xl:hidden">
+          <DrawerFunction />
+        </div>
+
+        {/* Render the icon button */}
+        <Button
+          onClick={toggleSidebarHandler}
+          variant="outline"
+          size="icon"
+          className="xl:inline hidden"
+        >
+          <i className="fa-solid fa-bars" />
+        </Button>
+      </div>
+
+      <Image src={LogoImage} alt="Logoimage" width={150} height={140} />
       <DropdownMenuDemo />
     </div>
   );
@@ -60,34 +85,32 @@ function Header() {
 export default Header;
 
 export function DropdownMenuDemo() {
-  const router = useRouter()
+  const router = useRouter();
 
   const logout = trpc.admin.logout.useMutation({
     onSuccess: (res: any) => {
-      console.log("return data", res);
+      console.log('return data', res);
     },
     onError(error) {
-      console.log( error.message,"ERROR" );
+      console.log(error.message, 'ERROR');
     },
-  })
+  });
 
-  async function handleLogout(){
-    console.log("Working")
-    
+  async function handleLogout() {
+    console.log('Working');
+
     try {
-      const response = await logout.mutateAsync({});  
-      console.log("Response : ",response)
-      toast.success('Logout successfully!')
-      localStorage.removeItem('winnar-admin-token')
-      router.replace('/admin/login')
-
-    } catch (error : any ){
-      console.log("Error ",error)
-      console.log("Error ",error)
+      const response = await logout.mutateAsync({});
+      console.log('Response : ', response);
+      toast.success('Logout successfully!');
+      localStorage.removeItem('winnar-admin-token');
+      router.replace('/admin/login');
+    } catch (error: any) {
+      console.log('Error ', error);
+      console.log('Error ', error);
       const errorMessage = formatTrpcError(error?.shape?.message);
-      console.log("Error : ",errorMessage)
-      toast.error(errorMessage)
-      
+      console.log('Error : ', errorMessage);
+      toast.error(errorMessage);
     }
   }
 
@@ -179,5 +202,22 @@ export function DropdownMenuDemo() {
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
+  );
+}
+
+function DrawerFunction() {
+  return (
+    <Sheet>
+      <SheetTrigger className="flex items-center mb-2  p-3 border-2 rounded-full hover:bg-secondary/80 hover:text-primary align-middle justify-between cursor-pointer">
+        <i className="fa-solid fa-bars" />
+      </SheetTrigger>
+      <SheetContent side={'left'}>
+        <SheetHeader>
+          <SheetDescription className="pt-10">
+            <Content />
+          </SheetDescription>
+        </SheetHeader>
+      </SheetContent>
+    </Sheet>
   );
 }

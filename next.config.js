@@ -31,8 +31,6 @@ module.exports = getConfig({
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     domains: [
       'images.unsplash.com',
-      'gateway.pinata.cloud',
-      'dfmin6ewnkm30.cloudfront.net',
       "media.winnar.com"
     ],
   },
