@@ -248,11 +248,11 @@ async function CreatePayment(APidata: any) {
           'card.cvv': APidata?.card?.cvv && +APidata?.card?.cvv,
           'standingInstruction.mode': 'INITIAL',
           'standingInstruction.source': 'CIT',
+          createRegistration: 'true',
+
           'customParameters[payload]': JSON.stringify({
             ...payload,
           }),
-
-          createRegistration: 'true',
         };
 
     const data = new URLSearchParams(apiDate).toString();
