@@ -41,6 +41,7 @@ import {
 import { Switch } from '~/components/ui/switch';
 import { CustomerDialog } from '../modal/customers';
 import { useToast } from '~/components/ui/use-toast';
+import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 
 export type Category = {
   id: number;
@@ -246,8 +247,13 @@ export default function CouponsDataTable() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="rounded-md border">
-        <Table>
+      <div className="rounded-md border ">
+      <ScrollArea  className='w-full '>
+        <ScrollBar orientation="horizontal">
+
+        </ScrollBar>
+
+        <Table className='w-full overflow-x-scroll'>
           <TableHeader>
             {table?.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
@@ -295,6 +301,8 @@ export default function CouponsDataTable() {
             )}
           </TableBody>
         </Table>
+      </ScrollArea>
+
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="space-x-2">

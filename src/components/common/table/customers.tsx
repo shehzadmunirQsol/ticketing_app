@@ -11,7 +11,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { ChevronDown } from 'lucide-react';
-
+import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 import { Button } from '@/ui/button';
 import {
   DropdownMenu,
@@ -205,6 +205,10 @@ export default function CustomersDataTable() {
         </DropdownMenu>
       </div>
       <div className="rounded-md border">
+      <ScrollArea  className='w-full '>
+        <ScrollBar orientation="horizontal">
+
+        </ScrollBar>
         <Table>
           <TableHeader>
             {table?.getHeaderGroups().map((headerGroup) => (
@@ -253,6 +257,7 @@ export default function CustomersDataTable() {
             )}
           </TableBody>
         </Table>
+        </ScrollArea>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="space-x-2">

@@ -175,3 +175,4 @@ export type deleteMyAccountCustomerSchemaInput = z.infer<
 >;
 
 export type addAddressInput = z.TypeOf<typeof addCustomerAddress>;
+export const logoutSchema = z.object({});

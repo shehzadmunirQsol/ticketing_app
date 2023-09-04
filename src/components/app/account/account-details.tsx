@@ -183,8 +183,8 @@ const AccountDetails = () => {
         <hr className=" opacity-20 mt-4" />
       </div>
       <div>
-        <PasswordChange email={user.email} />
-        <DeleteAccount email={user.email} />
+        <PasswordChange email={user?.email} />
+        <DeleteAccount email={user?.email} />
       </div>
     </div>
   );
@@ -473,7 +473,7 @@ function DeleteAccount({ email }: any) {
                 className="align-center  rounded-full px-5 text-base   text-black font-sans font-[900]   tracking-[-1px]"
                 variant="clip"
               >
-                SAVE CHANGES
+                DELETE MY ACCOUNT
               </Button>
             </div>
           </form>

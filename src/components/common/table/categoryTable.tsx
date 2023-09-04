@@ -37,6 +37,7 @@ import { trpc } from '~/utils/trpc';
 import Image from 'next/image';
 import { renderNFTImage } from '~/utils/helper';
 import Link from 'next/link';
+import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 
 export type Category = {
   thumb: string;
@@ -146,7 +147,7 @@ export default function CategoryDataTable() {
   }
 
   return (
-    <div className="w-full space-y-4">
+    <div className="w-full space-y-4 ">
       <div className="flex items-center justify-end gap-2">
         <LanguageSelect languageHandler={languageHandler} />
         <DropdownMenu>
@@ -176,8 +177,12 @@ export default function CategoryDataTable() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="rounded-md border">
-        <Table>
+      <div className="rounded-md border ">
+      <ScrollArea  className='w-full '>
+        <ScrollBar orientation="horizontal">
+
+        </ScrollBar>
+        <Table  className='w-[90vw] md:w-full'>
           <TableHeader>
             {table?.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
@@ -225,6 +230,7 @@ export default function CategoryDataTable() {
             )}
           </TableBody>
         </Table>
+        </ScrollArea>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="space-x-2">
