@@ -285,7 +285,11 @@ export const orderRouter = router({
           },
           OrderEvent: {
             include: {
-              Event: true,
+              Event: {
+                include: {
+                  EventDescription: true,
+                },
+              },
             },
           },
         },

@@ -1,6 +1,10 @@
 import { router, publicProcedure } from '../trpc';
 import { TRPCError } from '@trpc/server';
-import { applyCouponSchema, getCouponSchema } from '~/schema/coupon';
+import {
+  applyCouponSchema,
+  createCouponSchema,
+  getCouponSchema,
+} from '~/schema/coupon';
 import { prisma } from '~/server/prisma';
 
 export const couponRouter = router({
@@ -148,4 +152,86 @@ export const couponRouter = router({
       });
     }
   }),
+  create: publicProcedure
+    .input(createCouponSchema)
+    .mutation(async ({ input }) => {
+      try {
+        const payload: any = {
+          user_id: input?.user_id,
+          name: input?.name,
+          coupon_code: input?.coupon_code?.toUpperCase(),
+          is_percentage: input?.is_percentage == '1' ? true : false,
+          is_limited: input?.is_limited == '1' ? true : false,
+
+          discount: input?.discount,
+          start_date: input?.start_date,
+          end_date: input?.end_date,
+        };
+        if (input?.limit) payload.limit = +input?.limit;
+        const coupon = await prisma.coupon.create({
+          data: { ...payload },
+        });
+        if (!coupon) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Invalid Coupon',
+          });
+        }
+
+        if (!coupon) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Coupon Expired',
+          });
+        }
+
+        return { message: 'Coupon Created', data: coupon };
+      } catch (error: any) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: error?.message,
+        });
+      }
+    }),
+  update: publicProcedure
+    .input(createCouponSchema)
+    .mutation(async ({ input }) => {
+      try {
+        const payload: any = {
+          user_id: input?.user_id,
+          name: input?.name,
+          coupon_code: input?.coupon_code?.toUpperCase(),
+          is_percentage: input?.is_percentage == '1' ? true : false,
+          is_limited: input?.is_limited == '1' ? true : false,
+
+          discount: input?.discount,
+          start_date: input?.start_date,
+          end_date: input?.end_date,
+        };
+        if (input?.limit) payload.limit = +input?.limit;
+        const coupon = await prisma.coupon.create({
+          data: { ...payload },
+        });
+        if (!coupon) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Invalid Coupon',
+          });
+        }
+
+        if (!coupon) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Coupon Expired',
+          });
+        }
+
+        return { message: 'Coupon Created', data: coupon };
+      } catch (error: any) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: error?.message,
+        });
+      }
+    }),
 });

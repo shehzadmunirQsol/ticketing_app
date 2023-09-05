@@ -89,7 +89,9 @@ export default function OrderView() {
                   OrderApiData?.data?.OrderEvent?.map((item, index) => {
                     return (
                       <tr key={index}>
-                        <td className="py-4 text-gray-700">Product 1</td>
+                        <td className="py-4 text-gray-700">
+                          {item?.Event?.EventDescription[0]?.name}
+                        </td>
                         <td className="py-4 text-gray-700">{item?.quantity}</td>
                         <td className="py-4 text-gray-700">
                           AED {item?.ticket_price.toFixed(2)}
