@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
 import { useRouter } from 'next/router';
 
-const ImageSlider = ({ data }: any) => {
+const ImageSlider = ({ data, ticketPurchased }: any) => {
   const { cart } = useSelector((state: RootState) => state.cart);
 
   const [range, setRange] = useState<number[]>([1]);
@@ -75,7 +75,7 @@ const ImageSlider = ({ data }: any) => {
                   range={range}
                   ticketInBasket={ticketInBasket}
                   setRange={setRange}
-                  user_ticket_limit={data?.user_ticket_limit}
+                  user_ticket_limit={data?.user_ticket_limit - ticketPurchased}
                 />
               </div>
               {/* <div className="absolute bottom-10 -right-10  z-10  w-1/5 h-3/5  bg-teal-400 bg-opacity-50 rounded-full blur-3xl"></div> */}

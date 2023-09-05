@@ -31,7 +31,8 @@ module.exports = getConfig({
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     domains: [
       'images.unsplash.com',
-      "media.winnar.com"
+      'media.winnar.com',
+      'dfmin6ewnkm30.cloudfront.net',
     ],
   },
   /** We run eslint as a separate task in CI */

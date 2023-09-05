@@ -9,6 +9,7 @@ import {
   getEventsByIdSchema,
 } from '~/schema/event';
 import { prisma } from '~/server/prisma';
+import { verifyJWT } from '~/utils/jwt';
 
 export const eventRouter = router({
   get: publicProcedure.input(getEventSchema).query(async ({ input }) => {
@@ -396,13 +397,13 @@ export const eventRouter = router({
 
   getEventsById: publicProcedure
     .input(getEventsByIdSchema)
-    .query(async ({ input }) => {
+    .query(async ({ input, ctx }) => {
       try {
         console.log('ICONSOLE>LOGPSKSJS');
         console.log(input, 'MEINHNNSSA');
         console.log(input.id, 'MEINHNNSSA IDDD');
 
-        const eventPromise = await prisma.event.findUnique({
+        const event = await prisma.event.findUnique({
           where: {
             id: input.id,
           },
@@ -422,11 +423,27 @@ export const eventRouter = router({
             EventImages: true,
           },
         });
-        console.log(eventPromise, 'BJSAJSAKDHDHJSSHSH');
+
+        const token = ctx?.req?.cookies['winnar-token'];
+        let ticketPurchased = 0;
+
+        let userData;
+        if (token) {
+          userData = await verifyJWT(token);
+
+          const customerLimit = await prisma.orderEvent.groupBy({
+            where: { event_id: input.id, customer_id: userData?.id },
+            by: ['event_id', 'customer_id'],
+            _sum: { quantity: true },
+          });
+
+          ticketPurchased = customerLimit[0]?._sum?.quantity ?? 0;
+        }
 
         return {
           message: 'events found',
-          data: eventPromise,
+          data: event,
+          ticketPurchased: ticketPurchased,
         };
       } catch (error: any) {
         throw new TRPCError({

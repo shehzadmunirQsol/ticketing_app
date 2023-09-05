@@ -92,12 +92,18 @@ export const displayDate = (payload = '' as any) => {
   const formattedDate = `${da}-${mo}-${ye}`;
   return formattedDate;
 };
-export function isValidEmail(email:any) {
-  console.log(email,"email found")
+export function isValidEmail(email: any) {
+  console.log(email, 'email found');
   const pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   return pattern.test(email);
 }
 
-
-
-
+export const EMAIL_TEMPLATE_IDS = {
+  REGISTRATION_OTP: 2,
+  CONTACT_MAIN: 4,
+  FORGET_PASSWORD: 5,
+  SELECT_WINNER: 7,
+  ORDER_SUCCESS: 8,
+  ORDER_FAILED: 9,
+  NEW_REGISTERED_USER: 10,
+};

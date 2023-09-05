@@ -9,6 +9,7 @@ import {
 import https from 'https';
 
 import { prisma } from '~/server/prisma';
+import { EMAIL_TEMPLATE_IDS, sendEmail } from '~/utils/helper';
 
 export const orderRouter = router({
   checkout: publicProcedure
@@ -47,7 +48,7 @@ export const orderRouter = router({
           });
         }
 
-        const isDiscount = cart?.CouponApply?.length ? true : false;
+        const isDiscount = cart?.CouponApply?.length > 0;
         const discount = cart?.CouponApply[0]?.discount ?? 0;
         const isPercentage = cart?.CouponApply[0]?.is_percentage ?? false;
 
@@ -58,11 +59,10 @@ export const orderRouter = router({
             0,
           ) ?? 0;
 
-        const discountAmount = isDiscount
-          ? isPercentage
+        const discountAmount =
+          isDiscount && isPercentage
             ? subTotalAmount * (discount / 100)
-            : discount
-          : 0;
+            : discount;
 
         // Total Processing Initial Payment Process
         const paymentPayload: any = {
@@ -107,17 +107,28 @@ export const orderRouter = router({
           discount_amount: discountAmount,
           total_amount: subTotalAmount - discountAmount,
           total_payment_id: totalPaymentId,
-          postal_code: '0',
         };
         if (input?.values?.code) delete orderPayload?.code;
         if (input?.values?.cart_id) delete orderPayload?.cart_id;
 
         const orderEventPayload = cart?.CartItems.map((item) => ({
           event_id: item.Event.id,
+          customer_id: input?.values?.customer_id,
           ticket_price: item.Event.price,
           quantity: item.quantity,
           is_subscribe: item.is_subscribe,
         }));
+
+        const order = await prisma.order.create({
+          data: {
+            ...orderPayload,
+            OrderEvent: {
+              createMany: {
+                data: orderEventPayload,
+              },
+            },
+          },
+        });
 
         const orderSubscriptionPayload = await Promise.all(
           cart?.CartItems.filter((item) => item.is_subscribe).map(
@@ -138,6 +149,7 @@ export const orderRouter = router({
                 subscription_type: item.subscription_type,
                 end_date: item.Event.end_date,
                 cartItem: { ...item },
+                order_id: order.id,
               };
               if (input?.values) delete subPayload?.values;
               const apiRes: any = await CreateSubscription({
@@ -156,6 +168,7 @@ export const orderRouter = router({
                 });
               const totalSubscriptionId = apiRes?.data?.id;
               return {
+                order_id: order.id,
                 event_id: item.Event.id,
                 ticket_price: item.Event.price,
                 quantity: item.quantity,
@@ -167,20 +180,8 @@ export const orderRouter = router({
           ),
         );
 
-        await prisma.order.create({
-          data: {
-            ...orderPayload,
-            OrderSubscription: {
-              createMany: {
-                data: orderSubscriptionPayload,
-              },
-            },
-            OrderEvent: {
-              createMany: {
-                data: orderEventPayload,
-              },
-            },
-          },
+        await prisma.orderSubscription.createMany({
+          data: orderSubscriptionPayload,
         });
 
         const eventPromises = cart.CartItems.map((item) =>
@@ -198,6 +199,19 @@ export const orderRouter = router({
           where: { id: cart.id },
           data: { is_deleted: true },
         });
+
+        const mailOptions = {
+          template_id: EMAIL_TEMPLATE_IDS.ORDER_SUCCESS,
+          from: 'no-reply@winnar.com',
+          to: input.values.email,
+          subject: 'Your order has been placed 🎉',
+          params: {
+            first_name: input.values.first_name,
+            status: 'paid',
+          },
+        };
+
+        await sendEmail(mailOptions);
 
         return { message: 'Order created successfully!', user: user };
       } catch (error: any) {
@@ -219,9 +233,6 @@ export const orderRouter = router({
         const endDate = new Date(input?.endDate);
         where.created_at = { lte: endDate };
       }
-      // if (input.category_id) where.id = input.category_id;
-
-      // if (input.event_id) where.id = input.event_id;
 
       const totalEventPromise = prisma.order.count({
         where: where,
@@ -413,7 +424,7 @@ async function CreateSubscription(APidata: any) {
       subType['job.dayOfMonth'] = '1';
     }
     if (APidata?.subscription_type == 'quarterly') {
-      subType['job.month'] = '6';
+      subType['job.month'] = '3';
       subType['job.dayOfMonth'] = '1';
     }
     if (APidata?.subscription_type == 'yearly') subType['job.year'] = '*';
