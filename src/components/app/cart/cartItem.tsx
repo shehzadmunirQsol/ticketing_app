@@ -14,6 +14,7 @@ type CartItemProp = {
   cartItem: CartItemInterface;
   cart_id: number;
   customer_id: number;
+  ticketPurchased: number;
 };
 
 type SubscriptionType = 'weekly' | 'monthly' | 'quarterly' | null;

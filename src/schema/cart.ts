@@ -3,6 +3,11 @@ import { z } from 'zod';
 export const getCartSchema = z.object({
   customer_id: z.number(),
 });
+
+export const getTicketPurchasedSchema = z.object({
+  event_ids: z.array(z.number()),
+});
+
 export const removeCartItemSchema = z.object({
   cart_item_id: z.number(),
 });

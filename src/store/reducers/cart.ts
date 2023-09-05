@@ -16,6 +16,10 @@ export interface CartItemInterface {
     thumb: string;
     price: number;
     end_date: Date | null;
+    tickets_sold: number | null;
+    user_ticket_limit: number;
+    total_tickets: number;
+
     EventDescription: {
       name: string;
     }[];

@@ -28,6 +28,12 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
   const price = +(range[0] as number) * data?.price;
   const percentageSold = (data?.tickets_sold / data?.total_tickets) * 100;
 
+  const availableTickets = data?.total_tickets - data?.tickets_sold;
+  const userTicketLimit =
+    availableTickets > data?.user_ticket_limit - ticketPurchased
+      ? data?.user_ticket_limit - ticketPurchased
+      : availableTickets;
+
   return (
     <section className="text-gray-600 body-font">
       <div className="px-5  py-24 mx-auto flex flex-wrap">
@@ -75,10 +81,10 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
                   range={range}
                   ticketInBasket={ticketInBasket}
                   setRange={setRange}
-                  user_ticket_limit={data?.user_ticket_limit - ticketPurchased}
+                  user_ticket_limit={userTicketLimit}
+                  ticketPurchased={ticketPurchased}
                 />
               </div>
-              {/* <div className="absolute bottom-10 -right-10  z-10  w-1/5 h-3/5  bg-teal-400 bg-opacity-50 rounded-full blur-3xl"></div> */}
             </div>
           </div>
         </div>
