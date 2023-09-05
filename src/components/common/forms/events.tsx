@@ -31,8 +31,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '~/components/ui/select';
-import { Editor } from 'primereact/editor';
 import { EventFormSchema } from '~/schema/event';
+import { Editor } from 'primereact/editor';
 //theme
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
 //core
@@ -235,6 +235,7 @@ export default function EventForm() {
     }
   }
   console.log(form.formState.errors, 'form.error');
+  
   const renderHeader = () => {
     return (
       <>

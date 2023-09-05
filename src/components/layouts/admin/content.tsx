@@ -44,6 +44,11 @@ const SIDEBAR_DATA = [
     icon: <i className="fa-solid fa-chart-line p-4 rounded-full"></i>,
     title: 'Orders',
   },
+  {
+    key: '/admin/cms',
+    icon: <i className="fa-solid fa-chart-line p-4 rounded-full"></i>,
+    title: 'Cms',
+  },
   //   {
   //     key: '/client',
   //     icon: <i className="fa-solid fa-users p-4 rounded-full" />,
@@ -92,11 +97,6 @@ const SIDEBAR_DATA = [
 
         icon: <i className="fa-solid fa-file p-4 rounded-full" />,
         title: 'Spot Light',
-      },
-      {
-        key: '/admin/settings/faq',
-        icon: <i className="fa-solid fa-file p-4 rounded-full" />,
-        title: 'About',
       },
     ],
   },
