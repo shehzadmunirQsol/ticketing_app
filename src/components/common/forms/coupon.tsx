@@ -100,7 +100,7 @@ export default function CouponForm() {
           ? new Date(
               form
                 .watch('start_date')
-                ?.setDate(form.watch('start_date')?.getDate() + 1),
+                ?.setDate(form.watch('start_date')?.getDate() + 7),
             )
               .toISOString()
               .split('T')[0]

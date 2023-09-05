@@ -107,6 +107,26 @@ export function BannerForm() {
 
     enabled: index ? true : false,
   });
+  const formValidateData =
+    BannerApiData !== undefined && index
+      ? BannerApiData[0]?.lang_id
+        ? enFormSchema
+        : BannerApiData[0]?.lang_id == 2
+        ? arFormSchema
+        : BannerFormSchema
+      : BannerFormSchema;
+
+  const form = useForm<z.infer<typeof formValidateData>>({
+    resolver: zodResolver(
+      BannerApiData !== undefined && index
+        ? BannerApiData[0]?.lang_id == 1
+          ? enFormSchema
+          : BannerApiData[0]?.lang_id == 2
+          ? arFormSchema
+          : BannerFormSchema
+        : BannerFormSchema,
+    ),
+  });
   useEffect(() => {
     if (!isLoading && isFetched && BannerApiData !== undefined) {
       const data: any = { ...BannerApiData[0] };
@@ -128,27 +148,7 @@ export function BannerForm() {
         form.setValue('ar.date', json_data?.date);
       }
     }
-  }, [isLoading, isFetched, BannerApiData]);
-  const formValidateData =
-    BannerApiData !== undefined && index
-      ? BannerApiData[0]?.lang_id
-        ? enFormSchema
-        : BannerApiData[0]?.lang_id == 2
-        ? arFormSchema
-        : BannerFormSchema
-      : BannerFormSchema;
-
-  const form = useForm<z.infer<typeof formValidateData>>({
-    resolver: zodResolver(
-      BannerApiData !== undefined && index
-        ? BannerApiData[0]?.lang_id == 1
-          ? enFormSchema
-          : BannerApiData[0]?.lang_id == 2
-          ? arFormSchema
-          : BannerFormSchema
-        : BannerFormSchema,
-    ),
-  });
+  }, [isLoading, isFetched, BannerApiData, form]);
 
   const bannerUpload = trpc.settings.banner_create.useMutation({
     onSuccess: () => {
@@ -269,7 +269,7 @@ export function BannerForm() {
     console.log('uploading');
     if (optimizeFile?.name) {
       const response = await getS3ImageUrl(optimizeFile);
-      if (!response.success) throw new Error('Image Upload Failure' + response);
+      if (!response.success) throw new Error('Image Upload Failure');
 
       const isImage = isValidImageType(optimizeFile?.type);
 
@@ -528,7 +528,7 @@ export function BannerForm() {
           </Button>
         </div>
       </form>
-      <LoadingDialog open={isSubmitting} text={'Saving data...'} />
+      <LoadingDialog open={isSubmitting || isLoading} text={'Saving data...'} />
     </Form>
   );
 }

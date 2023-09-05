@@ -4,6 +4,7 @@ import {
   applyCouponSchema,
   createCouponSchema,
   getCouponSchema,
+  updateCouponSchema,
 } from '~/schema/coupon';
 import { prisma } from '~/server/prisma';
 
@@ -194,44 +195,18 @@ export const couponRouter = router({
       }
     }),
   update: publicProcedure
-    .input(createCouponSchema)
+    .input(updateCouponSchema)
     .mutation(async ({ input }) => {
-      try {
-        const payload: any = {
-          user_id: input?.user_id,
-          name: input?.name,
-          coupon_code: input?.coupon_code?.toUpperCase(),
-          is_percentage: input?.is_percentage == '1' ? true : false,
-          is_limited: input?.is_limited == '1' ? true : false,
-
-          discount: input?.discount,
-          start_date: input?.start_date,
-          end_date: input?.end_date,
-        };
-        if (input?.limit) payload.limit = +input?.limit;
-        const coupon = await prisma.coupon.create({
-          data: { ...payload },
-        });
-        if (!coupon) {
-          throw new TRPCError({
-            code: 'NOT_FOUND',
-            message: 'Invalid Coupon',
-          });
-        }
-
-        if (!coupon) {
-          throw new TRPCError({
-            code: 'NOT_FOUND',
-            message: 'Coupon Expired',
-          });
-        }
-
-        return { message: 'Coupon Created', data: coupon };
-      } catch (error: any) {
-        throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: error?.message,
-        });
-      }
+      // const payload = [...input];
+      const payload = { ...input };
+      if (payload?.coupon_id) delete payload?.coupon_id;
+      console.log(input, 'inputinputinputinput');
+      const setting_banner = await prisma.coupon.update({
+        where: {
+          id: input?.coupon_id,
+        },
+        data: { ...payload },
+      });
+      return setting_banner;
     }),
 });

@@ -259,7 +259,7 @@ export const orderRouter = router({
 
       const todayDate = new Date();
 
-      let ret: any = { current: [], past: [] };
+      const ret: any = { current: [], past: [] };
 
       for (let i = 0; i < orders.length; i++) {
         if (orders[i].OrderEvent[0].Event?.end_date < todayDate) {

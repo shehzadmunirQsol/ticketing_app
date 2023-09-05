@@ -26,7 +26,7 @@ export function CouponDialog(props: SettingDialogInterface) {
   const { toast } = useToast();
   const [loading, setLoading] = useState<boolean>(false);
 
-  const bannerUpdate: any = trpc.customer.update.useMutation({
+  const bannerUpdate: any = trpc.coupon.update.useMutation({
     onSuccess: () => {
       console.log('upload successfully');
 
@@ -41,10 +41,10 @@ export function CouponDialog(props: SettingDialogInterface) {
     try {
       setLoading(true);
       const payload: any = {
-        id: props?.selectedItem?.id,
+        coupon_id: props?.selectedItem?.id,
       };
       if (props?.type == 'enabled')
-        payload.is_approved = !props?.selectedItem?.is_approved;
+        payload.is_enabled = !props?.selectedItem?.is_enabled;
       if (props?.type == 'delete')
         payload.is_deleted = !props?.selectedItem?.is_deleted;
       // let data: any;
@@ -58,11 +58,7 @@ export function CouponDialog(props: SettingDialogInterface) {
         toast({
           variant: 'success',
           title: `${props?.title} ${
-            props?.type === 'enabled'
-              ? props?.selectedItem?.is_approved
-                ? 'disabled'
-                : 'Approved'
-              : 'deleted'
+            props?.type === 'enabled' ? 'Disabled' : 'Enabled'
           } Successfully`,
         });
         props?.refetch();

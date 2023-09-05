@@ -42,5 +42,9 @@ export const createCouponSchema = z.object({
   start_date: z.date(),
   end_date: z.date(),
 });
+export const updateCouponSchema = z.object({
+  coupon_id: z.number(),
+  is_enabled: z.boolean().optional(),
+});
 
 export type createCouponSchema = z.infer<typeof createCouponSchema>;
