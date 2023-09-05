@@ -1,6 +1,4 @@
 import React from 'react';
-import { Slider } from '~/components/ui/slider';
-import { Button } from '~/components/ui/button';
 import Image from 'next/image';
 import increment from '../../../public/assets/increment.svg';
 import decrement from '../../../public/assets/decrement.svg';
@@ -13,7 +11,7 @@ interface token {
 const CounterStyle = ({ range, setRange, min, max }: token) => {
   const rangeType: any = range && range?.length ? range[0] : 1;
   const handlerCounter = (type: string) => {
-    if (type == 'a' && rangeType <= max) {
+    if (type == 'a' && rangeType < max) {
       setRange([rangeType + 1]);
     } else if (type == 'b' && rangeType > min) {
       setRange([rangeType - 1]);
