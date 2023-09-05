@@ -234,7 +234,7 @@ export const orderRouter = router({
 
   getOrders: publicProcedure.input(getOrder).query(async ({ input, ctx }) => {
     try {
-      const orders = await prisma.order.findMany({
+      const orders: any = await prisma.order.findMany({
         where: {
           customer_id: input.id,
         },
@@ -256,20 +256,26 @@ export const orderRouter = router({
       });
 
       console.log({ orders }, 'ordersorders');
+      if (orders && orders?.length > 0) {
+        const todayDate = new Date();
 
-      const todayDate = new Date();
+        const ret: any = { current: [], past: [] };
 
-      const ret: any = { current: [], past: [] };
-
-      for (let i = 0; i < orders.length; i++) {
-        if (orders[i].OrderEvent[0].Event?.end_date < todayDate) {
-          ret.past.push(orders[i]);
-        } else {
-          ret.current.push(orders[i]);
+        for (let i = 0; i < orders.length; i++) {
+          if (orders[i].OrderEvent[0].Event?.end_date < todayDate) {
+            ret.past.push(orders[i]);
+          } else {
+            ret.current.push(orders[i]);
+          }
         }
-      }
 
-      return ret;
+        return ret;
+      } else {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'No Orders Found',
+        });
+      }
     } catch (error: any) {
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',

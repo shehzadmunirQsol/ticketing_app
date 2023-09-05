@@ -49,7 +49,7 @@ export default function OrderView() {
             </div>
           </div>
           <div className="border-b-2 border-gray-300 pb-8 mb-8">
-            <h2 className="text-2xl font-bold mb-4">Bill To:</h2>
+            <h2 className="text-2xl text-gray-700 font-bold mb-4">Bill To:</h2>
             <div className="text-gray-700 mb-2">
               {OrderApiData?.data?.first_name +
                 ' ' +
