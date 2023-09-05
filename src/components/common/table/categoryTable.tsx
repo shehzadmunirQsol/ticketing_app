@@ -38,6 +38,7 @@ import Image from 'next/image';
 import { renderNFTImage } from '~/utils/helper';
 import Link from 'next/link';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
+import { LoadingDialog } from '../modal/loadingModal';
 
 export type Category = {
   thumb: string;
@@ -112,7 +113,7 @@ export default function CategoryDataTable() {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
 
-  const { data } = trpc.category.get.useQuery(filters, {
+  const { data, isLoading } = trpc.category.get.useQuery(filters, {
     refetchOnWindowFocus: false,
   });
 
@@ -178,58 +179,56 @@ export default function CategoryDataTable() {
         </DropdownMenu>
       </div>
       <div className="rounded-md border ">
-      <ScrollArea  className='w-full '>
-        <ScrollBar orientation="horizontal">
-
-        </ScrollBar>
-        <Table  className='w-[90vw] md:w-full'>
-          <TableHeader>
-            {table?.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table?.getRowModel()?.rows?.length ? (
-              table?.getRowModel()?.rows?.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && 'selected'}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
-                    </TableCell>
-                  ))}
+        <ScrollArea className="w-full ">
+          <ScrollBar orientation="horizontal"></ScrollBar>
+          <Table className="w-[90vw] md:w-full">
+            <TableHeader>
+              {table?.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <TableHead key={header.id}>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext(),
+                            )}
+                      </TableHead>
+                    );
+                  })}
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+              ))}
+            </TableHeader>
+            <TableBody>
+              {table?.getRowModel()?.rows?.length ? (
+                table?.getRowModel()?.rows?.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && 'selected'}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext(),
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-24 text-center"
+                  >
+                    No results.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
         </ScrollArea>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
@@ -250,6 +249,7 @@ export default function CategoryDataTable() {
           </Button>
         </div>
       </div>
+      <LoadingDialog open={isLoading} text={'Loading data...'} />
     </div>
   );
 }

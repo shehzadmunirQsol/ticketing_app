@@ -26,11 +26,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from '~/components/ui/select';
-
-
+import { useToast } from '~/components/ui/use-toast';
 
 export default function CouponForm() {
-  const [image, setImage] = useState<File>();
+  const { toast } = useToast();
+
   const [loading, setLoading] = useState<boolean>(false);
   const [endDate, setEndDate] = useState<any>(
     new Date().toISOString().split('T')[0],
@@ -52,7 +52,7 @@ export default function CouponForm() {
     },
   );
 
-  const addCategory = trpc.category.create.useMutation();
+  const addCoupon = trpc.coupon.create.useMutation();
 
   // 1. Define your form.
   const form = useForm<createCouponSchema>({
@@ -72,15 +72,26 @@ export default function CouponForm() {
 
     try {
       setLoading(true);
-    } catch (error) {
-      setLoading(false);
 
-      console.log(error);
+      const data = await addCoupon.mutateAsync(values);
+      if (data) {
+        toast({
+          variant: 'success',
+          title: 'Coupon Uploaded Successfully',
+        });
+        setLoading(false);
+        router.back();
+      } else {
+        throw new Error('Data Create Error');
+      }
+    } catch (error: any) {
+      setLoading(false);
+      toast({
+        variant: 'destructive',
+        title: error?.message,
+      });
     }
   }
-
-
-
 
   useEffect(() => {
     try {
@@ -99,7 +110,6 @@ export default function CouponForm() {
       setEndDate(new Date().toISOString().split('T')[0]);
     }
   }, [form.watch('start_date')]);
-
 
   return (
     <Form {...form}>
@@ -185,7 +195,7 @@ export default function CouponForm() {
                   <Input
                     type={'number'}
                     min={1}
-                    max={form.watch('is_percentage') == '1'?100:100000}
+                    max={form.watch('is_percentage') == '1' ? 100 : 100000}
                     placeholder={'Enter Discount '}
                     {...form.register('discount', {
                       valueAsNumber: true,
@@ -307,7 +317,7 @@ export default function CouponForm() {
       </form>
 
       <LoadingDialog
-        open={addCategory.isLoading || loading}
+        open={addCoupon.isLoading || loading}
         text={`${categoryId ? 'Updating' : 'Adding'} Category...`}
       />
     </Form>

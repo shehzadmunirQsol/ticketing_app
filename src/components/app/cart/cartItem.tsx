@@ -56,7 +56,6 @@ export default function CartItem(props: CartItemProp) {
 
     try {
       const response = await addToBasket.mutateAsync(payload);
-      console.log({ response });
       dispatch(addToCart(response.data));
       setIsSubscribe(isSubscription);
       setSubscriptionType(isSubscription ? subscriptionType : null);
@@ -76,6 +75,8 @@ export default function CartItem(props: CartItemProp) {
     if (isSubscribe && subscriptionType) addToBasketHandler('unsubscribe');
     else setIsSubscribe((prevValue) => !prevValue);
   }
+
+  console.log({ props });
 
   return (
     <div
@@ -152,24 +153,35 @@ export default function CartItem(props: CartItemProp) {
 
             {isSubscribe ? (
               <div className="self-end grid grid-cols-2 gap-2">
-                {['Weekly', 'Monthly', 'Quarterly'].map((frequency) => (
-                  <Button
-                    key={frequency}
-                    className={`bg-card text-sm rounded-full ${
-                      frequency?.toLocaleLowerCase() === subscriptionType
-                        ? 'border border-primary'
-                        : ''
-                    }`}
-                    variant="outline"
-                    onClick={() =>
-                      setSubscriptionType(
-                        frequency?.toLocaleLowerCase() as SubscriptionType,
-                      )
-                    }
-                  >
-                    {frequency}
-                  </Button>
-                ))}
+                {Object.keys(subscription).map((frequency) => {
+                  const subscriptionDate = new Date(
+                    new Date().setDate(subscription[frequency] as number),
+                  ).getTime();
+
+                  const EndDate =
+                    props?.cartItem?.Event?.end_date?.getTime() ?? 0;
+                  const isSubscribable = subscriptionDate > EndDate;
+
+                  return (
+                    <Button
+                      key={frequency}
+                      className={`bg-card text-sm rounded-full ${
+                        frequency?.toLocaleLowerCase() === subscriptionType
+                          ? 'border border-primary'
+                          : ''
+                      }`}
+                      disabled={isSubscribable}
+                      variant="outline"
+                      onClick={() =>
+                        setSubscriptionType(
+                          frequency?.toLocaleLowerCase() as SubscriptionType,
+                        )
+                      }
+                    >
+                      {frequency}
+                    </Button>
+                  );
+                })}
                 <Button
                   className="rounded-full text-sm font-extrabold "
                   disabled={addToBasket.isLoading || !subscriptionType}
@@ -195,3 +207,9 @@ export default function CartItem(props: CartItemProp) {
     </div>
   );
 }
+
+const subscription: { [key: string]: number } = {
+  Weekly: 7,
+  Monthly: 30,
+  Quarterly: 90,
+};

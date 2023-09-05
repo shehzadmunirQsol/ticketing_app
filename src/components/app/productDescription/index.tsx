@@ -29,7 +29,7 @@ const ProductDetail = () => {
   return (
     <div>
       <Tabs />
-      <ImageSlider data={data?.data} />
+      <ImageSlider data={data?.data} ticketPurchased={data?.ticketPurchased} />
       <div className="lg:px-10 md:px-10 px-6">
         <EntiresDetail />
         <VideoSection />

@@ -4,10 +4,13 @@ import {
   createCheckoutPaymentSchema,
   createCheckoutSchema,
   getOrder,
+  getByIDSchema,
+  getOrderSchema,
 } from '~/schema/order';
 import https from 'https';
 
 import { prisma } from '~/server/prisma';
+import { EMAIL_TEMPLATE_IDS, sendEmail } from '~/utils/helper';
 
 export const orderRouter = router({
   checkout: publicProcedure
@@ -31,6 +34,7 @@ export const orderRouter = router({
                     id: true,
                     price: true,
                     tickets_sold: true,
+                    end_date: true,
                   },
                 },
               },
@@ -45,7 +49,7 @@ export const orderRouter = router({
           });
         }
 
-        const isDiscount = cart?.CouponApply?.length ? true : false;
+        const isDiscount = cart?.CouponApply?.length > 0;
         const discount = cart?.CouponApply[0]?.discount ?? 0;
         const isPercentage = cart?.CouponApply[0]?.is_percentage ?? false;
 
@@ -56,11 +60,12 @@ export const orderRouter = router({
             0,
           ) ?? 0;
 
-        const discountAmount = isDiscount
-          ? isPercentage
+        const discountAmount =
+          isDiscount && isPercentage
             ? subTotalAmount * (discount / 100)
-            : discount
-          : 0;
+            : discount;
+
+        // Total Processing Initial Payment Process
         const paymentPayload: any = {
           ...input,
           sub_total_amount: subTotalAmount,
@@ -68,33 +73,40 @@ export const orderRouter = router({
           total_amount: subTotalAmount - discountAmount,
           cartItem: cart?.CartItems,
         };
-        if (input?.values) delete paymentPayload?.values;
-        const apiRes: any = await CreatePayment({
+        const paymentRes: any = await CreatePayment({
           ...paymentPayload,
         })
           .then((response: any) => {
+            console.log(
+              response?.result?.parameterErrors,
+              'response?.result?.parameterErrors',
+            );
             if (!response?.result?.parameterErrors) {
               return { data: response, success: true };
             }
             throw new Error(response?.result?.parameterErrors[0].message);
           })
           .catch((error) => {
+            console.log(
+              error?.parameterErrors,
+              'response?.result?.parameterErrors',
+            );
             throw new Error(error.message);
           });
-        console.log(apiRes, 'apiRes?.registrationId');
+        console.log(paymentRes, 'apiRes?.registrationId');
         let user;
         if (!input?.registrationId) {
           user = await prisma.customer?.update({
             where: {
-              id: input?.customer_id,
+              id: input?.values?.customer_id,
             },
             data: {
-              total_customer_id: apiRes?.data?.registrationId as string,
+              total_customer_id: paymentRes?.data?.registrationId as string,
             },
           });
         }
 
-        const totalPaymentId = apiRes?.data?.id; // from total payment gateway
+        const totalPaymentId = paymentRes?.data?.id; // from total payment gateway
 
         const orderPayload: any = {
           ...input?.values,
@@ -104,68 +116,81 @@ export const orderRouter = router({
           discount_amount: discountAmount,
           total_amount: subTotalAmount - discountAmount,
           total_payment_id: totalPaymentId,
-          postal_code: '0',
         };
         if (input?.values?.code) delete orderPayload?.code;
         if (input?.values?.cart_id) delete orderPayload?.cart_id;
 
         const orderEventPayload = cart?.CartItems.map((item) => ({
           event_id: item.Event.id,
+          customer_id: input?.values?.customer_id,
           ticket_price: item.Event.price,
           quantity: item.quantity,
           is_subscribe: item.is_subscribe,
         }));
 
-        const orderSubscriptionPayload = cart?.CartItems.filter(
-          (item) => item.is_subscribe,
-        ).map(async (item) => {
-          // logic for payment schedule
-          const paymentPayload: any = {
-            ...input,
-            sub_total_amount: subTotalAmount,
-            discount_amount: discountAmount,
-            total_amount: subTotalAmount - discountAmount,
-            cartItem: { ...item },
-          };
-          if (input?.values) delete paymentPayload?.values;
-          const apiRes: any = await CreatePayment({
-            ...paymentPayload,
-          })
-            .then((response: any) => {
-              if (!response?.result?.parameterErrors) {
-                return { data: response, success: true };
-              }
-              throw new Error(response?.result?.parameterErrors[0].message);
-            })
-            .catch((error) => {
-              throw new Error(error.message);
-            });
-          const totalSubscriptionId = 'totalSubscriptionId';
-
-          return {
-            event_id: item.Event.id,
-            ticket_price: item.Event.price,
-            quantity: item.quantity,
-            customer_id: cart.customer_id,
-            total_subscription_id: totalSubscriptionId,
-            subscription_type: item.subscription_type,
-          };
-        });
-
-        await prisma.order.create({
+        const order = await prisma.order.create({
           data: {
             ...orderPayload,
-            OrderSubscription: {
-              createMany: {
-                data: orderSubscriptionPayload,
-              },
-            },
             OrderEvent: {
               createMany: {
                 data: orderEventPayload,
               },
             },
           },
+        });
+
+        const orderSubscriptionPayload = await Promise.all(
+          cart?.CartItems.filter((item) => item.is_subscribe).map(
+            async (item) => {
+              // logic for payment schedule
+              // Total Processing Subscription Process
+              const subPayload: any = {
+                ...input,
+                registrationId: input?.registrationId
+                  ? input?.registrationId
+                  : paymentRes?.data?.registrationId,
+
+                total_amount: +(+item.Event.price * +item.quantity),
+                event_id: item.Event.id,
+                ticket_price: item.Event.price,
+                quantity: item.quantity,
+                customer_id: input?.values?.customer_id,
+                subscription_type: item.subscription_type,
+                end_date: item.Event.end_date,
+                cartItem: { ...item },
+                order_id: order.id,
+              };
+              if (input?.values) delete subPayload?.values;
+              const apiRes: any = await CreateSubscription({
+                ...subPayload,
+              })
+                .then((response: any) => {
+                  console.log(response?.result, 'response?.resultsdaasdasd');
+
+                  if (!response?.result?.parameterErrors) {
+                    return { data: response, success: true };
+                  }
+                  throw new Error(response?.result?.parameterErrors[0].message);
+                })
+                .catch((error) => {
+                  throw new Error(error.message);
+                });
+              const totalSubscriptionId = apiRes?.data?.id;
+              return {
+                order_id: order.id,
+                event_id: item.Event.id,
+                ticket_price: item.Event.price,
+                quantity: item.quantity,
+                customer_id: input?.values?.customer_id,
+                total_subscription_id: totalSubscriptionId,
+                subscription_type: item.subscription_type,
+              };
+            },
+          ),
+        );
+
+        await prisma.orderSubscription.createMany({
+          data: orderSubscriptionPayload,
         });
 
         const eventPromises = cart.CartItems.map((item) =>
@@ -184,8 +209,22 @@ export const orderRouter = router({
           data: { is_deleted: true },
         });
 
+        const mailOptions = {
+          template_id: EMAIL_TEMPLATE_IDS.ORDER_SUCCESS,
+          from: 'no-reply@winnar.com',
+          to: input.values.email,
+          subject: 'Your order has been placed 🎉',
+          params: {
+            first_name: input.values.first_name,
+            status: 'paid',
+          },
+        };
+
+        await sendEmail(mailOptions);
+
         return { message: 'Order created successfully!', user: user };
       } catch (error: any) {
+        console.log({ error }, 'error message');
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: error?.message,
@@ -240,7 +279,109 @@ export const orderRouter = router({
     } catch (error) {
 
     }
-  })
+  }),
+  get: publicProcedure.input(getOrderSchema).query(async ({ input }) => {
+    try {
+      const where: any = { is_deleted: false };
+
+      if (input?.startDate) {
+        const startDate = new Date(input?.startDate);
+        where.created_at = { gte: startDate };
+      }
+      if (input?.endDate) {
+        const endDate = new Date(input?.endDate);
+        where.created_at = { lte: endDate };
+      }
+
+      const totalEventPromise = prisma.order.count({
+        where: where,
+      });
+
+      const eventPromise = prisma.order.findMany({
+        orderBy: { created_at: 'desc' },
+        skip: input.first * input.rows,
+        take: input.rows,
+        where: where,
+        include: {
+          Customer: {
+            select: {
+              email: true,
+              first_name: true,
+              last_name: true,
+            },
+          },
+        },
+      });
+
+      const [totalEvent, event] = await Promise.all([
+        totalEventPromise,
+        eventPromise,
+      ]);
+
+      if (!event?.length) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Events not found',
+        });
+      }
+
+      return {
+        message: 'events found',
+        count: totalEvent,
+        data: event,
+      };
+    } catch (error: any) {
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: error?.message,
+      });
+    }
+  }),
+  getByID: publicProcedure.input(getByIDSchema).query(async ({ input }) => {
+    try {
+      const where: any = { is_deleted: false, id: input?.order_id };
+
+      const eventPromise = prisma.order.findFirst({
+        orderBy: { created_at: 'desc' },
+
+        where: where,
+        include: {
+          Customer: {
+            select: {
+              email: true,
+              first_name: true,
+              last_name: true,
+            },
+          },
+          OrderEvent: {
+            include: {
+              Event: {
+                include: {
+                  EventDescription: true,
+                },
+              },
+            },
+          },
+        },
+      });
+      const [event] = await Promise.all([eventPromise]);
+      if (!event) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Events not found',
+        });
+      }
+      return {
+        message: 'events found',
+        data: event,
+      };
+    } catch (error: any) {
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: error?.message,
+      });
+    }
+  }),
 });
 
 async function CreatePayment(APidata: any) {
@@ -249,44 +390,49 @@ async function CreatePayment(APidata: any) {
       ? `/v1/registrations/${APidata?.registrationId}/payments`
       : '/v1/payments';
     const payload = { ...APidata };
+    console.log(APidata, 'APidata?.paymentBrandsss');
+
     if (payload?.card) delete payload?.card;
+    if (payload?.values) delete payload?.values;
+    const tot_amount = APidata?.total_amount.toFixed(2);
+    console.log(tot_amount, 'tot_amount');
     const apiDate: any = APidata?.registrationId
       ? {
-        entityId: process.env.TOTAN_ENTITY_ID,
-        amount: +APidata?.total_amount,
-        currency: 'AED',
-        paymentType: 'DB',
-        'standingInstruction.source': 'CIT',
-        // wpwlOptions: JSON.stringify(APidata?.cart),
-        'customParameters[payload]': JSON.stringify({
-          ...payload,
-        }),
+          entityId: process.env.TOTAN_ENTITY_ID,
+          amount: APidata?.total_amount.toFixed(2),
+          currency: 'AED',
+          paymentType: 'DB',
+          'standingInstruction.source': 'CIT',
+          // wpwlOptions: JSON.stringify(APidata?.cart),
+          'customParameters[payload]': JSON.stringify({
+            ...payload,
+          }),
 
         'standingInstruction.type': 'UNSCHEDULED',
       }
       : {
-        entityId: process.env.TOTAN_ENTITY_ID,
-        amount: APidata?.total_amount,
-        currency: 'AED',
-        paymentBrand: APidata?.paymentBrand,
-        paymentType: 'DB',
+          entityId: process.env.TOTAN_ENTITY_ID,
+          amount: APidata?.total_amount.toFixed(2),
+          currency: 'AED',
+          paymentType: 'DB',
+          paymentBrand: APidata?.paymentBrand,
 
-        'card.number':
-          APidata?.card?.number && +APidata?.card?.number.replaceAll(' ', ''),
-        'card.holder': APidata?.card?.holder && APidata?.card?.holder,
-        'card.expiryMonth':
-          APidata?.card?.expiryMonth && APidata?.card?.expiryMonth,
-        'card.expiryYear':
-          APidata?.card?.expiryYear && APidata?.card?.expiryYear,
-        'card.cvv': APidata?.card?.cvv && +APidata?.card?.cvv,
-        'standingInstruction.mode': 'INITIAL',
-        'standingInstruction.source': 'CIT',
-        'customParameters[payload]': JSON.stringify({
-          ...payload,
-        }),
+          'card.number':
+            APidata?.card?.number && +APidata?.card?.number.replaceAll(' ', ''),
+          'card.holder': APidata?.card?.holder && APidata?.card?.holder,
+          'card.expiryMonth':
+            APidata?.card?.expiryMonth && APidata?.card?.expiryMonth,
+          'card.expiryYear':
+            APidata?.card?.expiryYear && APidata?.card?.expiryYear,
+          'card.cvv': APidata?.card?.cvv && +APidata?.card?.cvv,
+          'standingInstruction.mode': 'INITIAL',
+          'standingInstruction.source': 'CIT',
+          createRegistration: 'true',
 
-        createRegistration: 'true',
-      };
+          'customParameters[payload]': JSON.stringify({
+            ...payload,
+          }),
+        };
 
     const data = new URLSearchParams(apiDate).toString();
     const options = {
@@ -311,6 +457,7 @@ async function CreatePayment(APidata: any) {
           try {
             resolve(JSON.parse(jsonString));
           } catch (error) {
+            console.log(error, 'error error error error');
             reject(error);
           }
         });
@@ -326,21 +473,43 @@ async function CreatePayment(APidata: any) {
 }
 async function CreateSubscription(APidata: any) {
   try {
+    const payload = { ...APidata };
+
+    if (payload?.card) delete payload?.card;
+    if (payload?.values) delete payload?.values;
+
     const path = '/scheduling/v1/schedules';
-    const apiDate: any = {
+    const subType: any = {};
+    if (APidata?.subscription_type == 'weekly') subType['job.dayOfWeek'] = '1';
+    if (APidata?.subscription_type == 'monthly') {
+      subType['job.month'] = '*';
+      subType['job.dayOfMonth'] = '1';
+    }
+    if (APidata?.subscription_type == 'quarterly') {
+      subType['job.month'] = '3';
+      subType['job.dayOfMonth'] = '1';
+    }
+    if (APidata?.subscription_type == 'yearly') subType['job.year'] = '*';
+    const payloadData: any = {
       entityId: process.env.TOTAN_ENTITY_ID,
       amount: APidata?.total_amount,
       registrationId: APidata?.registrationId,
       currency: 'AED',
       paymentType: 'DB',
       'standingInstruction.type': 'RECURRING',
-      'job.dayOfWeek': '1',
+      ...subType,
+      'job.endDate': new Date(APidata?.end_date)
+        .toISOString()
+        .slice(0, 19)
+        .replace('T', ' '),
       'customParameters[payload]': JSON.stringify({
-        ...APidata,
+        ...payload,
       }),
-      'job.endDate': APidata?.end_date,
     };
-    const data = new URLSearchParams(apiDate).toString();
+
+    console.log({ payloadData });
+
+    const data = new URLSearchParams(payloadData).toString();
     const options = {
       port: 443,
       host: 'eu-test.oppwa.com',

@@ -266,6 +266,7 @@ export function BannerForm() {
   }
 
   async function uploadOnS3Handler() {
+    console.log('uploading');
     if (optimizeFile?.name) {
       const response = await getS3ImageUrl(optimizeFile);
       if (!response.success)
@@ -294,16 +295,15 @@ export function BannerForm() {
       >
         <div className="space-y-4">
           <div>
-            {!index && (
-              <FileInput
-                register={form.register('thumb')}
-                reset={form.reset}
-                getValues={form.getValues}
-                setValue={form.setValue}
-                imageCompressorHandler={imageHandler}
-                required={true}
-              />
-            )}
+            <FileInput
+              register={form.register('thumb')}
+              reset={form.reset}
+              getValues={form.getValues}
+              setValue={form.setValue}
+              imageCompressorHandler={imageHandler}
+              required={true}
+            />
+
             <FormField
               control={form.control}
               name="link"

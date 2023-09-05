@@ -21,12 +21,12 @@ const SIDEBAR_DATA = [
   },
   {
     key: '/admin/category',
-    icon: <i className="fa-solid fa-home p-4 rounded-full" />,
+    icon: <i className="fa-solid fa-images p-4 rounded-full"></i>,
     title: 'Category',
   },
   {
     key: '/admin/events',
-    icon: <i className="fa-solid fa-home p-4 rounded-full" />,
+    icon: <i className="fa-solid fa-calendar-days p-4 rounded-full"></i>,
     title: 'Events',
   },
   {
@@ -39,38 +39,43 @@ const SIDEBAR_DATA = [
     icon: <i className="fa-solid fa-tag p-4 rounded-full" />,
     title: 'Coupon',
   },
-//   {
-//     key: '/client',
-//     icon: <i className="fa-solid fa-users p-4 rounded-full" />,
-//     title: 'Clients',
-//     child: [
-//       {
-//         key: '/admin/banners',
+  {
+    key: '/admin/orders',
+    icon: <i className="fa-solid fa-chart-line p-4 rounded-full"></i>,
+    title: 'Orders',
+  },
+  //   {
+  //     key: '/client',
+  //     icon: <i className="fa-solid fa-users p-4 rounded-full" />,
+  //     title: 'Clients',
+  //     child: [
+  //       {
+  //         key: '/admin/banners',
 
-//         icon: <i className="fa-solid fa-table p-4 rounded-full" />,
-//         title: 'Listing',
-//       },
-//       {
-//         key: '/admin/banners',
+  //         icon: <i className="fa-solid fa-table p-4 rounded-full" />,
+  //         title: 'Listing',
+  //       },
+  //       {
+  //         key: '/admin/banners',
 
-//         icon: <i className="fa-solid fa-image p-4 rounded-full" />,
-//         title: 'Gallery',
-//       },
-//     ],
-//   },
-//   {
-//     key: '/notification',
-//     icon: <i className="fa-solid fa-bell p-4 rounded-full" />,
-//     title: 'Notification',
-//     child: [
-//       {
-//         key: '/admin/banners',
+  //         icon: <i className="fa-solid fa-image p-4 rounded-full" />,
+  //         title: 'Gallery',
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     key: '/notification',
+  //     icon: <i className="fa-solid fa-bell p-4 rounded-full" />,
+  //     title: 'Notification',
+  //     child: [
+  //       {
+  //         key: '/admin/banners',
 
-//         icon: <i className="fa-solid fa-file p-4 rounded-full" />,
-//         title: 'Email',
-//       },
-//     ],
-//   },
+  //         icon: <i className="fa-solid fa-file p-4 rounded-full" />,
+  //         title: 'Email',
+  //       },
+  //     ],
+  //   },
   {
     key: '/settings',
     icon: <i className="fa-solid fa-gear p-4 rounded-full" />,

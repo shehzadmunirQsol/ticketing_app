@@ -46,6 +46,7 @@ import {
 import Link from 'next/link';
 import { Switch } from '~/components/ui/switch';
 import { SettingDialog } from '../modal/setting';
+import { LoadingDialog } from '../modal/loadingModal';
 
 // export const columns: ColumnDef<any>[] = [
 //   {
@@ -486,6 +487,7 @@ export default function DataTableSpotLight() {
         type={type}
         setType={setType}
       />
+      <LoadingDialog open={isLoading} text={'Loading data...'} />
     </div>
   );
 }
