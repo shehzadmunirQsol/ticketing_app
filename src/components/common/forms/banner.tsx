@@ -269,8 +269,7 @@ export function BannerForm() {
     console.log('uploading');
     if (optimizeFile?.name) {
       const response = await getS3ImageUrl(optimizeFile);
-      if (!response.success)
-        return console.log('response.message', response.message);
+      if (!response.success) throw new Error('Image Upload Failure' + response);
 
       const isImage = isValidImageType(optimizeFile?.type);
 
@@ -284,7 +283,7 @@ export function BannerForm() {
 
       return nftSource;
     } else {
-      return console.log('Please Select Image');
+      throw new Error('Please Select Image');
     }
   }
   return (
