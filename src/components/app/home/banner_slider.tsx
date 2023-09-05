@@ -36,14 +36,14 @@ const BannerSlider = () => {
     isSuccess,
   } = trpc.settings.get_banner.useQuery(initialOrderFilters, {
     refetchOnWindowFocus: false,
-    onSuccess: () => {
-      console.log({ BannerApiData });
-      setCarSlider(BannerApiData || []);
-    },
-
     // enabled: user?.id ? true : false,
   });
 
+  useEffect(() => {
+    if (BannerApiData) {
+      setCarSlider(BannerApiData);
+    }
+  }, [BannerApiData]);
 
   // FOR ANIMATION IN THE
   const animateSlideChange = () => {

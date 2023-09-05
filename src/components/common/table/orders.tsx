@@ -34,29 +34,27 @@ import {
 import LanguageSelect, { LanguageInterface } from '../language_select';
 import { GetCategorySchema } from '~/schema/category';
 import { trpc } from '~/utils/trpc';
-import Image from 'next/image';
-import { displayDate, renderNFTImage } from '~/utils/helper';
 import Link from 'next/link';
 import { GetEventSchema } from '~/schema/event';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 import { LoadingDialog } from '../modal/loadingModal';
 
 export type Category = {
-  thumb: string;
-  name: string;
-  desc: string | null;
   id: number;
-  price: number;
-  total_tickets: number;
-  tickets_sold: number;
-  user_ticket_limit: number;
-  launch_date: Date;
-  end_date: Date;
+  email: string;
+  first_name: string;
+  last_name: string;
+  phone_number: string;
+  total_amount: number;
+  discount_amount: number;
+  sub_total_amount: number;
+  total_payment_id: string;
+
   created_at: Date;
   updated_at: Date;
 };
 
-export default function EventsDataTable() {
+export default function OrdersDataTable() {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [filters, setFilters] = useState<GetEventSchema>({
     first: 0,
@@ -66,7 +64,7 @@ export default function EventsDataTable() {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
 
-  const { data, isLoading } = trpc.event.get.useQuery(filters, {
+  const { data, isLoading } = trpc.order.get.useQuery(filters, {
     refetchOnWindowFocus: false,
   });
   console.log({ data });
@@ -77,91 +75,74 @@ export default function EventsDataTable() {
     {
       accessorKey: 'name',
       header: 'Name',
-      cell: ({ row }) => {
-        return (
-          <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
-            <Image
-              className="object-cover bg-ac-2 h-10 w-16 rounded-lg"
-              src={renderNFTImage(row.original)}
-              alt={row?.original?.name}
-              width={100}
-              height={100}
-            />
-
-            <p className="text-base font-normal">{row?.original?.name}</p>
-          </div>
-        );
-      },
-    },
-    {
-      accessorKey: 'desc',
-      header: 'Description',
-      cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden w-64">
-          {row.getValue('desc')}
-        </div>
-      ),
-    },
-    {
-      accessorKey: 'price',
-      header: 'Token Price',
       cell: ({ row }) => (
         <div className="capitalize text-ellipsis whitespace-nowrap ">
-          AED{(row?.original?.price).toFixed(2)}
+          {row?.original?.first_name + ' ' + row?.original?.last_name}
         </div>
       ),
     },
     {
-      accessorKey: 'total_tickets',
-      header: 'Token Cap',
+      accessorKey: 'email',
+      header: 'Email',
       cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
-          {row?.original?.total_tickets}
-          &nbsp;
-          <sub>qty</sub>
+        <div className="capitalize text-ellipsis whitespace-nowrap ">
+          {row?.original?.email}
+        </div>
+      ),
+    },
+
+    {
+      accessorKey: 'phone_number',
+      header: 'Phone No.',
+      cell: ({ row }) => (
+        <div className="capitalize text-ellipsis whitespace-nowrap ">
+          {row?.original?.phone_number}
         </div>
       ),
     },
     {
-      accessorKey: 'tickets_sold',
-      header: 'Token Purchased',
+      accessorKey: 'total_payment_id',
+      header: 'Transaction ID',
       cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
-          {row?.original?.tickets_sold}
-          &nbsp;
-          <sub>qty</sub>
+        <div className="capitalize text-ellipsis whitespace-nowrap ">
+          {row?.original?.total_payment_id}
         </div>
       ),
     },
     {
-      accessorKey: 'user_ticket_limit',
-      header: 'Per User Purchased',
+      accessorKey: 'sub_total_amount',
+      header: 'Sub Total',
       cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
-          {row?.original?.user_ticket_limit}
-          &nbsp;
-          <sub>qty</sub>
+        <div className="capitalize text-ellipsis whitespace-nowrap ">
+          AED {(row?.original?.sub_total_amount).toFixed(2)}
         </div>
       ),
     },
     {
-      accessorKey: 'launch_date',
-      header: 'Launch Date',
+      accessorKey: 'discount_amount',
+      header: 'Discount',
       cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
-          {displayDate(row?.original?.launch_date)}
+        <div className="capitalize text-ellipsis whitespace-nowrap ">
+          {' '}
+          {row?.original?.discount_amount > 0
+            ? 'AED ' + (row?.original?.discount_amount).toFixed(2)
+            : 'N/A'}
         </div>
       ),
     },
     {
-      accessorKey: 'end_date',
-      header: 'End Date',
+      accessorKey: 'total_amount',
+      header: 'Total Amount',
       cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
-          {displayDate(row?.original?.end_date)}
+        <div className="capitalize text-ellipsis whitespace-nowrap ">
+          {' '}
+          {row?.original?.total_amount > 0
+            ? 'AED ' + (row?.original?.total_amount).toFixed(2)
+            : 'N/A'}
         </div>
       ),
     },
+
     {
       id: 'actions',
       enableHiding: false,
@@ -177,8 +158,8 @@ export default function EventsDataTable() {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <Link href={`/admin/events/edit/${row?.original?.id}`}>
-                <DropdownMenuItem>Edit Event</DropdownMenuItem>
+              <Link href={`/admin/orders/view/${row?.original?.id}`}>
+                <DropdownMenuItem>View Order</DropdownMenuItem>
               </Link>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -204,7 +185,7 @@ export default function EventsDataTable() {
   });
 
   function languageHandler(params: LanguageInterface) {
-    setFilters((prevFilters) => ({ ...prevFilters, lang_id: params.id }));
+    setFilters((prevFilters) => ({ ...prevFilters }));
   }
 
   function handlePagination(page: number) {
@@ -215,7 +196,6 @@ export default function EventsDataTable() {
   return (
     <div className="w-full space-y-4">
       <div className="flex items-center justify-end gap-2">
-        <LanguageSelect languageHandler={languageHandler} />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline">
@@ -314,8 +294,7 @@ export default function EventsDataTable() {
           </Button>
         </div>
       </div>
-            <LoadingDialog open={isLoading} text={'Loading data...'} />
-
+      <LoadingDialog open={isLoading} text={'Loading data...'} />
     </div>
   );
 }

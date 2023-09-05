@@ -211,7 +211,7 @@ function DrawerFunction() {
       <SheetTrigger className="flex items-center mb-2  p-3 border-2 rounded-full hover:bg-secondary/80 hover:text-primary align-middle justify-between cursor-pointer">
         <i className="fa-solid fa-bars" />
       </SheetTrigger>
-      <SheetContent side={'left'}>
+      <SheetContent className="w-64 " side={'left'}>
         <SheetHeader>
           <SheetDescription className="pt-10">
             <Content />

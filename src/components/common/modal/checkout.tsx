@@ -35,6 +35,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
 import { z } from 'zod';
 import { userAuth } from '~/store/reducers/auth';
+import { addCart } from '~/store/reducers/cart';
+import { useRouter } from 'next/router';
 interface SettingDialogInterface {
   selectedItem: any;
   isModal: boolean;
@@ -48,19 +50,20 @@ interface SettingDialogInterface {
 export function CheckoutDialog(props: SettingDialogInterface) {
   const { user } = useSelector((state: RootState) => state.auth);
   const { cart, totalAmount } = useSelector((state: RootState) => state.cart);
+  console.log({ user }, 'props?.selectedItem');
 
   console.log(user?.total_customer_id);
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const { toast } = useToast();
   const [loading, setLoading] = useState<boolean>(false);
-  const formSchema = user?.total_customer_id
-    ? createPaymentSchema
-    : createFormPaymentSchema;
+  const formSchema = false ? createPaymentSchema : createFormPaymentSchema;
   console.log({ formSchema });
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(
-      user?.total_customer_id ? createPaymentSchema : createFormPaymentSchema,
+      // user?.total_customer_id ? createPaymentSchema : createFormPaymentSchema,
+      false ? createPaymentSchema : createFormPaymentSchema,
     ),
   });
 
@@ -74,33 +77,71 @@ export function CheckoutDialog(props: SettingDialogInterface) {
   });
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
+      setLoading(true);
       console.log(values, 'onSubmit');
       let payload: any = {
-        price: 90,
-        registrationId: user?.total_customer_id,
+        // registrationId: user?.total_customer_id,
         customer_id: user?.id,
-        values: props?.selectedItem,
+        values: {
+          ...props?.selectedItem,
+          cart_id:
+            props?.selectedItem?.cart_id > 0
+              ? props?.selectedItem?.cart_id
+              : cart?.id,
+          customer_id:
+            props?.selectedItem?.customer_id > 0
+              ? props?.selectedItem?.customer_id
+              : user?.id,
+        },
       };
-      if (!user?.total_customer_id) {
+      if (true) {
         payload = {
           ...values,
           registrationId: user?.total_customer_id,
           customer_id: user?.id,
-          values: props?.selectedItem,
+          values: {
+            ...props?.selectedItem,
+            cart_id:
+              props?.selectedItem?.cart_id > 0
+                ? props?.selectedItem?.cart_id
+                : cart?.id,
+            customer_id:
+              props?.selectedItem?.customer_id > 0
+                ? props?.selectedItem?.customer_id
+                : user?.id,
+          },
         };
       }
       const data = await bannerUpdate.mutateAsync({
         ...payload,
       });
-      if (data?.user) {
-        dispatch(userAuth(data?.user));
+      if (data) {
+        toast({
+          variant: 'success',
+          title: 'Payment Successfully',
+        });
+        // dispatch(userAuth(data?.user));
+        dispatch(
+          addCart({
+            cart: {
+              id: null,
+              customer_id: null,
+              isDiscount: false,
+              discount: 0,
+              isPercentage: false,
+              cartItems: [],
+            },
+            count: 0,
+            totalAmount: 0,
+          }),
+        );
+        setLoading(false);
+
+        router.push('/');
       }
-      console.log({ data });
-      toast({
-        variant: 'success',
-        title: 'Payment Successfully',
-      });
     } catch (e: any) {
+      setLoading(false);
+
       toast({
         variant: 'destructive',
         title: e?.message,
@@ -129,7 +170,7 @@ export function CheckoutDialog(props: SettingDialogInterface) {
               <DialogHeader>
                 <DialogTitle>{props?.title}</DialogTitle>
                 <DialogDescription className=" flex flex-col gap-2 ">
-                  {user?.total_customer_id ? (
+                  {false ? (
                     <div className="p-2 rounded-md text-center border mt-2">
                       Pay With Previous Bank Details
                     </div>
