@@ -95,7 +95,7 @@ function CurrentandPast(data: any) {
   return (
     <>
       <div className={`flex  z-10 `}>
-        <div className="flex w-fit  ">
+        <div className="flex w-fit  cursor-pointer">
           <div
             onClick={() => setSelect(0)}
             className={`p-4 border-[1px] rounded-none text-lg font-black ${select == 0
@@ -119,7 +119,7 @@ function CurrentandPast(data: any) {
         <div className="border-[1px] border-b-[#808080] w-full border-transparent "></div>
       </div>
 
-      <div className="w-full py-4 border-[1px] border-t-0 border-[#808080] h-72 rounded-b-md">
+      <div className="w-full py-4 border-[1px] border-t-0 border-[#808080] h-fit rounded-b-md">
         {displayArray?.length === 0 ? (
           <div className="flex flex-col my-auto h-full items-center justify-center">
             <Image src={Current} alt="/" />
