@@ -61,17 +61,17 @@ const CarsPage = () => {
       {/* this div below ↓ it to add spacing to avoid header */}
       <div className="relative pt-24"></div>
       <FeaturedCars />
-      <div className="block sm:hidden">
+      <div className="block slg:hidden">
         <BannerTitle image={CarsBg} text={'Cars'} />
       </div>
-      <p className="  text-2xl md:text-5xl px-10 sm:px-16 pt-10 sm:pt-10 pb-6     tracking-tighter font-extrabold text-white ">
+      <p className="  text-2xl md:text-5xl sm:px-16 px-10 pt-10 sm:pt-10 pb-6     tracking-tighter font-extrabold text-white ">
         CARS COMPETITION
       </p>
       <div className="h-full  px-10 pb-20 ">
         <Glow className=" absolute  top-[760px] -right-16     w-1/5 h-[350px] overflow-hidden " />
 
         <Glow className=" absolute  bottom-96 -right-16  w-1/5 h-[350px] overflow-x-hidden" />
-        <div className=" grid grid-cols-1 md:grid-cols-2     lg:grid-cols-3   justify-between max-w-[1300px] mx-auto ">
+        <div className=" grid grid-cols-1 md:grid-cols-2 gap-y-4 lg:grid-cols-3  justify-between max-w-[1300px] mx-auto ">
           {products?.map((itemList, i) => {
             return (
               <div className="mx-auto py-2 md:py-0" key={i}>
@@ -80,7 +80,7 @@ const CarsPage = () => {
                   nextPage={nextPage}
                   dir={lang.dir}
                   data={itemList}
-                  class="z-50 h-full max-w-sm lg:max-w-2xl md:scale-95  w-full  "
+                  class="z-50 md:max-w-[700px] lg:max-w-[1000px]  "
                 />
               </div>
             );

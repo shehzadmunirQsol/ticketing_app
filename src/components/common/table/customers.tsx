@@ -223,28 +223,32 @@ export default function CustomersDataTable() {
         </DropdownMenu>
       </div>
       <div className="rounded-md border">
-        <ScrollArea className="w-full ">
-          <ScrollBar orientation="horizontal"></ScrollBar>
-          <Table>
-            <TableHeader>
-              {table?.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => {
-                    return (
-                      <TableHead key={header.id}>
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext(),
-                            )}
-                      </TableHead>
-                    );
-                  })}
-                </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody>
+      <ScrollArea  className='w-full'>
+        <ScrollBar orientation="horizontal">
+
+        </ScrollBar>
+        <Table>
+          <TableHeader>
+            {table?.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <TableHead key={header.id}>
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext(),
+                          )}
+                    </TableHead>
+                  );
+                })}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody>
+            
+           
               {table?.getRowModel()?.rows?.length ? (
                 table?.getRowModel()?.rows?.map((row) => (
                   <TableRow

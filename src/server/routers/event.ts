@@ -232,7 +232,7 @@ export const eventRouter = router({
         };
         const todayDate = new Date();
         const endingDate = new Date();
-        endingDate.setDate(endingDate.getDate() + 7);
+        endingDate.setDate(endingDate.getDate() + 21);
 
         // upcoming means its going to start
         if (input?.type == 'upcomming') where.launch_date = { gte: todayDate };
