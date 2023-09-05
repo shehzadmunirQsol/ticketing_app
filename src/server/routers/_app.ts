@@ -16,9 +16,11 @@ import { contactRouter } from './contact';
 import { couponRouter } from './coupon';
 import { paymentRouter } from './payment';
 import { orderRouter } from './order';
+import { cmsRouter } from './cms';
 
 export const appRouter = router({
   admin: adminUserRouter,
+  cms: cmsRouter,
   category: categoryRouter,
   event: eventRouter,
   language: languageRouter,
