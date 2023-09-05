@@ -76,12 +76,20 @@ export const orderRouter = router({
           ...paymentPayload,
         })
           .then((response: any) => {
+            console.log(
+              response?.result?.parameterErrors,
+              'response?.result?.parameterErrors',
+            );
             if (!response?.result?.parameterErrors) {
               return { data: response, success: true };
             }
             throw new Error(response?.result?.parameterErrors[0].message);
           })
           .catch((error) => {
+            console.log(
+              error?.parameterErrors,
+              'response?.result?.parameterErrors',
+            );
             throw new Error(error.message);
           });
         console.log(paymentRes, 'apiRes?.registrationId');
@@ -215,6 +223,7 @@ export const orderRouter = router({
 
         return { message: 'Order created successfully!', user: user };
       } catch (error: any) {
+        console.log({ error }, 'error message');
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: error?.message,
@@ -335,10 +344,12 @@ async function CreatePayment(APidata: any) {
 
     if (payload?.card) delete payload?.card;
     if (payload?.values) delete payload?.values;
+    const tot_amount = APidata?.total_amount.toFixed(2);
+    console.log(tot_amount, 'tot_amount');
     const apiDate: any = APidata?.registrationId
       ? {
           entityId: process.env.TOTAN_ENTITY_ID,
-          amount: +APidata?.total_amount,
+          amount: APidata?.total_amount.toFixed(2),
           currency: 'AED',
           paymentType: 'DB',
           'standingInstruction.source': 'CIT',
@@ -351,7 +362,7 @@ async function CreatePayment(APidata: any) {
         }
       : {
           entityId: process.env.TOTAN_ENTITY_ID,
-          amount: APidata?.total_amount,
+          amount: APidata?.total_amount.toFixed(2),
           currency: 'AED',
           paymentType: 'DB',
           paymentBrand: APidata?.paymentBrand,
@@ -396,6 +407,7 @@ async function CreatePayment(APidata: any) {
           try {
             resolve(JSON.parse(jsonString));
           } catch (error) {
+            console.log(error, 'error error error error');
             reject(error);
           }
         });
