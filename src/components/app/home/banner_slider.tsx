@@ -164,7 +164,6 @@ const BannerSlider = () => {
               className="    object-cover  transform rtl:-scale-x-100 ltr:scale-100"
               src={renderNFTImage(carSlider[currentIndex])}
               alt="banner image"
-              placeholder="blur"
               fill
               quality={100}
 
