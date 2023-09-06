@@ -1,6 +1,6 @@
 import { NextPageWithLayout } from '~/pages/_app';
-import EditBanner from '~/components/admin/banner/edit';
+import EditEvent from '~/components/admin/events/edit';
 
-const IndexPage: NextPageWithLayout = () => <EditBanner />;
+const IndexPage: NextPageWithLayout = () => <EditEvent />;
 
 export default IndexPage;
