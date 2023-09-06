@@ -297,7 +297,7 @@ export function MultiFileInput(props: any) {
         <div className="max-w-[768px] overflow-x-scroll flex items-center gap-4      h-64   border-2 border-dashed  border-gray-600 rounded-md">
           {files.map((item: any, index: any) => {
             return (
-              <div key={item} className="relative h-full  w-1/3">
+              <div key={item} className="relative h-full   w-1/3">
                 <Image
                   width={1200}
                   className=" h-full p-2 bg-white rounded-md w-full"

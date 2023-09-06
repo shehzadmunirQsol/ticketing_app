@@ -97,7 +97,7 @@ export function CheckoutDialog(props: SettingDialogInterface) {
       if (true) {
         payload = {
           ...values,
-          registrationId: user?.total_customer_id,
+          // registrationId: user?.total_customer_id,
           customer_id: user?.id,
           values: {
             ...props?.selectedItem,

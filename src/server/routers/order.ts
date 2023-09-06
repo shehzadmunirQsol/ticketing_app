@@ -3,6 +3,7 @@ import { TRPCError } from '@trpc/server';
 import {
   createCheckoutPaymentSchema,
   createCheckoutSchema,
+  getOrder,
   getByIDSchema,
   getOrderSchema,
 } from '~/schema/order';
@@ -76,12 +77,20 @@ export const orderRouter = router({
           ...paymentPayload,
         })
           .then((response: any) => {
+            console.log(
+              response?.result?.parameterErrors,
+              'response?.result?.parameterErrors',
+            );
             if (!response?.result?.parameterErrors) {
               return { data: response, success: true };
             }
             throw new Error(response?.result?.parameterErrors[0].message);
           })
           .catch((error) => {
+            console.log(
+              error?.parameterErrors,
+              'response?.result?.parameterErrors',
+            );
             throw new Error(error.message);
           });
         console.log(paymentRes, 'apiRes?.registrationId');
@@ -215,12 +224,65 @@ export const orderRouter = router({
 
         return { message: 'Order created successfully!', user: user };
       } catch (error: any) {
+        console.log({ error }, 'error message');
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: error?.message,
         });
       }
     }),
+
+  getOrders: publicProcedure.input(getOrder).query(async ({ input, ctx }) => {
+    try {
+      const orders: any = await prisma.order.findMany({
+        where: {
+          customer_id: input.id,
+        },
+        include: {
+          OrderEvent: {
+            include: {
+              Event: {
+                include: {
+                  EventDescription: {
+                    where: {
+                      lang_id: input.lang_id,
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      });
+
+      console.log({ orders }, 'ordersorders');
+      if (orders && orders?.length > 0) {
+        const todayDate = new Date();
+
+        const ret: any = { current: [], past: [] };
+
+        for (let i = 0; i < orders.length; i++) {
+          if (orders[i].OrderEvent[0].Event?.end_date < todayDate) {
+            ret.past.push(orders[i]);
+          } else {
+            ret.current.push(orders[i]);
+          }
+        }
+
+        return ret;
+      } else {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'No Orders Found',
+        });
+      }
+    } catch (error: any) {
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: error?.message,
+      });
+    }
+  }),
   get: publicProcedure.input(getOrderSchema).query(async ({ input }) => {
     try {
       const where: any = { is_deleted: false };
@@ -294,6 +356,15 @@ export const orderRouter = router({
               last_name: true,
             },
           },
+          OrderEvent: {
+            include: {
+              Event: {
+                include: {
+                  EventDescription: true,
+                },
+              },
+            },
+          },
         },
       });
       const [event] = await Promise.all([eventPromise]);
@@ -326,10 +397,12 @@ async function CreatePayment(APidata: any) {
 
     if (payload?.card) delete payload?.card;
     if (payload?.values) delete payload?.values;
+    const tot_amount = APidata?.total_amount.toFixed(2);
+    console.log(tot_amount, 'tot_amount');
     const apiDate: any = APidata?.registrationId
       ? {
           entityId: process.env.TOTAN_ENTITY_ID,
-          amount: +APidata?.total_amount,
+          amount: APidata?.total_amount.toFixed(2),
           currency: 'AED',
           paymentType: 'DB',
           'standingInstruction.source': 'CIT',
@@ -342,7 +415,7 @@ async function CreatePayment(APidata: any) {
         }
       : {
           entityId: process.env.TOTAN_ENTITY_ID,
-          amount: APidata?.total_amount,
+          amount: APidata?.total_amount.toFixed(2),
           currency: 'AED',
           paymentType: 'DB',
           paymentBrand: APidata?.paymentBrand,
@@ -387,6 +460,7 @@ async function CreatePayment(APidata: any) {
           try {
             resolve(JSON.parse(jsonString));
           } catch (error) {
+            console.log(error, 'error error error error');
             reject(error);
           }
         });

@@ -76,6 +76,10 @@ export const createCheckoutPaymentSchema = z.object({
 });
 
 
+export const getOrder = z.object({
+  id: z.number(),
+  lang_id: z.number()
+})
 export const getOrderSchema = z.object({
   startDate: z.date().optional(),
   endDate: z.date().optional(),

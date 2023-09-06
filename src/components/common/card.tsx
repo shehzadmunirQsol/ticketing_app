@@ -21,6 +21,7 @@ interface cardInterface {
 function ProductCard(props: cardInterface) {
   const cardRef = useRef<HTMLDivElement>(null);
   const { lang } = useSelector((state: RootState) => state.layout);
+  const todayDate = new Date()
 
   /**
    * Implement Intersection Observer to check if the last Card in the array is visible on the screen, then set a new limit
@@ -38,16 +39,18 @@ function ProductCard(props: cardInterface) {
     observer.observe(cardRef.current);
   }, [props?.isLast]);
 
+  console.log(props?.data, "props?.data")
   return (
-    <div
+    props?.data && <div
       dir={props?.dir}
       className={`   rounded-sm shadow-lg bg-card ${props?.class}`}
       ref={cardRef}
     >
       <div className="relative">
-        <div className=" absolute top-0 w-fit p-2 z-2 bg-primary text-black text-sm">
+
+        {todayDate === props?.data?.end_date && <div className=" absolute top-0 w-fit p-2 z-2 bg-primary text-black text-sm">
           <span className=" font-bold">CLOSES TODAY</span> 20:00
-        </div>
+        </div>}
         <Image
           width={150}
           height={100}
@@ -67,8 +70,8 @@ function ProductCard(props: cardInterface) {
 
       <div className="px-6 mt-6 py-4">
         <div className="flex flex-col gap-1">
-          <span className=" text-xs ">955 Sold out of 1850</span>
-          <Progress value={80} className="w-full" />
+          <span className=" text-xs ">{props?.data?.tickets_sold} Sold out of {props?.data?.total_tickets}</span>
+          <Progress value={(Number(props?.data?.tickets_sold) / Number(props?.data?.total_tickets)) * 100} className="w-full" />
         </div>
         <div className="font-bold text-xl lg:text-2xl xl:text-3xl ">
           <span className="text-gray-200  font-semibold leading-loose">
@@ -85,12 +88,12 @@ function ProductCard(props: cardInterface) {
           </span>
           <span className="text-primary text-md xl:text-lg font-black leading-[18px]">
             {' '}
-            AED 45000
+            AED {(props?.data?.cash_alt).toFixed(2)}
           </span>
         </div>
         <div className="flex  justify-between items-center mt-6 gap-4">
           <div className="text-primary text-md xl:text-lg font-black leading-[18px]">
-            AED 120.00
+            AED {(props?.data?.price).toFixed(2)}
           </div>
           <Link href={`/product-detail/${props?.data?.id}`}>
             <Button variant="rounded" className="font-[800] tracking-tight text-md xl:text-lg ">
