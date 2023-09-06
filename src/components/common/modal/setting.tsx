@@ -29,8 +29,6 @@ export function SettingDialog(props: SettingDialogInterface) {
   const bannerUpdate = trpc.settings.banner_update.useMutation({
     onSuccess: () => {
       console.log('upload successfully');
-
-      // router.push('/store/wallet-connect');
     },
     onError(error: any) {
       console.log({ error });
@@ -39,8 +37,6 @@ export function SettingDialog(props: SettingDialogInterface) {
   const bannerDelete = trpc.settings.banner_delete.useMutation({
     onSuccess: () => {
       console.log('upload successfully');
-
-      // router.push('/store/wallet-connect');
     },
     onError(error: any) {
       console.log({ error });

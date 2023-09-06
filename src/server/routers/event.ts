@@ -75,6 +75,7 @@ export const eventRouter = router({
         category_id: +eventPayload?.category_id,
         price: +eventPayload?.price,
         total_tickets: +eventPayload?.total_tickets,
+        tickets_sold: 0,
         user_ticket_limit: +eventPayload?.user_ticket_limit,
         cash_alt: +eventPayload?.cash_alt,
         launch_date: eventPayload?.launch_date,

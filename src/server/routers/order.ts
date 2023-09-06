@@ -234,7 +234,7 @@ export const orderRouter = router({
 
   getOrders: publicProcedure.input(getOrder).query(async ({ input, ctx }) => {
     try {
-      const orders = await prisma.order.findMany({
+      const orders: any = await prisma.order.findMany({
         where: {
           customer_id: input.id,
         },
@@ -242,42 +242,45 @@ export const orderRouter = router({
           OrderEvent: {
             include: {
               Event: {
-                include:{
-                  EventDescription:{
-                    where:{
-                      lang_id:input.lang_id
-                    }
-                  }
-                }
-              }
-            }
+                include: {
+                  EventDescription: {
+                    where: {
+                      lang_id: input.lang_id,
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      });
+
+      console.log({ orders }, 'ordersorders');
+      if (orders && orders?.length > 0) {
+        const todayDate = new Date();
+
+        const ret: any = { current: [], past: [] };
+
+        for (let i = 0; i < orders.length; i++) {
+          if (orders[i].OrderEvent[0].Event?.end_date < todayDate) {
+            ret.past.push(orders[i]);
+          } else {
+            ret.current.push(orders[i]);
           }
         }
-      })
 
-
-      console.log({ orders }, "ordersorders")
-
-      const todayDate = new Date()
-
-      let ret: any = { current: [], past: [] };
-
-      for (let i = 0; i < orders.length; i++) {
-        
-
-          if (orders[i].OrderEvent[0].Event?.end_date < todayDate) {
-            ret.past.push(orders[i])
-          } else {
-            ret.current.push(orders[i])
-  
-          }
-        
+        return ret;
+      } else {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'No Orders Found',
+        });
       }
-
-      return ret
-
-    } catch (error) {
-
+    } catch (error: any) {
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: error?.message,
+      });
     }
   }),
   get: publicProcedure.input(getOrderSchema).query(async ({ input }) => {
@@ -408,8 +411,8 @@ async function CreatePayment(APidata: any) {
             ...payload,
           }),
 
-        'standingInstruction.type': 'UNSCHEDULED',
-      }
+          'standingInstruction.type': 'UNSCHEDULED',
+        }
       : {
           entityId: process.env.TOTAN_ENTITY_ID,
           amount: APidata?.total_amount.toFixed(2),
