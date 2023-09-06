@@ -157,9 +157,9 @@ const BannerSlider = () => {
           </div>
 
           {/* text select cards */}
-          <div className="  absolute  top-[100px]  sm:mb-8 m-auto    md:top-[260px] lg:top-[240px] xl:top-[170px] ltr:right-6 rtl:left-6 md:ltr:right-2 md:rtl:left-4  z-20  w-[320px] h-[200px]  sm:max-w-[440px] sm:w-full sm:h-full  sm:max-h-[300px] md:max-w-[500px] md:max-h-[260px] lg:max-w-[680px] xl:max-w-[680px]  xl:max-h-[340px]">
+          <div className="  absolute  top-[100px]  sm:mb-8 m-auto    md:top-[260px] lg:top-[240px] xl:top-[170px] ltr:right-6 rtl:left-4 md:ltr:right-2 md:rtl:left-4  z-20  w-[320px] h-[200px]  sm:max-w-[440px] sm:w-full sm:h-full  sm:max-h-[300px] md:max-w-[500px] md:max-h-[260px] lg:max-w-[680px] xl:max-w-[680px] xl:max-h-[360px]   ">
             <Image
-              className="    object-contain md:object-cover transform rtl:-scale-x-100 ltr:scale-100"
+              className="    object-cover  transform rtl:-scale-x-100 ltr:scale-100"
               src={renderNFTImage(carSlider[currentIndex])}
               alt="/"
               fill
