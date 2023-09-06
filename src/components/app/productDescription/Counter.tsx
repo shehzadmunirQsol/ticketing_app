@@ -13,12 +13,14 @@ interface CounterProps {
   setRange: React.Dispatch<React.SetStateAction<number[]>>;
   user_ticket_limit: number;
   ticketInBasket: { current: number };
+  ticketPurchased: number;
 }
 const Counter: React.FC<CounterProps> = ({
   range,
   setRange,
   user_ticket_limit,
   ticketInBasket,
+  ticketPurchased,
 }) => {
   const { user, isLogin } = useSelector((state: RootState) => state.auth);
   const { cart } = useSelector((state: RootState) => state.cart);
@@ -70,37 +72,50 @@ const Counter: React.FC<CounterProps> = ({
   }
 
   return (
-    <div className="relative bg-backgroundDark p-4  ">
-
-      <p className="text-lg text-white">How many tickets?</p>
-      {/* <input type="range" name="range" id="range" className="appearance-white w-full h-3  rounded-full thumb:bg-primary" /> */}
-      <div>
-        <TokenRange
-          range={range}
-          setRange={setRange}
-          min={1}
-          max={user_ticket_limit}
-        />
-      </div>
-      <div>
-        <CounterStyle
-          range={range}
-          setRange={setRange}
-          min={1}
-          max={user_ticket_limit}
-        />
-      </div>
-      <div className="mt-6">
-        <Button
-          className="w-full  text-black font-sans font-[900]  text-xl tracking-[-1px]"
-          variant="clip"
-          onClick={addToBasketHandler}
-          disabled={ticketInBasket.current === range[0]}
-        >
-          ADD TICKETS TO BASKET
-        </Button>
-      </div>
-
+    <div className="relative bg-backgroundDark p-4">
+      {ticketPurchased >= user_ticket_limit ? (
+        <div className="sm:p-4 space-y-4 grid items-center">
+          <i className="fas fa-gauge-high text-7xl lg:text-9xl text-primary text-center" />
+          <h3 className="text-base md:text-xl lg:text-2xl text-center text-white">
+            You have reached your max limit
+          </h3>
+        </div>
+      ) : (
+        <>
+          <div className="flex items-center justify-between">
+            <p className="text-lg text-white">How many tickets?</p>
+            {ticketPurchased ? (
+              <p className="text-sm text-white/40 ">
+                {"You've"} purchased{' '}
+                <strong className="text-primary">{ticketPurchased}</strong>{' '}
+                tickets
+              </p>
+            ) : null}
+          </div>
+          <TokenRange
+            range={range}
+            setRange={setRange}
+            min={1}
+            max={user_ticket_limit}
+          />
+          <CounterStyle
+            range={range}
+            setRange={setRange}
+            min={1}
+            max={user_ticket_limit}
+          />
+          <div className="mt-6">
+            <Button
+              className="w-full  text-black font-sans font-[900]  text-xl tracking-[-1px]"
+              variant="clip"
+              onClick={addToBasketHandler}
+              disabled={ticketInBasket.current === range[0]}
+            >
+              ADD TICKETS TO BASKET
+            </Button>
+          </div>
+        </>
+      )}
     </div>
   );
 };

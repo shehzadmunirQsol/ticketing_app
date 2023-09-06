@@ -139,6 +139,14 @@ export default Header;
 
 export function DropdownMenuDemo() {
   const [click, setClick] = useState(false);
+  const dispatch = useDispatch();
+  function toggleLanguageHandler(lang: 'en' | 'ar') {
+    const dir: 'ltr' | 'rtl' = lang === 'ar' ? 'rtl' : 'ltr';
+    const lang_id: 1 | 2 = lang === 'en' ? 1 : 2;
+    const language = { lang, dir, lang_id };
+
+    dispatch(toggleLang(language));
+  }
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -167,11 +175,11 @@ export function DropdownMenuDemo() {
           </DropdownMenuItem>
           <DropdownMenuItem>
             <ShoppingCart className="mr-2 h-4 w-4" />
-            <span>Cart</span>
+            <Link href="/cart">Cart</Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
             <User className="mr-2 h-4 w-4" />
-            <span>Users</span>
+            <Link href="/account">My Account</Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuGroup>
@@ -180,12 +188,12 @@ export function DropdownMenuDemo() {
               <Languages className="mr-2 h-4 w-4" />
               <span>Language</span>
             </DropdownMenuSubTrigger>
-            <DropdownMenuPortal>
-              <DropdownMenuSubContent className="!w-14">
-                <DropdownMenuItem>
+            <DropdownMenuPortal >
+              <DropdownMenuSubContent className="!w-14" >
+                <DropdownMenuItem onClick={()=>toggleLanguageHandler("en")}>
                   <span>EN</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={()=>toggleLanguageHandler("ar")}>
                   <span>AR</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />

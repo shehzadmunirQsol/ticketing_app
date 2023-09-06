@@ -15,6 +15,11 @@ export interface CartItemInterface {
   Event: {
     thumb: string;
     price: number;
+    end_date: Date | null;
+    tickets_sold: number | null;
+    user_ticket_limit: number;
+    total_tickets: number;
+
     EventDescription: {
       name: string;
     }[];
@@ -53,10 +58,13 @@ export const cartSlice = createSlice({
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
-    addCart: (state, action: PayloadAction<CartState>) => {
-      state.cart = action.payload.cart;
-      state.count = getTotalCount(state.cart?.cartItems ?? []);
-      state.totalAmount = getTotalAmount(state.cart?.cartItems ?? []);
+    addCart: (
+      state,
+      action: PayloadAction<Cart & { cartItems: CartItemInterface[] }>,
+    ) => {
+      state.cart = action.payload;
+      state.count = getTotalCount(action.payload?.cartItems ?? []);
+      state.totalAmount = getTotalAmount(action.payload?.cartItems ?? []);
     },
     addToCart: (
       state,

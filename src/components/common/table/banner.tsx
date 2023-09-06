@@ -46,6 +46,7 @@ import {
 import Link from 'next/link';
 import { Switch } from '~/components/ui/switch';
 import { SettingDialog } from '../modal/setting';
+import { LoadingDialog } from '../modal/loadingModal';
 
 export default function DataTableBanner() {
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -304,59 +305,57 @@ export default function DataTableBanner() {
         </div>
       </div>
       <div className="rounded-md border">
-      <ScrollArea  className='w-full '>
-        <ScrollBar orientation="horizontal">
-
-        </ScrollBar>
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && 'selected'}
-                  dir={orderFilters?.lang_id == 1 ? 'ltr' : 'rtl'}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
-                    </TableCell>
-                  ))}
+        <ScrollArea className="w-full ">
+          <ScrollBar orientation="horizontal"></ScrollBar>
+          <Table>
+            <TableHeader>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <TableHead key={header.id}>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext(),
+                            )}
+                      </TableHead>
+                    );
+                  })}
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+              ))}
+            </TableHeader>
+            <TableBody>
+              {table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && 'selected'}
+                    dir={orderFilters?.lang_id == 1 ? 'ltr' : 'rtl'}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext(),
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-24 text-center"
+                  >
+                    No results.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
         </ScrollArea>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
@@ -392,6 +391,7 @@ export default function DataTableBanner() {
         type={type}
         setType={setType}
       />
+      <LoadingDialog open={isLoading} text={'Loading data...'} />
     </div>
   );
 }

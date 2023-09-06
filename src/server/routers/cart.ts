@@ -3,6 +3,7 @@ import { TRPCError } from '@trpc/server';
 import {
   addToCartSchema,
   getCartSchema,
+  getTicketPurchasedSchema,
   removeCartItemSchema,
 } from '~/schema/cart';
 import { prisma } from '~/server/prisma';
@@ -36,6 +37,10 @@ export const cartRouter = router({
                 select: {
                   thumb: true,
                   price: true,
+                  end_date: true,
+                  tickets_sold: true,
+                  user_ticket_limit: true,
+                  total_tickets: true,
 
                   EventDescription: {
                     where: { lang_id: 1 },
@@ -58,6 +63,35 @@ export const cartRouter = router({
       });
     }
   }),
+  getUserTicketLimit: publicProcedure
+    .input(getTicketPurchasedSchema)
+    .query(async ({ input, ctx }) => {
+      try {
+        const token = ctx?.req?.cookies['winnar-token'];
+
+        let userData;
+        if (token) {
+          userData = await verifyJWT(token);
+        } else {
+          return { data: null };
+        }
+        const customerLimit = await prisma.orderEvent.groupBy({
+          having: {
+            customer_id: userData?.id,
+            event_id: { in: input.event_ids },
+          },
+          by: ['event_id', 'customer_id'],
+          _sum: { quantity: true },
+        });
+
+        return { message: 'Found', data: customerLimit };
+      } catch (error: any) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: error?.message,
+        });
+      }
+    }),
   addToCart: publicProcedure
     .input(addToCartSchema)
     .mutation(async ({ input }) => {
@@ -91,6 +125,10 @@ export const cartRouter = router({
               select: {
                 thumb: true,
                 price: true,
+                end_date: true,
+                tickets_sold: true,
+                user_ticket_limit: true,
+                total_tickets: true,
                 EventDescription: {
                   where: { lang_id: 1 },
                   select: {

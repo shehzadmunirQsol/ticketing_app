@@ -1,32 +1,34 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { getAdminToken } from '~/utils/authToken';
+import { getAdminToken, getToken } from '~/utils/authToken';
 
-export function middleware(request: NextRequest, requestHeaders: Headers) {
+export function middleware(request: NextRequest) {
   // Clone the request headers and set a new header x-hello-from-middleware1
-  const storeRequestHeaders = new Headers(request.headers);
   if (request.nextUrl.pathname.startsWith('/admin')) {
-    const isProtecedAdminRoutes = ['/admin/login'].includes(
+    const storeRequestHeaders = new Headers(request.headers);
+
+    const isProtectedAdminRoutes = ['/admin/login'].includes(
       request.nextUrl.pathname,
     );
     const token = getAdminToken(storeRequestHeaders);
-    console.log('TOken: ', token);
-    if (isProtecedAdminRoutes && token)
+    if (isProtectedAdminRoutes && token)
       return NextResponse.redirect(new URL('/admin/dashboard', request.url));
-    if (!isProtecedAdminRoutes && !token)
+    if (!isProtectedAdminRoutes && !token)
       return NextResponse.redirect(new URL('/admin/login', request.url));
   }
-  // if (request.nextUrl.pathname.startsWith('/')) {
-  //   const isProtecedAdminRoutes = ['/login','/','/cash','/cars'].includes(
-  //     request.nextUrl.pathname,
-  //   );
-  //   const token = getAdminToken(storeRequestHeaders);
-  //   console.log("TOken: ",token)
-  //   if (isProtecedAdminRoutes && token)
-  //     return NextResponse.redirect(new URL('/', request.url));
-  //   if (!isProtecedAdminRoutes && !token)
-  //     return NextResponse.redirect(new URL('/', request.url));
-  // }
 
+  if (request.nextUrl.pathname.startsWith('/')) {
+    const storeRequestHeaders = new Headers(request.headers);
+
+    const isProtectedRoutes = ['/cart', '/checkout', '/account'].includes(
+      request.nextUrl.pathname,
+    );
+    const token = getToken(storeRequestHeaders);
+    if (request.nextUrl.pathname === '/login' && token)
+      return NextResponse.redirect(new URL('/', request.url));
+    if (isProtectedRoutes && !token)
+      return NextResponse.redirect(new URL('/login', request.url));
+    return NextResponse.next();
+  }
   return NextResponse.next();
 }

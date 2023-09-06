@@ -107,6 +107,26 @@ export function BannerForm() {
 
     enabled: index ? true : false,
   });
+  const formValidateData =
+    BannerApiData !== undefined && index
+      ? BannerApiData[0]?.lang_id
+        ? enFormSchema
+        : BannerApiData[0]?.lang_id == 2
+        ? arFormSchema
+        : BannerFormSchema
+      : BannerFormSchema;
+
+  const form = useForm<z.infer<typeof formValidateData>>({
+    resolver: zodResolver(
+      BannerApiData !== undefined && index
+        ? BannerApiData[0]?.lang_id == 1
+          ? enFormSchema
+          : BannerApiData[0]?.lang_id == 2
+          ? arFormSchema
+          : BannerFormSchema
+        : BannerFormSchema,
+    ),
+  });
   useEffect(() => {
     if (!isLoading && isFetched && BannerApiData !== undefined) {
       const data: any = { ...BannerApiData[0] };
@@ -128,27 +148,7 @@ export function BannerForm() {
         form.setValue('ar.date', json_data?.date);
       }
     }
-  }, [isLoading, isFetched, BannerApiData]);
-  const formValidateData =
-    BannerApiData !== undefined && index
-      ? BannerApiData[0]?.lang_id
-        ? enFormSchema
-        : BannerApiData[0]?.lang_id == 2
-        ? arFormSchema
-        : BannerFormSchema
-      : BannerFormSchema;
-
-  const form = useForm<z.infer<typeof formValidateData>>({
-    resolver: zodResolver(
-      BannerApiData !== undefined && index
-        ? BannerApiData[0]?.lang_id == 1
-          ? enFormSchema
-          : BannerApiData[0]?.lang_id == 2
-          ? arFormSchema
-          : BannerFormSchema
-        : BannerFormSchema,
-    ),
-  });
+  }, [isLoading, isFetched, BannerApiData, form]);
 
   const bannerUpload = trpc.settings.banner_create.useMutation({
     onSuccess: () => {
@@ -266,10 +266,10 @@ export function BannerForm() {
   }
 
   async function uploadOnS3Handler() {
+    console.log('uploading');
     if (optimizeFile?.name) {
       const response = await getS3ImageUrl(optimizeFile);
-      if (!response.success)
-        return console.log('response.message', response.message);
+      if (!response.success) throw new Error('Image Upload Failure');
 
       const isImage = isValidImageType(optimizeFile?.type);
 
@@ -283,7 +283,7 @@ export function BannerForm() {
 
       return nftSource;
     } else {
-      return console.log('Please Select Image');
+      throw new Error('Please Select Image');
     }
   }
   return (
@@ -294,16 +294,15 @@ export function BannerForm() {
       >
         <div className="space-y-4">
           <div>
-            {!index && (
-              <FileInput
-                register={form.register('thumb')}
-                reset={form.reset}
-                getValues={form.getValues}
-                setValue={form.setValue}
-                imageCompressorHandler={imageHandler}
-                required={true}
-              />
-            )}
+            <FileInput
+              register={form.register('thumb')}
+              reset={form.reset}
+              getValues={form.getValues}
+              setValue={form.setValue}
+              imageCompressorHandler={imageHandler}
+              required={true}
+            />
+
             <FormField
               control={form.control}
               name="link"
@@ -529,7 +528,7 @@ export function BannerForm() {
           </Button>
         </div>
       </form>
-      <LoadingDialog open={isSubmitting} text={'Saving data...'} />
+      <LoadingDialog open={isSubmitting || isLoading} text={'Saving data...'} />
     </Form>
   );
 }

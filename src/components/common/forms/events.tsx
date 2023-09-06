@@ -63,9 +63,9 @@ const formSchema: any = [
   {
     type: 'select',
     name: 'category_id',
-    label: 'Category ID',
+    label: 'Category',
 
-    placeholder: 'Please Enter Token Price',
+    placeholder: 'Please Select Category',
   },
   {
     type: 'text',
@@ -152,7 +152,7 @@ export default function EventForm() {
       console.log({ error });
     },
   });
- 
+
   // 1. Define your form.
 
   // 2. Define a submit handler.
@@ -474,6 +474,7 @@ export default function EventForm() {
                                 <Input
                                   type={item?.type}
                                   placeholder={item?.placeholder}
+
                                   {...field}
                                 />
                               </FormControl>
@@ -543,18 +544,21 @@ export default function EventForm() {
                                   <FormControl>
                                     <SelectTrigger className=" rounded-none  ">
                                       <SelectValue
+                                        className='!bg-black'
+
                                         placeholder={item?.placeholder}
                                       />
                                     </SelectTrigger>
                                   </FormControl>
-                                  <SelectContent>
-                                    <SelectGroup>
+                                  <SelectContent className=''>
+                                    <SelectGroup >
                                       {categoryData &&
                                         categoryData.map(
                                           (item: any, index: number) => {
                                             return (
                                               <div key={index}>
                                                 <SelectItem
+                                                  className='bg-slate-950'
                                                   value={(item?.id).toString()}
                                                 >
                                                   {item?.name}

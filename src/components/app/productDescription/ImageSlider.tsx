@@ -5,8 +5,9 @@ import ImageSliderStyle from './ImageSliderStyle';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
 import { useRouter } from 'next/router';
+import { getAvailableTickets } from '~/utils/helper';
 
-const ImageSlider = ({ data }: any) => {
+const ImageSlider = ({ data, ticketPurchased }: any) => {
   const { cart } = useSelector((state: RootState) => state.cart);
 
   const [range, setRange] = useState<number[]>([1]);
@@ -27,6 +28,18 @@ const ImageSlider = ({ data }: any) => {
 
   const price = +(range[0] as number) * data?.price;
   const percentageSold = (data?.tickets_sold / data?.total_tickets) * 100;
+
+  const ticketEventPayload = {
+    total_tickets: data?.total_tickets,
+    tickets_sold: data?.tickets_sold ?? 0,
+    user_ticket_limit: data?.user_ticket_limit,
+  };
+
+  const { userTicketLimit } = getAvailableTickets({
+    event: ticketEventPayload,
+    ticketPurchased: ticketPurchased,
+    quantity: range[0] ?? 0,
+  });
 
   return (
     <section className="text-gray-600 body-font">
@@ -75,10 +88,10 @@ const ImageSlider = ({ data }: any) => {
                   range={range}
                   ticketInBasket={ticketInBasket}
                   setRange={setRange}
-                  user_ticket_limit={data?.user_ticket_limit}
+                  user_ticket_limit={userTicketLimit}
+                  ticketPurchased={ticketPurchased}
                 />
               </div>
-              {/* <div className="absolute bottom-10 -right-10  z-10  w-1/5 h-3/5  bg-teal-400 bg-opacity-50 rounded-full blur-3xl"></div> */}
             </div>
           </div>
         </div>

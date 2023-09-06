@@ -7,13 +7,21 @@ import { trpc } from '~/utils/trpc';
 import { useDispatch } from 'react-redux';
 import { useToast } from '~/components/ui/use-toast';
 import { CartItemInterface, addToCart } from '~/store/reducers/cart';
-import { renderNFTImage } from '~/utils/helper';
+import { getAvailableTickets, renderNFTImage } from '~/utils/helper';
 import { RemoveItemDialog } from '~/components/common/modal/cartModal';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '~/components/ui/tooltip';
+import Link from 'next/link';
 
 type CartItemProp = {
   cartItem: CartItemInterface;
   cart_id: number;
   customer_id: number;
+  ticketPurchased: number;
 };
 
 type SubscriptionType = 'weekly' | 'monthly' | 'quarterly' | null;
@@ -56,7 +64,6 @@ export default function CartItem(props: CartItemProp) {
 
     try {
       const response = await addToBasket.mutateAsync(payload);
-      console.log({ response });
       dispatch(addToCart(response.data));
       setIsSubscribe(isSubscription);
       setSubscriptionType(isSubscription ? subscriptionType : null);
@@ -76,6 +83,18 @@ export default function CartItem(props: CartItemProp) {
     if (isSubscribe && subscriptionType) addToBasketHandler('unsubscribe');
     else setIsSubscribe((prevValue) => !prevValue);
   }
+
+  const ticketEventPayload = {
+    total_tickets: props.cartItem?.Event?.total_tickets,
+    tickets_sold: props.cartItem?.Event?.tickets_sold ?? 0,
+    user_ticket_limit: props.cartItem?.Event?.user_ticket_limit,
+  };
+
+  const { isTicketLimit } = getAvailableTickets({
+    event: ticketEventPayload,
+    ticketPurchased: props?.ticketPurchased,
+    quantity: cartItem?.quantity,
+  });
 
   return (
     <div
@@ -110,10 +129,13 @@ export default function CartItem(props: CartItemProp) {
           </div>
         </div>
         <div className="flex-1 flex items-start justify-between space-x-4">
-          <p className="hidden mdx:block text-xl xl:text-2xl ">
+          <Link
+            href={`/product-detail/${cartItem?.event_id}`}
+            className="hidden mdx:block text-xl xl:text-2xl "
+          >
             {cartItem?.Event?.EventDescription[0]?.name}
             {/* Win This 800BHP Ferrari E63s Night Edition + AED 1,000 Cash! */}
-          </p>
+          </Link>
           <div className="flex flex-col space-y-2">
             <div className="flex justify-between items-start min-w-[450px] w-1/2 max-w-[550px]">
               <div className="bg-card flex items-center justify-between overflow-hidden ">
@@ -125,13 +147,23 @@ export default function CartItem(props: CartItemProp) {
                   <i className="fas fa-minus text-xl xl:text-2xl font-extrabold" />
                 </Button>
                 <p className="w-16 text-center text-xl">{cartItem?.quantity}</p>
-                <Button
-                  className="p-2 bg-primary text-background"
-                  disabled={addToBasket.isLoading}
-                  onClick={() => addToBasketHandler('increment')}
-                >
-                  <i className="fas fa-plus text-xl xl:text-2xl font-extrabold" />
-                </Button>
+
+                <TooltipProvider>
+                  <Tooltip open={isTicketLimit}>
+                    <TooltipTrigger asChild>
+                      <Button
+                        className="p-2 bg-primary text-background"
+                        disabled={isTicketLimit || addToBasket.isLoading}
+                        onClick={() => addToBasketHandler('increment')}
+                      >
+                        <i className="fas fa-plus text-xl xl:text-2xl font-extrabold" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Cannot buy more tickets</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               </div>
               <p className="text-xl text-white font-bold">
                 AED: {(cartItem?.quantity * cartItem?.Event?.price)?.toFixed(2)}{' '}
@@ -152,24 +184,35 @@ export default function CartItem(props: CartItemProp) {
 
             {isSubscribe ? (
               <div className="self-end grid grid-cols-2 gap-2">
-                {['Weekly', 'Monthly', 'Quarterly'].map((frequency) => (
-                  <Button
-                    key={frequency}
-                    className={`bg-card text-sm rounded-full ${
-                      frequency?.toLocaleLowerCase() === subscriptionType
-                        ? 'border border-primary'
-                        : ''
-                    }`}
-                    variant="outline"
-                    onClick={() =>
-                      setSubscriptionType(
-                        frequency?.toLocaleLowerCase() as SubscriptionType,
-                      )
-                    }
-                  >
-                    {frequency}
-                  </Button>
-                ))}
+                {Object.keys(subscription).map((frequency) => {
+                  const subscriptionDate = new Date(
+                    new Date().setDate(subscription[frequency] as number),
+                  ).getTime();
+
+                  const EndDate =
+                    props?.cartItem?.Event?.end_date?.getTime() ?? 0;
+                  const isSubscribable = subscriptionDate > EndDate;
+
+                  return (
+                    <Button
+                      key={frequency}
+                      className={`bg-card text-sm rounded-full ${
+                        frequency?.toLocaleLowerCase() === subscriptionType
+                          ? 'border border-primary'
+                          : ''
+                      }`}
+                      disabled={isSubscribable}
+                      variant="outline"
+                      onClick={() =>
+                        setSubscriptionType(
+                          frequency?.toLocaleLowerCase() as SubscriptionType,
+                        )
+                      }
+                    >
+                      {frequency}
+                    </Button>
+                  );
+                })}
                 <Button
                   className="rounded-full text-sm font-extrabold "
                   disabled={addToBasket.isLoading || !subscriptionType}
@@ -195,3 +238,9 @@ export default function CartItem(props: CartItemProp) {
     </div>
   );
 }
+
+const subscription: { [key: string]: number } = {
+  Weekly: 7,
+  Monthly: 30,
+  Quarterly: 90,
+};

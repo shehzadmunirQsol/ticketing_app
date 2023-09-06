@@ -9,6 +9,7 @@ import {
   getEventsByIdSchema,
 } from '~/schema/event';
 import { prisma } from '~/server/prisma';
+import { verifyJWT } from '~/utils/jwt';
 
 export const eventRouter = router({
   get: publicProcedure.input(getEventSchema).query(async ({ input }) => {
@@ -33,7 +34,7 @@ export const eventRouter = router({
 
       const eventPromise = prisma.eventView.findMany({
         orderBy: { created_at: 'desc' },
-        skip: input.first,
+        skip: input.first * input.rows,
         take: input.rows,
         where: where,
       });
@@ -74,6 +75,7 @@ export const eventRouter = router({
         category_id: +eventPayload?.category_id,
         price: +eventPayload?.price,
         total_tickets: +eventPayload?.total_tickets,
+        tickets_sold: 0,
         user_ticket_limit: +eventPayload?.user_ticket_limit,
         cash_alt: +eventPayload?.cash_alt,
         launch_date: eventPayload?.launch_date,
@@ -107,7 +109,7 @@ export const eventRouter = router({
           message: 'Event Description not created',
         });
       }
-      const myImages = multi_image.map((str: string, ) => ({
+      const myImages = multi_image.map((str: string) => ({
         thumb: str,
         event_id: event.id,
       }));
@@ -190,10 +192,10 @@ export const eventRouter = router({
                 comp_details: true,
                 lang_id: true,
                 name: true,
-                desc: true
-              }
-            }
-          }
+                desc: true,
+              },
+            },
+          },
         });
 
         const [totalEvent, event] = await Promise.all([
@@ -343,72 +345,66 @@ export const eventRouter = router({
       }
     }),
 
-  getFeatured: publicProcedure
-    .input(getFeatured)
-    .query(async ({ input }) => {
-      try {
-        const where: any = {
-          is_deleted: false,
-          EventDescription: { some: { lang_id: input?.lang_id } },
-        };
+  getFeatured: publicProcedure.input(getFeatured).query(async ({ input }) => {
+    try {
+      const where: any = {
+        is_deleted: false,
+        EventDescription: { some: { lang_id: input?.lang_id } },
+      };
 
+      // upcoming means its going to start
+      if (input?.is_featured == 1) where.is_featured = true;
 
-        // upcoming means its going to start
-        if (input?.is_featured == 1) where.is_featured = true;
+      const totalEventPromise = prisma.event.count({
+        where: where,
+      });
 
-        const totalEventPromise = prisma.event.count({
-          where: where,
-        });
+      const eventPromise = prisma.event.findMany({
+        orderBy: { created_at: 'asc' },
+        skip: input.first * input.rows,
+        take: input.rows,
+        where: where,
+        include: {
+          EventImages: {},
+          EventDescription: {},
+        },
+      });
 
-        const eventPromise = prisma.event.findMany({
-          orderBy: { created_at: 'asc' },
-          skip: input.first * input.rows,
-          take: input.rows,
-          where: where,
-          include: {
-            EventImages: {
-            },
-            EventDescription: {
-            },
-          },
+      const [totalEvent, event] = await Promise.all([
+        totalEventPromise,
+        eventPromise,
+      ]);
 
-        });
-
-        const [totalEvent, event] = await Promise.all([
-          totalEventPromise,
-          eventPromise,
-        ]);
-
-        if (!event?.length) {
-          throw new TRPCError({
-            code: 'NOT_FOUND',
-            message: 'Events not found',
-          });
-        }
-
-        console.log(totalEvent, event, 'event data');
-        return {
-          message: 'Events found',
-          count: totalEvent,
-          data: event,
-        };
-      } catch (error: any) {
+      if (!event?.length) {
         throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: error?.message,
+          code: 'NOT_FOUND',
+          message: 'Events not found',
         });
       }
-    }),
+
+      console.log(totalEvent, event, 'event data');
+      return {
+        message: 'Events found',
+        count: totalEvent,
+        data: event,
+      };
+    } catch (error: any) {
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: error?.message,
+      });
+    }
+  }),
 
   getEventsById: publicProcedure
     .input(getEventsByIdSchema)
-    .query(async ({ input }) => {
+    .query(async ({ input, ctx }) => {
       try {
-        console.log("ICONSOLE>LOGPSKSJS")
-        console.log(input, "MEINHNNSSA")
-        console.log(input.id, "MEINHNNSSA IDDD")
+        console.log('ICONSOLE>LOGPSKSJS');
+        console.log(input, 'MEINHNNSSA');
+        console.log(input.id, 'MEINHNNSSA IDDD');
 
-        const eventPromise = await prisma.event.findUnique({
+        const event = await prisma.event.findUnique({
           where: {
             id: input.id,
           },
@@ -425,15 +421,30 @@ export const eventRouter = router({
                 comp_details: true,
               },
             },
-            EventImages: true
+            EventImages: true,
           },
-
         });
-        console.log(eventPromise, "BJSAJSAKDHDHJSSHSH")
+
+        const token = ctx?.req?.cookies['winnar-token'];
+        let ticketPurchased = 0;
+
+        let userData;
+        if (token) {
+          userData = await verifyJWT(token);
+
+          const customerLimit = await prisma.orderEvent.groupBy({
+            where: { event_id: input.id, customer_id: userData?.id },
+            by: ['event_id', 'customer_id'],
+            _sum: { quantity: true },
+          });
+
+          ticketPurchased = customerLimit[0]?._sum?.quantity ?? 0;
+        }
 
         return {
           message: 'events found',
-          data: eventPromise,
+          data: event,
+          ticketPurchased: ticketPurchased,
         };
       } catch (error: any) {
         throw new TRPCError({

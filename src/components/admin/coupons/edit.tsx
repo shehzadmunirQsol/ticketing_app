@@ -1,26 +1,12 @@
-import { useState } from 'react';
-import CategoryForm from '~/components/common/forms/categoryForm';
-import LanguageSelect, {
-  LanguageInterface,
-} from '~/components/common/language_select';
+import CouponForm from '~/components/common/forms/coupon';
 
-export default function EditCategory() {
-  const [language, setLanguage] = useState<LanguageInterface>({
-    id: 1,
-    code: 'en',
-  });
-
-  function languageHandler(params: LanguageInterface) {
-    setLanguage(params);
-  }
-
+export default function EditCoupon() {
   return (
     <div className="p-8 space-y-8">
       <div className="flex items-center justify-between">
-        <h2 className="text-4xl font-medium">Edit Category</h2>
-        <LanguageSelect languageHandler={languageHandler} />
+        <h2 className="text-4xl font-medium">Edit Coupon</h2>
       </div>
-      <CategoryForm language={language} />
+      <CouponForm />
     </div>
   );
 }

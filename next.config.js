@@ -27,12 +27,13 @@ module.exports = getConfig({
     NODE_ENV: env.NODE_ENV,
   },
   images: {
+    // disableStaticImages: true,
+    unoptimized: true,
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-    domains: [
-      'images.unsplash.com',
-      "media.winnar.com"
-    ],
+
+    domains: ['images.unsplash.com', 'media.winnar.com'],
+
   },
   /** We run eslint as a separate task in CI */
   eslint: { ignoreDuringBuilds: !!process.env.CI },
