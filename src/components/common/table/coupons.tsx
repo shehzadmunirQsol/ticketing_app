@@ -18,8 +18,13 @@ import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuSubContent,
   DropdownMenuTrigger,
 } from '@/ui/dropdown-menu';
+
 import {
   Table,
   TableBody,
@@ -43,6 +48,8 @@ import { useToast } from '~/components/ui/use-toast';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 import { CouponDialog } from '../modal/coupon';
 import { LoadingDialog } from '../modal/loadingModal';
+import { MoreHorizontal } from 'lucide-react';
+import Link from 'next/link';
 
 export type Category = {
   id: number;
@@ -78,7 +85,7 @@ export default function CouponsDataTable() {
   const [isModal, setIsModal] = React.useState(false);
 
   // APi
-  const { data, refetch,isLoading } = trpc.coupon.get.useQuery(filters, {
+  const { data, refetch, isLoading } = trpc.coupon.get.useQuery(filters, {
     refetchOnWindowFocus: false,
   });
 
@@ -193,6 +200,29 @@ export default function CouponsDataTable() {
           {displayDate(row?.original?.end_date)}
         </div>
       ),
+    },
+    {
+      id: 'actions',
+      enableHiding: false,
+      cell: ({ row }) => {
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <Link href={`/admin/coupons/edit/${row?.original?.id}`}>
+                <DropdownMenuItem>Edit Coupon</DropdownMenuItem>
+              </Link>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        );
+      },
     },
   ];
 

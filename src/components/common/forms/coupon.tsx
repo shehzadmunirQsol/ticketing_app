@@ -38,19 +38,38 @@ export default function CouponForm() {
 
   const router = useRouter();
 
-  const { categoryId = 0 } = router.query;
+  const { index } = router.query;
+  const initialOrderFilters: any = {};
+  if (index) initialOrderFilters.coupon_id = +index;
 
-  const { data: category } = trpc.category.getById.useQuery(
-    { category_id: +categoryId },
-    {
-      refetchOnWindowFocus: false,
-      enabled: categoryId ? true : false,
-      onSuccess(categoryData) {
-        // form.setValue('thumb', categoryData?.data?.thumb);
-        // form.setValue('en.name', enData?.name as string);
-      },
+  const { data: category } = trpc.coupon.getById.useQuery(initialOrderFilters, {
+    refetchOnWindowFocus: false,
+    enabled: index ? true : false,
+    onSuccess(categoryData) {
+      // form.setValue('thumb', categoryData?.data?.thumb);
+      form.setValue('name', categoryData?.data?.name as string);
+      form.setValue('coupon_code', categoryData?.data?.coupon_code as string);
+      form.setValue('discount', categoryData?.data?.discount);
+      form.setValue(
+        'is_percentage',
+        categoryData?.data?.is_percentage ? '1' : '0',
+      );
+      form.setValue('is_limited', categoryData?.data?.is_limited ? '1' : '0');
+      form.setValue('limit', categoryData?.data?.coupon_limit ?? 0);
+      if (categoryData?.data?.start_date) {
+        form.setValue(
+          'start_date',
+          categoryData?.data?.start_date?.toISOString().split('T')[0] as any,
+        );
+      }
+      if (categoryData?.data?.end_date) {
+        form.setValue(
+          'end_date',
+          categoryData?.data?.end_date?.toISOString().split('T')[0] as any,
+        );
+      }
     },
-  );
+  });
 
   const addCoupon = trpc.coupon.create.useMutation();
 
@@ -318,7 +337,7 @@ export default function CouponForm() {
 
       <LoadingDialog
         open={addCoupon.isLoading || loading}
-        text={`${categoryId ? 'Updating' : 'Adding'} Category...`}
+        text={`${index ? 'Updating' : 'Adding'} Category...`}
       />
     </Form>
   );

@@ -48,3 +48,4 @@ export const updateCouponSchema = z.object({
 });
 
 export type createCouponSchema = z.infer<typeof createCouponSchema>;
+export type updateCouponType = z.infer<typeof updateCouponSchema>;

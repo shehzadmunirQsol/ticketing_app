@@ -98,8 +98,9 @@ const BannerSlider = () => {
 
   return (
     <div
-      className={`relative w-full h-screen overflow-hidden ${lang.dir === 'ltr' ? 'banner_img' : 'banner_img_flip'
-        }`}
+      className={`relative w-full h-screen overflow-hidden ${
+        lang.dir === 'ltr' ? 'banner_img' : 'banner_img_flip'
+      }`}
     >
       <div className="relative ">
         <Image
@@ -124,8 +125,9 @@ const BannerSlider = () => {
           {/* text content */}
 
           <div
-            className={`relative ${showElement ? 'fading-animation' : ''
-              } transition-all  duration-500 items-center  ease-in-out top-32 sm:top-48 h-fit mx-auto  ltr:md:ml-20 rtl:md:mr-20 text-white sm:max-w-[500px] lg:max-w-[700px]`}
+            className={`relative ${
+              showElement ? 'fading-animation' : ''
+            } transition-all  duration-500 items-center  ease-in-out top-32 sm:top-48 h-fit mx-auto  ltr:md:ml-20 rtl:md:mr-20 text-white sm:max-w-[500px] lg:max-w-[700px]`}
           >
             <p className="px-4 text-3xl  md:text-4xl xl:text-5xl font-[900] tracking-[-2px] ">
               {carSlider[currentIndex]?.title}
@@ -148,7 +150,7 @@ const BannerSlider = () => {
                 className="mx-4 text-black font-sans font-[900]  tracking-[-1px]"
                 variant="clip"
               >
-                {lang.lang_id === 1 ? "ENTER NOW" : "أدخل الأن"}
+                {lang.lang_id === 1 ? 'ENTER NOW' : 'أدخل الأن'}
               </Button>
             </Link>
             <div className="block sm:hidden mx-auto  w-fit h-fit">
@@ -161,13 +163,14 @@ const BannerSlider = () => {
             <Image
               className="    object-contain md:object-cover transform rtl:-scale-x-100 ltr:scale-100"
               src={renderNFTImage(carSlider[currentIndex])}
-              alt="/"
+              alt="banner image"
+              placeholder="blur"
               fill
               quality={100}
 
-            // width={750}
-            // height={400}
-            // sizes="(max-width: 768px) 900px 500px, (max-width: 1200px) 700px 400px"
+              // width={750}
+              // height={400}
+              // sizes="(max-width: 768px) 900px 500px, (max-width: 1200px) 700px 400px"
             />
           </div>
           <div className="relative hidden    ltr:right-16 rtl:left-16 z-30  md:top-[380px]  items-end h-fit lg:flex justify-between  gap-3 mx-auto sm:mx-0">
@@ -178,8 +181,9 @@ const BannerSlider = () => {
                 onClick={() => goToSlide(i)}
               >
                 <div
-                  className={`relative   w-[100px] h-[60px] mx-auto border-2  ${currentIndex === i ? 'border-primary' : 'border-transparent'
-                    } group-hover:border-primary`}
+                  className={`relative   w-[100px] h-[60px] mx-auto border-2  ${
+                    currentIndex === i ? 'border-primary' : 'border-transparent'
+                  } group-hover:border-primary`}
                 >
                   <Image
                     src={renderNFTImage(item)}

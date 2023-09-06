@@ -1,5 +1,6 @@
 import { router, publicProcedure } from '../trpc';
 import { TRPCError } from '@trpc/server';
+import { z } from 'zod';
 import {
   applyCouponSchema,
   createCouponSchema,
@@ -87,6 +88,31 @@ export const couponRouter = router({
           },
           include: {
             Coupon: true,
+          },
+        });
+        if (!coupon) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Invalid Coupon',
+          });
+        }
+
+        return { message: 'Coupon Applied', data: coupon };
+      } catch (error: any) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: error?.message,
+        });
+      }
+    }),
+  getById: publicProcedure
+    .input(updateCouponSchema)
+    .query(async ({ input }) => {
+      try {
+        const coupon = await prisma.coupon.findFirst({
+          where: {
+            id: input?.coupon_id,
+            is_deleted: false,
           },
         });
         if (!coupon) {
@@ -197,15 +223,10 @@ export const couponRouter = router({
   update: publicProcedure
     .input(updateCouponSchema)
     .mutation(async ({ input }) => {
-      // const payload = [...input];
-      const payload = { ...input };
-      if (payload?.coupon_id) delete payload?.coupon_id;
-      console.log(input, 'inputinputinputinput');
+      const { coupon_id, ...payload } = input;
       const setting_banner = await prisma.coupon.update({
-        where: {
-          id: input?.coupon_id,
-        },
-        data: { ...payload },
+        where: { id: coupon_id },
+        data: payload,
       });
       return setting_banner;
     }),
