@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import React, { useId, useState } from 'react';
 import Image from 'next/image';
 import UploadImage from '~/public/assets/image.svg';
+import { ScrollArea, ScrollBar } from '../ui/scroll-area';
 
 export function FileInput(props: any) {
   const [image, setImage] = useState<any>(null);
@@ -64,8 +65,7 @@ export function FileInput(props: any) {
                 </span>
               </p>
               <p className="text-xs text-gray-500 dark:text-gray-400">
-                File types supported: JPG, PNG, GIF, SVG, MP4, WEBM, MP3,WAV,
-                OGG, GLB
+                File types supported: JPG, PNG, SVG
               </p>
             </div>
             <input
@@ -143,7 +143,7 @@ export function ImageInput(props: any) {
                 </span>
               </p>
               <p className="text-xs text-gray-500 dark:text-gray-400">
-                File types supported: JPG, PNG, GIF, SVG
+                File types supported: JPG, PNG, SVG
               </p>
             </div>
             <input
@@ -263,7 +263,7 @@ export function MultiFileInput(props: any) {
       file.type.startsWith('image/'),
     );
 
-    if (imageFiles.length > 8) {
+    if (imageFiles.length > 16) {
       alert('You can only upload up to 5 images at a time.');
       return;
     }
@@ -294,13 +294,13 @@ export function MultiFileInput(props: any) {
   return (
     <div className=" relative flex items-center justify-center p-2   w-full">
       {files && files.length > 0 ? (
-        <div className=" flex items-center gap-4 overflow-x-scroll lg:w-[1100px] p-4    h-64   border-2 border-dashed  border-gray-600 rounded-md">
+        <div className="max-w-[768px] overflow-x-scroll flex items-center gap-4      h-64   border-2 border-dashed  border-gray-600 rounded-md">
           {files.map((item: any, index: any) => {
             return (
               <div key={item} className="relative h-full  w-1/3">
                 <Image
                   width={1200}
-                  className=" h-full p-2 bg-white rounded-md min-w-[200px]"
+                  className=" h-full p-2 bg-white rounded-md w-full"
                   height={1200}
                   src={URL.createObjectURL(item)}
                   alt=""
@@ -317,19 +317,6 @@ export function MultiFileInput(props: any) {
               </div>
             );
           })}
-          {/* <div
-            onClick={() => handleDelete(props?.register?.name)}
-            className=" absolute top-[-16px] right-[-14px] h-10 w-10 duration bg-white  hover:bg-ac-2 hover:text-black text-black rounded-full flex justify-center items-center text-center"
-          >
-            <i className={` fa fa-remove text-xl `}></i>
-          </div>
-          <Image
-            width={5000}
-            height={5000}
-            src={image}
-            alt="uploaded Image"
-            className="w-full h-64 mb-3 object-contain text-gray-400"
-          /> */}
         </div>
       ) : (
         <>

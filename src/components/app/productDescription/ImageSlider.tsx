@@ -5,6 +5,7 @@ import ImageSliderStyle from './ImageSliderStyle';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
 import { useRouter } from 'next/router';
+import { getAvailableTickets } from '~/utils/helper';
 
 const ImageSlider = ({ data, ticketPurchased }: any) => {
   const { cart } = useSelector((state: RootState) => state.cart);
@@ -28,11 +29,17 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
   const price = +(range[0] as number) * data?.price;
   const percentageSold = (data?.tickets_sold / data?.total_tickets) * 100;
 
-  const availableTickets = data?.total_tickets - data?.tickets_sold;
-  const userTicketLimit =
-    availableTickets > data?.user_ticket_limit - ticketPurchased
-      ? data?.user_ticket_limit - ticketPurchased
-      : availableTickets;
+  const ticketEventPayload = {
+    total_tickets: data?.total_tickets,
+    tickets_sold: data?.tickets_sold ?? 0,
+    user_ticket_limit: data?.user_ticket_limit,
+  };
+
+  const { userTicketLimit } = getAvailableTickets({
+    event: ticketEventPayload,
+    ticketPurchased: ticketPurchased,
+    quantity: range[0] ?? 0,
+  });
 
   return (
     <section className="text-gray-600 body-font">

@@ -98,6 +98,8 @@ export default function CartPage() {
                 );
                 const ticketPurchased = userTicketLimit?._sum?.quantity ?? 0;
 
+                console.log({ ticketPurchased });
+
                 return (
                   <CartItem
                     key={cartItem.id}

@@ -8,7 +8,7 @@ import { LoginForm } from '../common/forms/form';
 
 export default function AuthenticationPage() {
   return (
-    <div className="lg:p-8">
+    <div className="grid items-center min-h-screen lg:p-8">
       <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
         <div className="flex flex-col space-y-2 text-center">
           <h1 className="text-3xl font-semibold tracking-tight">

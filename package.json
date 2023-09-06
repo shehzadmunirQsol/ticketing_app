@@ -12,7 +12,7 @@
     "dx": "run-p dx:* --print-label",
     "dev": "pnpm next dev ",
     "prebuild": "run-s generate migrate",
-    "build": "next build",
+    "build": "prebuild && next build",
     "start": "pm2-runtime start ecosystem.config.js",
     "lint": "eslint --ext \".js,.ts,.tsx\" --report-unused-disable-directives --report-unused-disable-directives src",
     "lint-fix": "pnpm lint --fix",

@@ -28,7 +28,6 @@ const BannerSlider = ({ data }: any) => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % data.length);
   };
 
-
   // 1.useEffect to change the current index
   // useEffect(() => {
   //   const interval = setInterval(() => {
@@ -59,7 +58,12 @@ const BannerSlider = ({ data }: any) => {
     return () => clearTimeout(animationTimeout);
   }, [currentIndex]);
 
-  console.log(data?.EventImages?.length > 0  ? data?.EventImages[currentIndex] : data?.thumb,"SBDJASDHSADJSAJDHSAD")
+  console.log(
+    data?.EventImages?.length > 0
+      ? data?.EventImages[currentIndex]
+      : data?.thumb,
+    'SBDJASDHSADJSAJDHSAD',
+  );
   return (
     <div className="relative">
       <div className="flex items-center">
@@ -74,7 +78,11 @@ const BannerSlider = ({ data }: any) => {
         <div className="relative h-[18rem] lg:h-[38rem]  w-full lg:px-6 md:px-6 ">
           <Image
             alt="feature"
-            src={renderNFTImage(data?.EventImages?.length > 0  ? data?.EventImages[currentIndex] : data?.thumb)}
+            src={renderNFTImage(
+              data?.EventImages?.length > 0
+                ? data?.EventImages[currentIndex]
+                : data?.thumb,
+            )}
             width={5000}
             height={5000}
             className=" object-contain object-center h-full w-full "
@@ -98,7 +106,6 @@ const BannerSlider = ({ data }: any) => {
       </div>
       <div className="flex flex-row gap-2 mt-4 lg:px-6 md:px-6 ">
         {data?.EventImages?.map((item: any, i: any) => {
-          console.log(item, 'HKSHSSHHSSHA');
           return (
             <div
               className="flex flex-row gap-2"
