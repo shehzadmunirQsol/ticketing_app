@@ -66,8 +66,8 @@ export const eventRouter = router({
   create: publicProcedure.input(EventFormSchema).mutation(async ({ input }) => {
     try {
       const { en, ar, multi_image, ...eventPayload } = input;
-      const createPayload: any = {
-        is_cash_alt: eventPayload?.is_alt,
+      const createPayload = {
+        is_cash_alt: eventPayload?.is_cash_alt,
         thumb: eventPayload?.thumb,
         user_id: 1,
         charity_id: 1,
@@ -77,14 +77,12 @@ export const eventRouter = router({
         total_tickets: +eventPayload?.total_tickets,
         tickets_sold: 0,
         user_ticket_limit: +eventPayload?.user_ticket_limit,
-        cash_alt: +eventPayload?.cash_alt,
+        cash_alt: eventPayload?.cash_alt,
         launch_date: eventPayload?.launch_date,
         end_date: eventPayload?.end_date,
       };
       const event = await prisma.event.create({
-        data: {
-          ...createPayload,
-        },
+        data: { ...createPayload },
       });
 
       if (!event) {

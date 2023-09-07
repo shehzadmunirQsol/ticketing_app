@@ -2,9 +2,9 @@ import aws from 'aws-sdk';
 
 export default function awsConfig() {
   const opt = {
-    accessKeyId: process.env?.AWS_ACCESS_KEY,
-    secretAccessKey: process.env?.AWS_SECRET_KEY,
-    region: process.env?.AWS_REGION,
+    accessKeyId: process.env?.ACCESS_KEY,
+    secretAccessKey: process.env?.SECRET_KEY,
+    region: process.env?.REGION,
     // endpoint: "http://localhost:8000",
   };
 
