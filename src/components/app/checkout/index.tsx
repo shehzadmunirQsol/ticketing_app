@@ -50,7 +50,7 @@ function Checkout() {
       apartment: user?.apartment,
       street_address: user?.street_address,
       city: user?.city,
-      code: user?.code,
+      code: '+971',
       country: user?.country,
       dob: user?.dob,
       email: user?.email,
