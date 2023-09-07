@@ -1,0 +1,178 @@
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+
+import { Button } from '@/ui/button';
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/ui/form';
+import { Input } from '@/ui/input';
+import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/router';
+import { trpc } from '~/utils/trpc';
+import { setAdminToken } from '~/utils/authToken';
+import { formatTrpcError } from '~/utils/helper';
+import { useDispatch } from 'react-redux';
+import { userAdminAuth, userAdminIsLogin } from '~/store/reducers/adminAuthSlice';
+import toast from 'react-hot-toast';
+
+const exampleFormSchema = z.object({
+  username: z.string().min(2, {
+    message: 'Username must be at least 2 characters.',
+  }),
+});
+
+export default function ExampleForm() {
+  // 1. Define your form.
+  const form = useForm<z.infer<typeof exampleFormSchema>>({
+    resolver: zodResolver(exampleFormSchema),
+    defaultValues: {
+      username: '',
+    },
+  });
+
+  // 2. Define a submit handler.
+  function onSubmit(values: z.infer<typeof exampleFormSchema>) {
+    // Do something with the form values.
+    // ✅ This will be type-safe and validated.
+    console.log(values);
+  }
+
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-full">
+        <FormField
+          control={form.control}
+          name="username"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Username</FormLabel>
+              <FormControl>
+                <Input placeholder="Enter Username" {...field} />
+              </FormControl>
+              <FormDescription>
+                This is your public display name.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button type="submit" variant={'clip'}>
+          Submit
+        </Button>
+      </form>
+    </Form>
+  );
+}
+
+const loginFormSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(6, {
+    message: 'Password must be at least 6 characters.',
+  }),
+});
+
+export function LoginForm() {
+  const router = useRouter();
+  const dispatch = useDispatch();
+  // const { toast } = useToast()
+  // 1. Define your form.
+  const form = useForm<z.infer<typeof loginFormSchema>>({
+    resolver: zodResolver(loginFormSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
+
+  const loginUser = trpc.admin.login.useMutation({
+      onSuccess: (res: any) => {
+        console.log("return data", res);
+              
+        if(res.jwt){
+          setAdminToken(res.jwt);
+        }
+
+      },
+      onError(error) {
+        console.log( error.message,"ERROR" );
+      },
+  })
+  // 2. Define a submit handler.
+  async function onSubmit(values: z.infer<typeof loginFormSchema>) {
+    // Do something with the form values.
+    // ✅ This will be type-safe and validated.
+
+    console.log(values);
+    try {
+      const response:any = await loginUser.mutateAsync({ ...values });  
+      console.log("Response : ",response?.user)  
+      // window.localStorage.setItem("Admin-user", JSON.stringify(response?.user));    
+      dispatch(userAdminAuth(response?.user));
+      dispatch(userAdminIsLogin(true));
+      toast.success('Login Successfully!')  
+
+      router.push('/admin/dashboard');
+    } catch (error : any ){
+      console.log("Error ",error)
+      const errorMessage = formatTrpcError(error?.shape?.message);
+      console.log("Error : ",errorMessage)
+      // console.log()
+      // toast({
+      //   variant: "destructive",
+      //   title: errorMessage,
+      // }) 
+      toast.error(errorMessage)
+      // const errorMessage = formatTrpcError(error?.shape?.message);
+    }
+
+  }
+
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <div className="space-y-4">
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input type="email" placeholder="Enter Email" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <Input
+                    type="password"
+                    placeholder="Enter password"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        <Button type="submit" size={'full'}>
+          Submit
+        </Button>
+      </form>
+    </Form>
+  );
+}

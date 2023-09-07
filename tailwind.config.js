@@ -1,45 +1,81 @@
-// const { fontFamily } = require('tailwindcss/defaultTheme');
-
 /** @type {import('tailwindcss').Config} */
+
+const defaultTheme = require('tailwindcss/defaultTheme');
+// const fontFamily = defaultTheme.fontFamily;
+// fontFamily['sans'] = [
+//   'Proxima Nova',
+//   'system-ui',
+//   // <-- you may provide more font fallbacks here
+// ];
+
 module.exports = {
   darkMode: 'class',
-  // darkMode: ['class', '[data-scheme="dark"]'],
-  // darkMode: ['class', '[data-theme="dark"]'],
   content: ['./src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
-      // fontFamily: {
-      //   sans: ['var(--font-sans)', ...fontFamily.sans],
-      // },
+      fontFamily: {
+        sans: ['Proxima-Nova', ...defaultTheme.fontFamily.sans],
+      },
+      
       colors: {
-        'color-brand-primary': '#23D2B3',
-        'color-brand-secondary': '',
-        'color-brand-tertiary': '',
-        'color-text-primary': '#FFFFFF',
-        'color-text-secondary': '#EAEAEA',
-        'color-text-inverted': '',
-        'color-text-link': '',
-        'color-text-ok': '',
-        'color-text-warn': '',
-        'color-text-danger': '',
-        'color-background-primary': '#060A0D',
-        'color-background-secondary': '#101417',
-        'color-background-tertiary': '#1B1D1F',
-        'color-ui-primary': '',
-        'color-ui-secondary': '',
-        'color-ui-tertiary': '',
-        'color-ui-ok': '',
-        'color-ui-warn': '',
-        'color-ui-danger': '',
+        // admin
+
+        border: 'hsl(var(--border))',
+        input: 'hsl(var(--input))',
+        ring: 'hsl(var(--ring))',
+        background: 'hsl(var(--background))',
+        backgroundDark: 'hsl(var(--background-card))',
+        lightColor: 'hsl(var(--light-text))',
+        cardGray: 'hsl(var(--card-gray))',
+        backgroundEntires: 'hsl(var(--background-entires))',
+        primaryLight: 'hsl(var(--primary-light))',
+        grayColor: 'hsl(var(--texts-gray))',
+        inputColor: 'hsl(var(--input-card))',
+        lightColorBorder: 'hsl(var(--light-color))',
+        lightTextColor: 'hsl(var(--light-text-color))',
+        'background-footer': 'hsl(var(--background-footer))',
+        foreground: 'hsl(var(--foreground))',
+        primary: {
+          DEFAULT: 'hsl(var(--primary))',
+          foreground: 'hsl(var(--primary-foreground))',
+        },
+        secondary: {
+          DEFAULT: 'hsl(var(--secondary))',
+          foreground: 'hsl(var(--secondary-foreground))',
+        },
+        destructive: {
+          DEFAULT: 'hsl(var(--destructive))',
+          foreground: 'hsl(var(--destructive-foreground))',
+        },
+        muted: {
+          DEFAULT: 'hsl(var(--muted))',
+          foreground: 'hsl(var(--muted-foreground))',
+        },
+        accent: {
+          DEFAULT: 'hsl(var(--accent))',
+          foreground: 'hsl(var(--accent-foreground))',
+        },
+        popover: {
+          DEFAULT: 'hsl(var(--popover))',
+          foreground: 'hsl(var(--popover-foreground))',
+        },
+        card: {
+          DEFAULT: 'hsl(var(--card))',
+          foreground: 'hsl(var(--card-foreground))',
+        },
       },
 
+      backgroundImage: {
+        'testimonials':
+          'linear-gradient(180deg, rgba(68, 78, 85, 0.40) 0%, rgba(56, 65, 71, 0.10) 100%)',
+      },
       keyframes: {
         'accordion-down': {
           from: { height: 0 },
-          to: { height: 'var(--radix-accordion-content-height)' },
+          to: { height: 'var(radix-accordion-content-height)' },
         },
         'accordion-up': {
-          from: { height: 'var(--radix-accordion-content-height)' },
+          from: { height: 'var(radix-accordion-content-height)' },
           to: { height: 0 },
         },
       },
@@ -49,12 +85,15 @@ module.exports = {
       },
     },
     screens: {
+      xs: '340px',
+      smm: '400px',
       sm: '640px',
       // => @media (min-width: 640px) { ... }
 
       md: '768px',
       // => @media (min-width: 768px) { ... }
-
+      mdx:"992px",
+      slg: '1000px',
       lg: '1024px',
       // => @media (min-width: 1024px) { ... }
 
