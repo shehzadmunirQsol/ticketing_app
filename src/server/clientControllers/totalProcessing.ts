@@ -12,7 +12,6 @@ export async function totalProcessingPayment(req: any, res: any) {
         payment_id: '',
         subscription_id: 1,
         content: JSON.stringify({ ...input }),
-        
       },
     });
     console.log({ createLogs });
