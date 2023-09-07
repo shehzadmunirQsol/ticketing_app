@@ -507,6 +507,23 @@ model CMSDescription {
   @@map("cms_description")
 }
 
+model TotalLogs {
+  id              Int     @id @default(autoincrement())
+  subscription_id Int?
+  name            String
+  type            String?
+  payment_id      String?
+  amount          Int
+  status          String? @default("paid")
+  content         String  @db.LongText
+  is_deleted      Boolean @default(false)
+
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+
+  @@map("total_logs")
+}
+
 view BannerView {
   id          Int          @unique
   group       SettingEnums
