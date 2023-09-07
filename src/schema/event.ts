@@ -44,39 +44,13 @@ export const getFeatured = z.object({
   lang_id: z.number(),
 });
 
-export const createEventSchema = z.object({
-  thumb: z.string(),
-  video_src: z.string().optional(),
-  price: z.number(),
-  is_alt: z.boolean(),
-  cash_alt: z.number().optional(),
-  total_tickets: z.number(),
-  user_ticket_limit: z.number(),
-  tickets_sold: z.number(),
-  launch_date: z.date().optional(),
-  end_date: z.date().optional(),
-  user_id: z.number(),
-  category_id: z.number(),
-
-  en: z.object({
-    name: z.string(),
-    desc: z.string().optional(),
-    comp_details: z.string().optional(),
-    lang_id: z.number(),
-  }),
-  ar: z.object({
-    name: z.string(),
-    desc: z.string().optional(),
-    comp_details: z.string().optional(),
-    lang_id: z.number(),
-  }),
-});
-
 export const deleteEventSchema = z.object({
   id: z.number(),
 });
 
 export const EventFormSchema = z.object({
+  event_id: z.number().optional(),
+  removed_images: z.array(z.number()).optional(),
   thumb: z.string(),
   multi_image: z.array(z.string()),
   price: z.number(),
@@ -100,6 +74,7 @@ export const EventFormSchema = z.object({
     comp_details: z.string().optional(),
   }),
 });
+
 export const enFormSchema = z.object({
   thumb: z.any(),
   link: z.string(),
@@ -134,4 +109,5 @@ export type GetEventSchema = z.infer<typeof getEventSchema>;
 
 export const getEventsByIdSchema = z.object({
   id: z.number(),
+  type: z.enum(['admin', 'client']).optional(),
 });

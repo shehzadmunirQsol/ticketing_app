@@ -14,7 +14,11 @@ import { Input } from '@/ui/input';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
-import { FileInput, MultiFileInput } from '~/components/common/file_input';
+import {
+  FileInput,
+  ImageInput,
+  MultiFileInput,
+} from '~/components/common/file_input';
 import { trpc } from '~/utils/trpc';
 import { getS3ImageUrl } from '~/service/api/s3Url.service';
 import { compressImage, isValidImageType } from '~/utils/helper';
@@ -130,7 +134,7 @@ export default function EventForm() {
   });
 
   const router = useRouter();
-  const [optimizeFile, setOptimizeFile] = useState<any>(null);
+  const [optimizeFile, setOptimizeFile] = useState<File | null>(null);
   const [optimizeMultiFile, setOptimizeMultiFile] = useState<File[]>([]);
   const [removedImages, setRemovedImages] = useState<EventImageType[]>([]);
 
@@ -140,58 +144,62 @@ export default function EventForm() {
 
   const form = useForm<z.infer<typeof EventFormSchema>>({
     resolver: zodResolver(EventFormSchema),
+    defaultValues: {
+      thumb: '',
+      multi_image: [],
+    },
   });
 
   const { data: eventData } = trpc.event.getEventsById.useQuery(
-    { id: eventId },
+    { id: eventId, type: 'admin' },
     {
+      refetchOnWindowFocus: false,
       enabled: eventId > 0 ? true : false,
       onSuccess: (payload) => {
-        console.log('get successfully');
         setFormData(payload);
-
-        // router.push('/store/wallet-connect');
       },
     },
   );
 
-  const eventUpload = trpc.event.create.useMutation({
-    onSuccess: () => {
-      console.log('upload successfully');
-
-      // router.push('/store/wallet-connect');
-    },
-    onError(error: any) {
-      console.log({ error });
-    },
-  });
+  const createEvent = trpc.event.create.useMutation();
+  const updateEvent = trpc.event.update.useMutation();
 
   // 1. Define your form.
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof EventFormSchema>) {
-    console.log({ values });
     try {
       setIsSubmitting(true);
-      const nftSource =
-        typeof form.getValues('thumb') !== 'object'
-          ? { thumb: values?.thumb }
-          : await uploadOnS3Handler(optimizeFile);
+
+      if (values.thumb === '') {
+        if (!optimizeFile) return alert('Please select an image');
+        const nftSource = await uploadOnS3Handler(optimizeFile);
+        values.thumb = nftSource ? nftSource?.thumb : '';
+      }
+
       const multiImage: string[] = optimizeMultiFile.length
         ? await uploadMultiImage()
         : [];
-      const payload = { ...values, multi_image: multiImage, ...nftSource };
-      const data = await eventUpload.mutateAsync(payload);
-      if (data) {
-        toast({
-          variant: 'success',
-          title: 'Event Uploaded Successfully',
+      values.multi_image = multiImage;
+
+      if (eventId > 0) {
+        const removed_images = removedImages.map((image) => image.id);
+
+        await updateEvent.mutateAsync({
+          ...values,
+          event_id: eventId,
+          removed_images,
         });
-        setIsSubmitting(false);
-        router.back();
       } else {
-        throw new Error('Data Create Error');
+        await createEvent.mutateAsync(values);
       }
+
+      toast({
+        variant: 'success',
+        title: 'Event Uploaded Successfully',
+      });
+      setIsSubmitting(false);
+      router.back();
     } catch (e: any) {
       setIsSubmitting(false);
 
@@ -253,9 +261,23 @@ export default function EventForm() {
 
   function setFormData(payload: EventDataType) {
     if (payload?.data) {
+      const en = payload.data?.EventDescription?.find(
+        (desc) => desc.lang_id === 1,
+      );
+      const ar = payload.data?.EventDescription?.find(
+        (desc) => desc.lang_id === 2,
+      );
+
+      form.setValue('en.name', en?.name as string);
+      form.setValue('en.desc', en?.desc as string);
+      form.setValue('en.comp_details', en?.desc as string);
+      form.setValue('ar.name', ar?.name as string);
+      form.setValue('ar.desc', ar?.desc as string);
+      form.setValue('ar.comp_details', ar?.desc as string);
       form.setValue('cash_alt', payload.data?.cash_alt);
       form.setValue('category_id', payload.data?.category_id);
       form.setValue('is_cash_alt', payload.data?.is_cash_alt);
+      form.setValue('end_date', payload.data?.end_date);
       form.setValue('launch_date', payload.data?.launch_date);
       form.setValue('price', payload.data?.price);
       form.setValue('thumb', payload.data?.thumb);
@@ -264,7 +286,6 @@ export default function EventForm() {
       form.setValue('video_src', payload.data?.video_src);
     }
   }
-  console.log(form.formState.errors, 'form.error');
   const renderHeader = () => {
     return (
       <>
@@ -302,6 +323,7 @@ export default function EventForm() {
   };
 
   const header = renderHeader();
+
   return (
     <>
       <Form {...form}>
@@ -311,15 +333,16 @@ export default function EventForm() {
         >
           <div className="space-y-4">
             <div className="w-full">
-              <FileInput
+              <ImageInput
                 register={form.register('thumb')}
                 reset={form.reset}
                 getValues={form.getValues}
                 setValue={form.setValue}
-                imageCompressorHandler={singleImageHandler}
-                placeholder={'Upload Single file'}
+                onChange={singleImageHandler}
+                onRemove={setOptimizeFile}
                 required={true}
               />
+
               <MultiFileInput
                 register={form.register('multi_image')}
                 reset={form.reset}
@@ -564,9 +587,11 @@ export default function EventForm() {
                             <FormItem>
                               <FormLabel>{item?.label}</FormLabel>
                               <Select
-                                onValueChange={field.onChange}
-                                defaultValue={field.value}
-                                value={field.value}
+                                onValueChange={(value) =>
+                                  field.onChange(+value)
+                                }
+                                defaultValue={field.value + ''}
+                                value={field.value + ''}
                               >
                                 <FormControl>
                                   <SelectTrigger className=" rounded-none  ">
@@ -616,9 +641,11 @@ export default function EventForm() {
                                 <FormLabel>{item?.label}</FormLabel>
                                 <FormControl>
                                   <Input
-                                    type={item?.type}
+                                    type={'number'}
                                     placeholder={item?.placeholder}
-                                    {...field}
+                                    {...form.register(item?.name, {
+                                      valueAsNumber: true,
+                                    })}
                                   />
                                 </FormControl>
                                 <FormMessage />

@@ -256,14 +256,14 @@ export function MultiFileInput(props: any) {
   // const [files, setFiles] = useState<File[]>([]);
 
   useEffect(() => {
-    if (typeof props?.getValues(props?.register.name) !== 'object') {
-      const linkData = `${
-        process.env.NEXT_PUBLIC_MEDIA_BASE_URL
-      }${props?.getValues(props?.register.name)}`;
-
-      setImages(linkData.includes('undefined') ? [] : [linkData]);
+    if (props?.eventImages?.length) {
+      const eventImages = props?.eventImages?.map(
+        (image: any) =>
+          `${process.env.NEXT_PUBLIC_MEDIA_BASE_URL}${image.thumb}`,
+      );
+      setImages(eventImages);
     }
-  }, [props?.getValues(props?.register.name)]);
+  }, [props?.eventImages]);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     if (e.target.files) {
