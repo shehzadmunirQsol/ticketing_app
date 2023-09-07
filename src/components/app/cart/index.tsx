@@ -15,9 +15,21 @@ export default function CartPage() {
   const { cart, totalAmount, count } = useSelector(
     (state: RootState) => state.cart,
   );
+
+  const eventIds = cart.cartItems.map((item) => item.event_id);
   const [code, setCode] = useState('');
   const { toast } = useToast();
   const dispatch = useDispatch();
+
+  const { data: userTicketLimits } = trpc.cart.getUserTicketLimit.useQuery(
+    {
+      event_ids: eventIds,
+    },
+    {
+      refetchOnWindowFocus: false,
+      enabled: eventIds.length ? true : false,
+    },
+  );
 
   const couponApply = trpc.coupon.applyCoupon.useMutation({
     onSuccess: () => {
@@ -65,6 +77,8 @@ export default function CartPage() {
     ? totalAmount * (cart.discount / 100)
     : cart.discount;
 
+  console.log({ userTicketLimit: userTicketLimits });
+
   return (
     <div className="relative mt-24">
       {count === 0 ? (
@@ -78,14 +92,24 @@ export default function CartPage() {
               Basket
             </h2>
             <div data-name="cards" className="w-full border-b border-white/40">
-              {cart?.cartItems?.map((cartItem) => (
-                <CartItem
-                  key={cartItem.id}
-                  cartItem={cartItem}
-                  cart_id={cart?.id ?? 0}
-                  customer_id={cart?.customer_id ?? 0}
-                />
-              ))}
+              {cart?.cartItems?.map((cartItem) => {
+                const userTicketLimit = userTicketLimits?.data?.find(
+                  (userLimit) => userLimit?.event_id === cartItem?.event_id,
+                );
+                const ticketPurchased = userTicketLimit?._sum?.quantity ?? 0;
+
+                console.log({ ticketPurchased });
+
+                return (
+                  <CartItem
+                    key={cartItem.id}
+                    cartItem={cartItem}
+                    cart_id={cart?.id ?? 0}
+                    customer_id={cart?.customer_id ?? 0}
+                    ticketPurchased={ticketPurchased}
+                  />
+                );
+              })}
             </div>
             <div className="bg-background space-y-4 w-1/3 ml-auto">
               <div className="flex bg-card border border-border">

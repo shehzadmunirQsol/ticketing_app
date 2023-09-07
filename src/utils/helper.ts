@@ -98,6 +98,34 @@ export function isValidEmail(email: any) {
   return pattern.test(email);
 }
 
+type AvailableTicketsType = {
+  event: {
+    total_tickets: number;
+    tickets_sold: number;
+    user_ticket_limit: number;
+  };
+  ticketPurchased: number;
+  quantity: number;
+};
+
+export function getAvailableTickets({
+  event,
+  ticketPurchased,
+  quantity,
+}: AvailableTicketsType) {
+  console.log({ event, ticketPurchased, quantity });
+  const availableTickets = event?.total_tickets - (event?.tickets_sold ?? 0);
+
+  const userTicketLimit =
+    availableTickets > event?.user_ticket_limit - ticketPurchased
+      ? event?.user_ticket_limit - ticketPurchased
+      : availableTickets;
+
+  const isTicketLimit = quantity >= userTicketLimit;
+
+  return { userTicketLimit, availableTickets, isTicketLimit };
+}
+
 export const EMAIL_TEMPLATE_IDS = {
   REGISTRATION_OTP: 2,
   CONTACT_MAIN: 4,

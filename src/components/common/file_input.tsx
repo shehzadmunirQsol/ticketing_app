@@ -2,6 +2,8 @@ import { useEffect } from 'react';
 import React, { useId, useState } from 'react';
 import Image from 'next/image';
 import UploadImage from '~/public/assets/image.svg';
+import { ScrollArea, ScrollBar } from '../ui/scroll-area';
+import { Button } from '../ui/button';
 
 export function FileInput(props: any) {
   const [image, setImage] = useState<any>(null);
@@ -64,8 +66,7 @@ export function FileInput(props: any) {
                 </span>
               </p>
               <p className="text-xs text-gray-500 dark:text-gray-400">
-                File types supported: JPG, PNG, GIF, SVG, MP4, WEBM, MP3,WAV,
-                OGG, GLB
+                File types supported: JPG, PNG, SVG
               </p>
             </div>
             <input
@@ -143,7 +144,7 @@ export function ImageInput(props: any) {
                 </span>
               </p>
               <p className="text-xs text-gray-500 dark:text-gray-400">
-                File types supported: JPG, PNG, GIF, SVG
+                File types supported: JPG, PNG, SVG
               </p>
             </div>
             <input
@@ -244,98 +245,115 @@ export function FileInput2(props: any) {
 }
 
 export function MultiFileInput(props: any) {
-  const [image, setImage] = useState<any>(null);
-  const [files, setFiles] = useState<any>([]);
+  const [images, setImages] = useState<string[]>([]);
+  const [uploadedImages, setUploadedImages] = useState<string[]>([]);
+  const [files, setFiles] = useState<File[]>([]);
 
-  const handleChange = (e: any) => {
-    // const ImagesArray = Object.entries(e.target.files).map((data: any) =>
-    //   URL.createObjectURL(data[1]),
-    // );
-    // console.log(ImagesArray);
-    // if (ImagesArray.length > 5) {
-    //   alert('You can only upload up to 5 images at a time.');
-    //   return;
-    // }
-    // setFile([...file, ...ImagesArray]);
-    // console.log('file', file);
-    const files = Array.from(e.target.files);
-    const imageFiles = files.filter((file: any) =>
-      file.type.startsWith('image/'),
-    );
-
-    if (imageFiles.length > 8) {
-      alert('You can only upload up to 5 images at a time.');
-      return;
-    }
-
-    setFiles(imageFiles);
-    // setImage(URL.createObjectURL(e.target.files[0]));
-    props.imageCompressorHandler(files, 'multiple');
-
-    props.setValue(props?.register.name, e.target.files);
-  };
-  const handleDelete = (InputName: string) => {
-    setImage(null);
-    props.setValue(InputName, null);
-  };
   useEffect(() => {
     if (typeof props?.getValues(props?.register.name) !== 'object') {
       const linkData = `${
         process.env.NEXT_PUBLIC_MEDIA_BASE_URL
       }${props?.getValues(props?.register.name)}`;
 
-      setImage(linkData.includes('undefined') ? null : linkData);
+      setImages(linkData.includes('undefined') ? [] : [linkData]);
     }
   }, [props?.getValues(props?.register.name)]);
-  function deleteFile(e: number) {
-    const newSelectedImages = files.filter((_: any, i: number) => i !== e);
-    setFiles(newSelectedImages);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const newFiles = Array.from(e.target.files);
+      const imageFiles = files.concat(
+        newFiles.filter((file: File) => file.type.startsWith('image/')),
+      );
+
+      if (imageFiles.length >= 15) {
+        alert('You can only upload up to 15 images at a time.');
+        return;
+      }
+
+      const viewImages = imageFiles.map((image) => URL.createObjectURL(image));
+
+      setFiles(imageFiles);
+      setImages(viewImages);
+      props.imageCompressorHandler(imageFiles, 'multiple');
+
+      props.setValue(props?.register.name, imageFiles);
+    }
+  };
+
+  function deleteFile(url: string, index: number) {
+    const newSelectedImages = images.filter((_: any, i: number) => i !== index);
+    const newSelectedFiles = files.filter((_: any, i: number) => i !== index);
+
+    setImages(newSelectedImages);
+    setFiles(newSelectedFiles);
+
+    if (url.includes('upload/')) {
+      const selectedUploadImages = props
+        ?.getValues(props?.register.name)
+        ?.filter((item: string) => item !== url);
+
+      props?.setValue(props?.register.name, selectedUploadImages);
+
+      setUploadedImages(selectedUploadImages);
+    }
   }
+  console.log({ images, files, uploadedImages });
   return (
-    <div className=" relative flex items-center justify-center p-2   w-full">
-      {files && files.length > 0 ? (
-        <div className=" flex items-center gap-4 overflow-x-scroll lg:w-[1100px] p-4    h-64   border-2 border-dashed  border-gray-600 rounded-md">
-          {files.map((item: any, index: any) => {
-            return (
-              <div key={item} className="relative h-full  w-1/3">
-                <Image
-                  width={1200}
-                  className=" h-full p-2 bg-white rounded-md min-w-[200px]"
-                  height={1200}
-                  src={URL.createObjectURL(item)}
-                  alt=""
-                />
-                {/* <button type="button" onClick={() => deleteFile(index)}>
+    <div className=" relative flex items-center justify-center p-2 flex-1">
+      {images && images.length > 0 ? (
+        <div className="space-y-3">
+          <div className="w-[70vw] overflow-x-scroll p-4  flex items-center gap-4 border-2 border-dashed  border-gray-600 rounded-md">
+            {images.map((item: string, index: number) => {
+              return (
+                <div
+                  key={item}
+                  className="relative h-56 min-w-[240px] w-1/3 max-w-xs"
+                >
+                  <Image
+                    width={1200}
+                    className=" h-full p-2 bg-white rounded-md w-full"
+                    height={1200}
+                    src={item}
+                    alt=""
+                  />
+                  {/* <button type="button" onClick={() => deleteFile(index)}>
                 delete
               </button> */}
-                <div
-                  onClick={() => deleteFile(index)}
-                  className=" absolute top-[-16px] right-[-14px] z-30 h-10 w-10 duration bg-white  hover:bg-ac-2 hover:text-black text-black rounded-full flex justify-center items-center text-center"
-                >
-                  <i className={` fa fa-remove text-xl `}></i>
+                  <div
+                    onClick={() => deleteFile(item, index)}
+                    className="cursor-pointer absolute top-[-16px] right-[-14px] z-30 h-10 w-10 duration bg-white  hover:bg-ac-2 hover:text-black text-black rounded-full flex justify-center items-center text-center"
+                  >
+                    <i className={` fa fa-remove text-xl `}></i>
+                  </div>
                 </div>
-              </div>
-            );
-          })}
-          {/* <div
-            onClick={() => handleDelete(props?.register?.name)}
-            className=" absolute top-[-16px] right-[-14px] h-10 w-10 duration bg-white  hover:bg-ac-2 hover:text-black text-black rounded-full flex justify-center items-center text-center"
-          >
-            <i className={` fa fa-remove text-xl `}></i>
+              );
+            })}
           </div>
-          <Image
-            width={5000}
-            height={5000}
-            src={image}
-            alt="uploaded Image"
-            className="w-full h-64 mb-3 object-contain text-gray-400"
-          /> */}
+
+          <label
+            htmlFor="dropzone-file-1"
+            className="bg-background border border-border block ml-auto py-2 px-3 w-max cursor-pointer"
+          >
+            Add more
+            <input
+              id="dropzone-file-1"
+              type="file"
+              className="sr-only"
+              accept="image/*"
+              disabled={files.length >= 15}
+              required
+              // {...props?.register}
+              onChange={handleChange}
+              multiple
+            />
+          </label>
         </div>
       ) : (
         <>
           <label
             htmlFor="dropzone-file-1"
-            className="flex flex-col items-center justify-center bg-transparent  w-full h-64 border-2 border-dashed rounded-lg cursor-pointer      border-gray-600 "
+            className="flex flex-col items-center justify-center bg-transparent flex-1 h-64 border-2 border-dashed rounded-lg cursor-pointer      border-gray-600 "
           >
             <div className="flex flex-col items-center justify-center pt-5 pb-6">
               <i className="fas fa-image text-7xl"></i>
@@ -353,8 +371,7 @@ export function MultiFileInput(props: any) {
                 </span>
               </p>
               <p className="text-xs text-gray-500 dark:text-gray-400">
-                File types supported: JPG, PNG, GIF, SVG, MP4, WEBM, MP3,WAV,
-                OGG, GLB
+                File types supported: JPG, PNG, SVG
               </p>
             </div>
             <input
@@ -362,10 +379,10 @@ export function MultiFileInput(props: any) {
               type="file"
               className="sr-only"
               accept="image/*"
-              disabled={files.length === 5}
+              disabled={files.length >= 15}
               required
               // {...props?.register}
-              onChange={(e) => handleChange(e)}
+              onChange={handleChange}
               multiple
             />
           </label>

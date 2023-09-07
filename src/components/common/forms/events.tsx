@@ -280,7 +280,7 @@ export default function EventForm() {
           className="relative justify-center items-center px-8 py-4 space-y-4  overflow-hidden "
         >
           <div className="space-y-4">
-            <div>
+            <div className="w-full">
               <FileInput
                 register={form.register('thumb')}
                 reset={form.reset}
@@ -474,7 +474,6 @@ export default function EventForm() {
                                 <Input
                                   type={item?.type}
                                   placeholder={item?.placeholder}
-
                                   {...field}
                                 />
                               </FormControl>
@@ -544,21 +543,20 @@ export default function EventForm() {
                                   <FormControl>
                                     <SelectTrigger className=" rounded-none  ">
                                       <SelectValue
-                                        className='!bg-black'
-
+                                        className="!bg-black"
                                         placeholder={item?.placeholder}
                                       />
                                     </SelectTrigger>
                                   </FormControl>
-                                  <SelectContent className=''>
-                                    <SelectGroup >
+                                  <SelectContent className="">
+                                    <SelectGroup>
                                       {categoryData &&
                                         categoryData.map(
                                           (item: any, index: number) => {
                                             return (
                                               <div key={index}>
                                                 <SelectItem
-                                                  className='bg-slate-950'
+                                                  className="bg-slate-950"
                                                   value={(item?.id).toString()}
                                                 >
                                                   {item?.name}
