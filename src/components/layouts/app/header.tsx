@@ -39,7 +39,6 @@ interface LinkItemProps {
 function Header() {
   const router = useRouter();
   const { isLogin } = useSelector((state: RootState) => state.auth);
-  const { count } = useSelector((state: RootState) => state.cart);
 
   const [color, setColor] = useState(false);
 
@@ -102,15 +101,10 @@ function Header() {
           <Button
             variant="outline"
             size="icon_square"
-            className="border-primary relative"
+            className="border-primary"
             onClick={() => routeHandler('/cart')}
           >
             <i className="fa-solid fa-cart-shopping" />
-            {count ? (
-              <span className="absolute -top-3 -right-3 inline-flex items-center justify-center bg-red-600 text-white rounded-full w-7 h-7 text-sm">
-                {count > 99 ? '99' : count}
-              </span>
-            ) : null}
           </Button>
           <Link href={isLogin ? '/account' : '/login'}>
             <Button
@@ -145,6 +139,14 @@ export default Header;
 
 export function DropdownMenuDemo() {
   const [click, setClick] = useState(false);
+  const dispatch = useDispatch();
+  function toggleLanguageHandler(lang: 'en' | 'ar') {
+    const dir: 'ltr' | 'rtl' = lang === 'ar' ? 'rtl' : 'ltr';
+    const lang_id: 1 | 2 = lang === 'en' ? 1 : 2;
+    const language = { lang, dir, lang_id };
+
+    dispatch(toggleLang(language));
+  }
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -163,21 +165,21 @@ export function DropdownMenuDemo() {
             <Link href="/cash">Cash</Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <Link href="/winners">Winners</Link>
+          <Link href="/winners">Winners</Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <span>About Us</span>
+            <span>About Us</span>   
           </DropdownMenuItem>
           <DropdownMenuItem>
             <span>FAQ</span>
           </DropdownMenuItem>
           <DropdownMenuItem>
             <ShoppingCart className="mr-2 h-4 w-4" />
-            <span>Cart</span>
+            <Link href="/cart">Cart</Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
             <User className="mr-2 h-4 w-4" />
-            <span>Users</span>
+            <Link href="/account">My Account</Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuGroup>
@@ -186,12 +188,12 @@ export function DropdownMenuDemo() {
               <Languages className="mr-2 h-4 w-4" />
               <span>Language</span>
             </DropdownMenuSubTrigger>
-            <DropdownMenuPortal>
-              <DropdownMenuSubContent className="!w-14">
-                <DropdownMenuItem>
+            <DropdownMenuPortal >
+              <DropdownMenuSubContent className="!w-14" >
+                <DropdownMenuItem onClick={()=>toggleLanguageHandler("en")}>
                   <span>EN</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={()=>toggleLanguageHandler("ar")}>
                   <span>AR</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
