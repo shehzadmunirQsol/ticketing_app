@@ -77,15 +77,15 @@ export const deleteEventSchema = z.object({
 });
 
 export const EventFormSchema = z.object({
-  thumb: z.any(),
-  multi_image: z.any(),
-  price: z.any(),
-  category_id: z.any(),
+  thumb: z.string(),
+  multi_image: z.array(z.string()),
+  price: z.number(),
+  category_id: z.number(),
   video_src: z.string(),
-  total_tickets: z.string(),
-  cash_alt: z.string(),
-  user_ticket_limit: z.string(),
-  is_alt: z.boolean(),
+  total_tickets: z.number(),
+  cash_alt: z.number().nullable(),
+  user_ticket_limit: z.number(),
+  is_cash_alt: z.boolean().default(false),
   launch_date: z.date(),
   end_date: z.date(),
 
@@ -131,8 +131,6 @@ export const arFormSchema = z.object({
 });
 
 export type GetEventSchema = z.infer<typeof getEventSchema>;
-
-
 
 export const getEventsByIdSchema = z.object({
   id: z.number(),

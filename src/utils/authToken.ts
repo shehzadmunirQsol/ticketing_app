@@ -1,5 +1,3 @@
-import { cookies } from 'next/headers';
-
 const AdminSessionName = 'winnar-admin-token';
 export function getAdminToken(headers: Headers | null) {
   const cookieStore = headers?.get('cookie');
