@@ -118,29 +118,29 @@ const formSchema: any = [
 ];
 export default function EventForm() {
   const { toast } = useToast();
-  const [filters, setFilters] = useState<any>({
+  const { data: categoryData } = trpc.category.getCategory.useQuery({
     lang_id: 1,
   });
-  const { data: categoryData } = trpc.category.getCategory.useQuery(filters);
 
   const router = useRouter();
   const [optimizeFile, setOptimizeFile] = useState<any>(null);
-  const [optimizeMultiFile, setOptimizeMultiFile] = useState<any>(null);
+  const [optimizeMultiFile, setOptimizeMultiFile] = useState<File[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const { index } = router.query;
-  const initialOrderFilters: any = {
-    rows: 10,
-    first: 0,
-    page: 0,
-  };
-  if (index) initialOrderFilters.banner_id = +index;
+  const eventId = router.query.index ? +router.query.index : 0;
 
   const formValidateData = EventFormSchema;
 
   const form = useForm<z.infer<typeof formValidateData>>({
     resolver: zodResolver(EventFormSchema),
   });
+
+  const { data: eventData } = trpc.event.getEventsById.useQuery(
+    { id: eventId },
+    {
+      enabled: eventId > 0 ? true : false,
+    },
+  );
 
   const eventUpload = trpc.event.create.useMutation({
     onSuccess: () => {
@@ -164,10 +164,9 @@ export default function EventForm() {
         typeof form.getValues('thumb') !== 'object'
           ? { thumb: values?.thumb }
           : await uploadOnS3Handler(optimizeFile);
-      const multiImage =
-        typeof form.getValues('multi_image') !== 'object'
-          ? { multi_image: values?.multi_image as any }
-          : await uploadMultiImage();
+      const multiImage = optimizeMultiFile.length
+        ? await uploadMultiImage()
+        : [];
       const payload: any = { ...values, multi_image: multiImage, ...nftSource };
       const data = await eventUpload.mutateAsync(payload);
       if (data) {
@@ -190,22 +189,24 @@ export default function EventForm() {
     }
   }
   async function uploadMultiImage() {
-    const data: any[] = [];
-    if (optimizeMultiFile !== null) {
-      for (let i = 0; i < optimizeMultiFile.length; i++) {
-        const upload_string = await uploadOnS3Handler(optimizeMultiFile[i]);
-        data.push(upload_string?.thumb);
-      }
-    }
+    const multiImagePromise: Promise<void | {
+      thumb: string;
+    }>[] = optimizeMultiFile.map((image: File) => uploadOnS3Handler(image));
+
+    const multiImage = await Promise.all(multiImagePromise);
+    const data = multiImage.map((image) => image?.thumb ?? '');
+
     return data;
   }
-  async function imageHandler(originalFile: any[], type: any) {
-    const multi_Image: any[] = [];
-    for (let i = 0; i < originalFile.length; i++) {
-      const single_image = await compressImage(originalFile[i]);
-      multi_Image.push(single_image);
-    }
-    setOptimizeMultiFile(multi_Image);
+  async function imageHandler(originalFiles: File[]) {
+    const multiImagePromise: Promise<File>[] = originalFiles.map((image) =>
+      compressImage(image),
+    );
+    const multiImage = await Promise.all(multiImagePromise);
+    setOptimizeMultiFile((prevImages: File[]) => [
+      ...prevImages,
+      ...multiImage,
+    ]);
   }
   async function singleImageHandler(originalFile: File) {
     console.log(originalFile, 'originalFile');
@@ -272,6 +273,8 @@ export default function EventForm() {
   };
 
   const header = renderHeader();
+
+  console.log({ eventData });
   return (
     <>
       <Form {...form}>
@@ -296,6 +299,8 @@ export default function EventForm() {
                 getValues={form.getValues}
                 setValue={form.setValue}
                 imageCompressorHandler={imageHandler}
+                files={optimizeMultiFile}
+                setFiles={setOptimizeMultiFile}
                 required={true}
                 placeholder={'Upload Multiple file'}
               />
@@ -323,16 +328,10 @@ export default function EventForm() {
               )}
             </div>
             <Tabs defaultValue={'en'} className="w-full">
-              {index ? (
-                <></>
-              ) : (
-                <>
-                  <TabsList>
-                    <TabsTrigger value="en">English</TabsTrigger>
-                    <TabsTrigger value="ar">Arabic</TabsTrigger>
-                  </TabsList>
-                </>
-              )}
+              <TabsList>
+                <TabsTrigger value="en">English</TabsTrigger>
+                <TabsTrigger value="ar">Arabic</TabsTrigger>
+              </TabsList>
               <TabsContent value="en">
                 <FormField
                   control={form.control}
@@ -613,7 +612,7 @@ export default function EventForm() {
           <div className="flex items-center justify-between">
             <div></div>
             <Button type="submit" variant={'clip'} className="w-1/2">
-              {index ? 'Edit Event' : 'Add Event'}
+              {eventId > 0 ? 'Edit Event' : 'Add Event'}
             </Button>
           </div>
         </form>

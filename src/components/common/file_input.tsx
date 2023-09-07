@@ -244,10 +244,16 @@ export function FileInput2(props: any) {
   );
 }
 
+type EventImageType = {
+  id: number;
+  thumb: string;
+  event_id: number;
+};
+
 export function MultiFileInput(props: any) {
   const [images, setImages] = useState<string[]>([]);
-  const [uploadedImages, setUploadedImages] = useState<string[]>([]);
-  const [files, setFiles] = useState<File[]>([]);
+  const [removedImages, setRemovedImages] = useState<EventImageType[]>([]);
+  // const [files, setFiles] = useState<File[]>([]);
 
   useEffect(() => {
     if (typeof props?.getValues(props?.register.name) !== 'object') {
@@ -259,46 +265,53 @@ export function MultiFileInput(props: any) {
     }
   }, [props?.getValues(props?.register.name)]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     if (e.target.files) {
       const newFiles = Array.from(e.target.files);
-      const imageFiles = files.concat(
-        newFiles.filter((file: File) => file.type.startsWith('image/')),
+      const imageFiles = newFiles.filter((file: File) =>
+        file.type.startsWith('image/'),
       );
 
-      if (imageFiles.length >= 15) {
+      if ([...props?.files, ...imageFiles].length >= 15) {
         alert('You can only upload up to 15 images at a time.');
         return;
       }
 
-      const viewImages = imageFiles.map((image) => URL.createObjectURL(image));
+      const viewImages = imageFiles.map((image: any) =>
+        URL.createObjectURL(image),
+      );
 
-      setFiles(imageFiles);
-      setImages(viewImages);
+      setImages((prevImages) => [...prevImages, ...viewImages]);
       props.imageCompressorHandler(imageFiles, 'multiple');
-
-      props.setValue(props?.register.name, imageFiles);
     }
-  };
+  }
 
   function deleteFile(url: string, index: number) {
     const newSelectedImages = images.filter((_: any, i: number) => i !== index);
-    const newSelectedFiles = files.filter((_: any, i: number) => i !== index);
+    const newSelectedFiles = props?.files.filter(
+      (_: any, i: number) => i !== index,
+    );
 
     setImages(newSelectedImages);
-    setFiles(newSelectedFiles);
+    props?.setFiles(newSelectedFiles);
 
     if (url.includes('upload/')) {
-      const selectedUploadImages = props
-        ?.getValues(props?.register.name)
-        ?.filter((item: string) => item !== url);
+      const uploadedImage: EventImageType = props?.uploadedImages?.find(
+        (item: EventImageType) =>
+          process.env.NEXT_PUBLIC_MEDIA_BASE_URL + item.thumb === url,
+      );
 
-      props?.setValue(props?.register.name, selectedUploadImages);
-
-      setUploadedImages(selectedUploadImages);
+      setRemovedImages((prevImages) => [...prevImages, uploadedImage]);
     }
   }
-  console.log({ images, files, uploadedImages });
+
+  console.log({
+    images,
+    files: props?.files,
+    uploadedImages: props?.uploadedImages,
+    removedImages,
+  });
+
   return (
     <div className=" relative flex items-center justify-center p-2 flex-1">
       {images && images.length > 0 ? (
@@ -308,7 +321,7 @@ export function MultiFileInput(props: any) {
               return (
                 <div
                   key={item}
-                  className="relative h-56 min-w-[240px] w-1/3 max-w-xs"
+                  className="relative h-56 min-w-[280px] w-1/3 max-w-xs"
                 >
                   <Image
                     width={1200}
@@ -341,9 +354,7 @@ export function MultiFileInput(props: any) {
               type="file"
               className="sr-only"
               accept="image/*"
-              disabled={files.length >= 15}
-              required
-              // {...props?.register}
+              disabled={props?.files?.length >= 15}
               onChange={handleChange}
               multiple
             />
@@ -379,7 +390,7 @@ export function MultiFileInput(props: any) {
               type="file"
               className="sr-only"
               accept="image/*"
-              disabled={files.length >= 15}
+              disabled={props?.files?.length >= 15}
               required
               // {...props?.register}
               onChange={handleChange}
