@@ -5,6 +5,17 @@ export async function totalProcessingPayment(req: any, res: any) {
   // delete input.routes;
 
   try {
+    const createLogs = await prisma.totalLogs.create({
+      data: {
+        amount: 0,
+        name: 'total prosess',
+        payment_id: '',
+        subscription_id: 1,
+        content: JSON.stringify({ ...input }),
+        
+      },
+    });
+    console.log({ createLogs });
     const payload = {
       order_id: 2,
       event_id: 1,
