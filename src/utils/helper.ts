@@ -92,12 +92,16 @@ export const displayDate = (payload = '' as any) => {
   const formattedDate = `${da}-${mo}-${ye}`;
   return formattedDate;
 };
-export function isValidEmail(email:any) {
-  console.log(email,"email found")
+export function isValidEmail(email: any) {
+  console.log(email, 'email found');
   const pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   return pattern.test(email);
 }
 
-
-
-
+export function createSlug(input: any) {
+  console.log(input,"frontinput")
+  const lowercaseInput = input?.toLowerCase();
+  const cleanedInput = lowercaseInput.replace(/[^\w\s-]/g, '');
+  const slug = cleanedInput.replace(/\s+/g, '-');
+  return slug.replace(/^-+|-+$/g, '');
+}

@@ -19,7 +19,7 @@ export default function EditCms() {
   return (
     <div className="p-8 space-y-8">
       <div className="flex items-center justify-between">
-        <h2 className="text-4xl font-medium">Add Cms</h2>
+        <h2 className="text-4xl font-medium">Edit CMS</h2>
         {/* <LanguageSelect languageHandler={languageHandler} /> */}
 
         <div className="flex items-center  gap-4">

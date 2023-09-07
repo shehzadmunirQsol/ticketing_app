@@ -11,16 +11,18 @@ import {
 import { Input } from '@/ui/input';
 import { Textarea } from '@/ui/textarea';
 import { useForm } from 'react-hook-form';
-import { CreateCategorySchema, createCategorySchema } from '~/schema/category';
+import { cmsSchemaInput, cmsSchema } from '~/schema/cms';
 import { ImageInput } from '../file_input';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getS3ImageUrl } from '~/service/api/s3Url.service';
 import { trpc } from '~/utils/trpc';
 import { useRouter } from 'next/router';
-import { compressImage } from '~/utils/helper';
+import { compressImage, createSlug } from '~/utils/helper';
 import { LoadingDialog } from '../modal/loadingModal';
 import { LanguageInterface } from '../language_select';
-import { Editor } from 'primereact/editor';
+// import { Editor } from 'primereact/editor';
+import CKEditor from 'react-ckeditor-component';
+
 //theme
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
 //core
@@ -33,39 +35,72 @@ interface CategoryFormInterface {
 }
 
 export default function cmsForm(props: CategoryFormInterface) {
-  const [image, setImage] = useState<File>();
-  const [loading, setLoading] = useState<boolean>(false);
-
   const router = useRouter();
   const { toast } = useToast();
-
   const { id = 0 } = router.query;
+  const form = useForm<any>();
+  // const form = useForm<cmsSchemaInput>({
+  // resolver: zodResolver(cmsSchema),
+  // });
 
+  const [image, setImage] = useState<File>();
+  const [loading, setLoading] = useState<boolean>(false);
+  const [content, setContent] = useState<any>('');
+
+  // Getting Data
   const { data } = trpc.cms.getById.useQuery(
     { id: +id },
     {
       refetchOnWindowFocus: false,
       enabled: id ? true : false,
       onSuccess(res) {
-       console.log(res,"res data")
-
-        form.setValue('en.title', data?.data?.CMSDescription[0]?.title);
-        form.setValue('en.slug', data?.data?.slug as string);
-        form.setValue('en.desc', data?.data?.CMSDescription[0]?.desc as string);
-        form.setValue('en.metadesc', data?.data?.CMSDescription[0]?.meta_keywords as string);
-        form.setValue('en.metatitle', data?.data?.CMSDescription[0]?.meta_keywords as string);
-        form.setValue('en.content', data?.data?.CMSDescription[0]?.content as string);
+        console.log(res, 'res data');
+        console.log(data?.data?.CMSDescription[0]?.title, '');
       },
     },
   );
-  console.log(data,"data data ")
 
+  useEffect(() => {
+    if(data){
+    form.setValue('en.title', data?.data?.CMSDescription[0]?.title);
+    form.setValue('en.slug', data?.data?.slug as string);
+    form.setValue('en.desc', data?.data?.CMSDescription[0]?.desc as string);
+    form.setValue(
+      'en.metadesc',
+      data?.data?.CMSDescription[0]?.meta_keywords as string,
+    );
+    form.setValue(
+      'en.metatitle',
+      data?.data?.CMSDescription[0]?.meta_keywords as string,
+    );
+    setContent(data?.data?.CMSDescription[0]?.content);
+  }
 
-  // 1. Define your form.
-  const form = useForm<any>();
+  }, [data]);
+
+  // Handle the change event when the CKEditor content changes
+  const handleChange = (evt: any) => {
+    var newContent = evt.editor.getData();
+
+    setContent(newContent);
+  };
+  // updating data
+  const updateCmsId = trpc.cms.updateById.useMutation({
+    onSuccess: (res) => {
+      console.log(res);
+      toast({
+        variant: 'success',
+        title: 'cms Updated Successfully',
+      });
+      // setEdit(false);
+    },
+    onError(error) {
+      console.log(error);
+    },
+  });
 
   // cms customer
-  const cmsAboutUs = trpc.cms.addCmsContent.useMutation({
+  const AddCmsContent = trpc.cms.addCmsContent.useMutation({
     onSuccess: (res: any) => {
       console.log(res, 'REs');
     },
@@ -76,9 +111,18 @@ export default function cmsForm(props: CategoryFormInterface) {
 
   // 2. Define a submit handler.
   async function onSubmit(values: any) {
+    console.log('add HSJSJSJSHJ');
     console.log(values, 'values');
     try {
-      const result = await cmsAboutUs.mutateAsync(values);
+      const slug = createSlug(values?.en?.slug);
+      console.log(slug)
+      const payload: any = {
+        content: content,
+        slug: slug,
+        ...values,
+      };
+      console.log(payload, 'payload');
+      const result = await AddCmsContent.mutateAsync(payload);
       console.log(result, 'cmsAboutUs');
       toast({
         variant: 'success',
@@ -97,37 +141,41 @@ export default function cmsForm(props: CategoryFormInterface) {
         title: error.message,
       });
     }
-
-    // try {
-    //   setLoading(true);
-
-    //   if (values.thumb === '') {
-    //     if (typeof image === 'undefined')
-    //       return alert('Please select an image');
-    //     const thumb = await uploadOnS3Handler();
-    //     values.thumb = thumb;
-    //   }
-
-    //   let response;
-
-    //   if (categoryId) {
-    //     response = await updateCategory.mutateAsync({
-    //       ...values,
-    //       category_id: +categoryId,
-    //     });
-    //   } else {
-    //     response = await addCategory.mutateAsync(values);
-    //   }
-
-    //   router.replace('/admin/category');
-    //   console.log({ response });
-    // } catch (error) {
-    //   setLoading(false);
-
-    //   console.log(error);
-    // }
   }
 
+  // update data andler
+  const onSubmitUpdate = async (values: any) => {
+    try {
+      const slug = createSlug(values?.en?.slug);
+      const payload = {
+        id: +id,
+        content: content,
+        slug: slug,
+        ...values,
+      };
+      console.log(payload, 'payload HSJSJSJSHJ');
+      const result = await updateCmsId.mutateAsync(payload);
+      console.log(result, 'cmsAboutUs HSJSJSJSHJ');
+      toast({
+        variant: 'success',
+        title: 'Cms Content Update Successfully',
+      });
+      form.setValue('title', '');
+      form.setValue('slug', '');
+      form.setValue('metatitle', '');
+      form.setValue('metadesc', '');
+      form.setValue('desc', '');
+      form.setValue('content', '');
+      router.push('/admin/cms');
+    } catch (error: any) {
+      toast({
+        variant: 'destructive',
+        title: error.message,
+      });
+    }
+  };
+
+  // language handle
   const langError =
     form.formState.errors?.en && form.formState.errors?.ar
       ? 'Kindly provide information in both English and Arabic fields.'
@@ -137,59 +185,31 @@ export default function cmsForm(props: CategoryFormInterface) {
       ? 'Kindly provide information in Arabic fields.'
       : '';
 
-  const renderHeader = () => {
-    return (
-      <>
-        <span className="ql-formats">
-          <select className="ql-header">
-            <option selected></option>
-            <option value="1"></option>
-            <option value="2"></option>
-            <option value="3"></option>
-          </select>
-        </span>
-        <span className="ql-formats">
-          <button className="ql-bold" aria-label="Bold"></button>
-          <button className="ql-italic" aria-label="Italic"></button>
-          <button className="ql-underline" aria-label="Underline"></button>
-        </span>
-
-        <span className="ql-formats">
-          <button className="ql-strike" aria-label="Font"></button>
-          <button className="ql-list" value="ordered"></button>
-          <button className="ql-list" value="bullet"></button>
-          <button aria-label="Link" className="ql-link"></button>
-          {/* <button aria-label="Image" className="ql-image"></button> */}
-        </span>
-        <span className="ql-formats">
-          <select className="ql-align">
-            <option selected></option>
-            <option className="ql-center" value="center"></option>
-            <option value="right">right</option>
-            <option value="justify"> justify</option>
-          </select>
-        </span>
-      </>
+  // Handle CMS Preview
+  const handlePreview = () => {
+    router.push(
+      {
+        pathname: '/admin/cms/preview',
+        query: { data: content },
+      },
+      '/admin/cms/preview',
     );
   };
 
-  const header = renderHeader();
-
-  const handlePreview = () => {
-    const data = form?.watch('en.content') 
-    console.log(form?.watch('en.content'),"form.watch")
-    router.push({
-        pathname: "/admin/cms/preview",
-        query: { data: data },
-      }, '/admin/cms/preview');
-  }
-  
-
-
+  // Editor Config
+  const editorConfig = {
+    stylesSet: 'default',
+    allowedContent: true,
+    autoParagraph: false,
+    extraAllowedContent: 'b i div class style',
+  };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form
+        onSubmit={form.handleSubmit(id ? onSubmitUpdate : onSubmit)}
+        className="space-y-4"
+      >
         {langError ? (
           <div className="flex gap-2 items-center p-2  text-destructive bg-white bg-opacity-60 rounded-md">
             <i className="fa-solid fa-circle-info"></i>
@@ -202,11 +222,11 @@ export default function cmsForm(props: CategoryFormInterface) {
         <div
           className={
             props.language.code === 'en'
-              ? 'block space-y-4'
-              : 'hidden space-y-4'
+              ? 'block lg:space-y-4 md:space-y-4  space-y-8'
+              : 'hidden lg:space-y-4 md:space-y-4 space-y-8'
           }
         >
-          <div className="flex flex-col lg:flex-row md:flex-row justify-between space-x-8">
+          <div className="flex flex-col lg:flex-row md:flex-row justify-between  lg:space-x-8 md:space-x-8  s">
             <FormField
               control={form.control}
               name="en.title"
@@ -239,7 +259,7 @@ export default function cmsForm(props: CategoryFormInterface) {
             />
           </div>
 
-          <div className="flex flex-col lg:flex-row md:flex-row justify-between space-x-8">
+          <div className="flex flex-col lg:flex-row md:flex-row justify-between lg:space-x-8 md:space-x-8 ">
             <FormField
               control={form.control}
               name="en.metatitle"
@@ -295,80 +315,45 @@ export default function cmsForm(props: CategoryFormInterface) {
             control={form.control}
             name="en.content"
             render={({ field }) => (
-              <FormItem className=" bg-black">
-                <FormLabel>Content*</FormLabel>
+              <FormItem className=" text-black">
+                <FormLabel>
+                  Content <sup className="text-md text-red-500">*</sup>
+                </FormLabel>
                 <FormControl>
-                  <Editor
-                    id={field.name}
-                    name="blog"
-                    value={field.value}
-                    className="bg-black"
-                    // headerTemplate={header}
-                    onTextChange={(e) => field.onChange(e.textValue)}
-                    // p-editor-container="bg-black"
-                    style={{ height: '320px', backgroundColor: 'black' }}
+                  <CKEditor
+                    activeClass="p10"
+                    content={content} // Set the initial content
+                    events={{
+                      change: handleChange,
+                    }}
+                    config={editorConfig}
                   />
-                  {/* <Textarea placeholder="Enter Description..." {...field} /> */}
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
         </div>
-        {/* <div
-          dir="ltr"
-          className={props.language.code === 'ar' ? 'block' : 'hidden'}
-        >
-          <FormField
-            control={form.control}
-            name="ar.name"
-            render={({ field }) => (
-              <FormItem dir="rtl">
-                <FormLabel>
-                  اسم <sup className="text-md text-red-500">*</sup>
-                </FormLabel>
-                <FormControl>
-                  <Input placeholder="Enter Category Name" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="ar.desc"
-            render={({ field }) => (
-              <FormItem dir="rtl">
-                <FormLabel>
-                  وصف <sup className="text-md text-red-500">*</sup>
-                </FormLabel>
-                <FormControl>
-                  <Textarea placeholder="...أدخل الوصف" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div> */}
         <div className="flex justify-end gap-4">
           <div></div>
 
           <Button type="button" variant={'clip'} onClick={handlePreview}>
             Preview
-
           </Button>
 
           <Button type="submit" variant={'clip'}>
-            Submit
+            {id ? "Update" : "Submit"}
           </Button>
         </div>
+        <LoadingDialog
+          open={AddCmsContent.isLoading || loading}
+          text={`${id ? 'Updating' : 'Adding'} CMS...`}
+        />
+        <LoadingDialog
+          open={updateCmsId.isLoading || loading}
+          text={`${id ? 'Updating' : 'Adding'} CMS...`}
+        />
       </form>
-
-      {/* <LoadingDialog
-        open={addCategory.isLoading || loading}
-        text={`${categoryId ? 'Updating' : 'Adding'} Category...`}
-      /> */}
     </Form>
   );
 }
