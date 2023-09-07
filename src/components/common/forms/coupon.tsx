@@ -300,7 +300,7 @@ export default function CouponForm() {
                   </FormControl>
                   <SelectContent>
                     <SelectGroup>
-                      <SelectItem value={'1'}>{'limited'}</SelectItem>
+                      {/* <SelectItem value={'1'}>{'limited'}</SelectItem> */}
                       <SelectItem value={'0'}>{'unlimited'}</SelectItem>
                     </SelectGroup>
                   </SelectContent>
