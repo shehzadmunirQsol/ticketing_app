@@ -252,7 +252,7 @@ type EventImageType = {
 
 export function MultiFileInput(props: any) {
   const [images, setImages] = useState<string[]>([]);
-  const [removedImages, setRemovedImages] = useState<EventImageType[]>([]);
+  // const [removedImages, setRemovedImages] = useState<EventImageType[]>([]);
   // const [files, setFiles] = useState<File[]>([]);
 
   useEffect(() => {
@@ -295,21 +295,23 @@ export function MultiFileInput(props: any) {
     setImages(newSelectedImages);
     props?.setFiles(newSelectedFiles);
 
-    if (url.includes('upload/')) {
-      const uploadedImage: EventImageType = props?.uploadedImages?.find(
+    if (url.includes('upload/') && props?.eventImages?.length) {
+      const uploadedImage: EventImageType = props?.eventImages?.find(
         (item: EventImageType) =>
           process.env.NEXT_PUBLIC_MEDIA_BASE_URL + item.thumb === url,
       );
 
-      setRemovedImages((prevImages) => [...prevImages, uploadedImage]);
+      props?.setRemovedImages((prevImages: EventImageType[]) => [
+        ...prevImages,
+        uploadedImage,
+      ]);
     }
   }
 
   console.log({
     images,
     files: props?.files,
-    uploadedImages: props?.uploadedImages,
-    removedImages,
+    eventImages: props?.eventImages,
   });
 
   return (

@@ -38,7 +38,7 @@ import 'primereact/resources/themes/lara-light-indigo/theme.css';
 //core
 import 'primereact/resources/primereact.min.css';
 
-const formSchema: any = [
+const formSchema = [
   {
     type: 'image',
     name: 'thumb',
@@ -103,7 +103,7 @@ const formSchema: any = [
   },
   {
     type: 'switch',
-    name: 'is_alt',
+    name: 'is_cash_alt',
     label: 'Alternative Selling Option',
 
     placeholder: 'Please Enter Price',
@@ -116,6 +116,13 @@ const formSchema: any = [
     placeholder: 'Please Enter Price',
   },
 ];
+
+type EventImageType = {
+  id: number;
+  thumb: string;
+  event_id: number;
+};
+
 export default function EventForm() {
   const { toast } = useToast();
   const { data: categoryData } = trpc.category.getCategory.useQuery({
@@ -125,13 +132,13 @@ export default function EventForm() {
   const router = useRouter();
   const [optimizeFile, setOptimizeFile] = useState<any>(null);
   const [optimizeMultiFile, setOptimizeMultiFile] = useState<File[]>([]);
+  const [removedImages, setRemovedImages] = useState<EventImageType[]>([]);
+
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const eventId = router.query.index ? +router.query.index : 0;
 
-  const formValidateData = EventFormSchema;
-
-  const form = useForm<z.infer<typeof formValidateData>>({
+  const form = useForm<z.infer<typeof EventFormSchema>>({
     resolver: zodResolver(EventFormSchema),
   });
 
@@ -139,6 +146,12 @@ export default function EventForm() {
     { id: eventId },
     {
       enabled: eventId > 0 ? true : false,
+      onSuccess: (payload) => {
+        console.log('get successfully');
+        setFormData(payload);
+
+        // router.push('/store/wallet-connect');
+      },
     },
   );
 
@@ -156,7 +169,7 @@ export default function EventForm() {
   // 1. Define your form.
 
   // 2. Define a submit handler.
-  async function onSubmit(values: z.infer<typeof formValidateData>) {
+  async function onSubmit(values: z.infer<typeof EventFormSchema>) {
     console.log({ values });
     try {
       setIsSubmitting(true);
@@ -164,15 +177,15 @@ export default function EventForm() {
         typeof form.getValues('thumb') !== 'object'
           ? { thumb: values?.thumb }
           : await uploadOnS3Handler(optimizeFile);
-      const multiImage = optimizeMultiFile.length
+      const multiImage: string[] = optimizeMultiFile.length
         ? await uploadMultiImage()
         : [];
-      const payload: any = { ...values, multi_image: multiImage, ...nftSource };
+      const payload = { ...values, multi_image: multiImage, ...nftSource };
       const data = await eventUpload.mutateAsync(payload);
       if (data) {
         toast({
           variant: 'success',
-          title: 'Banner Uploaded Successfully',
+          title: 'Event Uploaded Successfully',
         });
         setIsSubmitting(false);
         router.back();
@@ -235,6 +248,22 @@ export default function EventForm() {
       return console.log('Please Select Image');
     }
   }
+
+  type EventDataType = typeof eventData;
+
+  function setFormData(payload: EventDataType) {
+    if (payload?.data) {
+      form.setValue('cash_alt', payload.data?.cash_alt);
+      form.setValue('category_id', payload.data?.category_id);
+      form.setValue('is_cash_alt', payload.data?.is_cash_alt);
+      form.setValue('launch_date', payload.data?.launch_date);
+      form.setValue('price', payload.data?.price);
+      form.setValue('thumb', payload.data?.thumb);
+      form.setValue('total_tickets', payload.data?.total_tickets);
+      form.setValue('user_ticket_limit', payload.data?.user_ticket_limit);
+      form.setValue('video_src', payload.data?.video_src);
+    }
+  }
   console.log(form.formState.errors, 'form.error');
   const renderHeader = () => {
     return (
@@ -273,8 +302,6 @@ export default function EventForm() {
   };
 
   const header = renderHeader();
-
-  console.log({ eventData });
   return (
     <>
       <Form {...form}>
@@ -301,6 +328,8 @@ export default function EventForm() {
                 imageCompressorHandler={imageHandler}
                 files={optimizeMultiFile}
                 setFiles={setOptimizeMultiFile}
+                setRemovedImages={setRemovedImages}
+                eventImages={eventData?.data?.EventImages}
                 required={true}
                 placeholder={'Upload Multiple file'}
               />
@@ -458,154 +487,151 @@ export default function EventForm() {
             </Tabs>
             <div>
               <div className=" grid grid-cols-1 lg:grid-cols-2 gap-2  items-center">
-                {formSchema ? (
-                  formSchema.map((item: any, i: number) => {
-                    if (item?.type == 'text' || item?.type == 'number') {
-                      return (
-                        <FormField
-                          key={i}
-                          control={form.control}
-                          name={item?.name}
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>{item?.label}</FormLabel>
-                              <FormControl>
-                                <Input
-                                  type={item?.type}
-                                  placeholder={item?.placeholder}
-                                  {...field}
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                      );
-                    }
-                    if (item?.type == 'date') {
-                      return (
-                        <div key={i}>
-                          <FormItem className=" flex flex-col gap-2 mt-2 w-full">
+                {formSchema.map((item: any, i: number) => {
+                  if (item?.type == 'text' || item?.type == 'number') {
+                    return (
+                      <FormField
+                        key={i}
+                        control={form.control}
+                        name={item?.name}
+                        render={({ field }) => (
+                          <FormItem>
                             <FormLabel>{item?.label}</FormLabel>
                             <FormControl>
                               <Input
                                 type={item?.type}
                                 placeholder={item?.placeholder}
                                 {...form.register(item?.name, {
-                                  valueAsDate: true,
+                                  valueAsNumber:
+                                    item?.type == 'number' ? true : false,
                                 })}
                               />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
-                        </div>
-                      );
-                    }
-                    if (item?.type == 'switch') {
-                      return (
-                        <div key={i} className=" h-full">
-                          <FormField
-                            control={form.control}
-                            name={item?.name}
-                            render={({ field }) => (
-                              <FormItem className="flex items-center justify-between h-full  gap-2">
-                                <FormLabel>
-                                  Alternative Selling Option
-                                </FormLabel>
+                        )}
+                      />
+                    );
+                  }
+                  if (item?.type == 'date') {
+                    return (
+                      <div key={i}>
+                        <FormItem className=" flex flex-col gap-2 mt-2 w-full">
+                          <FormLabel>{item?.label}</FormLabel>
+                          <FormControl>
+                            <Input
+                              type={item?.type}
+                              placeholder={item?.placeholder}
+                              {...form.register(item?.name, {
+                                valueAsDate: true,
+                              })}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      </div>
+                    );
+                  }
+                  if (item?.type == 'switch') {
+                    return (
+                      <div key={i} className=" h-full">
+                        <FormField
+                          control={form.control}
+                          name={item?.name}
+                          render={({ field }) => (
+                            <FormItem className="flex items-center justify-between h-full  gap-2">
+                              <FormLabel>Alternative Selling Option</FormLabel>
+                              <FormControl>
+                                <Switch
+                                  checked={field.value}
+                                  onCheckedChange={field.onChange}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                    );
+                  }
+                  if (item?.type == 'select') {
+                    return (
+                      <div key={i}>
+                        <FormField
+                          control={form.control}
+                          name={item?.name}
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>{item?.label}</FormLabel>
+                              <Select
+                                onValueChange={field.onChange}
+                                defaultValue={field.value}
+                                value={field.value}
+                              >
                                 <FormControl>
-                                  <Switch
-                                    checked={field.value}
-                                    onCheckedChange={field.onChange}
-                                  />
+                                  <SelectTrigger className=" rounded-none  ">
+                                    <SelectValue
+                                      className="!bg-black"
+                                      placeholder={item?.placeholder}
+                                    />
+                                  </SelectTrigger>
                                 </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                        </div>
-                      );
-                    }
-                    if (item?.type == 'select') {
-                      return (
-                        <div key={i}>
+                                <SelectContent className="">
+                                  <SelectGroup>
+                                    {categoryData &&
+                                      categoryData.map(
+                                        (item: any, index: number) => {
+                                          return (
+                                            <div key={index}>
+                                              <SelectItem
+                                                className="bg-slate-950"
+                                                value={(item?.id).toString()}
+                                              >
+                                                {item?.name}
+                                              </SelectItem>
+                                            </div>
+                                          );
+                                        },
+                                      )}
+                                  </SelectGroup>
+                                </SelectContent>
+                              </Select>
+
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                    );
+                  }
+                  if (item?.type == 'switch_text') {
+                    return (
+                      <div key={i}>
+                        {form.watch('is_cash_alt') && (
                           <FormField
                             control={form.control}
                             name={item?.name}
                             render={({ field }) => (
                               <FormItem>
                                 <FormLabel>{item?.label}</FormLabel>
-                                <Select
-                                  onValueChange={field.onChange}
-                                  defaultValue={field.value}
-                                  value={field.value}
-                                >
-                                  <FormControl>
-                                    <SelectTrigger className=" rounded-none  ">
-                                      <SelectValue
-                                        className="!bg-black"
-                                        placeholder={item?.placeholder}
-                                      />
-                                    </SelectTrigger>
-                                  </FormControl>
-                                  <SelectContent className="">
-                                    <SelectGroup>
-                                      {categoryData &&
-                                        categoryData.map(
-                                          (item: any, index: number) => {
-                                            return (
-                                              <div key={index}>
-                                                <SelectItem
-                                                  className="bg-slate-950"
-                                                  value={(item?.id).toString()}
-                                                >
-                                                  {item?.name}
-                                                </SelectItem>
-                                              </div>
-                                            );
-                                          },
-                                        )}
-                                    </SelectGroup>
-                                  </SelectContent>
-                                </Select>
-
+                                <FormControl>
+                                  <Input
+                                    type={item?.type}
+                                    placeholder={item?.placeholder}
+                                    {...field}
+                                  />
+                                </FormControl>
                                 <FormMessage />
                               </FormItem>
                             )}
                           />
-                        </div>
-                      );
-                    }
-                    if (item?.type == 'switch_text') {
-                      return (
-                        <div key={i}>
-                          {form.watch('is_alt') && (
-                            <FormField
-                              control={form.control}
-                              name={item?.name}
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel>{item?.label}</FormLabel>
-                                  <FormControl>
-                                    <Input
-                                      type={item?.type}
-                                      placeholder={item?.placeholder}
-                                      {...field}
-                                    />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                          )}
-                        </div>
-                      );
-                    } else {
-                      return <div key={i}></div>;
-                    }
-                  })
-                ) : (
-                  <></>
-                )}
+                        )}
+                      </div>
+                    );
+                  } else {
+                    return <div key={i}></div>;
+                  }
+                })}
               </div>
             </div>
           </div>
