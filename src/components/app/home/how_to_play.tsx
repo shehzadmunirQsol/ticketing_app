@@ -8,6 +8,10 @@ import Frame11 from '~/public/assets/icons/Frame11.svg';
 import Frame12 from '~/public/assets/icons/Frame12.svg';
 import Frame13 from '~/public/assets/icons/Frame13.svg';
 
+
+// import LinesBehind from "~/public/assets/Lines_Text_Big.png"
+// import LinesBehind1 from "~/public/assets/Lines_Text_Big_2.png"
+
 import Image from 'next/image';
 import Glow from '~/components/common/glow';
 interface producctInterface {

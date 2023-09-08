@@ -46,12 +46,12 @@ function CategorySection() {
           return (
             <div
               key={i}
-              className="mainContainer  group transition-all duration-300 relative h-96  overflow-hidden cursor-pointer  "
+              className="mainContainer  group transition-all duration-300 relative h-64 md:h-96 cursor-pointer  "
             >
               <Link href={i == 0 ? `/cars` : i == 1 ? '/cash' : '/'}>
-                <div className=" absolute  w-full  h-[100%] categoryClip  bg-primary opacity-40 transition-all ease-in-out duration-300 "></div>
+                <div className=" absolute  w-full  h-full categoryClip  bg-primary opacity-40 transition-all ease-in-out duration-300 "></div>
                 <Image
-                  className=" bg-white opacity-30 "
+                  className=" bg-white opacity-30  h-64 md:h-96 object-cover"
                   src={renderNFTImage(item)}
                   width={640}
                   height={800}
@@ -60,7 +60,8 @@ function CategorySection() {
                   quality={100}
                   alt="car"
                 />
-                <div className="absolute   top-0 p-4">
+
+                <div className="absolute h-fit  top-0 p-4">
                   <div className="w-1/5  text-gray-200 text-5xl font-black uppercase ">
                     {nameList.map((name, index) => (
                       <p key={index}>{name}</p>
@@ -70,7 +71,7 @@ function CategorySection() {
                   </div>
                 </div>
                 <div className="absolute  w-full  bottom-4 p-4 flex gap-4 justify-between items-center">
-                  <div className=" text-gray-200 text-lg font-extrabold leading-normal text-ellipsis whitespace-nowrap overflow-hidden">
+                  <div className=" text-gray-200 text-lg font-bold leading-normal text-ellipsis whitespace-nowrap overflow-hidden">
                     {item?.desc}
                   </div>
                   <div className=" text-gray-200 text-2xl font-extrabold leading-normal">

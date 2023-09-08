@@ -5,7 +5,7 @@ import CarImage from '~/public/assets/card_image.png';
 import BottleImage from '~/public/assets/bottle.png';
 import { Progress } from '../ui/progress';
 import { Button } from '../ui/button';
-import { renderNFTImage } from '~/utils/helper';
+import { customTruncateHandler, renderNFTImage } from '~/utils/helper';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
 import Link from 'next/link';
@@ -52,9 +52,9 @@ function ProductCard(props: cardInterface) {
           <span className=" font-bold">CLOSES TODAY</span> 20:00
         </div>}
         <Image
-          width={150}
-          height={100}
-          className="w-full h-full object-cover bg-white"
+          width={550}
+          height={450}
+          className="w-full h-[230px] object-cover bg-white"
           src={props?.cash ?? renderNFTImage(props.data) ?? CarImage}
           quality={100}
           alt="Sunset in the mountains"
@@ -75,11 +75,11 @@ function ProductCard(props: cardInterface) {
         </div>
         <div className="font-bold text-xl lg:text-2xl xl:text-3xl ">
           <span className="text-gray-200  font-semibold leading-loose">
-            {`${props?.data?.EventDescription[0]?.desc}`}
+            {customTruncateHandler(props?.data?.EventDescription[0]?.desc,30)}
           </span>
         </div>
         <div className="opacity-75 text-gray-200  text-lg font-normal leading-normal">
-          {props?.data?.EventDescription[0]?.comp_details}
+          {customTruncateHandler(props?.data?.EventDescription[0]?.comp_details,30)}
         </div>
         <hr className=" opacity-20 mt-4" />
         <div className=" mt-2">
