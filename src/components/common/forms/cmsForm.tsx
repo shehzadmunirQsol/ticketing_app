@@ -34,7 +34,7 @@ interface CategoryFormInterface {
   language: LanguageInterface;
 }
 
-export default function cmsForm(props: CategoryFormInterface) {
+export default function CmsForm(props: CategoryFormInterface) {
   const router = useRouter();
   const { toast } = useToast();
   const { id = 0 } = router.query;
@@ -61,26 +61,25 @@ export default function cmsForm(props: CategoryFormInterface) {
   );
 
   useEffect(() => {
-    if(data){
-    form.setValue('en.title', data?.data?.CMSDescription[0]?.title);
-    form.setValue('en.slug', data?.data?.slug as string);
-    form.setValue('en.desc', data?.data?.CMSDescription[0]?.desc as string);
-    form.setValue(
-      'en.metadesc',
-      data?.data?.CMSDescription[0]?.meta_keywords as string,
-    );
-    form.setValue(
-      'en.metatitle',
-      data?.data?.CMSDescription[0]?.meta_keywords as string,
-    );
-    setContent(data?.data?.CMSDescription[0]?.content);
-  }
-
+    if (data) {
+      form.setValue('en.title', data?.data?.CMSDescription[0]?.title);
+      form.setValue('en.slug', data?.data?.slug as string);
+      form.setValue('en.desc', data?.data?.CMSDescription[0]?.desc as string);
+      form.setValue(
+        'en.metadesc',
+        data?.data?.CMSDescription[0]?.meta_keywords as string,
+      );
+      form.setValue(
+        'en.metatitle',
+        data?.data?.CMSDescription[0]?.meta_keywords as string,
+      );
+      setContent(data?.data?.CMSDescription[0]?.content);
+    }
   }, [data]);
 
   // Handle the change event when the CKEditor content changes
   const handleChange = (evt: any) => {
-    var newContent = evt.editor.getData();
+    const newContent:any = evt.editor.getData();
 
     setContent(newContent);
   };
@@ -115,7 +114,7 @@ export default function cmsForm(props: CategoryFormInterface) {
     console.log(values, 'values');
     try {
       const slug = createSlug(values?.en?.slug);
-      console.log(slug)
+      console.log(slug);
       const payload: any = {
         content: content,
         slug: slug,
@@ -128,6 +127,7 @@ export default function cmsForm(props: CategoryFormInterface) {
         variant: 'success',
         title: 'Cms Content Add Successfully',
       });
+      localStorage.removeItem('cmscontent');
       form.setValue('title', '');
       form.setValue('slug', '');
       form.setValue('metatitle', '');
@@ -160,6 +160,7 @@ export default function cmsForm(props: CategoryFormInterface) {
         variant: 'success',
         title: 'Cms Content Update Successfully',
       });
+      localStorage.removeItem('cmscontent');
       form.setValue('title', '');
       form.setValue('slug', '');
       form.setValue('metatitle', '');
@@ -187,13 +188,8 @@ export default function cmsForm(props: CategoryFormInterface) {
 
   // Handle CMS Preview
   const handlePreview = () => {
-    router.push(
-      {
-        pathname: '/admin/cms/preview',
-        query: { data: content },
-      },
-      '/admin/cms/preview',
-    );
+    window.localStorage.setItem('cmscontent', content);
+    window.open('/admin/cms/preview', '_blank');
   };
 
   // Editor Config
@@ -342,7 +338,7 @@ export default function cmsForm(props: CategoryFormInterface) {
           </Button>
 
           <Button type="submit" variant={'clip'}>
-            {id ? "Update" : "Submit"}
+            {id ? 'Update' : 'Submit'}
           </Button>
         </div>
         <LoadingDialog
