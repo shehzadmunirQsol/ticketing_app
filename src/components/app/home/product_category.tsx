@@ -74,7 +74,7 @@ function CategorySection() {
                   <div className=" text-gray-200 text-lg font-bold leading-normal text-ellipsis whitespace-nowrap overflow-hidden">
                     {item?.desc}
                   </div>
-                  <div className=" text-gray-200 text-2xl font-extrabold leading-normal">
+                  <div className=" text-primary text-2xl font-extrabold leading-normal">
                     <i className="fa-solid fa-arrow-right -rotate-45 group-hover:text-primary group-hover:rotate-0 duration-300"></i>
                   </div>
                 </div>
