@@ -173,7 +173,7 @@ export const customerRouter = router({
 
           const mailOptions: any = {
             template_id: 2,
-            from: 'shehzadmunir.qsols@gmail.com',
+            from: 'no-reply@winnar.com',
             to: input.email,
             subject: 'Email Verification OTP CODE',
             params: {
@@ -282,7 +282,7 @@ export const customerRouter = router({
         const respCode = await generateOTP(4);
         const mailOptions = {
           template_id: 5,
-          from: 'shehzadmunir.qsols@gmail.com',
+          from: 'no-reply@winnar.com',
           to: input.email,
           subject: 'Forgot Password request to Winnar',
           params: {
@@ -438,7 +438,7 @@ export const customerRouter = router({
           console.log(updateResponse, 'updateResponse');
           const mailOptions: any = {
             template_id: 2,
-            from: 'shehzadmunir.qsols@gmail.com',
+            from: 'no-reply@winnar.com',
             to: input.email,
             subject: 'Email Verification OTP CODE',
             params: {
