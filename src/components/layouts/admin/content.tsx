@@ -44,6 +44,11 @@ const SIDEBAR_DATA = [
     icon: <i className="fa-solid fa-chart-line p-4 rounded-full"></i>,
     title: 'Orders',
   },
+  {
+    key: '/admin/subscriptions',
+    icon: <i className="fa-solid fa-money-check-dollar p-4 rounded-full"></i>,
+    title: 'Subscriptions',
+  },
   //   {
   //     key: '/client',
   //     icon: <i className="fa-solid fa-users p-4 rounded-full" />,

@@ -79,6 +79,7 @@ export async function totalProcessingPayment(req: any, res: any) {
       console.log(updateSubs, 'updateSubs');
 
       // finally send email notification to the customer
+      return res.status(200).send({ data: 'data', success: true });
     }
 
     // const orderPayload
