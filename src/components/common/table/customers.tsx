@@ -72,9 +72,12 @@ export default function CustomersDataTable() {
   const [isModal, setIsModal] = React.useState(false);
 
   // APi
-  const { data, refetch,isLoading } = trpc.customer.getCustomers.useQuery(filters, {
-    refetchOnWindowFocus: false,
-  });
+  const { data, refetch, isLoading } = trpc.customer.getCustomers.useQuery(
+    filters,
+    {
+      refetchOnWindowFocus: false,
+    },
+  );
 
   const categoryData = React.useMemo(() => {
     return Array.isArray(data?.data) ? data?.data : [];
@@ -222,33 +225,29 @@ export default function CustomersDataTable() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="rounded-md border">
-      <ScrollArea  className='w-full'>
-        <ScrollBar orientation="horizontal">
-
-        </ScrollBar>
-        <Table>
-          <TableHeader>
-            {table?.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            
-           
+      <div className="rounded-md border border-border">
+        <ScrollArea className="w-full">
+          <ScrollBar orientation="horizontal"></ScrollBar>
+          <Table>
+            <TableHeader>
+              {table?.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <TableHead key={header.id}>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext(),
+                            )}
+                      </TableHead>
+                    );
+                  })}
+                </TableRow>
+              ))}
+            </TableHeader>
+            <TableBody>
               {table?.getRowModel()?.rows?.length ? (
                 table?.getRowModel()?.rows?.map((row) => (
                   <TableRow
@@ -309,7 +308,6 @@ export default function CustomersDataTable() {
         setType={setType}
       />
       <LoadingDialog open={isLoading} text={'Loading data...'} />
-
     </div>
   );
 }
