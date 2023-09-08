@@ -39,16 +39,22 @@ function AdminLayout({ children }: DefaultLayoutProps) {
   }, [dispatch, data]);
 
   return (
-    <div className="relative">
+    <div className="relative ">
       {router.asPath === '/admin/login' ? (
         <main className="flex-1 m-auto">{children}</main>
       ) : (
         <>
           <Header />
 
-          <div className="flex">
+          <div className="flex max-h-[calc(100vh-65px)] overflow-hidden">
             <Sidebar />
-            <main className={`flex-1 w-full ${isSidebarOpen ?'w-[calc(100vw-15%)]':'w-[calc(100vw-80px)]'}`}>{children}</main>
+            <main
+              className={`flex-1 w-full ${
+                isSidebarOpen ? 'w-[calc(100vw-15%)]' : 'w-[calc(100vw-80px)]'
+              }  min-h-[calc(100vh-100px)] overflow-y-scroll`}
+            >
+              {children}
+            </main>
           </div>
         </>
       )}

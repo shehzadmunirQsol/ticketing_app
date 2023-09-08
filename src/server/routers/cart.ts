@@ -63,6 +63,54 @@ export const cartRouter = router({
       });
     }
   }),
+  getCartItems: publicProcedure.query(async ({ ctx }) => {
+    try {
+      const cartItems = await prisma.cartItem.findMany({
+        orderBy: { created_at: 'desc' },
+        take: 10,
+        where: { is_deleted: false },
+        select: {
+          id: true,
+          created_at: true,
+          updated_at: true,
+          quantity: true,
+          is_subscribe: true,
+          subscription_type: true,
+          Event: {
+            select: {
+              id: true,
+              thumb: true,
+              price: true,
+              EventDescription: {
+                where: { lang_id: 1 },
+                select: {
+                  name: true,
+                },
+              },
+            },
+          },
+          Cart: {
+            select: {
+              Customer: {
+                select: {
+                  id: true,
+                  email: true,
+                  first_name: true,
+                },
+              },
+            },
+          },
+        },
+      });
+
+      return { message: 'Cart found', data: cartItems };
+    } catch (error: any) {
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: error?.message,
+      });
+    }
+  }),
   getUserTicketLimit: publicProcedure
     .input(getTicketPurchasedSchema)
     .query(async ({ input, ctx }) => {

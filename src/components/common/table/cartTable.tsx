@@ -33,22 +33,26 @@ import {
 } from '@/ui/table';
 import LanguageSelect, { LanguageInterface } from '../language_select';
 import { trpc } from '~/utils/trpc';
-import Link from 'next/link';
 import { GetEventSchema } from '~/schema/event';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 import { LoadingDialog } from '../modal/loadingModal';
+import Image from 'next/image';
+import { renderNFTImage } from '~/utils/helper';
 
-export type Category = {
+export type CartType = {
   id: number;
-  email: string;
-  first_name: string;
-  last_name: string;
-  phone_number: string;
-  total_amount: number;
-  discount_amount: number;
-  sub_total_amount: number;
-  total_payment_id: string;
-
+  is_subscribe: boolean;
+  quantity: number;
+  subscription_type: null;
+  Event: {
+    id: number;
+    thumb: string;
+    price: number;
+    EventDescription: { name: string }[];
+  };
+  Cart: {
+    Customer: { id: number; email: string; first_name: string };
+  };
   created_at: Date;
   updated_at: Date;
 };
@@ -63,110 +67,83 @@ export default function OrdersDataTable() {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
 
-  const { data, isLoading } = trpc.order.get.useQuery(filters, {
+  const { data, isLoading } = trpc.cart.getCartItems.useQuery(undefined, {
     refetchOnWindowFocus: false,
   });
-  const orderData = React.useMemo(() => {
+  const cartItemData = React.useMemo(() => {
     return Array.isArray(data?.data) ? data?.data : [];
   }, [data]);
-  const columns: ColumnDef<Category>[] = [
+  const columns: ColumnDef<CartType>[] = [
     {
-      accessorKey: 'name',
-      header: 'Customer Name',
-      cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap ">
-          {row?.original?.first_name + ' ' + row?.original?.last_name}
-        </div>
-      ),
-    },
-    {
-      accessorKey: 'email',
-      header: 'Email',
-      cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap ">
-          {row?.original?.email}
-        </div>
-      ),
-    },
-
-    {
-      accessorKey: 'phone_number',
-      header: 'Phone No.',
-      cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap ">
-          {row?.original?.phone_number}
-        </div>
-      ),
-    },
-    {
-      accessorKey: 'total_payment_id',
-      header: 'Transaction ID',
-      cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap ">
-          {row?.original?.total_payment_id}
-        </div>
-      ),
-    },
-    {
-      accessorKey: 'sub_total_amount',
-      header: 'Sub Total',
-      cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap ">
-          AED {(row?.original?.sub_total_amount).toFixed(2)}
-        </div>
-      ),
-    },
-    {
-      accessorKey: 'discount_amount',
-      header: 'Discount',
-      cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap ">
-          {' '}
-          {row?.original?.discount_amount > 0
-            ? 'AED ' + (row?.original?.discount_amount).toFixed(2)
-            : 'N/A'}
-        </div>
-      ),
-    },
-    {
-      accessorKey: 'total_amount',
-      header: 'Total Amount',
-      cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap ">
-          {' '}
-          {row?.original?.total_amount > 0
-            ? 'AED ' + (row?.original?.total_amount).toFixed(2)
-            : 'N/A'}
-        </div>
-      ),
-    },
-
-    {
-      id: 'actions',
-      enableHiding: false,
+      accessorKey: 'Event',
+      header: 'Event',
       cell: ({ row }) => {
         return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <Link href={`/admin/orders/view/${row?.original?.id}`}>
-                <DropdownMenuItem>View Order</DropdownMenuItem>
-              </Link>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
+            <Image
+              className="object-cover bg-ac-2 h-10 w-16 rounded-lg"
+              src={`${process.env.NEXT_PUBLIC_MEDIA_BASE_URL}${row?.original?.Event?.thumb}`}
+              alt={row?.original?.Event?.EventDescription[0]?.name ?? ''}
+              width={100}
+              height={100}
+            />
+
+            <p className="text-base font-normal">
+              {row?.original?.Event?.EventDescription[0]?.name}
+            </p>
+          </div>
         );
       },
     },
+    {
+      accessorKey: 'Customer Name',
+      header: 'Customer Name',
+      cell: ({ row }) => (
+        <div className="capitalize text-ellipsis whitespace-nowrap ">
+          {row?.original?.Cart?.Customer.first_name}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'Created At',
+      header: 'Created At',
+      cell: ({ row }) => (
+        <div className="capitalize text-ellipsis whitespace-nowrap ">
+          {row?.original?.created_at?.toDateString()}
+        </div>
+      ),
+    },
+
+    {
+      accessorKey: 'Quantity',
+      header: 'Quantity',
+      cell: ({ row }) => (
+        <div className="capitalize text-ellipsis whitespace-nowrap ">
+          {row?.original?.quantity}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'Price',
+      header: 'Price',
+      cell: ({ row }) => (
+        <div className="capitalize text-ellipsis whitespace-nowrap ">
+          {row?.original?.Event?.price?.toFixed(2)}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'Total Amount',
+      header: 'Total Amount',
+      cell: ({ row }) => (
+        <div className="capitalize text-ellipsis whitespace-nowrap ">
+          {(row?.original?.quantity * row?.original?.Event?.price)?.toFixed(2)}
+        </div>
+      ),
+    },
   ];
   const table = useReactTable({
-    data: orderData as Category[],
+    data: cartItemData as CartType[],
     columns,
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
@@ -190,6 +167,8 @@ export default function OrdersDataTable() {
     if (page < 0) return;
     setFilters((prevFilters) => ({ ...prevFilters, first: page }));
   }
+
+  console.log({ data });
 
   return (
     <div className="w-full space-y-4">
@@ -274,24 +253,7 @@ export default function OrdersDataTable() {
           </Table>
         </ScrollArea>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="space-x-2">
-          <Button
-            variant="outline"
-            onClick={() => handlePagination(filters.first - 1)}
-            disabled={filters.first === 0}
-          >
-            Previous
-          </Button>
-          <Button
-            variant="outline"
-            onClick={() => handlePagination(filters.first + 1)}
-            disabled={(filters.first + 1) * filters.rows > (data?.count || 0)}
-          >
-            Next
-          </Button>
-        </div>
-      </div>
+
       <LoadingDialog open={isLoading} text={'Loading data...'} />
     </div>
   );
