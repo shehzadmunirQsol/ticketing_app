@@ -17,23 +17,27 @@ export default function Home() {
       </div>
 
       {/* product section 1 */}
-      <div className="relative flex flex-col gap-8  px-6 py-2 ">
+      <div className="relative flex flex-col gap-x-8  px-8 py-2 ">
         {/* 13 cards */}
         <ProductSection
-          class="max-w-sm lg:max-w-xs"
-          slidesToShow={4}
+          class="max-w-sm lg:max-w-[26rem]"
+          slidesToShow={3}
           center={false}
           title={'ENDING SOON COMPETITIONS'}
           type="closing"
+          breakpoint={[3,2,1]}
+          breakpointScreens={[1350,1050,800]}
         />
         {/* product section 2 */}
         {/* 11 cards */}
         <ProductSection
-          class="max-w-md lg:max-w-sm xl:max-w-md ml-2   "
-          slidesToShow={3}
+          class="max-w-md md:max-w-xl  xl:max-w-[39rem] max-h-md"
+          slidesToShow={2}
           center={false}
           title="UPCOMING COMPETITIONS"
           type="upcomming"
+          breakpoint={[2,1,1]}
+          breakpointScreens={[900,850,600]}
         />
       </div>
       <CategorySection />
@@ -49,6 +53,8 @@ export default function Home() {
           center={false}
           title="Winnar Wonders: "
           subTitle="A Glimpse of Excellence"
+          breakpoint={[3,2,1]}
+          breakpointScreens={[1100,830,500]}
         />
       </div>
     </div>

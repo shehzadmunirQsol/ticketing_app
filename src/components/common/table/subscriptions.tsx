@@ -11,7 +11,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { ChevronDown } from 'lucide-react';
-import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
+
 import { Button } from '@/ui/button';
 import {
   DropdownMenu,
@@ -27,152 +27,158 @@ import {
   TableHeader,
   TableRow,
 } from '@/ui/table';
+import LanguageSelect, { LanguageInterface } from '../language_select';
 import { trpc } from '~/utils/trpc';
-import { customEmailTruncateHandler } from '~/utils/helper';
-import { getCustomerSchema } from '~/schema/customer';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '~/components/ui/tooltip';
-import { Switch } from '~/components/ui/switch';
-import { CustomerDialog } from '../modal/customers';
-import { useToast } from '~/components/ui/use-toast';
+import { GetEventSchema } from '~/schema/event';
+import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 import { LoadingDialog } from '../modal/loadingModal';
+import Image from 'next/image';
+import { displayDate, renderNFTImage } from '~/utils/helper';
 
 export type Category = {
-  email: string;
-  username: string | null;
-  first_name: string;
-  last_name: string;
-  is_approved: boolean;
-  is_verified: boolean;
   id: number;
-  dob: Date;
+  Customer: any;
+  Event: any;
+  total_subscription_id: string;
+  ticket_price: number;
+  quantity: number;
+  subscription_type: string;
+
+  next_date: Date;
   created_at: Date;
   updated_at: Date;
 };
 
-export default function CustomersDataTable() {
-  // use toast
-  const { toast } = useToast();
-
-  // use states
+export default function SubscriptionDataTable() {
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [filters, setFilters] = useState<getCustomerSchema>({
+  const [filters, setFilters] = useState<GetEventSchema>({
     first: 0,
     rows: 10,
+    lang_id: 1,
   });
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
-  const [selectedItem, setSelectedItem] = React.useState({});
-  const [title, setTitle] = React.useState('');
-  const [type, setType] = React.useState('');
-  const [isModal, setIsModal] = React.useState(false);
 
-  // APi
-  const { data, refetch, isLoading } = trpc.customer.getCustomers.useQuery(
-    filters,
-    {
-      refetchOnWindowFocus: false,
-    },
-  );
-
+  const { data, isLoading } = trpc.subscription.get.useQuery(filters, {
+    refetchOnWindowFocus: false,
+  });
+  console.log({ data });
   const categoryData = React.useMemo(() => {
     return Array.isArray(data?.data) ? data?.data : [];
   }, [data]);
-
-  // handle modal
-  const handleEnbled = (data: any, type: string) => {
-    if (!data?.is_approved) {
-      setSelectedItem(data);
-      setTitle('Customer');
-      setType(type);
-      setIsModal(true);
-    } else {
-      toast({
-        variant: 'success',
-        title: `Customer is Already Approved!`,
-      });
-    }
-  };
-  // columns
   const columns: ColumnDef<Category>[] = [
     {
-      accessorKey: 'email',
-      header: 'Email',
+      accessorKey: 'name',
+      header: 'Event',
       cell: ({ row }) => {
         return (
           <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger>
-                  {customEmailTruncateHandler(row?.original?.email)}
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p className="text-base font-normal">
-                    {row?.original?.email}
-                  </p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            <Image
+              className="object-cover bg-ac-2 h-10 w-16 rounded-lg"
+              src={renderNFTImage(row.original.Event)}
+              alt={row?.original?.Event?.EventDescription[0]?.name}
+              width={100}
+              height={100}
+            />
+
+            <p className="text-base font-normal">
+              {row?.original?.Event?.EventDescription[0]?.name}
+            </p>
           </div>
         );
       },
     },
     {
-      accessorKey: 'username',
-      header: 'User Name',
+      accessorKey: 'ticket_price',
+      header: 'Ticket Price',
       cell: ({ row }) => (
         <div className="capitalize text-ellipsis whitespace-nowrap ">
-          {row.getValue('username')}
+          AED {(row?.original?.ticket_price).toFixed(2)}
         </div>
       ),
     },
     {
-      accessorKey: 'first_name',
-      header: 'Name',
+      accessorKey: 'Quantity',
+      header: 'Quantity',
       cell: ({ row }) => (
         <div className="capitalize text-ellipsis whitespace-nowrap ">
-          {row?.original?.first_name + ' ' + row?.original?.last_name}
+          {(row?.original?.quantity).toFixed(2)}
         </div>
       ),
     },
     {
-      id: 'is_verified',
-      header: 'Verified Status',
-
-      cell: ({ row }) => {
-        return (
-          <div>
-            <Switch
-              checked={row?.original?.is_verified}
-              disabled={true}
-              // onCheckedChange={() => handleEnbled(row?.original, 'enabled')}
-            />
-          </div>
-        );
-      },
+      accessorKey: 'name',
+      header: 'Customer Name',
+      cell: ({ row }) => (
+        <div className="capitalize text-ellipsis whitespace-nowrap ">
+          {row?.original?.Customer?.first_name +
+            ' ' +
+            row?.original?.Customer?.last_name}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'email',
+      header: 'Email',
+      cell: ({ row }) => (
+        <div className="capitalize text-ellipsis whitespace-nowrap ">
+          {row?.original?.Customer?.email}
+        </div>
+      ),
     },
 
     {
-      id: 'is_approved',
-      header: 'Approved Status',
-
-      cell: ({ row }) => {
-        return (
-          <div>
-            <Switch
-              checked={row?.original?.is_approved}
-              onCheckedChange={() => handleEnbled(row?.original, 'enabled')}
-            />
-          </div>
-        );
-      },
+      accessorKey: 'Subscription ID',
+      header: 'Subscription ID',
+      cell: ({ row }) => (
+        <div className="capitalize text-ellipsis whitespace-nowrap ">
+          {row?.original?.total_subscription_id}
+        </div>
+      ),
     },
+    {
+      accessorKey: 'next_date',
+      header: 'Next Date',
+      cell: ({ row }) => (
+        <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
+          {displayDate(row?.original?.next_date)}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'created_at',
+      header: 'Created Date',
+      cell: ({ row }) => (
+        <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
+          {displayDate(row?.original?.created_at)}
+        </div>
+      ),
+    },
+
+    // {
+    //   id: 'actions',
+    //   enableHiding: false,
+    //   cell: ({ row }) => {
+    //     return (
+    //       <DropdownMenu>
+    //         <DropdownMenuTrigger asChild>
+    //           <Button variant="ghost" className="h-8 w-8 p-0">
+    //             <span className="sr-only">Open menu</span>
+    //             <MoreHorizontal className="h-4 w-4" />
+    //           </Button>
+    //         </DropdownMenuTrigger>
+    //         <DropdownMenuContent align="end">
+    //           <DropdownMenuLabel>Actions</DropdownMenuLabel>
+    //           <DropdownMenuSeparator />
+    //           <Link href={`/admin/orders/view/${row?.original?.id}`}>
+    //             <DropdownMenuItem>View Order</DropdownMenuItem>
+    //           </Link>
+    //         </DropdownMenuContent>
+    //       </DropdownMenu>
+    //     );
+    //   },
+    // },
   ];
-
   const table = useReactTable({
     data: categoryData as Category[],
     columns,
@@ -189,6 +195,10 @@ export default function CustomersDataTable() {
       rowSelection,
     },
   });
+
+  function languageHandler(params: LanguageInterface) {
+    setFilters((prevFilters) => ({ ...prevFilters }));
+  }
 
   function handlePagination(page: number) {
     if (page < 0) return;
@@ -226,7 +236,7 @@ export default function CustomersDataTable() {
         </DropdownMenu>
       </div>
       <div className="rounded-md border border-border">
-        <ScrollArea className="w-full">
+        <ScrollArea className="w-full ">
           <ScrollBar orientation="horizontal"></ScrollBar>
           <Table>
             <TableHeader>
@@ -296,17 +306,6 @@ export default function CustomersDataTable() {
           </Button>
         </div>
       </div>
-      <CustomerDialog
-        selectedItem={selectedItem}
-        setSelectedItem={setSelectedItem}
-        title={title}
-        setTitle={setTitle}
-        isModal={isModal}
-        setIsModal={setIsModal}
-        refetch={refetch}
-        type={type}
-        setType={setType}
-      />
       <LoadingDialog open={isLoading} text={'Loading data...'} />
     </div>
   );

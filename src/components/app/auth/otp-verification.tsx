@@ -189,7 +189,7 @@ export function OtpVerificationDailog(props: OtpVerificationDailogInterface) {
               className="justify-center items-center px-2 lg:px-8 py-4 space-y-4"
             >
               <p className="text-center text-grayColor">
-                We have sent OTP on your number
+                We have sent OTP on your email
               </p>
               <div className="flex gap-4 mb-2">
                 <Input

@@ -1,7 +1,5 @@
 import React from 'react';
-
 import OrdersDataTable from '~/components/common/table/orders';
-import OrderView from './view';
 
 function Orders() {
   return (
@@ -10,7 +8,6 @@ function Orders() {
         <div className=" text-4xl font-semibold">Orders</div>
       </div>
       <OrdersDataTable />
-      {/* <OrderView /> */}
     </div>
   );
 }

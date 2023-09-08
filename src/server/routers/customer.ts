@@ -12,13 +12,10 @@ import {
   resendOtpCustomerSchema,
   addCustomerAddress,
   getCustomerAddress,
-
-
-
   accountsDetailSchema,
   passwordChangeSchema,
   deleteMyAccountCustomerSchema,
-  logoutSchema
+  logoutSchema,
 } from '~/schema/customer';
 import { hashPass, isSamePass } from '~/utils/hash';
 import { signJWT, verifyJWT } from '~/utils/jwt';
@@ -48,8 +45,9 @@ export const customerRouter = router({
         code: 'NOT_FOUND',
         message: 'User not found!',
       });
+    const { password, otp, ...userApiData } = user;
 
-    return { data: user };
+    return { data: userApiData };
   }),
 
   update: publicProcedure
@@ -221,11 +219,12 @@ export const customerRouter = router({
             message: 'Please Wait for Admin Verification',
           });
         }
-        
+
         if (user?.is_disabled) {
           throw new TRPCError({
             code: 'NOT_FOUND',
-            message: 'Your Account is Disabled Kindly Contact From Admin Thankyou!',
+            message:
+              'Your Account is Disabled Kindly Contact From Admin Thankyou!',
           });
         }
         const checkPass = await isSamePass(input.password, user?.password);
@@ -243,8 +242,9 @@ export const customerRouter = router({
         });
 
         ctx?.res?.setHeader('Set-Cookie', serialized);
+        const { password, otp, ...userApiData } = user;
 
-        return { user, jwt };
+        return { user: userApiData, jwt };
       } catch (error: any) {
         console.log({ error });
         throw new TRPCError({
@@ -274,7 +274,8 @@ export const customerRouter = router({
         if (user?.is_disabled) {
           throw new TRPCError({
             code: 'NOT_FOUND',
-            message: 'Your Account is Disabled Kindly Contact From Admin Thankyou!',
+            message:
+              'Your Account is Disabled Kindly Contact From Admin Thankyou!',
           });
         }
 
@@ -477,15 +478,14 @@ export const customerRouter = router({
           // here u will do the mutation
 
           const payload = {
-
-            state: "",
-            street_address_2: "",
+            state: '',
+            street_address_2: '',
             ...input,
-          }
-          console.log({ payload }, "payload bk")
+          };
+          console.log({ payload }, 'payload bk');
           const customer_address = await prisma.customerAddress?.create({
             data: payload,
-          })
+          });
 
           return { customer_address: customer_address, status: true };
         }
@@ -501,26 +501,23 @@ export const customerRouter = router({
     .input(addCustomerAddress)
     .mutation(async ({ ctx, input }) => {
       try {
-
         // here u will do the mutation
 
         const payload = {
           postal_code: Number(input.postal_code),
-          state: "",
-          street_address_2: "",
+          state: '',
+          street_address_2: '',
           ...input,
-        }
-        console.log({ payload }, "payload update bk")
+        };
+        console.log({ payload }, 'payload update bk');
         const customer: any = await prisma.customerAddress.update({
           where: {
             id: input.id,
           },
-          data: payload
-        })
-
+          data: payload,
+        });
 
         return { customer: customer, status: true };
-
       } catch (error: any) {
         console.log({ error });
         throw new TRPCError({
@@ -543,17 +540,15 @@ export const customerRouter = router({
             code: 'NOT_FOUND',
             message: 'User not found',
           });
-
         } else {
           // here u will do the mutation
           const customer: any = await prisma.customerAddress.findFirst({
             where: { customer_id: input.customer_id },
-            include: { Customer: {} }
-          })
+            include: { Customer: {} },
+          });
 
           return customer;
         }
-
       } catch (error: any) {
         console.log({ error });
         throw new TRPCError({
@@ -679,27 +674,22 @@ export const customerRouter = router({
       }
     }),
 
-
-    logout: publicProcedure
-    .input(logoutSchema)
-    .mutation(async ({ ctx }) => {
-        try {
-          const serialized = serialize('winnar-token', '', {
-            httpOnly: true,
-            path: '/',
-            sameSite: 'strict',
-            // secure: process.env.NODE_ENV !== "development",
-          });
-          console.log("Serialized :: ",serialized)
-          ctx?.res?.setHeader('Set-Cookie', serialized);
-          return { message: 'Logout successfully!' };
-        } catch (error: any) {
-          throw new TRPCError({
-            code: 'INTERNAL_SERVER_ERROR',
-            message: error?.message,
-          });
-        }
-    }),
-
-
+  logout: publicProcedure.input(logoutSchema).mutation(async ({ ctx }) => {
+    try {
+      const serialized = serialize('winnar-token', '', {
+        httpOnly: true,
+        path: '/',
+        sameSite: 'strict',
+        // secure: process.env.NODE_ENV !== "development",
+      });
+      console.log('Serialized :: ', serialized);
+      ctx?.res?.setHeader('Set-Cookie', serialized);
+      return { message: 'Logout successfully!' };
+    } catch (error: any) {
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: error?.message,
+      });
+    }
+  }),
 });

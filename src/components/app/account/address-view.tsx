@@ -121,7 +121,7 @@ const AddressesView = () => {
 
       <form className="mt-4 flex ">
         <div
-          className={`w-64   rounded-md border-[1px] p-4 ${
+          className={`w-64   rounded-md border border-border-[1px] p-4 ${
             data ? 'border-primary' : 'border-[#808080]'
           }  flex flex-col`}
         >
@@ -182,7 +182,6 @@ const AddressesView = () => {
                     className="bg-primary-foreground p-0.5 font-sans  "
                     value={user.first_name + ' ' + user.last_name}
                     placeholder="Name"
-                    
                     type="text"
                     readOnly
                   />

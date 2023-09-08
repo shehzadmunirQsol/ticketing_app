@@ -77,7 +77,7 @@ export const createCheckoutPaymentSchema = z.object({
 
 
 export const getOrder = z.object({
-  id: z.number(),
+  customer_id: z.number().optional(),
   lang_id: z.number()
 })
 export const getOrderSchema = z.object({

@@ -6,9 +6,8 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   console.log(req?.body);
-  const { method, query } = req;
+  const { method } = req;
 
-  let event;
 
   try {
     if (method == 'POST') {
