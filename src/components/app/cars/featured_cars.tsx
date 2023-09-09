@@ -63,7 +63,7 @@ const FeaturedCars = () => {
 
   return (
     <div className="hidden slg:flex sm:flex-col">
-      <div className="flex max-h-[100%]  xl:max-h-[490px]">
+      <div className="flex max-h-[100%]  xl:max-h-[510px]">
         <div className="w-full !h-full sm:max-w-[400px]  md:max-w-[750px]  xl:max-w-[1000px] 2xl:max-w-[1200px]   relative">
           {/* buttons */}
           <div className="px-4 absolute w-full h-full flex justify-between items-center my-auto z-10">
@@ -86,7 +86,7 @@ const FeaturedCars = () => {
           <div className=" ">
             <Slider {...settings} ref={slide}>
               {prductsList?.data[0]?.EventImages.map((item, i) => (
-                <div className="relative md:w-[700px] md:h-[460px] lg:h-[490px] " key={i}>
+                <div className="relative md:w-[700px] md:h-[460px] lg:h-[510px] " key={i}>
                   <Image
                     src={renderNFTImage(item)}
                     alt="/"
@@ -114,7 +114,7 @@ const FeaturedCars = () => {
       </div>
 
 
-      <div className="flex max-h-[100%]  xl:max-h-[490px]  overflow-hidden">
+      <div className="flex h-full max-h-[100%]  ">
         {/* product cards */}
         <div className="w-full max-w-2xl">
           <ProductCard
@@ -144,10 +144,10 @@ const FeaturedCars = () => {
             </Button>
           </div>
           {/* slider */}
-          <div className=" h-full overflow-hidden">
+          <div className=" h-full max-h-[520px] overflow-hidden">
             <Slider {...settings} ref={slide2}>
               {prductsList?.data[1]?.EventImages.map((item, i) => (
-                <div className="relative md:w-[700px] md:h-[460px] lg:h-[490px] " key={i}>
+                <div className="relative md:w-[700px] md:h-[460px] lg:h-[520px] " key={i}>
                   <Image
                     src={renderNFTImage(item)}
                     alt="/"
