@@ -1,13 +1,19 @@
 import React from 'react';
 
-const CompititionDetail = () => {
+const CompititionDetail = ({data}:any) => {
+  console.log(data?.EventDescription[0].comp_details,"NSJSHSHJJHAGDHSJ")
+  const dataCode:any = data?.EventDescription[0].comp_details
   return (
     <section id="CompititionDetail">
     <div>
       <div className="w-30 ">
         <p className="lg:text-5xl md:text-4xl text-3xl  font-black ">Competition Details</p>
         <div className="border-b-4 w-16 border-primary mt-4"></div>
-        <p className="lg:text-3xl text-1xl font-black mt-6">
+
+
+        {dataCode ? (<p className="lg:text-3xl text-1xl font-black mt-6">
+         {dataCode}
+        </p>) : (<><p className="lg:text-3xl text-1xl font-black mt-6">
           Mercedes E63s AMG Night Edition
         </p>
         <div>
@@ -112,7 +118,9 @@ const CompititionDetail = () => {
             <br />
             Android Auto &amp; Apple Carplay
           </p>
-        </div>
+        </div></>)
+
+        }
       </div>
     </div>
     </section>

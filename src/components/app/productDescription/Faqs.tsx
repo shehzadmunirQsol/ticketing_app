@@ -39,7 +39,7 @@ const AccordianFaqs = () => {
               <AccordionContent>
                 Yes. It&apos;s animated by default, but you can disable it if
                 you prefer.
-              </AccordionContent>
+              </AccordionContent> 
             </AccordionItem>
             <AccordionItem value="item-4">
               <AccordionTrigger className="hover:no-underline focus-visible:text-green py-6">

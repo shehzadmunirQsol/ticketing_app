@@ -39,7 +39,7 @@ const ProductDetail = () => {
       </div>
       <LiveDraw />
       <div >
-        <CompititionDetail />
+        <CompititionDetail data={data?.data} />
         <AccordianFaqs />
       </div>
     </div>

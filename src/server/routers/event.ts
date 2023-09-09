@@ -433,7 +433,7 @@ export const eventRouter = router({
     .input(getEventsByIdSchema)
     .query(async ({ input, ctx }) => {
       try {
-        const descriptionPayload =
+        const descriptionPayload :any =
           input.type === 'admin' ? undefined : { lang_id: input.lang_id };
         const event = await prisma.event.findUnique({
           where: {
@@ -462,7 +462,7 @@ export const eventRouter = router({
           userData = await verifyJWT(token);
 
           const customerLimit = await prisma.orderEvent.groupBy({
-            where: { event_id: input.id, customer_id: userData?.id },
+            where: { event_id: input.id, customer_id: userData?.id  },
             by: ['event_id', 'customer_id'],
             _sum: { quantity: true },
           });

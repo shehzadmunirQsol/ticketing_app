@@ -150,7 +150,7 @@ export default function EventForm() {
     },
   });
 
-  const { data: eventData } = trpc.event.getEventsById.useQuery(
+  const { data: eventData }:any = trpc.event.getEventsById.useQuery(
     { id: eventId, type: 'admin' },
     {
       refetchOnWindowFocus: false,
@@ -262,10 +262,10 @@ export default function EventForm() {
   function setFormData(payload: EventDataType) {
     if (payload?.data) {
       const en = payload.data?.EventDescription?.find(
-        (desc) => desc.lang_id === 1,
+        (desc:any) => desc.lang_id === 1,
       );
       const ar = payload.data?.EventDescription?.find(
-        (desc) => desc.lang_id === 2,
+        (desc:any) => desc.lang_id === 2,
       );
 
       form.setValue('en.name', en?.name as string);
