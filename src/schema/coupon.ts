@@ -26,6 +26,7 @@ export const getCouponSchema = z.object({
 
 export const createCouponSchema = z.object({
   user_id: z.number(),
+  coupon_id: z.number().optional(),
   name: z.string(),
   coupon_code: z
     .string()
@@ -37,10 +38,32 @@ export const createCouponSchema = z.object({
     }),
   is_percentage: z.string(),
   is_limited: z.string(),
-  limit: z.number().optional(),
+  coupon_limit: z.number().optional(),
   discount: z.number(),
   start_date: z.date(),
   end_date: z.date(),
 });
+export const updateSchema = z.object({
+  user_id: z.number(),
+  coupon_id: z.number().optional(),
+  name: z.string(),
+  coupon_code: z
+    .string()
+    .max(6, {
+      message: 'Coupon Code must be at least 6 characters',
+    })
+    .max(6, {
+      message: 'Coupon Code must be at least 6 characters',
+    }),
+  is_percentage: z.string(),
+  is_limited: z.string(),
+  coupon_limit: z.number().optional(),
+  discount: z.number(),
+});
+export const updateCouponSchema = z.object({
+  coupon_id: z.number(),
+  is_enabled: z.boolean().optional(),
+});
 
 export type createCouponSchema = z.infer<typeof createCouponSchema>;
+export type updateCouponType = z.infer<typeof updateCouponSchema>;

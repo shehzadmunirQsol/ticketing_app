@@ -1,9 +1,7 @@
-"use strict";
-import { NextApiRequest, NextApiResponse } from "next";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function Emailhandler(req: any, res: any) {
   console.log(req.body,"req.body.email")
-    
+  try{
     const options:any = {
         method: 'POST',
         headers: {
@@ -26,7 +24,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         .catch(err => console.error(err));
 
     return res.status(200).send({ message: "email sent succesfully" })
+
+  }catch(e){
+    return res.status(500).send({ message: "email Not sent " })
+
+
+  }
+    
+ 
 }
-
-
-

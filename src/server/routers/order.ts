@@ -3,12 +3,14 @@ import { TRPCError } from '@trpc/server';
 import {
   createCheckoutPaymentSchema,
   createCheckoutSchema,
+  getOrder,
   getByIDSchema,
   getOrderSchema,
 } from '~/schema/order';
 import https from 'https';
 
 import { prisma } from '~/server/prisma';
+import { EMAIL_TEMPLATE_IDS, sendEmail } from '~/utils/helper';
 
 export const orderRouter = router({
   checkout: publicProcedure
@@ -47,7 +49,7 @@ export const orderRouter = router({
           });
         }
 
-        const isDiscount = cart?.CouponApply?.length ? true : false;
+        const isDiscount = cart?.CouponApply?.length > 0;
         const discount = cart?.CouponApply[0]?.discount ?? 0;
         const isPercentage = cart?.CouponApply[0]?.is_percentage ?? false;
 
@@ -58,11 +60,10 @@ export const orderRouter = router({
             0,
           ) ?? 0;
 
-        const discountAmount = isDiscount
-          ? isPercentage
+        const discountAmount =
+          isDiscount && isPercentage
             ? subTotalAmount * (discount / 100)
-            : discount
-          : 0;
+            : discount;
 
         // Total Processing Initial Payment Process
         const paymentPayload: any = {
@@ -76,12 +77,20 @@ export const orderRouter = router({
           ...paymentPayload,
         })
           .then((response: any) => {
+            console.log(
+              response?.result?.parameterErrors,
+              'response?.result?.parameterErrors',
+            );
             if (!response?.result?.parameterErrors) {
               return { data: response, success: true };
             }
             throw new Error(response?.result?.parameterErrors[0].message);
           })
           .catch((error) => {
+            console.log(
+              error?.parameterErrors,
+              'response?.result?.parameterErrors',
+            );
             throw new Error(error.message);
           });
         console.log(paymentRes, 'apiRes?.registrationId');
@@ -107,17 +116,28 @@ export const orderRouter = router({
           discount_amount: discountAmount,
           total_amount: subTotalAmount - discountAmount,
           total_payment_id: totalPaymentId,
-          postal_code: '0',
         };
         if (input?.values?.code) delete orderPayload?.code;
         if (input?.values?.cart_id) delete orderPayload?.cart_id;
 
         const orderEventPayload = cart?.CartItems.map((item) => ({
           event_id: item.Event.id,
+          customer_id: input?.values?.customer_id,
           ticket_price: item.Event.price,
           quantity: item.quantity,
           is_subscribe: item.is_subscribe,
         }));
+
+        const order = await prisma.order.create({
+          data: {
+            ...orderPayload,
+            OrderEvent: {
+              createMany: {
+                data: orderEventPayload,
+              },
+            },
+          },
+        });
 
         const orderSubscriptionPayload = await Promise.all(
           cart?.CartItems.filter((item) => item.is_subscribe).map(
@@ -138,6 +158,7 @@ export const orderRouter = router({
                 subscription_type: item.subscription_type,
                 end_date: item.Event.end_date,
                 cartItem: { ...item },
+                order_id: order.id,
               };
               if (input?.values) delete subPayload?.values;
               const apiRes: any = await CreateSubscription({
@@ -156,6 +177,7 @@ export const orderRouter = router({
                 });
               const totalSubscriptionId = apiRes?.data?.id;
               return {
+                order_id: order.id,
                 event_id: item.Event.id,
                 ticket_price: item.Event.price,
                 quantity: item.quantity,
@@ -167,20 +189,8 @@ export const orderRouter = router({
           ),
         );
 
-        await prisma.order.create({
-          data: {
-            ...orderPayload,
-            OrderSubscription: {
-              createMany: {
-                data: orderSubscriptionPayload,
-              },
-            },
-            OrderEvent: {
-              createMany: {
-                data: orderEventPayload,
-              },
-            },
-          },
+        await prisma.orderSubscription.createMany({
+          data: orderSubscriptionPayload,
         });
 
         const eventPromises = cart.CartItems.map((item) =>
@@ -199,14 +209,80 @@ export const orderRouter = router({
           data: { is_deleted: true },
         });
 
+        const mailOptions = {
+          template_id: EMAIL_TEMPLATE_IDS.ORDER_SUCCESS,
+          from: 'no-reply@winnar.com',
+          to: input.values.email,
+          subject: 'Your order has been placed 🎉',
+          params: {
+            first_name: input.values.first_name,
+            status: 'paid',
+          },
+        };
+
+        await sendEmail(mailOptions);
+
         return { message: 'Order created successfully!', user: user };
       } catch (error: any) {
+        console.log({ error }, 'error message');
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: error?.message,
         });
       }
     }),
+
+  getOrders: publicProcedure.input(getOrder).query(async ({ input, ctx }) => {
+    try {
+      const orders: any = await prisma.order.findMany({
+        where: {
+          customer_id: input?.customer_id,
+        },
+        include: {
+          OrderEvent: {
+            include: {
+              Event: {
+                include: {
+                  EventDescription: {
+                    where: {
+                      lang_id: input.lang_id,
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      });
+
+      console.log({ orders }, 'ordersorders');
+      if (orders && orders?.length > 0) {
+        const todayDate = new Date();
+
+        const ret: any = { current: [], past: [] };
+
+        for (let i = 0; i < orders.length; i++) {
+          if (orders[i].OrderEvent[0].Event?.end_date < todayDate) {
+            ret.past.push(orders[i]);
+          } else {
+            ret.current.push(orders[i]);
+          }
+        }
+
+        return ret;
+      } else {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'No Orders Found',
+        });
+      }
+    } catch (error: any) {
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: error?.message,
+      });
+    }
+  }),
   get: publicProcedure.input(getOrderSchema).query(async ({ input }) => {
     try {
       const where: any = { is_deleted: false };
@@ -219,9 +295,6 @@ export const orderRouter = router({
         const endDate = new Date(input?.endDate);
         where.created_at = { lte: endDate };
       }
-      // if (input.category_id) where.id = input.category_id;
-
-      // if (input.event_id) where.id = input.event_id;
 
       const totalEventPromise = prisma.order.count({
         where: where,
@@ -324,10 +397,12 @@ async function CreatePayment(APidata: any) {
 
     if (payload?.card) delete payload?.card;
     if (payload?.values) delete payload?.values;
+    const tot_amount = APidata?.total_amount.toFixed(2);
+    console.log(tot_amount, 'tot_amount');
     const apiDate: any = APidata?.registrationId
       ? {
           entityId: process.env.TOTAN_ENTITY_ID,
-          amount: +APidata?.total_amount,
+          amount: APidata?.total_amount.toFixed(2),
           currency: 'AED',
           paymentType: 'DB',
           'standingInstruction.source': 'CIT',
@@ -340,7 +415,7 @@ async function CreatePayment(APidata: any) {
         }
       : {
           entityId: process.env.TOTAN_ENTITY_ID,
-          amount: APidata?.total_amount,
+          amount: APidata?.total_amount.toFixed(2),
           currency: 'AED',
           paymentType: 'DB',
           paymentBrand: APidata?.paymentBrand,
@@ -385,6 +460,7 @@ async function CreatePayment(APidata: any) {
           try {
             resolve(JSON.parse(jsonString));
           } catch (error) {
+            console.log(error, 'error error error error');
             reject(error);
           }
         });
@@ -413,7 +489,7 @@ async function CreateSubscription(APidata: any) {
       subType['job.dayOfMonth'] = '1';
     }
     if (APidata?.subscription_type == 'quarterly') {
-      subType['job.month'] = '6';
+      subType['job.month'] = '3';
       subType['job.dayOfMonth'] = '1';
     }
     if (APidata?.subscription_type == 'yearly') subType['job.year'] = '*';

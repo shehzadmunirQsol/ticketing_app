@@ -243,7 +243,7 @@ export default function EventsDataTable() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="rounded-md border">
+      <div className="rounded-md border border-border">
         <ScrollArea className="w-full ">
           <ScrollBar orientation="horizontal"></ScrollBar>
           <Table>
@@ -314,8 +314,7 @@ export default function EventsDataTable() {
           </Button>
         </div>
       </div>
-            <LoadingDialog open={isLoading} text={'Loading data...'} />
-
+      <LoadingDialog open={isLoading} text={'Loading data...'} />
     </div>
   );
 }

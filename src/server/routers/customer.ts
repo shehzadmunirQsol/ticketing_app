@@ -45,8 +45,9 @@ export const customerRouter = router({
         code: 'NOT_FOUND',
         message: 'User not found!',
       });
+    const { password, otp, ...userApiData } = user;
 
-    return { data: user };
+    return { data: userApiData };
   }),
 
   update: publicProcedure
@@ -172,7 +173,7 @@ export const customerRouter = router({
 
           const mailOptions: any = {
             template_id: 2,
-            from: 'shehzadmunir.qsols@gmail.com',
+            from: 'no-reply@winnar.com',
             to: input.email,
             subject: 'Email Verification OTP CODE',
             params: {
@@ -241,8 +242,9 @@ export const customerRouter = router({
         });
 
         ctx?.res?.setHeader('Set-Cookie', serialized);
+        const { password, otp, ...userApiData } = user;
 
-        return { user, jwt };
+        return { user: userApiData, jwt };
       } catch (error: any) {
         console.log({ error });
         throw new TRPCError({
@@ -280,7 +282,7 @@ export const customerRouter = router({
         const respCode = await generateOTP(4);
         const mailOptions = {
           template_id: 5,
-          from: 'shehzadmunir.qsols@gmail.com',
+          from: 'no-reply@winnar.com',
           to: input.email,
           subject: 'Forgot Password request to Winnar',
           params: {
@@ -436,7 +438,7 @@ export const customerRouter = router({
           console.log(updateResponse, 'updateResponse');
           const mailOptions: any = {
             template_id: 2,
-            from: 'shehzadmunir.qsols@gmail.com',
+            from: 'no-reply@winnar.com',
             to: input.email,
             subject: 'Email Verification OTP CODE',
             params: {
@@ -475,7 +477,7 @@ export const customerRouter = router({
         } else {
           // here u will do the mutation
 
-          const payload: any = {
+          const payload = {
             state: '',
             street_address_2: '',
             ...input,

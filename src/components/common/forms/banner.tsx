@@ -107,28 +107,6 @@ export function BannerForm() {
 
     enabled: index ? true : false,
   });
-  useEffect(() => {
-    if (!isLoading && isFetched && BannerApiData !== undefined) {
-      const data: any = { ...BannerApiData[0] };
-      seteditData(data);
-      const json_data = JSON.parse(data?.value);
-      form.setValue('link', json_data?.link);
-      form.setValue('thumb', json_data?.thumb);
-      if (data?.lang_id == 1) {
-        form.setValue('en.model', json_data?.model);
-        form.setValue('en.title', json_data?.title);
-        form.setValue('en.price', json_data?.price);
-        form.setValue('en.description', json_data?.description);
-        form.setValue('en.date', json_data?.date);
-      } else {
-        form.setValue('ar.model', json_data?.model);
-        form.setValue('ar.title', json_data?.title);
-        form.setValue('ar.price', json_data?.price);
-        form.setValue('ar.description', json_data?.description);
-        form.setValue('ar.date', json_data?.date);
-      }
-    }
-  }, [isLoading, isFetched, BannerApiData]);
   const formValidateData =
     BannerApiData !== undefined && index
       ? BannerApiData[0]?.lang_id
@@ -149,6 +127,30 @@ export function BannerForm() {
         : BannerFormSchema,
     ),
   });
+  useEffect(() => {
+    if (!isLoading && isFetched && BannerApiData !== undefined) {
+      const data: any = { ...BannerApiData[0] };
+      seteditData(data);
+      if (data?.value) {
+        const json_data = JSON.parse(data?.value);
+        form.setValue('link', json_data?.link);
+        form.setValue('thumb', json_data?.thumb);
+        if (data?.lang_id == 1) {
+          form.setValue('en.model', json_data?.model);
+          form.setValue('en.title', json_data?.title);
+          form.setValue('en.price', json_data?.price);
+          form.setValue('en.description', json_data?.description);
+          form.setValue('en.date', json_data?.date);
+        } else {
+          form.setValue('ar.model', json_data?.model);
+          form.setValue('ar.title', json_data?.title);
+          form.setValue('ar.price', json_data?.price);
+          form.setValue('ar.description', json_data?.description);
+          form.setValue('ar.date', json_data?.date);
+        }
+      }
+    }
+  }, [isLoading, isFetched, BannerApiData, form]);
 
   const bannerUpload = trpc.settings.banner_create.useMutation({
     onSuccess: () => {
@@ -266,10 +268,10 @@ export function BannerForm() {
   }
 
   async function uploadOnS3Handler() {
+    console.log('uploading');
     if (optimizeFile?.name) {
       const response = await getS3ImageUrl(optimizeFile);
-      if (!response.success)
-        return console.log('response.message', response.message);
+      if (!response.success) throw new Error('Image Upload Failure');
 
       const isImage = isValidImageType(optimizeFile?.type);
 
@@ -283,7 +285,7 @@ export function BannerForm() {
 
       return nftSource;
     } else {
-      return console.log('Please Select Image');
+      throw new Error('Please Select Image');
     }
   }
   return (
@@ -294,16 +296,15 @@ export function BannerForm() {
       >
         <div className="space-y-4">
           <div>
-            {!index && (
-              <FileInput
-                register={form.register('thumb')}
-                reset={form.reset}
-                getValues={form.getValues}
-                setValue={form.setValue}
-                imageCompressorHandler={imageHandler}
-                required={true}
-              />
-            )}
+            <FileInput
+              register={form.register('thumb')}
+              reset={form.reset}
+              getValues={form.getValues}
+              setValue={form.setValue}
+              imageCompressorHandler={imageHandler}
+              required={true}
+            />
+
             <FormField
               control={form.control}
               name="link"
@@ -529,7 +530,7 @@ export function BannerForm() {
           </Button>
         </div>
       </form>
-      <LoadingDialog open={isSubmitting} text={'Saving data...'} />
+      <LoadingDialog open={isSubmitting || isLoading} text={'Saving data...'} />
     </Form>
   );
 }

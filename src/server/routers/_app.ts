@@ -1,8 +1,3 @@
-/**
- * This file contains the root router of your tRPC-backend
- */
-
-// post: postRouter,
 import { router } from '../trpc';
 import { categoryRouter } from './category';
 import { eventRouter } from './event';
@@ -17,6 +12,7 @@ import { couponRouter } from './coupon';
 import { paymentRouter } from './payment';
 import { orderRouter } from './order';
 import { cmsRouter } from './cms';
+import { subscriptionRouter } from './subscription';
 
 export const appRouter = router({
   admin: adminUserRouter,
@@ -32,6 +28,7 @@ export const appRouter = router({
   coupon: couponRouter,
   payment: paymentRouter,
   order: orderRouter,
+  subscription: subscriptionRouter,
 });
 
 export type AppRouter = typeof appRouter;

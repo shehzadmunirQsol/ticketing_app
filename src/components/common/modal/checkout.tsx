@@ -97,7 +97,7 @@ export function CheckoutDialog(props: SettingDialogInterface) {
       if (true) {
         payload = {
           ...values,
-          registrationId: user?.total_customer_id,
+          // registrationId: user?.total_customer_id,
           customer_id: user?.id,
           values: {
             ...props?.selectedItem,
@@ -118,21 +118,16 @@ export function CheckoutDialog(props: SettingDialogInterface) {
       if (data) {
         toast({
           variant: 'success',
-          title: 'Payment Successfully',
+          title: 'Order Successful! 🎉',
         });
-        // dispatch(userAuth(data?.user));
         dispatch(
           addCart({
-            cart: {
-              id: null,
-              customer_id: null,
-              isDiscount: false,
-              discount: 0,
-              isPercentage: false,
-              cartItems: [],
-            },
-            count: 0,
-            totalAmount: 0,
+            id: null,
+            customer_id: null,
+            isDiscount: false,
+            discount: 0,
+            isPercentage: false,
+            cartItems: [],
           }),
         );
         setLoading(false);

@@ -7,16 +7,20 @@ import AccountDetails from './account-details';
 import { trpc } from '~/utils/trpc';
 import { useToast } from '~/components/ui/use-toast';
 import { useRouter } from 'next/router';
+import { useDispatch } from 'react-redux';
+import { addCart } from '~/store/reducers/cart';
 
 const Account = () => {
   const { toast } = useToast();
   const router = useRouter();
+  const dispatch = useDispatch()
 
   const [counter, setCounter] = useState(0);
 
   const logout = trpc.customer.logout.useMutation({
     onSuccess: (res: any) => {
       console.log('return data', res);
+
     },
     onError(error) {
       console.log(error.message, 'ERROR');
@@ -35,6 +39,16 @@ const Account = () => {
       localStorage.removeItem('winnar-token');
       localStorage.removeItem('customer');
       router.replace('/login');
+      dispatch(
+        addCart({
+          id: null,
+          customer_id: null,
+          isDiscount: false,
+          discount: 0,
+          isPercentage: false,
+          cartItems: [],
+        }),
+      );
     } catch (error: any) {
       console.log('Error ', error);
       toast({
@@ -75,24 +89,22 @@ const Account = () => {
     <>
       <div className="relative pt-24"></div>
       <BannerTitle image={BackgroundImage} text={navigation[counter]?.title} />
-      <div className=" py-10 max-w-[1600px] md:px-16 px-4 mx-2 sm:mx-auto  flex  flex-col sm:flex-row justify-start sm:justify-between gap-8 items-start">
-        <ul className="bg-[#101417]   w-full sm:w-96   rounded-lg overflow-hidden ">
+      <div className="relative py-10 max-w-[1600px] md:px-16 px-4 mx-2 sm:mx-auto  flex  flex-col sm:flex-row justify-start sm:justify-between gap-8 items-start">
+        <ul className="sticky top-36  bg-[#101417]   w-full sm:w-96   rounded-lg ">
           {navigation.map((item, i) => (
             <li
               key={i}
-              className={`border-b-[0.5px] p-4  border-b-[#1B1D1F] last:border-b-none cursor-pointer border-l-4 ${
-                counter === i
+              className={`border-b-[0.5px] p-4  border-b-[#1B1D1F] last:border-b-none cursor-pointer border-l-4 ${counter === i
                   ? 'bg-[#1B1D1F]  border-l-primary text-primary '
                   : 'border-l-transparent'
-              } `}
+                } `}
               onClick={() =>
                 item.tab === 'Logout' ? handleLogout() : setCounter(i)
               }
             >
               <div
-                className={`${
-                  counter === i ? 'text-primary' : 'text-[#808080]'
-                } font-[800] tracking-tight`}
+                className={`${counter === i ? 'text-primary' : 'text-[#808080]'
+                  } font-[800] tracking-tight`}
               >
                 {item.tab}
               </div>

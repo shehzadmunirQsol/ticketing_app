@@ -6,7 +6,7 @@ export const s3Upload = async (file: any) => {
   const s3 = new S3();
   try {
     const params: any = {
-      Bucket: process.env.AWS_BUCKET_NAME,
+      Bucket: process.env.BUCKET_NAME,
       Key: `upload/${uuidv4()}-${file.originalname}`,
       Body: file.buffer,
       // ACL: "public-read",
@@ -34,9 +34,9 @@ export function runMiddleware(req: any, res: any, fn: any) {
   });
 }
 
-const region = process.env.AWS_REGION;
-const accessKeyId = process.env?.AWS_ACCESS_KEY;
-const secretAccessKey = process.env?.AWS_SECRET_KEY;
+const region = process.env.REGION;
+const accessKeyId = process.env?.ACCESS_KEY;
+const secretAccessKey = process.env?.SECRET_KEY;
 
 const s3 = new S3({
   region,
@@ -53,7 +53,7 @@ export async function generateUploadUrl(req: any, res: any) {
     const fileName = `${direcoryName}/${uuidv4()}-${req.body.fileName}`;
 
     const params = {
-      Bucket: process.env.AWS_BUCKET_NAME,
+      Bucket: process.env.BUCKET_NAME,
       Key: fileName,
       Expires: 60,
     };

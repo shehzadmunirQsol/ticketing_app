@@ -9,6 +9,7 @@ import {
   getEventsByIdSchema,
 } from '~/schema/event';
 import { prisma } from '~/server/prisma';
+import { verifyJWT } from '~/utils/jwt';
 
 export const eventRouter = router({
   get: publicProcedure.input(getEventSchema).query(async ({ input }) => {
@@ -65,23 +66,25 @@ export const eventRouter = router({
   create: publicProcedure.input(EventFormSchema).mutation(async ({ input }) => {
     try {
       const { en, ar, multi_image, ...eventPayload } = input;
-      const createPayload: any = {
-        is_cash_alt: eventPayload?.is_alt,
-        thumb: eventPayload?.thumb,
-        user_id: 1,
+      const createPayload = {
+        ...eventPayload,
         charity_id: 1,
-        video_src: eventPayload?.video_src,
-        category_id: +eventPayload?.category_id,
-        price: +eventPayload?.price,
-        total_tickets: +eventPayload?.total_tickets,
-        user_ticket_limit: +eventPayload?.user_ticket_limit,
-        cash_alt: +eventPayload?.cash_alt,
-        launch_date: eventPayload?.launch_date,
-        end_date: eventPayload?.end_date,
+        user_id: 1,
       };
+      const eventDescPayload = [
+        { ...en, lang_id: 1 },
+        { ...ar, lang_id: 2 },
+      ];
+      const myImages = multi_image.map((str: string) => ({
+        thumb: str,
+      }));
+
       const event = await prisma.event.create({
         data: {
           ...createPayload,
+
+          EventDescription: { createMany: { data: eventDescPayload } },
+          EventImages: { createMany: { data: myImages } },
         },
       });
 
@@ -92,33 +95,65 @@ export const eventRouter = router({
         });
       }
 
-      const eventDescPayload = [
-        { ...en, event_id: event.id, lang_id: 1 },
-        { ...ar, event_id: event.id, lang_id: 2 },
-      ];
+      return { data: event, message: 'Event created' };
+    } catch (error: any) {
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: error?.message,
+      });
+    }
+  }),
+  update: publicProcedure.input(EventFormSchema).mutation(async ({ input }) => {
+    try {
+      const {
+        en,
+        ar,
+        multi_image,
+        removed_images,
+        event_id = 0,
+        ...eventPayload
+      } = input;
+      const payload = {
+        ...eventPayload,
+        charity_id: 1,
+        user_id: 1,
+      };
 
-      const eventDesc = await prisma.eventDescription.createMany({
-        data: eventDescPayload,
+      const event = await prisma.event.update({
+        where: { id: event_id },
+        data: payload,
       });
 
-      if (!eventDesc.count) {
-        throw new TRPCError({
-          code: 'BAD_REQUEST',
-          message: 'Event Description not created',
-        });
-      }
       const myImages = multi_image.map((str: string) => ({
         thumb: str,
-        event_id: event.id,
+        event_id,
       }));
-      const eventImages = await prisma.eventImage.createMany({
+
+      const createEventImages = prisma.eventImage.createMany({
         data: myImages,
       });
 
-      if (!eventImages.count) {
+      const eventEnPromise = prisma.eventDescription.updateMany({
+        where: { event_id, lang_id: 1 },
+        data: en,
+      });
+
+      const eventArPromise = prisma.eventDescription.updateMany({
+        where: { event_id, lang_id: 2 },
+        data: ar,
+      });
+
+      await Promise.all([eventEnPromise, eventArPromise, createEventImages]);
+      if (removed_images?.length) {
+        await prisma.eventImage.deleteMany({
+          where: { id: { in: removed_images } },
+        });
+      }
+
+      if (!event) {
         throw new TRPCError({
           code: 'BAD_REQUEST',
-          message: 'Event Images not created',
+          message: 'Event not created',
         });
       }
 
@@ -396,21 +431,17 @@ export const eventRouter = router({
 
   getEventsById: publicProcedure
     .input(getEventsByIdSchema)
-    .query(async ({ input }) => {
+    .query(async ({ input, ctx }) => {
       try {
-        console.log('ICONSOLE>LOGPSKSJS');
-        console.log(input, 'MEINHNNSSA');
-        console.log(input.id, 'MEINHNNSSA IDDD');
-
-        const eventPromise = await prisma.event.findUnique({
+        const descriptionPayload =
+          input.type === 'admin' ? undefined : { lang_id: input.lang_id };
+        const event = await prisma.event.findUnique({
           where: {
             id: input.id,
           },
           include: {
             EventDescription: {
-              where: {
-                lang_id: 1,
-              },
+              where: descriptionPayload,
               select: {
                 id: true,
                 lang_id: true,
@@ -422,11 +453,27 @@ export const eventRouter = router({
             EventImages: true,
           },
         });
-        console.log(eventPromise, 'BJSAJSAKDHDHJSSHSH');
+
+        const token = ctx?.req?.cookies['winnar-token'];
+        let ticketPurchased = 0;
+
+        let userData;
+        if (token) {
+          userData = await verifyJWT(token);
+
+          const customerLimit = await prisma.orderEvent.groupBy({
+            where: { event_id: input.id, customer_id: userData?.id },
+            by: ['event_id', 'customer_id'],
+            _sum: { quantity: true },
+          });
+
+          ticketPurchased = customerLimit[0]?._sum?.quantity ?? 0;
+        }
 
         return {
           message: 'events found',
-          data: eventPromise,
+          data: event,
+          ticketPurchased: ticketPurchased,
         };
       } catch (error: any) {
         throw new TRPCError({
