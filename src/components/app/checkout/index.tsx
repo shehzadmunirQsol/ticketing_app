@@ -160,6 +160,8 @@ function Checkout() {
                             type="text"
                             placeholder="Apartment, suit, unit etc. (Optional) "
                             {...field}
+
+                            
                           />
                         </FormControl>
                         <FormMessage />
@@ -343,6 +345,7 @@ function Checkout() {
                             <FormMessage />
                           </FormItem>
                         )}
+
                       />
                       <FormField
                         control={form.control}
@@ -380,6 +383,7 @@ function Checkout() {
                               type="date"
                               placeholder="Enter your email address"
                               {...form.register('dob', { valueAsDate: true })}
+                              
                             />
                           </FormControl>
                           <FormMessage />
