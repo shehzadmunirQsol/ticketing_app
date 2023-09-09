@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import BottleImage from '~/public/assets/bottle.png';
+import placeHolderImage from '~/public/assets/placeholder.png';
 import Image from 'next/image';
 import { Button } from '~/components/ui/button';
 import { renderNFTImage } from '~/utils/helper';
@@ -76,17 +77,27 @@ const BannerSlider = ({ data }: any) => {
           <i className="fa-solid fa-chevron-left"></i>
         </Button>
         <div className="relative h-[18rem] lg:h-[38rem]  w-full lg:px-6 md:px-6 ">
-          <Image
-            alt="feature"
-            src={renderNFTImage(
-              data?.EventImages?.length > 0
-                ? data?.EventImages[currentIndex]
-                : data?.thumb,
-            )}
-            width={5000}
-            height={5000}
-            className=" object-contain object-center h-full w-full "
-          />
+          {data?.EventImages?.length ? (
+            <Image
+              alt="feature"
+              src={renderNFTImage(
+                data?.EventImages?.length > 0
+                  ? data?.EventImages[currentIndex]
+                  : data?.thumb,
+              )}
+              width={5000}
+              height={5000}
+              className=" object-contain object-center h-full w-full "
+            />
+          ) : (
+            <Image
+              alt="feature"
+              src={placeHolderImage}
+              width={5000}
+              height={5000}
+              className=" object-contain object-center h-full w-full "
+            />
+          )}
         </div>
         <div className="absolute lg:bottom-36 md:bottom-36 bottom-28  lg:right-10 md:right-10 right-4 rounded-full w-14 p-1 bg-gradient-to-b from-primary to-neutral-900">
           <Image

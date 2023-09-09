@@ -462,7 +462,7 @@ export const eventRouter = router({
           userData = await verifyJWT(token);
 
           const customerLimit = await prisma.orderEvent.groupBy({
-            where: { event_id: input.id, customer_id: userData?.id },
+            where: { event_id: input.id, customer_id: userData?.id  },
             by: ['event_id', 'customer_id'],
             _sum: { quantity: true },
           });

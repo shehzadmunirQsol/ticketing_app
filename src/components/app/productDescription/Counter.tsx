@@ -27,6 +27,7 @@ const Counter: React.FC<CounterProps> = ({
   const { cart } = useSelector((state: RootState) => state.cart);
 
   const { toast } = useToast();
+  const router = useRouter();
   const { query } = useRouter();
   const dispatch = useDispatch();
 
@@ -36,8 +37,9 @@ const Counter: React.FC<CounterProps> = ({
     if (!isLogin) {
       toast({
         variant: 'destructive',
-        title: 'Login to your account first!',
+        title: 'Please Login or Create Your Account!',
       });
+      router.push('/login')
       return;
     }
 
