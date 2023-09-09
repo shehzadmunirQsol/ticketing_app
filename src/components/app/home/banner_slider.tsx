@@ -50,7 +50,7 @@ const BannerSlider = () => {
     setShowElement(false); // Hide the content with the animation
     setTimeout(() => {
       setShowElement(true); // Show the new content with the animation
-    }, 50); // A small delay to ensure the transition classes are applied smoothly
+    }, 1000); // A small delay to ensure the transition classes are applied smoothly
   };
 
   const goToSlide = (slideIndex: any) => {
@@ -98,7 +98,7 @@ const BannerSlider = () => {
 
   return (
     <div
-      className={`relative w-full h-screen overflow-hidden ${lang.dir === 'ltr' ? 'banner_img' : 'banner_img_flip'
+      className={`relative w-full h-screen transition-all ease-in-out overflow-hidden ${lang.dir === 'ltr' ? 'banner_img' : 'banner_img_flip'
         }`}
     >
       <div className="relative ">
@@ -156,9 +156,9 @@ const BannerSlider = () => {
 
           {/* text select cards */}
           <div className={`  absolute  top-[100px] ${showElement ? 'fading-animation' : ''
-            } transition-all  duration-500 ease-in-out   sm:mb-8 m-auto    md:top-[260px] lg:top-[240px] xl:top-[170px] ltr:right-6 rtl:left-4 md:ltr:right-2 md:rtl:left-4  z-20  w-[320px] h-[200px]  sm:max-w-[440px] sm:w-full sm:h-full  sm:max-h-[300px] md:max-w-[500px] md:max-h-[260px] lg:max-w-[680px] xl:max-w-[680px] xl:max-h-[360px]   `}>
+            } transition-all  duration-500 ease-in-out   sm:mb-8 m-auto    md:top-[260px] lg:top-[240px] xl:top-[170px] ltr:right-6 rtl:left-4 md:ltr:-right-32 md:rtl:left-0  z-20  w-[320px] h-[200px]  sm:max-w-[440px] sm:w-full sm:h-full  sm:max-h-[300px] md:max-w-[500px] md:max-h-[260px] lg:max-w-[680px] xl:max-w-[680px] xl:max-h-[360px]   `}>
             <Image
-              className="    object-contain  transform rtl:-scale-x-100 ltr:scale-100"
+              className="    object-contain  transform rtl:-scale-x-100 ltr:scale-100 ltr:right-6 rtl:left-4 md:ltr:-right-32 md:rtl:left-0"
               src={renderNFTImage(carSlider[currentIndex])}
               alt="banner image"
               fill
