@@ -99,6 +99,7 @@
     "react-redux": "^8.0.5",
     "react-slick": "^0.29.0",
     "react-summernote": "^2.0.2",
+    "react-youtube": "^10.1.0",
     "select": "^1.1.2",
     "shadcn-ui": "^0.3.0",
     "sib-api-v3-sdk": "^8.5.0",

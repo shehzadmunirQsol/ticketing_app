@@ -9,7 +9,7 @@ const VideoSection = () => {
       <iframe
         className="w-full h-[560px]"
         src="https://www.youtube.com/embed/Y-x0efG1seA?controls=0"
-        title="YouTube video player"
+        title=""
         // frameBorder="0"
         allow=" autoplay;"
         allowFullScreen

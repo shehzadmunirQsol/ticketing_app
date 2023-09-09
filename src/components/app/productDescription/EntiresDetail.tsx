@@ -35,7 +35,7 @@ const EntiresDetail = () => {
                 <p className="leading-relaxed  lg:text-xl md:text-xl text-lg text-primary font-semibold">
                   <span className="font-black">Worldwide </span>Shipping
                 </p>
-                <p className="text-white text-sm underline -mt-2 ">
+                <p className="text-white text-sm underline  ">
                   {`T & C's Apply`}
                 </p>
               </div>

@@ -41,6 +41,15 @@ const AccordianFaqs = () => {
                 you prefer.
               </AccordionContent> 
             </AccordionItem>
+            <AccordionItem value="item-4">
+              <AccordionTrigger className="hover:no-underline focus-visible:text-green py-6">
+                <p className="lg:text-3xl  text-xl ">When is the draw?</p>
+              </AccordionTrigger>
+              <AccordionContent>
+                Yes. It&apos;s animated by default, but you can disable it if
+                you prefer.
+              </AccordionContent>
+            </AccordionItem>
           </Accordion>
           {/* <Glow className=" absolute  -bottom-[100px] -right-16  p-2   w-1/5 h-[350px] " /> */}
         </div>
