@@ -79,10 +79,6 @@ export default function CategoryForm(props: CategoryFormInterface) {
 
   // 2. Define a submit handler.
   async function onSubmit(values: CreateCategorySchema) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-
     try {
       setLoading(true);
 

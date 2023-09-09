@@ -35,8 +35,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '~/components/ui/select';
-import { Editor } from 'primereact/editor';
 import { EventFormSchema } from '~/schema/event';
+import { Editor } from 'primereact/editor';
 //theme
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
 //core
