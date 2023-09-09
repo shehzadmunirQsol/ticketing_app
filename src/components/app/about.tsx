@@ -5,16 +5,18 @@ import { Button } from '../ui/button';
 import { trpc } from '~/utils/trpc';
 
 const About = () => {
-  const { data: cms , isLoading } :any= trpc.cms.getCmsContent.useQuery( 
+  const { data: cms, isLoading }: any = trpc.cms.getCmsContent.useQuery(
     {},
     {
       refetchOnWindowFocus: false,
     },
   );
-  return (
-    <div dangerouslySetInnerHTML={{__html: cms[2].CMSDescription[0].content ?? <>Html Content Not Found</>}}>
 
-    </div>
+  console.log({ cms })
+  return (
+    // <div dangerouslySetInnerHTML={{__html: cms[2].CMSDescription[0].content ?? <>Html Content Not Found</>}}>
+
+    // </div>
     // <div>
     //   {/* complete */}
     //   <div class="w-full relative h-[250px] lg:h-[550px] z-40 text-center">
@@ -26,7 +28,7 @@ const About = () => {
     //       class=" object-cover block bg-black/50"
     //     />
     //     <div class="absolute h-[35px] w-full text-center top-[50%] flex items-center">
-    //       <div class="w-full text-center bg-green-500">
+    //       <div class="w-full text-center ">
     //         <p class=" text-white drop-shadow-2xl text-center w-full text-4xl  lg:text-5xl tracking-tighter  uppercase font-[900]">
     //           PRESTIGE CAR
     //         </p>
@@ -206,6 +208,8 @@ const About = () => {
     //     </div>
     //   </div>
     // </div>
+    <>
+    </>
   );
 };
 

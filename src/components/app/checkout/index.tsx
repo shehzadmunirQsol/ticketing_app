@@ -458,11 +458,10 @@ function Checkout() {
                   purposes described in our{' '}
                   <span className="text-white"> privacy policy</span>.
                 </p>
-                <div className="flex flex-row gap-2 justify-start w-full  lg:w-[60%] md:w-[60%] items-center">
-                  <div>
-                    <Input type="checkbox" className="accent-white text-2xl " />
-                  </div>
-                  <p className="text-sm text-cardGray">
+                <div className="flex flex-row gap-2 justify-start   items-start w-full  md:w-[65%] lg:w-[75%]">
+                    <input type="checkbox" className="accent-white  my-1" />
+                  
+                  <p className="text-sm text-cardGray ">
                     I’m 18 years old or over and i have read and agree to the
                     website
                     <span className="text-white"> Terms & Conditions</span>.
