@@ -11,8 +11,10 @@ const About = () => {
       refetchOnWindowFocus: false,
     },
   );
+  console.log(cms,"cmscmscmscmscmscms")
+  console.log(cms[1]?.CMSDescription[0]?.content,"cms[2].CMSDescription[0].content")
   return (
-    <div dangerouslySetInnerHTML={{__html: cms[2].CMSDescription[0].content ?? <>Html Content Not Found</>}}>
+    <div dangerouslySetInnerHTML={{__html:  cms[1]?.CMSDescription[0]?.content ?? <>Html Content Not Found</>}}>
 
     </div>
     // <div>

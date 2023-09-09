@@ -39,7 +39,7 @@ const AccordianFaqs = () => {
               <AccordionContent>
                 Yes. It&apos;s animated by default, but you can disable it if
                 you prefer.
-              </AccordionContent>
+              </AccordionContent> 
             </AccordionItem>
           </Accordion>
           {/* <Glow className=" absolute  -bottom-[100px] -right-16  p-2   w-1/5 h-[350px] " /> */}

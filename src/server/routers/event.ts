@@ -433,7 +433,7 @@ export const eventRouter = router({
     .input(getEventsByIdSchema)
     .query(async ({ input, ctx }) => {
       try {
-        const descriptionPayload =
+        const descriptionPayload :any =
           input.type === 'admin' ? undefined : { lang_id: input.lang_id };
         const event = await prisma.event.findUnique({
           where: {

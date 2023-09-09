@@ -150,7 +150,7 @@ export default function EventForm() {
     },
   });
 
-  const { data: eventData } = trpc.event.getEventsById.useQuery(
+  const { data: eventData }:any = trpc.event.getEventsById.useQuery(
     { id: eventId, type: 'admin' },
     {
       refetchOnWindowFocus: false,
