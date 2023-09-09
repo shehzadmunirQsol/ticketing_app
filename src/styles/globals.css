@@ -147,3 +147,18 @@
   width: 100%;
   background-color: blue;
 }
+.aboutus-card{
+  clip-path: polygon(0 0,
+                    calc(100% - 60px) 0,
+                    100% 60px,
+                    100% 100%,
+                    0 100%);
+}
+.glow {
+  -webkit-box-shadow: 0px 0px 116px 48px rgba(45, 255, 196, 0.28);
+  -moz-box-shadow: 0px 0px 116px 48px rgba(45, 255, 196, 0.28);
+  box-shadow: 0px 0px 116px 48px rgba(45, 255, 196, 0.28);
+  border-radius: 100%;
+}
+
+.clip-style{clip-path: polygon(50% 0%, 100% 0, 100% 35%, 100% 70%, 100% 100%, 50% 100%, 0 100%, 0 21%, 20% 22%, 0 0);}
