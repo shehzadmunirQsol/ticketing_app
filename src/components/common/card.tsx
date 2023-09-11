@@ -22,8 +22,10 @@ function ProductCard(props: cardInterface) {
   const cardRef = useRef<HTMLDivElement>(null);
   const { lang } = useSelector((state: RootState) => state.layout);
   const todayDate = new Date()
+  const endDate = new Date(props?.data?.end_date)
   console.log({ todayDate })
-  console.log(props?.data?.end_date, "end_date")
+  console.log(endDate.toDateString(), todayDate.toDateString(), "end_date")
+  console.log(endDate.toLocaleDateString() === todayDate.toLocaleDateString(), "match end")
 
 
   /**
@@ -51,9 +53,9 @@ function ProductCard(props: cardInterface) {
     >
       <div className="relative">
 
-        {todayDate === props?.data?.end_date && <div className=" absolute top-0 w-fit p-2 z-2 bg-primary text-black text-sm">
+        {endDate.toDateString() === todayDate.toDateString() ? <div className=" absolute top-0 w-fit p-2 z-2 bg-primary text-black text-sm">
           <span className=" font-bold">CLOSES TODAY</span> 20:00
-        </div>}
+        </div> : ""}
         <Image
           width={550}
           height={450}
