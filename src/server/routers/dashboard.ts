@@ -1,11 +1,6 @@
 import { router, publicProcedure } from '../trpc';
 import { TRPCError } from '@trpc/server';
-import {
-  addToCartSchema,
-  getCartSchema,
-  getTicketPurchasedSchema,
-  removeCartItemSchema,
-} from '~/schema/cart';
+
 import { prisma } from '~/server/prisma';
 import { verifyJWT } from '~/utils/jwt';
 
@@ -65,38 +60,38 @@ export const dashboardRouter = router({
       ]);
       const analyticsData: any = [
         {
-          title: 'Active Customer',
+          title: 'Active Customers',
           data: totalCustomer,
           symbol: '',
-          icon: 'fas fa-compass',
+          icon: 'fas fa-users',
           cols: true,
         },
         {
-          title: 'Pending Customer',
+          title: 'Pending Customers',
           data: pendingCustomer,
           symbol: '',
-          icon: 'fas fa-compass',
+          icon: 'fa-solid fa-user-clock',
           cols: true,
         },
         {
           title: 'Active Coupon',
           data: couponExpiry,
           symbol: '',
-          icon: 'fas fa-compass',
+          icon: 'fa-solid fa-tag',
           cols: true,
         },
         {
           title: 'Active Events',
           data: events,
           symbol: '',
-          icon: 'fas fa-compass',
+          icon: 'fa-solid fa-calendar-days',
           cols: true,
         },
         {
           title: 'Order Amount',
           data: ordersAmount._sum.total_amount,
           symbol: 'AED',
-          icon: 'fas fa-compass',
+          icon: 'fa-solid fa-chart-line',
           cols: true,
         },
       ];
@@ -119,25 +114,50 @@ export const dashboardRouter = router({
       } else {
         return { data: null };
       }
-      // const totalCustomerPromise = await prisma.order.groupBy({
-      //   by: {
-      //     month: {
-      //       // Use the `extract` function to extract the month from the date column
-      //       _in: prisma.$queryRaw`${prisma.order.created_at}.MONTH`,
-      //     },
-      //   },
-      //   where: {
-      //     is_deleted: false,
-      //     is_approved: true,
-      //   },
-      // });
-      const pendingCustomerPromise = await prisma.customer.count({
+
+      const chartData =
+        await prisma.$queryRaw`SELECT DATE_FORMAT( \`order\`.created_at,'%Y-%m-%d') as name, CAST(COUNT(*) AS CHAR) as count,SUM(\`order\`.total_amount) as total,CAST(SUM(\`order\`.sub_total_amount) AS DECIMAL(10, 2)) as sub_total_amount,CAST(SUM(\`order\`.discount_amount) AS DECIMAL(10, 2)) as discount_amount
+    FROM \`order\`
+    GROUP BY name ORDER BY name`;
+
+      return { message: 'Chart Data', data: chartData };
+    } catch (error: any) {
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: error?.message,
+      });
+    }
+  }),
+  recent: publicProcedure.query(async ({ ctx }) => {
+    try {
+      const token = ctx?.req?.cookies['winnar-admin-token'];
+
+      let userData;
+      if (token) {
+        userData = await verifyJWT(token);
+      } else {
+        return { data: null };
+      }
+      const recent_orders = await prisma.order.findMany({
+        take: 5,
+        orderBy: {
+          created_at: 'desc',
+        },
         where: {
-          is_approved: false,
+          is_deleted: false,
+        },
+        include: {
+          Customer: {
+            select: {
+              first_name: true,
+              last_name: true,
+              email: true,
+            },
+          },
         },
       });
 
-      return { message: 'Chart Data', data: pendingCustomerPromise };
+      return { message: 'Analytics Data', data: recent_orders };
     } catch (error: any) {
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',

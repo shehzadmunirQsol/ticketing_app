@@ -76,7 +76,7 @@ export default function DashboardPage() {
 }
 const AnalyticsCard = () => {
   const { data, isLoading } = trpc.dashboard.analytics.useQuery();
-  console.log({ data });
+  
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 ">
       {isLoading ? (
