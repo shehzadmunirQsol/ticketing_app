@@ -63,7 +63,7 @@ export default function SubscriptionDataTable() {
     refetchOnWindowFocus: false,
   });
   console.log({ data });
-  const categoryData = React.useMemo(() => {
+  const subscriptionData = React.useMemo(() => {
     return Array.isArray(data?.data) ? data?.data : [];
   }, [data]);
   const columns: ColumnDef<Category>[] = [
@@ -180,7 +180,7 @@ export default function SubscriptionDataTable() {
     // },
   ];
   const table = useReactTable({
-    data: categoryData as Category[],
+    data: subscriptionData as Category[],
     columns,
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),

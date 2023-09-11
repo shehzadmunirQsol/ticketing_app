@@ -9,18 +9,18 @@ import { useToast } from '~/components/ui/use-toast';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 import { addCart } from '~/store/reducers/cart';
+import { userLogout } from '~/store/reducers/auth';
 
 const Account = () => {
   const { toast } = useToast();
   const router = useRouter();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const [counter, setCounter] = useState(0);
 
   const logout = trpc.customer.logout.useMutation({
     onSuccess: (res: any) => {
       console.log('return data', res);
-
     },
     onError(error) {
       console.log(error.message, 'ERROR');
@@ -39,6 +39,7 @@ const Account = () => {
       localStorage.removeItem('winnar-token');
       localStorage.removeItem('customer');
       router.replace('/login');
+      dispatch(userLogout());
       dispatch(
         addCart({
           id: null,
@@ -94,17 +95,19 @@ const Account = () => {
           {navigation.map((item, i) => (
             <li
               key={i}
-              className={`border-b-[0.5px] p-4  border-b-[#1B1D1F] last:border-b-none cursor-pointer border-l-4 ${counter === i
+              className={`border-b-[0.5px] p-4  border-b-[#1B1D1F] last:border-b-none cursor-pointer border-l-4 ${
+                counter === i
                   ? 'bg-[#1B1D1F]  border-l-primary text-primary '
                   : 'border-l-transparent'
-                } `}
+              } `}
               onClick={() =>
                 item.tab === 'Logout' ? handleLogout() : setCounter(i)
               }
             >
               <div
-                className={`${counter === i ? 'text-primary' : 'text-[#808080]'
-                  } font-[800] tracking-tight`}
+                className={`${
+                  counter === i ? 'text-primary' : 'text-[#808080]'
+                } font-[800] tracking-tight`}
               >
                 {item.tab}
               </div>
