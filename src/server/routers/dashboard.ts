@@ -1,11 +1,6 @@
 import { router, publicProcedure } from '../trpc';
 import { TRPCError } from '@trpc/server';
-import {
-  addToCartSchema,
-  getCartSchema,
-  getTicketPurchasedSchema,
-  removeCartItemSchema,
-} from '~/schema/cart';
+
 import { prisma } from '~/server/prisma';
 import { verifyJWT } from '~/utils/jwt';
 
@@ -65,38 +60,38 @@ export const dashboardRouter = router({
       ]);
       const analyticsData: any = [
         {
-          title: 'Active Customer',
+          title: 'Active Customers',
           data: totalCustomer,
           symbol: '',
-          icon: 'fas fa-compass',
+          icon: 'fas fa-users',
           cols: true,
         },
         {
-          title: 'Pending Customer',
+          title: 'Pending Customers',
           data: pendingCustomer,
           symbol: '',
-          icon: 'fas fa-compass',
+          icon: 'fa-solid fa-user-clock',
           cols: true,
         },
         {
           title: 'Active Coupon',
           data: couponExpiry,
           symbol: '',
-          icon: 'fas fa-compass',
+          icon: 'fa-solid fa-tag',
           cols: true,
         },
         {
           title: 'Active Events',
           data: events,
           symbol: '',
-          icon: 'fas fa-compass',
+          icon: 'fa-solid fa-calendar-days',
           cols: true,
         },
         {
           title: 'Order Amount',
           data: ordersAmount._sum.total_amount,
           symbol: 'AED',
-          icon: 'fas fa-compass',
+          icon: 'fa-solid fa-chart-line',
           cols: true,
         },
       ];
