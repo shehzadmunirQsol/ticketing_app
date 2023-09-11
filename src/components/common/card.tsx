@@ -24,7 +24,7 @@ function ProductCard(props: cardInterface) {
   const todayDate = new Date()
   const endDate = new Date(props?.data?.end_date)
   console.log({ todayDate })
-  console.log(endDate.toDateString(), todayDate.toDateString(), "end_date")
+  console.log(endDate.toLocaleDateString() , todayDate.toLocaleDateString(), "end_date")
   console.log(endDate.toLocaleDateString() === todayDate.toLocaleDateString(), "match end")
 
 
@@ -53,7 +53,7 @@ function ProductCard(props: cardInterface) {
     >
       <div className="relative">
 
-        {endDate.toDateString() === todayDate.toDateString() ? <div className=" absolute top-0 w-fit p-2 z-2 bg-primary text-black text-sm">
+        {endDate.toLocaleDateString() === todayDate.toLocaleDateString() ? <div className=" absolute top-0 w-fit p-2 z-2 bg-primary text-black text-sm">
           <span className=" font-bold">CLOSES TODAY</span> 20:00
         </div> : ""}
         <Image

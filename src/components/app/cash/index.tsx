@@ -65,10 +65,10 @@ const CashPage = () => {
       <div className="h-full  px-10 py-20">
         <Glow className=" absolute  top-[560px] -right-16  p-2   w-1/5 h-[350px]  " />
         <Glow className=" absolute  bottom-96 -right-16  w-1/5 h-[350px] " />
-        <div className=" grid grid-cols-1 md:grid-cols-2     lg:grid-cols-3   justify-between max-w-[1300px] mx-auto ">
+        <div className=" grid grid-cols-1 md:grid-cols-2  z-40   lg:grid-cols-3   justify-between max-w-[1300px] mx-auto ">
           {products?.map((itemList, i) => {
             return (
-              <div className="mx-auto py-2 md:py-0" key={i}>
+              <div className="mx-auto py-2 md:py-0 z-40" key={i}>
                 <ProductCard
                   isLast={i === products.length - 1}
                   nextPage={nextPage}
