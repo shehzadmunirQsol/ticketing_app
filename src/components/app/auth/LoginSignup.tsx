@@ -99,6 +99,7 @@ export default function LoginSignup() {
       });
       dispatch(userAuth(response?.user));
 
+      router.back();
       formLogin.setValue('user', '');
       formLogin.setValue('password', '');
       router.push('/');
