@@ -46,7 +46,7 @@ function AdminLayout({ children }: DefaultLayoutProps) {
         <>
           <Header />
 
-          <div className="flex max-h-[calc(100vh-65px)] overflow-hidden">
+          <div className="flex max-h-[calc(100vh-70px)] overflow-y-hidden">
             <Sidebar />
             <main
               className={`flex-1 w-full ${

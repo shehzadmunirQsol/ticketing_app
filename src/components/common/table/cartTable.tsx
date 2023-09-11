@@ -11,16 +11,13 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { ChevronDown, MoreHorizontal } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 
 import { Button } from '@/ui/button';
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/ui/dropdown-menu';
 import {
@@ -31,13 +28,12 @@ import {
   TableHeader,
   TableRow,
 } from '@/ui/table';
-import LanguageSelect, { LanguageInterface } from '../language_select';
 import { trpc } from '~/utils/trpc';
-import { GetEventSchema } from '~/schema/event';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 import { LoadingDialog } from '../modal/loadingModal';
 import Image from 'next/image';
-import { renderNFTImage } from '~/utils/helper';
+import { GetCartItemsSchema } from '~/schema/cart';
+import { displayDate } from '~/utils/helper';
 
 export type CartType = {
   id: number;
@@ -59,15 +55,14 @@ export type CartType = {
 
 export default function OrdersDataTable() {
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [filters, setFilters] = useState<GetEventSchema>({
+  const [filters, setFilters] = useState<GetCartItemsSchema>({
     first: 0,
     rows: 10,
-    lang_id: 1,
   });
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
 
-  const { data, isLoading } = trpc.cart.getCartItems.useQuery(undefined, {
+  const { data, isLoading } = trpc.cart.getCartItems.useQuery(filters, {
     refetchOnWindowFocus: false,
   });
   const cartItemData = React.useMemo(() => {
@@ -88,7 +83,7 @@ export default function OrdersDataTable() {
               height={100}
             />
 
-            <p className="text-base font-normal">
+            <p className="w-40 text-ellipsis whitespace-nowrap overflow-hidden">
               {row?.original?.Event?.EventDescription[0]?.name}
             </p>
           </div>
@@ -105,11 +100,20 @@ export default function OrdersDataTable() {
       ),
     },
     {
+      accessorKey: 'Customer Email',
+      header: 'Customer Email',
+      cell: ({ row }) => (
+        <div className="text-ellipsis whitespace-nowrap ">
+          {row?.original?.Cart?.Customer?.email}
+        </div>
+      ),
+    },
+    {
       accessorKey: 'Created At',
       header: 'Created At',
       cell: ({ row }) => (
         <div className="capitalize text-ellipsis whitespace-nowrap ">
-          {row?.original?.created_at?.toDateString()}
+          {displayDate(row?.original?.created_at)}
         </div>
       ),
     },
@@ -118,27 +122,27 @@ export default function OrdersDataTable() {
       accessorKey: 'Quantity',
       header: 'Quantity',
       cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap ">
+        <p className="w-16 text-center text-ellipsis whitespace-nowrap ">
           {row?.original?.quantity}
-        </div>
+        </p>
       ),
     },
     {
       accessorKey: 'Price',
       header: 'Price',
       cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap ">
+        <p className="w-16 text-center text-ellipsis whitespace-nowrap ">
           {row?.original?.Event?.price?.toFixed(2)}
-        </div>
+        </p>
       ),
     },
     {
       accessorKey: 'Total Amount',
       header: 'Total Amount',
       cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap ">
+        <p className="w-24 text-center text-ellipsis whitespace-nowrap ">
           {(row?.original?.quantity * row?.original?.Event?.price)?.toFixed(2)}
-        </div>
+        </p>
       ),
     },
   ];
@@ -159,16 +163,10 @@ export default function OrdersDataTable() {
     },
   });
 
-  function languageHandler(params: LanguageInterface) {
-    setFilters((prevFilters) => ({ ...prevFilters }));
-  }
-
   function handlePagination(page: number) {
     if (page < 0) return;
     setFilters((prevFilters) => ({ ...prevFilters, first: page }));
   }
-
-  console.log({ data });
 
   return (
     <div className="w-full space-y-4">
@@ -252,6 +250,24 @@ export default function OrdersDataTable() {
             </TableBody>
           </Table>
         </ScrollArea>
+      </div>
+      <div className="flex items-center justify-end space-x-2 py-4">
+        <div className="space-x-2">
+          <Button
+            variant="outline"
+            onClick={() => handlePagination(filters.first - 1)}
+            disabled={filters.first === 0}
+          >
+            Previous
+          </Button>
+          <Button
+            variant="outline"
+            onClick={() => handlePagination(filters.first + 1)}
+            disabled={(filters.first + 1) * filters.rows > (data?.count || 0)}
+          >
+            Next
+          </Button>
+        </div>
       </div>
 
       <LoadingDialog open={isLoading} text={'Loading data...'} />

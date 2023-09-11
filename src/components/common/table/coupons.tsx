@@ -133,7 +133,7 @@ export default function CouponsDataTable() {
       accessorKey: 'coupon_code',
       header: 'Coupon Code',
       cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap ">
+        <div className="w-24 capitalize text-ellipsis whitespace-nowrap ">
           {row.getValue('coupon_code')}
         </div>
       ),

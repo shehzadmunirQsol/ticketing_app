@@ -88,7 +88,9 @@ export default function EventsDataTable() {
               height={100}
             />
 
-            <p className="text-base font-normal">{row?.original?.name}</p>
+            <p className="w-40 text-ellipsis whitespace-nowrap overflow-hidden">
+              {row?.original?.name}
+            </p>
           </div>
         );
       },
@@ -97,7 +99,7 @@ export default function EventsDataTable() {
       accessorKey: 'desc',
       header: 'Description',
       cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden w-64">
+        <div className="text-ellipsis whitespace-nowrap overflow-hidden w-64">
           {row.getValue('desc')}
         </div>
       ),
@@ -106,42 +108,42 @@ export default function EventsDataTable() {
       accessorKey: 'price',
       header: 'Token Price',
       cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap ">
-          AED{(row?.original?.price).toFixed(2)}
-        </div>
+        <p className="w-20 text-center text-ellipsis whitespace-nowrap overflow-hidden">
+          {(row?.original?.price).toFixed(2)}
+        </p>
       ),
     },
     {
       accessorKey: 'total_tickets',
       header: 'Token Cap',
       cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
+        <p className="w-20 text-ellipsis whitespace-nowrap overflow-hidden">
           {row?.original?.total_tickets}
           &nbsp;
           <sub>qty</sub>
-        </div>
+        </p>
       ),
     },
     {
       accessorKey: 'tickets_sold',
       header: 'Token Purchased',
       cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
+        <p className="w-28 text-center text-ellipsis whitespace-nowrap overflow-hidden">
           {row?.original?.tickets_sold}
           &nbsp;
           <sub>qty</sub>
-        </div>
+        </p>
       ),
     },
     {
       accessorKey: 'user_ticket_limit',
       header: 'Per User Purchased',
       cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
+        <p className="w-32 text-center text-ellipsis whitespace-nowrap overflow-hidden">
           {row?.original?.user_ticket_limit}
           &nbsp;
           <sub>qty</sub>
-        </div>
+        </p>
       ),
     },
     {
