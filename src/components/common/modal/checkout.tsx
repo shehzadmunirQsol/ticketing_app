@@ -240,7 +240,7 @@ export function CheckoutDialog(props: SettingDialogInterface) {
                               </FormLabel>
                               <FormControl>
                                 <Input
-                                  type="text"
+                                  type="password"
                                   maxLength={3}
                                   placeholder="Enter Cvv"
                                   {...field}

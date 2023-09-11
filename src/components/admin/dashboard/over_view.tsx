@@ -80,7 +80,7 @@ const AnalyticsCard = () => {
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 ">
       {isLoading ? (
-        <div className=" col-span-2 lg:col-span-4">
+        <div className=" col-span-2 lg:col-span-4 items-center m-auto">
           <i className="fa-solid fa-circle-notch transition-all animate-spin text-lg  "></i>
         </div>
       ) : data?.data ? (
