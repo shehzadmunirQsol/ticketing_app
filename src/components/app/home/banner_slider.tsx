@@ -139,10 +139,10 @@ const BannerSlider = () => {
             ) : (
               ''
             )}
-            <p className="hidden sm:block px-4 text-xl  font-normal ">
+            <p className="sm:block px-4 text-xl  font-normal ">
               {carSlider[currentIndex]?.description}
             </p>
-            <p className="px-4 text-3xl tracking-[-2px] font-[900]  my-3">
+            <p className="px-4 text-xl  sm:text-3xl tracking-[-2px] font-[700]  my-3">
               {carSlider[currentIndex]?.date}
             </p>
             <Link href="/cars">
@@ -153,9 +153,7 @@ const BannerSlider = () => {
                 {lang.lang_id === 1 ? 'ENTER NOW' : 'أدخل الأن'}
               </Button>
             </Link>
-            <div className="block sm:hidden mx-auto  w-fit h-fit">
-              <i className="fas fa-arrow-down animate-bounce text-teal-400 text-5xl my-14  "></i>
-            </div>
+            
           </div>
 
           {/* text select cards */}

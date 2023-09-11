@@ -15,9 +15,12 @@ interface producctInterface {
   data?: any;
   slidesToShow?: number;
   type: string;
+  breakpointScreens?: Array<number>;
+  breakpoint?: Array<number>;
   // slide: React.Ref<null>;
 }
 function ProductSection(props: producctInterface) {
+  console.log(props.breakpoint)
   const { lang } = useSelector((state: RootState) => state.layout);
   const [products, setProducts] = useState<Array<any>>([]);
 
@@ -81,28 +84,29 @@ function ProductSection(props: producctInterface) {
     // slidesPerRow: 1,
     responsive: [
       {
-        breakpoint: 1024,
+        breakpoint: props?.breakpointScreens && props?.breakpointScreens[0] !== undefined ? props?.breakpointScreens[0] : 1024,
         settings: {
-          slidesToShow: 3,
-          slidesToScroll: 2,
-          initialSlide: 1,
+          slidesToShow: props?.breakpoint && props?.breakpoint[0] !== undefined ? props?.breakpoint[0] : 3,
+          slidesToScroll: 1,
+          initialSlide: 0,
         },
       },
       {
-        breakpoint: 800,
+        breakpoint: props?.breakpointScreens && props?.breakpointScreens[1] !== undefined ? props?.breakpointScreens[1] : 800,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: props?.breakpoint && props?.breakpoint[1] !== undefined ? props?.breakpoint[1] : 2,
           slidesToScroll: 1,
-          initialSlide: 1,
+          initialSlide: 0,
           centerMode: false,
         },
       },
 
       {
-        breakpoint: 640,
+        breakpoint: props?.breakpointScreens && props?.breakpointScreens[2] !== undefined ? props?.breakpointScreens[2] : 640,
         settings: {
-          slidesToShow: 1,
+          slidesToShow: props?.breakpoint && props?.breakpoint[2] !== undefined ? props?.breakpoint[2] : 1,
           slidesToScroll: 1,
+          initialSlide: 0,
           centerMode: false,
         },
       },
@@ -110,14 +114,13 @@ function ProductSection(props: producctInterface) {
   };
   return (
     <div className="   w-full ">
-      <div className=" relative flex flex-col md:flex-row h-28 md:h-auto py-6  items-center w-full md:justify-between mb-6">
+      <div className=" relative flex gap-3 flex-col md:flex-row h-28 md:h-auto py-6  items-center w-full md:justify-between mb-6">
         <p className="text-gray-200 !text-xl sm:!text-3xl lg:!text-5xl font-black uppercase  ">
           {props?.title}
         </p>
         <div
-          className={`${
-            lang?.dir == 'rtl' ? ' flex-row-reverse' : 'md:absolute right-10'
-          }  flex gap-2 z-10 items-center justify-center `}
+          className={`${lang?.dir == 'rtl' ? ' flex-row-reverse' : 'md:absolute right-0'
+            }  flex gap-2 z-10 items-center justify-center `}
         >
           <Button
             variant="rounded"
@@ -143,10 +146,10 @@ function ProductSection(props: producctInterface) {
           ''
         ) : (
           <div
-            className={`absolute bottom-10 ${
-              props.type == 'closing' ? 'right-0' : 'left-0'
-            }  z-2  w-1/5 h-3/5  bg-teal-400 bg-opacity-50 rounded-full blur-3xl`}
+            className={`absolute bottom-10 ${props.type == 'closing' ? 'right-0' : 'left-0'
+              }  z-2  w-1/5 h-3/5  bg-teal-400 bg-opacity-50 rounded-full blur-3xl`}
           ></div>
+          
         )}
 
         <Slider ref={slide} {...settings}>
@@ -163,7 +166,7 @@ function ProductSection(props: producctInterface) {
               </div>
             );
           })}
-          
+
           {products.length === 0 ? (
             <div className="text-center w-full py-10 text-lg">
               Coming Soon...

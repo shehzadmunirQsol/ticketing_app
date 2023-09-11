@@ -235,7 +235,7 @@ export default function SubscriptionDataTable() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="rounded-md border">
+      <div className="rounded-md border border-border">
         <ScrollArea className="w-full ">
           <ScrollBar orientation="horizontal"></ScrollBar>
           <Table>

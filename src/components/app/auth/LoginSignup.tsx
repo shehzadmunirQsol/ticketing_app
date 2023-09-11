@@ -99,9 +99,9 @@ export default function LoginSignup() {
       });
       dispatch(userAuth(response?.user));
 
-      router.push('/');
       formLogin.setValue('user', '');
       formLogin.setValue('password', '');
+      router.push('/');
     },
     onError: (err) => {
       console.log(err.message, 'err');

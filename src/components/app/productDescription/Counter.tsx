@@ -23,9 +23,11 @@ const Counter: React.FC<CounterProps> = ({
   ticketPurchased,
 }) => {
   const { user, isLogin } = useSelector((state: RootState) => state.auth);
+  const { lang } = useSelector((state: RootState) => state.layout)
   const { cart } = useSelector((state: RootState) => state.cart);
 
   const { toast } = useToast();
+  const router = useRouter();
   const { query } = useRouter();
   const dispatch = useDispatch();
 
@@ -35,8 +37,9 @@ const Counter: React.FC<CounterProps> = ({
     if (!isLogin) {
       toast({
         variant: 'destructive',
-        title: 'Login to your account first!',
+        title: 'Please Login or Create Your Account!',
       });
+      router.push('/login')
       return;
     }
 
@@ -83,7 +86,7 @@ const Counter: React.FC<CounterProps> = ({
       ) : (
         <>
           <div className="flex items-center justify-between">
-            <p className="text-lg text-white">How many tickets?</p>
+            <p className="text-lg text-white">{lang.lang_id === 2 ? "كم عدد التذاكر" : "How many tickets?" } </p>
             {ticketPurchased ? (
               <p className="text-sm text-white/40 ">
                 {"You've"} purchased{' '}

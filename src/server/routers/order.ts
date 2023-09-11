@@ -236,7 +236,7 @@ export const orderRouter = router({
     try {
       const orders: any = await prisma.order.findMany({
         where: {
-          customer_id: input.id,
+          customer_id: input?.customer_id,
         },
         include: {
           OrderEvent: {
