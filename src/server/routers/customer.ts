@@ -199,6 +199,7 @@ export const customerRouter = router({
     .input(loginCustomerSchema)
     .mutation(async ({ ctx, input }) => {
       try {
+
         const validity = isValidEmail(input.user)
           ? { email: input.user }
           : { username: input.user };
@@ -286,7 +287,7 @@ export const customerRouter = router({
           to: input.email,
           subject: 'Forgot Password request to Winnar',
           params: {
-            link: `${process.env.NEXT_PUBLIC_BASE_URL}reset-password?verification_code=${respCode}&email=${user.email}`,
+            link: `${process.env.NEXT_PUBLIC_BASE_URL}/reset-password?verification_code=${respCode}&email=${user.email}`,
           },
         };
         const mailResponse = await sendEmail(mailOptions);

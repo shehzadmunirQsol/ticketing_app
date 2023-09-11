@@ -27,12 +27,12 @@ function LiveDraw() {
   ];
   return (
     <div className="relative w-full mb-20">
-      <div className="   bg-primary py-10  grid grid-cols-1 lg:grid-cols-2 items-center  ">
+      <div className="   bg-primary py-10  grid grid-cols-1 lg:grid-cols-2 items-start  ">
         <div className="   flex flex-col justify-center items-center  w-full ">
           <p className="  py-4 md:py-0 text-left !w-full md:!max-w-[310px] sm:!max-w-[310px] xs:!max-w-[310px] md:mb-30 text-black font-[1000] tracking-[-4px] !text-6xl   md:!text-6xl lg:!text-8xl uppercase">
             LIVE DRAW
           </p>
-          <div className=" flex justify-start items-center border-2 border-gray-900 border-l-0 border-r-0   py-4 m-auto mx-10 md:py-0 text-left !w-full md:!max-w-[310px] sm:!max-w-[310px] xs:!max-w-[310px] mt-10  ">
+          <div className=" flex justify-start items-start border-2 border-gray-900 border-l-0 border-r-0   py-4 m-auto mx-10 md:py-0 text-left !w-full md:!max-w-[310px] sm:!max-w-[310px] xs:!max-w-[310px] mt-10  ">
             <div className="flex justify-start items-center my-2 border-2 border-t-0 border-l-0 border-b-0 border-gray-900 w-30   pr-4">
               <Image
                 width={3}
@@ -43,7 +43,7 @@ function LiveDraw() {
               />{' '}
               <p className="text-md font-semibold text-black">04-08-2023</p>
             </div>
-            <div className="flex justify-start items-center ml-4 ">
+            <div className="flex justify-center items-center ml-4 my-2">
               <Image
                 width={3}
                 height={3}
@@ -56,7 +56,7 @@ function LiveDraw() {
           </div>
         </div>
 
-        <div className="flex flex-col gap-8 space-y-4 md:pt-20 sm:pt-20 xs:pt-20  ">
+        <div className="flex flex-col gap-8 space-y-4  items-start ">
           {LiveDraw?.map((item, index) => {
             return (
               <div

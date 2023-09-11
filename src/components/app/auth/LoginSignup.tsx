@@ -132,6 +132,26 @@ export default function LoginSignup() {
   // Login
 
   const onSubmitLogin = async (values: any) => {
+    if (!values.user && !values.password) {
+      toast({
+        variant: "destructive",
+        title: "Please Enter Your Login Information"
+      })
+      return;
+    } else if (!values.user) {
+      toast({
+        variant: "destructive",
+        title: "Please Enter Your Email"
+      })
+      return;
+    } else if (!values.password) {
+      toast({
+        variant: "destructive",
+        title: "Please Enter Your Password"
+      })
+      return;
+    }
+
     try {
       setIsSubmitting(true);
       const loginResult = await loginCustomer.mutateAsync(values);

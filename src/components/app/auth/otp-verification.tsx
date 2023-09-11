@@ -229,10 +229,10 @@ export function OtpVerificationDailog(props: OtpVerificationDailogInterface) {
                 className="flex flex-row justify-center items-center  "
                 onClick={handleResendOtp}
               >
-                <p className="text-center text-grayColor text-xs pr-4 underline">
+                <p className="text-center text-grayColor text-xs pr-4 underline cursor-pointer">
                   Didn’t receive an OTP?{' '}
                 </p>
-                <p className="text-white text-xs underline">Resend OTP</p>
+                <p className="text-white text-xs underline cursor-pointer">Resend OTP</p>
               </div>
               <div className="w-full mx-auto">
                 <div className=" flex items-center justify-center">

@@ -30,19 +30,27 @@ const ProductDetail = () => {
   console.log(id, typeof id, 'i am id work');
   console.log(data?.data, 'i am data work');
   return (
-    <div className='px-4 md:px-14'>
-      <Tabs />
-      <ImageSlider data={data?.data} ticketPurchased={data?.ticketPurchased} />
-      <div >
-        <EntiresDetail />
-        <VideoSection />
+    <>
+      <div className='px-4 md:px-14'>
+        <Tabs />
+        <ImageSlider data={data?.data} ticketPurchased={data?.ticketPurchased} />
+        <div >
+          <EntiresDetail />
+          <VideoSection />
+        </div>
+        <div >
+        </div>
+
       </div>
       <LiveDraw />
-      <div >
+
+      <div className='px-4 md:px-14'>
+
         <CompititionDetail data={data?.data} />
         <AccordianFaqs />
       </div>
-    </div>
+
+    </>
   );
 };
 
