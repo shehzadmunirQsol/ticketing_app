@@ -391,7 +391,7 @@ async function CreatePayment(APidata: any) {
   try {
     const path = APidata?.registrationId
       ? `/v1/registrations/${APidata?.registrationId}/payments`
-      : '/v1/threeDSecure';
+      : '/v1/payments';
     const payload = { ...APidata };
     console.log(APidata, 'APidata?.paymentBrandsss');
 

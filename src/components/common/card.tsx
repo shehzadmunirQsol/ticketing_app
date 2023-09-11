@@ -22,8 +22,10 @@ function ProductCard(props: cardInterface) {
   const cardRef = useRef<HTMLDivElement>(null);
   const { lang } = useSelector((state: RootState) => state.layout);
   const todayDate = new Date()
+  const endDate = new Date(props?.data?.end_date)
   console.log({ todayDate })
-  console.log(props?.data?.end_date, "end_date")
+  console.log(endDate.toLocaleDateString() , todayDate.toLocaleDateString(), "end_date")
+  console.log(endDate.toLocaleDateString() === todayDate.toLocaleDateString(), "match end")
 
 
   /**
@@ -51,9 +53,9 @@ function ProductCard(props: cardInterface) {
     >
       <div className="relative">
 
-        {todayDate === props?.data?.end_date && <div className=" absolute top-0 w-fit p-2 z-2 bg-primary text-black text-sm">
+        {endDate.toLocaleDateString() === todayDate.toLocaleDateString() ? <div className=" absolute top-0 w-fit p-2 z-2 bg-primary text-black text-sm">
           <span className=" font-bold">CLOSES TODAY</span> 20:00
-        </div>}
+        </div> : ""}
         <Image
           width={550}
           height={450}
@@ -83,7 +85,7 @@ function ProductCard(props: cardInterface) {
           </span>
         </div>
         <div className="opacity-75 text-gray-200  text-lg font-normal leading-normal">
-          {customTruncateHandler(props?.data?.EventDescription[0]?.comp_details, 45)}
+          {customTruncateHandler(props?.data?.EventDescription[0]?.comp_details, 40)}
         </div>
         <hr className=" opacity-20 mt-4" />
         <div className=" mt-2">

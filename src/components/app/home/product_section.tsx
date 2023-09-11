@@ -152,7 +152,7 @@ function ProductSection(props: producctInterface) {
           
         )}
 
-        <Slider ref={slide} {...settings}>
+        <Slider ref={slide} {...settings} >
           {products.map((item, index) => {
             return (
               <div key={index} className="">
