@@ -16,6 +16,8 @@ interface producctInterface {
   subTitle: string;
   center: boolean;
   slidesToShow?: number;
+  breakpointScreens?: Array<number>;
+  breakpoint?: Array<number>;
 }
 function VideoSlider(props: producctInterface) {
   const { lang } = useSelector((state: RootState) => state.layout);
@@ -68,17 +70,17 @@ function VideoSlider(props: producctInterface) {
     initialSlide: 0,
     responsive: [
       {
-        breakpoint: 1024,
+        breakpoint: props?.breakpointScreens && props?.breakpointScreens[0] !== undefined ? props?.breakpointScreens[0] : 1024,
         settings: {
-          slidesToShow: 3,
-          slidesToScroll: 2,
+          slidesToShow: props?.breakpoint && props?.breakpoint[0] !== undefined ? props?.breakpoint[0] : 3,
+          slidesToScroll: 1,
           initialSlide: 0,
         },
       },
       {
-        breakpoint: 800,
+        breakpoint: props?.breakpointScreens && props?.breakpointScreens[1] !== undefined ? props?.breakpointScreens[1] : 800,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: props?.breakpoint && props?.breakpoint[1] !== undefined ? props?.breakpoint[1] : 2,
           slidesToScroll: 1,
           initialSlide: 0,
           centerMode: false,
@@ -86,11 +88,11 @@ function VideoSlider(props: producctInterface) {
       },
 
       {
-        breakpoint: 640,
+        breakpoint: props?.breakpointScreens && props?.breakpointScreens[2] !== undefined ? props?.breakpointScreens[2] : 640,
         settings: {
-          initialSlide: 0,
-          slidesToShow: 1,
+          slidesToShow: props?.breakpoint && props?.breakpoint[2] !== undefined ? props?.breakpoint[2] : 1,
           slidesToScroll: 1,
+          initialSlide: 0,
           centerMode: false,
         },
       },
@@ -98,7 +100,7 @@ function VideoSlider(props: producctInterface) {
   };
   return (
     <div className="relative  w-full ">
-      <div className=" relative flex flex-col md:flex-row h-28 md:h-auto py-6  items-center w-full md:justify-between mb-6">
+      <div className=" mt-4 md:mt-10 relative flex flex-col md:flex-row h-28 md:h-auto py-6  items-center w-full md:justify-between mb-6">
         <div>
           <p className="text-gray-200 !text-xl sm:!text-3xl lg:!text-5xl font-black uppercase  ">
             {props?.title}

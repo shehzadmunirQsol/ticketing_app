@@ -8,12 +8,15 @@ import Tabs from './Tabs';
 import AccordianFaqs from './Faqs';
 import { useRouter } from 'next/router';
 import { trpc } from '~/utils/trpc';
+import { useSelector } from 'react-redux';
+import { RootState } from '~/store/store';
 
 const ProductDetail = () => {
   const router = useRouter();
+  const { lang } = useSelector((state: RootState) => state.layout)
   const id = Number(router.query.id);
   const { data } = trpc.event.getEventsById.useQuery(
-    { id },
+    { id: id, lang_id: lang.lang_id },
     {
       refetchOnWindowFocus: false,
       onSuccess: () => {
@@ -27,19 +30,27 @@ const ProductDetail = () => {
   console.log(id, typeof id, 'i am id work');
   console.log(data?.data, 'i am data work');
   return (
-    <div>
-      <Tabs />
-      <ImageSlider data={data?.data} ticketPurchased={data?.ticketPurchased} />
-      <div className="lg:px-10 md:px-10 px-6">
-        <EntiresDetail />
-        <VideoSection />
+    <>
+      <div className='px-4 md:px-14'>
+        <Tabs />
+        <ImageSlider data={data?.data} ticketPurchased={data?.ticketPurchased} />
+        <div >
+          <EntiresDetail />
+          <VideoSection />
+        </div>
+        <div >
+        </div>
+
       </div>
       <LiveDraw />
-      <div className="lg:px-10 md:px-10 px-6 ">
-        <CompititionDetail />
+
+      <div className='px-4 md:px-14'>
+
+        <CompititionDetail data={data?.data} />
         <AccordianFaqs />
       </div>
-    </div>
+
+    </>
   );
 };
 

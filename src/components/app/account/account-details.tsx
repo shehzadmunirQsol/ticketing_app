@@ -30,7 +30,7 @@ import { useToast } from '~/components/ui/use-toast';
 const AccountDetails = () => {
   const { toast } = useToast();
   const { user, isLogin } = useSelector((state: RootState) => state.auth);
-  console.log(user, 'HSDKDHJSHS');
+  console.log(user, 'user');
   // 1. Define your form.
   const form = useForm<accountsDetailSchemaInput>({
     resolver: zodResolver(accountsDetailSchemaInput),
@@ -218,14 +218,14 @@ function PasswordChange({ email }: any) {
 
   // handle account detail
   async function onSubmitAccountPassword(values: any) {
-    console.log('i am inner MAINSU');
+    
     try {
       const payload: any = {
         email: email,
         ...values,
       };
       const resp = await updateCustomerPassword.mutateAsync(payload);
-      console.log(resp, 'HSSHJSJJAKAJ MAINSU');
+      console.log({resp});
     } catch (e: any) {
       toast({
         variant: 'destructive',
@@ -236,7 +236,7 @@ function PasswordChange({ email }: any) {
 
   return (
     <div className="py-4 px-6 text-[#eaeaea]">
-      <p className=" font-bold text-2xl text-white">Personal information</p>
+      <p className=" font-bold text-2xl text-white">Password change</p>
       <div>
         <Form {...form}>
           <form

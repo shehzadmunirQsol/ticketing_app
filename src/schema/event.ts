@@ -109,5 +109,6 @@ export type GetEventSchema = z.infer<typeof getEventSchema>;
 
 export const getEventsByIdSchema = z.object({
   id: z.number(),
+  lang_id: z.number().optional(),
   type: z.enum(['admin', 'client']).optional(),
 });

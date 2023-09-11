@@ -31,8 +31,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '~/components/ui/select';
-import { Editor } from 'primereact/editor';
 import { EventFormSchema } from '~/schema/event';
+import { Editor } from 'primereact/editor';
 //theme
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
 //core
@@ -227,9 +227,7 @@ export default function EventForm() {
     ]);
   }
   async function singleImageHandler(originalFile: File) {
-    console.log(originalFile, 'originalFile');
     const optimizedFile = await compressImage(originalFile);
-    // console.log(type, 'typeof originalFile');
     setOptimizeFile(optimizedFile);
   }
   async function uploadOnS3Handler(originalFile: any) {
@@ -259,10 +257,10 @@ export default function EventForm() {
   function setFormData(payload: EventDataType) {
     if (payload?.data) {
       const en = payload.data?.EventDescription?.find(
-        (desc) => desc.lang_id === 1,
+        (desc: any) => desc.lang_id === 1,
       );
       const ar = payload.data?.EventDescription?.find(
-        (desc) => desc.lang_id === 2,
+        (desc: any) => desc.lang_id === 2,
       );
 
       form.setValue('en.name', en?.name as string);

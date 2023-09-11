@@ -16,7 +16,7 @@ const CarsPage = () => {
     lang_id: lang?.lang_id,
     first: 0,
     rows: 9,
-    category_id: 2,
+    category_id: 1,
   };
   const [filters, setFilters] = useState({
     ...eventFilters,

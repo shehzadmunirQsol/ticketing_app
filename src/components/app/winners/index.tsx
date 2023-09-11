@@ -18,14 +18,14 @@ export const Winners = () => {
     rows: 9,
   });
 
-  const { data:winnersList, refetch } = trpc.winner.getWinnersById.useQuery(
-    filters ,
+  const { data: winnersList, refetch } = trpc.winner.getWinnersById.useQuery(
+    filters,
     {
       refetchOnWindowFocus: false,
       // enabled: user?.id ? true : false,
     },
   );
-  console.log(winnersList,"winnerList")
+  console.log(winnersList, "winnerList")
 
 
 
@@ -43,7 +43,7 @@ export const Winners = () => {
       setFilters({ ...filters, first: 1 + filters.first });
     }
   }
-console.log(products,"state")
+  console.log(products, "state")
   return (
     <div>
       <div className="relative pt-24 "></div>
@@ -51,25 +51,31 @@ console.log(products,"state")
       <div className="h-full px-10 py-20">
         <Glow className=" absolute  top-[560px] -left-16  p-2   w-1/5 h-[350px]  " />
         <Glow className=" absolute bottom-[750px]  lg:bottom-[440px] md:bottom-[440px] -right-16  w-1/5 h-[350px] -z-2 " />
-        <div className=" grid grid-cols-1 md:grid-cols-2     lg:grid-cols-3   justify-between max-w-[1500px] mx-auto ">
-          {products?.map((itemList, i) => {
-            return (
-              <div className="mx-auto py-2 md:py-0" key={i}>
-                <WinnarsCard
-                  isLast={i === products.length - 1}
-                  nextPage={nextPage}
-                  dir={lang.dir}
-                  cash={Cash}
-                  data={itemList}
-                  class="z-50 h-full max-w-sm lg:max-w-2xl md:scale-95  w-full  "
-                />
-              </div>
-            );
-          })}
-        </div>
+        {products.length == 0 ?
+          <h2 className="py-20 md:py-40 lg:py-48 text-center text-2xl md:text-4xl lg:text-5xl font-black uppercase">
+            No Winners Selected yet
+          </h2>
+          : (<div className=" grid grid-cols-1 md:grid-cols-2     lg:grid-cols-3   justify-between max-w-[1500px] mx-auto ">
+            {products?.map((itemList: any, i: any) => {
+              return (
+                <div className="mx-auto py-2 md:py-0" key={i}>
+                  <WinnarsCard
+                    isLast={i === products.length - 1}
+                    nextPage={nextPage}
+                    dir={lang.dir}
+                    cash={Cash}
+                    data={itemList}
+                    class="z-50 h-full max-w-sm lg:max-w-2xl md:scale-95  w-full  "
+                  />
+                </div>
+              );
+            })}
+          </div>
+          )
+        }
 
         {/* doudt should it load more on action or automatically */}
-        {products.length != winnersList?.count ? (
+        {/* {products.length != winnersList?.count ? (
           <div className="w-fit mx-auto">
             <div className="text-center my-4">
               <p className="tracking-tight font-bold">Load More</p>
@@ -78,7 +84,7 @@ console.log(products,"state")
           </div>
         ) : (
           ''
-        )}
+        )} */}
       </div>
     </div>
   );

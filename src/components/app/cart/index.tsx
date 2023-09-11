@@ -80,18 +80,18 @@ export default function CartPage() {
   console.log({ userTicketLimit: userTicketLimits });
 
   return (
-    <div className="relative mt-24">
+    <div className="relative mt-24 z-20">
       {count === 0 ? (
         <h2 className="py-20 md:py-40 lg:py-48 text-center text-2xl md:text-4xl lg:text-5xl font-black uppercase">
           No items in the Cart
         </h2>
       ) : (
         <>
-          <div className="relative bg-background py-6 px-4 space-y-10 md:py-16 md:px-14 md:space-y-14">
-            <h2 className="text-2xl md:text-4xl lg:text-5xl font-black uppercase">
+          <div className="relative bg-background py-6 px-4 space-y-10 md:py-16 md:px-14 md:space-y-14 -z-30 ">
+            <h2 className="text-2xl md:text-4xl lg:text-5xl z-10 font-black uppercase">
               Basket
             </h2>
-            <div data-name="cards" className="w-full border-b border-white/40">
+            <div data-name="cards" className="w-full z-10 border-b border-white/40">
               {cart?.cartItems?.map((cartItem) => {
                 const userTicketLimit = userTicketLimits?.data?.find(
                   (userLimit) => userLimit?.event_id === cartItem?.event_id,
@@ -111,8 +111,8 @@ export default function CartPage() {
                 );
               })}
             </div>
-            <div className="bg-background space-y-4 w-1/3 ml-auto">
-              <div className="flex bg-card border border-border">
+            <div className="bg-transparent space-y-4 w-1/3 z-10 ml-auto">
+              <div className="flex bg-card border border-border rounded-md">
                 <Input
                   placeholder="Coupon code"
                   type="text"
@@ -162,13 +162,12 @@ export default function CartPage() {
                 </Button>
               </Link>
             </div>
-            <Glow className="absolute right-0 bottom-0 w-1/5 h-40 overflow-hidden" />
+            <Glow className="absolute right-0 -z-20 bottom-0 w-1/5 h-40 overflow-hidden" />
           </div>
 
-          <div className="py-10 pl-14 pr-4">
-            {/* 13 cards */}
+          <div className="py-10 pl-14 pr-4 -z-40">
             <ProductSection
-              class="max-w-sm lg:max-w-sm"
+              class="max-w-sm lg:max-w-[26rem]"
               slidesToShow={3}
               center={false}
               title={'Last chance offer'}

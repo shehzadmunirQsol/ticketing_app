@@ -23,8 +23,8 @@ export const contactRouter = router({
         if (payload?.code) delete payload.code;
         const mailOptions = {
           template_id: 4,
-          from: 'shehzadmunir.qsols@gmail.com',
-          to: 'muzammil.devqsols@gmail.com',
+          from: payload.email,
+          to: process.env.ADMIN,
           subject: 'Contact us request to Winnar ',
           params :{
             user_name:payload.name,

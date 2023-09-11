@@ -7,10 +7,14 @@ import AccountDetails from './account-details';
 import { trpc } from '~/utils/trpc';
 import { useToast } from '~/components/ui/use-toast';
 import { useRouter } from 'next/router';
+import { useDispatch } from 'react-redux';
+import { addCart } from '~/store/reducers/cart';
+import { userLogout } from '~/store/reducers/auth';
 
 const Account = () => {
   const { toast } = useToast();
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const [counter, setCounter] = useState(0);
 
@@ -35,6 +39,17 @@ const Account = () => {
       localStorage.removeItem('winnar-token');
       localStorage.removeItem('customer');
       router.replace('/login');
+      dispatch(userLogout());
+      dispatch(
+        addCart({
+          id: null,
+          customer_id: null,
+          isDiscount: false,
+          discount: 0,
+          isPercentage: false,
+          cartItems: [],
+        }),
+      );
     } catch (error: any) {
       console.log('Error ', error);
       toast({

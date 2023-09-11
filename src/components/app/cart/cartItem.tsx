@@ -128,7 +128,7 @@ export default function CartItem(props: CartItemProp) {
             />
           </div>
         </div>
-        <div className="flex-1 flex items-start justify-between space-x-4">
+        <div className="flex-1 flex items-center justify-between space-x-4">
           <Link
             href={`/product-detail/${cartItem?.event_id}`}
             className="hidden mdx:block text-xl xl:text-2xl "
@@ -137,7 +137,7 @@ export default function CartItem(props: CartItemProp) {
             {/* Win This 800BHP Ferrari E63s Night Edition + AED 1,000 Cash! */}
           </Link>
           <div className="flex flex-col space-y-2">
-            <div className="flex justify-between items-start min-w-[450px] w-1/2 max-w-[550px]">
+            <div className="flex justify-between items-center min-w-[450px] w-1/2 max-w-[550px]">
               <div className="bg-card flex items-center justify-between overflow-hidden ">
                 <Button
                   className="p-2 bg-primary text-background"
@@ -169,16 +169,20 @@ export default function CartItem(props: CartItemProp) {
                 AED: {(cartItem?.quantity * cartItem?.Event?.price)?.toFixed(2)}{' '}
               </p>
               <div className="space-y-2">
-                <div className="flex items-center gap-3">
-                  <p className={isSubscribe ? 'text-white' : 'text-white/40'}>
-                    Subscription
-                  </p>
-                  <Switch
-                    disabled={addToBasket.isLoading}
-                    onClick={toggleSwitch}
-                    checked={isSubscribe}
-                  />
-                </div>
+                {true ? (
+                  <></>
+                ) : (
+                  <div className="flex items-center gap-3">
+                    <p className={isSubscribe ? 'text-white' : 'text-white/40'}>
+                      Subscription
+                    </p>
+                    <Switch
+                      disabled={addToBasket.isLoading}
+                      onClick={toggleSwitch}
+                      checked={isSubscribe}
+                    />
+                  </div>
+                )}
               </div>
             </div>
 

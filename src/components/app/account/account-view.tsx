@@ -15,14 +15,14 @@ const AccountView = ({ control }: any) => {
   const { lang } = useSelector((state: RootState) => state.layout)
   console.log({ customer }, 'customer');
 
-  const { data: orders,isFetched } = trpc.order.getOrders.useQuery({
-    // id: customer?.data?.id
-    id: 13,
-    lang_id: lang.lang_id
-
-  }, {
-    refetchOnMount: false
-  });
+    const { data: orders,isFetched } = trpc.order.getOrders.useQuery({
+      customer_id: customer?.data?.id,
+      lang_id: lang.lang_id
+  
+    }, {
+      refetchOnMount: false,
+      enabled:customer?.data?.id ?true:false
+    });
 
   console.log({ orders }, "orders")
 
@@ -120,7 +120,7 @@ function CurrentandPast(data: any) {
       </div>
 
       <div className="w-full py-4 border-[1px] border-t-0 border-[#808080] h-fit rounded-b-md">
-        {displayArray?.length === 0 ? (
+        {displayArray==undefined || displayArray?.length === 0 ? (
           <div className="flex flex-col my-auto h-full items-center justify-center">
             <Image src={Current} alt="/" />
             <p className="text-center text-gray-300 text-md my-2 px-6">
