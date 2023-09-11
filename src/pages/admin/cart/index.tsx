@@ -1,6 +1,6 @@
 import { NextPageWithLayout } from '~/pages/_app';
-import Orders from '~/components/admin/orders/orders';
+import CartTable from '~/components/admin/cart/index';
 
-const IndexPage: NextPageWithLayout = () => <Orders />;
+const IndexPage: NextPageWithLayout = () => <CartTable />;
 
 export default IndexPage;

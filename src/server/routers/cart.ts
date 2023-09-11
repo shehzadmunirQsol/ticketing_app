@@ -5,6 +5,7 @@ import {
   getCartSchema,
   getTicketPurchasedSchema,
   removeCartItemSchema,
+  getCartItemsSchema,
 } from '~/schema/cart';
 import { prisma } from '~/server/prisma';
 import { verifyJWT } from '~/utils/jwt';
@@ -63,6 +64,77 @@ export const cartRouter = router({
       });
     }
   }),
+  getCartItems: publicProcedure
+    .input(getCartItemsSchema)
+    .query(async ({ input }) => {
+      try {
+        const payload = {
+          is_deleted: false,
+        };
+
+        const totalItemsPromise = prisma.cartItem.count({
+          where: payload,
+        });
+
+        const cartItemsPromise = prisma.cartItem.findMany({
+          orderBy: { created_at: 'desc' },
+          skip: input.rows * input.first,
+          take: input.rows,
+          where: payload,
+          select: {
+            id: true,
+            created_at: true,
+            updated_at: true,
+            quantity: true,
+            is_subscribe: true,
+            subscription_type: true,
+            Event: {
+              select: {
+                id: true,
+                thumb: true,
+                price: true,
+                EventDescription: {
+                  where: { lang_id: 1 },
+                  select: {
+                    name: true,
+                  },
+                },
+              },
+            },
+            Cart: {
+              select: {
+                Customer: {
+                  select: {
+                    id: true,
+                    email: true,
+                    first_name: true,
+                  },
+                },
+              },
+            },
+          },
+        });
+
+        const [totalItems, cartItems] = await Promise.all([
+          totalItemsPromise,
+          cartItemsPromise,
+        ]);
+
+        if (!cartItems?.length) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Cart Items not found',
+          });
+        }
+
+        return { message: 'Cart found', data: cartItems, count: totalItems };
+      } catch (error: any) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: error?.message,
+        });
+      }
+    }),
   getUserTicketLimit: publicProcedure
     .input(getTicketPurchasedSchema)
     .query(async ({ input, ctx }) => {

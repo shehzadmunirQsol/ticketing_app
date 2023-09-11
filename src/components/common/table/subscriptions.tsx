@@ -63,7 +63,7 @@ export default function SubscriptionDataTable() {
     refetchOnWindowFocus: false,
   });
   console.log({ data });
-  const categoryData = React.useMemo(() => {
+  const subscriptionData = React.useMemo(() => {
     return Array.isArray(data?.data) ? data?.data : [];
   }, [data]);
   const columns: ColumnDef<Category>[] = [
@@ -74,14 +74,14 @@ export default function SubscriptionDataTable() {
         return (
           <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
             <Image
-              className="object-cover bg-ac-2 h-10 w-16 rounded-lg"
+              className="object-contain bg-ac-2 h-10 w-16 rounded-lg"
               src={renderNFTImage(row.original.Event)}
               alt={row?.original?.Event?.EventDescription[0]?.name}
               width={100}
               height={100}
             />
 
-            <p className="text-base font-normal">
+            <p className="w-40 text-ellipsis whitespace-nowrap overflow-hidden">
               {row?.original?.Event?.EventDescription[0]?.name}
             </p>
           </div>
@@ -92,18 +92,18 @@ export default function SubscriptionDataTable() {
       accessorKey: 'ticket_price',
       header: 'Ticket Price',
       cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap ">
-          AED {(row?.original?.ticket_price).toFixed(2)}
-        </div>
+        <p className="w-20 text-center text-ellipsis whitespace-nowrap overflow-hidden">
+          {(row?.original?.ticket_price).toFixed(2)}
+        </p>
       ),
     },
     {
       accessorKey: 'Quantity',
       header: 'Quantity',
       cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap ">
+        <p className="w-20 text-center text-ellipsis whitespace-nowrap overflow-hidden">
           {(row?.original?.quantity).toFixed(2)}
-        </div>
+        </p>
       ),
     },
     {
@@ -180,7 +180,7 @@ export default function SubscriptionDataTable() {
     // },
   ];
   const table = useReactTable({
-    data: categoryData as Category[],
+    data: subscriptionData as Category[],
     columns,
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),

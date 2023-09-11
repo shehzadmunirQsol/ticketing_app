@@ -13,6 +13,7 @@ import { paymentRouter } from './payment';
 import { orderRouter } from './order';
 import { cmsRouter } from './cms';
 import { subscriptionRouter } from './subscription';
+import { dashboardRouter } from './dashboard';
 
 export const appRouter = router({
   admin: adminUserRouter,
@@ -29,6 +30,7 @@ export const appRouter = router({
   payment: paymentRouter,
   order: orderRouter,
   subscription: subscriptionRouter,
+  dashboard: dashboardRouter,
 });
 
 export type AppRouter = typeof appRouter;

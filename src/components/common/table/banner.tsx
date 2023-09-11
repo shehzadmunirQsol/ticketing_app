@@ -14,7 +14,6 @@ import {
 import { ChevronDown, MoreHorizontal } from 'lucide-react';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 import { Button } from '@/ui/button';
-import { Checkbox } from '@/ui/checkbox';
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -35,18 +34,12 @@ import {
 import { trpc } from '~/utils/trpc';
 import Image from 'next/image';
 import { renderNFTImage } from '~/utils/helper';
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '../../ui/select';
+
 import Link from 'next/link';
 import { Switch } from '~/components/ui/switch';
 import { SettingDialog } from '../modal/setting';
 import { LoadingDialog } from '../modal/loadingModal';
+import LanguageSelect, { LanguageInterface } from '../language_select';
 
 export default function DataTableBanner() {
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -64,17 +57,12 @@ export default function DataTableBanner() {
   const [orderFilters, setOrderFilters] = React.useState({
     ...initialOrderFilters,
   });
-  const {
-    data: BannerApiData,
-    refetch,
-    isFetched,
-    isLoading,
-    isError,
-  } = trpc.settings.get_banner.useQuery(orderFilters, {
-    refetchOnWindowFocus: false,
+  const { data, refetch, isFetched, isLoading, isError } =
+    trpc.settings.get_banner.useQuery(orderFilters, {
+      refetchOnWindowFocus: false,
 
-    // enabled: user?.id ? true : false,
-  });
+      // enabled: user?.id ? true : false,
+    });
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     [],
   );
@@ -94,28 +82,6 @@ export default function DataTableBanner() {
   };
   const columns: ColumnDef<any>[] = [
     {
-      id: 'select',
-      header: ({ table }) => (
-        <Checkbox
-          checked={table.getIsAllPageRowsSelected()}
-          onCheckedChange={(value: any) =>
-            table.toggleAllPageRowsSelected(!!value)
-          }
-          aria-label="Select all"
-        />
-      ),
-      cell: ({ row }) => (
-        <Checkbox
-          checked={row.getIsSelected()}
-          onCheckedChange={(value) => row.toggleSelected(!!value)}
-          aria-label="Select row"
-        />
-      ),
-      enableSorting: false,
-      enableHiding: false,
-    },
-
-    {
       id: 'title',
       header: 'Title',
 
@@ -124,23 +90,19 @@ export default function DataTableBanner() {
           row?.original?.value && JSON?.parse(row?.original?.value);
 
         return (
-          <>
-            <div className="flex items-center space-x-2 gap-2">
-              <Image
-                className="object-cover bg-ac-2   h-10 w-10 rounded-lg"
-                src={renderNFTImage(payment)}
-                alt={row?.original?.title}
-                width={32}
-                height={32}
-              />
+          <div className="flex items-center gap-2">
+            <Image
+              className="object-contain bg-ac-2 h-10 w-16 rounded-lg"
+              src={renderNFTImage(payment)}
+              alt={row?.original?.title}
+              width={32}
+              height={32}
+            />
 
-              <p className=" ">
-                {/* {customTruncateHandler(payment?.title, 15)} */}
-                {row?.original?.title}
-              </p>
-              {/* <p>{nft?.name}</p> */}
-            </div>
-          </>
+            <p className="w-40 text-ellipsis whitespace-nowrap overflow-hidden">
+              {row?.original?.title}
+            </p>
+          </div>
         );
       },
     },
@@ -149,7 +111,11 @@ export default function DataTableBanner() {
       header: 'Description',
 
       cell: ({ row }) => {
-        return <>{row?.original?.description}</>;
+        return (
+          <p className="w-40 text-ellipsis whitespace-nowrap overflow-hidden">
+            {row?.original?.description}
+          </p>
+        );
       },
     },
 
@@ -158,7 +124,11 @@ export default function DataTableBanner() {
       header: 'Model',
 
       cell: ({ row }) => {
-        return <>{row?.original?.model}</>;
+        return (
+          <p className="w-40 text-ellipsis whitespace-nowrap overflow-hidden">
+            {row?.original?.model}
+          </p>
+        );
       },
     },
     {
@@ -166,7 +136,11 @@ export default function DataTableBanner() {
       header: 'Link',
 
       cell: ({ row }) => {
-        return <>{row?.original?.link}</>;
+        return (
+          <p className="w-40 text-ellipsis whitespace-nowrap overflow-hidden">
+            {row?.original?.link}
+          </p>
+        );
       },
     },
     {
@@ -174,7 +148,11 @@ export default function DataTableBanner() {
       header: 'Price',
 
       cell: ({ row }) => {
-        return <>{row?.original?.price}</>;
+        return (
+          <p className="w-40 text-ellipsis whitespace-nowrap overflow-hidden">
+            {row?.original?.price}
+          </p>
+        );
       },
     },
     {
@@ -182,7 +160,11 @@ export default function DataTableBanner() {
       header: 'Date',
 
       cell: ({ row }) => {
-        return <>{row?.original?.date}</>;
+        return (
+          <p className="w-40 text-ellipsis whitespace-nowrap overflow-hidden">
+            {row?.original?.date}
+          </p>
+        );
       },
     },
     {
@@ -233,11 +215,13 @@ export default function DataTableBanner() {
       },
     },
   ];
+
+  const bannerData = React.useMemo(() => {
+    return Array.isArray(data) ? data : [];
+  }, [data]);
+
   const table = useReactTable({
-    data:
-      BannerApiData !== undefined && BannerApiData && isFetched && !isError
-        ? BannerApiData
-        : [],
+    data: bannerData,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -254,28 +238,21 @@ export default function DataTableBanner() {
       rowSelection,
     },
   });
-  function toggleLanguageHandler(lang: 'en' | 'ar') {
+
+  function languageHandler(params: LanguageInterface) {
     setOrderFilters((prevFilters: any) => ({
       ...prevFilters,
-      lang_id: lang === 'ar' ? 2 : 1,
+      lang_id: params.id,
     }));
   }
+
   return (
     <div className="w-full">
       <div className="flex justify-between items-center py-4">
         <div></div>
         <div className="flex gap-2">
-          <Select onValueChange={toggleLanguageHandler}>
-            <SelectTrigger className="h-10 px-4 py-2 rounded-none ">
-              <SelectValue placeholder="EN" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem value="en">EN</SelectItem>
-                <SelectItem value="ar">AR</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+          <LanguageSelect languageHandler={languageHandler} />
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="ml-auto">
@@ -307,7 +284,7 @@ export default function DataTableBanner() {
       <div className="rounded-md border border-border">
         <ScrollArea className="w-full ">
           <ScrollBar orientation="horizontal"></ScrollBar>
-          <Table>
+          <Table className="w-[90vw] md:w-full">
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
@@ -359,10 +336,6 @@ export default function DataTableBanner() {
         </ScrollArea>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of{' '}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
-        </div>
         <div className="space-x-2">
           <Button
             variant="outline"

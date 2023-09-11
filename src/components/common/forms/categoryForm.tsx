@@ -19,13 +19,9 @@ import { trpc } from '~/utils/trpc';
 import { useRouter } from 'next/router';
 import { compressImage } from '~/utils/helper';
 import { LoadingDialog } from '../modal/loadingModal';
-import { LanguageInterface } from '../language_select';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
 
-interface CategoryFormInterface {
-  language: LanguageInterface;
-}
-
-export default function CategoryForm(props: CategoryFormInterface) {
+export default function CategoryForm() {
   const [image, setImage] = useState<File>();
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -127,11 +123,11 @@ export default function CategoryForm(props: CategoryFormInterface) {
 
   const langError =
     form.formState.errors?.en && form.formState.errors?.ar
-      ? 'Kindly provide information in both English and Arabic fields.'
+      ? 'Kindly provide information in both English and Arabic language.'
       : form.formState.errors?.en && !form.formState.errors?.ar
-      ? 'Kindly provide information in English fields.'
+      ? 'Kindly provide information in English language.'
       : !form.formState.errors?.en && form.formState.errors?.ar
-      ? 'Kindly provide information in Arabic fields.'
+      ? 'Kindly provide information in Arabic language.'
       : '';
 
   return (
@@ -156,74 +152,82 @@ export default function CategoryForm(props: CategoryFormInterface) {
           ''
         )}
 
-        <div className={props.language.code === 'en' ? 'block' : 'hidden'}>
-          <FormField
-            control={form.control}
-            name="en.name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>
-                  Name <sup className="text-md text-red-500">*</sup>
-                </FormLabel>
-                <FormControl>
-                  <Input placeholder="Enter Category Name" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="en.desc"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>
-                  Description <sup className="text-md text-red-500">*</sup>
-                </FormLabel>
-                <FormControl>
-                  <Textarea placeholder="Enter Description..." {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-        <div
-          dir="ltr"
-          className={props.language.code === 'ar' ? 'block' : 'hidden'}
-        >
-          <FormField
-            control={form.control}
-            name="ar.name"
-            render={({ field }) => (
-              <FormItem dir="rtl">
-                <FormLabel>
-                  اسم <sup className="text-md text-red-500">*</sup>
-                </FormLabel>
-                <FormControl>
-                  <Input placeholder="Enter Category Name" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+        <Tabs defaultValue={'en'} className="w-full">
+          <TabsList>
+            <TabsTrigger value="en">English</TabsTrigger>
+            <TabsTrigger value="ar">Arabic</TabsTrigger>
+          </TabsList>
+          <TabsContent value="en">
+            <div>
+              <FormField
+                control={form.control}
+                name="en.name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Name <sup className="text-md text-red-500">*</sup>
+                    </FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter Category Name" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="en.desc"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Description <sup className="text-md text-red-500">*</sup>
+                    </FormLabel>
+                    <FormControl>
+                      <Textarea placeholder="Enter Description..." {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </TabsContent>
+          <TabsContent value="ar">
+            <div dir="ltr">
+              <FormField
+                control={form.control}
+                name="ar.name"
+                render={({ field }) => (
+                  <FormItem dir="rtl">
+                    <FormLabel>
+                      اسم <sup className="text-md text-red-500">*</sup>
+                    </FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter Category Name" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-          <FormField
-            control={form.control}
-            name="ar.desc"
-            render={({ field }) => (
-              <FormItem dir="rtl">
-                <FormLabel>
-                  وصف <sup className="text-md text-red-500">*</sup>
-                </FormLabel>
-                <FormControl>
-                  <Textarea placeholder="...أدخل الوصف" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
+              <FormField
+                control={form.control}
+                name="ar.desc"
+                render={({ field }) => (
+                  <FormItem dir="rtl">
+                    <FormLabel>
+                      وصف <sup className="text-md text-red-500">*</sup>
+                    </FormLabel>
+                    <FormControl>
+                      <Textarea placeholder="...أدخل الوصف" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </TabsContent>
+        </Tabs>
+
         <div className="flex justify-between">
           <div></div>
           <Button type="submit" variant={'clip'}>
