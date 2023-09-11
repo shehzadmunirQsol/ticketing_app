@@ -293,6 +293,7 @@ export const eventRouter = router({
                 id: true,
                 lang_id: true,
                 desc: true,
+                name:true,
                 comp_details: true,
               },
             },
