@@ -40,10 +40,6 @@ export default function DashboardPage() {
             </div>
           </div>
           <Tabs defaultValue="overview" className="space-y-4">
-            {/* <TabsList>
-              <TabsTrigger value="overview">Overview</TabsTrigger>
-              
-            </TabsList> */}
             <TabsContent value="overview" className="space-y-4">
               <AnalyticsCard />
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
@@ -58,9 +54,7 @@ export default function DashboardPage() {
                 <Card className="col-span-3">
                   <CardHeader className="text-muted-foreground ">
                     <CardTitle>Recent Sales</CardTitle>
-                    <CardDescription>
-                      You made 265 sales this month.
-                    </CardDescription>
+                    <CardDescription></CardDescription>
                   </CardHeader>
                   <CardContent>
                     <RecentSales />
@@ -76,9 +70,9 @@ export default function DashboardPage() {
 }
 const AnalyticsCard = () => {
   const { data, isLoading } = trpc.dashboard.analytics.useQuery();
-  
+
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 ">
+    <div className="grid xss:grid-cols-1  text-white xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-12 gap-4 mt-4 justify-center align-middle ">
       {isLoading ? (
         <div className=" col-span-2 lg:col-span-4 items-center m-auto">
           <i className="fa-solid fa-circle-notch transition-all animate-spin text-lg  "></i>
@@ -86,7 +80,12 @@ const AnalyticsCard = () => {
       ) : data?.data ? (
         data?.data.map((item: any, index: number) => {
           return (
-            <Card key={index} className="text-white">
+            <Card
+              key={index}
+              className={`${
+                item?.cols ? ' col-span-6 ' : 'col-span-4'
+              } text-white   group cursor-pointer xss:max-w-2xl xs:max-w-2xl sm:max-w-2xl md:max-w-4xl border  rounded-lg shadow  `}
+            >
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm text-white font-medium">
                   {item?.title}
