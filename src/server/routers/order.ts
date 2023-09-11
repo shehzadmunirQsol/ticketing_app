@@ -417,7 +417,7 @@ async function CreatePayment(APidata: any) {
           entityId: process.env.TOTAN_ENTITY_ID,
           amount: APidata?.total_amount.toFixed(2),
           currency: 'AED',
-          // paymentType: 'DB',
+          paymentType: 'DB',
           paymentBrand: APidata?.paymentBrand,
 
           'card.number':
