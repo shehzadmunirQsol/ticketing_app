@@ -109,4 +109,40 @@ export const dashboardRouter = router({
       });
     }
   }),
+  chart: publicProcedure.query(async ({ ctx }) => {
+    try {
+      const token = ctx?.req?.cookies['winnar-admin-token'];
+
+      let userData;
+      if (token) {
+        userData = await verifyJWT(token);
+      } else {
+        return { data: null };
+      }
+      // const totalCustomerPromise = await prisma.order.groupBy({
+      //   by: {
+      //     month: {
+      //       // Use the `extract` function to extract the month from the date column
+      //       _in: prisma.$queryRaw`${prisma.order.created_at}.MONTH`,
+      //     },
+      //   },
+      //   where: {
+      //     is_deleted: false,
+      //     is_approved: true,
+      //   },
+      // });
+      const pendingCustomerPromise = await prisma.customer.count({
+        where: {
+          is_approved: false,
+        },
+      });
+
+      return { message: 'Chart Data', data: pendingCustomerPromise };
+    } catch (error: any) {
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: error?.message,
+      });
+    }
+  }),
 });

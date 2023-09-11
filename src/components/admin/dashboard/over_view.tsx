@@ -49,7 +49,7 @@ export default function DashboardPage() {
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
                 <Card className="col-span-4">
                   <CardHeader className="text-muted-foreground">
-                    <CardTitle>Overview</CardTitle>
+                    <CardTitle>Sales Overview</CardTitle>
                   </CardHeader>
                   <CardContent className="pl-2">
                     <Overview />
