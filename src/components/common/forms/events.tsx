@@ -14,11 +14,7 @@ import { Input } from '@/ui/input';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
-import {
-  FileInput,
-  ImageInput,
-  MultiFileInput,
-} from '~/components/common/file_input';
+import { ImageInput, MultiFileInput } from '~/components/common/file_input';
 import { trpc } from '~/utils/trpc';
 import { getS3ImageUrl } from '~/service/api/s3Url.service';
 import { compressImage, isValidImageType } from '~/utils/helper';
@@ -96,14 +92,14 @@ const formSchema = [
     name: 'launch_date',
     label: 'Launch Date',
 
-    placeholder: 'Please Enter Price',
+    placeholder: 'Please Enter Date',
   },
   {
     type: 'date',
     name: 'end_date',
     label: 'End Date',
 
-    placeholder: 'Please Enter Price',
+    placeholder: 'Please Enter Date',
   },
   {
     type: 'switch',
@@ -150,16 +146,17 @@ export default function EventForm() {
     },
   });
 
-  const { data: eventData }:any = trpc.event.getEventsById.useQuery(
-    { id: eventId, type: 'admin' },
-    {
-      refetchOnWindowFocus: false,
-      enabled: eventId > 0 ? true : false,
-      onSuccess: (payload) => {
-        setFormData(payload);
+  const { data: eventData, isLoading: isEventLoading } =
+    trpc.event.getEventsById.useQuery(
+      { id: eventId, type: 'admin' },
+      {
+        refetchOnWindowFocus: false,
+        enabled: eventId > 0 ? true : false,
+        onSuccess: (payload) => {
+          setFormData(payload);
+        },
       },
-    },
-  );
+    );
 
   const createEvent = trpc.event.create.useMutation();
   const updateEvent = trpc.event.update.useMutation();
@@ -230,9 +227,7 @@ export default function EventForm() {
     ]);
   }
   async function singleImageHandler(originalFile: File) {
-    console.log(originalFile, 'originalFile');
     const optimizedFile = await compressImage(originalFile);
-    // console.log(type, 'typeof originalFile');
     setOptimizeFile(optimizedFile);
   }
   async function uploadOnS3Handler(originalFile: any) {
@@ -262,10 +257,10 @@ export default function EventForm() {
   function setFormData(payload: EventDataType) {
     if (payload?.data) {
       const en = payload.data?.EventDescription?.find(
-        (desc:any) => desc.lang_id === 1,
+        (desc: any) => desc.lang_id === 1,
       );
       const ar = payload.data?.EventDescription?.find(
-        (desc:any) => desc.lang_id === 2,
+        (desc: any) => desc.lang_id === 2,
       );
 
       form.setValue('en.name', en?.name as string);
@@ -277,8 +272,14 @@ export default function EventForm() {
       form.setValue('cash_alt', payload.data?.cash_alt);
       form.setValue('category_id', payload.data?.category_id);
       form.setValue('is_cash_alt', payload.data?.is_cash_alt);
-      form.setValue('end_date', payload.data?.end_date);
-      form.setValue('launch_date', payload.data?.launch_date);
+      form.setValue(
+        'end_date',
+        payload.data?.end_date?.toISOString()?.split('T')[0] as any,
+      );
+      form.setValue(
+        'launch_date',
+        payload.data?.launch_date?.toISOString()?.split('T')[0] as any,
+      );
       form.setValue('price', payload.data?.price);
       form.setValue('thumb', payload.data?.thumb);
       form.setValue('total_tickets', payload.data?.total_tickets);
@@ -360,8 +361,8 @@ export default function EventForm() {
             <div>
               {form.formState.errors?.ar && form.formState.errors?.en && (
                 <div className="flex gap-2 items-center p-2  text-destructive bg-white bg-opacity-60 rounded-md">
-                  <i className="fa-solid fa-circle-info"></i>Please Fill English
-                  & Arabic form
+                  <i className="fa-solid fa-circle-info"></i>Kindly provide
+                  information in both English & Arabic language
                 </div>
               )}
             </div>
@@ -369,13 +370,13 @@ export default function EventForm() {
               {form.formState.errors?.en && !form.formState.errors?.ar && (
                 <div className="flex gap-2 items-center p-2  text-destructive bg-white bg-opacity-60 rounded-md">
                   <i className="fa-solid fa-circle-info"></i>
-                  <>Please Fill English form</>
+                  <>Kindly provide information in English language</>
                 </div>
               )}
               {!form.formState.errors?.en && form.formState.errors?.ar && (
                 <div className="flex gap-2 items-center p-2  text-destructive bg-white bg-opacity-60 rounded-md">
                   <i className="fa-solid fa-circle-info"></i>
-                  <>Please Fill Arabic form</>
+                  <>Kindly provide information in Arabic language</>
                 </div>
               )}
             </div>
@@ -511,7 +512,7 @@ export default function EventForm() {
             <div>
               <div className=" grid grid-cols-1 lg:grid-cols-2 gap-2  items-center">
                 {formSchema.map((item: any, i: number) => {
-                  if (item?.type == 'text' || item?.type == 'number') {
+                  if (item?.type == 'text') {
                     return (
                       <FormField
                         key={i}
@@ -522,11 +523,40 @@ export default function EventForm() {
                             <FormLabel>{item?.label}</FormLabel>
                             <FormControl>
                               <Input
-                                type={item?.type}
+                                type={'text'}
+                                placeholder={item?.placeholder}
+                                {...form.register(item.name)}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    );
+                  }
+                  if (item?.type == 'number') {
+                    const max =
+                      item?.name === 'user_ticket_limit'
+                        ? form.watch('total_tickets')
+                        : Infinity;
+
+                    return (
+                      <FormField
+                        key={i}
+                        control={form.control}
+                        name={item?.name}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>{item?.label}</FormLabel>
+                            <FormControl>
+                              <Input
+                                type={'number'}
+                                defaultValue={1}
+                                min={1}
+                                max={max}
                                 placeholder={item?.placeholder}
                                 {...form.register(item?.name, {
-                                  valueAsNumber:
-                                    item?.type == 'number' ? true : false,
+                                  valueAsNumber: true,
                                 })}
                               />
                             </FormControl>
@@ -537,22 +567,49 @@ export default function EventForm() {
                     );
                   }
                   if (item?.type == 'date') {
+                    const launchMinDate = new Date();
+                    console.log(form?.watch('launch_date'));
+                    console.log(form?.watch('end_date'));
+
+                    const launchDate = isNaN(
+                      form?.watch('launch_date')?.getTime(),
+                    )
+                      ? launchMinDate
+                      : form?.watch('launch_date');
+
+                    const minDate = (
+                      item?.name === 'launch_date' ? launchMinDate : launchDate
+                    )
+                      ?.toISOString()
+                      ?.split('T')[0];
+
+                    console.log({
+                      minDate,
+                      launchMinDate,
+                      launchDate,
+                    });
                     return (
-                      <div key={i}>
-                        <FormItem className=" flex flex-col gap-2 mt-2 w-full">
-                          <FormLabel>{item?.label}</FormLabel>
-                          <FormControl>
-                            <Input
-                              type={item?.type}
-                              placeholder={item?.placeholder}
-                              {...form.register(item?.name, {
-                                valueAsDate: true,
-                              })}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      </div>
+                      <FormField
+                        key={i}
+                        control={form.control}
+                        name={item?.name}
+                        render={({ field }) => (
+                          <FormItem className=" flex flex-col gap-2 mt-2 w-full">
+                            <FormLabel>{item?.label}</FormLabel>
+                            <FormControl>
+                              <Input
+                                type={'date'}
+                                placeholder={item?.placeholder}
+                                min={minDate}
+                                {...form.register(item?.name, {
+                                  valueAsDate: true,
+                                })}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
                     );
                   }
                   if (item?.type == 'switch') {
@@ -590,18 +647,16 @@ export default function EventForm() {
                                 onValueChange={(value) =>
                                   field.onChange(+value)
                                 }
-                                defaultValue={field.value + ''}
                                 value={field.value + ''}
                               >
                                 <FormControl>
-                                  <SelectTrigger className=" rounded-none  ">
+                                  <SelectTrigger className=" rounded-none bg-background ">
                                     <SelectValue
-                                      className="!bg-black"
-                                      placeholder={item?.placeholder}
+                                      placeholder={'Select Category'}
                                     />
                                   </SelectTrigger>
                                 </FormControl>
-                                <SelectContent className="">
+                                <SelectContent className="bg-background">
                                   <SelectGroup>
                                     {categoryData &&
                                       categoryData.map(
@@ -642,6 +697,8 @@ export default function EventForm() {
                                 <FormControl>
                                   <Input
                                     type={'number'}
+                                    defaultValue={1}
+                                    min={1}
                                     placeholder={item?.placeholder}
                                     {...form.register(item?.name, {
                                       valueAsNumber: true,
@@ -670,6 +727,9 @@ export default function EventForm() {
           </div>
         </form>
       </Form>
+      {eventId > 0 ? (
+        <LoadingDialog open={isEventLoading} text={'Loading...'} />
+      ) : null}
       <LoadingDialog open={isSubmitting} text={'Saving data...'} />
     </>
   );

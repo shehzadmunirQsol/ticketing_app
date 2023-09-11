@@ -35,130 +35,11 @@ import {
 import { trpc } from '~/utils/trpc';
 import Image from 'next/image';
 import { renderNFTImage } from '~/utils/helper';
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '../../ui/select';
 import Link from 'next/link';
 import { Switch } from '~/components/ui/switch';
 import { SettingDialog } from '../modal/setting';
 import { LoadingDialog } from '../modal/loadingModal';
-
-// export const columns: ColumnDef<any>[] = [
-//   {
-//     id: 'select',
-//     header: ({ table }) => (
-//       <Checkbox
-//         checked={table.getIsAllPageRowsSelected()}
-//         onCheckedChange={(value: any) =>
-//           table.toggleAllPageRowsSelected(!!value)
-//         }
-//         aria-label="Select all"
-//       />
-//     ),
-//     cell: ({ row }) => (
-//       <Checkbox
-//         checked={row.getIsSelected()}
-//         onCheckedChange={(value) => row.toggleSelected(!!value)}
-//         aria-label="Select row"
-//       />
-//     ),
-//     enableSorting: false,
-//     enableHiding: false,
-//   },
-
-//   {
-//     id: 'title',
-//     header: 'Title',
-
-//     cell: ({ row }) => {
-//       const payment = row?.original?.value && JSON?.parse(row?.original?.value);
-
-//       return (
-//         <>
-//           <div className="flex items-center space-x-2">
-//             <Image
-//               className="object-cover bg-ac-2   h-10 w-10 rounded-lg"
-//               src={renderNFTImage(payment)}
-//               alt={row?.original?.name}
-//               width={32}
-//               height={32}
-//             />
-
-//             <p className=" ">
-//               {/* {customTruncateHandler(payment?.title, 15)} */}
-//               {row?.original?.name}
-//             </p>
-//             {/* <p>{nft?.name}</p> */}
-//           </div>
-//         </>
-//       );
-//     },
-//   },
-//   {
-//     id: 'description',
-//     header: 'Description',
-
-//     cell: ({ row }) => {
-//       const payment = row?.original?.value && JSON?.parse(row?.original?.value);
-
-//       return <>{payment?.description}</>;
-//     },
-//   },
-
-//   {
-//     id: 'link',
-//     header: 'Link',
-
-//     cell: ({ row }) => {
-//       return <>{row?.original?.link}</>;
-//     },
-//   },
-//   {
-//     id: 'is_enabled',
-//     header: 'Enabled',
-
-//     cell: ({ row }) => {
-//       return (
-//         <>
-//           <Switch checked={row?.original?.is_enabled} />
-//         </>
-//       );
-//     },
-//   },
-
-//   {
-//     id: 'actions',
-//     enableHiding: false,
-//     cell: ({ row }) => {
-//       const payment = row?.original;
-//       console.log(row?.original, 'row?.original');
-
-//       return (
-//         <DropdownMenu>
-//           <DropdownMenuTrigger asChild>
-//             <Button variant="ghost" className="h-8 w-8 p-0 ">
-//               <span className="sr-only">Open menu</span>
-//               <MoreHorizontal className="h-4 w-4" />
-//             </Button>
-//           </DropdownMenuTrigger>
-//           <DropdownMenuContent align="end">
-//             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-
-//             <DropdownMenuSeparator />
-//             <Link href={`/admin/settings/spotlight/edit/${payment?.id}`}>
-//               <DropdownMenuItem>Edit Spot Light</DropdownMenuItem>
-//             </Link>
-//           </DropdownMenuContent>
-//         </DropdownMenu>
-//       );
-//     },
-//   },
-// ];
+import LanguageSelect, { LanguageInterface } from '../language_select';
 
 export default function DataTableSpotLight() {
   const initialOrderFilters: any = {
@@ -175,17 +56,14 @@ export default function DataTableSpotLight() {
   const [orderFilters, setOrderFilters] = React.useState({
     ...initialOrderFilters,
   });
-  const {
-    data: BannerApiData,
-    refetch,
-    isFetched,
-    isLoading,
-    isError,
-  } = trpc.settings.get_banner.useQuery(orderFilters, {
-    refetchOnWindowFocus: false,
+  const { data, refetch, isLoading } = trpc.settings.get_banner.useQuery(
+    orderFilters,
+    {
+      refetchOnWindowFocus: false,
 
-    // enabled: user?.id ? true : false,
-  });
+      // enabled: user?.id ? true : false,
+    },
+  );
   const [sorting, setSorting] = React.useState<SortingState>([]);
 
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -208,28 +86,6 @@ export default function DataTableSpotLight() {
   };
   const columns: ColumnDef<any>[] = [
     {
-      id: 'select',
-      header: ({ table }) => (
-        <Checkbox
-          checked={table.getIsAllPageRowsSelected()}
-          onCheckedChange={(value: any) =>
-            table.toggleAllPageRowsSelected(!!value)
-          }
-          aria-label="Select all"
-        />
-      ),
-      cell: ({ row }) => (
-        <Checkbox
-          checked={row.getIsSelected()}
-          onCheckedChange={(value) => row.toggleSelected(!!value)}
-          aria-label="Select row"
-        />
-      ),
-      enableSorting: false,
-      enableHiding: false,
-    },
-
-    {
       id: 'title',
       header: 'Title',
 
@@ -241,18 +97,16 @@ export default function DataTableSpotLight() {
           <>
             <div className="flex items-center  gap-2">
               <Image
-                className="object-cover bg-ac-2   h-10 w-10 rounded-lg"
+                className="object-contain bg-ac-2 h-10 w-16 rounded-lg"
                 src={renderNFTImage(payment)}
                 alt={row?.original?.name}
                 width={32}
                 height={32}
               />
 
-              <p className=" ">
-                {/* {customTruncateHandler(payment?.title, 15)} */}
+              <p className="w-40 text-ellipsis whitespace-nowrap overflow-hidden">
                 {row?.original?.name}
               </p>
-              {/* <p>{nft?.name}</p> */}
             </div>
           </>
         );
@@ -266,7 +120,11 @@ export default function DataTableSpotLight() {
         const payment =
           row?.original?.value && JSON?.parse(row?.original?.value);
 
-        return <>{payment?.description}</>;
+        return (
+          <p className="w-40 text-ellipsis whitespace-nowrap overflow-hidden">
+            {payment?.description}
+          </p>
+        );
       },
     },
 
@@ -275,7 +133,11 @@ export default function DataTableSpotLight() {
       header: 'Link',
 
       cell: ({ row }) => {
-        return <>{row?.original?.link}</>;
+        return (
+          <p className="w-40 text-ellipsis whitespace-nowrap overflow-hidden">
+            {row?.original?.link}
+          </p>
+        );
       },
     },
     {
@@ -327,11 +189,13 @@ export default function DataTableSpotLight() {
       },
     },
   ];
+
+  const wondersData = React.useMemo(() => {
+    return Array.isArray(data) ? data : [];
+  }, [data]);
+
   const table = useReactTable({
-    data:
-      BannerApiData !== undefined && BannerApiData && isFetched && !isError
-        ? BannerApiData
-        : [],
+    data: wondersData,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -348,10 +212,10 @@ export default function DataTableSpotLight() {
       rowSelection,
     },
   });
-  function toggleLanguageHandler(lang: 'en' | 'ar') {
+  function languageHandler(params: LanguageInterface) {
     setOrderFilters((prevFilters: any) => ({
       ...prevFilters,
-      lang_id: lang === 'ar' ? 2 : 1,
+      lang_id: params.id,
     }));
   }
 
@@ -360,17 +224,8 @@ export default function DataTableSpotLight() {
       <div className="flex justify-between items-center py-4">
         <div></div>
         <div className="flex gap-2">
-          <Select onValueChange={toggleLanguageHandler}>
-            <SelectTrigger className="h-10 px-4 py-2 rounded-none ">
-              <SelectValue placeholder="EN" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem value="en">EN</SelectItem>
-                <SelectItem value="ar">AR</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+          <LanguageSelect languageHandler={languageHandler} />
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="ml-auto">
@@ -455,10 +310,6 @@ export default function DataTableSpotLight() {
         </ScrollArea>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of{' '}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
-        </div>
         <div className="space-x-2">
           <Button
             variant="outline"
