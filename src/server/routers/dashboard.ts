@@ -65,6 +65,7 @@ export const dashboardRouter = router({
           symbol: '',
           icon: 'fas fa-users',
           cols: true,
+          link: '/admin/customers',
         },
         {
           title: 'Pending Customers',
@@ -72,27 +73,31 @@ export const dashboardRouter = router({
           symbol: '',
           icon: 'fa-solid fa-user-clock',
           cols: true,
+          link: '/admin/customers',
         },
         {
           title: 'Active Coupon',
           data: couponExpiry,
           symbol: '',
           icon: 'fa-solid fa-tag',
-          cols: true,
+          cols: false,
+          link: '/admin/coupons',
         },
         {
           title: 'Active Events',
           data: events,
           symbol: '',
           icon: 'fa-solid fa-calendar-days',
-          cols: true,
+          cols: false,
+          link: '/admin/events',
         },
         {
           title: 'Order Amount',
           data: ordersAmount._sum.total_amount,
           symbol: 'AED',
           icon: 'fa-solid fa-chart-line',
-          cols: true,
+          cols: false,
+          link: '/admin/events',
         },
       ];
 

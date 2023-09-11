@@ -35,7 +35,7 @@ export function Overview() {
               fontSize={12}
               tickLine={false}
               axisLine={false}
-              tickFormatter={(value) => `AED${value}`}
+              tickFormatter={(value) => `AED ${value}`}
             />
             <Tooltip
               cursor={{ fill: 'transparent' }}

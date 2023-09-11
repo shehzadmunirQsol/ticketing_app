@@ -2,8 +2,20 @@ import * as Collapsible from '@radix-ui/react-collapsible';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
+import { useSelector } from 'react-redux';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '~/components/ui/tooltip';
+import { RootState } from '~/store/store';
 
 export default function Content() {
+  const { isSidebarOpen } = useSelector(
+    (state: RootState) => state.adminLayout,
+  );
+
   const [open, setOpen] = React.useState<string | null>('/dashboard');
   const [childActive, setChildActive] = React.useState<string>('/dashboard');
 
@@ -28,7 +40,7 @@ export default function Content() {
   }
   return (
     <>
-      {SIDEBAR_DATA.map((item, index) => {
+      {SIDEBAR_DATA.map((item) => {
         let active = childActive;
         if (!item.child) {
           active = active?.split('-')[0] as string;
@@ -54,10 +66,28 @@ export default function Content() {
                 }
               >
                 {/* <Drawer/> */}
-                <div className="flex items-center gap-5">
-                  {item.icon} {item.title}
-                </div>
-                {item.child && item.child.length > 0 && (
+
+                {isSidebarOpen ? (
+                  <div className="flex items-center gap-5 ">
+                    {' '}
+                    {item.icon} {item.title}
+                  </div>
+                ) : (
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <div className="flex items-center gap-5 ">
+                          {item.icon}
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent side="right">
+                        <p className="text-base">{item.title}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                )}
+
+                {isSidebarOpen && item.child && item.child.length > 0 && (
                   <button>
                     {open === item.key ? (
                       <i className="fa-solid fa-chevron-down" />
@@ -71,11 +101,11 @@ export default function Content() {
             <Collapsible.Content className="space-y-2">
               {item.child &&
                 item.child.length > 0 &&
-                item.child.map((itemChild, index) => (
+                item.child.map((childItem, index) => (
                   <Link
-                    href={itemChild?.key}
+                    href={childItem?.key}
                     onClick={() => handleClickChild(`${item.key}-${index}`)}
-                    key={itemChild.title}
+                    key={childItem.title}
                     className={`
                         ${
                           active === `${item.key}-${index}`
@@ -85,8 +115,25 @@ export default function Content() {
                           flex items-center gap-5 cursor-pointer rounded-full hover:bg-secondary/80 hover:text-primary
                         `}
                   >
-                    {itemChild.icon}
-                    {itemChild.title}
+                    {isSidebarOpen ? (
+                      <div className="flex items-center gap-5 ">
+                        {' '}
+                        {childItem.icon} {childItem.title}
+                      </div>
+                    ) : (
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <div className="flex items-center gap-5 ">
+                              {childItem.icon}
+                            </div>
+                          </TooltipTrigger>
+                          <TooltipContent side="right">
+                            <p className="text-base">{childItem.title}</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    )}
                   </Link>
                 ))}
             </Collapsible.Content>
@@ -131,18 +178,18 @@ const SIDEBAR_DATA = [
   {
     key: '/admin/cms',
     icon: <i className="fa-solid fa-chart-line p-4 rounded-full"></i>,
-    title: 'Cms',
+    title: 'CMS',
   },
   {
     key: '/admin/orders',
     icon: <i className="fa-solid fa-chart-line p-4 rounded-full"></i>,
     title: 'Orders',
   },
-  {
-    key: '/admin/subscriptions',
-    icon: <i className="fa-solid fa-money-check-dollar p-4 rounded-full"></i>,
-    title: 'Subscriptions',
-  },
+  // {
+  //   key: '/admin/subscriptions',
+  //   icon: <i className="fa-solid fa-money-check-dollar p-4 rounded-full"></i>,
+  //   title: 'Subscriptions',
+  // },
 
   {
     key: '/settings',
@@ -152,13 +199,13 @@ const SIDEBAR_DATA = [
       {
         key: '/admin/settings/banners',
 
-        icon: <i className="fa-solid fa-file p-4 rounded-full" />,
+        icon: <i className="fa-solid fa-image p-4 rounded-full" />,
         title: 'Banner',
       },
       {
         key: '/admin/settings/spotlight',
 
-        icon: <i className="fa-solid fa-file p-4 rounded-full" />,
+        icon: <i className="fa-solid fa-image p-4 rounded-full" />,
         title: 'Spot Light',
       },
     ],

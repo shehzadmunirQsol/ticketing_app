@@ -12,7 +12,7 @@ export default function Sidebar() {
     <div
       className={`${
         isSidebarOpen ? 'w-64' : 'w-20 overflow-hidden'
-      } duration-150 p-4 space-y-2 text-grey bg-background min-h-screen hidden xl:block`}
+      } duration-150 p-4 space-y-2 text-grey bg-background h-[calc(100vh-65px)] hidden xl:block overflow-y-scroll scroll-hide`}
     >
       <Content />
     </div>
