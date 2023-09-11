@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Slider from 'react-slick';
 
 import 'slick-carousel/slick/slick.css';
@@ -41,12 +41,16 @@ function VideoSlider(props: producctInterface) {
     isSuccess,
   } = trpc.settings.get_banner.useQuery(initialOrderFilters, {
     refetchOnWindowFocus: false,
-    onSuccess: () => {
-      setVideoCardSlider(videoData || []);
-    },
 
     // enabled: user?.id ? true : false,
   });
+
+  useEffect(() => {
+    if (videoData) {
+      setVideoCardSlider(videoData)
+    }
+  }, [videoData])
+
   console.log({ videoCardSlider });
 
   const slide = useRef<any>();
@@ -110,9 +114,8 @@ function VideoSlider(props: producctInterface) {
           </p>
         </div>
         <div
-          className={`${
-            lang?.dir == 'rtl' ? ' flex-row-reverse' : 'md:absolute right-10'
-          }  flex gap-2 items-center justify-center `}
+          className={`${lang?.dir == 'rtl' ? ' flex-row-reverse' : 'md:absolute right-10'
+            }  flex gap-2 items-center justify-center `}
         >
           <Button
             variant="rounded"
@@ -135,16 +138,16 @@ function VideoSlider(props: producctInterface) {
         <Slider ref={slide} {...settings}>
           {videoCardSlider
             ? videoCardSlider.map((item, index) => {
-                return (
-                  <div key={index} className="cardInfo">
-                    <VideoCard
-                      class={`${props?.class} `}
-                      dir={`${lang?.dir}`}
-                      data={item}
-                    />
-                  </div>
-                );
-              })
+              return (
+                <div key={index} className="cardInfo">
+                  <VideoCard
+                    class={`${props?.class} `}
+                    dir={`${lang?.dir}`}
+                    data={item}
+                  />
+                </div>
+              );
+            })
             : ''}
 
           {videoCardSlider.length === 0 ? (

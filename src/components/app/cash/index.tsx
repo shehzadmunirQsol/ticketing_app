@@ -55,8 +55,9 @@ const CashPage = () => {
   console.log({ products }, 'products');
   console.log({ filters }, 'filters');
   console.log(products.length, prductsList?.count, 'check load more');
-  console.log(lang, 'check load more');
 
+
+  
   return (
     <>
       <div className="relative pt-24"></div>
@@ -82,7 +83,7 @@ const CashPage = () => {
         </div>
 
         {/* doudt should it load more on action or automatically */}
-        {prductsList && products.length < prductsList?.count ? (
+        {products.length != prductsList?.count ? (
           <div className="w-fit mx-auto">
             <div className="text-center my-4">
               <p className="tracking-tight font-bold">Load More</p>

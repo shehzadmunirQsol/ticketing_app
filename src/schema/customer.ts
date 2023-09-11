@@ -110,13 +110,18 @@ export const accountsDetailSchema = z.object({
 export const accountsDetailSchemaInput = z.object({
   first_name: z
     .string()
-    .min(2, {
-      message: 'Name must be at least 2 characters',
+    .min(1, {
+      message: 'Required',
     })
     .max(24, {
       message: 'Name must not exceed 24 characters',
     }),
-  last_name: z.string(),
+  last_name: z.string().min(1, {
+    message: 'Required',
+  })
+    .max(24, {
+      message: 'Name must not exceed 24 characters',
+    }),
   email: z.string().email(),
   dob: z.date().optional().nullable(),
 });

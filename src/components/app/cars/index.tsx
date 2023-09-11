@@ -87,7 +87,7 @@ const CarsPage = () => {
           })}
         </div>
 
-        {prductsList && products.length < prductsList?.count ? (
+        { products.length != prductsList?.count ? (
           <div className="w-fit mx-auto">
             <div className="text-center my-4">
               <p className="tracking-tight font-bold">Load More</p>
