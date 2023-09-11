@@ -83,7 +83,7 @@ function ProductCard(props: cardInterface) {
           </span>
         </div>
         <div className="opacity-75 text-gray-200  text-lg font-normal leading-normal">
-          {customTruncateHandler(props?.data?.EventDescription[0]?.comp_details, 45)}
+          {customTruncateHandler(props?.data?.EventDescription[0]?.comp_details, 40)}
         </div>
         <hr className=" opacity-20 mt-4" />
         <div className=" mt-2">

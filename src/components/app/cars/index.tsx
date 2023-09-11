@@ -70,8 +70,8 @@ const CarsPage = () => {
       <div className="h-full  px-10 pb-20 ">
         <Glow className=" absolute  top-[760px] -right-16     w-1/5 h-[350px] overflow-hidden " />
 
-        <Glow className=" absolute  bottom-96 -right-16  w-1/5 h-[350px] overflow-x-hidden" />
-        <div className=" grid grid-cols-1 md:grid-cols-2 gap-y-4 lg:grid-cols-3  justify-between max-w-[1300px] mx-auto ">
+        <Glow className=" absolute   bottom-96 -right-16  w-1/5 h-[350px] overflow-x-hidden" />
+        <div className=" grid grid-cols-1 md:grid-cols-2 z-10 gap-4 lg:grid-cols-3  justify-between max-w-[1300px] mx-auto ">
           {products?.map((itemList, i) => {
             return (
               <div className="mx-auto py-2 md:py-0" key={i}>
