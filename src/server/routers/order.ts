@@ -391,7 +391,7 @@ async function CreatePayment(APidata: any) {
   try {
     const path = APidata?.registrationId
       ? `/v1/registrations/${APidata?.registrationId}/payments`
-      : '/v1/threeDSecure';
+      : '/v1/payments';
     const payload = { ...APidata };
     console.log(APidata, 'APidata?.paymentBrandsss');
 
@@ -417,7 +417,7 @@ async function CreatePayment(APidata: any) {
           entityId: process.env.TOTAN_ENTITY_ID,
           amount: APidata?.total_amount.toFixed(2),
           currency: 'AED',
-          // paymentType: 'DB',
+          paymentType: 'DB',
           paymentBrand: APidata?.paymentBrand,
 
           'card.number':
