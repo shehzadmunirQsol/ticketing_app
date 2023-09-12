@@ -166,8 +166,8 @@ export default function LoginSignup() {
   };
 
   return (
-    <section className="body-font  ">
-      <div className="px-5 pt-24 pb-5 lg:pb-0 md:pb-0 lg:py-24 md:py-24 mx-auto flex flex-col-reverse lg:flex-row md:flex-row gap-14 mt-6 ">
+    <section className="body-font   ">
+      <div className="px-5 pt-24 mb-16 lg:pb-0 md:pb-0 lg:py-24 md:py-24 mx-auto flex flex-col-reverse lg:flex-row md:flex-row gap-14 mt-6   max-w-[1300px] ">
         <div className="lg:w-2/3 md:w-2/3 w-full h-full mb-5 lg:mb-0 rounded-lg hidden  lg:block  ">
           <SideImage
             image={CarImage}
@@ -369,7 +369,7 @@ export default function LoginSignup() {
                     className="  lg:w-52 md:w-52 w-full     text-black font-sans font-[900]   text-xl tracking-[-1px]"
                     variant="clip"
                   >
-                    Register
+                    REGISTER
                   </Button>
                 </div>
               </form>
