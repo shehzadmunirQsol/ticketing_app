@@ -52,7 +52,7 @@ export default function Contact() {
       // props.setIsModal(false);
       toast({
         variant: 'success',
-        title: 'please check your email ',
+        title: 'Email Sent.',
       });
       // form.setValue('name', '');
       // form.setValue('email', '');
@@ -102,6 +102,7 @@ export default function Contact() {
                 <FormField
                   control={form.control}
                   name="name"
+
                   render={({ field }) => (
                     <FormItem className="mb-6 lg:mb-10 md:mb-10">
                       <FormLabel className="text-xs font-thin  text-grayColor">
@@ -146,6 +147,7 @@ export default function Contact() {
                     <FormField
                       control={form.control}
                       name="code"
+                      defaultValue='+971'
                       render={({ field }) => (
                         <FormItem>
                           <Select
