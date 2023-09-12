@@ -30,26 +30,46 @@ export function isValidImageType(type: any) {
   return isImage;
 }
 
-export const sendEmail = async (mailOptions: any) => {
-  console.log(mailOptions, 'mailOptions');
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/email/mailer`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        ...mailOptions,
-      }),
-    },
-  );
+type EmailOptionsType = {
+  from:string;
+  to:string;
+  subject:string;
+  template_id:number;
+  params?:object;
+}
 
-  const { error } = await res.json();
-  if (error) {
-    console.log(error.response, error.response.body, 'api brevo error');
-    return;
+export const sendEmail = async (mailOptions: EmailOptionsType) => {
+  console.log(mailOptions, 'mailOptions');
+  try{
+    const options = {
+        method: 'POST',
+        headers: {
+          accept: 'application/json',
+          'content-type': 'application/json',
+          'api-key': process.env.BREVO_EMAIL_API_KEY as string
+        },
+        body: JSON.stringify({
+          sender: {name: 'Winnar', email: mailOptions.from},
+          to: [{email: mailOptions.to}],
+          subject: mailOptions.subject,
+          templateId: mailOptions.template_id,
+          params:{...mailOptions.params}
+          //   params: {FNAME: 'HASSAN', LNAME: 'SHAN'},
+        })
+      };
+    const res= await fetch('https://api.brevo.com/v3/smtp/email', options)
+
+    if(!res.ok) {
+      console.log(res)
+      return console.log("email did not send")
+    }
+
+  }catch(error){
+    console.log(error)
   }
+
+
+
 };
 
 export async function compressImage(fileImage: File, fileType = 'image/webp') {

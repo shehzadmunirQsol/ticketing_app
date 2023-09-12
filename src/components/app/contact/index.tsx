@@ -80,7 +80,7 @@ export default function Contact() {
 
   return (
     <section className="body-font  ">
-      <div className="px-5 pt-16 pb-5 lg:pb-0 md:pb-0 lg:py-24 md:py-24 mx-auto flex flex-col-reverse lg:flex-row md:flex-row gap-14 mt-6 ">
+      <div className="px-5 pt-16 pb-10 lg:pb-0 md:pb-0 lg:py-24 md:py-24 mx-auto flex flex-col-reverse lg:flex-row md:flex-row gap-14 mt-6 ">
         <div className="lg:w-2/3 md:w-2/3 w-full h-full mb-5 lg:mb-0 rounded-lg hidden  lg:block  ">
           <SideImage
             image={ContactImage}
@@ -154,8 +154,8 @@ export default function Contact() {
                             value={field.value}
                           >
                             <FormControl className="rounded-md bg-inputColor">
-                              <SelectTrigger className=" rounded-none  ">
-                                <SelectValue placeholder="+971" />
+                              <SelectTrigger defaultValue={"+971"}  className=" rounded-none  ">
+                                <SelectValue  placeholder="+971" />
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
