@@ -165,6 +165,35 @@ export const eventRouter = router({
       });
     }
   }),
+  getEventCustomers: publicProcedure.query(async ({ input }) => {
+    try {
+      const eventCustomers =
+        await prisma.$executeRaw`SELECT e.id AS 'event_id', e.price, e.thumb, oe.customer_id, c.email,
+      CONCAT(c.first_name,' ',c.last_name) AS 'full_name', SUM( oe.quantity ) AS 'quantity'
+      FROM event AS e
+      JOIN order_event AS oe
+      ON e.id = oe.event_id
+      JOIN customer AS c
+      ON c.id = oe.customer_id
+      GROUP BY e.id, c.id
+      HAVING e.id IN ( 1 )
+      order BY quantity DESC
+      `;
+
+      console.log({ eventCustomers });
+
+      return {
+        message: 'events found',
+        data: eventCustomers,
+      };
+    } catch (error: any) {
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: error?.message,
+      });
+    }
+  }),
+
   delete: publicProcedure
     .input(deleteEventSchema)
     .mutation(async ({ input }) => {
@@ -293,7 +322,7 @@ export const eventRouter = router({
                 id: true,
                 lang_id: true,
                 desc: true,
-                name:true,
+                name: true,
                 comp_details: true,
               },
             },
@@ -434,7 +463,7 @@ export const eventRouter = router({
     .input(getEventsByIdSchema)
     .query(async ({ input, ctx }) => {
       try {
-        const descriptionPayload :any =
+        const descriptionPayload: any =
           input.type === 'admin' ? undefined : { lang_id: input.lang_id };
         const event = await prisma.event.findUnique({
           where: {
@@ -463,7 +492,7 @@ export const eventRouter = router({
           userData = await verifyJWT(token);
 
           const customerLimit = await prisma.orderEvent.groupBy({
-            where: { event_id: input.id, customer_id: userData?.id  },
+            where: { event_id: input.id, customer_id: userData?.id },
             by: ['event_id', 'customer_id'],
             _sum: { quantity: true },
           });
