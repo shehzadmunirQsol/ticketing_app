@@ -18,6 +18,9 @@ import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/ui/dropdown-menu';
 import {
@@ -32,43 +35,45 @@ import { trpc } from '~/utils/trpc';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 import { LoadingDialog } from '../modal/loadingModal';
 import Image from 'next/image';
-import { GetCartItemsSchema } from '~/schema/cart';
-import { displayDate } from '~/utils/helper';
+import { useRouter } from 'next/router';
+import { MoreHorizontal } from 'lucide-react';
 
-export type CartType = {
-  id: number;
-  is_subscribe: boolean;
-  quantity: number;
-  subscription_type: null;
-  Event: {
-    id: number;
-    thumb: string;
-    price: number;
-    EventDescription: { name: string }[];
-  };
-  Cart: {
-    Customer: { id: number; email: string; first_name: string };
-  };
-  created_at: Date;
-  updated_at: Date;
+export type EventCustomerType = {
+  event_id: number;
+  price: number;
+  thumb: string;
+  event_name: string;
+  customer_id: number;
+  email: string;
+  first_name: string;
+  last_name: string;
+  quantity: string;
 };
 
 export default function OrdersDataTable() {
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [filters, setFilters] = useState<GetCartItemsSchema>({
-    first: 0,
-    rows: 10,
-  });
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
 
-  const { data, isLoading } = trpc.cart.getCartItems.useQuery(filters, {
-    refetchOnWindowFocus: false,
-  });
+  const router = useRouter();
+  const event_id =
+    router?.query?.event_id && +router?.query?.event_id > 0
+      ? +router?.query?.event_id
+      : 0;
+
+  const { data, isLoading } = trpc.event.getEventCustomers.useQuery(
+    { event_id },
+    {
+      refetchOnWindowFocus: true,
+      enabled: event_id > 0 ? true : false,
+    },
+  );
+
   const cartItemData = React.useMemo(() => {
     return Array.isArray(data?.data) ? data?.data : [];
   }, [data]);
-  const columns: ColumnDef<CartType>[] = [
+
+  const columns: ColumnDef<EventCustomerType>[] = [
     {
       accessorKey: 'Event',
       header: 'Event',
@@ -77,14 +82,14 @@ export default function OrdersDataTable() {
           <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
             <Image
               className="object-cover bg-ac-2 h-10 w-16 rounded-lg"
-              src={`${process.env.NEXT_PUBLIC_MEDIA_BASE_URL}${row?.original?.Event?.thumb}`}
-              alt={row?.original?.Event?.EventDescription[0]?.name ?? ''}
+              src={`${process.env.NEXT_PUBLIC_MEDIA_BASE_URL}${row?.original?.thumb}`}
+              alt={row?.original?.event_name ?? ''}
               width={100}
               height={100}
             />
 
             <p className="w-40 text-ellipsis whitespace-nowrap overflow-hidden">
-              {row?.original?.Event?.EventDescription[0]?.name}
+              {row?.original?.event_name}
             </p>
           </div>
         );
@@ -95,7 +100,7 @@ export default function OrdersDataTable() {
       header: 'Customer Name',
       cell: ({ row }) => (
         <div className="capitalize text-ellipsis whitespace-nowrap ">
-          {row?.original?.Cart?.Customer.first_name}
+          {row?.original?.first_name}
         </div>
       ),
     },
@@ -104,11 +109,20 @@ export default function OrdersDataTable() {
       header: 'Customer Email',
       cell: ({ row }) => (
         <div className="text-ellipsis whitespace-nowrap ">
-          {row?.original?.Cart?.Customer?.email}
+          {row?.original?.email}
         </div>
       ),
     },
 
+    {
+      accessorKey: 'Price',
+      header: 'Price',
+      cell: ({ row }) => (
+        <p className="w-16 text-ellipsis whitespace-nowrap ">
+          {row?.original?.price?.toFixed(2)}
+        </p>
+      ),
+    },
     {
       accessorKey: 'Quantity',
       header: 'Quantity',
@@ -119,26 +133,38 @@ export default function OrdersDataTable() {
       ),
     },
     {
-      accessorKey: 'Price',
-      header: 'Price',
-      cell: ({ row }) => (
-        <p className="w-16 text-center text-ellipsis whitespace-nowrap ">
-          {row?.original?.Event?.price?.toFixed(2)}
-        </p>
-      ),
-    },
-    {
       accessorKey: 'Total Amount',
       header: 'Total Amount',
       cell: ({ row }) => (
         <p className="w-24 text-center text-ellipsis whitespace-nowrap ">
-          {(row?.original?.quantity * row?.original?.Event?.price)?.toFixed(2)}
+          {(+row?.original?.quantity * row?.original?.price)?.toFixed(2)}
         </p>
       ),
     },
+    {
+      id: 'actions',
+      enableHiding: false,
+      cell: ({ row }) => {
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>Select Winner</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        );
+      },
+    },
   ];
   const table = useReactTable({
-    data: cartItemData as CartType[],
+    data: cartItemData as EventCustomerType[],
     columns,
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
@@ -154,10 +180,7 @@ export default function OrdersDataTable() {
     },
   });
 
-  function handlePagination(page: number) {
-    if (page < 0) return;
-    setFilters((prevFilters) => ({ ...prevFilters, first: page }));
-  }
+  console.log({ data });
 
   return (
     <div className="w-full space-y-4">
@@ -241,24 +264,6 @@ export default function OrdersDataTable() {
             </TableBody>
           </Table>
         </ScrollArea>
-      </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="space-x-2">
-          <Button
-            variant="outline"
-            onClick={() => handlePagination(filters.first - 1)}
-            disabled={filters.first === 0}
-          >
-            Previous
-          </Button>
-          <Button
-            variant="outline"
-            onClick={() => handlePagination(filters.first + 1)}
-            disabled={(filters.first + 1) * filters.rows > (data?.count || 0)}
-          >
-            Next
-          </Button>
-        </div>
       </div>
 
       <LoadingDialog open={isLoading} text={'Loading data...'} />

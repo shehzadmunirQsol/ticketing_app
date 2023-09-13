@@ -7,6 +7,7 @@ import {
   getEventSchema,
   getFeatured,
   getEventsByIdSchema,
+  getEventCustomers,
 } from '~/schema/event';
 import { prisma } from '~/server/prisma';
 import { verifyJWT } from '~/utils/jwt';
@@ -165,34 +166,35 @@ export const eventRouter = router({
       });
     }
   }),
-  getEventCustomers: publicProcedure.query(async ({ input }) => {
-    try {
-      const eventCustomers =
-        await prisma.$executeRaw`SELECT e.id AS 'event_id', e.price, e.thumb, oe.customer_id, c.email,
-      CONCAT(c.first_name,' ',c.last_name) AS 'full_name', SUM( oe.quantity ) AS 'quantity'
-      FROM event AS e
-      JOIN order_event AS oe
-      ON e.id = oe.event_id
-      JOIN customer AS c
-      ON c.id = oe.customer_id
-      GROUP BY e.id, c.id
-      HAVING e.id IN ( 1 )
-      order BY quantity DESC
-      `;
+  getEventCustomers: publicProcedure
+    .input(getEventCustomers)
+    .query(async ({ input }) => {
+      try {
+        const eventCustomers =
+          await prisma.$queryRaw`SELECT e.id AS 'event_id', e.thumb, e.price, oe.customer_id, c.email,ed.name AS 'event_name', c.first_name, c.last_name, SUM( oe.quantity ) AS 'quantity'
+          FROM event AS e
+          JOIN event_description AS ed
+          ON e.id = ed.event_id
+          JOIN order_event AS oe
+          ON e.id = oe.event_id
+          JOIN customer AS c
+          ON c.id = oe.customer_id
+          GROUP BY e.id, c.id
+          HAVING e.id = ${input.event_id}
+          order BY quantity DESC
+          `;
 
-      console.log({ eventCustomers });
-
-      return {
-        message: 'events found',
-        data: eventCustomers,
-      };
-    } catch (error: any) {
-      throw new TRPCError({
-        code: 'INTERNAL_SERVER_ERROR',
-        message: error?.message,
-      });
-    }
-  }),
+        return {
+          message: 'events found',
+          data: eventCustomers,
+        };
+      } catch (error: any) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: error?.message,
+        });
+      }
+    }),
 
   delete: publicProcedure
     .input(deleteEventSchema)
