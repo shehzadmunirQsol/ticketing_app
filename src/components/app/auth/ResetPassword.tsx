@@ -66,7 +66,7 @@ export default function ResetPassword() {
   };
 
   return (
-    <div className="w-full  lg:w-2/3 md:w-2/3  mt-36 mb-20 mx-auto bg-card py-10 px-5 lg:px-10 md:px-10">
+    <div className="w-full  lg:w-2/3 md:w-2/3  mt-36 mb-20 mx-auto bg-card py-10 px-5 lg:px-10 md:px-10 max-w-[1300px]">
       <p className="text-3xl text-primary font-black">Reset Password</p>
       <Form {...formResetPassword}>
         <form
