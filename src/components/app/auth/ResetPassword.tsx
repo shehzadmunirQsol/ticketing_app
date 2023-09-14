@@ -47,7 +47,7 @@ export default function ResetPassword() {
 
   const onSubmit = async (values: any) => {
     console.log(values, 'onSubmit');
-    if (values.confirmPassword !== values.password) {
+    if (values.confirmPassword !== values?.password) {
       toast({
         variant: 'destructive',
         title: 'Password are not matching ',
