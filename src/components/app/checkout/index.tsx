@@ -21,16 +21,19 @@ import Group17 from '~/public/assets/icons/Group17.png';
 import Image from 'next/image';
 import Glow from '~/components/common/glow';
 import { CouponModal } from './Coupon';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
 import { CheckoutDialog } from '~/components/common/modal/checkout';
 import { CreateCheckoutSchema, createCheckoutSchema } from '~/schema/order';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { trpc } from '~/utils/trpc';
+import { useRouter } from 'next/router';
 
 function Checkout() {
   const { cart, totalAmount } = useSelector((state: RootState) => state.cart);
   const { user } = useSelector((state: RootState) => state.auth);
+  const router = useRouter();
 
   // Handle Coupon Dailog
   const [isModal, setIsModal] = useState(false);
@@ -59,11 +62,51 @@ function Checkout() {
       state: user?.state,
     },
   });
+  const checkoutCreator = trpc.order.createCheckout.useMutation({
+    onSuccess: () => {
+      console.log('upload successfully');
+    },
+    onError(error: any) {
+      console.log({ error });
+    },
+  });
+  const getStatus = trpc.order.getStatus.useMutation({
+    onSuccess: () => {
+      console.log('upload successfully');
+    },
+    onError(error: any) {
+      console.log({ error });
+    },
+  });
+  useEffect(() => {
+    (async () => {
+      const data = router?.query;
+      if (data?.id) {
+        const Resdata = await getStatus.mutateAsync({
+          checkout_id: data?.id as string,
+        });
+        console.log(Resdata, 'router?.query');
+      }
+    })();
+  }, [router?.query]);
 
   const onSubmitCheckout = async (values: any) => {
     try {
-      setIsCardModal(true);
-      setSelectedItem({ ...values });
+      const data = await checkoutCreator.mutateAsync({
+        values: {
+          ...values,
+          cart_id: cart?.id,
+          customer_id: user?.id,
+        },
+      });
+      console.log(data?.checkout?.data?.id, 'get checkout id');
+      if (data?.checkout?.data) {
+        setIsCardModal(true);
+        setSelectedItem({
+          values: { ...values },
+          checkoutID: data?.checkout?.data?.id,
+        });
+      }
     } catch (err) {
       setIsCardModal(false);
     }
@@ -160,8 +203,6 @@ function Checkout() {
                             type="text"
                             placeholder="Apartment, suit, unit etc. (Optional) "
                             {...field}
-
-
                           />
                         </FormControl>
                         <FormMessage />
@@ -345,7 +386,6 @@ function Checkout() {
                             <FormMessage />
                           </FormItem>
                         )}
-
                       />
                       <FormField
                         control={form.control}
@@ -382,11 +422,13 @@ function Checkout() {
                             <Input
                               type="date"
                               placeholder="Enter your Date of Birth"
-                              {...form.register('dob', { valueAsDate: true, required:"required" })}
-
+                              {...form.register('dob', {
+                                valueAsDate: true,
+                                required: 'required',
+                              })}
                             />
                           </FormControl>
-                          <FormMessage  />
+                          <FormMessage />
                         </FormItem>
                       )}
                     />
@@ -413,23 +455,23 @@ function Checkout() {
                 <div className=" max-h-60 overflow-x-auto space-y-8">
                   {cart?.cartItems?.length
                     ? cart?.cartItems?.map((item) => {
-                      return (
-                        <div
-                          className="flex flex-row justify-between "
-                          key={item.id}
-                        >
-                          <p className="lg:text-2xl md:lg:text-xl   w-[60%]">
-                            {item?.Event?.EventDescription[0]?.name}
-                          </p>
-                          <p className="font-black text-lg lg:text-xl ">
-                            AED{' '}
-                            {(item?.Event?.price * item?.quantity)?.toFixed(
-                              2,
-                            )}
-                          </p>
-                        </div>
-                      );
-                    })
+                        return (
+                          <div
+                            className="flex flex-row justify-between "
+                            key={item.id}
+                          >
+                            <p className="lg:text-2xl md:lg:text-xl   w-[60%]">
+                              {item?.Event?.EventDescription[0]?.name}
+                            </p>
+                            <p className="font-black text-lg lg:text-xl ">
+                              AED{' '}
+                              {(item?.Event?.price * item?.quantity)?.toFixed(
+                                2,
+                              )}
+                            </p>
+                          </div>
+                        );
+                      })
                     : null}
                 </div>
                 {cart?.isDiscount ? (
@@ -463,7 +505,11 @@ function Checkout() {
                   <span className="text-white"> privacy policy</span>.
                 </p>
                 <div className="flex flex-row gap-2 justify-start   items-start w-full  md:w-[65%] lg:w-[85%]">
-                  <input type="checkbox" className="accent-white  my-1" required/>
+                  <input
+                    type="checkbox"
+                    className="accent-white  my-1"
+                    required
+                  />
 
                   <p className="text-sm text-cardGray ">
                     I’m 18 years old or over and i have read and agree to the

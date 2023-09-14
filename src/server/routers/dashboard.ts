@@ -19,11 +19,13 @@ export const dashboardRouter = router({
         where: {
           is_deleted: false,
           is_approved: true,
+          is_verified: true,
         },
       });
       const pendingCustomerPromise = await prisma.customer.count({
         where: {
           is_approved: false,
+          is_verified: false,
         },
       });
       const todayDate = new Date();
