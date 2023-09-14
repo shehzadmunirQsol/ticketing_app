@@ -183,11 +183,11 @@ export default function LoginSignup() {
             <TabsList className=" w-full rounded-none border-none ">
               <TabsTrigger
                 value="login"
-                className="w-full font-black text-md -mt-1 rounded-none border-none m-0  "
+                className="w-full font-black text-md -mt-1 font-sans rounded-none border-none m-0  "
               >
                 Login
               </TabsTrigger>
-              <TabsTrigger value="signup" className="w-full text-md font-black">
+              <TabsTrigger value="signup" className="w-full font-sans text-md font-black">
                 Register
               </TabsTrigger>
             </TabsList>
@@ -203,7 +203,7 @@ export default function LoginSignup() {
                     control={formLogin.control}
                     name="user"
                     render={({ field }) => (
-                      <FormItem className="mb-6">
+                      <FormItem className="mb-4">
                         <FormLabel className="text-xs font-thin text-grayColor">
                           Username or email address*
                         </FormLabel>
@@ -212,10 +212,11 @@ export default function LoginSignup() {
                             type="text"
                             placeholder="Enter Username or Email Address"
                             {...field}
+                            className='rounded-md'
                           />
                         </FormControl>
                         <div className='relative pb-2'>
-                        <FormMessage />
+                          <FormMessage />
                         </div>
                       </FormItem>
                     )}
@@ -233,10 +234,11 @@ export default function LoginSignup() {
                             type="password"
                             placeholder="Enter Your Password"
                             {...field}
+                            className='rounded-md'
                           />
                         </FormControl>
                         <div className='relative pb-2'>
-                        <FormMessage />
+                          <FormMessage />
                         </div>
                       </FormItem>
                     )}
@@ -272,7 +274,7 @@ export default function LoginSignup() {
                     control={formSignup.control}
                     name="username"
                     render={({ field }) => (
-                      <FormItem className="mb-6 ">
+                      <FormItem className="mb-4 ">
                         <FormLabel className="text-xs font-thin  text-grayColor">
                           Username*
                         </FormLabel>
@@ -281,6 +283,7 @@ export default function LoginSignup() {
                             type="text"
                             placeholder="Enter Your Username "
                             {...field}
+                            className='rounded-md'
                           />
                         </FormControl>
                         <div className='relative pb-2'>
@@ -293,7 +296,7 @@ export default function LoginSignup() {
                     control={formSignup.control}
                     name="email"
                     render={({ field }) => (
-                      <FormItem className="mb-6 ">
+                      <FormItem className="mb-4 ">
                         <FormLabel className="text-xs  font-thin text-grayColor">
                           Email Address*
                         </FormLabel>
@@ -302,6 +305,7 @@ export default function LoginSignup() {
                             type="text"
                             placeholder="Enter Your Email Address"
                             {...field}
+                            className='rounded-md'
                           />
                         </FormControl>
                         <div className='relative pb-2'>
@@ -314,7 +318,7 @@ export default function LoginSignup() {
                     control={formSignup.control}
                     name="password"
                     render={({ field }) => (
-                      <FormItem className="mb-6 ">
+                      <FormItem className="mb-4 ">
                         <FormLabel className="text-xs font-thin text-grayColor">
                           Password*
                         </FormLabel>
@@ -323,6 +327,7 @@ export default function LoginSignup() {
                             type="password"
                             placeholder="Enter your password"
                             {...field}
+                            className='rounded-md'
                           />
                         </FormControl>
                         <div className='relative pb-2'>
@@ -335,7 +340,7 @@ export default function LoginSignup() {
                     control={formSignup.control}
                     name="firstname"
                     render={({ field }) => (
-                      <FormItem className="mb-6 ">
+                      <FormItem className="mb-4 ">
                         <FormLabel className="text-xs font-thin text-grayColor">
                           First Name*
                         </FormLabel>
@@ -344,6 +349,7 @@ export default function LoginSignup() {
                             type="text"
                             placeholder="Enter your first name"
                             {...field}
+                            className='rounded-md'
                           />
                         </FormControl>
                         <div className='relative pb-2'>
@@ -356,7 +362,7 @@ export default function LoginSignup() {
                     control={formSignup.control}
                     name="lastname"
                     render={({ field }) => (
-                      <FormItem className="">
+                      <FormItem className="mb-12">
                         <FormLabel className="text-xs font-thin text-grayColor">
                           Last Name*
                         </FormLabel>
@@ -365,6 +371,7 @@ export default function LoginSignup() {
                             type="text"
                             placeholder="Enter your last name"
                             {...field}
+                            className='rounded-md'
                           />
                         </FormControl>
                         <div className='relative pb-2'>
@@ -374,7 +381,7 @@ export default function LoginSignup() {
                     )}
                   />
                 </div>
-                <div className=" flex flex-col lg:flex-row md:flex-row justify-between items-center gap-6 ">
+                <div className="mt-4 flex flex-col lg:flex-row md:flex-row justify-between items-center gap-6 ">
                   <p className="text-lightColor text-gray-400 font-extralight text-xs w-full lg:w-96  md:w-96">
                     Your personal data will be used to process your order,
                     support your experience throughout this website, and for
