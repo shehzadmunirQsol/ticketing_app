@@ -123,9 +123,7 @@ export const dashboardRouter = router({
       }
 
       const chartData =
-        await prisma.$queryRaw`SELECT DATE_FORMAT( \`order\`.created_at,'%Y-%m-%d') as name, CAST(COUNT(*) AS CHAR) as count,SUM(\`order\`.total_amount) as total,CAST(SUM(\`order\`.sub_total_amount) AS DECIMAL(10, 2)) as sub_total_amount,CAST(SUM(\`order\`.discount_amount) AS DECIMAL(10, 2)) as discount_amount
-    FROM \`order\`
-    GROUP BY name ORDER BY name`;
+        await prisma.$queryRaw`SELECT to_char( o.created_at,'yyyy-mm-dd') as NAME,CAST(COUNT(*) AS CHAR) as count,SUM(o.total_amount) as total,CAST(SUM(o.sub_total_amount) AS DECIMAL(10, 2)) as sub_total_amount,CAST(SUM(o.discount_amount) AS DECIMAL(10, 2)) as discount_amount FROM PUBLIC."order" o GROUP BY  name`;
 
       return { message: 'Chart Data', data: chartData };
     } catch (error: any) {

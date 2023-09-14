@@ -46,6 +46,7 @@ export const adminUserRouter = router({
 
   login: publicProcedure.input(loginSchema).mutation(async ({ input, ctx }) => {
     try {
+      console.log('input.email', input.email);
       const user = await prisma.adminUser.findFirst({
         where: { email: input.email },
       });
