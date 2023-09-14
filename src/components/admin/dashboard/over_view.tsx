@@ -44,11 +44,11 @@ export default function DashboardPage() {
             <TabsContent value="overview" className="space-y-4">
               <AnalyticsCard />
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-                <Card className="col-span-4">
-                  <CardHeader className="text-muted-foreground">
+                <Card className="col-span-4 bg-transparent">
+                  <CardHeader className="text-muted-foreground ">
                     <CardTitle>Sales Overview</CardTitle>
                   </CardHeader>
-                  <CardContent className="pl-2">
+                  <CardContent className="pl-2 z-10">
                     <Overview />
                   </CardContent>
                 </Card>

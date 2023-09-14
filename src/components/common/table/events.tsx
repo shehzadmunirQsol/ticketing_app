@@ -167,6 +167,7 @@ export default function EventsDataTable() {
     {
       id: 'actions',
       enableHiding: false,
+      header:"Actions",
       cell: ({ row }) => {
         return (
           <DropdownMenu>
@@ -177,8 +178,7 @@ export default function EventsDataTable() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuSeparator />
+              
               <Link href={`/admin/events/edit/${row?.original?.id}`}>
                 <DropdownMenuItem>Edit Event</DropdownMenuItem>
               </Link>

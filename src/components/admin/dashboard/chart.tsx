@@ -22,6 +22,7 @@ export function Overview() {
           {/* {data} */}
           <BarChart
             data={isFetched && chartData?.data ? (chartData?.data as any) : []}
+            
           >
             <XAxis
               dataKey="name"
@@ -35,6 +36,7 @@ export function Overview() {
               fontSize={12}
               tickLine={false}
               axisLine={false}
+              scale='linear'
               tickFormatter={(value) => `AED ${value}`}
             />
             <Tooltip
