@@ -1,7 +1,3 @@
-import { Metadata } from 'next';
-import Image from 'next/image';
-
-import { Button } from '@/ui/button';
 import {
   Card,
   CardContent,
@@ -9,36 +5,23 @@ import {
   CardHeader,
   CardTitle,
 } from '@/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/ui/tabs';
+import { Tabs, TabsContent } from '@/ui/tabs';
 import { Overview } from './chart';
 import { RecentSales } from './recent_sales';
 import { trpc } from '~/utils/trpc';
 import Link from 'next/link';
-// import { Overview } from '@/app/examples/dashboard/components/overview';
-// import { RecentSales } from '@/app/examples/dashboard/components/recent-sales';
-
-export const metadata: Metadata = {
-  title: 'Dashboard',
-  description: 'Example dashboard app built using the components.',
-};
 
 export default function DashboardPage() {
   return (
     <>
       <div className="flex-col md:flex">
         <div className="">
-          <div className="flex h-6 items-center px-4">
-            {/* <TeamSwitcher />
-            <MainNav className="mx-6" /> */}
-          </div>
+          <div className="flex h-6 items-center px-4"></div>
         </div>
         <div className="flex-1 space-y-2 px-8 ">
           <div className="flex items-center justify-between space-y-2">
             <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
-            <div className="flex items-center space-x-2">
-              {/* <CalendarDateRangePicker /> */}
-              {/* <Button>Download</Button> */}
-            </div>
+            <div className="flex items-center space-x-2"></div>
           </div>
           <Tabs defaultValue="overview" className="space-y-4">
             <TabsContent value="overview" className="space-y-4">
@@ -70,7 +53,9 @@ export default function DashboardPage() {
   );
 }
 const AnalyticsCard = () => {
-  const { data, isLoading } = trpc.dashboard.analytics.useQuery();
+  const { data, isLoading } = trpc.dashboard.analytics.useQuery(undefined, {
+    refetchOnWindowFocus: false,
+  });
 
   return (
     <div className="grid xss:grid-cols-1  text-white xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-12 gap-4 mt-4 justify-center align-middle ">
