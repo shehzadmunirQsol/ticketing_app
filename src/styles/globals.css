@@ -91,6 +91,13 @@
   display: none; /* Safari and Chrome */
 }
 
+.line-clamp-1 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
 @media screen and (max-width: 768px) {
   .banner_img_flip {
     background: none;

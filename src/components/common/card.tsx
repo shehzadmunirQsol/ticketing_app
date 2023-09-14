@@ -78,14 +78,15 @@ function ProductCard(props: cardInterface) {
           <span className=" text-xs ">{props?.data?.tickets_sold} Sold out of {props?.data?.total_tickets}</span>
           <Progress value={(Number(props?.data?.tickets_sold) / Number(props?.data?.total_tickets)) * 100} className="w-full" />
         </div>
-        <div className="font-bold text-xl lg:text-2xl xl:text-3xl ">
+        <div className="font-bold text-xl lg:text-2xl xl:text-3xl line-clamp-1">
           {lang.lang_id === 1 ? <span className='font-[800] text-gray-200 leading-loose'>WIN</span> : lang.lang_id === 2 ? <span className='font-[900] font-sans text-gray-200 leading-loose'>يفوز</span> : ""}
-          <span className="text-gray-200  font-semibold leading-loose mx-2">
-            {customTruncateHandler(props?.data?.EventDescription[0]?.name, 30)}
+          <span className="text-gray-200  font-semibold leading-loose mx-2 ">
+            {props?.data?.EventDescription[0]?.name}
           </span>
         </div>
-        <div className="opacity-75 text-gray-200  text-lg font-normal leading-normal">
-          {customTruncateHandler(props?.data?.EventDescription[0]?.comp_details, 40)}
+        <div className="opacity-75 text-gray-200  text-md font-normal leading-normal line-clamp-1" >
+          {/* {customTruncateHandler(props?.data?.EventDescription[0]?.comp_details, 40)} */}
+          <p className='line-clamp-1'>{props?.data?.EventDescription[0]?.comp_details}</p>
         </div>
         <hr className=" opacity-20 mt-4" />
         <div className=" mt-2">

@@ -28,6 +28,7 @@ export const dashboardRouter = router({
           is_verified: false,
         },
       });
+
       const todayDate = new Date();
       const couponExpiryPromise = await prisma.coupon.count({
         where: {

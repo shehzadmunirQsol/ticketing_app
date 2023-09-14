@@ -9,12 +9,12 @@ import {
 import { trpc } from '~/utils/trpc';
 
 export function Overview() {
-  const {
-    data: chartData,
-    isLoading,
-    isFetched,
-  } = trpc.dashboard.chart.useQuery();
-  console.log({ chartData }, 'group by data');
+  const { data: chartData, isFetched } = trpc.dashboard.chart.useQuery(
+    undefined,
+    {
+      refetchOnWindowFocus: false,
+    },
+  );
   return (
     <>
       {isFetched && chartData?.data ? (
@@ -35,6 +35,7 @@ export function Overview() {
               fontSize={12}
               tickLine={false}
               axisLine={false}
+              scale="linear"
               tickFormatter={(value) => `AED ${value}`}
             />
             <Tooltip
@@ -56,7 +57,6 @@ export function Overview() {
   );
 }
 const CustomTooltip = ({ active, payload, label }: any) => {
-  console.log({ payload });
   if (active && payload && payload.length) {
     return (
       <div className="custom-tooltip w-44 bg-border text-sm rounded-md text-white p-4">

@@ -185,6 +185,7 @@ export default function DataTableBanner() {
 
     {
       id: 'actions',
+      header:"Actions",
       enableHiding: false,
       cell: ({ row }) => {
         const payment = row?.original;
@@ -198,9 +199,7 @@ export default function DataTableBanner() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-
-              <DropdownMenuSeparator />
+              
               <Link href={`/admin/settings/banners/edit/${payment?.id}`}>
                 <DropdownMenuItem>Edit Banner</DropdownMenuItem>
               </Link>

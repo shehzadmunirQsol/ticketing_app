@@ -143,6 +143,7 @@ export default function OrdersDataTable() {
 
     {
       id: 'actions',
+      header:"Actions",
       enableHiding: false,
       cell: ({ row }) => {
         return (
@@ -154,8 +155,7 @@ export default function OrdersDataTable() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuSeparator />
+              
               <Link href={`/admin/orders/view/${row?.original?.id}`}>
                 <DropdownMenuItem>View Order</DropdownMenuItem>
               </Link>

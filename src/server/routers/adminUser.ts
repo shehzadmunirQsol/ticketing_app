@@ -50,23 +50,14 @@ export const adminUserRouter = router({
       const user = await prisma.adminUser.findFirst({
         where: { email: input.email },
       });
-      console.log('user found: ', user);
       if (!user || user?.is_deleted) {
         throw new TRPCError({
           code: 'NOT_FOUND',
           message: 'User Not Found',
         });
       }
-      // if (user?.is_deleted) {
-      //     throw new TRPCError({
-      //         code: 'NOT_FOUND',
-      //         message: 'User Not Found'
-      //     });
-      // }
-      console.log('Inout Pass : ', input.password);
-      console.log('User Pass : ', user?.password);
+
       const checkPass = await isSamePass(input.password, user?.password);
-      console.log('check pass', checkPass);
 
       if (!checkPass) {
         throw new TRPCError({

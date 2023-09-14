@@ -60,6 +60,7 @@ export default function CouponForm() {
     refetchOnWindowFocus: false,
     enabled: index ? true : false,
   });
+
   useEffect(() => {
     if (!isLoading && isFetched && categoryData !== undefined) {
       form.setValue('name', categoryData?.data?.name as string);
@@ -165,6 +166,7 @@ export default function CouponForm() {
                   <Input
                     className="uppercase"
                     placeholder="Enter Coupon Code"
+                    maxLength={6}
                     {...field}
                   />
                 </FormControl>
@@ -271,6 +273,7 @@ export default function CouponForm() {
                       min={endDate}
                       {...form.register('end_date', {
                         valueAsDate: true,
+                        required:true
                       })}
                     />
                   </FormControl>
@@ -326,6 +329,7 @@ export default function CouponForm() {
                       placeholder="Enter Coupon Limit"
                       {...form.register('coupon_limit', {
                         valueAsNumber: true,
+                        required:true
                       })}
                     />
                   </FormControl>

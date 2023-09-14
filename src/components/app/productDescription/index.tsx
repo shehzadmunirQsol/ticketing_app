@@ -31,8 +31,8 @@ const ProductDetail = () => {
   console.log(data?.data, 'i am data work');
   return (
     <>
-      <div className='px-4 md:px-14'>
-        <Tabs />
+      <Tabs />
+      <div id='BuyTickets' className='px-4 md:px-14'>
         <ImageSlider data={data?.data} ticketPurchased={data?.ticketPurchased} />
         <div >
           <EntiresDetail />

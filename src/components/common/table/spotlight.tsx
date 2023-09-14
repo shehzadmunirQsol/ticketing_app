@@ -159,6 +159,7 @@ export default function DataTableSpotLight() {
     {
       id: 'actions',
       enableHiding: false,
+      header:"Actions",
       cell: ({ row }) => {
         const payment = row?.original;
         console.log(row?.original, 'row?.original');
@@ -172,9 +173,7 @@ export default function DataTableSpotLight() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-
-              <DropdownMenuSeparator />
+              
               <Link href={`/admin/settings/spotlight/edit/${payment?.id}`}>
                 <DropdownMenuItem>Edit Spot Light</DropdownMenuItem>
               </Link>

@@ -47,7 +47,7 @@ export type EventCustomerType = {
   email: string;
   first_name: string;
   last_name: string;
-  quantity: string;
+  quantity: number;
 };
 
 export default function OrdersDataTable() {
@@ -137,7 +137,7 @@ export default function OrdersDataTable() {
       header: 'Total Amount',
       cell: ({ row }) => (
         <p className="w-24 text-center text-ellipsis whitespace-nowrap ">
-          {(+row?.original?.quantity * row?.original?.price)?.toFixed(2)}
+          {(row?.original?.quantity * row?.original?.price)?.toFixed(2)}
         </p>
       ),
     },
