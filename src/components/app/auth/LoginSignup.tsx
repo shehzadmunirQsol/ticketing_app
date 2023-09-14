@@ -360,10 +360,11 @@ export default function LoginSignup() {
                   />
                 </div>
                 <div className="absolute  bottom-0 flex flex-col lg:flex-row md:flex-row justify-between items-center gap-6 ">
-                  <p className="text-lightColor font-extralight text-xs w-full lg:w-96  md:w-96">
+                  <p className="text-lightColor text-gray-400 font-extralight text-xs w-full lg:w-96  md:w-96">
                     Your personal data will be used to process your order,
                     support your experience throughout this website, and for
                     other purposes described in our privacy policy.
+=
                   </p>
                   <Button
                     className="  lg:w-52 md:w-52 w-full     text-black font-sans font-[900]   text-xl tracking-[-1px]"

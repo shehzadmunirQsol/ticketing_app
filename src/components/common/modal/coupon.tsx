@@ -45,6 +45,8 @@ export function CouponDialog(props: SettingDialogInterface) {
       };
       if (props?.type == 'enabled')
         payload.is_enabled = !props?.selectedItem?.is_enabled;
+      if (props?.type == 'disabled')
+        payload.is_enabled = !props?.selectedItem?.is_enabled;
       if (props?.type == 'delete')
         payload.is_deleted = !props?.selectedItem?.is_deleted;
       // let data: any;

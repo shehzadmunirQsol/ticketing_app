@@ -80,6 +80,7 @@ export const columns: ColumnDef<Category>[] = [
   },
   {
     id: 'actions',
+    header:"Actions",
     enableHiding: false,
     cell: ({ row }) => {
       return (
@@ -91,8 +92,7 @@ export const columns: ColumnDef<Category>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuSeparator />
+            
             <Link href={`/admin/category/edit/${row?.original?.id}`}>
               <DropdownMenuItem>Edit Category</DropdownMenuItem>
             </Link>

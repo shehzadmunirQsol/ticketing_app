@@ -1,5 +1,4 @@
 import React from 'react';
-import ExampleForm from '~/components/common/forms/form';
 import DashboardPage from './over_view';
 
 function Dashboard() {

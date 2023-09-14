@@ -32,7 +32,6 @@ import {
   TableRow,
 } from '@/ui/table';
 import LanguageSelect, { LanguageInterface } from '../language_select';
-import { GetCategorySchema } from '~/schema/category';
 import { trpc } from '~/utils/trpc';
 import Image from 'next/image';
 import { displayDate, renderNFTImage } from '~/utils/helper';
@@ -40,6 +39,8 @@ import Link from 'next/link';
 import { GetEventSchema } from '~/schema/event';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 import { LoadingDialog } from '../modal/loadingModal';
+import { setSelectedEvent } from '~/store/reducers/admin_layout';
+import { useDispatch } from 'react-redux';
 
 export type Category = {
   thumb: string;
@@ -66,10 +67,12 @@ export default function EventsDataTable() {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
 
+  const dispatch = useDispatch();
+
   const { data, isLoading } = trpc.event.get.useQuery(filters, {
     refetchOnWindowFocus: false,
   });
-  console.log({ data });
+
   const categoryData = React.useMemo(() => {
     return Array.isArray(data?.data) ? data?.data : [];
   }, [data]);
@@ -167,6 +170,7 @@ export default function EventsDataTable() {
     {
       id: 'actions',
       enableHiding: false,
+      header:"Actions",
       cell: ({ row }) => {
         return (
           <DropdownMenu>
@@ -177,10 +181,16 @@ export default function EventsDataTable() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuSeparator />
+              
               <Link href={`/admin/events/edit/${row?.original?.id}`}>
                 <DropdownMenuItem>Edit Event</DropdownMenuItem>
+              </Link>
+              <DropdownMenuSeparator />
+              <Link
+                onClick={() => dispatch(setSelectedEvent(row.original))}
+                href={`/admin/events/event-customers/${row.original.id}`}
+              >
+                <DropdownMenuItem>Event Customers</DropdownMenuItem>
               </Link>
             </DropdownMenuContent>
           </DropdownMenu>
