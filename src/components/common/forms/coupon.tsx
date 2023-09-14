@@ -150,7 +150,10 @@ export default function CouponForm() {
                 <FormControl>
                   <Input placeholder="Enter Coupon Name" {...field} />
                 </FormControl>
-                <FormMessage />
+                
+                <div className='relative pb-2'>
+                        <FormMessage />
+                        </div>
               </FormItem>
             )}
           />
@@ -170,7 +173,10 @@ export default function CouponForm() {
                     {...field}
                   />
                 </FormControl>
-                <FormMessage />
+                
+                <div className='relative pb-2'>
+                        <FormMessage />
+                        </div>
               </FormItem>
             )}
           />
@@ -202,7 +208,10 @@ export default function CouponForm() {
                     </SelectContent>
                   </Select>
                 </FormControl>
-                <FormMessage />
+                
+                <div className='relative pb-2'>
+                        <FormMessage />
+                        </div>
               </FormItem>
             )}
           />
@@ -227,7 +236,10 @@ export default function CouponForm() {
                     })}
                   />
                 </FormControl>
-                <FormMessage />
+                
+                <div className='relative pb-2'>
+                        <FormMessage />
+                        </div>
               </FormItem>
             )}
           />
@@ -251,7 +263,10 @@ export default function CouponForm() {
                       })}
                     />
                   </FormControl>
-                  <FormMessage />
+                  
+                  <div className='relative pb-2'>
+                        <FormMessage />
+                        </div>
                 </FormItem>
               )}
             />
@@ -277,7 +292,10 @@ export default function CouponForm() {
                       })}
                     />
                   </FormControl>
-                  <FormMessage />
+                  
+                  <div className='relative pb-2'>
+                        <FormMessage />
+                        </div>
                 </FormItem>
               )}
             />
@@ -309,7 +327,10 @@ export default function CouponForm() {
                   </SelectContent>
                 </Select>
 
-                <FormMessage />
+                
+                <div className='relative pb-2'>
+                        <FormMessage />
+                        </div>
               </FormItem>
             )}
           />
@@ -333,7 +354,10 @@ export default function CouponForm() {
                       })}
                     />
                   </FormControl>
-                  <FormMessage />
+                  
+                  <div className='relative pb-2'>
+                        <FormMessage />
+                        </div>
                 </FormItem>
               )}
             />

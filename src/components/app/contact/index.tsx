@@ -114,7 +114,10 @@ export default function Contact() {
                           {...field}
                         />
                       </FormControl>
-                      <FormMessage />
+                      
+                      <div className='relative pb-2'>
+                        <FormMessage />
+                        </div>
                     </FormItem>
                   )}
                 />
@@ -133,7 +136,10 @@ export default function Contact() {
                           {...field}
                         />
                       </FormControl>
-                      <FormMessage />
+                      
+                      <div className='relative pb-2'>
+                        <FormMessage />
+                        </div>
                     </FormItem>
                   )}
                 />
@@ -170,7 +176,10 @@ export default function Contact() {
                             </SelectContent>
                           </Select>
 
-                          <FormMessage />
+                          
+                          <div className='relative pb-2'>
+                        <FormMessage />
+                        </div>
                         </FormItem>
                       )}
                     />
@@ -189,7 +198,10 @@ export default function Contact() {
                               {...field}
                             />
                           </FormControl>
-                          <FormMessage />
+                          
+                          <div className='relative pb-2'>
+                        <FormMessage />
+                        </div>
                         </FormItem>
                       )}
                     />
@@ -210,7 +222,10 @@ export default function Contact() {
                           {...field}
                         />
                       </FormControl>
-                      <FormMessage />
+                      
+                      <div className='relative pb-2'>
+                        <FormMessage />
+                        </div>
                     </FormItem>
                   )}
                 />

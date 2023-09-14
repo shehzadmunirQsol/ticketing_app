@@ -199,7 +199,10 @@ export function CheckoutDialog(props: SettingDialogInterface) {
                               </SelectContent>
                             </Select>
 
-                            <FormMessage />
+
+                            <div className='relative pb-2'>
+                              <FormMessage />
+                            </div>
                           </FormItem>
                         )}
                       />
@@ -223,10 +226,16 @@ export function CheckoutDialog(props: SettingDialogInterface) {
                                   onChange={(e) =>
                                     formatCardNum(e.target.value)
                                   }
-                                  // {...field}
+                                // {...field}
                                 />
                               </FormControl>
-                              <FormMessage />
+
+                              <div className='relative pb-2'>
+
+                                <div className='relative pb-2'>
+                                  <FormMessage />
+                                </div>
+                              </div>
                             </FormItem>
                           )}
                         />
@@ -246,7 +255,13 @@ export function CheckoutDialog(props: SettingDialogInterface) {
                                   {...field}
                                 />
                               </FormControl>
-                              <FormMessage />
+
+                              <div className='relative pb-2'>
+
+                                <div className='relative pb-2'>
+                                  <FormMessage />
+                                </div>
+                              </div>
                             </FormItem>
                           )}
                         />
@@ -270,7 +285,10 @@ export function CheckoutDialog(props: SettingDialogInterface) {
                                     {...field}
                                   />
                                 </FormControl>
-                                <FormMessage />
+
+                                <div className='relative pb-2'>
+                                  <FormMessage />
+                                </div>
                               </FormItem>
                             )}
                           />
@@ -291,7 +309,10 @@ export function CheckoutDialog(props: SettingDialogInterface) {
                                     {...field}
                                   />
                                 </FormControl>
-                                <FormMessage />
+
+                                <div className='relative pb-2'>
+                                  <FormMessage />
+                                </div>
                               </FormItem>
                             )}
                           />
@@ -314,7 +335,10 @@ export function CheckoutDialog(props: SettingDialogInterface) {
                                     {...field}
                                   />
                                 </FormControl>
-                                <FormMessage />
+
+                                <div className='relative pb-2'>
+                                  <FormMessage />
+                                </div>
                               </FormItem>
                             )}
                           />

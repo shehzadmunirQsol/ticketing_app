@@ -168,7 +168,7 @@ export default function LoginSignup() {
   return (
     <section className="body-font   ">
       <div className="px-5 pt-24 mb-16 lg:pb-0 md:pb-0 lg:py-24 md:py-24 mx-auto flex flex-col-reverse lg:flex-row md:flex-row gap-14 mt-6  w-full max-w-[1300px] ">
-        <div className=" lg:w-2/3 md:w-2/3 w-full h-full  mb-5 lg:mb-0 rounded-lg hidden  lg:block  ">
+        <div className=" lg:w-2/3 md:w-2/3 w-full  h-full  mb-5 lg:mb-0 rounded-lg hidden  lg:block  ">
           <SideImage
             image={CarImage}
             text={'Unlock Your Journey Login or Register for'}
@@ -193,10 +193,10 @@ export default function LoginSignup() {
             </TabsList>
           </>
           <TabsContent value="login">
-            <Form {...formLogin}>
+            <Form {...formLogin} >
               <form
                 onSubmit={formLogin.handleSubmit(onSubmitLogin)}
-                className="justify-center items-center px-2 lg:px-8 py-4 space-y-4 w-full"
+                className="justify-center items-center px-2 lg:px-8 py-4 space-y-4 w-full h-full"
               >
                 <div className='w-full'>
                   <FormField
@@ -214,7 +214,9 @@ export default function LoginSignup() {
                             {...field}
                           />
                         </FormControl>
+                        <div className='relative pb-2'>
                         <FormMessage />
+                        </div>
                       </FormItem>
                     )}
                   />
@@ -233,7 +235,9 @@ export default function LoginSignup() {
                             {...field}
                           />
                         </FormControl>
+                        <div className='relative pb-2'>
                         <FormMessage />
+                        </div>
                       </FormItem>
                     )}
                   />
@@ -257,10 +261,11 @@ export default function LoginSignup() {
           </TabsContent>
           <LoadingDialog open={isSubmitting} text={'Loading...'} />
           <TabsContent value="signup">
-            <Form {...formSignup}>
+            <Form {...formSignup} >
               <form
+
                 onSubmit={formSignup.handleSubmit(onSubmitSignup)}
-                className="relative justify-center items-center px-2 lg:px-8 py-4 space-y-4 w-full h-[38rem]"
+                className=" justify-center items-center px-2 lg:px-8 py-4 space-y-4 w-full h-full"
               >
                 <div className="">
                   <FormField
@@ -278,7 +283,9 @@ export default function LoginSignup() {
                             {...field}
                           />
                         </FormControl>
-                        <FormMessage />
+                        <div className='relative pb-2'>
+                          <FormMessage />
+                        </div>
                       </FormItem>
                     )}
                   />
@@ -297,7 +304,9 @@ export default function LoginSignup() {
                             {...field}
                           />
                         </FormControl>
-                        <FormMessage />
+                        <div className='relative pb-2'>
+                          <FormMessage />
+                        </div>
                       </FormItem>
                     )}
                   />
@@ -316,7 +325,9 @@ export default function LoginSignup() {
                             {...field}
                           />
                         </FormControl>
-                        <FormMessage />
+                        <div className='relative pb-2'>
+                          <FormMessage />
+                        </div>
                       </FormItem>
                     )}
                   />
@@ -335,7 +346,9 @@ export default function LoginSignup() {
                             {...field}
                           />
                         </FormControl>
-                        <FormMessage />
+                        <div className='relative pb-2'>
+                          <FormMessage />
+                        </div>
                       </FormItem>
                     )}
                   />
@@ -354,17 +367,18 @@ export default function LoginSignup() {
                             {...field}
                           />
                         </FormControl>
-                        <FormMessage />
+                        <div className='relative pb-2'>
+                          <FormMessage />
+                        </div>
                       </FormItem>
                     )}
                   />
                 </div>
-                <div className="absolute  bottom-0 flex flex-col lg:flex-row md:flex-row justify-between items-center gap-6 ">
+                <div className=" flex flex-col lg:flex-row md:flex-row justify-between items-center gap-6 ">
                   <p className="text-lightColor text-gray-400 font-extralight text-xs w-full lg:w-96  md:w-96">
                     Your personal data will be used to process your order,
                     support your experience throughout this website, and for
                     other purposes described in our privacy policy.
-=
                   </p>
                   <Button
                     className="  lg:w-52 md:w-52 w-full     text-black font-sans font-[900]   text-xl tracking-[-1px]"
