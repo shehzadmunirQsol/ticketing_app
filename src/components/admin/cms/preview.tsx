@@ -1,4 +1,6 @@
+import Head from 'next/head.js';
 import { useRouter } from 'next/router';
+import Script from 'next/script';
 import React, { useEffect, useState } from 'react';
 
 const Preview = () => {
@@ -29,9 +31,40 @@ const Preview = () => {
     };
   }, []);
 
+  // useEffect(() => {
+  //   import('./custom.js');
+  // }, []);
+
   return (
     <div>
-      {/* <p>hello</p> */}
+      <Head>
+        <Script src="./custom.js"></Script>
+      </Head>
+      <Script
+        src="https://connect.facebook.net/en_US/sdk.js"
+        strategy="lazyOnload"
+        onLoad={() => {
+          const carousel:any = document.querySelector('.carousel');
+          var scrollValue:any;
+
+          function handleLeftScroll() {
+            scrollValue =
+              Math.sign(scrollValue) === -1 ? scrollValue - 200 : 0 - 200;
+            carousel.style.transition = '0.5s ease';
+            carousel.scrollLeft += scrollValue;
+
+            console.log('handleLeftScroll');
+          }
+          function handleRightScroll() {
+            scrollValue =
+              Math.sign(scrollValue) != -1 ? scrollValue + 200 : 0 + 200;
+            carousel.style.transition = '0.5s ease';
+            carousel.scrollLeft += scrollValue;
+            console.log('handleRightScroll');
+          }
+          console.log(`script loaded correctly, window.FB has been populated`);
+        }}
+      />
       <div
         dangerouslySetInnerHTML={{
           __html: data?.toString() ?? '<>html conte</>',
@@ -40,5 +73,20 @@ const Preview = () => {
     </div>
   );
 };
+
+
+<div className="carousel">
+  <div className="card">
+    <img src="" alt="" />
+    <h4></h4>
+    <p></p>
+
+    <div className="hover">
+    <h4></h4>
+    <p></p>
+
+    </div>
+  </div>
+</div>
 
 export default Preview;

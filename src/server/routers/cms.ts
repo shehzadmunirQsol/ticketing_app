@@ -21,6 +21,7 @@ export const cmsRouter = router({
         const payload: any = {
           user_id: 1,
           slug: input.slug,
+          type: input.type,
         };
 
         const cms = await prisma?.cMS?.create({
@@ -94,13 +95,13 @@ export const cmsRouter = router({
     .mutation(async ({ input }) => {
       try {
         console.log(input, 'HSJSJSJSHJ ::');
-        const cms:any = await prisma?.cMS?.findUnique({
+        const cms: any = await prisma?.cMS?.findUnique({
           where: { id: input.id },
           include: {
             CMSDescription: true,
           },
         });
-        console.log(cms,"cmscmscmscmscmscmscms")
+        console.log(cms, 'cmscmscmscmscmscmscms');
         if (!cms) {
           throw new TRPCError({
             code: 'NOT_FOUND',

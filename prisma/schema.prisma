@@ -610,6 +610,7 @@ enum SubscriptionEnums {
 }
 
 enum CMSEnums {
+  EventFAQs
   faqs
   static
 }

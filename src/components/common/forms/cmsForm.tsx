@@ -22,6 +22,14 @@ import { LoadingDialog } from '../modal/loadingModal';
 import { LanguageInterface } from '../language_select';
 // import { Editor } from 'primereact/editor';
 import CKEditor from 'react-ckeditor-component';
+import {
+  Select,
+  SelectItem,
+  SelectTrigger,
+  SelectContent,
+  SelectGroup,
+  SelectValue,
+} from '@/ui/select';
 
 //theme
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
@@ -39,6 +47,7 @@ export default function CmsForm(props: CategoryFormInterface) {
   const { toast } = useToast();
   const { id = 0 } = router.query;
   const form = useForm<any>();
+  
   // const form = useForm<cmsSchemaInput>({
   // resolver: zodResolver(cmsSchema),
   // });
@@ -46,14 +55,14 @@ export default function CmsForm(props: CategoryFormInterface) {
   const [image, setImage] = useState<File>();
   const [loading, setLoading] = useState<boolean>(false);
   const [content, setContent] = useState<any>('');
-
+console.log(form.formState.errors,"form.formState.errors")
   // Getting Data
   const { data } = trpc.cms.getById.useQuery(
     { id: +id },
     {
       refetchOnWindowFocus: false,
       enabled: id ? true : false,
-      onSuccess(res) {
+      onSuccess(res: any) {
         console.log(res, 'res data');
         console.log(data?.data?.CMSDescription[0]?.title, '');
       },
@@ -79,13 +88,13 @@ export default function CmsForm(props: CategoryFormInterface) {
 
   // Handle the change event when the CKEditor content changes
   const handleChange = (evt: any) => {
-    const newContent:any = evt.editor.getData();
+    const newContent: any = evt.editor.getData();
 
     setContent(newContent);
   };
   // updating data
   const updateCmsId = trpc.cms.updateById.useMutation({
-    onSuccess: (res) => {
+    onSuccess: (res: any) => {
       console.log(res);
       toast({
         variant: 'success',
@@ -93,7 +102,7 @@ export default function CmsForm(props: CategoryFormInterface) {
       });
       // setEdit(false);
     },
-    onError(error) {
+    onError(error: any) {
       console.log(error);
     },
   });
@@ -103,7 +112,7 @@ export default function CmsForm(props: CategoryFormInterface) {
     onSuccess: (res: any) => {
       console.log(res, 'REs');
     },
-    onError: (err) => {
+    onError: (err: any) => {
       console.log(err.message, 'err');
     },
   });
@@ -197,8 +206,17 @@ export default function CmsForm(props: CategoryFormInterface) {
     stylesSet: 'default',
     allowedContent: true,
     autoParagraph: false,
-    extraAllowedContent: 'b i div class style',
+    extraAllowedContent: 'b i div class style;script[src]',
   };
+
+  const FaqsType = [
+    {
+      faqType: 'EventFAQs',
+    },
+    {
+      faqType: 'static',
+    },
+  ];
 
   return (
     <Form {...form}>
@@ -254,7 +272,39 @@ export default function CmsForm(props: CategoryFormInterface) {
               )}
             />
           </div>
+          <FormField
+            control={form.control}
+            name="type"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>
+                    Cms Type<sup className="text-md text-red-500">*</sup>
+                  </FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                  value={field.value}
+                >
+                  <FormControl className="rounded-md bg-[#060B0E]">
+                    <SelectTrigger className=" rounded-none  ">
+                      <SelectValue placeholder="Select Cms Type" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectGroup>
+                      {FaqsType?.map((item, i) => (
+                        <SelectItem key={i} value={item?.faqType}>
+                          {item?.faqType}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
 
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <div className="flex flex-col lg:flex-row md:flex-row justify-between lg:space-x-8 md:space-x-8 ">
             <FormField
               control={form.control}
@@ -312,7 +362,7 @@ export default function CmsForm(props: CategoryFormInterface) {
             name="en.content"
             render={({ field }) => (
               <FormItem className=" text-black">
-                <FormLabel>
+                <FormLabel className=" text-white">
                   Content <sup className="text-md text-red-500">*</sup>
                 </FormLabel>
                 <FormControl>
