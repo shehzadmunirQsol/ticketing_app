@@ -13,6 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/ui/tabs';
 import { Overview } from './chart';
 import { RecentSales } from './recent_sales';
 import { trpc } from '~/utils/trpc';
+import Link from 'next/link';
 // import { Overview } from '@/app/examples/dashboard/components/overview';
 // import { RecentSales } from '@/app/examples/dashboard/components/recent-sales';
 
@@ -43,11 +44,11 @@ export default function DashboardPage() {
             <TabsContent value="overview" className="space-y-4">
               <AnalyticsCard />
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-                <Card className="col-span-4">
-                  <CardHeader className="text-muted-foreground">
+                <Card className="col-span-4 bg-transparent">
+                  <CardHeader className="text-muted-foreground ">
                     <CardTitle>Sales Overview</CardTitle>
                   </CardHeader>
-                  <CardContent className="pl-2">
+                  <CardContent className="pl-2 z-10">
                     <Overview />
                   </CardContent>
                 </Card>
@@ -86,20 +87,22 @@ const AnalyticsCard = () => {
                 item?.cols ? ' col-span-6 ' : 'col-span-4'
               } text-white   group cursor-pointer xss:max-w-2xl xs:max-w-2xl sm:max-w-2xl md:max-w-4xl border  rounded-lg shadow  `}
             >
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm text-white font-medium">
-                  {item?.title}
-                </CardTitle>
-                <i
-                  className={`${item?.icon} h-4 w-4 text-muted-foreground`}
-                ></i>
-              </CardHeader>
-              <CardContent>
-                <div className=" text-muted-foreground  font-bold">
-                  <span className="text-2xl">{item?.data}</span>
-                  <sub className="text-sm"> {item?.symbol}</sub>
-                </div>
-              </CardContent>
+              <Link href={item?.link}>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm text-white font-medium">
+                    {item?.title}
+                  </CardTitle>
+                  <i
+                    className={`${item?.icon} h-4 w-4 text-muted-foreground`}
+                  ></i>
+                </CardHeader>
+                <CardContent>
+                  <div className=" text-muted-foreground  font-bold">
+                    <span className="text-2xl">{item?.data}</span>
+                    <sub className="text-sm"> {item?.symbol}</sub>
+                  </div>
+                </CardContent>
+              </Link>
             </Card>
           );
         })

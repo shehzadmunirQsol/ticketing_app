@@ -166,9 +166,9 @@ export default function LoginSignup() {
   };
 
   return (
-    <section className="body-font  ">
-      <div className="px-5 pt-24 pb-5 lg:pb-0 md:pb-0 lg:py-24 md:py-24 mx-auto flex flex-col-reverse lg:flex-row md:flex-row gap-14 mt-6 ">
-        <div className="lg:w-2/3 md:w-2/3 w-full h-full mb-5 lg:mb-0 rounded-lg hidden  lg:block  ">
+    <section className="body-font   ">
+      <div className="px-5 pt-24 mb-16 lg:pb-0 md:pb-0 lg:py-24 md:py-24 mx-auto flex flex-col-reverse lg:flex-row md:flex-row gap-14 mt-6  w-full max-w-[1300px] ">
+        <div className=" lg:w-2/3 md:w-2/3 w-full h-full  mb-5 lg:mb-0 rounded-lg hidden  lg:block  ">
           <SideImage
             image={CarImage}
             text={'Unlock Your Journey Login or Register for'}
@@ -177,10 +177,10 @@ export default function LoginSignup() {
         </div>
         <Tabs
           defaultValue={defaultValue === 'login' ? 'login' : 'signup'}
-          className="flex flex-col flex-wrap   lg:w-2/2 md:w-full  lg:text-left  rounded-none border-none  lg:mr-6 bg-card"
+          className="flex flex-col flex-wrap   lg:w-2/2 md:w-full  lg:text-left  rounded-none border-none  lg:mr-6 bg-card "
         >
           <>
-            <TabsList className=" w-full rounded-none border-none py-4">
+            <TabsList className=" w-full rounded-none border-none ">
               <TabsTrigger
                 value="login"
                 className="w-full font-black text-md -mt-1 rounded-none border-none m-0  "
@@ -196,9 +196,9 @@ export default function LoginSignup() {
             <Form {...formLogin}>
               <form
                 onSubmit={formLogin.handleSubmit(onSubmitLogin)}
-                className="justify-center items-center px-2 lg:px-8 py-4 space-y-4"
+                className="justify-center items-center px-2 lg:px-8 py-4 space-y-4 w-full"
               >
-                <div>
+                <div className='w-full'>
                   <FormField
                     control={formLogin.control}
                     name="user"
@@ -260,14 +260,14 @@ export default function LoginSignup() {
             <Form {...formSignup}>
               <form
                 onSubmit={formSignup.handleSubmit(onSubmitSignup)}
-                className="justify-center items-center px-2 lg:px-8 py-4 space-y-4"
+                className="relative justify-center items-center px-2 lg:px-8 py-4 space-y-4 w-full h-[38rem]"
               >
-                <div className="w-full">
+                <div className="">
                   <FormField
                     control={formSignup.control}
                     name="username"
                     render={({ field }) => (
-                      <FormItem className="mb-6 lg:mb-10 md:mb-10">
+                      <FormItem className="mb-6 ">
                         <FormLabel className="text-xs font-thin  text-grayColor">
                           Username*
                         </FormLabel>
@@ -286,7 +286,7 @@ export default function LoginSignup() {
                     control={formSignup.control}
                     name="email"
                     render={({ field }) => (
-                      <FormItem className="mb-6 lg:mb-10 md:mb-10">
+                      <FormItem className="mb-6 ">
                         <FormLabel className="text-xs  font-thin text-grayColor">
                           Email Address*
                         </FormLabel>
@@ -305,7 +305,7 @@ export default function LoginSignup() {
                     control={formSignup.control}
                     name="password"
                     render={({ field }) => (
-                      <FormItem className="mb-6 lg:mb-10 md:mb-10">
+                      <FormItem className="mb-6 ">
                         <FormLabel className="text-xs font-thin text-grayColor">
                           Password*
                         </FormLabel>
@@ -324,7 +324,7 @@ export default function LoginSignup() {
                     control={formSignup.control}
                     name="firstname"
                     render={({ field }) => (
-                      <FormItem className="mb-6 lg:mb-10 md:mb-10">
+                      <FormItem className="mb-6 ">
                         <FormLabel className="text-xs font-thin text-grayColor">
                           First Name*
                         </FormLabel>
@@ -343,7 +343,7 @@ export default function LoginSignup() {
                     control={formSignup.control}
                     name="lastname"
                     render={({ field }) => (
-                      <FormItem className="mb-6 lg:mb-28 md:mb-28">
+                      <FormItem className="">
                         <FormLabel className="text-xs font-thin text-grayColor">
                           Last Name*
                         </FormLabel>
@@ -359,17 +359,18 @@ export default function LoginSignup() {
                     )}
                   />
                 </div>
-                <div className="flex flex-col lg:flex-row md:flex-row justify-between items-center gap-6 mt-44">
-                  <p className="text-lightColor font-extralight text-xs w-full lg:w-96  md:w-96">
+                <div className="absolute  bottom-0 flex flex-col lg:flex-row md:flex-row justify-between items-center gap-6 ">
+                  <p className="text-lightColor text-gray-400 font-extralight text-xs w-full lg:w-96  md:w-96">
                     Your personal data will be used to process your order,
                     support your experience throughout this website, and for
                     other purposes described in our privacy policy.
+=
                   </p>
                   <Button
                     className="  lg:w-52 md:w-52 w-full     text-black font-sans font-[900]   text-xl tracking-[-1px]"
                     variant="clip"
                   >
-                    Register
+                    REGISTER
                   </Button>
                 </div>
               </form>

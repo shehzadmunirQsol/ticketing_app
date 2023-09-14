@@ -11,6 +11,8 @@ import {
 import { useToast } from '~/components/ui/use-toast';
 import { trpc } from '~/utils/trpc';
 import { LoadingDialog } from './loadingModal';
+import { sendEmail } from '~/utils/helper';
+
 interface SettingDialogInterface {
   selectedItem: any;
   isModal: boolean;
@@ -26,11 +28,10 @@ export function CustomerDialog(props: SettingDialogInterface) {
   const { toast } = useToast();
   const [loading, setLoading] = useState<boolean>(false);
 
-  const bannerUpdate:any = trpc.customer.update.useMutation({
+  const bannerUpdate: any = trpc.customer.update.useMutation({
     onSuccess: () => {
       console.log('upload successfully');
 
-      // router.push('/store/wallet-connect');
     },
     onError(error: any) {
       console.log({ error });
@@ -49,6 +50,7 @@ export function CustomerDialog(props: SettingDialogInterface) {
         payload.is_deleted = !props?.selectedItem?.is_deleted;
       // let data: any;
       const data = await bannerUpdate.mutateAsync({ ...payload });
+     
 
       if (data) {
         setLoading(false);
@@ -57,13 +59,12 @@ export function CustomerDialog(props: SettingDialogInterface) {
 
         toast({
           variant: 'success',
-          title: `${props?.title} ${
-            props?.type === 'enabled'
-              ? props?.selectedItem?.is_approved
-                ? 'disabled'
-                : 'Approved'
-              : 'deleted'
-          } Successfully`,
+          title: `${props?.title} ${props?.type === 'enabled'
+            ? props?.selectedItem?.is_approved
+              ? 'disabled'
+              : 'Approved'
+            : 'deleted'
+            } Successfully`,
         });
         props?.refetch();
       } else {

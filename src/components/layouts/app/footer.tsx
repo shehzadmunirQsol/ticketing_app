@@ -5,6 +5,8 @@ import Lines from '~/public/assets/icons/Lines_Big.png';
 import Group16 from '~/public/assets/icons/Group16.svg';
 import Group17 from '~/public/assets/icons/Group17.png';
 import Glow from '~/components/common/glow';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 interface LinkItemProps {
   name: string;
@@ -13,6 +15,7 @@ interface LinkItemProps {
   disable?: boolean;
 }
 function Footer() {
+  const router = useRouter()
   return (
     <footer className="bg-background-footer h-full !z-50">
       <div className="mx-auto relative w-full max-w-screen h-full">
@@ -58,17 +61,18 @@ function Footer() {
                 <div>
                   <ul className="text-gray-500 dark:text-gray-400 font-medium">
                     {[
-                      'Home',
-                      'Cars',
-                      'Cash',
-                      'Winners',
-                      'FAQs',
-                      'My Account',
+                      { page: "Home", link: "/" },
+                      { page: "Cars", link: "/cars" },
+                      { page: "Cash", link: "/cash" },
+                      { page: "Winners", link: "/winners" },
+                      { page: "FAQs", link: "/" },
+
+
                     ].map((item, index) => {
                       return (
                         <li key={index} className=" text-sm">
-                          <a href="/item" className="hover:underline">
-                            {item}
+                          <a href={item.link} className="hover:underline">
+                            {item.page}
                           </a>
                         </li>
                       );
@@ -78,18 +82,18 @@ function Footer() {
                 <div>
                   <ul className="text-gray-500 dark:text-gray-400 font-medium">
                     {[
-                      'About Us',
-                      'Contact Us',
-                      'Terms & Conditions',
-                      'Security',
-                      'Our Team',
-                      'Cookie & Privacy Policy',
+                      { page: "About Us", link: "/" },
+                      { page: "Contact Us", link: "/contact" },
+                      { page: "Terms & Conditions", link: "/" },
+                      { page: "Our Team", link: "/" },
+                      { page: "Cookie & Privacy Policy", link: "/" },
+
                     ].map((item, index) => {
                       return (
                         <li key={index} className="text-sm">
-                          <a href="/item" className="hover:underline">
-                            {item}
-                          </a>
+                          <Link href={item.link} className="hover:underline">
+                            {item.page}
+                          </Link>
                         </li>
                       );
                     })}
@@ -106,6 +110,8 @@ function Footer() {
                         variant="outline"
                         size="icon_square"
                         className=" rounded-md"
+                        onClick={() => router.push("https://www.facebook.com/WinnarUAE")}
+
                       >
                         <i className="fa-brands fa-facebook-f text-xl"></i>
                       </Button>
@@ -113,6 +119,7 @@ function Footer() {
                         variant="outline"
                         size="icon_square"
                         className=" rounded-md"
+                        onClick={() => router.push("https://www.instagram.com/winnar/")}
                       >
                         <i className="fa-brands fa-instagram text-xl"></i>
                       </Button>
@@ -120,8 +127,9 @@ function Footer() {
                         variant="outline"
                         size="icon_square"
                         className=" rounded-md"
+                        onClick={() => router.push("https://www.linkedin.com/company/winnar/")}
                       >
-                        <i className="fa-brands fa-youtube text-xl"></i>
+                        <i className="fa-brands fa-linkedin text-xl"></i>
                       </Button>
                     </div>
                   </div>
