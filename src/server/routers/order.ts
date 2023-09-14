@@ -510,10 +510,134 @@ export const orderRouter = router({
             throw new Error(error.message);
           });
         console.log('paymentRes', paymentRes?.data);
-        return {
-          message: 'Order created successfully!',
-          checkout: paymentRes,
-        };
+        if (paymentRes?.data) {
+          const statusData = paymentRes?.data;
+          const successStatus =
+            statusData?.result?.description.toLowerCase().includes('success') &&
+            statusData?.resultDetails?.resultMessage
+              .toLowerCase()
+              .includes('success');
+          if (successStatus) {
+            const payload = JSON.parse(statusData?.customParameters?.payload);
+            console.log({ payload }, 'total processing payload');
+            const cart = await prisma.cart.findUnique({
+              where: { id: payload?.values?.cart_id },
+              include: {
+                CouponApply: {
+                  where: { is_deleted: false },
+                  select: {
+                    discount: true,
+                    is_percentage: true,
+                  },
+                },
+                CartItems: {
+                  include: {
+                    Event: {
+                      select: {
+                        id: true,
+                        price: true,
+                        tickets_sold: true,
+                        end_date: true,
+                      },
+                    },
+                  },
+                },
+              },
+            });
+
+            if (!cart?.CartItems?.length) {
+              throw new TRPCError({
+                code: 'BAD_REQUEST',
+                message: 'No items in the cart!',
+              });
+            }
+
+            const isDiscount = cart?.CouponApply?.length > 0;
+            const discount = cart?.CouponApply[0]?.discount ?? 0;
+            const isPercentage = cart?.CouponApply[0]?.is_percentage ?? false;
+
+            const subTotalAmount =
+              cart?.CartItems.reduce(
+                (accumulator, current) =>
+                  accumulator + current.quantity * current.Event.price,
+                0,
+              ) ?? 0;
+
+            const discountAmount =
+              isDiscount && isPercentage
+                ? subTotalAmount * (discount / 100)
+                : discount;
+            const totalPaymentId = paymentRes?.data?.id;
+            const orderPayload: any = {
+              ...payload?.values,
+              phone_number:
+                payload?.values?.code + payload?.values?.phone_number,
+
+              sub_total_amount: subTotalAmount,
+              status: 'paid',
+              discount_amount: discountAmount,
+              total_amount: subTotalAmount - discountAmount,
+              total_payment_id: totalPaymentId,
+            };
+            if (payload?.values?.code) delete orderPayload?.code;
+            if (payload?.values?.cart_id) delete orderPayload?.cart_id;
+
+            const orderEventPayload = cart?.CartItems.map((item) => ({
+              event_id: item.Event.id,
+              customer_id: payload?.values?.customer_id,
+              ticket_price: item.Event.price,
+              quantity: item.quantity,
+              is_subscribe: item.is_subscribe,
+            }));
+            const order = await prisma.order.create({
+              data: {
+                ...orderPayload,
+                OrderEvent: {
+                  createMany: {
+                    data: orderEventPayload,
+                  },
+                },
+              },
+            });
+            const eventPromises = cart.CartItems.map((item) =>
+              prisma.event.update({
+                where: { id: item.Event.id },
+                data: {
+                  tickets_sold:
+                    (item?.Event?.tickets_sold ?? 0) + item?.quantity,
+                },
+              }),
+            );
+
+            await Promise.all(eventPromises);
+
+            await prisma.cart.update({
+              where: { id: cart.id },
+              data: { is_deleted: true },
+            });
+
+            const mailOptions = {
+              template_id: EMAIL_TEMPLATE_IDS.ORDER_SUCCESS,
+              from: 'no-reply@winnar.com',
+              to: payload.values.email,
+              subject: 'Your order has been placed 🎉',
+              params: {
+                first_name: payload.values.first_name,
+                status: 'paid',
+              },
+            };
+
+            await sendEmail(mailOptions);
+            return {
+              message: 'Order created successfully!',
+              status: true,
+            };
+          }
+        }
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Something Went Wrong',
+        });
       } catch (error: any) {
         console.log({ error }, 'error message');
         throw new TRPCError({

@@ -22,20 +22,27 @@ import Image from 'next/image';
 import Glow from '~/components/common/glow';
 import { CouponModal } from './Coupon';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
 import { CheckoutDialog } from '~/components/common/modal/checkout';
 import { CreateCheckoutSchema, createCheckoutSchema } from '~/schema/order';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { trpc } from '~/utils/trpc';
 import { useRouter } from 'next/router';
+import { LoadingDialog } from '~/components/common/modal/loadingModal';
+import { useToast } from '~/components/ui/use-toast';
+import { addCart } from '~/store/reducers/cart';
 
 function Checkout() {
   const { cart, totalAmount } = useSelector((state: RootState) => state.cart);
   const { user } = useSelector((state: RootState) => state.auth);
   const router = useRouter();
+  const { toast } = useToast();
+  const dispatch = useDispatch();
 
   // Handle Coupon Dailog
+  const [loading, setLoading] = useState<boolean>(false);
+
   const [isModal, setIsModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState({});
   const [title, setTitle] = useState('Enter Payment Detail');
@@ -80,12 +87,35 @@ function Checkout() {
   });
   useEffect(() => {
     (async () => {
-      const data = router?.query;
-      if (data?.id) {
-        const Resdata = await getStatus.mutateAsync({
-          checkout_id: data?.id as string,
-        });
-        console.log(Resdata, 'router?.query');
+      try {
+        const data = router?.query;
+        if (data?.id) {
+          setLoading(true);
+          const Resdata = await getStatus.mutateAsync({
+            checkout_id: data?.id as string,
+          });
+          if (Resdata?.status) {
+            toast({
+              variant: 'success',
+              title: 'Order Successful! 🎉',
+            });
+            dispatch(
+              addCart({
+                id: null,
+                customer_id: null,
+                isDiscount: false,
+                discount: 0,
+                isPercentage: false,
+                cartItems: [],
+              }),
+            );
+            setLoading(false);
+
+            router.push('/');
+          }
+        }
+      } catch (e: any) {
+        console.log(e?.message, 'error');
       }
     })();
   }, [router?.query]);
@@ -540,6 +570,8 @@ function Checkout() {
           </div>
         </form>
       </Form>
+      <LoadingDialog open={loading} text={'Order processing...'} />
+
       <CouponModal
         isModal={isModal}
         setIsModal={setIsModal}

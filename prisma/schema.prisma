@@ -373,7 +373,7 @@ model CartItem {
 }
 
 model Order {
-  id               Int        @id @default(autoincrement())
+  id               Int        @id @unique @default(autoincrement())
   sub_total_amount Float
   discount_amount  Float
   total_amount     Float

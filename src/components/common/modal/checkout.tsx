@@ -12,23 +12,9 @@ import { useToast } from '~/components/ui/use-toast';
 import { trpc } from '~/utils/trpc';
 import { LoadingDialog } from './loadingModal';
 import { useForm } from 'react-hook-form';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '~/components/ui/form';
+
 import { Input } from '~/components/ui/input';
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '~/components/ui/select';
+
 import { createFormPaymentSchema, createPaymentSchema } from '~/schema/payment';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useDispatch, useSelector } from 'react-redux';
@@ -157,7 +143,7 @@ export function CheckoutDialog(props: SettingDialogInterface) {
   return (
     <>
       <Dialog open={props?.isModal} onOpenChange={(e) => props.setIsModal(e)}>
-        <DialogContent className="sm:max-w-[450px] bg-white ">
+        <DialogContent className="sm:max-w-[450px] ">
           <Script
             src={`https://eu-test.oppwa.com/v1/paymentWidgets.js?checkoutId=${props?.selectedItem?.checkoutID}`}
             onReady={() => {
