@@ -43,6 +43,7 @@ export type EventCustomerType = {
   price: number;
   thumb: string;
   event_name: string;
+  end_date: Date;
   customer_id: number;
   email: string;
   first_name: string;
@@ -145,7 +146,7 @@ export default function OrdersDataTable() {
       id: 'actions',
       enableHiding: false,
       cell: ({ row }) => {
-        return (
+        return new Date() > row?.original?.end_date ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="h-8 w-8 p-0">
@@ -159,7 +160,7 @@ export default function OrdersDataTable() {
               <DropdownMenuItem>Select Winner</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-        );
+        ) : null;
       },
     },
   ];

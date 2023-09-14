@@ -16,8 +16,9 @@ export default function Content() {
     (state: RootState) => state.adminLayout,
   );
 
-  const [open, setOpen] = React.useState<string | null>('/dashboard');
-  const [childActive, setChildActive] = React.useState<string>('/dashboard');
+  const [open, setOpen] = React.useState<string | null>('/admin/dashboard');
+  const [childActive, setChildActive] =
+    React.useState<string>('/admin/dashboard');
 
   const router = useRouter();
 
