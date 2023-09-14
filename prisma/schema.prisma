@@ -2,7 +2,7 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -27,7 +27,7 @@ model Setting {
   id         Int          @id @default(autoincrement())
   group      SettingEnums @default(BANNER)
   key        String
-  value      String       @db.LongText
+  value      String
   lang_id    Int?         @default(1)
   is_deleted Boolean      @default(false)
   is_enabled Boolean      @default(false)
@@ -101,7 +101,7 @@ model Charity {
 model CharityDescription {
   id         Int      @id @default(autoincrement())
   name       String
-  desc       String?  @db.LongText
+  desc       String?
   lang_id    Int
   charity_id Int
   created_at DateTime @default(now()) @db.Timestamp(6)
@@ -173,7 +173,7 @@ model Category {
 model CategoryDescription {
   id          Int      @id @default(autoincrement())
   name        String
-  desc        String?  @db.LongText
+  desc        String?
   lang_id     Int
   category_id Int
   created_at  DateTime @default(now()) @db.Timestamp(6)
@@ -187,25 +187,26 @@ model CategoryDescription {
 }
 
 model Event {
-  id                Int      @id @default(autoincrement())
+  id                Int       @id @default(autoincrement())
   thumb             String
   video_src         String
   price             Int
   cash_alt          Int?
   total_tickets     Int
-  tickets_sold      Int?     @default(0)
+  tickets_sold      Int?      @default(0)
   user_ticket_limit Int
-  is_cash_alt       Boolean  @default(false)
-  is_enabled        Boolean  @default(false)
-  is_featured       Boolean  @default(false)
+  is_cash_alt       Boolean   @default(false)
+  is_enabled        Boolean   @default(false)
+  is_featured       Boolean   @default(false)
   user_id           Int
   category_id       Int
   charity_id        Int
-  launch_date       DateTime @default(now()) @db.Timestamp(6)
-  end_date          DateTime @default(now()) @db.Timestamp(6)
-  created_at        DateTime @default(now()) @db.Timestamp(6)
-  updated_at        DateTime @default(now()) @db.Timestamp(6)
-  is_deleted        Boolean  @default(false)
+  launch_date       DateTime  @default(now()) @db.Timestamp(6)
+  end_date          DateTime  @default(now()) @db.Timestamp(6)
+  draw_date         DateTime? @db.Timestamp(6)
+  created_at        DateTime  @default(now()) @db.Timestamp(6)
+  updated_at        DateTime  @default(now()) @db.Timestamp(6)
+  is_deleted        Boolean   @default(false)
 
   User              AdminUser           @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   Category          Category            @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
@@ -225,7 +226,7 @@ model Event {
 model EventDescription {
   id           Int      @id @default(autoincrement())
   name         String
-  desc         String?  @db.LongText
+  desc         String?
   comp_details String?
   lang_id      Int
   event_id     Int
@@ -257,7 +258,7 @@ model EventImage {
 model EventFAQ {
   id         Int     @id @default(autoincrement())
   question   String
-  answer     String  @db.LongText
+  answer     String
   lang_id    Int
   event_id   Int
   is_deleted Boolean @default(false)
@@ -282,7 +283,7 @@ model Customer {
   first_name        String
   profile_pic       String?
   last_name         String
-  total_customer_id String?             @db.LongText
+  total_customer_id String?
   dob               DateTime?
   is_deleted        Boolean             @default(false)
   is_verified       Boolean             @default(false)
@@ -304,8 +305,8 @@ model Customer {
 model DeleteRequest {
   id          Int      @id @default(autoincrement())
   customer_id Int
-  reason      String?  @db.LongText
-  comment     String?  @db.LongText
+  reason      String?
+  comment     String?
   is_deleted  Boolean? @default(false)
   created_at  DateTime @default(now()) @db.Timestamp(6)
   updated_at  DateTime @default(now()) @db.Timestamp(6)
@@ -495,7 +496,7 @@ model CMSDescription {
   desc          String
   meta_keywords String
   lang_id       Int
-  content       String  @db.LongText
+  content       String
   is_deleted    Boolean @default(false)
 
   created_at DateTime @default(now()) @db.Timestamp(6)
@@ -516,7 +517,7 @@ model TotalLogs {
   payment_id      String?
   amount          Int
   status          String? @default("paid")
-  content         String  @db.LongText
+  content         String
   is_deleted      Boolean @default(false)
 
   created_at DateTime @default(now()) @db.Timestamp(6)
@@ -552,7 +553,7 @@ view EventView {
   id                Int     @id @default(autoincrement())
   thumb             String
   name              String
-  desc              String? @db.LongText
+  desc              String?
   comp_details      String?
   video_src         String?
   price             Int
@@ -584,7 +585,7 @@ view CategoryView {
   user_id    Int
   lang_id    Int
   name       String
-  desc       String?  @db.LongText
+  desc       String?
   is_deleted Boolean  @default(false)
   created_at DateTime @default(now()) @db.Timestamp(6)
   updated_at DateTime @default(now()) @db.Timestamp(6)

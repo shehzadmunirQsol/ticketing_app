@@ -11,7 +11,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { ChevronDown, MoreHorizontal } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 
 import { Button } from '@/ui/button';
 import {
@@ -31,140 +31,114 @@ import {
   TableHeader,
   TableRow,
 } from '@/ui/table';
-import LanguageSelect, { LanguageInterface } from '../language_select';
 import { trpc } from '~/utils/trpc';
-import Image from 'next/image';
-import { displayDate, renderNFTImage } from '~/utils/helper';
-import Link from 'next/link';
-import { GetEventSchema } from '~/schema/event';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 import { LoadingDialog } from '../modal/loadingModal';
-import { setSelectedEvent } from '~/store/reducers/admin_layout';
-import { useDispatch } from 'react-redux';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { MoreHorizontal } from 'lucide-react';
 
-export type Category = {
-  thumb: string;
-  name: string;
-  desc: string | null;
-  id: number;
+export type EventCustomerType = {
+  event_id: number;
   price: number;
-  total_tickets: number;
-  tickets_sold: number;
-  user_ticket_limit: number;
-  launch_date: Date;
-  end_date: Date;
-  created_at: Date;
-  updated_at: Date;
+  thumb: string;
+  event_name: string;
+  customer_id: number;
+  email: string;
+  first_name: string;
+  last_name: string;
+  quantity: string;
 };
 
-export default function EventsDataTable() {
+export default function OrdersDataTable() {
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [filters, setFilters] = useState<GetEventSchema>({
-    first: 0,
-    rows: 10,
-    lang_id: 1,
-  });
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
 
-  const dispatch = useDispatch();
+  const router = useRouter();
+  const event_id =
+    router?.query?.event_id && +router?.query?.event_id > 0
+      ? +router?.query?.event_id
+      : 0;
 
-  const { data, isLoading } = trpc.event.get.useQuery(filters, {
-    refetchOnWindowFocus: false,
-  });
+  const { data, isLoading } = trpc.event.getEventCustomers.useQuery(
+    { event_id },
+    {
+      refetchOnWindowFocus: true,
+      enabled: event_id > 0 ? true : false,
+    },
+  );
 
-  const categoryData = React.useMemo(() => {
+  const cartItemData = React.useMemo(() => {
     return Array.isArray(data?.data) ? data?.data : [];
   }, [data]);
-  const columns: ColumnDef<Category>[] = [
+
+  const columns: ColumnDef<EventCustomerType>[] = [
     {
-      accessorKey: 'name',
-      header: 'Name',
+      accessorKey: 'Event',
+      header: 'Event',
       cell: ({ row }) => {
         return (
           <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
             <Image
               className="object-cover bg-ac-2 h-10 w-16 rounded-lg"
-              src={renderNFTImage(row.original)}
-              alt={row?.original?.name}
+              src={`${process.env.NEXT_PUBLIC_MEDIA_BASE_URL}${row?.original?.thumb}`}
+              alt={row?.original?.event_name ?? ''}
               width={100}
               height={100}
             />
 
             <p className="w-40 text-ellipsis whitespace-nowrap overflow-hidden">
-              {row?.original?.name}
+              {row?.original?.event_name}
             </p>
           </div>
         );
       },
     },
     {
-      accessorKey: 'desc',
-      header: 'Description',
+      accessorKey: 'Customer Name',
+      header: 'Customer Name',
       cell: ({ row }) => (
-        <div className="text-ellipsis whitespace-nowrap overflow-hidden w-64">
-          {row.getValue('desc')}
+        <div className="capitalize text-ellipsis whitespace-nowrap ">
+          {row?.original?.first_name}
         </div>
       ),
     },
     {
-      accessorKey: 'price',
-      header: 'Token Price',
+      accessorKey: 'Customer Email',
+      header: 'Customer Email',
       cell: ({ row }) => (
-        <p className="w-20 text-center text-ellipsis whitespace-nowrap overflow-hidden">
-          {(row?.original?.price).toFixed(2)}
-        </p>
-      ),
-    },
-    {
-      accessorKey: 'total_tickets',
-      header: 'Token Cap',
-      cell: ({ row }) => (
-        <p className="w-20 text-ellipsis whitespace-nowrap overflow-hidden">
-          {row?.original?.total_tickets}
-          &nbsp;
-          <sub>qty</sub>
-        </p>
-      ),
-    },
-    {
-      accessorKey: 'tickets_sold',
-      header: 'Token Purchased',
-      cell: ({ row }) => (
-        <p className="w-28 text-center text-ellipsis whitespace-nowrap overflow-hidden">
-          {row?.original?.tickets_sold}
-          &nbsp;
-          <sub>qty</sub>
-        </p>
-      ),
-    },
-    {
-      accessorKey: 'user_ticket_limit',
-      header: 'Per User Purchased',
-      cell: ({ row }) => (
-        <p className="w-32 text-center text-ellipsis whitespace-nowrap overflow-hidden">
-          {row?.original?.user_ticket_limit}
-          &nbsp;
-          <sub>qty</sub>
-        </p>
-      ),
-    },
-    {
-      accessorKey: 'launch_date',
-      header: 'Launch Date',
-      cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
-          {displayDate(row?.original?.launch_date)}
+        <div className="text-ellipsis whitespace-nowrap ">
+          {row?.original?.email}
         </div>
       ),
     },
+
     {
-      accessorKey: 'end_date',
-      header: 'End Date',
+      accessorKey: 'Price',
+      header: 'Price',
       cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
-          {displayDate(row?.original?.end_date)}
-        </div>
+        <p className="w-16 text-ellipsis whitespace-nowrap ">
+          {row?.original?.price?.toFixed(2)}
+        </p>
+      ),
+    },
+    {
+      accessorKey: 'Quantity',
+      header: 'Quantity',
+      cell: ({ row }) => (
+        <p className="w-16 text-center text-ellipsis whitespace-nowrap ">
+          {row?.original?.quantity}
+        </p>
+      ),
+    },
+    {
+      accessorKey: 'Total Amount',
+      header: 'Total Amount',
+      cell: ({ row }) => (
+        <p className="w-24 text-center text-ellipsis whitespace-nowrap ">
+          {(+row?.original?.quantity * row?.original?.price)?.toFixed(2)}
+        </p>
       ),
     },
     {
@@ -182,16 +156,7 @@ export default function EventsDataTable() {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <Link href={`/admin/events/edit/${row?.original?.id}`}>
-                <DropdownMenuItem>Edit Event</DropdownMenuItem>
-              </Link>
-              <DropdownMenuSeparator />
-              <Link
-                onClick={() => dispatch(setSelectedEvent(row.original))}
-                href={`/admin/events/event-customers/${row.original.id}`}
-              >
-                <DropdownMenuItem>Event Customers</DropdownMenuItem>
-              </Link>
+              <DropdownMenuItem>Select Winner</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         );
@@ -199,7 +164,7 @@ export default function EventsDataTable() {
     },
   ];
   const table = useReactTable({
-    data: categoryData as Category[],
+    data: cartItemData as EventCustomerType[],
     columns,
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
@@ -215,19 +180,11 @@ export default function EventsDataTable() {
     },
   });
 
-  function languageHandler(params: LanguageInterface) {
-    setFilters((prevFilters) => ({ ...prevFilters, lang_id: params.id }));
-  }
-
-  function handlePagination(page: number) {
-    if (page < 0) return;
-    setFilters((prevFilters) => ({ ...prevFilters, first: page }));
-  }
+  console.log({ data });
 
   return (
     <div className="w-full space-y-4">
       <div className="flex items-center justify-end gap-2">
-        <LanguageSelect languageHandler={languageHandler} />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline">
@@ -308,24 +265,7 @@ export default function EventsDataTable() {
           </Table>
         </ScrollArea>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="space-x-2">
-          <Button
-            variant="outline"
-            onClick={() => handlePagination(filters.first - 1)}
-            disabled={filters.first === 0}
-          >
-            Previous
-          </Button>
-          <Button
-            variant="outline"
-            onClick={() => handlePagination(filters.first + 1)}
-            disabled={(filters.first + 1) * filters.rows > (data?.count || 0)}
-          >
-            Next
-          </Button>
-        </div>
-      </div>
+
       <LoadingDialog open={isLoading} text={'Loading data...'} />
     </div>
   );

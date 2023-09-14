@@ -105,10 +105,13 @@ export const arFormSchema = z.object({
   }),
 });
 
-export type GetEventSchema = z.infer<typeof getEventSchema>;
-
 export const getEventsByIdSchema = z.object({
   id: z.number(),
   lang_id: z.number().optional(),
   type: z.enum(['admin', 'client']).optional(),
 });
+export const getEventCustomers = z.object({
+  event_id: z.number(),
+});
+
+export type GetEventSchema = z.infer<typeof getEventSchema>;

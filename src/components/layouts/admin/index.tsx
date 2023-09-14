@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect } from 'react';
+import React, { ReactNode } from 'react';
 import Header from './header';
 import Sidebar from './sidebar';
 import { useRouter } from 'next/router';
@@ -21,25 +21,19 @@ function AdminLayout({ children }: DefaultLayoutProps) {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const { data } = trpc.admin.me.useQuery(
+  trpc.admin.me.useQuery(
     { isLogin },
     {
       refetchOnWindowFocus: false,
-      enabled: typeof window !== 'undefined' ? true : false,
+      onSuccess(data) {
+        dispatch(userAdminAuth(data as any));
+        dispatch(userAdminIsLogin(true));
+      },
     },
   );
 
-  useEffect(() => {
-    console.log('Data: ', data);
-    if (data?.id) {
-      dispatch(userAdminAuth(data as any));
-      dispatch(userAdminIsLogin(true));
-    }
-    // do not update this dependancy
-  }, [dispatch, data]);
-
   return (
-    <div className="relative ">
+    <div className="relative">
       {router.asPath === '/admin/login' ? (
         <main className="flex-1 m-auto">{children}</main>
       ) : (
