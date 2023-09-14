@@ -231,3 +231,7 @@ textarea:focus {
 .wpwl-img {
   margin: 0 0 0 auto;
 }
+.wpwl-wrapper > button {
+  background-color: hsl(var(--primary)) !important;
+  color: white;
+}

@@ -95,23 +95,23 @@ function Checkout() {
             checkout_id: data?.id as string,
           });
           if (Resdata?.status) {
-            toast({
-              variant: 'success',
-              title: 'Order Successful! 🎉',
-            });
-            dispatch(
-              addCart({
-                id: null,
-                customer_id: null,
-                isDiscount: false,
-                discount: 0,
-                isPercentage: false,
-                cartItems: [],
-              }),
-            );
-            setLoading(false);
-
-            router.push('/');
+            setTimeout(() => {
+              router.push('/');
+              toast({
+                variant: 'success',
+                title: 'Order Successful! 🎉',
+              });
+              dispatch(
+                addCart({
+                  id: null,
+                  customer_id: null,
+                  isDiscount: false,
+                  discount: 0,
+                  isPercentage: false,
+                  cartItems: [],
+                }),
+              );
+            }, 2000);
           }
         }
       } catch (e: any) {
