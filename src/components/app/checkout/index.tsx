@@ -32,6 +32,7 @@ import { useRouter } from 'next/router';
 import { LoadingDialog } from '~/components/common/modal/loadingModal';
 import { useToast } from '~/components/ui/use-toast';
 import { addCart } from '~/store/reducers/cart';
+import Link from 'next/link';
 
 function Checkout() {
   const { cart, totalAmount } = useSelector((state: RootState) => state.cart);
@@ -557,7 +558,7 @@ function Checkout() {
                   Your personal data will be used to process your order, support
                   your experience throughout this website, and for other
                   purposes described in our{' '}
-                  <span className="text-white"> privacy policy</span>.
+                  <span className="text-white"> <Link href="/cms/privacy-policy"> privacy policy </Link></span>.
                 </p>
                 <div className="flex flex-row gap-2 justify-start   items-start w-full  md:w-[65%] lg:w-[85%]">
                   <input
@@ -569,7 +570,7 @@ function Checkout() {
                   <p className="text-sm text-cardGray ">
                     I’m 18 years old or over and i have read and agree to the
                     website
-                    <span className="text-white"> Terms & Conditions</span>.
+                    <span className="text-white"><Link href="/cms/terms-condition"> Terms & Conditions </Link></span>.
                   </p>
                 </div>
               </div>

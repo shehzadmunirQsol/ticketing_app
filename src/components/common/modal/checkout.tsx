@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Button } from '~/components/ui/button';
+import { redirect } from 'next/navigation'
 import {
   Dialog,
   DialogContent,
@@ -119,7 +120,8 @@ export function CheckoutDialog(props: SettingDialogInterface) {
         );
         setLoading(false);
 
-        router.push('/');
+      window.location.href= '/'
+      window.location.reload()
       }
     } catch (e: any) {
       setLoading(false);
