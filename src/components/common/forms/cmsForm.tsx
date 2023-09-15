@@ -79,7 +79,7 @@ export default function CmsForm(props: CategoryFormInterface) {
 
   // Handle the change event when the CKEditor content changes
   const handleChange = (evt: any) => {
-    const newContent:any = evt.editor.getData();
+    const newContent: any = evt.editor.getData();
 
     setContent(newContent);
   };
@@ -181,10 +181,10 @@ export default function CmsForm(props: CategoryFormInterface) {
     form.formState.errors?.en && form.formState.errors?.ar
       ? 'Kindly provide information in both English and Arabic fields.'
       : form.formState.errors?.en && !form.formState.errors?.ar
-      ? 'Kindly provide information in English fields.'
-      : !form.formState.errors?.en && form.formState.errors?.ar
-      ? 'Kindly provide information in Arabic fields.'
-      : '';
+        ? 'Kindly provide information in English fields.'
+        : !form.formState.errors?.en && form.formState.errors?.ar
+          ? 'Kindly provide information in Arabic fields.'
+          : '';
 
   // Handle CMS Preview
   const handlePreview = () => {
@@ -234,7 +234,10 @@ export default function CmsForm(props: CategoryFormInterface) {
                   <FormControl>
                     <Input placeholder="Enter Page Title" {...field} />
                   </FormControl>
-                  <FormMessage />
+
+                  <div className='relative pb-2'>
+                    <FormMessage />
+                  </div>
                 </FormItem>
               )}
             />
@@ -249,7 +252,10 @@ export default function CmsForm(props: CategoryFormInterface) {
                   <FormControl>
                     <Input placeholder="Enter Page Slug" {...field} />
                   </FormControl>
-                  <FormMessage />
+
+                  <div className='relative pb-2'>
+                    <FormMessage />
+                  </div>
                 </FormItem>
               )}
             />
@@ -267,7 +273,10 @@ export default function CmsForm(props: CategoryFormInterface) {
                   <FormControl>
                     <Textarea placeholder="Enter Meta Title..." {...field} />
                   </FormControl>
-                  <FormMessage />
+
+                  <div className='relative pb-2'>
+                    <FormMessage />
+                  </div>
                 </FormItem>
               )}
             />
@@ -286,7 +295,10 @@ export default function CmsForm(props: CategoryFormInterface) {
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage />
+
+                  <div className='relative pb-2'>
+                    <FormMessage />
+                  </div>
                 </FormItem>
               )}
             />
@@ -302,7 +314,10 @@ export default function CmsForm(props: CategoryFormInterface) {
                 <FormControl>
                   <Textarea placeholder="Enter Description..." {...field} />
                 </FormControl>
-                <FormMessage />
+
+                <div className='relative pb-2'>
+                  <FormMessage />
+                </div>
               </FormItem>
             )}
           />
@@ -325,7 +340,10 @@ export default function CmsForm(props: CategoryFormInterface) {
                     config={editorConfig}
                   />
                 </FormControl>
-                <FormMessage />
+
+                <div className='relative pb-2'>
+                  <FormMessage />
+                </div>
               </FormItem>
             )}
           />

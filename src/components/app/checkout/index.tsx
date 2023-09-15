@@ -180,7 +180,9 @@ function Checkout() {
                             {...field}
                           />
                         </FormControl>
+                        <div className='relative pb-2'>
                         <FormMessage />
+                        </div>
                       </FormItem>
                     )}
                   />
@@ -199,7 +201,9 @@ function Checkout() {
                             {...field}
                           />
                         </FormControl>
+                        <div className='relative pb-2'>
                         <FormMessage />
+                        </div>
                       </FormItem>
                     )}
                   />
@@ -221,7 +225,9 @@ function Checkout() {
                             {...field}
                           />
                         </FormControl>
+                        <div className='relative pb-2'>
                         <FormMessage />
+                        </div>
                       </FormItem>
                     )}
                   />
@@ -237,7 +243,9 @@ function Checkout() {
                             {...field}
                           />
                         </FormControl>
+                        <div className='relative pb-2'>
                         <FormMessage />
+                        </div>
                       </FormItem>
                     )}
                   />
@@ -278,7 +286,9 @@ function Checkout() {
                             </SelectContent>
                           </Select>
 
-                          <FormMessage />
+                          <div className='relative pb-2'>
+                        <FormMessage />
+                        </div>
                         </FormItem>
                       )}
                     />
@@ -316,7 +326,9 @@ function Checkout() {
                             </SelectContent>
                           </Select>
 
-                          <FormMessage />
+                          <div className='relative pb-2'>
+                        <FormMessage />
+                        </div>
                         </FormItem>
                       )}
                     />
@@ -338,7 +350,9 @@ function Checkout() {
                             {...field}
                           />
                         </FormControl>
+                        <div className='relative pb-2'>
                         <FormMessage />
+                        </div>
                       </FormItem>
                     )}
                   />
@@ -357,7 +371,9 @@ function Checkout() {
                             {...field}
                           />
                         </FormControl>
+                        <div className='relative pb-2'>
                         <FormMessage />
+                        </div>
                       </FormItem>
                     )}
                   />
@@ -377,7 +393,9 @@ function Checkout() {
                           {...field}
                         />
                       </FormControl>
-                      <FormMessage />
+                      <div className='relative pb-2'>
+                        <FormMessage />
+                        </div>
                     </FormItem>
                   )}
                 />
@@ -415,7 +433,9 @@ function Checkout() {
                               </SelectContent>
                             </Select>
 
-                            <FormMessage />
+                            <div className='relative pb-2'>
+                        <FormMessage />
+                        </div>
                           </FormItem>
                         )}
                       />
@@ -435,7 +455,10 @@ function Checkout() {
                                 {...field}
                               />
                             </FormControl>
-                            <FormMessage />
+                            
+                            <div className='relative pb-2'>
+                        <FormMessage />
+                        </div>
                           </FormItem>
                         )}
                       />

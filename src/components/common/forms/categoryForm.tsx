@@ -125,10 +125,10 @@ export default function CategoryForm() {
     form.formState.errors?.en && form.formState.errors?.ar
       ? 'Kindly provide information in both English and Arabic language.'
       : form.formState.errors?.en && !form.formState.errors?.ar
-      ? 'Kindly provide information in English language.'
-      : !form.formState.errors?.en && form.formState.errors?.ar
-      ? 'Kindly provide information in Arabic language.'
-      : '';
+        ? 'Kindly provide information in English language.'
+        : !form.formState.errors?.en && form.formState.errors?.ar
+          ? 'Kindly provide information in Arabic language.'
+          : '';
 
   return (
     <Form {...form}>
@@ -170,7 +170,10 @@ export default function CategoryForm() {
                     <FormControl>
                       <Input placeholder="Enter Category Name" {...field} />
                     </FormControl>
-                    <FormMessage />
+
+                    <div className='relative pb-2'>
+                      <FormMessage />
+                    </div>
                   </FormItem>
                 )}
               />
@@ -185,7 +188,10 @@ export default function CategoryForm() {
                     <FormControl>
                       <Textarea placeholder="Enter Description..." {...field} />
                     </FormControl>
-                    <FormMessage />
+
+                    <div className='relative pb-2'>
+                      <FormMessage />
+                    </div>
                   </FormItem>
                 )}
               />
@@ -204,7 +210,10 @@ export default function CategoryForm() {
                     <FormControl>
                       <Input placeholder="Enter Category Name" {...field} />
                     </FormControl>
-                    <FormMessage />
+
+                    <div className='relative pb-2'>
+                      <FormMessage />
+                    </div>
                   </FormItem>
                 )}
               />
@@ -220,7 +229,10 @@ export default function CategoryForm() {
                     <FormControl>
                       <Textarea placeholder="...أدخل الوصف" {...field} />
                     </FormControl>
-                    <FormMessage />
+
+                    <div className='relative pb-2'>
+                      <FormMessage />
+                    </div>
                   </FormItem>
                 )}
               />

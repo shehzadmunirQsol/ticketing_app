@@ -399,7 +399,10 @@ export default function EventForm() {
                           {...field}
                         />
                       </FormControl>
-                      <FormMessage />
+
+                      <div className='relative pb-2'>
+                        <FormMessage />
+                      </div>
                     </FormItem>
                   )}
                 />
@@ -415,7 +418,10 @@ export default function EventForm() {
                           {...field}
                         />
                       </FormControl>
-                      <FormMessage />
+
+                      <div className='relative pb-2'>
+                        <FormMessage />
+                      </div>
                     </FormItem>
                   )}
                 />
@@ -438,7 +444,10 @@ export default function EventForm() {
                         />
                         {/* <Textarea placeholder="Enter Description..." {...field} /> */}
                       </FormControl>
-                      <FormMessage />
+
+                      <div className='relative pb-2'>
+                        <FormMessage />
+                      </div>
                     </FormItem>
                   )}
                 />
@@ -458,7 +467,10 @@ export default function EventForm() {
                             {...field}
                           />
                         </FormControl>
-                        <FormMessage />
+
+                        <div className='relative pb-2'>
+                          <FormMessage />
+                        </div>
                       </FormItem>
                     )}
                   />
@@ -474,7 +486,10 @@ export default function EventForm() {
                             {...field}
                           />
                         </FormControl>
-                        <FormMessage />
+
+                        <div className='relative pb-2'>
+                          <FormMessage />
+                        </div>
                       </FormItem>
                     )}
                   />
@@ -502,7 +517,10 @@ export default function EventForm() {
                           </div>
                           {/* <Textarea placeholder="Enter Description..." {...field} /> */}
                         </FormControl>
-                        <FormMessage />
+
+                        <div className='relative pb-2'>
+                          <FormMessage />
+                        </div>
                       </FormItem>
                     )}
                   />
@@ -528,7 +546,10 @@ export default function EventForm() {
                                 {...form.register(item.name)}
                               />
                             </FormControl>
-                            <FormMessage />
+
+                            <div className='relative pb-2'>
+                              <FormMessage />
+                            </div>
                           </FormItem>
                         )}
                       />
@@ -560,7 +581,10 @@ export default function EventForm() {
                                 })}
                               />
                             </FormControl>
-                            <FormMessage />
+
+                            <div className='relative pb-2'>
+                              <FormMessage />
+                            </div>
                           </FormItem>
                         )}
                       />
@@ -606,7 +630,10 @@ export default function EventForm() {
                                 })}
                               />
                             </FormControl>
-                            <FormMessage />
+
+                            <div className='relative pb-2'>
+                              <FormMessage />
+                            </div>
                           </FormItem>
                         )}
                       />
@@ -627,7 +654,10 @@ export default function EventForm() {
                                   onCheckedChange={field.onChange}
                                 />
                               </FormControl>
-                              <FormMessage />
+
+                              <div className='relative pb-2'>
+                                <FormMessage />
+                              </div>
                             </FormItem>
                           )}
                         />
@@ -677,7 +707,10 @@ export default function EventForm() {
                                 </SelectContent>
                               </Select>
 
-                              <FormMessage />
+
+                              <div className='relative pb-2'>
+                                <FormMessage />
+                              </div>
                             </FormItem>
                           )}
                         />
@@ -705,7 +738,10 @@ export default function EventForm() {
                                     })}
                                   />
                                 </FormControl>
-                                <FormMessage />
+
+                                <div className='relative pb-2'>
+                                  <FormMessage />
+                                </div>
                               </FormItem>
                             )}
                           />

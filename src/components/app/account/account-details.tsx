@@ -102,7 +102,9 @@ const AccountDetails = () => {
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <div className='relative pb-2'>
+                    <FormMessage />
+                  </div>
                 </FormItem>
               )}
             />
@@ -121,7 +123,9 @@ const AccountDetails = () => {
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <div className='relative pb-2'>
+                    <FormMessage />
+                  </div>
                 </FormItem>
               )}
             />
@@ -141,7 +145,9 @@ const AccountDetails = () => {
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <div className='relative pb-2'>
+                    <FormMessage />
+                  </div>
                 </FormItem>
               )}
             />
@@ -163,7 +169,9 @@ const AccountDetails = () => {
                       })}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <div className='relative pb-2'>
+                    <FormMessage />
+                  </div>
                 </FormItem>
               )}
             />
@@ -218,14 +226,14 @@ function PasswordChange({ email }: any) {
 
   // handle account detail
   async function onSubmitAccountPassword(values: any) {
-    
+
     try {
       const payload: any = {
         email: email,
         ...values,
       };
       const resp = await updateCustomerPassword.mutateAsync(payload);
-      console.log({resp});
+      console.log({ resp });
     } catch (e: any) {
       toast({
         variant: 'destructive',
@@ -258,7 +266,9 @@ function PasswordChange({ email }: any) {
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <div className='relative pb-2'>
+                    <FormMessage />
+                  </div>
                 </FormItem>
               )}
             />
@@ -277,7 +287,9 @@ function PasswordChange({ email }: any) {
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <div className='relative pb-2'>
+                    <FormMessage />
+                  </div>
                 </FormItem>
               )}
             />
@@ -296,7 +308,9 @@ function PasswordChange({ email }: any) {
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <div className='relative pb-2'>
+                    <FormMessage />
+                  </div>
                 </FormItem>
               )}
             />
@@ -463,7 +477,9 @@ function DeleteAccount({ email }: any) {
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <div className='relative pb-2'>
+                    <FormMessage />
+                  </div>
                 </FormItem>
               )}
             />

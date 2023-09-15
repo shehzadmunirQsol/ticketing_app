@@ -62,7 +62,10 @@ export default function ExampleForm() {
               <FormDescription>
                 This is your public display name.
               </FormDescription>
-              <FormMessage />
+
+              <div className='relative pb-2'>
+                <FormMessage />
+              </div>
             </FormItem>
           )}
         />
@@ -133,7 +136,10 @@ export function LoginForm() {
                 <FormControl>
                   <Input type="email" placeholder="Enter Email" {...field} />
                 </FormControl>
-                <FormMessage />
+
+                <div className='relative pb-2'>
+                  <FormMessage />
+                </div>
               </FormItem>
             )}
           />
@@ -150,7 +156,10 @@ export function LoginForm() {
                     {...field}
                   />
                 </FormControl>
-                <FormMessage />
+
+                <div className='relative pb-2'>
+                  <FormMessage />
+                </div>
               </FormItem>
             )}
           />

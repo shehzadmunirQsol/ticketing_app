@@ -180,7 +180,7 @@ export default function DataTableSpotLight() {
               <DropdownMenuItem
                 onClick={() => handleEnbled(row?.original, 'delete')}
               >
-                Delete Banner
+                Delete Spotlight
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
