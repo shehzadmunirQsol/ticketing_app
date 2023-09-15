@@ -11,7 +11,7 @@ const CompititionDetail = ({data}:any) => {
         <div className="border-b-4 w-16 border-primary mt-4"></div>
 
 
-        {dataCode ? (<p className="lg:text-3xl text-1xl font-black mt-6">
+        {dataCode ? (<p >
          {dataCode}
         </p>) : (<><p className="lg:text-3xl text-1xl font-black mt-6">
           Mercedes E63s AMG Night Edition
