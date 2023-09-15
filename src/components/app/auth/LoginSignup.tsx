@@ -167,7 +167,7 @@ export default function LoginSignup() {
 
   return (
     <section className="body-font   ">
-      <div className="px-5 pt-24 mb-16 lg:pb-0 md:pb-0 lg:py-24 md:py-24 mx-auto flex flex-col-reverse lg:flex-row md:flex-row gap-14 mt-6  w-full max-w-[1300px] ">
+      <div className="px-5 pt-24 mb-16 lg:pb-0 md:pb-0 lg:py-24 md:py-24 mx-auto flex flex-col-reverse lg:flex-row md:flex-row gap-6 lg:gap-14 mt-6  w-full max-w-[1300px] ">
         <div className=" lg:w-2/3 md:w-2/3 w-full  h-full  mb-5 lg:mb-0 rounded-lg hidden  lg:block  ">
           <SideImage
             image={CarImage}
