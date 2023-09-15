@@ -3,7 +3,7 @@ import { z } from 'zod';
 export const cmsSchema = z.object({
   content: z.string().optional(),
   slug: z.string().optional(),
-  type: z.string(),
+  type: z.enum(['event_faqs', 'faqs', 'static']).nullable(),
   en: z.object({
     slug: z.string(),
     title: z.string(),
@@ -15,7 +15,7 @@ export const cmsSchema = z.object({
 export const cmsSchemaInput = z.object({
   content: z.string().optional(),
   slug: z.string().optional(),
-  type: z.enum(['EventFAQs', 'faqs', 'static']).nullable(),
+  type: z.enum(['event_faqs', 'faqs', 'static']).nullable(),
   en: z.object({
     slug: z.string(),
     title: z.string(),

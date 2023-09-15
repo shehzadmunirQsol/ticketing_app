@@ -82,11 +82,11 @@ function Footer() {
                 <div>
                   <ul className="text-gray-500 dark:text-gray-400 font-medium">
                     {[
-                      { page: "About Us", link: "/" },
+                      { page: "About Us", link: "/cms/about-us" },
                       { page: "Contact Us", link: "/contact" },
-                      { page: "Terms & Conditions", link: "/" },
-                      { page: "Our Team", link: "/" },
-                      { page: "Cookie & Privacy Policy", link: "/" },
+                      { page: "Terms & Conditions", link: "/cms/terms-condition" },
+                      { page: "Our Team", link: "/cms/about-us" },
+                      { page: "Cookie & Privacy Policy", link: "/cms/privacy-policy" },
 
                     ].map((item, index) => {
                       return (

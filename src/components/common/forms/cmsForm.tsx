@@ -73,6 +73,7 @@ console.log(form.formState.errors,"form.formState.errors")
     if (data) {
       form.setValue('en.title', data?.data?.CMSDescription[0]?.title);
       form.setValue('en.slug', data?.data?.slug as string);
+      form.setValue('type', data?.data?.type as string);
       form.setValue('en.desc', data?.data?.CMSDescription[0]?.desc as string);
       form.setValue(
         'en.metadesc',
@@ -211,7 +212,7 @@ console.log(form.formState.errors,"form.formState.errors")
 
   const FaqsType = [
     {
-      faqType: 'EventFAQs',
+      faqType: 'event_faqs',
     },
     {
       faqType: 'static',
