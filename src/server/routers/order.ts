@@ -519,6 +519,29 @@ export const orderRouter = router({
               .includes('success');
           if (successStatus) {
             const payload = JSON.parse(statusData?.customParameters?.payload);
+            const customerData = await prisma.customer.findFirst({
+              where: {
+                id: payload?.values?.customer_id,
+              },
+            });
+            if (
+              !customerData?.total_customer_id?.includes(
+                statusData?.registrationId,
+              )
+            ) {
+              const register_id =
+                customerData?.total_customer_id +
+                ',' +
+                statusData?.registrationId;
+              const updateCustomer = await prisma.customer.update({
+                where: {
+                  id: payload?.values?.customer_id,
+                },
+                data: {
+                  total_customer_id: register_id,
+                },
+              });
+            }
             console.log({ payload }, 'total processing payload');
             const cart = await prisma.cart.findUnique({
               where: { id: payload?.values?.cart_id },
@@ -581,6 +604,7 @@ export const orderRouter = router({
             };
             if (payload?.values?.code) delete orderPayload?.code;
             if (payload?.values?.cart_id) delete orderPayload?.cart_id;
+            if (payload?.values?.total_id) delete orderPayload?.total_id;
 
             const orderEventPayload = cart?.CartItems.map((item) => ({
               event_id: item.Event.id,
@@ -653,8 +677,17 @@ async function CreateCheckout(APidata: any) {
     const path = '/v1/checkouts';
     const payload = { ...APidata };
     console.log(APidata, 'APidata?.paymentBrandsss');
+    const registrationID: any = APidata?.values?.total_id?.split(',');
+    const regPayload: { [key: string]: string } = {};
+
+    if (registrationID && registrationID.length) {
+      registrationID.forEach((item: string, index: number) => {
+        regPayload[`registrations[${index}].id`] = item;
+      });
+    }
 
     if (payload?.card) delete payload?.card;
+    if (payload?.total_id) delete payload?.total_id;
     const tot_amount = APidata?.total_amount.toFixed(2);
     const apiDate: any = {
       entityId: process.env.TOTAN_ENTITY_ID,
@@ -662,6 +695,8 @@ async function CreateCheckout(APidata: any) {
       currency: 'AED',
       paymentType: 'DB',
       // wpwlOptions: JSON.stringify(APidata?.cart),
+      ...regPayload,
+      createRegistration: 'true',
       'standingInstruction.source': 'CIT',
       'standingInstruction.mode': 'REPEATED',
       'standingInstruction.type': 'UNSCHEDULED',
