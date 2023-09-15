@@ -97,23 +97,24 @@ export function BannerForm() {
     page: 0,
   };
   if (index) initialOrderFilters.banner_id = +index;
-
+  console.log(initialOrderFilters.banner_id, 'initialOrderFilters.banner_id');
   const {
     data: BannerApiData,
     isFetched,
     isLoading,
+    isFetching,
   } = trpc.settings.get_banner.useQuery(initialOrderFilters, {
     refetchOnWindowFocus: false,
 
-    enabled: index ? true : false,
+    enabled: initialOrderFilters.banner_id !== undefined ? true : false,
   });
   const formValidateData =
     BannerApiData !== undefined && index
       ? BannerApiData[0]?.lang_id
         ? enFormSchema
         : BannerApiData[0]?.lang_id == 2
-          ? arFormSchema
-          : BannerFormSchema
+        ? arFormSchema
+        : BannerFormSchema
       : BannerFormSchema;
 
   const form = useForm<z.infer<typeof formValidateData>>({
@@ -122,8 +123,8 @@ export function BannerForm() {
         ? BannerApiData[0]?.lang_id == 1
           ? enFormSchema
           : BannerApiData[0]?.lang_id == 2
-            ? arFormSchema
-            : BannerFormSchema
+          ? arFormSchema
+          : BannerFormSchema
         : BannerFormSchema,
     ),
   });
@@ -288,9 +289,7 @@ export function BannerForm() {
       throw new Error('Please Select Image');
     }
   }
-
-
-  console.log({isSubmitting , isLoading})
+  console.log({ isFetching });
   return (
     <Form {...form}>
       <form
@@ -317,7 +316,7 @@ export function BannerForm() {
                   <FormControl>
                     <Input type="text" placeholder="Enter LInk" {...field} />
                   </FormControl>
-                  <div className='relative pb-2'>
+                  <div className="relative pb-2">
                     <FormMessage />
                   </div>
                 </FormItem>
@@ -349,14 +348,14 @@ export function BannerForm() {
           <Tabs
             defaultValue={
               index &&
-                BannerApiData !== undefined &&
-                BannerApiData[0]?.lang_id == 1
+              BannerApiData !== undefined &&
+              BannerApiData[0]?.lang_id == 1
                 ? 'en'
                 : index &&
                   BannerApiData !== undefined &&
                   BannerApiData[0]?.lang_id == 2
-                  ? 'ar'
-                  : 'en'
+                ? 'ar'
+                : 'en'
             }
             className="w-full"
           >
@@ -380,7 +379,7 @@ export function BannerForm() {
                     <FormControl>
                       <Input type="text" placeholder="Enter Modal" {...field} />
                     </FormControl>
-                    <div className='relative pb-2'>
+                    <div className="relative pb-2">
                       <FormMessage />
                     </div>
                   </FormItem>
@@ -395,7 +394,7 @@ export function BannerForm() {
                     <FormControl>
                       <Input type="text" placeholder="Enter Title" {...field} />
                     </FormControl>
-                    <div className='relative pb-2'>
+                    <div className="relative pb-2">
                       <FormMessage />
                     </div>
                   </FormItem>
@@ -410,7 +409,7 @@ export function BannerForm() {
                     <FormControl>
                       <Input type="text" placeholder="Enter Price" {...field} />
                     </FormControl>
-                    <div className='relative pb-2'>
+                    <div className="relative pb-2">
                       <FormMessage />
                     </div>
                   </FormItem>
@@ -430,7 +429,7 @@ export function BannerForm() {
                       />
                     </FormControl>
 
-                    <div className='relative pb-2'>
+                    <div className="relative pb-2">
                       <FormMessage />
                     </div>
                   </FormItem>
@@ -446,7 +445,7 @@ export function BannerForm() {
                       <Input type="text" placeholder="Enter Date" {...field} />
                     </FormControl>
 
-                    <div className='relative pb-2'>
+                    <div className="relative pb-2">
                       <FormMessage />
                     </div>
                   </FormItem>
@@ -469,7 +468,7 @@ export function BannerForm() {
                         />
                       </FormControl>
 
-                      <div className='relative pb-2'>
+                      <div className="relative pb-2">
                         <FormMessage />
                       </div>
                     </FormItem>
@@ -489,7 +488,7 @@ export function BannerForm() {
                         />
                       </FormControl>
 
-                      <div className='relative pb-2'>
+                      <div className="relative pb-2">
                         <FormMessage />
                       </div>
                     </FormItem>
@@ -505,7 +504,7 @@ export function BannerForm() {
                         <Input type="text" placeholder="مَشرُوع" {...field} />
                       </FormControl>
 
-                      <div className='relative pb-2'>
+                      <div className="relative pb-2">
                         <FormMessage />
                       </div>
                     </FormItem>
@@ -525,7 +524,7 @@ export function BannerForm() {
                         />
                       </FormControl>
 
-                      <div className='relative pb-2'>
+                      <div className="relative pb-2">
                         <FormMessage />
                       </div>
                     </FormItem>
@@ -545,7 +544,7 @@ export function BannerForm() {
                         />
                       </FormControl>
 
-                      <div className='relative pb-2'>
+                      <div className="relative pb-2">
                         <FormMessage />
                       </div>
                     </FormItem>
@@ -562,7 +561,10 @@ export function BannerForm() {
           </Button>
         </div>
       </form>
-      <LoadingDialog open={isSubmitting && isLoading} text={'Saving data...'} />
+      <LoadingDialog
+        open={isSubmitting || isFetching}
+        text={'Saving data...'}
+      />
     </Form>
   );
 }

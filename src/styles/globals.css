@@ -186,3 +186,58 @@
     0 0
   );
 }
+
+.wpwl-form {
+  background: #f8f8f8;
+  padding: 8px;
+}
+.wpwl-label-brand {
+  display: none;
+}
+.wpwl-label {
+  color: black;
+}
+.wpwl-form-card {
+  background: #f8f8f8;
+  border: 0px;
+}
+.wpwl-control,
+input.wpwl-control {
+  background: white;
+  border: 1px solid #ddd;
+  color: black;
+  box-shadow: none;
+  border-radius: 0px;
+  font-family: 'ff-good-headline-web-pro-con', 'Pathway Gothic One', sans-serif;
+  text-transform: none;
+  padding: 10px;
+  font-size: 18px;
+  height: 50px;
+}
+.wpwl-control,
+.input-text:focus,
+input[type='text']:focus,
+input[type='tel']:focus,
+input[type='url']:focus,
+input[type='password']:focus,
+input[type='search']:focus {
+  background-color: white;
+}
+.wpwl-control > textarea:focus {
+  background-color: white;
+}
+.wpwl-brand-SOFORTUEBERWEISUNG,
+.wpwl-brand-GIROPAY {
+  cursor: pointer;
+}
+.wpwl-brand,
+.wpwl-img {
+  margin: 0 0 0 auto;
+}
+.wpwl-wrapper > button {
+  background-color: hsl(var(--primary)) !important;
+  color: white;
+}
+.wpwl-group-registration {
+  color: black;
+}

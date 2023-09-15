@@ -125,10 +125,10 @@ export default function CategoryForm() {
     form.formState.errors?.en && form.formState.errors?.ar
       ? 'Kindly provide information in both English and Arabic language.'
       : form.formState.errors?.en && !form.formState.errors?.ar
-        ? 'Kindly provide information in English language.'
-        : !form.formState.errors?.en && form.formState.errors?.ar
-          ? 'Kindly provide information in Arabic language.'
-          : '';
+      ? 'Kindly provide information in English language.'
+      : !form.formState.errors?.en && form.formState.errors?.ar
+      ? 'Kindly provide information in Arabic language.'
+      : '';
 
   return (
     <Form {...form}>
@@ -171,7 +171,7 @@ export default function CategoryForm() {
                       <Input placeholder="Enter Category Name" {...field} />
                     </FormControl>
 
-                    <div className='relative pb-2'>
+                    <div className="relative pb-2">
                       <FormMessage />
                     </div>
                   </FormItem>
@@ -189,7 +189,7 @@ export default function CategoryForm() {
                       <Textarea placeholder="Enter Description..." {...field} />
                     </FormControl>
 
-                    <div className='relative pb-2'>
+                    <div className="relative pb-2">
                       <FormMessage />
                     </div>
                   </FormItem>
@@ -211,7 +211,7 @@ export default function CategoryForm() {
                       <Input placeholder="Enter Category Name" {...field} />
                     </FormControl>
 
-                    <div className='relative pb-2'>
+                    <div className="relative pb-2">
                       <FormMessage />
                     </div>
                   </FormItem>
@@ -230,7 +230,7 @@ export default function CategoryForm() {
                       <Textarea placeholder="...أدخل الوصف" {...field} />
                     </FormControl>
 
-                    <div className='relative pb-2'>
+                    <div className="relative pb-2">
                       <FormMessage />
                     </div>
                   </FormItem>

@@ -6,6 +6,8 @@ import {
   getOrder,
   getByIDSchema,
   getOrderSchema,
+  getCheckoutIDSchema,
+  getPaymentStatusSchema,
 } from '~/schema/order';
 import https from 'https';
 
@@ -231,6 +233,99 @@ export const orderRouter = router({
         });
       }
     }),
+  createCheckout: publicProcedure
+    .input(getCheckoutIDSchema)
+    .mutation(async ({ input }) => {
+      try {
+        const cart = await prisma.cart.findUnique({
+          where: { id: input?.values?.cart_id },
+          include: {
+            CouponApply: {
+              where: { is_deleted: false },
+              select: {
+                discount: true,
+                is_percentage: true,
+              },
+            },
+            CartItems: {
+              include: {
+                Event: {
+                  select: {
+                    id: true,
+                    price: true,
+                    tickets_sold: true,
+                    end_date: true,
+                  },
+                },
+              },
+            },
+          },
+        });
+
+        if (!cart?.CartItems?.length) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'No items in the cart!',
+          });
+        }
+        const isDiscount = cart?.CouponApply?.length > 0;
+        const discount = cart?.CouponApply[0]?.discount ?? 0;
+        const isPercentage = cart?.CouponApply[0]?.is_percentage ?? false;
+
+        const subTotalAmount =
+          cart?.CartItems.reduce(
+            (accumulator, current) =>
+              accumulator + current.quantity * current.Event.price,
+            0,
+          ) ?? 0;
+
+        const discountAmount =
+          isDiscount && isPercentage
+            ? subTotalAmount * (discount / 100)
+            : discount;
+
+        // Total Processing Initial Payment Process
+        const paymentPayload: any = {
+          ...input,
+          sub_total_amount: subTotalAmount,
+          discount_amount: discountAmount,
+          total_amount: subTotalAmount - discountAmount,
+          cartItem: cart?.CartItems,
+        };
+
+        const paymentRes: any = await CreateCheckout({
+          ...paymentPayload,
+        })
+          .then((response: any) => {
+            console.log(
+              response?.result?.parameterErrors,
+              'response?.result?.parameterErrors',
+            );
+            if (!response?.result?.parameterErrors) {
+              return { data: response, success: true };
+            }
+            throw new Error(response?.result?.parameterErrors[0].message);
+          })
+          .catch((error) => {
+            console.log(
+              error?.parameterErrors,
+              'response?.result?.parameterErrors',
+            );
+            throw new Error(error.message);
+          });
+        console.log('paymentRes', paymentRes?.data);
+        return {
+          message: 'Order created successfully!',
+          checkout: paymentRes,
+        };
+      } catch (error: any) {
+        console.log({ error }, 'error message');
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: error?.message,
+        });
+      }
+    }),
 
   getOrders: publicProcedure.input(getOrder).query(async ({ input, ctx }) => {
     const todayDate = new Date();
@@ -426,8 +521,306 @@ export const orderRouter = router({
       });
     }
   }),
+  getStatus: publicProcedure
+    .input(getPaymentStatusSchema)
+    .mutation(async ({ input }) => {
+      try {
+        // Total Processing Initial Payment Process
+        const paymentPayload: any = {
+          id: input?.checkout_id,
+        };
+
+        const paymentRes: any = await getPaymentStatus({
+          ...paymentPayload,
+        })
+          .then((response: any) => {
+            console.log(
+              response?.result?.parameterErrors,
+              'response?.result?.parameterErrors',
+            );
+            if (!response?.result?.parameterErrors) {
+              return { data: response, success: true };
+            }
+            throw new Error(response?.result?.parameterErrors[0].message);
+          })
+          .catch((error) => {
+            console.log(
+              error?.parameterErrors,
+              'response?.result?.parameterErrors',
+            );
+            throw new Error(error.message);
+          });
+        console.log('paymentRes', paymentRes?.data);
+        if (paymentRes?.data) {
+          const statusData = paymentRes?.data;
+          const successStatus =
+            statusData?.result?.description.toLowerCase().includes('success') &&
+            statusData?.resultDetails?.resultMessage
+              .toLowerCase()
+              .includes('success');
+          if (successStatus) {
+            const payload = JSON.parse(statusData?.customParameters?.payload);
+            const customerData = await prisma.customer.findFirst({
+              where: {
+                id: payload?.values?.customer_id,
+              },
+            });
+            if (
+              !customerData?.total_customer_id?.includes(
+                statusData?.registrationId,
+              )
+            ) {
+              const register_id =
+                customerData?.total_customer_id +
+                ',' +
+                statusData?.registrationId;
+              const updateCustomer = await prisma.customer.update({
+                where: {
+                  id: payload?.values?.customer_id,
+                },
+                data: {
+                  total_customer_id: register_id,
+                },
+              });
+            }
+            console.log({ payload }, 'total processing payload');
+            const cart = await prisma.cart.findUnique({
+              where: { id: payload?.values?.cart_id },
+              include: {
+                CouponApply: {
+                  where: { is_deleted: false },
+                  select: {
+                    discount: true,
+                    is_percentage: true,
+                  },
+                },
+                CartItems: {
+                  include: {
+                    Event: {
+                      select: {
+                        id: true,
+                        price: true,
+                        tickets_sold: true,
+                        end_date: true,
+                      },
+                    },
+                  },
+                },
+              },
+            });
+
+            if (!cart?.CartItems?.length) {
+              throw new TRPCError({
+                code: 'BAD_REQUEST',
+                message: 'No items in the cart!',
+              });
+            }
+
+            const isDiscount = cart?.CouponApply?.length > 0;
+            const discount = cart?.CouponApply[0]?.discount ?? 0;
+            const isPercentage = cart?.CouponApply[0]?.is_percentage ?? false;
+
+            const subTotalAmount =
+              cart?.CartItems.reduce(
+                (accumulator, current) =>
+                  accumulator + current.quantity * current.Event.price,
+                0,
+              ) ?? 0;
+
+            const discountAmount =
+              isDiscount && isPercentage
+                ? subTotalAmount * (discount / 100)
+                : discount;
+            const totalPaymentId = paymentRes?.data?.id;
+            const orderPayload: any = {
+              ...payload?.values,
+              phone_number:
+                payload?.values?.code + payload?.values?.phone_number,
+
+              sub_total_amount: subTotalAmount,
+              status: 'paid',
+              discount_amount: discountAmount,
+              total_amount: subTotalAmount - discountAmount,
+              total_payment_id: totalPaymentId,
+            };
+            if (payload?.values?.code) delete orderPayload?.code;
+            if (payload?.values?.cart_id) delete orderPayload?.cart_id;
+            if (payload?.values?.total_id) delete orderPayload?.total_id;
+
+            const orderEventPayload = cart?.CartItems.map((item) => ({
+              event_id: item.Event.id,
+              customer_id: payload?.values?.customer_id,
+              ticket_price: item.Event.price,
+              quantity: item.quantity,
+              is_subscribe: item.is_subscribe,
+            }));
+            const order = await prisma.order.create({
+              data: {
+                ...orderPayload,
+                OrderEvent: {
+                  createMany: {
+                    data: orderEventPayload,
+                  },
+                },
+              },
+            });
+            const eventPromises = cart.CartItems.map((item) =>
+              prisma.event.update({
+                where: { id: item.Event.id },
+                data: {
+                  tickets_sold:
+                    (item?.Event?.tickets_sold ?? 0) + item?.quantity,
+                },
+              }),
+            );
+
+            await Promise.all(eventPromises);
+
+            await prisma.cart.update({
+              where: { id: cart.id },
+              data: { is_deleted: true },
+            });
+
+            const mailOptions = {
+              template_id: EMAIL_TEMPLATE_IDS.ORDER_SUCCESS,
+              from: 'no-reply@winnar.com',
+              to: payload.values.email,
+              subject: 'Your order has been placed 🎉',
+              params: {
+                first_name: payload.values.first_name,
+                status: 'paid',
+              },
+            };
+
+            await sendEmail(mailOptions);
+            return {
+              message: 'Order created successfully!',
+              status: true,
+            };
+          }
+        }
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Something Went Wrong',
+        });
+      } catch (error: any) {
+        console.log({ error }, 'error message');
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: error?.message,
+        });
+      }
+    }),
 });
 
+async function CreateCheckout(APidata: any) {
+  try {
+    const path = '/v1/checkouts';
+    const payload = { ...APidata };
+    console.log(APidata, 'APidata?.paymentBrandsss');
+    const registrationID: any = APidata?.values?.total_id?.split(',');
+    const regPayload: { [key: string]: string } = {};
+
+    if (registrationID && registrationID.length) {
+      registrationID.forEach((item: string, index: number) => {
+        regPayload[`registrations[${index}].id`] = item;
+      });
+    }
+
+    if (payload?.card) delete payload?.card;
+    if (payload?.total_id) delete payload?.total_id;
+    const tot_amount = APidata?.total_amount.toFixed(2);
+    const apiDate: any = {
+      entityId: process.env.TOTAN_ENTITY_ID,
+      amount: APidata?.total_amount.toFixed(2),
+      currency: 'AED',
+      paymentType: 'DB',
+      // wpwlOptions: JSON.stringify(APidata?.cart),
+      ...regPayload,
+      createRegistration: 'true',
+      'standingInstruction.source': 'CIT',
+      'standingInstruction.mode': 'REPEATED',
+      'standingInstruction.type': 'UNSCHEDULED',
+      'customParameters[payload]': JSON.stringify({
+        ...payload,
+      }),
+    };
+
+    const data = new URLSearchParams(apiDate).toString();
+    const options = {
+      port: 443,
+      host: 'eu-test.oppwa.com',
+      path: path,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Length': data.length,
+        Authorization: process.env.TOTAL_PROCESSING_BEARER,
+      },
+    };
+    return new Promise((resolve, reject) => {
+      const postRequest = https.request(options, function (res) {
+        const buf: any = [];
+        res.on('data', (chunk) => {
+          buf.push(Buffer.from(chunk));
+        });
+        res.on('end', () => {
+          const jsonString = Buffer.concat(buf).toString('utf8');
+          try {
+            resolve(JSON.parse(jsonString));
+          } catch (error) {
+            console.log(error, 'error error error error');
+            reject(error);
+          }
+        });
+      });
+      postRequest.on('error', reject);
+      postRequest.write(data);
+      postRequest.end();
+    });
+  } catch (error: any) {
+    console.log({ error }, 'function error');
+    throw new Error(error.message);
+  }
+}
+async function getPaymentStatus(APidata: any) {
+  try {
+    const path = `/v1/checkouts/${APidata?.id}/payment?entityId=${process.env.TOTAN_ENTITY_ID}`;
+    // path += '?entityId=${process.env.TOTAN_ENTITY_ID}';
+
+    const options = {
+      port: 443,
+      host: 'eu-test.oppwa.com',
+      path: path,
+      method: 'GET',
+      headers: {
+        Authorization: process.env.TOTAL_PROCESSING_BEARER,
+      },
+    };
+    return new Promise((resolve, reject) => {
+      const postRequest = https.request(options, function (res) {
+        const buf: any = [];
+        res.on('data', (chunk) => {
+          buf.push(Buffer.from(chunk));
+        });
+        res.on('end', () => {
+          const jsonString = Buffer.concat(buf).toString('utf8');
+          try {
+            resolve(JSON.parse(jsonString));
+          } catch (error) {
+            console.log(error, 'error error error error');
+            reject(error);
+          }
+        });
+      });
+      postRequest.on('error', reject);
+      postRequest.end();
+    });
+  } catch (error: any) {
+    console.log({ error }, 'function error');
+    throw new Error(error.message);
+  }
+}
 async function CreatePayment(APidata: any) {
   try {
     const path = APidata?.registrationId

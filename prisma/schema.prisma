@@ -615,6 +615,7 @@ enum SubscriptionEnums {
 enum CMSEnums {
   faqs
   static
+  event_faqs
 }
 
 enum OrderEnums {
