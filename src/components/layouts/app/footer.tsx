@@ -58,7 +58,7 @@ function Footer() {
                   />
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-2  w-1/3">
+              <div className="grid grid-cols-1 gap-8 sm:gap-6 sm:grid-cols-2  w-full sm:w-1/3">
                 <div>
                   <ul className="text-gray-500 dark:text-gray-400 font-medium">
                     {[
@@ -83,11 +83,11 @@ function Footer() {
                 <div>
                   <ul className="text-gray-500 dark:text-gray-400 font-medium">
                     {[
-                      { page: "About Us", link: "/" },
+                      { page: "About Us", link: "/about-us" },
                       { page: "Contact Us", link: "/contact" },
-                      { page: "Terms & Conditions", link: "/" },
-                      { page: "Our Team", link: "/" },
-                      { page: "Cookie & Privacy Policy", link: "/" },
+                      { page: "Terms & Conditions", link: "/terms-condition" },
+                      { page: "Our Team", link: "/about-us" },
+                      { page: "Cookie & Privacy Policy", link: "/privacy-policy" },
 
                     ].map((item, index) => {
                       return (
