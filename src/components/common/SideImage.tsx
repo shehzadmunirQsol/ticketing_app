@@ -5,7 +5,7 @@ import Image from 'next/image';
 const SideImage = ({ image, text, text2 }: any) => {
   const form = useForm<any>();
   return (
-    <div className="relative h-4/5">
+    <div className="relative h-4/5 max-w-[500px] max-h-[700px]">
       <Image
         src={image.src}
         width={51500}

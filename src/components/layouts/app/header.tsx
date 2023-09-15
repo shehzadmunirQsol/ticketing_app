@@ -235,14 +235,14 @@ export function ItemMenuDemo() {
     },
     {
       name: 'About Us',
-      // link: `/about-us`,
-      link: `/`,
+      link: `/about-us`,
+      // link: `/`,
       icon: 'fa-solid fa-image',
     },
     {
       name: 'FAQ',
-      // link: `/faq`,
-      link: `/`,
+      link: `/faq`,
+      // link: `/`,
       icon: 'fa-solid fa-users',
     },
   ];
