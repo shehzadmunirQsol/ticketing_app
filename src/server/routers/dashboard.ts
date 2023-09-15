@@ -100,7 +100,7 @@ export const dashboardRouter = router({
           symbol: 'AED',
           icon: 'fa-solid fa-chart-line',
           cols: false,
-          link: '/admin/events',
+          link: '/admin/orders',
         },
       ];
 

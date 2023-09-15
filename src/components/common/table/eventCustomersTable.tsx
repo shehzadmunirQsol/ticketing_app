@@ -37,6 +37,7 @@ import { LoadingDialog } from '../modal/loadingModal';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { MoreHorizontal } from 'lucide-react';
+import { SelectWinnerDialog } from '../modal/eventModal';
 
 export type EventCustomerType = {
   event_id: number;
@@ -51,10 +52,20 @@ export type EventCustomerType = {
   quantity: number;
 };
 
+const initialModalProps = {
+  isModal: false,
+  event_id: 0,
+  customer_id: 0,
+  event_name: '',
+  customer_name: '',
+};
+
 export default function OrdersDataTable() {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
+
+  const [modalProps, setModalProps] = useState(initialModalProps);
 
   const router = useRouter();
   const event_id =
@@ -157,7 +168,11 @@ export default function OrdersDataTable() {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Select Winner</DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => setModalPropsHandler(row.original)}
+              >
+                Select Winner
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         ) : null;
@@ -181,7 +196,21 @@ export default function OrdersDataTable() {
     },
   });
 
-  console.log({ data });
+  function setModalPropsHandler(params: EventCustomerType) {
+    setModalProps({
+      customer_id: params.customer_id,
+      event_id: params.event_id,
+      event_name: params.event_name,
+      customer_name: params.first_name,
+      isModal: true,
+    });
+  }
+  function openChangeHandler() {
+    setModalProps((prevState) => ({
+      ...initialModalProps,
+      isModal: !prevState.isModal,
+    }));
+  }
 
   return (
     <div className="w-full space-y-4">
@@ -267,6 +296,10 @@ export default function OrdersDataTable() {
         </ScrollArea>
       </div>
 
+      <SelectWinnerDialog
+        {...modalProps}
+        openChangeHandler={openChangeHandler}
+      />
       <LoadingDialog open={isLoading} text={'Loading data...'} />
     </div>
   );

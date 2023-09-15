@@ -177,14 +177,19 @@ const SIDEBAR_DATA = [
     title: 'Cart',
   },
   {
-    key: '/admin/cms',
-    icon: <i className="fa-solid fa-chart-line p-4 rounded-full"></i>,
-    title: 'CMS',
-  },
-  {
     key: '/admin/orders',
     icon: <i className="fa-solid fa-chart-line p-4 rounded-full"></i>,
     title: 'Orders',
+  },
+  {
+    key: '/admin/winners',
+    icon: <i className="fa-solid fa-chart-line p-4 rounded-full"></i>,
+    title: 'Winners',
+  },
+  {
+    key: '/admin/cms',
+    icon: <i className="fa-solid fa-chart-line p-4 rounded-full"></i>,
+    title: 'CMS',
   },
   // {
   //   key: '/admin/subscriptions',
