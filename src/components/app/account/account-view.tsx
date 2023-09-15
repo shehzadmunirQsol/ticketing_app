@@ -31,7 +31,7 @@ const AccountView = ({ control }: any) => {
       <p className="mb-3">
         Hello{' '}
         <span className="font-bold">
-          {customer &&
+           {customer &&  
             `${customer?.data?.first_name} ${customer?.data?.last_name}`}
         </span>
       </p>

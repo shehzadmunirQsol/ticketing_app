@@ -235,13 +235,13 @@ export function ItemMenuDemo() {
     },
     {
       name: 'About Us',
-      link: `/cms/about-us`,
+      link: `/about-us`,
       // link: `/`,
       icon: 'fa-solid fa-image',
     },
     {
       name: 'FAQ',
-      link: `/cms/faq`,
+      link: `/faq`,
       // link: `/`,
       icon: 'fa-solid fa-users',
     },

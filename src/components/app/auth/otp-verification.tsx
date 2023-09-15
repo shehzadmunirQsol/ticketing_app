@@ -37,14 +37,13 @@ export function OtpVerificationDailog(props: OtpVerificationDailogInterface) {
   const inputThree: any = useRef<HTMLInputElement>(null);
   const inputFour: any = useRef<HTMLInputElement>(null);
 
-  
   // Response OTP Verification
   const otpVerification = trpc.customer.verificationOtpCustomer.useMutation({
     onSuccess: (res: any) => {
       console.log(res, 'mein hun res');
       toast({
         variant: 'success',
-        title: 'Your Otp is Verified please wait admin verification ',
+        title: 'Your Otp is Verified Please Login!',
       });
       props.setOtpIsModal(false);
       router.push('/login');
@@ -137,23 +136,30 @@ export function OtpVerificationDailog(props: OtpVerificationDailogInterface) {
   }
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+    try {
+      event.preventDefault();
 
-    const storedData: string | null = localStorage?.getItem('customer');
+      const storedData: string | null = localStorage?.getItem('customer');
 
-    if (storedData !== null) {
-      const userData: any = JSON.parse(storedData);
-      const result: any = {
-        email: userData.email,
-        otp_1: +inputOne.current.value,
-        otp_2: +inputTwo.current.value,
-        otp_3: +inputThree.current.value,
-        otp_4: +inputFour.current.value,
-      };
-      console.log(result, 'otp Hun mein ');
-      const otpResult = await otpVerification.mutateAsync(result);
-      console.log(otpResult, 'otpResult');
-      console.log(otpResult, 'otpResult');
+      if (storedData !== null) {
+        const userData: any = JSON.parse(storedData);
+        const result: any = {
+          email: userData.email,
+          otp_1: +inputOne.current.value,
+          otp_2: +inputTwo.current.value,
+          otp_3: +inputThree.current.value,
+          otp_4: +inputFour.current.value,
+        };
+        console.log(result, 'otp Hun mein ');
+        const otpResult = await otpVerification.mutateAsync(result);
+        console.log(otpResult, 'otpResult');
+        console.log(otpResult, 'otpResult');
+      }
+    } catch (error:any) {
+      toast({
+        variant: 'destructive',
+        title: error?.message,
+      });
     }
   }
 
@@ -232,7 +238,9 @@ export function OtpVerificationDailog(props: OtpVerificationDailogInterface) {
                 <p className="text-center text-grayColor text-xs pr-4 underline cursor-pointer">
                   Didn’t receive an OTP?{' '}
                 </p>
-                <p className="text-white text-xs underline cursor-pointer">Resend OTP</p>
+                <p className="text-white text-xs underline cursor-pointer">
+                  Resend OTP
+                </p>
               </div>
               <div className="w-full mx-auto">
                 <div className=" flex items-center justify-center">

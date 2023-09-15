@@ -280,9 +280,9 @@ model Customer {
   password          String
   is_approved       Boolean             @default(false)
   otp               String              @default("")
-  first_name        String
+  first_name        String?
   profile_pic       String?
-  last_name         String
+  last_name         String?
   total_customer_id String?
   dob               DateTime?
   is_deleted        Boolean             @default(false)
