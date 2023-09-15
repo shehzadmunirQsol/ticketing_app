@@ -87,6 +87,7 @@ export function SpotLightForm() {
     data: BannerApiData,
     isFetched,
     isLoading,
+    isFetching,
   } = trpc.settings.get_banner.useQuery(orderFilters, {
     refetchOnWindowFocus: false,
 
@@ -303,7 +304,10 @@ export function SpotLightForm() {
                   <FormControl>
                     <Input type="text" placeholder="Enter Link" {...field} />
                   </FormControl>
-                  <FormMessage />
+
+                  <div className="relative pb-2">
+                    <FormMessage />
+                  </div>
                 </FormItem>
               )}
             />
@@ -364,7 +368,10 @@ export function SpotLightForm() {
                     <FormControl>
                       <Input type="text" placeholder="Enter Name" {...field} />
                     </FormControl>
-                    <FormMessage />
+
+                    <div className="relative pb-2">
+                      <FormMessage />
+                    </div>
                   </FormItem>
                 )}
               />
@@ -377,7 +384,10 @@ export function SpotLightForm() {
                     <FormControl>
                       <Textarea placeholder="Enter Description..." {...field} />
                     </FormControl>
-                    <FormMessage />
+
+                    <div className="relative pb-2">
+                      <FormMessage />
+                    </div>
                   </FormItem>
                 )}
               />
@@ -397,7 +407,10 @@ export function SpotLightForm() {
                           {...field}
                         />
                       </FormControl>
-                      <FormMessage />
+
+                      <div className="relative pb-2">
+                        <FormMessage />
+                      </div>
                     </FormItem>
                   )}
                 />
@@ -413,7 +426,10 @@ export function SpotLightForm() {
                           {...field}
                         />
                       </FormControl>
-                      <FormMessage />
+
+                      <div className="relative pb-2">
+                        <FormMessage />
+                      </div>
                     </FormItem>
                   )}
                 />
@@ -428,7 +444,10 @@ export function SpotLightForm() {
           </Button>
         </div>
       </form>
-      <LoadingDialog open={isSubmitting} text={'Saving data...'} />
+      <LoadingDialog
+        open={isSubmitting || isFetching}
+        text={'Saving data...'}
+      />
     </Form>
   );
 }

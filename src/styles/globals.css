@@ -526,7 +526,7 @@ html{
   display: none;
 }
 .wpwl-label {
-  color: black;
+  color: white;
 }
 .wpwl-form-card {
   background: #f8f8f8;
@@ -545,13 +545,16 @@ input.wpwl-control {
   font-size: 18px;
   height: 50px;
 }
-.input-text:focus,
-input[type='text']:focus,
-input[type='tel']:focus,
-input[type='url']:focus,
-input[type='password']:focus,
-input[type='search']:focus,
-textarea:focus {
+
+.wpwl-control > .input-text:focus,
+.wpwl-control > input[type='text']:focus,
+.wpwl-control > input[type='tel']:focus,
+.wpwl-control > input[type='url']:focus,
+.wpwl-control > input[type='password']:focus,
+.wpwl-control > input[type='search']:focus {
+  background-color: white;
+}
+.wpwl-control > textarea:focus {
   background-color: white;
 }
 .wpwl-brand-SOFORTUEBERWEISUNG,
@@ -565,4 +568,27 @@ textarea:focus {
 .wpwl-wrapper > button {
   background-color: hsl(var(--primary)) !important;
   color: white;
+}
+
+.wpwl-form-registrations {
+  background-color: hsl(var(--background)) !important;
+
+  border: none;
+  border-bottom: 2px solid hsl(var(--border)) !important ;
+  border-radius: none !important;
+
+  box-shadow: none;
+}
+.wpwl-container > .wpwl-form-card {
+  background-color: hsl(var(--background)) !important;
+  border: 1px solid hsl(var(--primary)) !important;
+  padding: 20px;
+  box-shadow: none;
+}
+.wpwl-group-registration {
+  background-color: hsl(var(--background-card)) !important;
+  /* border-color: hsl(var(--border)) !important; */
+}
+.wpwl-selected {
+  border-color: hsl(var(--primary)) !important;
 }

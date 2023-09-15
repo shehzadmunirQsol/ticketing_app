@@ -1,11 +1,11 @@
 import { z } from 'zod';
 
 export const signupCustomerSchema = z.object({
-  username: z.string({ required_error: "Please enter your username" }),
-  email: z.string({ required_error: "Please enter your email" }).email(),
-  password: z.string({ required_error: "Please enter your password" }),
-  firstname: z.string({ required_error: "Please enter your first name" }),
-  lastname: z.string({ required_error: "Please enter your last name" }),
+  username: z.string({ required_error: "Please enter your username", invalid_type_error: "Please enter your username" }),
+  email: z.string({ required_error: "Please enter your email", invalid_type_error: "Please enter your email" }).email(),
+  password: z.string({ required_error: "Please enter your password", invalid_type_error: "Please enter your password" }),
+  firstname: z.string({ required_error: "Please enter your first name", invalid_type_error: "Please enter your first name" }),
+  lastname: z.string({ required_error: "Please enter your last name", invalid_type_error: "Please enter your last name" }),
 });
 export const signupCustomerSchemaInput = z.object({
   username: z

@@ -112,7 +112,7 @@ function Checkout() {
                   cartItems: [],
                 }),
               );
-            }, 2000);
+            }, 3000);
           }
         }
       } catch (e: any) {
@@ -120,6 +120,7 @@ function Checkout() {
       }
     })();
   }, [router?.query]);
+  console.log('user?.total_customer_id', user?.total_customer_id);
 
   const onSubmitCheckout = async (values: any) => {
     try {
@@ -128,6 +129,7 @@ function Checkout() {
           ...values,
           cart_id: cart?.id,
           customer_id: user?.id,
+          total_id: user?.total_customer_id,
         },
       });
       console.log(data?.checkout?.data?.id, 'get checkout id');
@@ -179,7 +181,9 @@ function Checkout() {
                             {...field}
                           />
                         </FormControl>
+                        <div className='relative pb-2'>
                         <FormMessage />
+                        </div>
                       </FormItem>
                     )}
                   />
@@ -198,7 +202,9 @@ function Checkout() {
                             {...field}
                           />
                         </FormControl>
+                        <div className='relative pb-2'>
                         <FormMessage />
+                        </div>
                       </FormItem>
                     )}
                   />
@@ -220,7 +226,9 @@ function Checkout() {
                             {...field}
                           />
                         </FormControl>
+                        <div className='relative pb-2'>
                         <FormMessage />
+                        </div>
                       </FormItem>
                     )}
                   />
@@ -236,7 +244,9 @@ function Checkout() {
                             {...field}
                           />
                         </FormControl>
+                        <div className='relative pb-2'>
                         <FormMessage />
+                        </div>
                       </FormItem>
                     )}
                   />
@@ -277,7 +287,9 @@ function Checkout() {
                             </SelectContent>
                           </Select>
 
-                          <FormMessage />
+                          <div className='relative pb-2'>
+                        <FormMessage />
+                        </div>
                         </FormItem>
                       )}
                     />
@@ -315,7 +327,9 @@ function Checkout() {
                             </SelectContent>
                           </Select>
 
-                          <FormMessage />
+                          <div className='relative pb-2'>
+                        <FormMessage />
+                        </div>
                         </FormItem>
                       )}
                     />
@@ -337,7 +351,9 @@ function Checkout() {
                             {...field}
                           />
                         </FormControl>
+                        <div className='relative pb-2'>
                         <FormMessage />
+                        </div>
                       </FormItem>
                     )}
                   />
@@ -356,7 +372,9 @@ function Checkout() {
                             {...field}
                           />
                         </FormControl>
+                        <div className='relative pb-2'>
                         <FormMessage />
+                        </div>
                       </FormItem>
                     )}
                   />
@@ -376,7 +394,9 @@ function Checkout() {
                           {...field}
                         />
                       </FormControl>
-                      <FormMessage />
+                      <div className='relative pb-2'>
+                        <FormMessage />
+                        </div>
                     </FormItem>
                   )}
                 />
@@ -414,7 +434,9 @@ function Checkout() {
                               </SelectContent>
                             </Select>
 
-                            <FormMessage />
+                            <div className='relative pb-2'>
+                        <FormMessage />
+                        </div>
                           </FormItem>
                         )}
                       />
@@ -434,7 +456,10 @@ function Checkout() {
                                 {...field}
                               />
                             </FormControl>
-                            <FormMessage />
+                            
+                            <div className='relative pb-2'>
+                        <FormMessage />
+                        </div>
                           </FormItem>
                         )}
                       />

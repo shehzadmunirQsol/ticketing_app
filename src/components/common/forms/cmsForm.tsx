@@ -191,10 +191,10 @@ console.log(form.formState.errors,"form.formState.errors")
     form.formState.errors?.en && form.formState.errors?.ar
       ? 'Kindly provide information in both English and Arabic fields.'
       : form.formState.errors?.en && !form.formState.errors?.ar
-      ? 'Kindly provide information in English fields.'
-      : !form.formState.errors?.en && form.formState.errors?.ar
-      ? 'Kindly provide information in Arabic fields.'
-      : '';
+        ? 'Kindly provide information in English fields.'
+        : !form.formState.errors?.en && form.formState.errors?.ar
+          ? 'Kindly provide information in Arabic fields.'
+          : '';
 
   // Handle CMS Preview
   const handlePreview = () => {
@@ -253,7 +253,10 @@ console.log(form.formState.errors,"form.formState.errors")
                   <FormControl>
                     <Input placeholder="Enter Page Title" {...field} />
                   </FormControl>
-                  <FormMessage />
+
+                  <div className='relative pb-2'>
+                    <FormMessage />
+                  </div>
                 </FormItem>
               )}
             />
@@ -268,7 +271,10 @@ console.log(form.formState.errors,"form.formState.errors")
                   <FormControl>
                     <Input placeholder="Enter Page Slug" {...field} />
                   </FormControl>
-                  <FormMessage />
+
+                  <div className='relative pb-2'>
+                    <FormMessage />
+                  </div>
                 </FormItem>
               )}
             />
@@ -318,7 +324,10 @@ console.log(form.formState.errors,"form.formState.errors")
                   <FormControl>
                     <Textarea placeholder="Enter Meta Title..." {...field} />
                   </FormControl>
-                  <FormMessage />
+
+                  <div className='relative pb-2'>
+                    <FormMessage />
+                  </div>
                 </FormItem>
               )}
             />
@@ -337,7 +346,10 @@ console.log(form.formState.errors,"form.formState.errors")
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage />
+
+                  <div className='relative pb-2'>
+                    <FormMessage />
+                  </div>
                 </FormItem>
               )}
             />
@@ -353,7 +365,10 @@ console.log(form.formState.errors,"form.formState.errors")
                 <FormControl>
                   <Textarea placeholder="Enter Description..." {...field} />
                 </FormControl>
-                <FormMessage />
+
+                <div className='relative pb-2'>
+                  <FormMessage />
+                </div>
               </FormItem>
             )}
           />
@@ -376,7 +391,10 @@ console.log(form.formState.errors,"form.formState.errors")
                     config={editorConfig}
                   />
                 </FormControl>
-                <FormMessage />
+
+                <div className='relative pb-2'>
+                  <FormMessage />
+                </div>
               </FormItem>
             )}
           />
