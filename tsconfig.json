@@ -28,6 +28,6 @@
     "**/*.tsx",
     "./*.js",
     "./src/**/*.js"
-  ],
+, "src/components/app/cms/index.jsx", "src/components/admin/cms/script.jsx"  ],
   "exclude": ["node_modules"]
 }

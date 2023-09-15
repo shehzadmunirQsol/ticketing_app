@@ -230,7 +230,7 @@ export const customerRouter = router({
         if (!user.is_approved) {
           throw new TRPCError({
             code: 'NOT_FOUND',
-            message: 'Please Wait for Admin Verification',
+            message: 'Your Email is Not Verified',
           });
         }
 
@@ -394,6 +394,14 @@ export const customerRouter = router({
           where: { otp: otpCode },
         });
         console.log(user, 'user HJDJDHDDN');
+        if(!user)
+        {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Invalid Otp',
+          });
+
+        }
 
         if (user.otp !== otpCode) {
           throw new TRPCError({
@@ -408,6 +416,7 @@ export const customerRouter = router({
             },
             data: {
               is_verified: true,
+              is_approved: true,
               otp: '',
             },
           });
