@@ -7,6 +7,14 @@ import 'slick-carousel/slick/slick-theme.css';
 import Group15 from '~/public/assets/icons/Group15.png';
 import Group14 from '~/public/assets/icons/Group14.png';
 
+import Face1 from "~/public/assets/face/face1.png"
+import Face2 from "~/public/assets/face/face2.png"
+import Face3 from "~/public/assets/face/face3.png"
+import Face4 from "~/public/assets/face/face4.png"
+import Face5 from "~/public/assets/face/face5.png"
+import Face6 from "~/public/assets/face/face6.png"
+
+
 import { User } from 'lucide-react';
 
 import Image from 'next/image';
@@ -20,6 +28,7 @@ function Testimonials() {
   const TestimonialsData = [
     {
       step: 1,
+      face: Face1,
       name: 'Adam S',
       stars: 5,
       publish: 'Last year',
@@ -28,10 +37,10 @@ function Testimonials() {
     },
     {
       step: 1,
-      name: 'Tom Macca',
+      name: 'Oliver Bailey',
       stars: 5,
       class: 'row-span-1',
-
+      face: Face2,
       publish: 'Last year',
       desc: '5* Won a Mercedes c63s AMG for just £10 off just 10 tickets on their raffle competitions!',
     },
@@ -39,17 +48,17 @@ function Testimonials() {
       step: 1,
       name: 'Andy Bone',
       class: 'row-span-1',
-
+      face: Face3,
       stars: 5,
       publish: 'Last year',
       desc: 'Excellent friendly service and would highly recommend. Won a few times and goods arrived quickly. Cash alternative in bank within a few hours. Excellent and great.',
     },
     {
       step: 1,
-      name: 'Oliver Bailey',
+      name: 'Tom Macca',
       stars: 5,
       class: 'row-span-2',
-
+      face: Face4,
       publish: 'Last year',
       desc: 'Won the Toyota Supra which is a amazing car the staff where great will definitely be entering again',
     },
@@ -58,6 +67,7 @@ function Testimonials() {
       name: 'Michael Jolley',
       stars: 5,
       class: 'row-span-2',
+      face: Face5,
 
       publish: 'Last year',
       desc: "Wow what can I say I won an Audi RS5 absolutely over the moon, cracking blokes to deal with with brilliant communication, thanks once again for our car it's amazing all from a few £0:99p tickets. Is definitely recommend 7 days performance to anyone 10/10 well done guys",
@@ -67,6 +77,7 @@ function Testimonials() {
       name: 'Daniel Lloyd Mechanic',
       stars: 5,
       class: 'row-span-1',
+      face: Face6,
 
       publish: 'Last year',
       desc: 'I have played in many competitions with 7 days the last few years and finally bagged a winner on tickets I forgot all about. I won the £5000 tui voucher but chose the cash instead.',
@@ -97,7 +108,7 @@ function Testimonials() {
         </div>
       </div>
 
-      <div className="     grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 justify-start items-start     gap-4 px-4   ">
+      <div className="     grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 justify-start items-start     gap-4 px-4 md:px-14 py-6 md:py-12   ">
         {TestimonialsData?.map((item, index) => {
           return (
             <div
@@ -108,7 +119,7 @@ function Testimonials() {
               <div className="   z-10 h-12 w-14  rounded-full  bg-white">
                 <Image
                   className="w-full h-full object-cover rounded-full"
-                  src={Group14}
+                  src={item.face}
                   quality={100}
                   alt="Sunset in the mountains"
                 />

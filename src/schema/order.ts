@@ -113,9 +113,15 @@ export const getPaymentStatusSchema = z.object({
   checkout_id: z.string(),
 });
 export const getOrder = z.object({
+  
+  startDate: z.date().optional(),
+  endDate: z.date().optional(),
   customer_id: z.number().optional(),
-  lang_id: z.number(),
-});
+  first: z.number().optional(),
+  rows: z.number().optional(),
+  lang_id: z.number().optional(),
+})
+  
 export const getOrderSchema = z.object({
   startDate: z.date().optional(),
   endDate: z.date().optional(),
