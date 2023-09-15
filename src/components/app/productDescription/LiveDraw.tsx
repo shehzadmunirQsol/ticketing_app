@@ -56,7 +56,7 @@ function LiveDraw() {
           </div>
         </div>
 
-        <div className="flex flex-col gap-8 space-y-4  items-start ">
+        <div className="flex flex-col gap-8 space-y-4   justify-center my-auto max-w-lg text-left ">
           {LiveDraw?.map((item, index) => {
             return (
               <div

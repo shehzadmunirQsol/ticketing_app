@@ -31,40 +31,10 @@ const Preview = () => {
     };
   }, []);
 
-  // useEffect(() => {
-  //   import('./custom.js');
-  // }, []);
+
 
   return (
     <div>
-      <Head>
-        <Script src="./custom.js"></Script>
-      </Head>
-      <Script
-        src="https://connect.facebook.net/en_US/sdk.js"
-        strategy="lazyOnload"
-        onLoad={() => {
-          const carousel:any = document.querySelector('.carousel');
-          var scrollValue:any;
-
-          function handleLeftScroll() {
-            scrollValue =
-              Math.sign(scrollValue) === -1 ? scrollValue - 200 : 0 - 200;
-            carousel.style.transition = '0.5s ease';
-            carousel.scrollLeft += scrollValue;
-
-            console.log('handleLeftScroll');
-          }
-          function handleRightScroll() {
-            scrollValue =
-              Math.sign(scrollValue) != -1 ? scrollValue + 200 : 0 + 200;
-            carousel.style.transition = '0.5s ease';
-            carousel.scrollLeft += scrollValue;
-            console.log('handleRightScroll');
-          }
-          console.log(`script loaded correctly, window.FB has been populated`);
-        }}
-      />
       <div
         dangerouslySetInnerHTML={{
           __html: data?.toString() ?? '<>html conte</>',

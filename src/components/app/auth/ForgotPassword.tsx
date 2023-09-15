@@ -45,6 +45,11 @@ export function ForgotPasswordDailog(props: ForgotPasswordDialogInterface) {
       },
       onError: (err) => {
         console.log(err.message, 'err');
+        toast({
+          variant: 'destructive',
+          title: err.message,
+        });
+        return;
       },
     });
 
@@ -52,8 +57,13 @@ export function ForgotPasswordDailog(props: ForgotPasswordDialogInterface) {
 
   const onSubmit = async (values: any) => {
     console.log(values, 'onSubmit');
-    const resp = await customerForgotPassword.mutateAsync(values);
-    console.log(resp, 'final res');
+    try{
+      const resp = await customerForgotPassword.mutateAsync(values);
+      console.log(resp, 'final res');
+
+    }catch(error){
+      console.log(error,"forgot password")
+    }
   };
 
   return (
@@ -72,7 +82,7 @@ export function ForgotPasswordDailog(props: ForgotPasswordDialogInterface) {
                   name="email"
                   render={({ field }) => (
                     <FormItem className="mb-6">
-                      <FormLabel className="text-xs font-thin text-grayColor">
+                      <FormLabel className="text-xs font-thin text-grayColor !text-left">
                         Email*
                       </FormLabel>
                       <FormControl>
@@ -90,7 +100,7 @@ export function ForgotPasswordDailog(props: ForgotPasswordDialogInterface) {
                   className="w-full     text-black font-sans font-[900]   text-xl tracking-[-1px]"
                   variant="clip"
                 >
-                  Submit
+                  SUBMIT
                 </Button>
               </form>
             </Form>

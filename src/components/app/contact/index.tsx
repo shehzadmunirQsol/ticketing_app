@@ -1,5 +1,4 @@
 import React from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
 import { Button } from '@/ui/button';
 import {
   Form,
@@ -52,7 +51,7 @@ export default function Contact() {
       // props.setIsModal(false);
       toast({
         variant: 'success',
-        title: 'please check your email ',
+        title: 'Email Sent.',
       });
       // form.setValue('name', '');
       // form.setValue('email', '');
@@ -80,7 +79,7 @@ export default function Contact() {
 
   return (
     <section className="body-font  ">
-      <div className="px-5 pt-16 pb-5 lg:pb-0 md:pb-0 lg:py-24 md:py-24 mx-auto flex flex-col-reverse lg:flex-row md:flex-row gap-14 mt-6 ">
+      <div className="px-5 mb-10 sm:mb-20 pt-16 pb-10 lg:pb-0 md:pb-0 lg:py-24 md:py-24 mx-auto flex flex-col-reverse lg:flex-row md:flex-row gap-14 mt-6 max-w-[1300px]">
         <div className="lg:w-2/3 md:w-2/3 w-full h-full mb-5 lg:mb-0 rounded-lg hidden  lg:block  ">
           <SideImage
             image={ContactImage}
@@ -88,7 +87,7 @@ export default function Contact() {
             text2={'Support, Questions'}
           />
         </div>
-        <div className="flex flex-col flex-wrap   lg:w-2/2 md:w-full  lg:text-left  rounded-none border-none  lg:mr-6 bg-card">
+        <div className="flex flex-col flex-wrap   lg:w-2/3 md:w-full  lg:text-left  rounded-none border-none  lg:mr-6 bg-card">
           <div className="font-black  py-4 ">
             <p className="text-xl pl-6">Contact Us</p>
             <hr className=" opacity-20 mt-4" />
@@ -102,6 +101,7 @@ export default function Contact() {
                 <FormField
                   control={form.control}
                   name="name"
+
                   render={({ field }) => (
                     <FormItem className="mb-6 lg:mb-10 md:mb-10">
                       <FormLabel className="text-xs font-thin  text-grayColor">
@@ -146,6 +146,7 @@ export default function Contact() {
                     <FormField
                       control={form.control}
                       name="code"
+                      defaultValue='+971'
                       render={({ field }) => (
                         <FormItem>
                           <Select
@@ -154,8 +155,8 @@ export default function Contact() {
                             value={field.value}
                           >
                             <FormControl className="rounded-md bg-inputColor">
-                              <SelectTrigger className=" rounded-none  ">
-                                <SelectValue placeholder="+971" />
+                              <SelectTrigger defaultValue={"+971"}  className=" rounded-md  ">
+                                <SelectValue  placeholder="+971" />
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>

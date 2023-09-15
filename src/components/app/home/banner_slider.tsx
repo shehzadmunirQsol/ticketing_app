@@ -98,7 +98,7 @@ const BannerSlider = () => {
 
   return (
     <div
-      className={`relative w-full h-screen transition-all ease-in-out overflow-hidden ${lang.dir === 'ltr' ? 'banner_img' : 'banner_img_flip'
+      className={`relative w-full h-[40rem] lg:h-screen transition-all ease-in-out overflow-hidden ${lang.dir === 'ltr' ? 'banner_img' : 'banner_img_flip'
         }`}
     >
       <div className="relative ">
@@ -140,7 +140,7 @@ const BannerSlider = () => {
             <p className="sm:block px-4 text-xl  font-normal ">
               {carSlider[currentIndex]?.description}
             </p>
-            <p className="px-4 text-xl  sm:text-3xl tracking-[-2px] font-[700]  my-3">
+            <p className="px-4 text-lg  sm:text-2xl tracking-[-2px] font-[700]  my-3">
               {carSlider[currentIndex]?.date}
             </p>
             <Link href="/cars">
@@ -156,9 +156,9 @@ const BannerSlider = () => {
 
           {/* text select cards */}
           <div className={`  absolute  top-[100px] ${showElement ? 'fading-animation' : ''
-            } transition-all  duration-500 ease-in-out   sm:mb-8 m-auto    md:top-[260px] lg:top-[240px] xl:top-[170px] ltr:right-6 rtl:left-4 md:ltr:-right-32 md:rtl:left-0  z-20  w-[320px] h-[200px]  sm:max-w-[440px] sm:w-full sm:h-full  sm:max-h-[300px] md:max-w-[500px] md:max-h-[260px] lg:max-w-[680px] xl:max-w-[680px] xl:max-h-[360px]   `}>
+            } transition-all  duration-500 ease-in-out   sm:mb-8 m-auto    md:top-[260px] lg:top-[240px] xl:top-[170px] ltr:-right-6 rtl:-left-6 md:ltr:-right-32 md:rtl:-left-32  z-20  w-[320px] h-[200px]  sm:max-w-[440px] sm:w-full sm:h-full  sm:max-h-[300px] md:max-w-[500px] md:max-h-[260px] lg:max-w-[680px] xl:max-w-[680px] xl:max-h-[360px]   `}>
             <Image
-              className="    object-contain  transform rtl:-scale-x-100 ltr:scale-100 ltr:right-6 rtl:left-4 md:ltr:-right-32 md:rtl:left-0"
+              className="    object-contain  transform rtl:-scale-x-100 ltr:scale-100 ltr:right-6 rtl:left-4 md:ltr:-right-40 md:rtl:-left-16"
               src={renderNFTImage(carSlider[currentIndex])}
               alt="banner image"
               fill
@@ -187,7 +187,7 @@ const BannerSlider = () => {
                     className="rounded-md object-contain group-hover:rounded-none transform rtl:-scale-x-100 ltr:scale-100"
                   />
                 </div>
-                <p className="mt-3">{item.model}</p>
+                <p className="mt-1 text-xs max-w-[100px] mx-auto">{item.model}</p>
               </div>
             ))}
           </div>

@@ -55,8 +55,9 @@ const CashPage = () => {
   console.log({ products }, 'products');
   console.log({ filters }, 'filters');
   console.log(products.length, prductsList?.count, 'check load more');
-  console.log(lang, 'check load more');
 
+
+  
   return (
     <>
       <div className="relative pt-24"></div>
@@ -64,10 +65,10 @@ const CashPage = () => {
       <div className="h-full  px-10 py-20">
         <Glow className=" absolute  top-[560px] -right-16  p-2   w-1/5 h-[350px]  " />
         <Glow className=" absolute  bottom-96 -right-16  w-1/5 h-[350px] " />
-        <div className=" grid grid-cols-1 md:grid-cols-2     lg:grid-cols-3   justify-between max-w-[1300px] mx-auto ">
+        <div className=" grid grid-cols-1 md:grid-cols-2  z-40   lg:grid-cols-3   justify-between max-w-[1300px] mx-auto ">
           {products?.map((itemList, i) => {
             return (
-              <div className="mx-auto py-2 md:py-0" key={i}>
+              <div className="mx-auto py-2 md:py-0 z-40" key={i}>
                 <ProductCard
                   isLast={i === products.length - 1}
                   nextPage={nextPage}
@@ -82,7 +83,7 @@ const CashPage = () => {
         </div>
 
         {/* doudt should it load more on action or automatically */}
-        {prductsList && products.length < prductsList?.count ? (
+        {products.length != prductsList?.count ? (
           <div className="w-fit mx-auto">
             <div className="text-center my-4">
               <p className="tracking-tight font-bold">Load More</p>

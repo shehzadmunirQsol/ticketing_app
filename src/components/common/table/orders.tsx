@@ -32,7 +32,6 @@ import {
   TableRow,
 } from '@/ui/table';
 import LanguageSelect, { LanguageInterface } from '../language_select';
-import { GetCategorySchema } from '~/schema/category';
 import { trpc } from '~/utils/trpc';
 import Link from 'next/link';
 import { GetEventSchema } from '~/schema/event';
@@ -67,14 +66,13 @@ export default function OrdersDataTable() {
   const { data, isLoading } = trpc.order.get.useQuery(filters, {
     refetchOnWindowFocus: false,
   });
-  console.log({ data });
-  const categoryData = React.useMemo(() => {
+  const orderData = React.useMemo(() => {
     return Array.isArray(data?.data) ? data?.data : [];
   }, [data]);
   const columns: ColumnDef<Category>[] = [
     {
       accessorKey: 'name',
-      header: 'Name',
+      header: 'Customer Name',
       cell: ({ row }) => (
         <div className="capitalize text-ellipsis whitespace-nowrap ">
           {row?.original?.first_name + ' ' + row?.original?.last_name}
@@ -145,6 +143,7 @@ export default function OrdersDataTable() {
 
     {
       id: 'actions',
+      header:"Actions",
       enableHiding: false,
       cell: ({ row }) => {
         return (
@@ -156,8 +155,7 @@ export default function OrdersDataTable() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuSeparator />
+              
               <Link href={`/admin/orders/view/${row?.original?.id}`}>
                 <DropdownMenuItem>View Order</DropdownMenuItem>
               </Link>
@@ -168,7 +166,7 @@ export default function OrdersDataTable() {
     },
   ];
   const table = useReactTable({
-    data: categoryData as Category[],
+    data: orderData as Category[],
     columns,
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),

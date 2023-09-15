@@ -1,32 +1,38 @@
 import { z } from 'zod';
 
 export const signupCustomerSchema = z.object({
-  username: z.string(),
-  email: z.string().email(),
-  password: z.string(),
-  firstname: z.string(),
-  lastname: z.string(),
+  username: z.string({ required_error: "Please enter your username" }),
+  email: z.string({ required_error: "Please enter your email" }).email(),
+  password: z.string({ required_error: "Please enter your password" }),
+  firstname: z.string({ required_error: "Please enter your first name" }),
+  lastname: z.string({ required_error: "Please enter your last name" }),
 });
 export const signupCustomerSchemaInput = z.object({
   username: z
-    .string()
+    .string(
+      { required_error: "Please enter your username" }
+    )
     .min(2, {
       message: 'Username must be at least 2 characters',
     })
     .max(24, {
       message: 'Username must not exceed 24 characters',
     }),
-  email: z.string().email(),
+  email: z.string(
+    { required_error: "Please enter your email" }
+  ).email(),
   password: z
-    .string()
+    .string(
+      { required_error: "Please enter your password" }
+    )
     .min(6, {
       message: 'Password must be at least 6 characters',
     })
     .max(30, {
       message: 'Password must not exceed 30 characters',
     }),
-  firstname: z.string(),
-  lastname: z.string(),
+  firstname: z.string({ required_error: "Please enter your first name" }),
+  lastname: z.string({ required_error: "Please enter your last name" }),
 });
 export type signupCustomerInput = z.TypeOf<typeof signupCustomerSchemaInput>;
 
@@ -110,13 +116,18 @@ export const accountsDetailSchema = z.object({
 export const accountsDetailSchemaInput = z.object({
   first_name: z
     .string()
-    .min(2, {
-      message: 'Name must be at least 2 characters',
+    .min(1, {
+      message: 'Required',
     })
     .max(24, {
       message: 'Name must not exceed 24 characters',
     }),
-  last_name: z.string(),
+  last_name: z.string().min(1, {
+    message: 'Required',
+  })
+    .max(24, {
+      message: 'Name must not exceed 24 characters',
+    }),
   email: z.string().email(),
   dob: z.date().optional().nullable(),
 });

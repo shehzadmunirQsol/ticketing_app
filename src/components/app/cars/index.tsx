@@ -16,7 +16,7 @@ const CarsPage = () => {
     lang_id: lang?.lang_id,
     first: 0,
     rows: 9,
-    category_id: 2,
+    category_id: 1,
   };
   const [filters, setFilters] = useState({
     ...eventFilters,
@@ -70,11 +70,11 @@ const CarsPage = () => {
       <div className="h-full  px-10 pb-20 ">
         <Glow className=" absolute  top-[760px] -right-16     w-1/5 h-[350px] overflow-hidden " />
 
-        <Glow className=" absolute  bottom-96 -right-16  w-1/5 h-[350px] overflow-x-hidden" />
-        <div className=" grid grid-cols-1 md:grid-cols-2 gap-y-4 lg:grid-cols-3  justify-between max-w-[1300px] mx-auto ">
+        <Glow className=" absolute   bottom-96 -right-16  w-1/5 h-[350px] overflow-x-hidden" />
+        <div className=" grid grid-cols-1 md:grid-cols-2 z-40 gap-4 lg:grid-cols-3  justify-between max-w-[1300px] mx-auto ">
           {products?.map((itemList, i) => {
             return (
-              <div className="mx-auto py-2 md:py-0" key={i}>
+              <div className="mx-auto py-2 md:py-0 z-40" key={i}>
                 <ProductCard
                   isLast={i === products.length - 1}
                   nextPage={nextPage}
@@ -87,7 +87,7 @@ const CarsPage = () => {
           })}
         </div>
 
-        {prductsList && products.length < prductsList?.count ? (
+        { products.length != prductsList?.count ? (
           <div className="w-fit mx-auto">
             <div className="text-center my-4">
               <p className="tracking-tight font-bold">Load More</p>

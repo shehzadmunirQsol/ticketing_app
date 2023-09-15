@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect } from 'react';
+import React, { ReactNode } from 'react';
 import Header from './header';
 import Sidebar from './sidebar';
 import { useRouter } from 'next/router';
@@ -21,22 +21,16 @@ function AdminLayout({ children }: DefaultLayoutProps) {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const { data } = trpc.admin.me.useQuery(
+  trpc.admin.me.useQuery(
     { isLogin },
     {
       refetchOnWindowFocus: false,
-      enabled: typeof window !== 'undefined' ? true : false,
+      onSuccess(data) {
+        dispatch(userAdminAuth(data as any));
+        dispatch(userAdminIsLogin(true));
+      },
     },
   );
-
-  useEffect(() => {
-    console.log('Data: ', data);
-    if (data?.id) {
-      dispatch(userAdminAuth(data as any));
-      dispatch(userAdminIsLogin(true));
-    }
-    // do not update this dependancy
-  }, [dispatch, data]);
 
   return (
     <div className="relative">
@@ -46,9 +40,15 @@ function AdminLayout({ children }: DefaultLayoutProps) {
         <>
           <Header />
 
-          <div className="flex">
+          <div className="flex max-h-[calc(100vh-70px)] overflow-y-hidden">
             <Sidebar />
-            <main className={`flex-1 w-full ${isSidebarOpen ?'w-[calc(100vw-15%)]':'w-[calc(100vw-80px)]'}`}>{children}</main>
+            <main
+              className={`flex-1 w-full ${
+                isSidebarOpen ? 'w-[calc(100vw-15%)]' : 'w-[calc(100vw-80px)]'
+              }  min-h-[calc(100vh-100px)] overflow-y-scroll`}
+            >
+              {children}
+            </main>
           </div>
         </>
       )}

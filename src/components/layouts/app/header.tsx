@@ -107,8 +107,8 @@ function Header() {
           >
             <i className="fa-solid fa-cart-shopping" />
             {count ? (
-              <span className="absolute -top-3 -right-3 inline-flex items-center justify-center bg-red-600 text-white rounded-full w-7 h-7 text-sm">
-                {count > 99 ? '99' : count}
+              <span className="absolute -top-3 -right-3 inline-flex items-center my-auto justify-center bg-red-600 text-white rounded-full w-7 h-7 text-xs">
+                {count > 99 ? '99+' : count}
               </span>
             ) : null}
           </Button>

@@ -62,6 +62,20 @@ export const customerRouter = router({
         },
         data: { ...payload },
       });
+
+      if (input.is_approved) {
+        const mailOptions = {
+          template_id: 10,
+          from: "no-reply@winnar.com",
+          subject: "Thank you for sigining up for Winnar",
+          to: customer.email,
+          params: {
+            first_name: customer?.first_name,
+          }
+        };
+
+        const mailResponse = await sendEmail(mailOptions);
+      }
       return customer;
     }),
 
@@ -263,7 +277,6 @@ export const customerRouter = router({
         const user = await prisma.customer.findFirst({
           where: { email: input.email },
         });
-        console.log(user, 'mein hun user');
         console.log('user found: ', user);
         if (!user || user?.is_deleted) {
           throw new TRPCError({
@@ -281,6 +294,8 @@ export const customerRouter = router({
         }
 
         const respCode = await generateOTP(4);
+
+        //  email
         const mailOptions = {
           template_id: 5,
           from: 'no-reply@winnar.com',

@@ -95,6 +95,7 @@ export default function CouponsDataTable() {
 
   // handle modal
   const handleEnbled = (data: any, type: string) => {
+    console.log({data,type},"enable check")
     if (!data?.is_approved) {
       setSelectedItem(data);
       setTitle('Coupon');
@@ -133,7 +134,7 @@ export default function CouponsDataTable() {
       accessorKey: 'coupon_code',
       header: 'Coupon Code',
       cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap ">
+        <div className="w-24 capitalize text-ellipsis whitespace-nowrap ">
           {row.getValue('coupon_code')}
         </div>
       ),
@@ -177,7 +178,7 @@ export default function CouponsDataTable() {
           <div>
             <Switch
               checked={row?.original?.is_enabled}
-              onCheckedChange={() => handleEnbled(row?.original, 'enabled')}
+              onCheckedChange={() => handleEnbled(row?.original,row?.original?.is_enabled? 'enabled':"disabled")}
             />
           </div>
         );
@@ -204,6 +205,7 @@ export default function CouponsDataTable() {
     {
       id: 'actions',
       enableHiding: false,
+      header:"Actions",
       cell: ({ row }) => {
         return (
           <DropdownMenu>
@@ -214,8 +216,8 @@ export default function CouponsDataTable() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuSeparator />
+              {/* <DropdownMenuLabel>Actions</DropdownMenuLabel> */}
+              {/* <DropdownMenuSeparator /> */}
               <Link href={`/admin/coupons/edit/${row?.original?.id}`}>
                 <DropdownMenuItem>Edit Coupon</DropdownMenuItem>
               </Link>

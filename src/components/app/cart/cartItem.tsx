@@ -169,16 +169,20 @@ export default function CartItem(props: CartItemProp) {
                 AED: {(cartItem?.quantity * cartItem?.Event?.price)?.toFixed(2)}{' '}
               </p>
               <div className="space-y-2">
-                <div className="flex items-center gap-3">
-                  <p className={isSubscribe ? 'text-white' : 'text-white/40'}>
-                    Subscription
-                  </p>
-                  <Switch
-                    disabled={addToBasket.isLoading}
-                    onClick={toggleSwitch}
-                    checked={isSubscribe}
-                  />
-                </div>
+                {true ? (
+                  <></>
+                ) : (
+                  <div className="flex items-center gap-3">
+                    <p className={isSubscribe ? 'text-white' : 'text-white/40'}>
+                      Subscription
+                    </p>
+                    <Switch
+                      disabled={addToBasket.isLoading}
+                      onClick={toggleSwitch}
+                      checked={isSubscribe}
+                    />
+                  </div>
+                )}
               </div>
             </div>
 

@@ -32,7 +32,6 @@ import {
   TableRow,
 } from '@/ui/table';
 import LanguageSelect, { LanguageInterface } from '../language_select';
-import { GetCategorySchema } from '~/schema/category';
 import { trpc } from '~/utils/trpc';
 import Image from 'next/image';
 import { displayDate, renderNFTImage } from '~/utils/helper';
@@ -40,6 +39,8 @@ import Link from 'next/link';
 import { GetEventSchema } from '~/schema/event';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 import { LoadingDialog } from '../modal/loadingModal';
+import { setSelectedEvent } from '~/store/reducers/admin_layout';
+import { useDispatch } from 'react-redux';
 
 export type Category = {
   thumb: string;
@@ -66,10 +67,12 @@ export default function EventsDataTable() {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
 
+  const dispatch = useDispatch();
+
   const { data, isLoading } = trpc.event.get.useQuery(filters, {
     refetchOnWindowFocus: false,
   });
-  console.log({ data });
+
   const categoryData = React.useMemo(() => {
     return Array.isArray(data?.data) ? data?.data : [];
   }, [data]);
@@ -88,7 +91,9 @@ export default function EventsDataTable() {
               height={100}
             />
 
-            <p className="text-base font-normal">{row?.original?.name}</p>
+            <p className="w-40 text-ellipsis whitespace-nowrap overflow-hidden">
+              {row?.original?.name}
+            </p>
           </div>
         );
       },
@@ -97,7 +102,7 @@ export default function EventsDataTable() {
       accessorKey: 'desc',
       header: 'Description',
       cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden w-64">
+        <div className="text-ellipsis whitespace-nowrap overflow-hidden w-64">
           {row.getValue('desc')}
         </div>
       ),
@@ -106,42 +111,42 @@ export default function EventsDataTable() {
       accessorKey: 'price',
       header: 'Token Price',
       cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap ">
-          AED{(row?.original?.price).toFixed(2)}
-        </div>
+        <p className="w-20 text-center text-ellipsis whitespace-nowrap overflow-hidden">
+          {(row?.original?.price).toFixed(2)}
+        </p>
       ),
     },
     {
       accessorKey: 'total_tickets',
       header: 'Token Cap',
       cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
+        <p className="w-20 text-ellipsis whitespace-nowrap overflow-hidden">
           {row?.original?.total_tickets}
           &nbsp;
           <sub>qty</sub>
-        </div>
+        </p>
       ),
     },
     {
       accessorKey: 'tickets_sold',
       header: 'Token Purchased',
       cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
+        <p className="w-28 text-center text-ellipsis whitespace-nowrap overflow-hidden">
           {row?.original?.tickets_sold}
           &nbsp;
           <sub>qty</sub>
-        </div>
+        </p>
       ),
     },
     {
       accessorKey: 'user_ticket_limit',
       header: 'Per User Purchased',
       cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
+        <p className="w-32 text-center text-ellipsis whitespace-nowrap overflow-hidden">
           {row?.original?.user_ticket_limit}
           &nbsp;
           <sub>qty</sub>
-        </div>
+        </p>
       ),
     },
     {
@@ -165,6 +170,7 @@ export default function EventsDataTable() {
     {
       id: 'actions',
       enableHiding: false,
+      header:"Actions",
       cell: ({ row }) => {
         return (
           <DropdownMenu>
@@ -175,10 +181,16 @@ export default function EventsDataTable() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuSeparator />
+              
               <Link href={`/admin/events/edit/${row?.original?.id}`}>
                 <DropdownMenuItem>Edit Event</DropdownMenuItem>
+              </Link>
+              <DropdownMenuSeparator />
+              <Link
+                onClick={() => dispatch(setSelectedEvent(row.original))}
+                href={`/admin/events/event-customers/${row.original.id}`}
+              >
+                <DropdownMenuItem>Event Customers</DropdownMenuItem>
               </Link>
             </DropdownMenuContent>
           </DropdownMenu>
