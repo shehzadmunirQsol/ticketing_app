@@ -288,6 +288,9 @@ export function BannerForm() {
       throw new Error('Please Select Image');
     }
   }
+
+
+  console.log({isSubmitting , isLoading})
   return (
     <Form {...form}>
       <form
@@ -559,7 +562,7 @@ export function BannerForm() {
           </Button>
         </div>
       </form>
-      <LoadingDialog open={isSubmitting || isLoading} text={'Saving data...'} />
+      <LoadingDialog open={isSubmitting && isLoading} text={'Saving data...'} />
     </Form>
   );
 }

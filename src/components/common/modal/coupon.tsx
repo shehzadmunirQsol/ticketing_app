@@ -59,9 +59,8 @@ export function CouponDialog(props: SettingDialogInterface) {
 
         toast({
           variant: 'success',
-          title: `${props?.title} ${
-            props?.type === 'enabled' ? 'Disabled' : 'Enabled'
-          } Successfully`,
+          title: `${props?.title} ${props?.type === 'enabled' ? 'Disabled' : 'Enabled'
+            } Successfully`,
         });
         props?.refetch();
       } else {
@@ -86,8 +85,8 @@ export function CouponDialog(props: SettingDialogInterface) {
             <DialogDescription>
               <div className="flex flex-col gap-4 mt-4">
                 <div className="  flex gap-2 items-center p-2  ">
-                  Note: By Saving this information customer can apply this
-                  coupon on cart.
+                  <p>Note: By Saving this information customer <span className='text-primary'>{props?.type !== 'enabled' ? "can apply" : "cannot apply"}</span>  this
+                    coupon on cart.</p>
                 </div>
               </div>
             </DialogDescription>
