@@ -143,7 +143,7 @@ export function CheckoutDialog(props: SettingDialogInterface) {
   return (
     <>
       <Dialog open={props?.isModal} onOpenChange={(e) => props.setIsModal(e)}>
-        <DialogContent className="sm:max-w-[450px] ">
+        <DialogContent className="sm:max-w-[450px]  max-h-[calc(100%-70px)] overflow-y-scroll scroll-hide">
           <Script
             src={`https://eu-test.oppwa.com/v1/paymentWidgets.js?checkoutId=${props?.selectedItem?.checkoutID}`}
             onReady={() => {
@@ -153,7 +153,7 @@ export function CheckoutDialog(props: SettingDialogInterface) {
           <form
             action="http://localhost:3000/checkout"
             className="paymentWidgets justify-start   lg:justify-center md:justify-center items-center px-2 lg:px-6 py-2 space-y-2 text-black"
-            data-brands="VISA MASTER AMEX"
+            data-brands="VISA MASTER AMEX PAYPAL PAYPAL_CONTINUE"
           ></form>
         </DialogContent>
       </Dialog>
