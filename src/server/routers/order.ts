@@ -525,14 +525,17 @@ export const orderRouter = router({
               },
             });
             if (
+              customerData?.total_customer_id === '' ||
               !customerData?.total_customer_id?.includes(
                 statusData?.registrationId,
               )
             ) {
               const register_id =
-                customerData?.total_customer_id +
-                ',' +
-                statusData?.registrationId;
+                customerData?.total_customer_id !== ''
+                  ? customerData?.total_customer_id +
+                    ',' +
+                    statusData?.registrationId
+                  : statusData?.registrationId;
               const updateCustomer = await prisma.customer.update({
                 where: {
                   id: payload?.values?.customer_id,
@@ -591,8 +594,10 @@ export const orderRouter = router({
                 ? subTotalAmount * (discount / 100)
                 : discount;
             const totalPaymentId = paymentRes?.data?.id;
+            const { total_id, ...valuesData }: any = { ...payload?.values };
+            console.log({ total_id });
             const orderPayload: any = {
-              ...payload?.values,
+              ...valuesData,
               phone_number:
                 payload?.values?.code + payload?.values?.phone_number,
 
@@ -605,7 +610,7 @@ export const orderRouter = router({
             if (payload?.values?.code) delete orderPayload?.code;
             if (payload?.values?.cart_id) delete orderPayload?.cart_id;
             if (payload?.values?.total_id) delete orderPayload?.total_id;
-
+            console.log({ orderPayload, payload }, 'orderPayload, payload');
             const orderEventPayload = cart?.CartItems.map((item) => ({
               event_id: item.Event.id,
               customer_id: payload?.values?.customer_id,
@@ -653,7 +658,7 @@ export const orderRouter = router({
 
             await sendEmail(mailOptions);
             return {
-              message: 'Order created successfully!',
+              message: paymentRes?.data,
               status: true,
             };
           }
@@ -687,7 +692,7 @@ async function CreateCheckout(APidata: any) {
     }
 
     if (payload?.card) delete payload?.card;
-    if (payload?.total_id) delete payload?.total_id;
+    if (payload?.values?.total_id) delete payload?.values?.total_id;
     const tot_amount = APidata?.total_amount.toFixed(2);
     const apiDate: any = {
       entityId: process.env.TOTAN_ENTITY_ID,

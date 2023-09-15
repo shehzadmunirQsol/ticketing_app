@@ -105,7 +105,7 @@ export const getCheckoutIDSchema = z.object({
     dob: z.date(),
     cart_id: z.number(),
     customer_id: z.number(),
-    total_id: z.string().optional(),
+    total_id: z.string().optional().nullable(),
   }),
 });
 
