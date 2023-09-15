@@ -220,8 +220,10 @@ input[type='text']:focus,
 input[type='tel']:focus,
 input[type='url']:focus,
 input[type='password']:focus,
-input[type='search']:focus,
-textarea:focus {
+input[type='search']:focus {
+  background-color: white;
+}
+.wpwl-control > textarea:focus {
   background-color: white;
 }
 .wpwl-brand-SOFORTUEBERWEISUNG,
