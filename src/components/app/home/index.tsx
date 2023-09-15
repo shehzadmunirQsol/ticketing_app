@@ -20,7 +20,7 @@ export default function Home() {
       <div className="relative flex flex-col gap-4 md:gap-14  px-4 md:px-14 py-8 md:py-14  ">
         {/* 13 cards */}
         <ProductSection
-          class="max-w-sm lg:max-w-[24rem]"
+          class="max-w-sm lg:max-w-[27rem]"
           slidesToShow={3}
           center={false}
           title={'ENDING SOON COMPETITIONS'}
@@ -31,7 +31,7 @@ export default function Home() {
         {/* product section 2 */}
         {/* 11 cards */}
         <ProductSection
-          class="max-w-md md:max-w-xl  xl:max-w-[36rem] max-h-md"
+          class="max-w-md md:max-w-xl  xl:max-w-[40rem] max-h-md"
           slidesToShow={2}
           center={false}
           title="UPCOMING COMPETITIONS"
@@ -46,9 +46,9 @@ export default function Home() {
       <Testimonials />
 
       {/* Video section */}
-      <div className="relative flex flex-col gap-12  px-4 md:px-14 py-12 lg:py-16 bg-background-footer ">
+      <div className="relative flex flex-col gap-6 md:gap-12  px-4 md:px-14 py-12 lg:py-16 bg-background-footer ">
         <VideoSlider
-          class="w-full max-w-sm lg:max-w-xs xl:max-w-[17rem]"
+          class="w-full max-w-[15rem] lg:max-w-[16rem] xl:max-w-[18rem]"
           slidesToShow={4}
           center={false}
           title="Winnar Wonders: "
