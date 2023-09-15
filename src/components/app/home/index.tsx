@@ -20,24 +20,25 @@ export default function Home() {
       <div className="relative flex flex-col gap-4 md:gap-14  px-4 md:px-14 py-8 md:py-14  ">
         {/* 13 cards */}
         <ProductSection
-          class="max-w-sm lg:max-w-[27rem]"
+          class="mx-auto md:mx-0 max-w-md md:max-w-[22rem] lg:max-w-[24rem] xl:max-w-[26rem]"
           slidesToShow={3}
           center={false}
           title={'ENDING SOON COMPETITIONS'}
           type="closing"
-          breakpoint={[3,2,1]}
-          breakpointScreens={[1350,1050,800]}
+          breakpoint={[3, 2, 1]}
+          breakpointScreens={[1350, 1050, 800]}
         />
         {/* product section 2 */}
         {/* 11 cards */}
+        <div className='py-4'></div>
         <ProductSection
-          class="max-w-md md:max-w-xl  xl:max-w-[40rem] max-h-md"
+          class="mx-auto md:pl-3 max-w-md md:max-w-xl  xl:max-w-[40rem] max-h-md"
           slidesToShow={2}
           center={false}
           title="UPCOMING COMPETITIONS"
           type="upcomming"
-          breakpoint={[2,1,1]}
-          breakpointScreens={[900,850,600]}
+          breakpoint={[2, 1, 1]}
+          breakpointScreens={[900, 850, 600]}
         />
       </div>
       <CategorySection />
@@ -53,8 +54,8 @@ export default function Home() {
           center={false}
           title="Winnar Wonders: "
           subTitle="A Glimpse of Excellence"
-          breakpoint={[3,2,1]}
-          breakpointScreens={[1100,830,500]}
+          breakpoint={[3, 2, 1]}
+          breakpointScreens={[1100, 830, 500]}
         />
       </div>
     </div>
