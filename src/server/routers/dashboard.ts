@@ -18,13 +18,11 @@ export const dashboardRouter = router({
       const totalCustomerPromise = await prisma.customer.count({
         where: {
           is_deleted: false,
-          is_approved: true,
           is_verified: true,
         },
       });
       const pendingCustomerPromise = await prisma.customer.count({
         where: {
-          is_approved: false,
           is_verified: false,
         },
       });
@@ -100,7 +98,7 @@ export const dashboardRouter = router({
           symbol: 'AED',
           icon: 'fa-solid fa-chart-line',
           cols: false,
-          link: '/admin/events',
+          link: '/admin/orders',
         },
       ];
 
