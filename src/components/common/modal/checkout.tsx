@@ -153,7 +153,7 @@ export function CheckoutDialog(props: SettingDialogInterface) {
             }}
           ></Script>
           <form
-            action={`${process.env.NEXT_PUBLIC_BASE_URL}checkout`}
+            action={`${process.env.NEXT_PUBLIC_BASE_URL}/checkout`}
             className="paymentWidgets justify-start   lg:justify-center md:justify-center items-center px-2 lg:px-6 py-2 space-y-2 text-black"
             data-brands="VISA MASTER AMEX "
           ></form>
