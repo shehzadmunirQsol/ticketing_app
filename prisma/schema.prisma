@@ -616,6 +616,7 @@ enum CMSEnums {
   EventFAQs
   faqs
   static
+  event_faqs
 }
 
 enum OrderEnums {
