@@ -87,6 +87,7 @@ export function SpotLightForm() {
     data: BannerApiData,
     isFetched,
     isLoading,
+    isFetching,
   } = trpc.settings.get_banner.useQuery(orderFilters, {
     refetchOnWindowFocus: false,
 
@@ -113,8 +114,8 @@ export function SpotLightForm() {
       ? BannerApiData[0]?.lang_id == 1
         ? enFormSchema
         : BannerApiData[0]?.lang_id == 2
-          ? arFormSchema
-          : SpotLightFormSchema
+        ? arFormSchema
+        : SpotLightFormSchema
       : SpotLightFormSchema;
 
   const form = useForm<z.infer<typeof formValidateData>>({
@@ -123,8 +124,8 @@ export function SpotLightForm() {
         ? BannerApiData[0]?.lang_id == 1
           ? enFormSchema
           : BannerApiData[0]?.lang_id == 2
-            ? arFormSchema
-            : SpotLightFormSchema
+          ? arFormSchema
+          : SpotLightFormSchema
         : SpotLightFormSchema,
     ),
   });
@@ -304,7 +305,7 @@ export function SpotLightForm() {
                     <Input type="text" placeholder="Enter Link" {...field} />
                   </FormControl>
 
-                  <div className='relative pb-2'>
+                  <div className="relative pb-2">
                     <FormMessage />
                   </div>
                 </FormItem>
@@ -336,14 +337,14 @@ export function SpotLightForm() {
           <Tabs
             defaultValue={
               index &&
-                BannerApiData !== undefined &&
-                BannerApiData[0]?.lang_id == 1
+              BannerApiData !== undefined &&
+              BannerApiData[0]?.lang_id == 1
                 ? 'en'
                 : index &&
                   BannerApiData !== undefined &&
                   BannerApiData[0]?.lang_id == 2
-                  ? 'ar'
-                  : 'en'
+                ? 'ar'
+                : 'en'
             }
             className="w-full"
           >
@@ -368,7 +369,7 @@ export function SpotLightForm() {
                       <Input type="text" placeholder="Enter Name" {...field} />
                     </FormControl>
 
-                    <div className='relative pb-2'>
+                    <div className="relative pb-2">
                       <FormMessage />
                     </div>
                   </FormItem>
@@ -384,7 +385,7 @@ export function SpotLightForm() {
                       <Textarea placeholder="Enter Description..." {...field} />
                     </FormControl>
 
-                    <div className='relative pb-2'>
+                    <div className="relative pb-2">
                       <FormMessage />
                     </div>
                   </FormItem>
@@ -407,7 +408,7 @@ export function SpotLightForm() {
                         />
                       </FormControl>
 
-                      <div className='relative pb-2'>
+                      <div className="relative pb-2">
                         <FormMessage />
                       </div>
                     </FormItem>
@@ -426,7 +427,7 @@ export function SpotLightForm() {
                         />
                       </FormControl>
 
-                      <div className='relative pb-2'>
+                      <div className="relative pb-2">
                         <FormMessage />
                       </div>
                     </FormItem>
@@ -443,7 +444,10 @@ export function SpotLightForm() {
           </Button>
         </div>
       </form>
-      <LoadingDialog open={isSubmitting} text={'Saving data...'} />
+      <LoadingDialog
+        open={isSubmitting || isFetching}
+        text={'Saving data...'}
+      />
     </Form>
   );
 }
