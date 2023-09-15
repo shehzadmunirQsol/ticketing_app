@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button } from '~/components/ui/button';
-import { redirect } from 'next/navigation'
+import { redirect } from 'next/navigation';
 import {
   Dialog,
   DialogContent,
@@ -120,8 +120,8 @@ export function CheckoutDialog(props: SettingDialogInterface) {
         );
         setLoading(false);
 
-      window.location.href= '/'
-      window.location.reload()
+        window.location.href = '/';
+        window.location.reload();
       }
     } catch (e: any) {
       setLoading(false);
@@ -153,7 +153,7 @@ export function CheckoutDialog(props: SettingDialogInterface) {
             }}
           ></Script>
           <form
-            action="http://localhost:3000/checkout"
+            action={`${process.env.NEXT_PUBLIC_BASE_URL}checkout`}
             className="paymentWidgets justify-start   lg:justify-center md:justify-center items-center px-2 lg:px-6 py-2 space-y-2 text-black"
             data-brands="VISA MASTER AMEX "
           ></form>
