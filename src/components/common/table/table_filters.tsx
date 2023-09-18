@@ -63,7 +63,10 @@ export function TableFilters(props: SettingDialogInterface) {
   const HandleFilterChange = (e: any, filter: string) => {
     const data = e.target.value;
     if (data !== 'delete') {
-      setFilterVal({ ...filterVal, [filter]: +data });
+      setFilterVal({
+        ...filterVal,
+        [filter]: data === '1' ? true : data === '0' ? false : data,
+      });
     } else {
       setFilterVal((current: any) => {
         // remove cost key from object
@@ -238,7 +241,13 @@ export function TableFilters(props: SettingDialogInterface) {
                                     HandleFilterChange(e, item.filtername)
                                   }
                                   defaultValue={'DEFAULT'}
-                                  value={filterVal[item.filtername]}
+                                  value={
+                                    filterVal[item.filtername] == true
+                                      ? '1'
+                                      : filterVal[item.filtername] == false
+                                      ? '0'
+                                      : filterVal[item.filtername]
+                                  }
                                   className=" w-full px-2 py-3 border border-border bg-transparent"
                                   // style={{
                                   //   textAlign: 'center',

@@ -75,7 +75,7 @@ export const getCustomerSchema = z.object({
   searchQuery: z.string().optional(),
   first: z.number(),
   rows: z.number(),
-  filter: z.object({}).optional(),
+  filters: z.any().optional(),
 });
 export const updateCustomerSchema = z.object({
   id: z.number(),

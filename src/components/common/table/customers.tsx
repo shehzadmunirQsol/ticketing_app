@@ -84,10 +84,11 @@ export default function CustomersDataTable() {
   const [title, setTitle] = React.useState('');
   const [type, setType] = React.useState('');
   const [isModal, setIsModal] = React.useState(false);
+  console.log({ filterID });
 
   // APi
   const { data, refetch, isLoading } = trpc.customer.getCustomers.useQuery(
-    filters,
+    { ...filters, filters: { ...filterID } },
     {
       refetchOnWindowFocus: false,
     },
@@ -219,7 +220,7 @@ export default function CustomersDataTable() {
     {
       Icon: 'fal fa-chevron-down',
       text: 'Name',
-      filtername: 'name',
+      filtername: 'searchQuery',
       type: 'text',
     },
 

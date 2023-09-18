@@ -83,7 +83,38 @@ export const customerRouter = router({
     .input(getCustomerSchema)
     .query(async ({ input }) => {
       try {
-        const where: any = { is_deleted: false };
+        const { filters, ...payload } = input;
+        const filterPayload: any = { ...filters };
+
+        if (filterPayload?.created_at) delete filterPayload.created_at;
+        if (filterPayload?.searchQuery) delete filterPayload.searchQuery;
+        const where: any = { is_deleted: false, ...filterPayload };
+        console.log({ filters }, 'filters_input');
+        if (input?.filters?.searchQuery) {
+          where.OR = [];
+          where.OR.push({
+            first_name: {
+              contains: input?.filters?.searchQuery,
+              mode: 'insensitive',
+            },
+          });
+          where.OR.push({
+            last_name: {
+              contains: input?.filters?.searchQuery,
+              mode: 'insensitive',
+            },
+          });
+          where.OR.push({
+            username: {
+              contains: input?.filters?.searchQuery,
+              mode: 'insensitive',
+            },
+          });
+          // options.where.OR.push({
+          //   price: { contains: input.searchQuery, mode: 'insensitive' },
+          // });
+        }
+        console.log({ where }, 'wherewherewherewhere');
 
         if (input?.startDate) {
           const startDate = new Date(input?.startDate);
@@ -113,12 +144,12 @@ export const customerRouter = router({
         if (!customer?.length) {
           throw new TRPCError({
             code: 'NOT_FOUND',
-            message: 'Categories not found',
+            message: 'Customer not found',
           });
         }
 
         return {
-          message: 'categories found',
+          message: 'Custoemer found',
           count: totalCustomers,
           data: customer,
         };
