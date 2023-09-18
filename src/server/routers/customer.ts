@@ -224,15 +224,15 @@ export const customerRouter = router({
           });
         }
         if (!user.is_approved) {
-          
+
 
           const respCode = await generateOTP(4);
-          
+
           const customer = await prisma.customer?.update({
-            where:{
-              id:user.id
+            where: {
+              id: user.id
             },
-            data: {otp:respCode},
+            data: { otp: respCode },
           });
 
           const mailOptions: any = {
@@ -247,10 +247,7 @@ export const customerRouter = router({
           };
           const mailResponse = await sendEmail(mailOptions);
 
-          throw new TRPCError({
-            code: 'NOT_FOUND',
-            message: 'Your Email is Not Verified',
-          });
+          return { status: false, message: 'Your Account is Not Verified', }
         }
 
         if (user?.is_disabled) {
@@ -369,7 +366,7 @@ export const customerRouter = router({
         } else {
           throw new TRPCError({
             code: 'NOT_FOUND',
-            message: 'please try again',
+            message: 'Please try again',
           });
         }
 
@@ -407,7 +404,7 @@ export const customerRouter = router({
     .mutation(async ({ ctx, input }) => {
       try {
         const otpCode = `${input.otp_1}${input.otp_2}${input.otp_3}${input.otp_4}`;
-        
+
         console.log(otpCode, input.emailOrUser, 'HJDJDHDDN');
 
         const validity = isValidEmail(input.emailOrUser)
@@ -417,8 +414,7 @@ export const customerRouter = router({
           where: validity,
         });
 
-        if(!user)
-        {
+        if (!user) {
           throw new TRPCError({
             code: 'NOT_FOUND',
             message: 'Invalid Otp',
@@ -459,11 +455,14 @@ export const customerRouter = router({
     .input(resendOtpCustomerSchema)
     .mutation(async ({ ctx, input }) => {
       try {
-        console.log(input, 'SJAHHSJSHJA');
-        console.log(input.email, 'HJDJDHDDN');
-        const user: any = await prisma.customer.findFirst({
-          where: { email: input.email },
+        const validity = isValidEmail(input.emailOrUser)
+          ? { email: input.emailOrUser }
+          : { username: input.emailOrUser };
+
+        const user = await prisma.customer.findFirst({
+          where: validity,
         });
+
         console.log(user, 'user HJDJDHDDN');
 
         if (!user) {
@@ -486,11 +485,11 @@ export const customerRouter = router({
           const mailOptions: any = {
             template_id: 2,
             from: 'no-reply@winnar.com',
-            to: input.email,
+            to: updateResponse.email,
             subject: 'Email Verification OTP CODE',
             params: {
               otp: respCode,
-              first_name: input?.email,
+              first_name: updateResponse?.email,
             },
           };
           const mailResponse = await sendEmail(mailOptions);
