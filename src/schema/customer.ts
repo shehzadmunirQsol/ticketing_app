@@ -126,7 +126,7 @@ export type resetPasswordCustomerSchemaInput = z.TypeOf<
 >;
 
 export const verificationOtpCustomerSchema = z.object({
-  email: z.string().email(),
+  emailOrUser: z.string().email(),
   otp_1: z.number(),
   otp_2: z.number(),
   otp_3: z.number(),

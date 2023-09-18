@@ -75,7 +75,7 @@ export default function LoginSignup() {
       console.log(res, 'res');
       toast({
         variant: 'success',
-        title: 'User Register Successfully Please Check your Email',
+        title: 'Registeration Successful, Please Check your Email',
       });
       // router.push('/login')
       setDefaultValue('login');
@@ -100,7 +100,7 @@ export default function LoginSignup() {
     onSuccess: (response) => {
       toast({
         variant: 'success',
-        title: 'User Login Successfully ',
+        title: 'Login Successful ',
       });
       dispatch(userAuth(response?.user));
 
@@ -163,6 +163,7 @@ export default function LoginSignup() {
       console.log(loginResult, 'loginResult');
     } catch (e: any) {
       setIsSubmitting(false);
+      setOtpIsModal(true);
       toast({
         variant: 'destructive',
         title: e.message,
@@ -410,6 +411,7 @@ export default function LoginSignup() {
       <OtpVerificationDailog
         otpIsModal={otpIsModal}
         setOtpIsModal={setOtpIsModal}
+        emailOrUser={formLogin.getValues("user")}
       />
     </section>
   );
