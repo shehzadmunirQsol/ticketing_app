@@ -97,10 +97,7 @@ export default function CartItem(props: CartItemProp) {
   });
 
   return (
-    <div
-      data-name="card"
-      className="card py-3 mdx:py-6 border-t border-white/40"
-    >
+    <div data-name="card" className="py-3 mdx:py-6 border-t border-white/40">
       <div className="mb-2 flex items-center justify-between mdx:hidden">
         <p className="text-xl font-bold">
           {cartItem?.Event?.EventDescription[0]?.name}
@@ -237,6 +234,7 @@ export default function CartItem(props: CartItemProp) {
         isModal={isModal}
         openChangeHandler={() => setIsModal((preModal) => !preModal)}
         cart_item_id={cartItem.id}
+        event_id={cartItem.event_id}
         item_name={cartItem?.Event?.EventDescription[0]?.name ?? ''}
       />
     </div>

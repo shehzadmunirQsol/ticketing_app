@@ -16,6 +16,7 @@ interface SettingDialogInterface {
   isModal: boolean;
   openChangeHandler: () => void;
   cart_item_id: number;
+  event_id: number;
   item_name: string;
 }
 
@@ -30,7 +31,7 @@ export function RemoveItemDialog(props: SettingDialogInterface) {
       const payload = { cart_item_id: props?.cart_item_id };
 
       await removeCartItem.mutateAsync(payload);
-      dispatch(removeFromCart(payload));
+      dispatch(removeFromCart({ event_id: props?.event_id }));
       props?.openChangeHandler();
       toast({
         variant: 'success',
