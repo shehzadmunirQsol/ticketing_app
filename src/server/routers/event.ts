@@ -15,7 +15,11 @@ import { verifyJWT } from '~/utils/jwt';
 export const eventRouter = router({
   get: publicProcedure.input(getEventSchema).query(async ({ input }) => {
     try {
-      const where: any = { is_deleted: false, lang_id: input.lang_id };
+      const where: any = {
+        is_deleted: false,
+        lang_id: input.lang_id,
+        // end_date: { gte: new Date() },
+      };
 
       if (input?.startDate) {
         const startDate = new Date(input?.startDate);
@@ -25,7 +29,7 @@ export const eventRouter = router({
         const endDate = new Date(input?.endDate);
         where.created_at = { lte: endDate };
       }
-      if (input.category_id) where.id = input.category_id;
+      if (input.category_id) where.category_id = input.category_id;
 
       // if (input.event_id) where.id = input.event_id;
 
