@@ -47,8 +47,9 @@ import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 interface SettingDialogInterface {
   inputList: object[];
   item_name: string;
-  value: object;
+  value: any;
   setValue: any;
+  setFilters: any;
 }
 
 export function TableFilters(props: SettingDialogInterface) {
@@ -61,11 +62,20 @@ export function TableFilters(props: SettingDialogInterface) {
 
   const dispatch = useDispatch();
   const HandleFilterChange = (e: any, filter: string) => {
-    const data = e.target.value;
+    const data =
+      filter == 'category_id'
+        ? +e.target.value
+        : filter == 'is_verified'
+        ? e.target.value == 'true'
+          ? true
+          : false
+        : e.target.value;
+    console.log({ data });
+
     if (data !== 'delete') {
       setFilterVal({
         ...filterVal,
-        [filter]: data === '1' ? true : data === '0' ? false : data,
+        [filter]: data,
       });
     } else {
       setFilterVal((current: any) => {
@@ -73,11 +83,6 @@ export function TableFilters(props: SettingDialogInterface) {
         const { [filter]: data, ...rest } = current;
         return rest;
       });
-      //   setValue((current) => {
-      //     // remove cost key from object
-      //     const { [filter]: data, ...rest } = current;
-      //     return rest;
-      //   });
     }
   };
   const filterInputsHandle = (filter: string, target: any) => {
@@ -93,15 +98,28 @@ export function TableFilters(props: SettingDialogInterface) {
 
   const handleDeleteFilter = () => {
     return (
-      //   setValue({}),
+      props.setValue({}),
       setFilter(!filter),
       setFilterVal({}),
       setFilterDate({}),
-      setFilterInput({})
+      setFilterInput({}),
+      props?.setFilters({
+        first: 0,
+        rows: 10,
+        lang_id: 1,
+      })
     );
   };
   const SubmitFilter = () => {
-    return props?.setValue({ ...filterVal, ...filterDate, ...filterInput });
+    return (
+      props?.setValue({ ...filterVal, ...filterDate, ...filterInput }),
+      setFilter(!filter),
+      props?.setFilters({
+        first: 0,
+        rows: 10,
+        lang_id: 1,
+      })
+    );
   };
 
   const curr = new Date();
@@ -112,8 +130,14 @@ export function TableFilters(props: SettingDialogInterface) {
 
   return (
     <div>
-      <Button variant="outline" onClick={() => setFilter(!filter)}>
-        Filters <i className="fa-solid fa-filter ml-2 h-4 w-4"></i>
+      <Button
+        variant="outline"
+        className={`${
+          Object.keys(props?.value)?.length ? ' text-primary' : ' text-white '
+        } `}
+        onClick={() => setFilter(!filter)}
+      >
+        Filters <i className={`fa-solid fa fa-filter   ml-2 h-4 w-4`}></i>
       </Button>
       <Sheet open={filter} onOpenChange={(e) => setFilter(e)}>
         <SheetOverlay className=" backdrop-blur-none" />
@@ -123,12 +147,12 @@ export function TableFilters(props: SettingDialogInterface) {
         >
           <SheetHeader>
             <SheetTitle>{props?.item_name} Filters</SheetTitle>
-            <ScrollArea className="w-full h-[calc(100vh-165px)] p-2">
+            <ScrollArea className="w-full h-[calc(100vh-165px)] ">
               <ScrollBar orientation="vertical"></ScrollBar>
               <SheetDescription className="pt-10">
                 <Form {...form}>
                   <form>
-                    <div className=" grid grid-cols-1    items-center">
+                    <div className=" grid grid-cols-1    items-center p-2">
                       {props?.inputList.map((item: any, i: number) => {
                         if (item?.type == 'text') {
                           return (
@@ -240,30 +264,10 @@ export function TableFilters(props: SettingDialogInterface) {
                                   onChange={(e) =>
                                     HandleFilterChange(e, item.filtername)
                                   }
-                                  defaultValue={'DEFAULT'}
                                   value={
-                                    filterVal[item.filtername] == true
-                                      ? '1'
-                                      : filterVal[item.filtername] == false
-                                      ? '0'
-                                      : filterVal[item.filtername]
+                                    filterVal[item.filtername]?.toString() ?? ''
                                   }
-                                  className=" w-full px-2 py-3 border border-border bg-transparent"
-                                  // style={{
-                                  //   textAlign: 'center',
-                                  //   marginTop: '10px',
-                                  //   border: '1px solid white',
-                                  //   backgroundColor: Object.keys(
-                                  //     filterVal,
-                                  //   ).includes(item.filtername)
-                                  //     ? 'white'
-                                  //     : '#262626',
-                                  //   color: Object.keys(filterVal).includes(
-                                  //     item.filtername,
-                                  //   )
-                                  //     ? 'black'
-                                  //     : 'white',
-                                  // }}
+                                  className=" w-full px-2 py-3 border border-border bg-transparent focus:border-primary selection:border-border focus:ring-border"
                                 >
                                   <option
                                     value={'delete'}

@@ -9,6 +9,7 @@ export const getEventSchema = z.object({
   first: z.number(),
   rows: z.number(),
   lang_id: z.number(),
+  filters: z.any().optional(),
 });
 export const getUpcoming = z.object({
   startDate: z.date().optional(),
@@ -54,56 +55,52 @@ export const EventFormSchema = z.object({
   thumb: z.string(),
   multi_image: z.array(z.string()),
   price: z.number({
-    invalid_type_error: "Please enter a price",
-    required_error: "Please enter a price"
+    invalid_type_error: 'Please enter a price',
+    required_error: 'Please enter a price',
   }),
 
   video_src: z.string(),
-  cash_alt: z.number({
-    required_error: "Please enter a price",
-    invalid_type_error: "Please enter a valid price"
-
-
-  }).nullable().optional(),
+  cash_alt: z
+    .number({
+      required_error: 'Please enter a price',
+      invalid_type_error: 'Please enter a valid price',
+    })
+    .nullable()
+    .optional(),
   user_ticket_limit: z.number({
-    required_error: "Please enter user tickets limit",
-    invalid_type_error: "Please enter a valid limit"
+    required_error: 'Please enter user tickets limit',
+    invalid_type_error: 'Please enter a valid limit',
   }),
   is_cash_alt: z.boolean().default(false),
   launch_date: z.date({
-    invalid_type_error: "Please select a valid date",
-    required_error: "Please select a date",
-
+    invalid_type_error: 'Please select a valid date',
+    required_error: 'Please select a date',
   }),
   end_date: z.date({
-    invalid_type_error: "Please select a valid date",
-    required_error: "Please select a date",
-
+    invalid_type_error: 'Please select a valid date',
+    required_error: 'Please select a date',
   }),
   category_id: z.number({
-    required_error: "Select a category"
+    required_error: 'Select a category',
   }),
   total_tickets: z.number({
-    required_error: "Please enter total tickets limit",
-    invalid_type_error: "Please enter a valid limit"
+    required_error: 'Please enter total tickets limit',
+    invalid_type_error: 'Please enter a valid limit',
   }),
 
   en: z.object({
     name: z.string({
-      required_error: "Please enter a event name"
+      required_error: 'Please enter a event name',
     }),
     desc: z.string(),
     comp_details: z.string(),
-
-
   }),
   ar: z.object({
     name: z.string({
-      required_error: "الرجاء إدخال اسم الحدث"
+      required_error: 'الرجاء إدخال اسم الحدث',
     }),
     desc: z.string().optional(),
     comp_details: z.string().optional(),
-
   }),
 });
 

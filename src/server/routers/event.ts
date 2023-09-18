@@ -15,16 +15,46 @@ import { verifyJWT } from '~/utils/jwt';
 export const eventRouter = router({
   get: publicProcedure.input(getEventSchema).query(async ({ input }) => {
     try {
-      const where: any = { is_deleted: false, lang_id: input.lang_id };
+      const { filters, ...payload } = input;
+      const filterPayload: any = { ...filters };
+      if (filterPayload?.created_at) delete filterPayload.created_at;
+      if (filterPayload?.searchQuery) delete filterPayload.searchQuery;
+      if (filterPayload?.endDate) delete filterPayload.endDate;
+      if (filterPayload?.startDate) delete filterPayload.startDate;
+      const where: any = {
+        is_deleted: false,
+        lang_id: input.lang_id,
+        ...filterPayload,
+      };
+      if (input?.filters?.searchQuery) {
+        where.OR = [];
+        where.OR.push({
+          name: {
+            contains: input?.filters?.searchQuery,
+            mode: 'insensitive',
+          },
+        });
 
-      if (input?.startDate) {
-        const startDate = new Date(input?.startDate);
-        where.created_at = { gte: startDate };
+        // options.where.OR.push({
+        //   price: { contains: input.searchQuery, mode: 'insensitive' },
+        // });
       }
-      if (input?.endDate) {
-        const endDate = new Date(input?.endDate);
-        where.created_at = { lte: endDate };
+
+      // if (input?.filters?.startDate) {
+      //   const startDate = new Date(input?.filters?.startDate);
+      //   where.launch_date = { lte: startDate };
+      //   where.end_date = { gte: startDate };
+      // }
+      if (input?.filters?.startDate) {
+        const startDate = new Date(input?.filters?.startDate);
+        where.launch_date = { gte: startDate };
       }
+
+      if (input?.filters?.endDate) {
+        const endDate = new Date(input?.filters?.endDate);
+        where.end_date = { lte: endDate };
+      }
+
       if (input.category_id) where.id = input.category_id;
 
       // if (input.event_id) where.id = input.event_id;

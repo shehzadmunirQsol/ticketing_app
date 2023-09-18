@@ -88,6 +88,8 @@ export const customerRouter = router({
 
         if (filterPayload?.created_at) delete filterPayload.created_at;
         if (filterPayload?.searchQuery) delete filterPayload.searchQuery;
+        if (filterPayload?.endDate) delete filterPayload.endDate;
+        if (filterPayload?.startDate) delete filterPayload.startDate;
         const where: any = { is_deleted: false, ...filterPayload };
         console.log({ filters }, 'filters_input');
         if (input?.filters?.searchQuery) {
@@ -114,14 +116,13 @@ export const customerRouter = router({
           //   price: { contains: input.searchQuery, mode: 'insensitive' },
           // });
         }
-        console.log({ where }, 'wherewherewherewhere');
 
-        if (input?.startDate) {
-          const startDate = new Date(input?.startDate);
+        if (input?.filters?.startDate) {
+          const startDate = new Date(input?.filters?.startDate);
           where.created_at = { gte: startDate };
         }
-        if (input?.endDate) {
-          const endDate = new Date(input?.endDate);
+        if (input?.filters?.endDate) {
+          const endDate = new Date(input?.filters?.endDate);
           where.created_at = { lte: endDate };
         }
 

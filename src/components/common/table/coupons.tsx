@@ -19,9 +19,6 @@ import {
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuSubContent,
   DropdownMenuTrigger,
 } from '@/ui/dropdown-menu';
 
@@ -50,6 +47,7 @@ import { CouponDialog } from '../modal/coupon';
 import { LoadingDialog } from '../modal/loadingModal';
 import { MoreHorizontal } from 'lucide-react';
 import Link from 'next/link';
+import { TableFilters } from './table_filters';
 
 export type Category = {
   id: number;
@@ -73,6 +71,8 @@ export default function CouponsDataTable() {
 
   // use states
   const [sorting, setSorting] = useState<SortingState>([]);
+  const [filterID, setFilterID] = useState({});
+
   const [filters, setFilters] = useState<getCustomerSchema>({
     first: 0,
     rows: 10,
@@ -95,7 +95,7 @@ export default function CouponsDataTable() {
 
   // handle modal
   const handleEnbled = (data: any, type: string) => {
-    console.log({data,type},"enable check")
+    console.log({ data, type }, 'enable check');
     if (!data?.is_approved) {
       setSelectedItem(data);
       setTitle('Coupon');
@@ -131,11 +131,11 @@ export default function CouponsDataTable() {
       },
     },
     {
-      accessorKey: 'coupon_code',
+      accessorKey: 'Coupon Code',
       header: 'Coupon Code',
       cell: ({ row }) => (
         <div className="w-24 capitalize text-ellipsis whitespace-nowrap ">
-          {row.getValue('coupon_code')}
+          {row?.original?.coupon_code}
         </div>
       ),
     },
@@ -150,7 +150,7 @@ export default function CouponsDataTable() {
       ),
     },
     {
-      accessorKey: 'is_percentage',
+      accessorKey: 'Type',
       header: 'Type',
       cell: ({ row }) => (
         <div className="capitalize text-ellipsis whitespace-nowrap ">
@@ -159,7 +159,7 @@ export default function CouponsDataTable() {
       ),
     },
     {
-      accessorKey: 'is_limited',
+      accessorKey: 'Limit',
       header: 'Limit',
       cell: ({ row }) => (
         <div className="capitalize text-ellipsis whitespace-nowrap ">
@@ -170,7 +170,7 @@ export default function CouponsDataTable() {
       ),
     },
     {
-      id: 'is_approved',
+      id: 'Enabled',
       header: 'Enabled',
 
       cell: ({ row }) => {
@@ -178,14 +178,19 @@ export default function CouponsDataTable() {
           <div>
             <Switch
               checked={row?.original?.is_enabled}
-              onCheckedChange={() => handleEnbled(row?.original,row?.original?.is_enabled? 'enabled':"disabled")}
+              onCheckedChange={() =>
+                handleEnbled(
+                  row?.original,
+                  row?.original?.is_enabled ? 'enabled' : 'disabled',
+                )
+              }
             />
           </div>
         );
       },
     },
     {
-      accessorKey: 'start_date',
+      accessorKey: 'Start Date',
       header: 'Start Date',
       cell: ({ row }) => (
         <div className="capitalize text-ellipsis whitespace-nowrap ">
@@ -194,7 +199,7 @@ export default function CouponsDataTable() {
       ),
     },
     {
-      accessorKey: 'end_date',
+      accessorKey: 'End Date',
       header: 'End Date',
       cell: ({ row }) => (
         <div className="capitalize text-ellipsis whitespace-nowrap ">
@@ -205,7 +210,7 @@ export default function CouponsDataTable() {
     {
       id: 'actions',
       enableHiding: false,
-      header:"Actions",
+      header: 'Actions',
       cell: ({ row }) => {
         return (
           <DropdownMenu>
@@ -250,6 +255,84 @@ export default function CouponsDataTable() {
     setFilters((prevFilters) => ({ ...prevFilters, first: page }));
   }
 
+  // FILTER OPTIONS
+  const roleOptions1 = [
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'Name',
+      filtername: 'searchQuery',
+      type: 'text',
+    },
+
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'Enabled',
+      filtername: 'is_enabled',
+      type: 'select',
+
+      filter: [
+        {
+          name: 'Yes',
+          value: true,
+        },
+        {
+          name: 'No',
+          value: false,
+        },
+      ],
+    },
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'Type',
+      filtername: 'is_percentage',
+      type: 'select',
+
+      filter: [
+        {
+          name: 'Fixed',
+          value: true,
+        },
+        {
+          name: 'Percentage',
+          value: false,
+        },
+      ],
+    },
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'Limit',
+      filtername: 'is_limit',
+      type: 'select',
+
+      filter: [
+        {
+          name: 'Limit',
+          value: true,
+        },
+        {
+          name: 'Unlimited',
+          value: false,
+        },
+      ],
+    },
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'Start Date',
+      filtername: 'startDate',
+      type: 'date',
+    },
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'End Date',
+      filtername: 'endDate',
+      type: 'date',
+    },
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'Clear Filter',
+      filtername: 'Clear',
+    },
+  ];
   return (
     <div className="w-full space-y-4">
       <div className="flex items-center justify-end gap-2">
@@ -279,6 +362,13 @@ export default function CouponsDataTable() {
               })}
           </DropdownMenuContent>
         </DropdownMenu>
+        <TableFilters
+          inputList={roleOptions1}
+          item_name={'Coupon'}
+          value={filterID}
+          setValue={setFilterID}
+          setFilters={setFilters}
+        />
       </div>
       <div className="rounded-md border border-border ">
         <ScrollArea className="w-full ">

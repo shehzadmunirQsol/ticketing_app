@@ -115,7 +115,7 @@ export default function CustomersDataTable() {
   // columns
   const columns: ColumnDef<Category>[] = [
     {
-      accessorKey: 'email',
+      accessorKey: 'Email',
       header: 'Email',
       cell: ({ row }) => {
         return (
@@ -137,16 +137,16 @@ export default function CustomersDataTable() {
       },
     },
     {
-      accessorKey: 'username',
+      accessorKey: 'User Name',
       header: 'User Name',
       cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap ">
-          {row.getValue('username')}
+        <div className=" text-ellipsis whitespace-nowrap ">
+          {row?.original?.username}
         </div>
       ),
     },
     {
-      accessorKey: 'first_name',
+      accessorKey: 'Name',
       header: 'Name',
       cell: ({ row }) => (
         <div className="capitalize text-ellipsis whitespace-nowrap ">
@@ -157,7 +157,7 @@ export default function CustomersDataTable() {
       ),
     },
     {
-      id: 'is_verified',
+      id: 'Verified Status',
       header: 'Verified Status',
 
       cell: ({ row }) => {
@@ -208,11 +208,11 @@ export default function CustomersDataTable() {
   const StatusOptions = [
     {
       name: 'Yes',
-      value: 1,
+      value: true,
     },
     {
       name: 'No',
-      value: 0,
+      value: false,
     },
   ];
   // FILTER OPTIONS
@@ -234,8 +234,14 @@ export default function CustomersDataTable() {
     },
     {
       Icon: 'fal fa-chevron-down',
-      text: 'Date',
-      filtername: 'created_at',
+      text: 'From Date',
+      filtername: 'startDate',
+      type: 'date',
+    },
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'To Date',
+      filtername: 'endDate',
       type: 'date',
     },
     {
@@ -279,6 +285,7 @@ export default function CustomersDataTable() {
           item_name={'Customers'}
           value={filterID}
           setValue={setFilterID}
+          setFilters={setFilters}
         />
       </div>
 
