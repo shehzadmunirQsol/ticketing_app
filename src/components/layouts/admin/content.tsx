@@ -177,7 +177,7 @@ const SIDEBAR_DATA = [
   },
   {
     key: '/admin/cms',
-    icon: <i className="fa-solid fa-chart-line p-4 rounded-full"></i>,
+    icon: <i className="fas fa-folder-open p-4 rounded-full"></i>,
     title: 'CMS',
   },
   {

@@ -18,7 +18,7 @@ function Footer() {
   const router = useRouter()
   return (
     <footer className="bg-background-footer h-full !z-50">
-      <div className="mx-auto relative w-full max-w-screen h-full">
+      <div className="mx-auto relative w-full max-w-screen h-full ">
         <div className=" absolute  p-1 w-1/2 z-20  h-full  ">
           <Glow className="absolute bottom-0 -left-16 z-20  p-2   w-1/2 h-1/3  " />
           {/* <div className="absolute bottom-0 -left-16 z-2  p-2  w-1/2 h-1/3  bg-teal-400 bg-opacity-30 rounded-full blur-3xl"></div> */}
@@ -32,10 +32,10 @@ function Footer() {
             />
           </div>
         </div>
-        <div className="relative z-30">
-          <div className="relative p-4 py-6 lg:py-8 lg:px-8">
+        <div className="relative z-30 ">
+          <div className="relative p-4 py-6 md:px-14 md:py-14">
             <div className="md:flex md:justify-between ">
-              <div className="mb-6 md:mb-0 flex flex-col gap-8 w-full">
+              <div className="mb-6 md:mb-0 flex flex-col gap-8 lg:w-2/3">
                 <div>
                   <Button variant="rounded-outline" className="z-30">
                     <div>
@@ -44,9 +44,10 @@ function Footer() {
                     </div>
                   </Button>
                 </div>
-                <div className="w-full lg:w-1/2 text-sm text-white opacity-70">
-                  © Copyright WINNAR 2023 Registered Company Number: 11320154,
-                  UAE
+                <div className="w-full  text-sm text-white opacity-70">
+                  <p>© Copyright WINNAR 2023</p>
+                  <p>Registered Company </p>
+                  <p>Number: 11320154, UAE</p>
                 </div>
                 <div className="w-full lg:w-1/3 text-sm text-white opacity-70">
                   <Image
@@ -57,7 +58,7 @@ function Footer() {
                   />
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-2  w-full">
+              <div className="grid grid-cols-1 gap-8 sm:gap-6 sm:grid-cols-2  w-full sm:w-1/3">
                 <div>
                   <ul className="text-gray-500 dark:text-gray-400 font-medium">
                     {[
@@ -100,7 +101,7 @@ function Footer() {
                   </ul>
                 </div>
                 <div className=" col-span-2 w-full ">
-                  <div className=" flex items-center justify-between  ">
+                  <div className=" flex items-center justify-between  gap-8 sm:gap-6">
                     <div className=" text-sm font-bold w-full">
                       CONNECT WITH US
                     </div>
@@ -109,7 +110,8 @@ function Footer() {
                       <Button
                         variant="outline"
                         size="icon_square"
-                        className=" rounded-md"
+                        
+                        className="p-1 rounded-md"
                         onClick={() => router.push("https://www.facebook.com/WinnarUAE")}
 
                       >
@@ -138,7 +140,7 @@ function Footer() {
             </div>
           </div>
 
-          <div className="flex h-32  w-full relative justify-end items-end px-8">
+          <div className="flex h-32  w-full relative justify-end items-end px-8 mt-8 ">
             <Image
               className="w-full h-full object-contain  z-40"
               src={Group16}
