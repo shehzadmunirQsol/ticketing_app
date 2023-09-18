@@ -135,7 +135,9 @@ export default function CustomersDataTable() {
       header: 'Name',
       cell: ({ row }) => (
         <div className="capitalize text-ellipsis whitespace-nowrap ">
-          {row?.original?.first_name + ' ' + row?.original?.last_name}
+          {(row?.original?.first_name ?? '') +
+            ' ' +
+            (row?.original?.last_name ?? '')}
         </div>
       ),
     },
@@ -158,7 +160,7 @@ export default function CustomersDataTable() {
 
     {
       accessorKey: 'Created At',
-      header: 'End Date',
+      header: 'Created At',
       cell: ({ row }) => (
         <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
           {displayDate(row?.original?.created_at)}

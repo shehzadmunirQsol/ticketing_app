@@ -40,7 +40,7 @@ const AccountDetails = () => {
     if (user) {
       form.setValue('email', user?.email);
       form.setValue('first_name', user?.first_name);
-      form.setValue('last_name', user?.last_name);
+      form.setValue('last_name', user?.last_name ?? '');
       form.setValue('dob', user?.dob);
     }
   }, [user]);
@@ -102,7 +102,7 @@ const AccountDetails = () => {
                       {...field}
                     />
                   </FormControl>
-                  <div className='relative pb-2'>
+                  <div className="relative pb-2">
                     <FormMessage />
                   </div>
                 </FormItem>
@@ -123,7 +123,7 @@ const AccountDetails = () => {
                       {...field}
                     />
                   </FormControl>
-                  <div className='relative pb-2'>
+                  <div className="relative pb-2">
                     <FormMessage />
                   </div>
                 </FormItem>
@@ -145,7 +145,7 @@ const AccountDetails = () => {
                       {...field}
                     />
                   </FormControl>
-                  <div className='relative pb-2'>
+                  <div className="relative pb-2">
                     <FormMessage />
                   </div>
                 </FormItem>
@@ -169,7 +169,7 @@ const AccountDetails = () => {
                       })}
                     />
                   </FormControl>
-                  <div className='relative pb-2'>
+                  <div className="relative pb-2">
                     <FormMessage />
                   </div>
                 </FormItem>
@@ -226,7 +226,6 @@ function PasswordChange({ email }: any) {
 
   // handle account detail
   async function onSubmitAccountPassword(values: any) {
-
     try {
       const payload: any = {
         email: email,
@@ -266,7 +265,7 @@ function PasswordChange({ email }: any) {
                       {...field}
                     />
                   </FormControl>
-                  <div className='relative pb-2'>
+                  <div className="relative pb-2">
                     <FormMessage />
                   </div>
                 </FormItem>
@@ -287,7 +286,7 @@ function PasswordChange({ email }: any) {
                       {...field}
                     />
                   </FormControl>
-                  <div className='relative pb-2'>
+                  <div className="relative pb-2">
                     <FormMessage />
                   </div>
                 </FormItem>
@@ -308,7 +307,7 @@ function PasswordChange({ email }: any) {
                       {...field}
                     />
                   </FormControl>
-                  <div className='relative pb-2'>
+                  <div className="relative pb-2">
                     <FormMessage />
                   </div>
                 </FormItem>
@@ -477,7 +476,7 @@ function DeleteAccount({ email }: any) {
                       {...field}
                     />
                   </FormControl>
-                  <div className='relative pb-2'>
+                  <div className="relative pb-2">
                     <FormMessage />
                   </div>
                 </FormItem>
