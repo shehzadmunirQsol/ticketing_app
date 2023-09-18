@@ -223,11 +223,10 @@ export const customerRouter = router({
             message: 'User Not Found',
           });
         }
+
+
         if (!user.is_approved) {
-
-
           const respCode = await generateOTP(4);
-
           const customer = await prisma.customer?.update({
             where: {
               id: user.id
@@ -247,7 +246,10 @@ export const customerRouter = router({
           };
           const mailResponse = await sendEmail(mailOptions);
 
-          return { status: false, message: 'Your Account is Not Verified', }
+            throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Your Account is Not Verified',
+          });
         }
 
         if (user?.is_disabled) {

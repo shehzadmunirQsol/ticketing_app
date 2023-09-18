@@ -163,7 +163,6 @@ export function OtpVerificationDailog(props: OtpVerificationDailogInterface) {
 
       const otpResult = await otpVerification.mutateAsync(result);
       console.log(otpResult, 'otpResult');
-      console.log(otpResult, 'otpResult');
     } catch (error: any) {
       toast({
         variant: 'destructive',
