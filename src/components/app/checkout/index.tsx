@@ -558,7 +558,7 @@ function Checkout() {
                   Your personal data will be used to process your order, support
                   your experience throughout this website, and for other
                   purposes described in our{' '}
-                  <span className="text-white"> <Link href="/cms/privacy-policy"> privacy policy </Link></span>.
+                  <span className="text-white"> <Link href="/privacy-policy"> privacy policy </Link></span>.
                 </p>
                 <div className="flex flex-row gap-2 justify-start   items-start w-full  md:w-[65%] lg:w-[85%]">
                   <input
