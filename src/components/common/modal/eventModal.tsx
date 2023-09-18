@@ -18,6 +18,7 @@ interface SelectCustomerInterface {
   customer_id: number;
   customer_name: string;
   event_name: string;
+  customer_email: string;
 }
 
 export function SelectWinnerDialog(props: SelectCustomerInterface) {
@@ -31,12 +32,15 @@ export function SelectWinnerDialog(props: SelectCustomerInterface) {
       const payload = {
         event_id: props?.event_id,
         customer_id: props?.customer_id,
+        customer_name: props?.customer_name,
+        event_name: props?.event_name,
+        customer_email: props?.customer_email,
       };
 
       await selectWinner.mutateAsync(payload);
       toast({
         variant: 'success',
-        title: 'Item removed successfully!',
+        title: 'Winner Selected successfully!',
       });
       router.replace('/admin/winners');
     } catch (error: any) {

@@ -58,6 +58,7 @@ const initialModalProps = {
   customer_id: 0,
   event_name: '',
   customer_name: '',
+  customer_email: '',
 };
 
 export default function OrdersDataTable() {
@@ -202,6 +203,7 @@ export default function OrdersDataTable() {
       event_id: params.event_id,
       event_name: params.event_name,
       customer_name: params.first_name,
+      customer_email: params.email,
       isModal: true,
     });
   }

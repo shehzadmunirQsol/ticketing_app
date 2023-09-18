@@ -68,9 +68,7 @@ export const cartRouter = router({
     .input(getCartItemsSchema)
     .query(async ({ input }) => {
       try {
-        const payload = {
-          is_deleted: false,
-        };
+        const payload = { is_deleted: false };
 
         const totalItemsPromise = prisma.cartItem.count({
           where: payload,

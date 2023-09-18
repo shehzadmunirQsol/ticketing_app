@@ -2,7 +2,7 @@ import { router, publicProcedure } from '../trpc';
 import { TRPCError } from '@trpc/server';
 import { prisma } from '~/server/prisma';
 import { getWinnersSchema, selectWinnerSchema } from '~/schema/winners';
-import { generateOTP, sendEmail } from '~/utils/helper';
+import { EMAIL_TEMPLATE_IDS, sendEmail } from '~/utils/helper';
 
 export const winnerRouter = router({
   get: publicProcedure.input(getWinnersSchema).query(async ({ input }) => {
@@ -10,6 +10,7 @@ export const winnerRouter = router({
       const winnersPromise = prisma.winner.findMany({
         skip: input.first * input.rows,
         take: input.rows,
+        orderBy: { created_at: 'desc' },
         select: {
           draw_date: true,
           is_cash_alt: true,
@@ -65,9 +66,12 @@ export const winnerRouter = router({
     .input(selectWinnerSchema)
     .mutation(async ({ input }) => {
       try {
+        const { customer_email, customer_name, event_name, ...payloadIds } =
+          input;
+
         const drawDate = new Date();
         const winnerPayload = {
-          ...input,
+          ...payloadIds,
           draw_date: drawDate,
           ticket_num: Math.floor(Math.random() * 99999),
           is_enabled: true,
@@ -82,6 +86,19 @@ export const winnerRouter = router({
         });
 
         await Promise.all([eventPromise, winnerPromise]);
+
+        const mailOptions = {
+          template_id: EMAIL_TEMPLATE_IDS.SELECT_WINNER,
+          from: 'no-reply@winnar.com',
+          to: customer_email,
+          subject: 'Winner Selected!',
+          params: {
+            first_name: customer_name,
+            event_name: event_name,
+          },
+        };
+
+        await sendEmail(mailOptions);
 
         return { message: 'Winner selected successfully!' };
       } catch (error: any) {

@@ -28,7 +28,7 @@ import {
   TableRow,
 } from '@/ui/table';
 import { trpc } from '~/utils/trpc';
-import { customEmailTruncateHandler } from '~/utils/helper';
+import { customEmailTruncateHandler, displayDate } from '~/utils/helper';
 import { getCustomerSchema } from '~/schema/customer';
 import {
   Tooltip,
@@ -135,7 +135,9 @@ export default function CustomersDataTable() {
       header: 'Name',
       cell: ({ row }) => (
         <div className="capitalize text-ellipsis whitespace-nowrap ">
-          {row?.original?.first_name + ' ' + row?.original?.last_name}
+          {(row?.original?.first_name ?? '') +
+            ' ' +
+            (row?.original?.last_name ?? '')}
         </div>
       ),
     },
@@ -157,19 +159,13 @@ export default function CustomersDataTable() {
     },
 
     {
-      id: 'is_approved',
-      header: 'Approved Status',
-
-      cell: ({ row }) => {
-        return (
-          <div>
-            <Switch
-              checked={row?.original?.is_approved}
-              onCheckedChange={() => handleEnbled(row?.original, 'enabled')}
-            />
-          </div>
-        );
-      },
+      accessorKey: 'Created At',
+      header: 'End Date',
+      cell: ({ row }) => (
+        <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
+          {displayDate(row?.original?.created_at)}
+        </div>
+      ),
     },
   ];
 

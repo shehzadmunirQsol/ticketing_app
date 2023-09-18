@@ -170,7 +170,10 @@ export default function CategoryForm() {
                     <FormControl>
                       <Input placeholder="Enter Category Name" {...field} />
                     </FormControl>
-                    <FormMessage />
+
+                    <div className="relative pb-2">
+                      <FormMessage />
+                    </div>
                   </FormItem>
                 )}
               />
@@ -185,7 +188,10 @@ export default function CategoryForm() {
                     <FormControl>
                       <Textarea placeholder="Enter Description..." {...field} />
                     </FormControl>
-                    <FormMessage />
+
+                    <div className="relative pb-2">
+                      <FormMessage />
+                    </div>
                   </FormItem>
                 )}
               />
@@ -204,7 +210,10 @@ export default function CategoryForm() {
                     <FormControl>
                       <Input placeholder="Enter Category Name" {...field} />
                     </FormControl>
-                    <FormMessage />
+
+                    <div className="relative pb-2">
+                      <FormMessage />
+                    </div>
                   </FormItem>
                 )}
               />
@@ -220,7 +229,10 @@ export default function CategoryForm() {
                     <FormControl>
                       <Textarea placeholder="...أدخل الوصف" {...field} />
                     </FormControl>
-                    <FormMessage />
+
+                    <div className="relative pb-2">
+                      <FormMessage />
+                    </div>
                   </FormItem>
                 )}
               />

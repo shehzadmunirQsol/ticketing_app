@@ -21,18 +21,29 @@ import Group17 from '~/public/assets/icons/Group17.png';
 import Image from 'next/image';
 import Glow from '~/components/common/glow';
 import { CouponModal } from './Coupon';
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
 import { CheckoutDialog } from '~/components/common/modal/checkout';
 import { CreateCheckoutSchema, createCheckoutSchema } from '~/schema/order';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { trpc } from '~/utils/trpc';
+import { useRouter } from 'next/router';
+import { LoadingDialog } from '~/components/common/modal/loadingModal';
+import { useToast } from '~/components/ui/use-toast';
+import { addCart } from '~/store/reducers/cart';
+import Link from 'next/link';
 
 function Checkout() {
   const { cart, totalAmount } = useSelector((state: RootState) => state.cart);
   const { user } = useSelector((state: RootState) => state.auth);
+  const router = useRouter();
+  const { toast } = useToast();
+  const dispatch = useDispatch();
 
   // Handle Coupon Dailog
+  const [loading, setLoading] = useState<boolean>(false);
+
   const [isModal, setIsModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState({});
   const [title, setTitle] = useState('Enter Payment Detail');
@@ -59,11 +70,76 @@ function Checkout() {
       state: user?.state,
     },
   });
+  const checkoutCreator = trpc.order.createCheckout.useMutation({
+    onSuccess: () => {
+      console.log('upload successfully');
+    },
+    onError(error: any) {
+      console.log({ error });
+    },
+  });
+  const getStatus = trpc.order.getStatus.useMutation({
+    onSuccess: () => {
+      console.log('upload successfully');
+    },
+    onError(error: any) {
+      console.log({ error });
+    },
+  });
+  useEffect(() => {
+    (async () => {
+      try {
+        const data = router?.query;
+        if (data?.id) {
+          setLoading(true);
+          const Resdata = await getStatus.mutateAsync({
+            checkout_id: data?.id as string,
+          });
+          if (Resdata?.status) {
+            setTimeout(() => {
+              router.push('/');
+              toast({
+                variant: 'success',
+                title: 'Order Successful! 🎉',
+              });
+              dispatch(
+                addCart({
+                  id: null,
+                  customer_id: null,
+                  isDiscount: false,
+                  discount: 0,
+                  isPercentage: false,
+                  cartItems: [],
+                }),
+              );
+            }, 3000);
+          }
+        }
+      } catch (e: any) {
+        console.log(e?.message, 'error');
+      }
+    })();
+  }, [router?.query]);
+  console.log('user?.total_customer_id', user?.total_customer_id);
 
   const onSubmitCheckout = async (values: any) => {
     try {
-      setIsCardModal(true);
-      setSelectedItem({ ...values });
+      const data = await checkoutCreator.mutateAsync({
+        values: {
+          ...values,
+          cart_id: cart?.id,
+          customer_id: user?.id,
+          total_id: user?.total_customer_id,
+        },
+      });
+      console.log(data?.checkout?.data?.id, 'get checkout id');
+      if (data?.checkout?.data) {
+        setIsCardModal(true);
+        setSelectedItem({
+          values: { ...values },
+          checkoutID: data?.checkout?.data?.id,
+        });
+      }
     } catch (err) {
       setIsCardModal(false);
     }
@@ -105,7 +181,9 @@ function Checkout() {
                             {...field}
                           />
                         </FormControl>
+                        <div className='relative pb-2'>
                         <FormMessage />
+                        </div>
                       </FormItem>
                     )}
                   />
@@ -124,7 +202,9 @@ function Checkout() {
                             {...field}
                           />
                         </FormControl>
+                        <div className='relative pb-2'>
                         <FormMessage />
+                        </div>
                       </FormItem>
                     )}
                   />
@@ -146,7 +226,9 @@ function Checkout() {
                             {...field}
                           />
                         </FormControl>
+                        <div className='relative pb-2'>
                         <FormMessage />
+                        </div>
                       </FormItem>
                     )}
                   />
@@ -160,11 +242,11 @@ function Checkout() {
                             type="text"
                             placeholder="Apartment, suit, unit etc. (Optional) "
                             {...field}
-
-
                           />
                         </FormControl>
+                        <div className='relative pb-2'>
                         <FormMessage />
+                        </div>
                       </FormItem>
                     )}
                   />
@@ -205,7 +287,9 @@ function Checkout() {
                             </SelectContent>
                           </Select>
 
-                          <FormMessage />
+                          <div className='relative pb-2'>
+                        <FormMessage />
+                        </div>
                         </FormItem>
                       )}
                     />
@@ -243,7 +327,9 @@ function Checkout() {
                             </SelectContent>
                           </Select>
 
-                          <FormMessage />
+                          <div className='relative pb-2'>
+                        <FormMessage />
+                        </div>
                         </FormItem>
                       )}
                     />
@@ -265,7 +351,9 @@ function Checkout() {
                             {...field}
                           />
                         </FormControl>
+                        <div className='relative pb-2'>
                         <FormMessage />
+                        </div>
                       </FormItem>
                     )}
                   />
@@ -284,7 +372,9 @@ function Checkout() {
                             {...field}
                           />
                         </FormControl>
+                        <div className='relative pb-2'>
                         <FormMessage />
+                        </div>
                       </FormItem>
                     )}
                   />
@@ -304,7 +394,9 @@ function Checkout() {
                           {...field}
                         />
                       </FormControl>
-                      <FormMessage />
+                      <div className='relative pb-2'>
+                        <FormMessage />
+                        </div>
                     </FormItem>
                   )}
                 />
@@ -342,10 +434,11 @@ function Checkout() {
                               </SelectContent>
                             </Select>
 
-                            <FormMessage />
+                            <div className='relative pb-2'>
+                        <FormMessage />
+                        </div>
                           </FormItem>
                         )}
-
                       />
                       <FormField
                         control={form.control}
@@ -363,7 +456,10 @@ function Checkout() {
                                 {...field}
                               />
                             </FormControl>
-                            <FormMessage />
+                            
+                            <div className='relative pb-2'>
+                        <FormMessage />
+                        </div>
                           </FormItem>
                         )}
                       />
@@ -382,11 +478,13 @@ function Checkout() {
                             <Input
                               type="date"
                               placeholder="Enter your Date of Birth"
-                              {...form.register('dob', { valueAsDate: true, required:"required" })}
-
+                              {...form.register('dob', {
+                                valueAsDate: true,
+                                required: 'required',
+                              })}
                             />
                           </FormControl>
-                          <FormMessage  />
+                          <FormMessage />
                         </FormItem>
                       )}
                     />
@@ -413,23 +511,23 @@ function Checkout() {
                 <div className=" max-h-60 overflow-x-auto space-y-8">
                   {cart?.cartItems?.length
                     ? cart?.cartItems?.map((item) => {
-                      return (
-                        <div
-                          className="flex flex-row justify-between "
-                          key={item.id}
-                        >
-                          <p className="lg:text-2xl md:lg:text-xl   w-[60%]">
-                            {item?.Event?.EventDescription[0]?.name}
-                          </p>
-                          <p className="font-black text-lg lg:text-xl ">
-                            AED{' '}
-                            {(item?.Event?.price * item?.quantity)?.toFixed(
-                              2,
-                            )}
-                          </p>
-                        </div>
-                      );
-                    })
+                        return (
+                          <div
+                            className="flex flex-row justify-between "
+                            key={item.id}
+                          >
+                            <p className="lg:text-2xl md:lg:text-xl   w-[60%]">
+                              {item?.Event?.EventDescription[0]?.name}
+                            </p>
+                            <p className="font-black text-lg lg:text-xl ">
+                              AED{' '}
+                              {(item?.Event?.price * item?.quantity)?.toFixed(
+                                2,
+                              )}
+                            </p>
+                          </div>
+                        );
+                      })
                     : null}
                 </div>
                 {cart?.isDiscount ? (
@@ -460,15 +558,19 @@ function Checkout() {
                   Your personal data will be used to process your order, support
                   your experience throughout this website, and for other
                   purposes described in our{' '}
-                  <span className="text-white"> privacy policy</span>.
+                  <span className="text-white"> <Link href="/cms/privacy-policy"> privacy policy </Link></span>.
                 </p>
                 <div className="flex flex-row gap-2 justify-start   items-start w-full  md:w-[65%] lg:w-[85%]">
-                  <input type="checkbox" className="accent-white  my-1" required/>
+                  <input
+                    type="checkbox"
+                    className="accent-white  my-1"
+                    required
+                  />
 
                   <p className="text-sm text-cardGray ">
                     I’m 18 years old or over and i have read and agree to the
                     website
-                    <span className="text-white"> Terms & Conditions</span>.
+                    <span className="text-white"><Link href="/cms/terms-condition"> Terms & Conditions </Link></span>.
                   </p>
                 </div>
               </div>
@@ -494,6 +596,8 @@ function Checkout() {
           </div>
         </form>
       </Form>
+      <LoadingDialog open={loading} text={'Order processing...'} />
+
       <CouponModal
         isModal={isModal}
         setIsModal={setIsModal}

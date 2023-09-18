@@ -97,15 +97,16 @@ export function BannerForm() {
     page: 0,
   };
   if (index) initialOrderFilters.banner_id = +index;
-
+  console.log(initialOrderFilters.banner_id, 'initialOrderFilters.banner_id');
   const {
     data: BannerApiData,
     isFetched,
     isLoading,
+    isFetching,
   } = trpc.settings.get_banner.useQuery(initialOrderFilters, {
     refetchOnWindowFocus: false,
 
-    enabled: index ? true : false,
+    enabled: initialOrderFilters.banner_id !== undefined ? true : false,
   });
   const formValidateData =
     BannerApiData !== undefined && index
@@ -288,6 +289,7 @@ export function BannerForm() {
       throw new Error('Please Select Image');
     }
   }
+  console.log({ isFetching });
   return (
     <Form {...form}>
       <form
@@ -314,7 +316,9 @@ export function BannerForm() {
                   <FormControl>
                     <Input type="text" placeholder="Enter LInk" {...field} />
                   </FormControl>
-                  <FormMessage />
+                  <div className="relative pb-2">
+                    <FormMessage />
+                  </div>
                 </FormItem>
               )}
             />
@@ -375,7 +379,9 @@ export function BannerForm() {
                     <FormControl>
                       <Input type="text" placeholder="Enter Modal" {...field} />
                     </FormControl>
-                    <FormMessage />
+                    <div className="relative pb-2">
+                      <FormMessage />
+                    </div>
                   </FormItem>
                 )}
               />
@@ -388,7 +394,9 @@ export function BannerForm() {
                     <FormControl>
                       <Input type="text" placeholder="Enter Title" {...field} />
                     </FormControl>
-                    <FormMessage />
+                    <div className="relative pb-2">
+                      <FormMessage />
+                    </div>
                   </FormItem>
                 )}
               />
@@ -401,7 +409,9 @@ export function BannerForm() {
                     <FormControl>
                       <Input type="text" placeholder="Enter Price" {...field} />
                     </FormControl>
-                    <FormMessage />
+                    <div className="relative pb-2">
+                      <FormMessage />
+                    </div>
                   </FormItem>
                 )}
               />
@@ -418,7 +428,10 @@ export function BannerForm() {
                         {...field}
                       />
                     </FormControl>
-                    <FormMessage />
+
+                    <div className="relative pb-2">
+                      <FormMessage />
+                    </div>
                   </FormItem>
                 )}
               />
@@ -431,7 +444,10 @@ export function BannerForm() {
                     <FormControl>
                       <Input type="text" placeholder="Enter Date" {...field} />
                     </FormControl>
-                    <FormMessage />
+
+                    <div className="relative pb-2">
+                      <FormMessage />
+                    </div>
                   </FormItem>
                 )}
               />
@@ -451,7 +467,10 @@ export function BannerForm() {
                           {...field}
                         />
                       </FormControl>
-                      <FormMessage />
+
+                      <div className="relative pb-2">
+                        <FormMessage />
+                      </div>
                     </FormItem>
                   )}
                 />
@@ -468,7 +487,10 @@ export function BannerForm() {
                           {...field}
                         />
                       </FormControl>
-                      <FormMessage />
+
+                      <div className="relative pb-2">
+                        <FormMessage />
+                      </div>
                     </FormItem>
                   )}
                 />
@@ -481,7 +503,10 @@ export function BannerForm() {
                       <FormControl>
                         <Input type="text" placeholder="مَشرُوع" {...field} />
                       </FormControl>
-                      <FormMessage />
+
+                      <div className="relative pb-2">
+                        <FormMessage />
+                      </div>
                     </FormItem>
                   )}
                 />
@@ -498,7 +523,10 @@ export function BannerForm() {
                           {...field}
                         />
                       </FormControl>
-                      <FormMessage />
+
+                      <div className="relative pb-2">
+                        <FormMessage />
+                      </div>
                     </FormItem>
                   )}
                 />
@@ -515,7 +543,10 @@ export function BannerForm() {
                           {...field}
                         />
                       </FormControl>
-                      <FormMessage />
+
+                      <div className="relative pb-2">
+                        <FormMessage />
+                      </div>
                     </FormItem>
                   )}
                 />
@@ -530,7 +561,10 @@ export function BannerForm() {
           </Button>
         </div>
       </form>
-      <LoadingDialog open={isSubmitting || isLoading} text={'Saving data...'} />
+      <LoadingDialog
+        open={isSubmitting || isFetching}
+        text={'Saving data...'}
+      />
     </Form>
   );
 }

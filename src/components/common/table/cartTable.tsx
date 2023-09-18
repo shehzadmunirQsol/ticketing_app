@@ -94,7 +94,7 @@ export default function OrdersDataTable() {
       accessorKey: 'Customer Name',
       header: 'Customer Name',
       cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap ">
+        <div className="w-28 capitalize text-ellipsis whitespace-nowrap ">
           {row?.original?.Cart?.Customer.first_name}
         </div>
       ),
@@ -117,7 +117,6 @@ export default function OrdersDataTable() {
         </div>
       ),
     },
-
     {
       accessorKey: 'Quantity',
       header: 'Quantity',

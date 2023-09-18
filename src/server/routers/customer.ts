@@ -66,12 +66,12 @@ export const customerRouter = router({
       if (input.is_approved) {
         const mailOptions = {
           template_id: 10,
-          from: "no-reply@winnar.com",
-          subject: "Thank you for sigining up for Winnar",
+          from: 'no-reply@winnar.com',
+          subject: 'Thank you for sigining up for Winnar',
           to: customer.email,
           params: {
             first_name: customer?.first_name,
-          }
+          },
         };
 
         const mailResponse = await sendEmail(mailOptions);
@@ -99,7 +99,7 @@ export const customerRouter = router({
         });
 
         const categoryPromise = prisma.customer.findMany({
-          orderBy: { created_at: 'asc' },
+          orderBy: { created_at: 'desc' },
           skip: input.first * input.rows,
           take: input.rows,
           where: where,
@@ -213,7 +213,6 @@ export const customerRouter = router({
     .input(loginCustomerSchema)
     .mutation(async ({ ctx, input }) => {
       try {
-
         const validity = isValidEmail(input.user)
           ? { email: input.user }
           : { username: input.user };
@@ -231,7 +230,7 @@ export const customerRouter = router({
         if (!user.is_approved) {
           throw new TRPCError({
             code: 'NOT_FOUND',
-            message: 'Please Wait for Admin Verification',
+            message: 'Your Email is Not Verified',
           });
         }
 
@@ -395,6 +394,14 @@ export const customerRouter = router({
           where: { otp: otpCode },
         });
         console.log(user, 'user HJDJDHDDN');
+        if(!user)
+        {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Invalid Otp',
+          });
+
+        }
 
         if (user.otp !== otpCode) {
           throw new TRPCError({
@@ -409,6 +416,7 @@ export const customerRouter = router({
             },
             data: {
               is_verified: true,
+              is_approved: true,
               otp: '',
             },
           });

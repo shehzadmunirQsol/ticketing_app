@@ -177,6 +177,11 @@ const SIDEBAR_DATA = [
     title: 'Cart',
   },
   {
+    key: '/admin/cms',
+    icon: <i className="fas fa-folder-open p-4 rounded-full"></i>,
+    title: 'CMS',
+  },
+  {
     key: '/admin/orders',
     icon: <i className="fa-solid fa-chart-line p-4 rounded-full"></i>,
     title: 'Orders',
@@ -186,16 +191,6 @@ const SIDEBAR_DATA = [
     icon: <i className="fa-solid fa-chart-line p-4 rounded-full"></i>,
     title: 'Winners',
   },
-  {
-    key: '/admin/cms',
-    icon: <i className="fa-solid fa-chart-line p-4 rounded-full"></i>,
-    title: 'CMS',
-  },
-  // {
-  //   key: '/admin/subscriptions',
-  //   icon: <i className="fa-solid fa-money-check-dollar p-4 rounded-full"></i>,
-  //   title: 'Subscriptions',
-  // },
 
   {
     key: '/settings',
