@@ -160,7 +160,7 @@ export default function CustomersDataTable() {
 
     {
       accessorKey: 'Created At',
-      header: 'End Date',
+      header: 'Created At',
       cell: ({ row }) => (
         <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
           {displayDate(row?.original?.created_at)}
