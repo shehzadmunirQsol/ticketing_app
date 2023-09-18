@@ -16,7 +16,7 @@
   }
 
   :root {
-    --background: 206, 37%, 4%, 1;
+    --background: 206, 37%, 4%, 100%;
     --background-footer: 206, 18%, 8%, 1;
     --background-card: 206, 18%, 8%, 1;
     --input-card: 170, 4%, 8%, 1;
