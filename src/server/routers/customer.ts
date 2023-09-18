@@ -227,9 +227,6 @@ export const customerRouter = router({
             },
           };
           const mailResponse = await sendEmail(mailOptions);
-          console.log(mailResponse, 'mailResponse');
-
-          console.log(customer, 'user');
           return customer;
         }
       } catch (error: any) {
@@ -247,11 +244,10 @@ export const customerRouter = router({
         const validity = isValidEmail(input.user)
           ? { email: input.user }
           : { username: input.user };
-        console.log(validity, 'validity');
         const user = await prisma.customer.findFirst({
           where: validity,
         });
-        console.log('user found: ', user);
+
         if (!user || user?.is_deleted) {
           throw new TRPCError({
             code: 'NOT_FOUND',
@@ -259,6 +255,27 @@ export const customerRouter = router({
           });
         }
         if (!user.is_approved) {
+          const respCode = await generateOTP(4);
+
+          const customer = await prisma.customer?.update({
+            where: {
+              id: user.id,
+            },
+            data: { otp: respCode },
+          });
+
+          const mailOptions: any = {
+            template_id: 2,
+            from: 'no-reply@winnar.com',
+            to: user.email,
+            subject: 'Email Verification OTP CODE',
+            params: {
+              otp: respCode,
+              first_name: user?.first_name,
+            },
+          };
+          const mailResponse = await sendEmail(mailOptions);
+
           throw new TRPCError({
             code: 'NOT_FOUND',
             message: 'Your Email is Not Verified',
@@ -268,8 +285,7 @@ export const customerRouter = router({
         if (user?.is_disabled) {
           throw new TRPCError({
             code: 'NOT_FOUND',
-            message:
-              'Your Account is Disabled Kindly Contact From Admin Thankyou!',
+            message: 'Your Account is Disabled Kindly Contact From Admin',
           });
         }
         const checkPass = await isSamePass(input.password, user?.password);
@@ -418,13 +434,17 @@ export const customerRouter = router({
     .input(verificationOtpCustomerSchema)
     .mutation(async ({ ctx, input }) => {
       try {
-        console.log(input, 'SJAHHSJSHJA');
         const otpCode = `${input.otp_1}${input.otp_2}${input.otp_3}${input.otp_4}`;
-        console.log(otpCode, input.email, 'HJDJDHDDN');
-        const user: any = await prisma.customer.findFirst({
-          where: { otp: otpCode },
+
+        console.log(otpCode, input.emailOrUser, 'HJDJDHDDN');
+
+        const validity = isValidEmail(input.emailOrUser)
+          ? { email: input.emailOrUser }
+          : { username: input.emailOrUser };
+        const user = await prisma.customer.findFirst({
+          where: validity,
         });
-        console.log(user, 'user HJDJDHDDN');
+
         if (!user) {
           throw new TRPCError({
             code: 'NOT_FOUND',
