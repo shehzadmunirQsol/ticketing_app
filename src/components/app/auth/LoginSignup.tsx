@@ -390,7 +390,7 @@ export default function LoginSignup() {
                   <p className="text-lightColor text-gray-400 font-extralight text-xs w-full lg:w-96  md:w-96">
                     Your personal data will be used to process your order,
                     support your experience throughout this website, and for
-                    other purposes described in our privacy policy.
+                    other purposes described in our <span className='text-white underline'> <Link href="/privacy-policy "> privacy policy. </Link></span>
                   </p>
                   <Button
                     className="  lg:w-52 md:w-52 w-full     text-black font-sans font-[900]   text-xl tracking-[-1px]"
