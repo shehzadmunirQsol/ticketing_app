@@ -40,6 +40,18 @@ import { Switch } from '~/components/ui/switch';
 import { CustomerDialog } from '../modal/customers';
 import { useToast } from '~/components/ui/use-toast';
 import { LoadingDialog } from '../modal/loadingModal';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '~/components/ui/accordion';
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from '~/components/ui/collapsible';
+import { TableFilters } from './table_filters';
 
 export type Category = {
   email: string;
@@ -60,6 +72,8 @@ export default function CustomersDataTable() {
 
   // use states
   const [sorting, setSorting] = useState<SortingState>([]);
+  const [filterID, setFilterID] = useState({});
+
   const [filters, setFilters] = useState<getCustomerSchema>({
     first: 0,
     rows: 10,
@@ -190,6 +204,45 @@ export default function CustomersDataTable() {
     if (page < 0) return;
     setFilters((prevFilters) => ({ ...prevFilters, first: page }));
   }
+  const StatusOptions = [
+    {
+      name: 'Yes',
+      value: 1,
+    },
+    {
+      name: 'No',
+      value: 0,
+    },
+  ];
+  // FILTER OPTIONS
+  const roleOptions1 = [
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'Name',
+      filtername: 'name',
+      type: 'text',
+    },
+
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'Verified',
+      filtername: 'is_verified',
+      type: 'select',
+
+      filter: StatusOptions,
+    },
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'Date',
+      filtername: 'created_at',
+      type: 'date',
+    },
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'Clear Filter',
+      filtername: 'Clear',
+    },
+  ];
 
   return (
     <div className="w-full space-y-4">
@@ -220,7 +273,14 @@ export default function CustomersDataTable() {
               })}
           </DropdownMenuContent>
         </DropdownMenu>
+        <TableFilters
+          inputList={roleOptions1}
+          item_name={'Customers'}
+          value={filterID}
+          setValue={setFilterID}
+        />
       </div>
+
       <div className="rounded-md border border-border">
         <ScrollArea className="w-full">
           <ScrollBar orientation="horizontal"></ScrollBar>

@@ -24,7 +24,7 @@ export const signupCustomerSchema = z.object({
       message: 'Password must not exceed 30 characters',
     }),
 
-    firstname: z
+  firstname: z
     .string({ required_error: 'Please enter your firstname' })
     .min(2, {
       message: 'firstname must be at least 2 characters',
@@ -75,6 +75,7 @@ export const getCustomerSchema = z.object({
   searchQuery: z.string().optional(),
   first: z.number(),
   rows: z.number(),
+  filter: z.object({}).optional(),
 });
 export const updateCustomerSchema = z.object({
   id: z.number(),

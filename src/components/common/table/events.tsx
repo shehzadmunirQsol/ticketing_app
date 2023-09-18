@@ -140,7 +140,7 @@ export default function EventsDataTable() {
     },
     {
       accessorKey: 'user_ticket_limit',
-      header: 'Per User Purchased',
+      header: 'Per User Limit',
       cell: ({ row }) => (
         <p className="w-32 text-center text-ellipsis whitespace-nowrap overflow-hidden">
           {row?.original?.user_ticket_limit}
@@ -170,7 +170,7 @@ export default function EventsDataTable() {
     {
       id: 'actions',
       enableHiding: false,
-      header:"Actions",
+      header: 'Actions',
       cell: ({ row }) => {
         return (
           <DropdownMenu>
@@ -181,7 +181,6 @@ export default function EventsDataTable() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              
               <Link href={`/admin/events/edit/${row?.original?.id}`}>
                 <DropdownMenuItem>Edit Event</DropdownMenuItem>
               </Link>

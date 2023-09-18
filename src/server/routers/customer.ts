@@ -394,13 +394,11 @@ export const customerRouter = router({
           where: { otp: otpCode },
         });
         console.log(user, 'user HJDJDHDDN');
-        if(!user)
-        {
+        if (!user) {
           throw new TRPCError({
             code: 'NOT_FOUND',
             message: 'Invalid Otp',
           });
-
         }
 
         if (user.otp !== otpCode) {
