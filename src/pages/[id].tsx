@@ -331,7 +331,7 @@ const faqContent = ` <section>
 <p class="text-base mt-4 text-grayColor">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold">&lsquo;My Account&rsquo;</span> and in your email confirmation.</p>
 </div>
 
-<div class="text-3xl group-hover:rotate-180 transition duration-500 ml-auto"><svg class="text-white group-hover:text-primary" fill="none" height="15" viewbox="0 0 24 15" width="24" xmlns="http://www.w3.org/2000/svg"> <path d="M2.82 0.159912L12 9.33991L21.18 0.159912L24 2.99991L12 14.9999L0 2.99991L2.82 0.159912Z" fill="currentColor" id="Vector"></path> </svg></div>
+<div class="text-3xl group-hover:rotate-180 transition duration-200 ml-auto"><svg class="text-white group-hover:text-primary" fill="none" height="15" viewbox="0 0 24 15" width="24" xmlns="http://www.w3.org/2000/svg"> <path d="M2.82 0.159912L12 9.33991L21.18 0.159912L24 2.99991L12 14.9999L0 2.99991L2.82 0.159912Z" fill="currentColor" id="Vector"></path> </svg></div>
 </div>
 </div>
 
@@ -343,7 +343,7 @@ const faqContent = ` <section>
 <p class="text-base mt-4 text-grayColor">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold">&lsquo;My Account&rsquo;</span> and in your email confirmation.</p>
 </div>
 
-<div class="text-3xl group-hover:rotate-180 transition duration-500 ml-auto"><svg class="text-white group-hover:text-primary" fill="none" height="15" viewbox="0 0 24 15" width="24" xmlns="http://www.w3.org/2000/svg"> <path d="M2.82 0.159912L12 9.33991L21.18 0.159912L24 2.99991L12 14.9999L0 2.99991L2.82 0.159912Z" fill="currentColor" id="Vector"></path> </svg></div>
+<div class="text-3xl group-hover:rotate-180 transition duration-200 ml-auto"><svg class="text-white group-hover:text-primary" fill="none" height="15" viewbox="0 0 24 15" width="24" xmlns="http://www.w3.org/2000/svg"> <path d="M2.82 0.159912L12 9.33991L21.18 0.159912L24 2.99991L12 14.9999L0 2.99991L2.82 0.159912Z" fill="currentColor" id="Vector"></path> </svg></div>
 </div>
 </div>
 
@@ -355,7 +355,7 @@ const faqContent = ` <section>
 <p class="text-base mt-4 text-grayColor">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold">&lsquo;My Account&rsquo;</span> and in your email confirmation.</p>
 </div>
 
-<div class="text-3xl group-hover:rotate-180 transition duration-500 ml-auto"><svg class="text-white group-hover:text-primary" fill="none" height="15" viewbox="0 0 24 15" width="24" xmlns="http://www.w3.org/2000/svg"> <path d="M2.82 0.159912L12 9.33991L21.18 0.159912L24 2.99991L12 14.9999L0 2.99991L2.82 0.159912Z" fill="currentColor" id="Vector"></path> </svg></div>
+<div class="text-3xl group-hover:rotate-180 transition duration-200 ml-auto"><svg class="text-white group-hover:text-primary" fill="none" height="15" viewbox="0 0 24 15" width="24" xmlns="http://www.w3.org/2000/svg"> <path d="M2.82 0.159912L12 9.33991L21.18 0.159912L24 2.99991L12 14.9999L0 2.99991L2.82 0.159912Z" fill="currentColor" id="Vector"></path> </svg></div>
 </div>
 </div>
 
@@ -369,7 +369,7 @@ const faqContent = ` <section>
 <p class="text-base mt-4 text-grayColor">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold">&lsquo;My Account&rsquo;</span> and in your email confirmation.</p>
 </div>
 
-<div class="text-3xl group-hover:rotate-180 transition duration-500 ml-auto"><svg class="text-white group-hover:text-primary" fill="none" height="15" viewbox="0 0 24 15" width="24" xmlns="http://www.w3.org/2000/svg"> <path d="M2.82 0.159912L12 9.33991L21.18 0.159912L24 2.99991L12 14.9999L0 2.99991L2.82 0.159912Z" fill="currentColor" id="Vector"></path> </svg></div>
+<div class="text-3xl group-hover:rotate-180 transition duration-200 ml-auto"><svg class="text-white group-hover:text-primary" fill="none" height="15" viewbox="0 0 24 15" width="24" xmlns="http://www.w3.org/2000/svg"> <path d="M2.82 0.159912L12 9.33991L21.18 0.159912L24 2.99991L12 14.9999L0 2.99991L2.82 0.159912Z" fill="currentColor" id="Vector"></path> </svg></div>
 </div>
 </div>
 
@@ -381,7 +381,7 @@ const faqContent = ` <section>
 <p class="text-base mt-4 text-grayColor">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold">&lsquo;My Account&rsquo;</span> and in your email confirmation.</p>
 </div>
 
-<div class="text-3xl group-hover:rotate-180 transition duration-500 ml-auto"><svg class="text-white group-hover:text-primary" fill="none" height="15" viewbox="0 0 24 15" width="24" xmlns="http://www.w3.org/2000/svg"> <path d="M2.82 0.159912L12 9.33991L21.18 0.159912L24 2.99991L12 14.9999L0 2.99991L2.82 0.159912Z" fill="currentColor" id="Vector"></path> </svg></div>
+<div class="text-3xl group-hover:rotate-180 transition duration-200 ml-auto"><svg class="text-white group-hover:text-primary" fill="none" height="15" viewbox="0 0 24 15" width="24" xmlns="http://www.w3.org/2000/svg"> <path d="M2.82 0.159912L12 9.33991L21.18 0.159912L24 2.99991L12 14.9999L0 2.99991L2.82 0.159912Z" fill="currentColor" id="Vector"></path> </svg></div>
 </div>
 </div>
 
@@ -393,7 +393,7 @@ const faqContent = ` <section>
 <p class="text-base mt-4 text-grayColor">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold">&lsquo;My Account&rsquo;</span> and in your email confirmation.</p>
 </div>
 
-<div class="text-3xl group-hover:rotate-180 transition duration-500 ml-auto"><svg class="text-white group-hover:text-primary" fill="none" height="15" viewbox="0 0 24 15" width="24" xmlns="http://www.w3.org/2000/svg"> <path d="M2.82 0.159912L12 9.33991L21.18 0.159912L24 2.99991L12 14.9999L0 2.99991L2.82 0.159912Z" fill="currentColor" id="Vector"></path> </svg></div>
+<div class="text-3xl group-hover:rotate-180 transition duration-200 ml-auto"><svg class="text-white group-hover:text-primary" fill="none" height="15" viewbox="0 0 24 15" width="24" xmlns="http://www.w3.org/2000/svg"> <path d="M2.82 0.159912L12 9.33991L21.18 0.159912L24 2.99991L12 14.9999L0 2.99991L2.82 0.159912Z" fill="currentColor" id="Vector"></path> </svg></div>
 </div>
 </div>
 
@@ -405,7 +405,7 @@ const faqContent = ` <section>
 <p class="text-base mt-4 text-grayColor">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold">&lsquo;My Account&rsquo;</span> and in your email confirmation.</p>
 </div>
 
-<div class="text-3xl group-hover:rotate-180 transition duration-500 ml-auto"><svg class="text-white group-hover:text-primary" fill="none" height="15" viewbox="0 0 24 15" width="24" xmlns="http://www.w3.org/2000/svg"> <path d="M2.82 0.159912L12 9.33991L21.18 0.159912L24 2.99991L12 14.9999L0 2.99991L2.82 0.159912Z" fill="currentColor" id="Vector"></path> </svg></div>
+<div class="text-3xl group-hover:rotate-180 transition duration-200 ml-auto"><svg class="text-white group-hover:text-primary" fill="none" height="15" viewbox="0 0 24 15" width="24" xmlns="http://www.w3.org/2000/svg"> <path d="M2.82 0.159912L12 9.33991L21.18 0.159912L24 2.99991L12 14.9999L0 2.99991L2.82 0.159912Z" fill="currentColor" id="Vector"></path> </svg></div>
 </div>
 </div>
 
@@ -417,7 +417,7 @@ const faqContent = ` <section>
 <p class="text-base mt-4 text-grayColor">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold">&lsquo;My Account&rsquo;</span> and in your email confirmation.</p>
 </div>
 
-<div class="text-3xl group-hover:rotate-180 transition duration-500 ml-auto"><svg class="text-white group-hover:text-primary" fill="none" height="15" viewbox="0 0 24 15" width="24" xmlns="http://www.w3.org/2000/svg"> <path d="M2.82 0.159912L12 9.33991L21.18 0.159912L24 2.99991L12 14.9999L0 2.99991L2.82 0.159912Z" fill="currentColor" id="Vector"></path> </svg></div>
+<div class="text-3xl group-hover:rotate-180 transition duration-200 ml-auto"><svg class="text-white group-hover:text-primary" fill="none" height="15" viewbox="0 0 24 15" width="24" xmlns="http://www.w3.org/2000/svg"> <path d="M2.82 0.159912L12 9.33991L21.18 0.159912L24 2.99991L12 14.9999L0 2.99991L2.82 0.159912Z" fill="currentColor" id="Vector"></path> </svg></div>
 </div>
 </div>
 
@@ -430,7 +430,7 @@ const faqContent = ` <section>
 <p class="text-base mt-4 text-grayColor">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold">&lsquo;My Account&rsquo;</span> and in your email confirmation.</p>
 </div>
 
-<div class="text-3xl group-hover:rotate-180 transition duration-500 ml-auto"><svg class="text-white group-hover:text-primary" fill="none" height="15" viewbox="0 0 24 15" width="24" xmlns="http://www.w3.org/2000/svg"> <path d="M2.82 0.159912L12 9.33991L21.18 0.159912L24 2.99991L12 14.9999L0 2.99991L2.82 0.159912Z" fill="currentColor" id="Vector"></path> </svg></div>
+<div class="text-3xl group-hover:rotate-180 transition duration-200 ml-auto"><svg class="text-white group-hover:text-primary" fill="none" height="15" viewbox="0 0 24 15" width="24" xmlns="http://www.w3.org/2000/svg"> <path d="M2.82 0.159912L12 9.33991L21.18 0.159912L24 2.99991L12 14.9999L0 2.99991L2.82 0.159912Z" fill="currentColor" id="Vector"></path> </svg></div>
 </div>
 </div>
 
@@ -442,7 +442,7 @@ const faqContent = ` <section>
 <p class="text-base mt-4 text-grayColor">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold">&lsquo;My Account&rsquo;</span> and in your email confirmation.</p>
 </div>
 
-<div class="text-3xl group-hover:rotate-180 transition duration-500 ml-auto"><svg class="text-white group-hover:text-primary" fill="none" height="15" viewbox="0 0 24 15" width="24" xmlns="http://www.w3.org/2000/svg"> <path d="M2.82 0.159912L12 9.33991L21.18 0.159912L24 2.99991L12 14.9999L0 2.99991L2.82 0.159912Z" fill="currentColor" id="Vector"></path> </svg></div>
+<div class="text-3xl group-hover:rotate-180 transition duration-200 ml-auto"><svg class="text-white group-hover:text-primary" fill="none" height="15" viewbox="0 0 24 15" width="24" xmlns="http://www.w3.org/2000/svg"> <path d="M2.82 0.159912L12 9.33991L21.18 0.159912L24 2.99991L12 14.9999L0 2.99991L2.82 0.159912Z" fill="currentColor" id="Vector"></path> </svg></div>
 </div>
 </div>
 
@@ -454,7 +454,7 @@ const faqContent = ` <section>
 <p class="text-base mt-4 text-grayColor">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold">&lsquo;My Account&rsquo;</span> and in your email confirmation.</p>
 </div>
 
-<div class="text-3xl group-hover:rotate-180 transition duration-500 ml-auto"><svg class="text-white group-hover:text-primary" fill="none" height="15" viewbox="0 0 24 15" width="24" xmlns="http://www.w3.org/2000/svg"> <path d="M2.82 0.159912L12 9.33991L21.18 0.159912L24 2.99991L12 14.9999L0 2.99991L2.82 0.159912Z" fill="currentColor" id="Vector"></path> </svg></div>
+<div class="text-3xl group-hover:rotate-180 transition duration-200 ml-auto"><svg class="text-white group-hover:text-primary" fill="none" height="15" viewbox="0 0 24 15" width="24" xmlns="http://www.w3.org/2000/svg"> <path d="M2.82 0.159912L12 9.33991L21.18 0.159912L24 2.99991L12 14.9999L0 2.99991L2.82 0.159912Z" fill="currentColor" id="Vector"></path> </svg></div>
 </div>
 </div>
 
@@ -466,7 +466,7 @@ const faqContent = ` <section>
 <p class="text-base mt-4 text-grayColor">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold"><span class="text-primary font-bold">&lsquo;My Account&rsquo;</span></span> and in your email confirmation.</p>
 </div>
 
-<div class="text-3xl group-hover:rotate-180 transition duration-500 ml-auto"><svg class="text-white group-hover:text-primary" fill="none" height="15" viewbox="0 0 24 15" width="24" xmlns="http://www.w3.org/2000/svg"> <path d="M2.82 0.159912L12 9.33991L21.18 0.159912L24 2.99991L12 14.9999L0 2.99991L2.82 0.159912Z" fill="currentColor" id="Vector"></path> </svg></div>
+<div class="text-3xl group-hover:rotate-180 transition duration-200 ml-auto"><svg class="text-white group-hover:text-primary" fill="none" height="15" viewbox="0 0 24 15" width="24" xmlns="http://www.w3.org/2000/svg"> <path d="M2.82 0.159912L12 9.33991L21.18 0.159912L24 2.99991L12 14.9999L0 2.99991L2.82 0.159912Z" fill="currentColor" id="Vector"></path> </svg></div>
 </div>
 </div>
 
@@ -482,7 +482,7 @@ const faqContent = ` <section>
 <p class="text-base mt-4 text-grayColor">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold">&lsquo;My Account&rsquo;</span> and in your email confirmation.</p>
 </div>
 
-<div class="text-3xl group-hover:rotate-180 transition duration-500 ml-auto"><svg class="text-white group-hover:text-primary" fill="none" height="15" viewbox="0 0 24 15" width="24" xmlns="http://www.w3.org/2000/svg"> <path d="M2.82 0.159912L12 9.33991L21.18 0.159912L24 2.99991L12 14.9999L0 2.99991L2.82 0.159912Z" fill="currentColor" id="Vector"></path> </svg></div>
+<div class="text-3xl group-hover:rotate-180 transition duration-200 ml-auto"><svg class="text-white group-hover:text-primary" fill="none" height="15" viewbox="0 0 24 15" width="24" xmlns="http://www.w3.org/2000/svg"> <path d="M2.82 0.159912L12 9.33991L21.18 0.159912L24 2.99991L12 14.9999L0 2.99991L2.82 0.159912Z" fill="currentColor" id="Vector"></path> </svg></div>
 </div>
 </div>
 </div>
@@ -490,9 +490,150 @@ const faqContent = ` <section>
 </div>
 </section>`;
 
+const faqContent2 = ` <div >
+
+<div class="w-full relative h-[750px] md:h-[650px] lg:h-[550px] z-40 text-center " >
+<Image
+  src="https://media.winnar.com/upload/about-page-background.png"
+  alt="/"
+  fill
+  quality={100}
+  class=" object-cover  w-full h-full block bg-black/50"
+/>
+<div class="absolute h-[35px] w-full text-center top-[50%] flex items-center">
+<div class="w-full text-center">
+<p class="text-white drop-shadow-2xl text-center w-full text-4xl  lg:text-5xl tracking-tighter  uppercase font-[900]">FAQS</p>
+</div>
+</div>
+</div>
+
+
+
+<div className="absolute top-[40px] right-64 px-8 xl:block hidden">
+  <svg
+    width="474"
+    height="895"
+    viewBox="0 0 674 1095"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M1.11379 547.5L486.887 1093.73H819.886L334.113 547.5H1.11379Z"
+      stroke="url(#paint0_linear_190_685)"
+    />
+    <path
+      d="M1.11379 546.728L486.887 0.5H819.886L334.113 546.728H1.11379Z"
+      stroke="url(#paint1_linear_190_685)"
+    />
+    <defs>
+      <linearGradient
+        id="paint0_linear_190_685"
+        x1="706"
+        y1="1094.23"
+        x2="220"
+        y2="531.228"
+        gradientUnits="userSpaceOnUse"
+      >
+        {/* <stop stop-opacity="0" /> */}
+        {/* <stop offset="1" stop-color="#454545" /> */}
+      </linearGradient>
+      <linearGradient
+        id="paint1_linear_190_685"
+        x1="706"
+        y1="-1.26162e-05"
+        x2="220"
+        y2="563"
+        gradientUnits="userSpaceOnUse"
+      >
+        {/* <stop stop-opacity="0" /> */}
+        {/* <stop offset="1" stop-color="#454545" /> */}
+      </linearGradient>
+    </defs>
+  </svg>
+</div>
+
+
+
+<div class="relative  min-h-screen w-full flex flex-col gap-8  lg:px-14 md:px-14 px-4 mt-16">
+<div>
+
+
+
+
+<p class="lg:text-5xl md:text-4xl text-3xl text-start  font-black uppercase ">Frequently asked questions</p>
+
+<div class="border-b-4 w-16 border-primary">&nbsp;</div>
+
+
+
+
+
+<div class="mt-8 overflow-hidden">
+  <!-- accordion-tab  -->
+  <div class="group outline-none accordion-section" tabindex="1">
+    <div class="group border-b group-focus:border-b-0 border-t py-4 border-lightColorBorder hover:border-b-primary shadow-lg hover:shadow-2xl flex justify-between  items-center text-gray-500 transition ease duration-200 cursor-pointer pr-10 relative">
+      <div class="group-focus:text-white transition ease duration-200 lg:text-3xl text-xl font-bold text-white">
+      Competition Rules
+      </div>
+      <div class=" h-8 w-8  rounded-full items-center inline-flex justify-center transform transition ease duration-150  group-focus:text-white group-focus:-rotate-180 absolute top-0 right-0 mb-auto ml-auto mt-2 mr-2">
+        <i class="fas fa-chevron-down group-focus:text-primary "></i>
+      </div>
+    </div>
+    <div class="group-focus:max-h-screen max-h-0 group-focus:border-b group-focus:pb-10 border-b-primary  text-base  text-grayColor overflow-hidden ease duration-200">
+    <p class="text-base mt-4 text-grayColor">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold">&lsquo;My Account&rsquo;</span> and in your email confirmation.</p>
+    </div>
+  </div>
+  <!-- accordion-tab  -->
+  <div class="group outline-none accordion-section" tabindex="1">
+    <div class="group border-b group-focus:border-b-0 border-t py-4 border-lightColorBorder hover:border-b-primary shadow-lg hover:shadow-2xl flex justify-between  items-center text-gray-500 transition ease duration-200 cursor-pointer pr-10 relative">
+      <div class="group-focus:text-white transition ease duration-200 lg:text-3xl text-xl font-bold text-white">
+      When do I get my number?
+      </div>
+      <div class=" h-8 w-8  rounded-full items-center inline-flex justify-center transform transition ease duration-200 group-focus:text-white group-focus:-rotate-180 absolute top-0 right-0 mb-auto ml-auto mt-2 mr-2">
+        <i class="fas fa-chevron-down group-focus:text-primary "></i>
+      </div>
+    </div>
+    <div class="group-focus:max-h-screen max-h-0 group-focus:border-b group-focus:pb-10 border-b-primary  text-base  text-grayColor overflow-hidden ease duration-200">
+    <p class="text-base mt-4 text-grayColor">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold">&lsquo;My Account&rsquo;</span> and in your email confirmation.</p>
+    </div>
+  </div>
+  <!-- accordion-tab  -->
+  <div class="group outline-none accordion-section" tabindex="1">
+    <div class="group border-b group-focus:border-b-0 border-t py-4 border-lightColorBorder hover:border-b-primary shadow-lg hover:shadow-2xl flex justify-between  items-center text-gray-500 transition ease duration-200 cursor-pointer pr-10 relative">
+      <div class="group-focus:text-white transition ease duration-200 lg:text-3xl text-xl font-bold text-white">
+      How do you do the draw?
+      </div>
+      <div class=" h-8 w-8  rounded-full items-center inline-flex justify-center transform transition ease duration-200 group-focus:text-white group-focus:-rotate-180 absolute top-0 right-0 mb-auto ml-auto mt-2 mr-2">
+        <i class="fas fa-chevron-down group-focus:text-primary "></i>
+      </div>
+    </div>
+    <div class="group-focus:max-h-screen max-h-0 group-focus:border-b group-focus:pb-10 border-b-primary  text-base  text-grayColor overflow-hidden ease duration-200">
+    <p class="text-base mt-4 text-grayColor">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold">&lsquo;My Account&rsquo;</span> and in your email confirmation.</p>
+    </div>
+  </div>
+  <!-- accordion-tab  -->
+  <div class="group outline-none accordion-section" tabindex="1">
+    <div class="group border-b group-focus:border-b-0 border-t py-4 border-lightColorBorder hover:border-b-primary shadow-lg hover:shadow-2xl flex justify-between  items-center text-gray-500 transition ease duration-200 cursor-pointer pr-10 relative">
+      <div class="group-focus:text-white transition ease duration-200 lg:text-3xl text-xl font-bold text-white">
+      When is the draw?
+      </div>
+      <div class=" h-8 w-8  rounded-full items-center inline-flex justify-center transform transition ease duration-200 group-focus:text-white group-focus:-rotate-180 absolute top-0 right-0 mb-auto ml-auto mt-2 mr-2">
+        <i class="fas fa-chevron-down group-focus:text-primary "></i>
+      </div>
+    </div>
+    <div class="group-focus:max-h-screen max-h-0 group-focus:border-b group-focus:pb-10 border-b-primary  text-base  text-grayColor overflow-hidden ease duration-200">
+    <p class="text-base mt-4 text-grayColor">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold">&lsquo;My Account&rsquo;</span> and in your email confirmation.</p>
+    </div>
+  </div>
+
+</div>
+</div>
+
+`;
+
 export default function CmsPage({ storeBlogsData }: any) {
   const reactElements = parse(storeBlogsData?.CMSDescription[0]?.content || '', {
-  // const reactElements = parse(AboutUsContent || '', {
+  // const reactElements = parse(faqContent2 || '', {
     replace: findElementsWithAttribute,
   });
 
