@@ -428,7 +428,12 @@ html{
     bottom: 0.5rem;
   }
 
-
+  .bg-Image {
+    background-image: url('https://media.winnar.com/upload/about-background-1.png');
+    object-fit: cover;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
 
 
 
