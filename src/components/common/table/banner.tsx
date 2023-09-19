@@ -74,10 +74,7 @@ export default function DataTableBanner() {
       // enabled: user?.id ? true : false,
     },
   );
-  console.log(
-    { ...filters, filters: { ...filterID } },
-    '...filters, filters: { ...filterID }',
-  );
+
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});

@@ -11,16 +11,13 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { ChevronDown, MoreHorizontal } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 
 import { Button } from '@/ui/button';
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/ui/dropdown-menu';
 import {
@@ -31,192 +28,115 @@ import {
   TableHeader,
   TableRow,
 } from '@/ui/table';
-import LanguageSelect, { LanguageInterface } from '../language_select';
 import { trpc } from '~/utils/trpc';
-import Image from 'next/image';
-import { displayDate, renderNFTImage } from '~/utils/helper';
-import Link from 'next/link';
-import { GetEventSchema } from '~/schema/event';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 import { LoadingDialog } from '../modal/loadingModal';
-import { setSelectedEvent } from '~/store/reducers/admin_layout';
-import { useDispatch } from 'react-redux';
+import Image from 'next/image';
+import { displayDate } from '~/utils/helper';
 import { TableFilters } from './table_filters';
 
-export type Category = {
-  thumb: string;
-  name: string;
-  desc: string | null;
-  id: number;
-  price: number;
-  total_tickets: number;
-  tickets_sold: number;
-  user_ticket_limit: number;
-  launch_date: Date;
-  end_date: Date;
-  created_at: Date;
-  updated_at: Date;
+export type WinnerType = {
+  Event: {
+    id: number;
+    EventDescription: {
+      name: string;
+    }[];
+    thumb: string;
+  };
+  Customer: {
+    email: string;
+    id: number;
+    first_name: string;
+  };
+  is_cash_alt: boolean;
+  draw_date: Date | null;
+  ticket_num: number;
 };
 
-export default function EventsDataTable() {
+export default function WinnersDataTable() {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [filterID, setFilterID] = useState({});
 
-  const [filters, setFilters] = useState<GetEventSchema>({
+  const [filters, setFilters] = useState({
     first: 0,
     rows: 10,
     lang_id: 1,
   });
-  console.log({ filterID });
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
 
-  const dispatch = useDispatch();
-
-  const { data, isLoading } = trpc.event.get.useQuery(
+  const { data, isLoading } = trpc.winner.get.useQuery(
     { ...filters, filters: { ...filterID } },
     {
-      refetchOnWindowFocus: false,
+      refetchOnWindowFocus: true,
     },
   );
-  const { data: categoryData } = trpc.category.getCategory.useQuery({
-    lang_id: 1,
-  });
 
-  const eventData = React.useMemo(() => {
+  const winnesData = React.useMemo(() => {
     return Array.isArray(data?.data) ? data?.data : [];
   }, [data]);
-  const columns: ColumnDef<Category>[] = [
+
+  const columns: ColumnDef<WinnerType>[] = [
     {
-      accessorKey: 'Name',
-      header: 'Name',
+      accessorKey: 'Event',
+      header: 'Event',
       cell: ({ row }) => {
         return (
           <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
             <Image
               className="object-cover bg-ac-2 h-10 w-16 rounded-lg"
-              src={renderNFTImage(row.original)}
-              alt={row?.original?.name}
+              src={`${process.env.NEXT_PUBLIC_MEDIA_BASE_URL}${row?.original?.Event.thumb}`}
+              alt={row?.original?.Event.EventDescription[0]?.name ?? ''}
               width={100}
               height={100}
             />
 
             <p className="w-40 text-ellipsis whitespace-nowrap overflow-hidden">
-              {row?.original?.name}
+              {row?.original?.Event.EventDescription[0]?.name}
             </p>
           </div>
         );
       },
     },
     {
-      accessorKey: 'Description',
-      header: 'Description',
+      accessorKey: 'Customer Name',
+      header: 'Customer Name',
       cell: ({ row }) => (
-        <div className="text-ellipsis whitespace-nowrap overflow-hidden w-64">
-          {row?.original?.desc}
+        <div className="capitalize text-ellipsis whitespace-nowrap ">
+          {row?.original?.Customer?.first_name}
         </div>
       ),
     },
     {
-      accessorKey: 'Token Price',
-      header: 'Token Price',
+      accessorKey: 'Customer Email',
+      header: 'Customer Email',
       cell: ({ row }) => (
-        <p className="w-20 text-center text-ellipsis whitespace-nowrap overflow-hidden">
-          {(row?.original?.price).toFixed(2)}
-        </p>
-      ),
-    },
-    {
-      accessorKey: 'Token Cap',
-      header: 'Token Cap',
-      cell: ({ row }) => (
-        <p className="w-20 text-ellipsis whitespace-nowrap overflow-hidden">
-          {row?.original?.total_tickets}
-          &nbsp;
-          <sub>qty</sub>
-        </p>
-      ),
-    },
-    {
-      accessorKey: 'Token Purchased',
-      header: 'Token Purchased',
-      cell: ({ row }) => (
-        <p className="w-28 text-center text-ellipsis whitespace-nowrap overflow-hidden">
-          {row?.original?.tickets_sold}
-          &nbsp;
-          <sub>qty</sub>
-        </p>
-      ),
-    },
-    {
-      accessorKey: 'Per User Limit',
-      header: 'Per User Limit',
-      cell: ({ row }) => (
-        <p className="w-32 text-center text-ellipsis whitespace-nowrap overflow-hidden">
-          {row?.original?.user_ticket_limit}
-          &nbsp;
-          <sub>qty</sub>
-        </p>
-      ),
-    },
-    {
-      accessorKey: 'Launch Date',
-      header: 'Launch Date',
-      cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
-          {displayDate(row?.original?.launch_date)}
+        <div className="text-ellipsis whitespace-nowrap ">
+          {row?.original?.Customer?.email}
         </div>
       ),
     },
     {
-      accessorKey: 'End Date',
-      header: 'End Date',
+      accessorKey: 'Draw Date',
+      header: 'Draw Date',
       cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
-          {displayDate(row?.original?.end_date)}
+        <div className="text-ellipsis whitespace-nowrap">
+          {displayDate(row?.original?.draw_date)}
         </div>
       ),
     },
     {
-      id: 'actions',
-      enableHiding: false,
-      header: 'Actions',
-      cell: ({ row }) => {
-        return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-
-              <Link href={`/admin/events/edit/${row?.original?.id}`}>
-                <DropdownMenuItem>Edit Event</DropdownMenuItem>
-              </Link>
-
-              {row?.original?.tickets_sold > 0 ? (
-                <>
-                  <DropdownMenuSeparator />
-                  <Link
-                    onClick={() => dispatch(setSelectedEvent(row.original))}
-                    href={`/admin/events/event-customers/${row.original.id}`}
-                  >
-                    <DropdownMenuItem>Event Customers</DropdownMenuItem>
-                  </Link>
-                </>
-              ) : null}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        );
-      },
+      accessorKey: 'Ticket number',
+      header: 'Ticket number',
+      cell: ({ row }) => (
+        <div className="text-ellipsis whitespace-nowrap text-primary">
+          #{row?.original?.ticket_num}
+        </div>
+      ),
     },
   ];
   const table = useReactTable({
-    data: eventData as Category[],
+    data: winnesData as WinnerType[],
     columns,
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
@@ -232,15 +152,20 @@ export default function EventsDataTable() {
     },
   });
 
-  function languageHandler(params: LanguageInterface) {
-    setFilters((prevFilters) => ({ ...prevFilters, lang_id: params.id }));
-  }
-
   function handlePagination(page: number) {
     if (page < 0) return;
     setFilters((prevFilters) => ({ ...prevFilters, first: page }));
   }
-
+  const StatusOptions = [
+    {
+      name: 'Yes',
+      value: true,
+    },
+    {
+      name: 'No',
+      value: false,
+    },
+  ];
   // FILTER OPTIONS
   const roleOptions1 = [
     {
@@ -249,45 +174,19 @@ export default function EventsDataTable() {
       filtername: 'searchQuery',
       type: 'text',
     },
-    {
-      Icon: 'fal fa-chevron-down',
-      text: 'Event Status',
-      filtername: 'status',
-      type: 'select',
-
-      filter: [
-        {
-          name: 'Active',
-          value: 'active',
-        },
-        {
-          name: 'Closed',
-          value: 'in-active',
-        },
-      ],
-    },
-    {
-      Icon: 'fal fa-chevron-down',
-      text: 'Category',
-      filtername: 'category_id',
-      type: 'select',
-
-      filter: categoryData,
-    },
 
     {
       Icon: 'fal fa-chevron-down',
-      text: 'Launch Date',
+      text: 'From Date',
       filtername: 'startDate',
       type: 'date',
     },
     {
       Icon: 'fal fa-chevron-down',
-      text: 'End Date',
+      text: 'To Date',
       filtername: 'endDate',
       type: 'date',
     },
-
     {
       Icon: 'fal fa-chevron-down',
       text: 'Clear Filter',
@@ -298,7 +197,6 @@ export default function EventsDataTable() {
   return (
     <div className="w-full space-y-4">
       <div className="flex items-center justify-end gap-2">
-        <LanguageSelect languageHandler={languageHandler} />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline">
@@ -327,7 +225,7 @@ export default function EventsDataTable() {
         </DropdownMenu>
         <TableFilters
           inputList={roleOptions1}
-          item_name={'Events'}
+          item_name={'Winners'}
           value={filterID}
           setValue={setFilterID}
           setFilters={setFilters}
@@ -404,6 +302,7 @@ export default function EventsDataTable() {
           </Button>
         </div>
       </div>
+
       <LoadingDialog open={isLoading} text={'Loading data...'} />
     </div>
   );
