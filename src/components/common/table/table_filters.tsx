@@ -133,7 +133,13 @@ export function TableFilters(props: SettingDialogInterface) {
   const dateForInput = curr.toISOString().substring(0, 10);
 
   const today = new Date().toISOString().split('T')[0];
-
+  async function onSubmit(values: any) {
+    try {
+      console.log({ values });
+    } catch (error: any) {
+      console.log(error?.message);
+    }
+  }
   return (
     <div>
       <Button
@@ -157,7 +163,7 @@ export function TableFilters(props: SettingDialogInterface) {
               <ScrollBar orientation="vertical"></ScrollBar>
               <SheetDescription className="pt-10">
                 <Form {...form}>
-                  <form>
+                  <form onSubmit={form.handleSubmit(onSubmit)}>
                     <div className=" grid grid-cols-1    items-center p-2">
                       {props?.inputList.map((item: any, i: number) => {
                         if (item?.type == 'text') {

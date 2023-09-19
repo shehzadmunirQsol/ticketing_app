@@ -330,7 +330,6 @@ export const orderRouter = router({
   getOrders: publicProcedure.input(getOrder).query(async ({ input, ctx }) => {
     const todayDate = new Date();
     try {
-
       const where: any = { is_deleted: false };
 
       if (input?.startDate) {
@@ -342,11 +341,9 @@ export const orderRouter = router({
         where.created_at = { lte: endDate };
       }
 
-
       const curentOrders: any = prisma.order.findMany({
         where: {
           customer_id: input?.customer_id,
-
         },
         include: {
           OrderEvent: {
@@ -377,7 +374,6 @@ export const orderRouter = router({
                   EventDescription: {
                     where: {
                       lang_id: input.lang_id,
-
                     },
                   },
                 },
@@ -387,8 +383,7 @@ export const orderRouter = router({
         },
       });
 
-
-      const [current, past] = await Promise.all([curentOrders, pastOrders])
+      const [current, past] = await Promise.all([curentOrders, pastOrders]);
 
       // console.log({ orders }, 'ordersorders');
       // if (orders && orders?.length > 0) {
@@ -421,15 +416,67 @@ export const orderRouter = router({
   }),
   get: publicProcedure.input(getOrderSchema).query(async ({ input }) => {
     try {
-      const where: any = { is_deleted: false };
+      const { filters, ...inputData } = input;
+      const filterPayload: any = { ...filters };
 
-      if (input?.startDate) {
-        const startDate = new Date(input?.startDate);
+      if (filterPayload?.searchQuery) delete filterPayload.searchQuery;
+      if (filterPayload?.endDate) delete filterPayload.endDate;
+      if (filterPayload?.startDate) delete filterPayload.startDate;
+      const where: any = { is_deleted: false, ...filterPayload };
+
+      if (input?.filters?.startDate) {
+        const startDate = new Date(input?.filters?.startDate);
         where.created_at = { gte: startDate };
       }
-      if (input?.endDate) {
-        const endDate = new Date(input?.endDate);
+      if (input?.filters?.endDate) {
+        const endDate = new Date(input?.filters?.endDate);
         where.created_at = { lte: endDate };
+      }
+      if (input?.filters?.searchQuery) {
+        where.OR = [];
+        where.OR.push({
+          first_name: {
+            contains: input?.filters?.searchQuery,
+            mode: 'insensitive',
+          },
+        });
+        where.OR.push({
+          last_name: {
+            contains: input?.filters?.searchQuery,
+            mode: 'insensitive',
+          },
+        });
+        where.OR.push({
+          email: {
+            contains: input?.filters?.searchQuery,
+            mode: 'insensitive',
+          },
+        });
+
+        // where.OR.push({
+        //   Customer: {
+        //     first_name: {
+        //       contains: input?.filters?.searchQuery,
+        //       mode: 'insensitive',
+        //     },
+        //   },
+        // });
+        // where.OR.push({
+        //   Customer: {
+        //     last_name: {
+        //       contains: input?.filters?.searchQuery,
+        //       mode: 'insensitive',
+        //     },
+        //   },
+        // });
+        where.OR.push({
+          Customer: {
+            email: {
+              contains: input?.filters?.searchQuery,
+              mode: 'insensitive',
+            },
+          },
+        });
       }
 
       const totalEventPromise = prisma.order.count({
@@ -840,57 +887,57 @@ async function CreatePayment(APidata: any) {
     console.log(tot_amount, 'tot_amount');
     const apiDate: any = APidata?.registrationId
       ? {
-        entityId: process.env.TOTAN_ENTITY_ID,
-        amount: APidata?.total_amount.toFixed(2),
-        currency: 'AED',
-        paymentType: 'DB',
-        'standingInstruction.source': 'CIT',
-        // wpwlOptions: JSON.stringify(APidata?.cart),
-        'customParameters[payload]': JSON.stringify({
-          ...payload,
-        }),
+          entityId: process.env.TOTAN_ENTITY_ID,
+          amount: APidata?.total_amount.toFixed(2),
+          currency: 'AED',
+          paymentType: 'DB',
+          'standingInstruction.source': 'CIT',
+          // wpwlOptions: JSON.stringify(APidata?.cart),
+          'customParameters[payload]': JSON.stringify({
+            ...payload,
+          }),
 
-        'standingInstruction.type': 'UNSCHEDULED',
-      }
+          'standingInstruction.type': 'UNSCHEDULED',
+        }
       : {
-        entityId: process.env.TOTAN_ENTITY_ID,
-        amount: APidata?.total_amount.toFixed(2),
-        currency: 'AED',
-        paymentType: 'DB',
-        paymentBrand: APidata?.paymentBrand,
+          entityId: process.env.TOTAN_ENTITY_ID,
+          amount: APidata?.total_amount.toFixed(2),
+          currency: 'AED',
+          paymentType: 'DB',
+          paymentBrand: APidata?.paymentBrand,
 
-        'card.number':
-          APidata?.card?.number && +APidata?.card?.number.replaceAll(' ', ''),
-        'card.holder': APidata?.card?.holder && APidata?.card?.holder,
-        'card.expiryMonth':
-          APidata?.card?.expiryMonth && APidata?.card?.expiryMonth,
-        'card.expiryYear':
-          APidata?.card?.expiryYear && APidata?.card?.expiryYear,
-        'card.cvv': APidata?.card?.cvv && +APidata?.card?.cvv,
-        'standingInstruction.mode': 'INITIAL',
-        'standingInstruction.source': 'CIT',
-        // createRegistration: 'true',
-        'merchant.name': 'MerchantCo',
-        'merchant.city': 'Munich',
-        'merchant.country': 'DE',
-        'merchant.mcc': '5399',
-        'customer.ip': '192.168.0.1',
-        'customer.browser.acceptHeader': 'text/html',
-        'customer.browser.screenColorDepth': '48',
-        'customer.browser.javaEnabled': 'false',
-        'customer.browser.language': 'de',
-        'customer.browser.screenHeight': '1200',
-        'customer.browser.screenWidth': '1600',
-        'customer.browser.timezone': '60',
-        'customer.browser.challengeWindow': '4',
-        'customer.browser.userAgent':
-          'Mozilla/4.0 (MSIE 6.0; Windows NT 5.0)',
-        testMode: 'EXTERNAL',
+          'card.number':
+            APidata?.card?.number && +APidata?.card?.number.replaceAll(' ', ''),
+          'card.holder': APidata?.card?.holder && APidata?.card?.holder,
+          'card.expiryMonth':
+            APidata?.card?.expiryMonth && APidata?.card?.expiryMonth,
+          'card.expiryYear':
+            APidata?.card?.expiryYear && APidata?.card?.expiryYear,
+          'card.cvv': APidata?.card?.cvv && +APidata?.card?.cvv,
+          'standingInstruction.mode': 'INITIAL',
+          'standingInstruction.source': 'CIT',
+          // createRegistration: 'true',
+          'merchant.name': 'MerchantCo',
+          'merchant.city': 'Munich',
+          'merchant.country': 'DE',
+          'merchant.mcc': '5399',
+          'customer.ip': '192.168.0.1',
+          'customer.browser.acceptHeader': 'text/html',
+          'customer.browser.screenColorDepth': '48',
+          'customer.browser.javaEnabled': 'false',
+          'customer.browser.language': 'de',
+          'customer.browser.screenHeight': '1200',
+          'customer.browser.screenWidth': '1600',
+          'customer.browser.timezone': '60',
+          'customer.browser.challengeWindow': '4',
+          'customer.browser.userAgent':
+            'Mozilla/4.0 (MSIE 6.0; Windows NT 5.0)',
+          testMode: 'EXTERNAL',
 
-        'customParameters[payload]': JSON.stringify({
-          ...payload,
-        }),
-      };
+          'customParameters[payload]': JSON.stringify({
+            ...payload,
+          }),
+        };
 
     const data = new URLSearchParams(apiDate).toString();
     const options = {

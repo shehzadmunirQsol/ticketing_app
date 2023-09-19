@@ -17,7 +17,7 @@ export const eventRouter = router({
     try {
       const { filters, ...payload } = input;
       const filterPayload: any = { ...filters };
-      if (filterPayload?.created_at) delete filterPayload.created_at;
+
       if (filterPayload?.searchQuery) delete filterPayload.searchQuery;
       if (filterPayload?.endDate) delete filterPayload.endDate;
       if (filterPayload?.startDate) delete filterPayload.startDate;

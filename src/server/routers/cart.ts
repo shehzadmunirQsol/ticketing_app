@@ -71,7 +71,6 @@ export const cartRouter = router({
         const { filters, ...inputData } = input;
         const filterPayload: any = { ...filters };
 
-        if (filterPayload?.created_at) delete filterPayload.created_at;
         if (filterPayload?.searchQuery) delete filterPayload.searchQuery;
         if (filterPayload?.endDate) delete filterPayload.endDate;
         if (filterPayload?.startDate) delete filterPayload.startDate;
@@ -79,11 +78,9 @@ export const cartRouter = router({
           is_deleted: false,
           ...filterPayload,
         };
-        const EventDesPayload: any = {};
-        const CustomerPayload: any = {};
+
         if (input?.filters?.searchQuery) {
           payload.OR = [];
-          CustomerPayload.OR = [];
           payload.OR.push({
             Event: {
               EventDescription: {
