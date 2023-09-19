@@ -2,6 +2,8 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import OrdersDataTable from '~/components/common/table/orders';
+import OrdersDataByIdTable from '~/components/common/table/ordersByIdTable';
 import { Button } from '~/components/ui/button';
 import { Separator } from '~/components/ui/separator';
 import Current from '~/public/assets/not-current-entrie.png';
@@ -141,19 +143,7 @@ function CurrentandPast(data: any) {
         ) : (
           <>
             <div className="flex flex-wrap justify-start items-start gap-4">
-              {displayArray &&
-                displayArray.map((item, i) => (
-                  <div
-                    key={i}
-                    className="bg-[#101417] p-4 w-52 h-24 border border-white rounded-sm"
-                  >
-                    <p className="font-bold">{`${item?.OrderEvent[0]?.Event?.EventDescription[0]?.name} `}</p>
-                    <p>{`Total Amount: AED ${(item?.total_amount).toFixed(
-                      2,
-                    )}`}</p>
-                    <p>{`Quantity: ${item?.OrderEvent[0].quantity}`}</p>
-                  </div>
-                ))}
+              <OrdersDataByIdTable />
             </div>
           </>
         )}
