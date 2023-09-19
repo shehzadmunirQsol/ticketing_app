@@ -333,8 +333,11 @@ export const eventRouter = router({
         // upcoming means its going to start
         if (input?.type == 'upcomming') where.launch_date = { gte: todayDate };
         if (input?.type == 'closing') {
-          where.launch_date = { gte: todayDate };
-          where.end_date = { gte: todayDate, lte: endingDate };
+          where.launch_date = { lte: new Date(todayDate) };
+          where.end_date = {
+            gte: new Date(todayDate),
+            lte: new Date(endingDate),
+          };
         }
         const totalEventPromise = prisma.event.count({
           where: where,
@@ -373,7 +376,6 @@ export const eventRouter = router({
           });
         }
 
-        console.log(totalEvent, event, 'event data');
         return {
           message: 'Events found',
           count: totalEvent,
