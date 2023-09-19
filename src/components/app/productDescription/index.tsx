@@ -13,43 +13,35 @@ import { RootState } from '~/store/store';
 
 const ProductDetail = () => {
   const router = useRouter();
-  const { lang } = useSelector((state: RootState) => state.layout)
+  const { lang } = useSelector((state: RootState) => state.layout);
   const id = Number(router.query.id);
   const { data } = trpc.event.getEventsById.useQuery(
     { id: id, lang_id: lang.lang_id },
     {
       refetchOnWindowFocus: false,
-      onSuccess: () => {
-        console.log({ data });
-        // setCarSlider(BannerApiData || []);
-      },
-      // enabled: user?.id ? true : false,
     },
   );
 
-  console.log(id, typeof id, 'i am id work');
-  console.log(data?.data, 'i am data work');
   return (
     <>
       <Tabs />
-      <div id='BuyTickets' className='px-4 md:px-14'>
-        <ImageSlider data={data?.data} ticketPurchased={data?.ticketPurchased} />
-        <div >
+      <div id="BuyTickets" className="px-4 md:px-14">
+        <ImageSlider
+          data={data?.data}
+          ticketPurchased={data?.ticketPurchased}
+        />
+        <div>
           <EntiresDetail />
           <VideoSection />
         </div>
-        <div >
-        </div>
-
+        <div></div>
       </div>
       <LiveDraw />
 
-      <div className='px-4 md:px-14'>
-
+      <div className="px-4 md:px-14">
         <CompititionDetail data={data?.data} />
         <AccordianFaqs />
       </div>
-
     </>
   );
 };

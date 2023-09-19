@@ -31,4 +31,17 @@ export const addToCartSchema = z.object({
   subscription_type: z.enum(['weekly', 'monthly', 'quarterly']).nullable(),
 });
 
+export const createCartSchema = z.object({
+  customer_id: z.number(),
+  cart_id: z.number().default(0),
+  cart_items: z.array(
+    z.object({
+      event_id: z.number(),
+      quantity: z.number(),
+      is_subscribe: z.boolean().default(false),
+      subscription_type: z.enum(['weekly', 'monthly', 'quarterly']).nullable(),
+    }),
+  ),
+});
+
 export type GetCartItemsSchema = z.infer<typeof getCartItemsSchema>;

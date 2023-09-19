@@ -6,9 +6,41 @@ import {
   getTicketPurchasedSchema,
   removeCartItemSchema,
   getCartItemsSchema,
+  createCartSchema,
 } from '~/schema/cart';
 import { prisma } from '~/server/prisma';
 import { verifyJWT } from '~/utils/jwt';
+
+const cartInclude = {
+  CouponApply: {
+    where: { is_deleted: false },
+    select: {
+      discount: true,
+      is_percentage: true,
+    },
+  },
+  CartItems: {
+    include: {
+      Event: {
+        select: {
+          thumb: true,
+          price: true,
+          end_date: true,
+          tickets_sold: true,
+          user_ticket_limit: true,
+          total_tickets: true,
+
+          EventDescription: {
+            where: { lang_id: 1 },
+            select: {
+              name: true,
+            },
+          },
+        },
+      },
+    },
+  },
+};
 
 export const cartRouter = router({
   get: publicProcedure.input(getCartSchema).query(async ({ ctx }) => {
@@ -24,36 +56,7 @@ export const cartRouter = router({
 
       const cart = await prisma.cart.findFirst({
         where: { customer_id: userData.id, is_deleted: false },
-        include: {
-          CouponApply: {
-            where: { is_deleted: false },
-            select: {
-              discount: true,
-              is_percentage: true,
-            },
-          },
-          CartItems: {
-            include: {
-              Event: {
-                select: {
-                  thumb: true,
-                  price: true,
-                  end_date: true,
-                  tickets_sold: true,
-                  user_ticket_limit: true,
-                  total_tickets: true,
-
-                  EventDescription: {
-                    where: { lang_id: 1 },
-                    select: {
-                      name: true,
-                    },
-                  },
-                },
-              },
-            },
-          },
-        },
+        include: cartInclude,
       });
 
       return { message: 'Cart found', data: cart };
@@ -162,6 +165,78 @@ export const cartRouter = router({
         });
       }
     }),
+
+  createCart: publicProcedure
+    .input(createCartSchema)
+    .mutation(async ({ input }) => {
+      try {
+        const { customer_id, cart_id, cart_items: cartItems } = input;
+
+        if (cart_id > 0) {
+          const prevCart = await prisma.cart.findUnique({
+            where: { id: cart_id },
+            include: cartInclude,
+          });
+
+          if (!prevCart) {
+            throw new TRPCError({
+              code: 'BAD_REQUEST',
+              message: 'Invalid cart data',
+            });
+          }
+
+          const eventIds: number[] = cartItems.map((item) => item.event_id);
+          const existingEventIds: number[] = [];
+
+          prevCart?.CartItems.forEach((item) => {
+            if (eventIds.includes(item.event_id))
+              existingEventIds.push(item.event_id);
+          });
+
+          if (existingEventIds.length) {
+            await prisma.cartItem.deleteMany({
+              where: {
+                cart_id: prevCart.id,
+                event_id: {
+                  in: existingEventIds,
+                },
+              },
+            });
+          }
+
+          await prisma.cartItem.createMany({
+            data: cartItems.map((item) => ({ ...item, cart_id })),
+          });
+
+          const cart = await prisma.cart.findUnique({
+            where: { id: cart_id },
+            include: cartInclude,
+          });
+
+          return { message: 'Cart created', data: cart };
+        } else {
+          const cart = await prisma.cart.create({
+            data: {
+              customer_id,
+              CartItems: {
+                createMany: {
+                  data: cartItems,
+                },
+              },
+            },
+            include: cartInclude,
+          });
+
+          return { message: 'Cart created', data: cart };
+        }
+      } catch (error: any) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: error?.message,
+        });
+      }
+    }),
+
   addToCart: publicProcedure
     .input(addToCartSchema)
     .mutation(async ({ input }) => {

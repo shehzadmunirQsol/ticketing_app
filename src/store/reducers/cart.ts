@@ -77,6 +77,7 @@ export const cartSlice = createSlice({
       );
       if (itemIndex >= 0) {
         cartItems.splice(itemIndex, 1, action.payload.cartItem);
+        0;
       } else {
         cartItems.push(action.payload.cartItem);
       }
@@ -86,6 +87,13 @@ export const cartSlice = createSlice({
       state.cart.id = action.payload.id;
       state.cart.customer_id = action.payload.customer_id;
       state.cart.cartItems = cartItems;
+
+      if (!state.cart.id) {
+        localStorage.setItem('winnar-cart', JSON.stringify(state.cart));
+      } else {
+        console.log("localStorage.removeItem('winnar-cart')");
+        localStorage.removeItem('winnar-cart');
+      }
     },
     removeFromCart: (state, action: PayloadAction<{ event_id: number }>) => {
       const cartItems = [...(state.cart?.cartItems ?? [])].filter(
@@ -95,6 +103,14 @@ export const cartSlice = createSlice({
       state.count = getTotalCount(cartItems);
       state.totalAmount = getTotalAmount(cartItems);
       state.cart.cartItems = cartItems;
+
+      if (!state.cart.id) {
+        localStorage.setItem('winnar-cart', JSON.stringify(state.cart));
+      } else {
+        console.log("localStorage.removeItem('winnar-cart')");
+
+        localStorage.removeItem('winnar-cart');
+      }
     },
     addDiscount: (
       state,
@@ -107,6 +123,14 @@ export const cartSlice = createSlice({
       state.cart.isDiscount = action.payload.isDiscount;
       state.cart.discount = action.payload.discount;
       state.cart.isPercentage = action.payload.isPercentage;
+
+      if (!state.cart.id) {
+        localStorage.setItem('winnar-cart', JSON.stringify(state.cart));
+      } else {
+        console.log("localStorage.removeItem('winnar-cart')");
+
+        localStorage.removeItem('winnar-cart');
+      }
     },
   },
 });

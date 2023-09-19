@@ -120,7 +120,6 @@ function Checkout() {
       }
     })();
   }, [router?.query]);
-  console.log('user?.total_customer_id', user?.total_customer_id);
 
   const onSubmitCheckout = async (values: any) => {
     try {
@@ -148,6 +147,18 @@ function Checkout() {
   const discountAmount = cart.isPercentage
     ? totalAmount * (cart.discount / 100)
     : cart.discount;
+
+  const today = new Date();
+
+  // Calculate the minimum date (18 years ago from today)
+  const minDate = new Date(
+    today.getFullYear() - 18,
+    today.getMonth(),
+    today.getDate(),
+  );
+
+  // Format the minimum date as "YYYY-MM-DD" for the input field
+  const minDateFormatted = minDate.toISOString().split('T')[0];
 
   return (
     <div className="relative mt-20 bg-background py-6 px-4 space-y-10 md:py-16 md:px-14 md:space-y-14">
@@ -181,8 +192,8 @@ function Checkout() {
                             {...field}
                           />
                         </FormControl>
-                        <div className='relative pb-2'>
-                        <FormMessage />
+                        <div className="relative pb-2">
+                          <FormMessage />
                         </div>
                       </FormItem>
                     )}
@@ -202,8 +213,8 @@ function Checkout() {
                             {...field}
                           />
                         </FormControl>
-                        <div className='relative pb-2'>
-                        <FormMessage />
+                        <div className="relative pb-2">
+                          <FormMessage />
                         </div>
                       </FormItem>
                     )}
@@ -226,8 +237,8 @@ function Checkout() {
                             {...field}
                           />
                         </FormControl>
-                        <div className='relative pb-2'>
-                        <FormMessage />
+                        <div className="relative pb-2">
+                          <FormMessage />
                         </div>
                       </FormItem>
                     )}
@@ -244,8 +255,8 @@ function Checkout() {
                             {...field}
                           />
                         </FormControl>
-                        <div className='relative pb-2'>
-                        <FormMessage />
+                        <div className="relative pb-2">
+                          <FormMessage />
                         </div>
                       </FormItem>
                     )}
@@ -287,9 +298,9 @@ function Checkout() {
                             </SelectContent>
                           </Select>
 
-                          <div className='relative pb-2'>
-                        <FormMessage />
-                        </div>
+                          <div className="relative pb-2">
+                            <FormMessage />
+                          </div>
                         </FormItem>
                       )}
                     />
@@ -327,9 +338,9 @@ function Checkout() {
                             </SelectContent>
                           </Select>
 
-                          <div className='relative pb-2'>
-                        <FormMessage />
-                        </div>
+                          <div className="relative pb-2">
+                            <FormMessage />
+                          </div>
                         </FormItem>
                       )}
                     />
@@ -351,8 +362,8 @@ function Checkout() {
                             {...field}
                           />
                         </FormControl>
-                        <div className='relative pb-2'>
-                        <FormMessage />
+                        <div className="relative pb-2">
+                          <FormMessage />
                         </div>
                       </FormItem>
                     )}
@@ -372,8 +383,8 @@ function Checkout() {
                             {...field}
                           />
                         </FormControl>
-                        <div className='relative pb-2'>
-                        <FormMessage />
+                        <div className="relative pb-2">
+                          <FormMessage />
                         </div>
                       </FormItem>
                     )}
@@ -394,15 +405,15 @@ function Checkout() {
                           {...field}
                         />
                       </FormControl>
-                      <div className='relative pb-2'>
+                      <div className="relative pb-2">
                         <FormMessage />
-                        </div>
+                      </div>
                     </FormItem>
                   )}
                 />
 
-                <div className="flex flex-col items-center   md:flex-row gap-2  w-full justify-between">
-                  <div className=" w-full ">
+                <div className="flex flex-col items-start md:flex-row gap-2 w-full justify-between">
+                  <div className="flex-1">
                     <p className="text-sm text-cardGray  mb-3 ">Phone Number</p>
                     <div className="flex flex-row gap-2 ">
                       <FormField
@@ -434,9 +445,9 @@ function Checkout() {
                               </SelectContent>
                             </Select>
 
-                            <div className='relative pb-2'>
-                        <FormMessage />
-                        </div>
+                            <div className="relative pb-2">
+                              <FormMessage />
+                            </div>
                           </FormItem>
                         )}
                       />
@@ -450,32 +461,33 @@ function Checkout() {
                           </FormLabel> */}
                             <FormControl className="rounded-md bg-inputColor">
                               <Input
-                                maxLength={9}
-                                type="text"
+                                max={999999999}
+                                type="number"
                                 placeholder="Enter your phone number"
                                 {...field}
                               />
                             </FormControl>
-                            
-                            <div className='relative pb-2'>
-                        <FormMessage />
-                        </div>
+
+                            <div className="relative pb-2">
+                              <FormMessage />
+                            </div>
                           </FormItem>
                         )}
                       />
                     </div>
                   </div>
-                  <div className="flex-1 w-full ">
+                  <div className="">
                     <FormField
                       control={form.control}
                       name="dob"
                       render={() => (
-                        <FormItem className=" w-full">
+                        <FormItem>
                           <FormLabel className="text-sm text-cardGray">
                             Date of Birth <sup className="text-red-500">*</sup>
                           </FormLabel>
                           <FormControl className="rounded-md bg-inputColor">
                             <Input
+                              max={minDateFormatted}
                               type="date"
                               placeholder="Enter your Date of Birth"
                               {...form.register('dob', {
@@ -558,7 +570,11 @@ function Checkout() {
                   Your personal data will be used to process your order, support
                   your experience throughout this website, and for other
                   purposes described in our{' '}
-                  <span className="text-white"> <Link href="/cms/privacy-policy"> privacy policy </Link></span>.
+                  <span className="text-white">
+                    {' '}
+                    <Link href="/cms/privacy-policy"> privacy policy </Link>
+                  </span>
+                  .
                 </p>
                 <div className="flex flex-row gap-2 justify-start   items-start w-full  md:w-[65%] lg:w-[85%]">
                   <input
@@ -570,7 +586,13 @@ function Checkout() {
                   <p className="text-sm text-cardGray ">
                     I’m 18 years old or over and i have read and agree to the
                     website
-                    <span className="text-white"><Link href="/cms/terms-condition"> Terms & Conditions </Link></span>.
+                    <span className="text-white">
+                      <Link href="/cms/terms-condition">
+                        {' '}
+                        Terms & Conditions{' '}
+                      </Link>
+                    </span>
+                    .
                   </p>
                 </div>
               </div>
@@ -625,9 +647,28 @@ const countries = [
     country: 'United Arab Emirates',
   },
 ];
+
 const states = [
   {
-    state: 'United Arab Emirates',
+    state: 'Abu Dhabi',
+  },
+  {
+    state: 'Dubai',
+  },
+  {
+    state: 'Sharjah',
+  },
+  {
+    state: 'Ajman',
+  },
+  {
+    state: 'Umm Al-Quwain',
+  },
+  {
+    state: 'Ras Al Khaimah',
+  },
+  {
+    state: 'Fujairah',
   },
 ];
 
