@@ -133,6 +133,9 @@ export const getOrderSchema = z.object({
   filters: z.any().optional(),
 });
 export const getByIDSchema = z.object({
-  order_id: z.number(),
+  order_id: z.number().optional(),
+  customer_id:z.number().optional().nullable(),
+  type:z.string().optional().nullable(),
+  lang_id: z.number().optional(),
 });
 export type CreateCheckoutSchema = z.infer<typeof createCheckoutSchema>;

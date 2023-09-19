@@ -525,7 +525,11 @@ export const orderRouter = router({
   }),
   getByID: publicProcedure.input(getByIDSchema).query(async ({ input }) => {
     try {
-      const where: any = { is_deleted: false, id: input?.order_id };
+      const where: any = { is_deleted: false, };
+      if(input?.order_id) where.id=input?.order_id
+
+      if(input?.customer_id) where.customer_id=input.customer_id
+      
 
       const eventPromise = prisma.order.findFirst({
         orderBy: { created_at: 'desc' },
