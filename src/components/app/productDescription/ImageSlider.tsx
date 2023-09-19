@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import { getAvailableTickets } from '~/utils/helper';
 
 const ImageSlider = ({ data, ticketPurchased }: any) => {
+  
   const { cart } = useSelector((state: RootState) => state.cart);
   const { lang } = useSelector((state: RootState) => state.layout)
   console.log(lang,"langlanglanglang")
@@ -77,11 +78,11 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
               <p className=" text-white text-xl  lg:text-2xl mb-2">
               {lang.lang_id === 2 ? "البديل النقدي" : "Cash Alternative " } <span color=""></span>{' '}
                 <span className=" font-black mr-1 text-primary">
-                  AED {data?.cash_alt.toFixed(2)}
+                  AED {data?.cash_alt?.toFixed(2)}
                 </span>
               </p>
               <p className=" lg:text-2xl text-xl  pl-0 text-primary font-black ">
-                AED {price.toFixed(2)}
+                AED {price?.toFixed(2)}
               </p>
             </div>
             <div className="w-full relative">
