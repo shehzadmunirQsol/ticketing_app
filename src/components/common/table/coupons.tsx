@@ -85,9 +85,12 @@ export default function CouponsDataTable() {
   const [isModal, setIsModal] = React.useState(false);
 
   // APi
-  const { data, refetch, isLoading } = trpc.coupon.get.useQuery(filters, {
-    refetchOnWindowFocus: false,
-  });
+  const { data, refetch, isLoading } = trpc.coupon.get.useQuery(
+    { ...filters, filters: { ...filterID } },
+    {
+      refetchOnWindowFocus: false,
+    },
+  );
 
   const categoryData = React.useMemo(() => {
     return Array.isArray(data?.data) ? data?.data : [];
@@ -290,18 +293,18 @@ export default function CouponsDataTable() {
       filter: [
         {
           name: 'Fixed',
-          value: true,
+          value: false,
         },
         {
           name: 'Percentage',
-          value: false,
+          value: true,
         },
       ],
     },
     {
       Icon: 'fal fa-chevron-down',
       text: 'Limit',
-      filtername: 'is_limit',
+      filtername: 'is_limited',
       type: 'select',
 
       filter: [

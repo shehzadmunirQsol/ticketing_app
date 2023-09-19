@@ -22,41 +22,32 @@ export const getCouponSchema = z.object({
   searchQuery: z.string().optional(),
   first: z.number(),
   rows: z.number(),
+  filters: z.any().optional(),
 });
 
 export const createCouponSchema = z.object({
-  user_id: z.number(
-
-  ),
+  user_id: z.number(),
   coupon_id: z.number().optional(),
-  name: z.string(
-    { required_error: " Please enter a name" }
-  ),
+  name: z.string({ required_error: ' Please enter a name' }),
   coupon_code: z
-    .string(
-      { required_error: " Please enter a coupon code" }
-    )
+    .string({ required_error: ' Please enter a coupon code' })
     .min(6, {
       message: 'Coupon Code must be 6 characters',
     })
     .max(6, {
       message: 'Coupon Code must be 6 characters',
     }),
-  is_percentage: z.string(
-    { required_error: " Please select a discount type" }
-  ),
+  is_percentage: z.string({ required_error: ' Please select a discount type' }),
   is_limited: z.string(),
   coupon_limit: z.number().optional(),
-  discount: z.number(
-    { invalid_type_error: " Please enter a discount" }
-  ),
+  discount: z.number({ invalid_type_error: ' Please enter a discount' }),
   start_date: z.date({
-    invalid_type_error: "Please select a start date",
-    required_error: "Please select a start date"
+    invalid_type_error: 'Please select a start date',
+    required_error: 'Please select a start date',
   }),
   end_date: z.date({
-    invalid_type_error: "Please select a start date",
-    required_error: "Please select a start date"
+    invalid_type_error: 'Please select a start date',
+    required_error: 'Please select a start date',
   }),
 });
 export const updateSchema = z.object({
