@@ -59,15 +59,14 @@ export default function EventForm() {
   );
 
   const filteredCms = cms?.filter((item) => item?.type === 'event_faqs') || [];
+  console.log(filteredCms, 'filteredCms');
 
-  const modifiedArray: any = filteredCms.map((obj) => {
-    const modifiedObj: any = { ...obj };
+  const modifiedArray = filteredCms.map((item) => ({
+    id: item.id,
+    name: item.CMSDescription[0]?.title || '', // Access the first "title" in CMSDescription
+  }));
 
-    modifiedObj.name = modifiedObj.type;
-    delete modifiedObj.type;
-
-    return modifiedObj;
-  });
+  console.log({ modifiedArray });
 
   const formSchema = [
     {
@@ -111,7 +110,7 @@ export default function EventForm() {
       type: 'text',
       name: 'video_src',
       label: 'Video Source',
-  
+
       placeholder: 'Please Enter Video Source',
     },
     {
@@ -173,7 +172,7 @@ export default function EventForm() {
       multi_image: [],
     },
   });
-  console.log(form.formState.errors,"form.formState.errors")
+  console.log(form.formState.errors, 'form.formState.errors');
 
   const { data: eventData, isLoading: isEventLoading } =
     trpc.event.getEventsById.useQuery(
@@ -227,7 +226,7 @@ export default function EventForm() {
       setIsSubmitting(false);
       router.back();
     } catch (e: any) {
-      console.log(e,"evensh eissues")
+      console.log(e, 'evensh eissues');
       setIsSubmitting(false);
 
       toast({
@@ -300,7 +299,8 @@ export default function EventForm() {
       form.setValue('ar.desc', ar?.desc as string);
       form.setValue('ar.comp_details', ar?.desc as string);
       form.setValue('cash_alt', payload.data?.cash_alt);
-      form.setValue('category_id', payload.data?.category_id);
+      form.setValue('category_id', payload.data?.category_id );
+      form.setValue('faq_id', payload.data?.faq_id as any);
       form.setValue('is_cash_alt', payload.data?.is_cash_alt);
       form.setValue(
         'end_date',

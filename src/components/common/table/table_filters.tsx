@@ -62,10 +62,16 @@ export function TableFilters(props: SettingDialogInterface) {
 
   const dispatch = useDispatch();
   const HandleFilterChange = (e: any, filter: string) => {
+    const filterData = [
+      'is_verified',
+      'is_enabled',
+      'is_percentage',
+      'is_limit',
+    ];
     const data =
       filter == 'category_id'
         ? +e.target.value
-        : filter == 'is_verified'
+        : filterData.includes(filter)
         ? e.target.value == 'true'
           ? true
           : false

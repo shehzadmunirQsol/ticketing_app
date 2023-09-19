@@ -10,6 +10,9 @@ export async function getStaticPaths() {
       id: true,
       slug: true,
     },
+    where: {
+      is_enabled: true,
+    },
   });
 
   const paths = response?.map((post: any) => ({
@@ -22,6 +25,7 @@ export async function getStaticProps({ params }: any) {
   const response = await prisma.cMS.findFirst({
     where: {
       slug: params?.id,
+      is_enabled: true,
     },
 
     select: {
@@ -552,8 +556,6 @@ const faqContent2 = ` <div >
   </svg>
 </div>
 
-
-
 <div class="relative  min-h-screen w-full flex flex-col gap-8  lg:px-14 md:px-14 px-4 mt-16">
 <div>
 
@@ -632,10 +634,20 @@ const faqContent2 = ` <div >
 `;
 
 export default function CmsPage({ storeBlogsData }: any) {
-  const reactElements = parse(storeBlogsData?.CMSDescription[0]?.content || '', {
-  // const reactElements = parse(AboutUsContent || '', {
-    replace: findElementsWithAttribute,
-  });
+  const reactElements = parse(
+    storeBlogsData?.CMSDescription[0]?.content || '',
+    {
+      // const reactElements = parse(AboutUsContent || '', {
+      replace: findElementsWithAttribute,
+    },
+  );
+
+  const reactElementsForFAQs = parse(
+    storeBlogsData?.CMSDescription[0]?.content || '',
+    {
+      replace: (node) => node,
+    },
+  );
 
   return (
     <div className=" w-full bg-bg-1 py-2">
