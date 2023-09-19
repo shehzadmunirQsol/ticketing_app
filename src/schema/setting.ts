@@ -14,7 +14,7 @@ export const getBannerSchema = z.object({
   is_enabled: z.boolean().optional(),
   banner_id: z.number().optional(),
   searchQuery: z.string().optional(),
-  page: z.number(),
   first: z.number(),
   rows: z.number(),
+  filters: z.any().optional(),
 });

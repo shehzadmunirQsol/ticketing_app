@@ -54,6 +54,12 @@ export const settingRouter = router({
     .input(getBannerSchema)
     .query(async ({ input }) => {
       try {
+        const { filters, ...inputData } = input;
+        const filterPayload: any = { ...filters };
+
+        if (filterPayload?.searchQuery) delete filterPayload.searchQuery;
+        if (filterPayload?.endDate) delete filterPayload.endDate;
+        if (filterPayload?.startDate) delete filterPayload.startDate;
         const options: any = {
           orderBy: { created_at: 'desc' },
           skip: input.first * input.rows,
@@ -61,6 +67,7 @@ export const settingRouter = router({
           where: {
             group: input?.group,
             is_deleted: false,
+            ...filterPayload,
           },
         };
         const select: any = {
@@ -71,14 +78,13 @@ export const settingRouter = router({
             thumb: true,
             model: true,
             value: true,
-
             price: true,
             lang_id: true,
             description: true,
             is_enabled: true,
             is_deleted: true,
-
             date: true,
+            created_at: true,
           },
         };
 
@@ -86,16 +92,61 @@ export const settingRouter = router({
           select.select = {
             id: true,
             lang_id: true,
-
             value: true,
             name: true,
             link: true,
             description: true,
             is_enabled: true,
             is_deleted: true,
-
             thumb: true,
+            created_at: true,
           };
+        }
+
+        // Filters implementations
+        if (input?.filters?.searchQuery) {
+          options.where.OR = [];
+          if (input?.group == 'WONDER') {
+            options.where.OR.push({
+              name: {
+                contains: input?.filters?.searchQuery,
+                mode: 'insensitive',
+              },
+            });
+            options.where.OR.push({
+              description: {
+                contains: input?.filters?.searchQuery,
+                mode: 'insensitive',
+              },
+            });
+          } else {
+            options.where.OR.push({
+              model: {
+                contains: input?.filters?.searchQuery,
+                mode: 'insensitive',
+              },
+            });
+            options.where.OR.push({
+              title: {
+                contains: input?.filters?.searchQuery,
+                mode: 'insensitive',
+              },
+            });
+            options.where.OR.push({
+              description: {
+                contains: input?.filters?.searchQuery,
+                mode: 'insensitive',
+              },
+            });
+          }
+        }
+        if (input?.filters?.startDate) {
+          const startDate = new Date(input?.filters?.startDate);
+          options.where.created_at = { gte: startDate };
+        }
+        if (input?.filters?.endDate) {
+          const endDate = new Date(input?.filters?.endDate);
+          options.where.created_at = { lte: endDate };
         }
         if (input?.lang_id) options.where.lang_id = input?.lang_id;
 
@@ -103,20 +154,6 @@ export const settingRouter = router({
 
         if (input?.banner_id) options.where.id = input?.banner_id;
 
-        if (input.startDate) {
-          const startDate = new Date(input?.startDate);
-          startDate.setDate(startDate.getDate());
-
-          options.where.AND = [];
-          options.where.AND.push({ created_at: { gte: startDate } });
-        }
-        if (input.endDate) {
-          const endDate = new Date(input?.endDate);
-          endDate.setDate(endDate.getDate() + 1);
-
-          options.where.AND = options?.AND ?? [];
-          options.where.AND.push({ created_at: { lte: endDate } });
-        }
         const totalBannerPromise = prisma.bannerView.count({
           where: options?.where,
         });
@@ -131,7 +168,7 @@ export const settingRouter = router({
         if (!banner?.length) {
           throw new TRPCError({
             code: 'NOT_FOUND',
-            message: 'Events not found',
+            message: 'banner not found',
           });
         }
 
@@ -141,6 +178,7 @@ export const settingRouter = router({
           data: banner,
         };
       } catch (error: any) {
+        console.log({ error });
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: error.message,

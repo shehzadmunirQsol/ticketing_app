@@ -80,7 +80,7 @@ export const columns: ColumnDef<Category>[] = [
   },
   {
     id: 'actions',
-    header:"Actions",
+    header: 'Actions',
     enableHiding: false,
     cell: ({ row }) => {
       return (
@@ -92,7 +92,6 @@ export const columns: ColumnDef<Category>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            
             <Link href={`/admin/category/edit/${row?.original?.id}`}>
               <DropdownMenuItem>Edit Category</DropdownMenuItem>
             </Link>
@@ -182,7 +181,7 @@ export default function CategoryDataTable() {
         <ScrollArea className="w-full ">
           <ScrollBar orientation="horizontal"></ScrollBar>
           <Table className="w-[90vw] md:w-full">
-            <TableHeader>
+            <TableHeader className="bg-secondary/80">
               {table?.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {

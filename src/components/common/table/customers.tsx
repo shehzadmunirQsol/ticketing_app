@@ -282,7 +282,7 @@ export default function CustomersDataTable() {
         <ScrollArea className="w-full">
           <ScrollBar orientation="horizontal"></ScrollBar>
           <Table>
-            <TableHeader>
+            <TableHeader className="bg-secondary/80">
               {table?.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {

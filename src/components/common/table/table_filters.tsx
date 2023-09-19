@@ -50,6 +50,7 @@ interface SettingDialogInterface {
   value: any;
   setValue: any;
   setFilters: any;
+  initial?: any;
 }
 
 export function TableFilters(props: SettingDialogInterface) {
@@ -67,6 +68,7 @@ export function TableFilters(props: SettingDialogInterface) {
       'is_enabled',
       'is_percentage',
       'is_limit',
+      'is_disabled',
     ];
     const data =
       filter == 'category_id'
@@ -109,22 +111,34 @@ export function TableFilters(props: SettingDialogInterface) {
       setFilterVal({}),
       setFilterDate({}),
       setFilterInput({}),
-      props?.setFilters({
-        first: 0,
-        rows: 10,
-        lang_id: 1,
-      })
+      props?.setFilters(
+        props?.initial
+          ? {
+              ...props?.initial,
+            }
+          : {
+              first: 0,
+              rows: 10,
+              lang_id: 1,
+            },
+      )
     );
   };
   const SubmitFilter = () => {
     return (
       props?.setValue({ ...filterVal, ...filterDate, ...filterInput }),
       setFilter(!filter),
-      props?.setFilters({
-        first: 0,
-        rows: 10,
-        lang_id: 1,
-      })
+      props?.setFilters(
+        props?.initial
+          ? {
+              ...props?.initial,
+            }
+          : {
+              first: 0,
+              rows: 10,
+              lang_id: 1,
+            },
+      )
     );
   };
 
@@ -279,7 +293,7 @@ export function TableFilters(props: SettingDialogInterface) {
                                   value={
                                     filterVal[item.filtername]?.toString() ?? ''
                                   }
-                                  className=" w-full px-2 py-3 border border-border bg-transparent focus:border-primary selection:border-border focus:ring-border"
+                                  className=" w-full px-2 py-3 border border-border bg-black focus:border-primary selection:border-border focus:ring-border"
                                 >
                                   <option
                                     value={'delete'}
