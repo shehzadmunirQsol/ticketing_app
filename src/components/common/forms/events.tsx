@@ -38,8 +38,6 @@ import 'primereact/resources/themes/lara-light-indigo/theme.css';
 //core
 import 'primereact/resources/primereact.min.css';
 
-
-
 type EventImageType = {
   id: number;
   thumb: string;
@@ -52,76 +50,67 @@ export default function EventForm() {
     lang_id: 1,
   });
 
+  // Get Data From Cms
+  const { data: cms, isLoading } = trpc.cms.getCmsContent.useQuery(
+    {},
+    {
+      refetchOnWindowFocus: false,
+    },
+  );
 
-  
-    // Get Data From Cms
-    const { data: cms, isLoading } = trpc.cms.getCmsContent.useQuery(
-      {},
-      {
-        refetchOnWindowFocus: false,
-      },
-    );
+  const filteredCms = cms?.filter((item) => item?.type === 'event_faqs') || [];
+  console.log(filteredCms, 'filteredCms');
 
-    const filteredCms = cms?.filter(item => item?.type === 'event_faqs') || [];
-    console.log({filteredCms} )
+  const modifiedArray = filteredCms.map((item) => ({
+    id: item.id,
+    name: item.CMSDescription[0]?.title || '', // Access the first "title" in CMSDescription
+  }));
 
-
-const modifiedArray:any = filteredCms.map(obj => {
-  const modifiedObj:any = { ...obj };
-  
-  modifiedObj.name = modifiedObj.type;
-  delete modifiedObj.type; 
-
-  return modifiedObj;
-});
-
-console.log({modifiedArray});
-
-
-
-
-
-
-
-
-
+  console.log({ modifiedArray });
 
   const formSchema = [
     {
       type: 'image',
       name: 'thumb',
       label: 'Image',
-  
+
       placeholder: 'Please Select Image',
     },
     {
       type: 'image',
       name: 'multi_image',
       label: 'Multi Image',
-  
+
       placeholder: 'Please Select Image',
     },
     {
       type: 'number',
       name: 'price',
       label: 'Token Price',
-  
+
       placeholder: 'Please Enter Token Price',
     },
     {
       type: 'select',
       name: 'category_id',
       label: 'Category',
-      list:categoryData,
-      
+      list: categoryData,
+
       placeholder: 'Please Select Category',
     },
     {
       type: 'select',
-      name: 'events_faqs',
+      name: 'faq_id',
       label: 'Event Faqs',
-      list:modifiedArray,
-  
+      list: modifiedArray,
+
+      placeholder: 'Please Enter Faqs Type',
+    },
+    {
+      type: 'text',
+      name: 'video_src',
+      label: 'Video Source',
+
       placeholder: 'Please Enter Video Source',
     },
     {
@@ -136,33 +125,33 @@ console.log({modifiedArray});
       label: 'Per User Cap',
       placeholder: 'Please Enter Per User Cap',
     },
-  
+
     {
       type: 'date',
       name: 'launch_date',
       label: 'Launch Date',
-  
+
       placeholder: 'Please Enter Date',
     },
     {
       type: 'date',
       name: 'end_date',
       label: 'End Date',
-  
+
       placeholder: 'Please Enter Date',
     },
     {
       type: 'switch',
       name: 'is_cash_alt',
       label: 'Alternative Selling Option',
-  
+
       placeholder: 'Please Enter Price',
     },
     {
       type: 'switch_text',
       name: 'cash_alt',
       label: 'Alternative Selling Option',
-  
+
       placeholder: 'Please Enter Price',
     },
   ];
@@ -183,6 +172,7 @@ console.log({modifiedArray});
       multi_image: [],
     },
   });
+  console.log(form.formState.errors, 'form.formState.errors');
 
   const { data: eventData, isLoading: isEventLoading } =
     trpc.event.getEventsById.useQuery(
@@ -195,8 +185,6 @@ console.log({modifiedArray});
         },
       },
     );
-
-
 
   const createEvent = trpc.event.create.useMutation();
   const updateEvent = trpc.event.update.useMutation();
@@ -238,6 +226,7 @@ console.log({modifiedArray});
       setIsSubmitting(false);
       router.back();
     } catch (e: any) {
+      console.log(e, 'evensh eissues');
       setIsSubmitting(false);
 
       toast({
@@ -310,7 +299,8 @@ console.log({modifiedArray});
       form.setValue('ar.desc', ar?.desc as string);
       form.setValue('ar.comp_details', ar?.desc as string);
       form.setValue('cash_alt', payload.data?.cash_alt);
-      form.setValue('category_id', payload.data?.category_id);
+      form.setValue('category_id', payload.data?.category_id );
+      form.setValue('faq_id', payload.data?.faq_id as any);
       form.setValue('is_cash_alt', payload.data?.is_cash_alt);
       form.setValue(
         'end_date',
@@ -440,7 +430,7 @@ console.log({modifiedArray});
                         />
                       </FormControl>
 
-                      <div className='relative pb-2'>
+                      <div className="relative pb-2">
                         <FormMessage />
                       </div>
                     </FormItem>
@@ -459,7 +449,7 @@ console.log({modifiedArray});
                         />
                       </FormControl>
 
-                      <div className='relative pb-2'>
+                      <div className="relative pb-2">
                         <FormMessage />
                       </div>
                     </FormItem>
@@ -485,7 +475,7 @@ console.log({modifiedArray});
                         {/* <Textarea placeholder="Enter Description..." {...field} /> */}
                       </FormControl>
 
-                      <div className='relative pb-2'>
+                      <div className="relative pb-2">
                         <FormMessage />
                       </div>
                     </FormItem>
@@ -508,7 +498,7 @@ console.log({modifiedArray});
                           />
                         </FormControl>
 
-                        <div className='relative pb-2'>
+                        <div className="relative pb-2">
                           <FormMessage />
                         </div>
                       </FormItem>
@@ -527,7 +517,7 @@ console.log({modifiedArray});
                           />
                         </FormControl>
 
-                        <div className='relative pb-2'>
+                        <div className="relative pb-2">
                           <FormMessage />
                         </div>
                       </FormItem>
@@ -558,7 +548,7 @@ console.log({modifiedArray});
                           {/* <Textarea placeholder="Enter Description..." {...field} /> */}
                         </FormControl>
 
-                        <div className='relative pb-2'>
+                        <div className="relative pb-2">
                           <FormMessage />
                         </div>
                       </FormItem>
@@ -587,7 +577,7 @@ console.log({modifiedArray});
                               />
                             </FormControl>
 
-                            <div className='relative pb-2'>
+                            <div className="relative pb-2">
                               <FormMessage />
                             </div>
                           </FormItem>
@@ -622,7 +612,7 @@ console.log({modifiedArray});
                               />
                             </FormControl>
 
-                            <div className='relative pb-2'>
+                            <div className="relative pb-2">
                               <FormMessage />
                             </div>
                           </FormItem>
@@ -671,7 +661,7 @@ console.log({modifiedArray});
                               />
                             </FormControl>
 
-                            <div className='relative pb-2'>
+                            <div className="relative pb-2">
                               <FormMessage />
                             </div>
                           </FormItem>
@@ -695,7 +685,7 @@ console.log({modifiedArray});
                                 />
                               </FormControl>
 
-                              <div className='relative pb-2'>
+                              <div className="relative pb-2">
                                 <FormMessage />
                               </div>
                             </FormItem>
@@ -747,8 +737,7 @@ console.log({modifiedArray});
                                 </SelectContent>
                               </Select>
 
-
-                              <div className='relative pb-2'>
+                              <div className="relative pb-2">
                                 <FormMessage />
                               </div>
                             </FormItem>
@@ -779,7 +768,7 @@ console.log({modifiedArray});
                                   />
                                 </FormControl>
 
-                                <div className='relative pb-2'>
+                                <div className="relative pb-2">
                                   <FormMessage />
                                 </div>
                               </FormItem>

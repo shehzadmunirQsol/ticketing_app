@@ -51,7 +51,9 @@ export const cmsRouter = router({
 
   getCmsContent: publicProcedure.input(getCmsSchema).query(async (input) => {
     try {
+      
       const cms = await prisma?.cMS?.findMany({
+        orderBy: { created_at: 'desc' },
         include: {
           CMSDescription: true,
         },

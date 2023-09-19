@@ -466,6 +466,17 @@ export const eventRouter = router({
               },
             },
             EventImages: true,
+            CMS:{
+              include:{
+                CMSDescription:{
+                  where:{lang_id: input.lang_id},
+                  select:{
+                    content:true,
+                    lang_id:true
+                  }
+                }
+              }
+            }
           },
         });
 
