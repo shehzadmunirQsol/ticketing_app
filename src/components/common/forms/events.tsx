@@ -38,84 +38,7 @@ import 'primereact/resources/themes/lara-light-indigo/theme.css';
 //core
 import 'primereact/resources/primereact.min.css';
 
-const formSchema = [
-  {
-    type: 'image',
-    name: 'thumb',
-    label: 'Image',
 
-    placeholder: 'Please Select Image',
-  },
-  {
-    type: 'image',
-    name: 'multi_image',
-    label: 'Multi Image',
-
-    placeholder: 'Please Select Image',
-  },
-  {
-    type: 'number',
-    name: 'price',
-    label: 'Token Price',
-
-    placeholder: 'Please Enter Token Price',
-  },
-  {
-    type: 'select',
-    name: 'category_id',
-    label: 'Category',
-
-    placeholder: 'Please Select Category',
-  },
-  {
-    type: 'text',
-    name: 'video_src',
-    label: 'Video Source',
-
-    placeholder: 'Please Enter Video Source',
-  },
-  {
-    type: 'number',
-    name: 'total_tickets',
-    label: 'Total Cap',
-    placeholder: 'Please Enter Total Cap',
-  },
-  {
-    type: 'number',
-    name: 'user_ticket_limit',
-    label: 'Per User Cap',
-    placeholder: 'Please Enter Per User Cap',
-  },
-
-  {
-    type: 'date',
-    name: 'launch_date',
-    label: 'Launch Date',
-
-    placeholder: 'Please Enter Date',
-  },
-  {
-    type: 'date',
-    name: 'end_date',
-    label: 'End Date',
-
-    placeholder: 'Please Enter Date',
-  },
-  {
-    type: 'switch',
-    name: 'is_cash_alt',
-    label: 'Alternative Selling Option',
-
-    placeholder: 'Please Enter Price',
-  },
-  {
-    type: 'switch_text',
-    name: 'cash_alt',
-    label: 'Alternative Selling Option',
-
-    placeholder: 'Please Enter Price',
-  },
-];
 
 type EventImageType = {
   id: number;
@@ -128,6 +51,121 @@ export default function EventForm() {
   const { data: categoryData } = trpc.category.getCategory.useQuery({
     lang_id: 1,
   });
+
+
+  
+    // Get Data From Cms
+    const { data: cms, isLoading } = trpc.cms.getCmsContent.useQuery(
+      {},
+      {
+        refetchOnWindowFocus: false,
+      },
+    );
+
+    const filteredCms = cms?.filter(item => item?.type === 'event_faqs') || [];
+    console.log({filteredCms} )
+
+
+const modifiedArray:any = filteredCms.map(obj => {
+  const modifiedObj:any = { ...obj };
+  
+  modifiedObj.name = modifiedObj.type;
+  delete modifiedObj.type; 
+
+  return modifiedObj;
+});
+
+console.log({modifiedArray});
+
+
+
+
+
+
+
+
+
+
+  const formSchema = [
+    {
+      type: 'image',
+      name: 'thumb',
+      label: 'Image',
+  
+      placeholder: 'Please Select Image',
+    },
+    {
+      type: 'image',
+      name: 'multi_image',
+      label: 'Multi Image',
+  
+      placeholder: 'Please Select Image',
+    },
+    {
+      type: 'number',
+      name: 'price',
+      label: 'Token Price',
+  
+      placeholder: 'Please Enter Token Price',
+    },
+    {
+      type: 'select',
+      name: 'category_id',
+      label: 'Category',
+      list:categoryData,
+      
+      placeholder: 'Please Select Category',
+    },
+    {
+      type: 'select',
+      name: 'events_faqs',
+      label: 'Event Faqs',
+      list:modifiedArray,
+  
+      placeholder: 'Please Enter Video Source',
+    },
+    {
+      type: 'number',
+      name: 'total_tickets',
+      label: 'Total Cap',
+      placeholder: 'Please Enter Total Cap',
+    },
+    {
+      type: 'number',
+      name: 'user_ticket_limit',
+      label: 'Per User Cap',
+      placeholder: 'Please Enter Per User Cap',
+    },
+  
+    {
+      type: 'date',
+      name: 'launch_date',
+      label: 'Launch Date',
+  
+      placeholder: 'Please Enter Date',
+    },
+    {
+      type: 'date',
+      name: 'end_date',
+      label: 'End Date',
+  
+      placeholder: 'Please Enter Date',
+    },
+    {
+      type: 'switch',
+      name: 'is_cash_alt',
+      label: 'Alternative Selling Option',
+  
+      placeholder: 'Please Enter Price',
+    },
+    {
+      type: 'switch_text',
+      name: 'cash_alt',
+      label: 'Alternative Selling Option',
+  
+      placeholder: 'Please Enter Price',
+    },
+  ];
 
   const router = useRouter();
   const [optimizeFile, setOptimizeFile] = useState<File | null>(null);
@@ -157,6 +195,8 @@ export default function EventForm() {
         },
       },
     );
+
+
 
   const createEvent = trpc.event.create.useMutation();
   const updateEvent = trpc.event.update.useMutation();
@@ -688,8 +728,8 @@ export default function EventForm() {
                                 </FormControl>
                                 <SelectContent className="bg-background">
                                   <SelectGroup>
-                                    {categoryData &&
-                                      categoryData.map(
+                                    {item?.list &&
+                                      item?.list.map(
                                         (item: any, index: number) => {
                                           return (
                                             <div key={index}>
