@@ -20,7 +20,7 @@ export default function Home() {
       <div className="relative flex flex-col gap-4 md:gap-14  px-4 md:px-14 py-8 md:py-14  ">
         {/* 13 cards */}
         <ProductSection
-          class="mx-auto md:mx-0 max-w-md md:max-w-[22rem] lg:max-w-[24rem] xl:max-w-[26rem]"
+          class="mx-auto mdxs:mx-0 max-w-md md:max-w-[21.5rem] lg:max-w-[23.5rem] xl:max-w-[24.5rem] "
           slidesToShow={3}
           center={false}
           title={'ENDING SOON COMPETITIONS'}
@@ -32,7 +32,7 @@ export default function Home() {
         {/* 11 cards */}
         <div className='py-4'></div>
         <ProductSection
-          class="mx-auto md:pl-3 max-w-md md:max-w-xl  xl:max-w-[40rem] max-h-md"
+          class="mx-auto md:pl-3 max-w-md md:max-w-xl  xl:max-w-[40rem] max-h-md "
           slidesToShow={2}
           center={false}
           title="UPCOMING COMPETITIONS"

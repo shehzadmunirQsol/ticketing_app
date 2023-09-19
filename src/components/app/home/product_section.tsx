@@ -73,7 +73,7 @@ function ProductSection(props: producctInterface) {
   };
   console.log({ products }, products.length, props?.type)
   const settings = {
-    className: 'center slider variable-width flex',
+    className: 'center slider variable-width flex gap-3',
 
     dots: false,
     infinite: false,
@@ -81,6 +81,7 @@ function ProductSection(props: producctInterface) {
     slidesToShow: props?.slidesToShow && products.length > props?.slidesToShow ? props?.slidesToShow : products.length,
     slidesToScroll: 1,
     arrows:false,
+    centerMode: false,
     responsive: [
       {
         breakpoint: props?.breakpointScreens && props?.breakpointScreens[0] !== undefined ? props?.breakpointScreens[0] : 1024,
