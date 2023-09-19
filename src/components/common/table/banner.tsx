@@ -66,11 +66,18 @@ export default function DataTableBanner() {
     isFetched,
     isLoading,
     isError,
-  } = trpc.settings.get_banner.useQuery(filters, {
-    refetchOnWindowFocus: false,
+  } = trpc.settings.get_banner.useQuery(
+    { ...filters, filters: { ...filterID } },
+    {
+      refetchOnWindowFocus: false,
 
-    // enabled: user?.id ? true : false,
-  });
+      // enabled: user?.id ? true : false,
+    },
+  );
+  console.log(
+    { ...filters, filters: { ...filterID } },
+    '...filters, filters: { ...filterID }',
+  );
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
@@ -248,12 +255,33 @@ export default function DataTableBanner() {
       lang_id: params.id,
     }));
   }
+  function handlePagination(page: number) {
+    if (page < 0) return;
+    setFilters((prevFilters: any) => ({ ...prevFilters, first: page }));
+  }
   const roleOptions1 = [
     {
       Icon: 'fal fa-chevron-down',
       text: 'Search',
       filtername: 'searchQuery',
       type: 'text',
+    },
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'Enabled',
+      filtername: 'is_enabled',
+      type: 'select',
+
+      filter: [
+        {
+          name: 'Yes',
+          value: true,
+        },
+        {
+          name: 'No',
+          value: false,
+        },
+      ],
     },
 
     {
@@ -313,6 +341,7 @@ export default function DataTableBanner() {
             value={filterID}
             setValue={setFilterID}
             setFilters={setFilters}
+            initial={initialOrderFilters}
           />
         </div>
       </div>
@@ -320,7 +349,7 @@ export default function DataTableBanner() {
         <ScrollArea className="w-full ">
           <ScrollBar orientation="horizontal"></ScrollBar>
           <Table className="w-[90vw] md:w-full">
-            <TableHeader>
+            <TableHeader className="bg-secondary/80">
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
@@ -374,15 +403,17 @@ export default function DataTableBanner() {
         <div className="space-x-2">
           <Button
             variant="outline"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
+            onClick={() => handlePagination(filters.first - 1)}
+            disabled={filters.first === 0}
           >
             Previous
           </Button>
           <Button
             variant="outline"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
+            onClick={() => handlePagination(filters.first + 1)}
+            disabled={
+              (filters.first + 1) * filters.rows > (bannerApi?.count || 0)
+            }
           >
             Next
           </Button>

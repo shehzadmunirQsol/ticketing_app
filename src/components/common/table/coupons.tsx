@@ -378,7 +378,7 @@ export default function CouponsDataTable() {
           <ScrollBar orientation="horizontal"></ScrollBar>
 
           <Table className="w-full overflow-x-scroll">
-            <TableHeader>
+            <TableHeader className="bg-secondary/80">
               {table?.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {

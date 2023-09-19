@@ -40,6 +40,7 @@ import { SettingDialog } from '../modal/setting';
 import { LoadingDialog } from '../modal/loadingModal';
 import LanguageSelect, { LanguageInterface } from '../language_select';
 import { useMemo, useState } from 'react';
+import { TableFilters } from './table_filters';
 
 export default function DataTableSpotLight() {
   const initialOrderFilters: any = {
@@ -53,18 +54,21 @@ export default function DataTableSpotLight() {
     first: 0,
     page: 0,
   };
-  const [orderFilters, setOrderFilters] = useState({
+  const [filterID, setFilterID] = useState({});
+
+  const [filters, setFilters] = useState({
     ...initialOrderFilters,
   });
   const {
     data: spotLightApi,
     refetch,
     isLoading,
-  } = trpc.settings.get_banner.useQuery(orderFilters, {
-    refetchOnWindowFocus: false,
-
-    // enabled: user?.id ? true : false,
-  });
+  } = trpc.settings.get_banner.useQuery(
+    { ...filters, filters: { ...filterID } },
+    {
+      refetchOnWindowFocus: false,
+    },
+  );
   const [sorting, setSorting] = useState<SortingState>([]);
 
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -208,12 +212,59 @@ export default function DataTableSpotLight() {
       rowSelection,
     },
   });
+  function handlePagination(page: number) {
+    if (page < 0) return;
+    setFilters((prevFilters: any) => ({ ...prevFilters, first: page }));
+  }
   function languageHandler(params: LanguageInterface) {
-    setOrderFilters((prevFilters: any) => ({
+    setFilters((prevFilters: any) => ({
       ...prevFilters,
       lang_id: params.id,
     }));
   }
+  const roleOptions1 = [
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'Search',
+      filtername: 'searchQuery',
+      type: 'text',
+    },
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'Enabled',
+      filtername: 'is_enabled',
+      type: 'select',
+
+      filter: [
+        {
+          name: 'Yes',
+          value: true,
+        },
+        {
+          name: 'No',
+          value: false,
+        },
+      ],
+    },
+
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'From Date',
+      filtername: 'startDate',
+      type: 'date',
+    },
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'To Date',
+      filtername: 'endDate',
+      type: 'date',
+    },
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'Clear Filter',
+      filtername: 'Clear',
+    },
+  ];
 
   return (
     <div className="w-full  ">
@@ -248,13 +299,21 @@ export default function DataTableSpotLight() {
                 })}
             </DropdownMenuContent>
           </DropdownMenu>
+          <TableFilters
+            inputList={roleOptions1}
+            item_name={'Spot Light'}
+            value={filterID}
+            setValue={setFilterID}
+            setFilters={setFilters}
+            initial={initialOrderFilters}
+          />
         </div>
       </div>
       <div className="rounded-md border border-border">
         <ScrollArea className="w-full ">
           <ScrollBar orientation="horizontal"></ScrollBar>
           <Table>
-            <TableHeader>
+            <TableHeader className="bg-secondary/80">
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
@@ -279,7 +338,7 @@ export default function DataTableSpotLight() {
                     key={row.id}
                     data-state={row.getIsSelected() && 'selected'}
                     className=""
-                    dir={orderFilters?.lang_id == 1 ? 'ltr' : 'rtl'}
+                    dir={filters?.lang_id == 1 ? 'ltr' : 'rtl'}
                   >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id} className=" p-6">
@@ -309,15 +368,17 @@ export default function DataTableSpotLight() {
         <div className="space-x-2">
           <Button
             variant="outline"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
+            onClick={() => handlePagination(filters.first - 1)}
+            disabled={filters.first === 0}
           >
             Previous
           </Button>
           <Button
             variant="outline"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
+            onClick={() => handlePagination(filters.first + 1)}
+            disabled={
+              (filters.first + 1) * filters.rows > (spotLightApi?.count || 0)
+            }
           >
             Next
           </Button>
