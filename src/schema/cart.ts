@@ -11,6 +11,7 @@ export const getCartItemsSchema = z.object({
   cart_id: z.number().optional(),
   first: z.number().default(0),
   rows: z.number().default(10),
+  filters: z.any().optional(),
 });
 
 export const getTicketPurchasedSchema = z.object({
