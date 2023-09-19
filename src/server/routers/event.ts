@@ -15,20 +15,45 @@ import { verifyJWT } from '~/utils/jwt';
 export const eventRouter = router({
   get: publicProcedure.input(getEventSchema).query(async ({ input }) => {
     try {
+      const { filters, ...payload } = input;
+      const filterPayload: any = { ...filters };
+
+      if (filterPayload?.searchQuery) delete filterPayload.searchQuery;
+      if (filterPayload?.endDate) delete filterPayload.endDate;
+      if (filterPayload?.startDate) delete filterPayload.startDate;
+      if (filterPayload?.status) delete filterPayload.status;
       const where: any = {
         is_deleted: false,
         lang_id: input.lang_id,
-        draw_date: null,
+        ...filterPayload,
       };
+      if (input?.filters?.searchQuery) {
+        where.OR = [];
+        where.OR.push({
+          name: {
+            contains: input?.filters?.searchQuery,
+            mode: 'insensitive',
+          },
+        });
+      }
 
-      if (input?.startDate) {
-        const startDate = new Date(input?.startDate);
-        where.created_at = { gte: startDate };
+      if (input?.filters?.startDate) {
+        const startDate = new Date(input?.filters?.startDate);
+        where.launch_date = { gte: startDate };
       }
-      if (input?.endDate) {
-        const endDate = new Date(input?.endDate);
-        where.created_at = { lte: endDate };
+      if (input?.filters?.status == 'active') {
+        const startDate = new Date();
+        where.launch_date = { gte: startDate };
       }
+      if (input?.filters?.status == 'in-active') {
+        const startDate = new Date();
+        where.end_date = { lte: startDate };
+      }
+      if (input?.filters?.endDate) {
+        const endDate = new Date(input?.filters?.endDate);
+        where.end_date = { lte: endDate };
+      }
+
       if (input.category_id) where.category_id = input.category_id;
 
       // if (input.event_id) where.id = input.event_id;
@@ -174,6 +199,7 @@ export const eventRouter = router({
     .input(getEventCustomers)
     .query(async ({ input }) => {
       try {
+        // const where = `e.id = ${input.event_id} AND ed.lang_id=1`;
         const eventCustomers =
           await prisma.$queryRaw`SELECT e.id AS event_id, e.thumb, e.price, e.end_date, oe.customer_id, c.email,ed.name AS event_name, c.first_name, c.last_name, CAST( SUM( oe.quantity ) AS INT ) AS quantity
           FROM event AS e
@@ -310,8 +336,11 @@ export const eventRouter = router({
         // upcoming means its going to start
         if (input?.type == 'upcomming') where.launch_date = { gte: todayDate };
         if (input?.type == 'closing') {
-          where.launch_date = { lte: todayDate };
-          where.end_date = { gte: todayDate, lte: endingDate };
+          where.launch_date = { lte: new Date(todayDate) };
+          where.end_date = {
+            gte: new Date(todayDate),
+            lte: new Date(endingDate),
+          };
         }
         const totalEventPromise = prisma.event.count({
           where: where,
@@ -350,7 +379,6 @@ export const eventRouter = router({
           });
         }
 
-        console.log(totalEvent, event, 'event data');
         return {
           message: 'Events found',
           count: totalEvent,
@@ -438,6 +466,17 @@ export const eventRouter = router({
               },
             },
             EventImages: true,
+            CMS:{
+              include:{
+                CMSDescription:{
+                  where:{lang_id: input.lang_id},
+                  select:{
+                    content:true,
+                    lang_id:true
+                  }
+                }
+              }
+            }
           },
         });
 

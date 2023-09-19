@@ -8,16 +8,12 @@ interface token {
   setRange: any;
   min: number;
   max: number;
-
 }
 const TokenRange = ({ range, setRange, min, max }: token) => {
-  console.log({ range });
-  const totalValue = 500; // Total value
-const currentValue = 100; // Current dynamic value
-
-const percentage:any = ((range && range.length ? range[0]:1) / max) * 100;
-console.log({percentage})
-// cons
+  const percentage: any = ((range && range.length ? range[0] : 1) / max) * 100;
+  console.log({ percentage });
+  console.log(range[0],"range[0]");
+  // cons
   return (
     <div>
       <div className="range-slider-container mt-14">
@@ -28,7 +24,6 @@ console.log({percentage})
           min={min}
           step={1}
           onValueChange={(e: any) => {
-            console.log(e[0], '');
             setRange(e);
           }}
         />
@@ -40,9 +35,9 @@ console.log({percentage})
           {range}
         </div>
       </div>
-      <div className='flex justify-between'>
-        <p className='text-card-gray font-black'>{min}</p>
-        <p className='text-card-gray font-black'>{max}</p>
+      <div className="flex justify-between">
+        <p className="text-card-gray font-black">{min}</p>
+        <p className="text-card-gray font-black">{max}</p>
       </div>
     </div>
   );

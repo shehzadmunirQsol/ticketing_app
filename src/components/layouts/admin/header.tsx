@@ -12,43 +12,23 @@ import {
   SheetContent,
   SheetDescription,
   SheetHeader,
+  SheetOverlay,
   SheetTitle,
   SheetTrigger,
 } from '~/components/ui/sheet';
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuPortal,
   DropdownMenuSeparator,
   DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@/ui/dropdown-menu';
-import {
-  Cloud,
-  CreditCard,
-  Github,
-  Keyboard,
-  LifeBuoy,
-  LogOut,
-  Mail,
-  MessageSquare,
-  Plus,
-  PlusCircle,
-  Settings,
-  User,
-  UserPlus,
-  Users,
-} from 'lucide-react';
+import { LogOut } from 'lucide-react';
 // import { router } from '~/server/trpc';
 import { formatTrpcError } from '~/utils/helper';
 import toast from 'react-hot-toast';
-import Link from 'next/link';
 import Content from './content';
 import { LoadingDialog } from '~/components/common/modal/loadingModal';
 function Header() {
@@ -135,10 +115,11 @@ export function DropdownMenuDemo() {
 function DrawerFunction() {
   return (
     <Sheet>
+      <SheetOverlay />
       <SheetTrigger className="flex items-center mb-2  p-3 border-2 rounded-full hover:bg-secondary/80 hover:text-primary align-middle justify-between cursor-pointer">
         <i className="fa-solid fa-bars" />
       </SheetTrigger>
-      <SheetContent className="w-64 " side={'left'}>
+      <SheetContent className="w-64 border-border" side={'left'}>
         <SheetHeader>
           <SheetDescription className="pt-10">
             <Content />

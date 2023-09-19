@@ -71,17 +71,17 @@ function ProductSection(props: producctInterface) {
   const previous = () => {
     slide?.current?.slickPrev();
   };
+  console.log({ products }, products.length, props?.type)
   const settings = {
-    className: 'center slider variable-width ',
+    className: 'center slider variable-width flex gap-3',
 
     dots: false,
-    // infinite: false,
+    infinite: false,
     speed: 500,
-    slidesToShow: props?.slidesToShow,
-    slidesToScroll: props?.slidesToShow,
-    // centerMode: false,
-    arrows: false,
-    // slidesPerRow: 1,
+    slidesToShow: props?.slidesToShow && products.length > props?.slidesToShow ? props?.slidesToShow : products.length,
+    slidesToScroll: 1,
+    arrows:false,
+    centerMode: false,
     responsive: [
       {
         breakpoint: props?.breakpointScreens && props?.breakpointScreens[0] !== undefined ? props?.breakpointScreens[0] : 1024,
@@ -89,6 +89,7 @@ function ProductSection(props: producctInterface) {
           slidesToShow: props?.breakpoint && props?.breakpoint[0] !== undefined ? props?.breakpoint[0] : 3,
           slidesToScroll: 1,
           initialSlide: 0,
+          centerMode: false,
         },
       },
       {
@@ -149,8 +150,9 @@ function ProductSection(props: producctInterface) {
             className={`absolute bottom-10 ${props.type == 'closing' ? 'right-0' : 'left-0'
               }  z-2  w-1/5 h-3/5  bg-teal-400 bg-opacity-50 rounded-full blur-3xl`}
           ></div>
-          
+
         )}
+
 
         <Slider ref={slide} {...settings} >
           {products.map((item, index) => {
@@ -167,14 +169,14 @@ function ProductSection(props: producctInterface) {
             );
           })}
 
-          {products.length === 0 ? (
-            <div className="text-center w-full py-10 text-lg">
-              Coming Soon...
-            </div>
-          ) : (
-            ''
-          )}
         </Slider>
+        {products.length === 0 ? (
+          <div className="text-center w-full py-10 text-lg">
+            Coming Soon...
+          </div>
+        ) : (
+          ''
+        )}
       </div>
     </div>
   );

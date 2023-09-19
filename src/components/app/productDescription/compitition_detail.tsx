@@ -6,14 +6,14 @@ const CompititionDetail = ({data}:any) => {
   return (
     <section id="CompititionDetail">
     <div>
-      <div className="w-30 ">
+      <div className="w-30 my-10 ">
         <p className="lg:text-5xl md:text-4xl text-3xl  font-black ">Competition Details</p>
         <div className="border-b-4 w-16 border-primary mt-4"></div>
 
 
-        {dataCode ? (<p className="lg:text-3xl text-1xl font-black mt-6">
+        {dataCode ? (<div className='my-10'><p className="mb-20">
          {dataCode}
-        </p>) : (<><p className="lg:text-3xl text-1xl font-black mt-6">
+        </p></div>) : (<><p className="lg:text-3xl text-1xl font-black ">
           Mercedes E63s AMG Night Edition
         </p>
         <div>

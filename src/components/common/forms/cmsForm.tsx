@@ -47,7 +47,7 @@ export default function CmsForm(props: CategoryFormInterface) {
   const { toast } = useToast();
   const { id = 0 } = router.query;
   const form = useForm<any>();
-  
+
   // const form = useForm<cmsSchemaInput>({
   // resolver: zodResolver(cmsSchema),
   // });
@@ -55,7 +55,7 @@ export default function CmsForm(props: CategoryFormInterface) {
   const [image, setImage] = useState<File>();
   const [loading, setLoading] = useState<boolean>(false);
   const [content, setContent] = useState<any>('');
-console.log(form.formState.errors,"form.formState.errors")
+  console.log(form.formState.errors, 'form.formState.errors');
   // Getting Data
   const { data } = trpc.cms.getById.useQuery(
     { id: +id },
@@ -191,10 +191,10 @@ console.log(form.formState.errors,"form.formState.errors")
     form.formState.errors?.en && form.formState.errors?.ar
       ? 'Kindly provide information in both English and Arabic fields.'
       : form.formState.errors?.en && !form.formState.errors?.ar
-        ? 'Kindly provide information in English fields.'
-        : !form.formState.errors?.en && form.formState.errors?.ar
-          ? 'Kindly provide information in Arabic fields.'
-          : '';
+      ? 'Kindly provide information in English fields.'
+      : !form.formState.errors?.en && form.formState.errors?.ar
+      ? 'Kindly provide information in Arabic fields.'
+      : '';
 
   // Handle CMS Preview
   const handlePreview = () => {
@@ -254,7 +254,7 @@ console.log(form.formState.errors,"form.formState.errors")
                     <Input placeholder="Enter Page Title" {...field} />
                   </FormControl>
 
-                  <div className='relative pb-2'>
+                  <div className="relative pb-2">
                     <FormMessage />
                   </div>
                 </FormItem>
@@ -272,7 +272,7 @@ console.log(form.formState.errors,"form.formState.errors")
                     <Input placeholder="Enter Page Slug" {...field} />
                   </FormControl>
 
-                  <div className='relative pb-2'>
+                  <div className="relative pb-2">
                     <FormMessage />
                   </div>
                 </FormItem>
@@ -285,8 +285,8 @@ console.log(form.formState.errors,"form.formState.errors")
             render={({ field }) => (
               <FormItem>
                 <FormLabel>
-                    Cms Type<sup className="text-md text-red-500">*</sup>
-                  </FormLabel>
+                  Cms Type<sup className="text-md text-red-500">*</sup>
+                </FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
@@ -325,7 +325,7 @@ console.log(form.formState.errors,"form.formState.errors")
                     <Textarea placeholder="Enter Meta Title..." {...field} />
                   </FormControl>
 
-                  <div className='relative pb-2'>
+                  <div className="relative pb-2">
                     <FormMessage />
                   </div>
                 </FormItem>
@@ -347,7 +347,7 @@ console.log(form.formState.errors,"form.formState.errors")
                     />
                   </FormControl>
 
-                  <div className='relative pb-2'>
+                  <div className="relative pb-2">
                     <FormMessage />
                   </div>
                 </FormItem>
@@ -366,7 +366,7 @@ console.log(form.formState.errors,"form.formState.errors")
                   <Textarea placeholder="Enter Description..." {...field} />
                 </FormControl>
 
-                <div className='relative pb-2'>
+                <div className="relative pb-2">
                   <FormMessage />
                 </div>
               </FormItem>
@@ -392,7 +392,7 @@ console.log(form.formState.errors,"form.formState.errors")
                   />
                 </FormControl>
 
-                <div className='relative pb-2'>
+                <div className="relative pb-2">
                   <FormMessage />
                 </div>
               </FormItem>

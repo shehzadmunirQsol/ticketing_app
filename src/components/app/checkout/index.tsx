@@ -572,7 +572,7 @@ function Checkout() {
                   purposes described in our{' '}
                   <span className="text-white">
                     {' '}
-                    <Link href="/cms/privacy-policy"> privacy policy </Link>
+                    <Link href="/privacy-policy"> privacy policy </Link>
                   </span>
                   .
                 </p>

@@ -41,6 +41,7 @@ import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 import { LoadingDialog } from '../modal/loadingModal';
 import { setSelectedEvent } from '~/store/reducers/admin_layout';
 import { useDispatch } from 'react-redux';
+import { TableFilters } from './table_filters';
 
 export type Category = {
   thumb: string;
@@ -59,26 +60,35 @@ export type Category = {
 
 export default function EventsDataTable() {
   const [sorting, setSorting] = useState<SortingState>([]);
+  const [filterID, setFilterID] = useState({});
+
   const [filters, setFilters] = useState<GetEventSchema>({
     first: 0,
     rows: 10,
     lang_id: 1,
   });
+  console.log({ filterID });
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
 
   const dispatch = useDispatch();
 
-  const { data, isLoading } = trpc.event.get.useQuery(filters, {
-    refetchOnWindowFocus: false,
+  const { data, isLoading } = trpc.event.get.useQuery(
+    { ...filters, filters: { ...filterID } },
+    {
+      refetchOnWindowFocus: false,
+    },
+  );
+  const { data: categoryData } = trpc.category.getCategory.useQuery({
+    lang_id: 1,
   });
 
-  const categoryData = React.useMemo(() => {
+  const eventData = React.useMemo(() => {
     return Array.isArray(data?.data) ? data?.data : [];
   }, [data]);
   const columns: ColumnDef<Category>[] = [
     {
-      accessorKey: 'name',
+      accessorKey: 'Name',
       header: 'Name',
       cell: ({ row }) => {
         return (
@@ -99,16 +109,16 @@ export default function EventsDataTable() {
       },
     },
     {
-      accessorKey: 'desc',
+      accessorKey: 'Description',
       header: 'Description',
       cell: ({ row }) => (
         <div className="text-ellipsis whitespace-nowrap overflow-hidden w-64">
-          {row.getValue('desc')}
+          {row?.original?.desc}
         </div>
       ),
     },
     {
-      accessorKey: 'price',
+      accessorKey: 'Token Price',
       header: 'Token Price',
       cell: ({ row }) => (
         <p className="w-20 text-center text-ellipsis whitespace-nowrap overflow-hidden">
@@ -117,7 +127,7 @@ export default function EventsDataTable() {
       ),
     },
     {
-      accessorKey: 'total_tickets',
+      accessorKey: 'Token Cap',
       header: 'Token Cap',
       cell: ({ row }) => (
         <p className="w-20 text-ellipsis whitespace-nowrap overflow-hidden">
@@ -128,7 +138,7 @@ export default function EventsDataTable() {
       ),
     },
     {
-      accessorKey: 'tickets_sold',
+      accessorKey: 'Token Purchased',
       header: 'Token Purchased',
       cell: ({ row }) => (
         <p className="w-28 text-center text-ellipsis whitespace-nowrap overflow-hidden">
@@ -139,8 +149,8 @@ export default function EventsDataTable() {
       ),
     },
     {
-      accessorKey: 'user_ticket_limit',
-      header: 'Per User Purchased',
+      accessorKey: 'Per User Limit',
+      header: 'Per User Limit',
       cell: ({ row }) => (
         <p className="w-32 text-center text-ellipsis whitespace-nowrap overflow-hidden">
           {row?.original?.user_ticket_limit}
@@ -150,7 +160,7 @@ export default function EventsDataTable() {
       ),
     },
     {
-      accessorKey: 'launch_date',
+      accessorKey: 'Launch Date',
       header: 'Launch Date',
       cell: ({ row }) => (
         <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
@@ -159,7 +169,7 @@ export default function EventsDataTable() {
       ),
     },
     {
-      accessorKey: 'end_date',
+      accessorKey: 'End Date',
       header: 'End Date',
       cell: ({ row }) => (
         <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
@@ -206,7 +216,7 @@ export default function EventsDataTable() {
     },
   ];
   const table = useReactTable({
-    data: categoryData as Category[],
+    data: eventData as Category[],
     columns,
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
@@ -230,6 +240,60 @@ export default function EventsDataTable() {
     if (page < 0) return;
     setFilters((prevFilters) => ({ ...prevFilters, first: page }));
   }
+
+  // FILTER OPTIONS
+  const roleOptions1 = [
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'Search',
+      filtername: 'searchQuery',
+      type: 'text',
+    },
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'Event Status',
+      filtername: 'status',
+      type: 'select',
+
+      filter: [
+        {
+          name: 'Active',
+          value: 'active',
+        },
+        {
+          name: 'Closed',
+          value: 'in-active',
+        },
+      ],
+    },
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'Category',
+      filtername: 'category_id',
+      type: 'select',
+
+      filter: categoryData,
+    },
+
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'Launch Date',
+      filtername: 'startDate',
+      type: 'date',
+    },
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'End Date',
+      filtername: 'endDate',
+      type: 'date',
+    },
+
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'Clear Filter',
+      filtername: 'Clear',
+    },
+  ];
 
   return (
     <div className="w-full space-y-4">
@@ -261,6 +325,13 @@ export default function EventsDataTable() {
               })}
           </DropdownMenuContent>
         </DropdownMenu>
+        <TableFilters
+          inputList={roleOptions1}
+          item_name={'Events'}
+          value={filterID}
+          setValue={setFilterID}
+          setFilters={setFilters}
+        />
       </div>
       <div className="rounded-md border border-border">
         <ScrollArea className="w-full ">

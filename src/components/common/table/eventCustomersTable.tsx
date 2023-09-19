@@ -38,6 +38,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { MoreHorizontal } from 'lucide-react';
 import { SelectWinnerDialog } from '../modal/eventModal';
+import { TableFilters } from './table_filters';
 
 export type EventCustomerType = {
   event_id: number;
@@ -62,6 +63,7 @@ const initialModalProps = {
 };
 
 export default function OrdersDataTable() {
+  const [filterID, setFilterID] = useState({});
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
@@ -213,7 +215,33 @@ export default function OrdersDataTable() {
       isModal: !prevState.isModal,
     }));
   }
+  // FILTER OPTIONS
+  const roleOptions1 = [
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'Search',
+      filtername: 'searchQuery',
+      type: 'text',
+    },
 
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'From Date',
+      filtername: 'startDate',
+      type: 'date',
+    },
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'To Date',
+      filtername: 'endDate',
+      type: 'date',
+    },
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'Clear Filter',
+      filtername: 'Clear',
+    },
+  ];
   return (
     <div className="w-full space-y-4">
       <div className="flex items-center justify-end gap-2">
@@ -243,6 +271,13 @@ export default function OrdersDataTable() {
               })}
           </DropdownMenuContent>
         </DropdownMenu>
+        {/* <TableFilters
+          inputList={roleOptions1}
+          item_name={'Event Customer'}
+          value={filterID}
+          setValue={setFilterID}
+          // setFilters={setFilters}
+        /> */}
       </div>
       <div className="rounded-md border border-border">
         <ScrollArea className="w-full ">
