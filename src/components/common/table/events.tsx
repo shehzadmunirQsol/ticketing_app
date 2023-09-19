@@ -251,6 +251,23 @@ export default function EventsDataTable() {
     },
     {
       Icon: 'fal fa-chevron-down',
+      text: 'Event Status',
+      filtername: 'status',
+      type: 'select',
+
+      filter: [
+        {
+          name: 'Active',
+          value: 'active',
+        },
+        {
+          name: 'Closed',
+          value: 'in-active',
+        },
+      ],
+    },
+    {
+      Icon: 'fal fa-chevron-down',
       text: 'Category',
       filtername: 'category_id',
       type: 'select',

@@ -21,6 +21,7 @@ export const eventRouter = router({
       if (filterPayload?.searchQuery) delete filterPayload.searchQuery;
       if (filterPayload?.endDate) delete filterPayload.endDate;
       if (filterPayload?.startDate) delete filterPayload.startDate;
+      if (filterPayload?.status) delete filterPayload.status;
       const where: any = {
         is_deleted: false,
         lang_id: input.lang_id,
@@ -34,22 +35,20 @@ export const eventRouter = router({
             mode: 'insensitive',
           },
         });
-
-        // options.where.OR.push({
-        //   price: { contains: input.searchQuery, mode: 'insensitive' },
-        // });
       }
 
-      // if (input?.filters?.startDate) {
-      //   const startDate = new Date(input?.filters?.startDate);
-      //   where.launch_date = { lte: startDate };
-      //   where.end_date = { gte: startDate };
-      // }
       if (input?.filters?.startDate) {
         const startDate = new Date(input?.filters?.startDate);
         where.launch_date = { gte: startDate };
       }
-
+      if (input?.filters?.status == 'active') {
+        const startDate = new Date();
+        where.launch_date = { gte: startDate };
+      }
+      if (input?.filters?.status == 'in-active') {
+        const startDate = new Date();
+        where.end_date = { lte: startDate };
+      }
       if (input?.filters?.endDate) {
         const endDate = new Date(input?.filters?.endDate);
         where.end_date = { lte: endDate };
@@ -200,6 +199,7 @@ export const eventRouter = router({
     .input(getEventCustomers)
     .query(async ({ input }) => {
       try {
+        // const where = `e.id = ${input.event_id} AND ed.lang_id=1`;
         const eventCustomers =
           await prisma.$queryRaw`SELECT e.id AS event_id, e.thumb, e.price, e.end_date, oe.customer_id, c.email,ed.name AS event_name, c.first_name, c.last_name, CAST( SUM( oe.quantity ) AS INT ) AS quantity
           FROM event AS e

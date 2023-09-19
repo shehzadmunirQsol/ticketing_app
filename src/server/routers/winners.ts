@@ -7,10 +7,69 @@ import { EMAIL_TEMPLATE_IDS, sendEmail } from '~/utils/helper';
 export const winnerRouter = router({
   get: publicProcedure.input(getWinnersSchema).query(async ({ input }) => {
     try {
+      const { filters, ...payload } = input;
+      const filterPayload: any = { ...filters };
+
+      if (filterPayload?.searchQuery) delete filterPayload.searchQuery;
+      if (filterPayload?.endDate) delete filterPayload.endDate;
+      if (filterPayload?.startDate) delete filterPayload.startDate;
+      const where: any = { is_deleted: false, ...filterPayload };
+      console.log({ filters }, 'filters_input');
+      if (input?.filters?.searchQuery) {
+        where.OR = [];
+        where.OR.push({
+          Event: {
+            EventDescription: {
+              some: {
+                name: {
+                  contains: input?.filters?.searchQuery,
+                  mode: 'insensitive',
+                },
+              },
+            },
+          },
+        });
+
+        where.OR.push({
+          Customer: {
+            first_name: {
+              contains: input?.filters?.searchQuery,
+              mode: 'insensitive',
+            },
+          },
+        });
+        where.OR.push({
+          Customer: {
+            last_name: {
+              contains: input?.filters?.searchQuery,
+              mode: 'insensitive',
+            },
+          },
+        });
+        where.OR.push({
+          Customer: {
+            email: {
+              contains: input?.filters?.searchQuery,
+              mode: 'insensitive',
+            },
+          },
+        });
+      }
+
+      if (input?.filters?.startDate) {
+        const startDate = new Date(input?.filters?.startDate);
+        where.created_at = { gte: startDate };
+      }
+      if (input?.filters?.endDate) {
+        const endDate = new Date(input?.filters?.endDate);
+        where.created_at = { lte: endDate };
+      }
+
       const winnersPromise = prisma.winner.findMany({
         skip: input.first * input.rows,
         take: input.rows,
         orderBy: { created_at: 'desc' },
+        where: where,
         select: {
           draw_date: true,
           is_cash_alt: true,

@@ -49,7 +49,7 @@ interface SettingDialogInterface {
   item_name: string;
   value: any;
   setValue: any;
-  setFilters: any;
+  setFilters?: any;
   initial?: any;
 }
 
@@ -111,34 +111,36 @@ export function TableFilters(props: SettingDialogInterface) {
       setFilterVal({}),
       setFilterDate({}),
       setFilterInput({}),
-      props?.setFilters(
-        props?.initial
-          ? {
-              ...props?.initial,
-            }
-          : {
-              first: 0,
-              rows: 10,
-              lang_id: 1,
-            },
-      )
+      props?.setFilters &&
+        props?.setFilters(
+          props?.initial
+            ? {
+                ...props?.initial,
+              }
+            : {
+                first: 0,
+                rows: 10,
+                lang_id: 1,
+              },
+        )
     );
   };
   const SubmitFilter = () => {
     return (
       props?.setValue({ ...filterVal, ...filterDate, ...filterInput }),
       setFilter(!filter),
-      props?.setFilters(
-        props?.initial
-          ? {
-              ...props?.initial,
-            }
-          : {
-              first: 0,
-              rows: 10,
-              lang_id: 1,
-            },
-      )
+      props?.setFilters &&
+        props?.setFilters(
+          props?.initial
+            ? {
+                ...props?.initial,
+              }
+            : {
+                first: 0,
+                rows: 10,
+                lang_id: 1,
+              },
+        )
     );
   };
 
@@ -175,9 +177,9 @@ export function TableFilters(props: SettingDialogInterface) {
             <SheetTitle>{props?.item_name} Filters</SheetTitle>
             <ScrollArea className="w-full h-[calc(100vh-165px)] ">
               <ScrollBar orientation="vertical"></ScrollBar>
-              <SheetDescription className="pt-10">
-                <Form {...form}>
-                  <form onSubmit={form.handleSubmit(onSubmit)}>
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)}>
+                  <SheetDescription className="pt-10">
                     <div className=" grid grid-cols-1    items-center p-2">
                       {props?.inputList.map((item: any, i: number) => {
                         if (item?.type == 'text') {
@@ -327,9 +329,9 @@ export function TableFilters(props: SettingDialogInterface) {
                         }
                       })}
                     </div>
-                  </form>
-                </Form>
-              </SheetDescription>
+                  </SheetDescription>
+                </form>
+              </Form>
             </ScrollArea>
           </SheetHeader>
           <SheetFooter>

@@ -33,6 +33,7 @@ import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 import { LoadingDialog } from '../modal/loadingModal';
 import Image from 'next/image';
 import { displayDate } from '~/utils/helper';
+import { TableFilters } from './table_filters';
 
 export type WinnerType = {
   Event: {
@@ -54,6 +55,8 @@ export type WinnerType = {
 
 export default function WinnersDataTable() {
   const [sorting, setSorting] = useState<SortingState>([]);
+  const [filterID, setFilterID] = useState({});
+
   const [filters, setFilters] = useState({
     first: 0,
     rows: 10,
@@ -62,9 +65,12 @@ export default function WinnersDataTable() {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
 
-  const { data, isLoading } = trpc.winner.get.useQuery(filters, {
-    refetchOnWindowFocus: true,
-  });
+  const { data, isLoading } = trpc.winner.get.useQuery(
+    { ...filters, filters: { ...filterID } },
+    {
+      refetchOnWindowFocus: true,
+    },
+  );
 
   const winnesData = React.useMemo(() => {
     return Array.isArray(data?.data) ? data?.data : [];
@@ -150,6 +156,43 @@ export default function WinnersDataTable() {
     if (page < 0) return;
     setFilters((prevFilters) => ({ ...prevFilters, first: page }));
   }
+  const StatusOptions = [
+    {
+      name: 'Yes',
+      value: true,
+    },
+    {
+      name: 'No',
+      value: false,
+    },
+  ];
+  // FILTER OPTIONS
+  const roleOptions1 = [
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'Search',
+      filtername: 'searchQuery',
+      type: 'text',
+    },
+
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'From Date',
+      filtername: 'startDate',
+      type: 'date',
+    },
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'To Date',
+      filtername: 'endDate',
+      type: 'date',
+    },
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'Clear Filter',
+      filtername: 'Clear',
+    },
+  ];
 
   return (
     <div className="w-full space-y-4">
@@ -180,6 +223,13 @@ export default function WinnersDataTable() {
               })}
           </DropdownMenuContent>
         </DropdownMenu>
+        <TableFilters
+          inputList={roleOptions1}
+          item_name={'Winners'}
+          value={filterID}
+          setValue={setFilterID}
+          setFilters={setFilters}
+        />
       </div>
       <div className="rounded-md border border-border">
         <ScrollArea className="w-full ">
