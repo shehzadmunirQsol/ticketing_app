@@ -68,9 +68,74 @@ export const cartRouter = router({
     .input(getCartItemsSchema)
     .query(async ({ input }) => {
       try {
+        const { filters, ...inputData } = input;
+        const filterPayload: any = { ...filters };
+
+        if (filterPayload?.searchQuery) delete filterPayload.searchQuery;
+        if (filterPayload?.endDate) delete filterPayload.endDate;
+        if (filterPayload?.startDate) delete filterPayload.startDate;
         const payload = {
           is_deleted: false,
+          ...filterPayload,
         };
+
+        if (input?.filters?.searchQuery) {
+          payload.OR = [];
+          payload.OR.push({
+            Event: {
+              EventDescription: {
+                some: {
+                  name: {
+                    contains: input?.filters?.searchQuery,
+                    mode: 'insensitive',
+                  },
+                },
+              },
+            },
+          });
+          payload.OR.push({
+            Cart: {
+              Customer: {
+                first_name: {
+                  contains: input?.filters?.searchQuery,
+                  mode: 'insensitive',
+                },
+              },
+            },
+          });
+          payload.OR.push({
+            Cart: {
+              Customer: {
+                last_name: {
+                  contains: input?.filters?.searchQuery,
+                  mode: 'insensitive',
+                },
+              },
+            },
+          });
+          payload.OR.push({
+            Cart: {
+              Customer: {
+                email: {
+                  contains: input?.filters?.searchQuery,
+                  mode: 'insensitive',
+                },
+              },
+            },
+          });
+
+          // options.where.OR.push({
+          //   price: { contains: input.searchQuery, mode: 'insensitive' },
+          // });
+        }
+        if (input?.filters?.startDate) {
+          const startDate = new Date(input?.filters?.startDate);
+          payload.created_at = { gte: startDate };
+        }
+        if (input?.filters?.endDate) {
+          const endDate = new Date(input?.filters?.endDate);
+          payload.created_at = { lte: endDate };
+        }
 
         const totalItemsPromise = prisma.cartItem.count({
           where: payload,

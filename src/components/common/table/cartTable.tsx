@@ -65,9 +65,12 @@ export default function OrdersDataTable() {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
 
-  const { data, isLoading } = trpc.cart.getCartItems.useQuery(filters, {
-    refetchOnWindowFocus: false,
-  });
+  const { data, isLoading } = trpc.cart.getCartItems.useQuery(
+    { ...filters, filters: { ...filterID } },
+    {
+      refetchOnWindowFocus: false,
+    },
+  );
   const cartItemData = React.useMemo(() => {
     return Array.isArray(data?.data) ? data?.data : [];
   }, [data]);

@@ -97,28 +97,12 @@ export const settingRouter = router({
             thumb: true,
           };
         }
-        if (input?.lang_id) {
-          options.where = {
-            lang_id: input?.lang_id,
-            group: input?.group,
-            is_deleted: false,
-          };
-        }
-        if (input?.is_enabled) {
-          options.where = {
-            lang_id: input?.lang_id,
-            group: input?.group,
-            is_enabled: true,
-            is_deleted: false,
-          };
-        }
-        if (input?.banner_id) {
-          options.where = {
-            id: input?.banner_id,
-            group: input?.group,
-            is_deleted: false,
-          };
-        }
+        if (input?.lang_id) options.where.lang_id = input?.lang_id;
+
+        if (input?.is_enabled) options.where.is_enabled = true;
+
+        if (input?.banner_id) options.where.id = input?.banner_id;
+
         if (input.startDate) {
           const startDate = new Date(input?.startDate);
           startDate.setDate(startDate.getDate());
@@ -133,17 +117,29 @@ export const settingRouter = router({
           options.where.AND = options?.AND ?? [];
           options.where.AND.push({ created_at: { lte: endDate } });
         }
-        const setting_banner = await prisma.bannerView.findMany({
+        const totalBannerPromise = prisma.bannerView.count({
+          where: options?.where,
+        });
+        const bannerPromise = prisma.bannerView.findMany({
           ...options,
           ...select,
         });
+        const [totalBanner, banner] = await Promise.all([
+          totalBannerPromise,
+          bannerPromise,
+        ]);
+        if (!banner?.length) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Events not found',
+          });
+        }
 
-        console.log({ setting_banner }, 'banner data');
-
-        console.log({ options });
-        console.log({ setting_banner }, 'setting_banner');
-
-        return setting_banner;
+        return {
+          message: 'banner found',
+          count: totalBanner,
+          data: banner,
+        };
       } catch (error: any) {
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',

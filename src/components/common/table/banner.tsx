@@ -1,4 +1,3 @@
-import * as React from 'react';
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -40,9 +39,11 @@ import { Switch } from '~/components/ui/switch';
 import { SettingDialog } from '../modal/setting';
 import { LoadingDialog } from '../modal/loadingModal';
 import LanguageSelect, { LanguageInterface } from '../language_select';
+import { useMemo, useState } from 'react';
+import { TableFilters } from './table_filters';
 
 export default function DataTableBanner() {
-  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [sorting, setSorting] = useState<SortingState>([]);
   const initialOrderFilters: any = {
     startDate: null,
     endDate: null,
@@ -54,25 +55,29 @@ export default function DataTableBanner() {
     first: 0,
     page: 0,
   };
-  const [orderFilters, setOrderFilters] = React.useState({
+  const [filterID, setFilterID] = useState({});
+
+  const [filters, setFilters] = useState({
     ...initialOrderFilters,
   });
-  const { data, refetch, isFetched, isLoading, isError } =
-    trpc.settings.get_banner.useQuery(orderFilters, {
-      refetchOnWindowFocus: false,
+  const {
+    data: bannerApi,
+    refetch,
+    isFetched,
+    isLoading,
+    isError,
+  } = trpc.settings.get_banner.useQuery(filters, {
+    refetchOnWindowFocus: false,
 
-      // enabled: user?.id ? true : false,
-    });
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    [],
-  );
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState({});
-  const [selectedItem, setSelectedItem] = React.useState({});
-  const [title, setTitle] = React.useState('');
-  const [type, setType] = React.useState('');
-  const [isModal, setIsModal] = React.useState(false);
+    // enabled: user?.id ? true : false,
+  });
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = useState({});
+  const [selectedItem, setSelectedItem] = useState({});
+  const [title, setTitle] = useState('');
+  const [type, setType] = useState('');
+  const [isModal, setIsModal] = useState(false);
   const handleEnbled = (data: any, type: string) => {
     // console.log({ e, data });
     setSelectedItem(data);
@@ -185,7 +190,7 @@ export default function DataTableBanner() {
 
     {
       id: 'actions',
-      header:"Actions",
+      header: 'Actions',
       enableHiding: false,
       cell: ({ row }) => {
         const payment = row?.original;
@@ -199,7 +204,6 @@ export default function DataTableBanner() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              
               <Link href={`/admin/settings/banners/edit/${payment?.id}`}>
                 <DropdownMenuItem>Edit Banner</DropdownMenuItem>
               </Link>
@@ -215,9 +219,9 @@ export default function DataTableBanner() {
     },
   ];
 
-  const bannerData = React.useMemo(() => {
-    return Array.isArray(data) ? data : [];
-  }, [data]);
+  const bannerData = useMemo(() => {
+    return Array.isArray(bannerApi?.data) ? bannerApi?.data ?? [] : [];
+  }, [bannerApi]);
 
   const table = useReactTable({
     data: bannerData,
@@ -239,12 +243,37 @@ export default function DataTableBanner() {
   });
 
   function languageHandler(params: LanguageInterface) {
-    setOrderFilters((prevFilters: any) => ({
+    setFilters((prevFilters: any) => ({
       ...prevFilters,
       lang_id: params.id,
     }));
   }
+  const roleOptions1 = [
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'Search',
+      filtername: 'searchQuery',
+      type: 'text',
+    },
 
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'From Date',
+      filtername: 'startDate',
+      type: 'date',
+    },
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'To Date',
+      filtername: 'endDate',
+      type: 'date',
+    },
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'Clear Filter',
+      filtername: 'Clear',
+    },
+  ];
   return (
     <div className="w-full">
       <div className="flex justify-between items-center py-4">
@@ -278,6 +307,13 @@ export default function DataTableBanner() {
                 })}
             </DropdownMenuContent>
           </DropdownMenu>
+          <TableFilters
+            inputList={roleOptions1}
+            item_name={'Banner'}
+            value={filterID}
+            setValue={setFilterID}
+            setFilters={setFilters}
+          />
         </div>
       </div>
       <div className="rounded-md border border-border">
@@ -308,7 +344,7 @@ export default function DataTableBanner() {
                   <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && 'selected'}
-                    dir={orderFilters?.lang_id == 1 ? 'ltr' : 'rtl'}
+                    dir={filters?.lang_id == 1 ? 'ltr' : 'rtl'}
                   >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id}>

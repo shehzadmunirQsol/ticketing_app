@@ -113,15 +113,14 @@ export const getPaymentStatusSchema = z.object({
   checkout_id: z.string(),
 });
 export const getOrder = z.object({
-  
   startDate: z.date().optional(),
   endDate: z.date().optional(),
   customer_id: z.number().optional(),
   first: z.number().optional(),
   rows: z.number().optional(),
   lang_id: z.number().optional(),
-})
-  
+});
+
 export const getOrderSchema = z.object({
   startDate: z.date().optional(),
   endDate: z.date().optional(),
@@ -131,6 +130,7 @@ export const getOrderSchema = z.object({
   first: z.number(),
   rows: z.number(),
   lang_id: z.number().optional(),
+  filters: z.any().optional(),
 });
 export const getByIDSchema = z.object({
   order_id: z.number(),
