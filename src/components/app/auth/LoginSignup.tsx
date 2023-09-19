@@ -60,7 +60,6 @@ export default function LoginSignup() {
   const [isModal, setIsModal] = React.useState(false);
   const [otpIsModal, setOtpIsModal] = React.useState(false);
   const [defaultValue, setDefaultValue] = React.useState('login');
-  console.log(defaultValue, 'defaultValue');
   // register customer
   const registerCustomer = trpc.customer.register.useMutation({
     onSuccess: (res: any) => {
@@ -74,7 +73,6 @@ export default function LoginSignup() {
           last_name: res.last_name,
         }),
       );
-      console.log(res, 'res');
       toast({
         variant: 'success',
         title: 'Registeration Successful, Please Check your Email',
