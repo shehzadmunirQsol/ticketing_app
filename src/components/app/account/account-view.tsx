@@ -2,6 +2,8 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import OrdersDataTable from '~/components/common/table/orders';
+import OrdersDataByIdTable from '~/components/common/table/ordersByIdTable';
 import { Button } from '~/components/ui/button';
 import { Separator } from '~/components/ui/separator';
 import Current from '~/public/assets/not-current-entrie.png';
@@ -13,20 +15,8 @@ const grid = ['', ''];
 const AccountView = ({ control }: any) => {
   const { data: customer, isLoading } = trpc.customer.get.useQuery();
   const { lang } = useSelector((state: RootState) => state.layout);
+
   console.log({ customer }, 'customer');
-
-  const { data: orders, isFetched } = trpc.order.getOrders.useQuery(
-    {
-      customer_id: customer?.data?.id,
-      lang_id: lang.lang_id,
-    },
-    {
-      refetchOnMount: false,
-      enabled: customer?.data?.id ? true : false,
-    },
-  );
-
-  console.log({ orders }, 'orders');
 
   return (
     <div className="py-4 px-6 text-[#eaeaea]">
@@ -70,26 +60,42 @@ const AccountView = ({ control }: any) => {
         Once you enter a competition your tickets will appear here.{' '}
         <span className="font-bold">Good luck!</span>
       </p>
-      {isFetched && <CurrentandPast data={orders} />}
+      <CurrentandPast customer_id={customer?.data?.id} />
     </div>
   );
 };
 
 export default AccountView;
 
-function CurrentandPast(data: any) {
+interface currentandpastprops {
+  customer_id?: number;
+}
+function CurrentandPast({ customer_id }: currentandpastprops) {
+  console.log({ customer_id });
+  const { lang } = useSelector((state: RootState) => state.layout);
+
+  const { data: orders, isFetched } = trpc.order.getOrders.useQuery(
+    {
+      customer_id: customer_id as number,
+      lang_id: lang.lang_id,
+    },
+    {
+      refetchOnMount: false,
+      enabled: customer_id ? true : false,
+    },
+  );
   const [select, setSelect] = useState(0);
   const [displayArray, setDisplayArray] = useState<Array<any>>([]);
 
   const router = useRouter();
   useEffect(() => {
-    console.log(data, 'data?.current');
+    console.log(orders, 'data?.current');
     if (select === 0) {
-      setDisplayArray(data?.data?.current);
+      setDisplayArray(orders?.current);
     } else {
-      setDisplayArray(data?.data?.past);
+      setDisplayArray(orders?.past);
     }
-  }, [select, data]);
+  }, [select, orders]);
 
   console.log({ displayArray }, 'displayArray');
 
@@ -141,19 +147,7 @@ function CurrentandPast(data: any) {
         ) : (
           <>
             <div className="flex flex-wrap justify-start items-start gap-4">
-              {displayArray &&
-                displayArray.map((item, i) => (
-                  <div
-                    key={i}
-                    className="bg-[#101417] p-4 w-52 h-24 border border-white rounded-sm"
-                  >
-                    <p className="font-bold">{`${item?.OrderEvent[0]?.Event?.EventDescription[0]?.name} `}</p>
-                    <p>{`Total Amount: AED ${(item?.total_amount).toFixed(
-                      2,
-                    )}`}</p>
-                    <p>{`Quantity: ${item?.OrderEvent[0].quantity}`}</p>
-                  </div>
-                ))}
+              <OrdersDataByIdTable id={customer_id} />
             </div>
           </>
         )}
