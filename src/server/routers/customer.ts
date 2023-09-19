@@ -66,12 +66,12 @@ export const customerRouter = router({
       if (input.is_approved) {
         const mailOptions = {
           template_id: 10,
-          from: "no-reply@winnar.com",
-          subject: "Thank you for sigining up for Winnar",
+          from: 'no-reply@winnar.com',
+          subject: 'Thank you for sigining up for Winnar',
           to: customer.email,
           params: {
             first_name: customer?.first_name,
-          }
+          },
         };
 
         const mailResponse = await sendEmail(mailOptions);
@@ -83,14 +83,45 @@ export const customerRouter = router({
     .input(getCustomerSchema)
     .query(async ({ input }) => {
       try {
-        const where: any = { is_deleted: false };
+        const { filters, ...payload } = input;
+        const filterPayload: any = { ...filters };
 
-        if (input?.startDate) {
-          const startDate = new Date(input?.startDate);
+        if (filterPayload?.searchQuery) delete filterPayload.searchQuery;
+        if (filterPayload?.endDate) delete filterPayload.endDate;
+        if (filterPayload?.startDate) delete filterPayload.startDate;
+        const where: any = { is_deleted: false, ...filterPayload };
+        console.log({ filters }, 'filters_input');
+        if (input?.filters?.searchQuery) {
+          where.OR = [];
+          where.OR.push({
+            first_name: {
+              contains: input?.filters?.searchQuery,
+              mode: 'insensitive',
+            },
+          });
+          where.OR.push({
+            last_name: {
+              contains: input?.filters?.searchQuery,
+              mode: 'insensitive',
+            },
+          });
+          where.OR.push({
+            username: {
+              contains: input?.filters?.searchQuery,
+              mode: 'insensitive',
+            },
+          });
+          // options.where.OR.push({
+          //   price: { contains: input.searchQuery, mode: 'insensitive' },
+          // });
+        }
+
+        if (input?.filters?.startDate) {
+          const startDate = new Date(input?.filters?.startDate);
           where.created_at = { gte: startDate };
         }
-        if (input?.endDate) {
-          const endDate = new Date(input?.endDate);
+        if (input?.filters?.endDate) {
+          const endDate = new Date(input?.filters?.endDate);
           where.created_at = { lte: endDate };
         }
 
@@ -99,7 +130,7 @@ export const customerRouter = router({
         });
 
         const categoryPromise = prisma.customer.findMany({
-          orderBy: { created_at: 'asc' },
+          orderBy: { created_at: 'desc' },
           skip: input.first * input.rows,
           take: input.rows,
           where: where,
@@ -113,12 +144,12 @@ export const customerRouter = router({
         if (!customer?.length) {
           throw new TRPCError({
             code: 'NOT_FOUND',
-            message: 'Categories not found',
+            message: 'Customer not found',
           });
         }
 
         return {
-          message: 'categories found',
+          message: 'Custoemer found',
           count: totalCustomers,
           data: customer,
         };
@@ -196,9 +227,6 @@ export const customerRouter = router({
             },
           };
           const mailResponse = await sendEmail(mailOptions);
-          console.log(mailResponse, 'mailResponse');
-
-          console.log(customer, 'user');
           return customer;
         }
       } catch (error: any) {
@@ -213,33 +241,51 @@ export const customerRouter = router({
     .input(loginCustomerSchema)
     .mutation(async ({ ctx, input }) => {
       try {
-
         const validity = isValidEmail(input.user)
           ? { email: input.user }
           : { username: input.user };
-        console.log(validity, 'validity');
         const user = await prisma.customer.findFirst({
           where: validity,
         });
-        console.log('user found: ', user);
+
         if (!user || user?.is_deleted) {
           throw new TRPCError({
             code: 'NOT_FOUND',
             message: 'User Not Found',
           });
         }
+
         if (!user.is_approved) {
+          const respCode = await generateOTP(4);
+          const customer = await prisma.customer?.update({
+            where: {
+              id: user.id,
+            },
+            data: { otp: respCode },
+          });
+
+          const mailOptions: any = {
+            template_id: 2,
+            from: 'no-reply@winnar.com',
+            to: user.email,
+            subject: 'Email Verification OTP CODE',
+            params: {
+              otp: respCode,
+              first_name: user?.first_name,
+            },
+          };
+          const mailResponse = await sendEmail(mailOptions);
+
           throw new TRPCError({
             code: 'NOT_FOUND',
-            message: 'Please Wait for Admin Verification',
+            message: 'Your Account is Not Verified',
           });
         }
 
         if (user?.is_disabled) {
           throw new TRPCError({
             code: 'NOT_FOUND',
-            message:
-              'Your Account is Disabled Kindly Contact From Admin Thankyou!',
+            message: 'Your Account is Disabled Kindly Contact From Admin',
           });
         }
         const checkPass = await isSamePass(input.password, user?.password);
@@ -347,11 +393,10 @@ export const customerRouter = router({
               otp: '',
             },
           });
-          console.log(updateResponse, 'updateResponse');
         } else {
           throw new TRPCError({
             code: 'NOT_FOUND',
-            message: 'please try again',
+            message: 'Please try again',
           });
         }
 
@@ -388,13 +433,23 @@ export const customerRouter = router({
     .input(verificationOtpCustomerSchema)
     .mutation(async ({ ctx, input }) => {
       try {
-        console.log(input, 'SJAHHSJSHJA');
         const otpCode = `${input.otp_1}${input.otp_2}${input.otp_3}${input.otp_4}`;
-        console.log(otpCode, input.email, 'HJDJDHDDN');
-        const user: any = await prisma.customer.findFirst({
-          where: { otp: otpCode },
+
+        console.log(otpCode, input.emailOrUser, 'HJDJDHDDN');
+
+        const validity = isValidEmail(input.emailOrUser)
+          ? { email: input.emailOrUser }
+          : { username: input.emailOrUser };
+        const user = await prisma.customer.findFirst({
+          where: validity,
         });
-        console.log(user, 'user HJDJDHDDN');
+
+        if (!user) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Invalid Otp',
+          });
+        }
 
         if (user.otp !== otpCode) {
           throw new TRPCError({
@@ -402,19 +457,28 @@ export const customerRouter = router({
             message: 'Invalid Otp',
           });
         } else {
-          console.log('else HJDJDHDDN');
           const updateResponse = await prisma.customer?.update({
             where: {
               id: user.id,
             },
             data: {
               is_verified: true,
+              is_approved: true,
               otp: '',
             },
           });
-          console.log(updateResponse, 'updateResponse');
         }
-        return { message: 'otp', status: true };
+        const jwt = signJWT({ email: user.email, id: user.id });
+        const serialized = serialize('winnar-token', jwt, {
+          httpOnly: true,
+          path: '/',
+          sameSite: 'strict',
+        });
+
+        ctx?.res?.setHeader('Set-Cookie', serialized);
+        const { password, otp, ...userApiData } = user;
+
+        return { user: userApiData, jwt };
       } catch (error: any) {
         console.log({ error });
         throw new TRPCError({
@@ -428,11 +492,14 @@ export const customerRouter = router({
     .input(resendOtpCustomerSchema)
     .mutation(async ({ ctx, input }) => {
       try {
-        console.log(input, 'SJAHHSJSHJA');
-        console.log(input.email, 'HJDJDHDDN');
-        const user: any = await prisma.customer.findFirst({
-          where: { email: input.email },
+        const validity = isValidEmail(input.emailOrUser)
+          ? { email: input.emailOrUser }
+          : { username: input.emailOrUser };
+
+        const user = await prisma.customer.findFirst({
+          where: validity,
         });
+
         console.log(user, 'user HJDJDHDDN');
 
         if (!user) {
@@ -455,11 +522,11 @@ export const customerRouter = router({
           const mailOptions: any = {
             template_id: 2,
             from: 'no-reply@winnar.com',
-            to: input.email,
+            to: updateResponse.email,
             subject: 'Email Verification OTP CODE',
             params: {
               otp: respCode,
-              first_name: input?.email,
+              first_name: updateResponse?.email,
             },
           };
           const mailResponse = await sendEmail(mailOptions);

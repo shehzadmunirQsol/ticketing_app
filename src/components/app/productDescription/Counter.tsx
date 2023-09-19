@@ -14,6 +14,7 @@ interface CounterProps {
   user_ticket_limit: number;
   ticketInBasket: { current: number };
   ticketPurchased: number;
+  event: any;
 }
 const Counter: React.FC<CounterProps> = ({
   range,
@@ -21,35 +22,25 @@ const Counter: React.FC<CounterProps> = ({
   user_ticket_limit,
   ticketInBasket,
   ticketPurchased,
+  event,
 }) => {
   const { user, isLogin } = useSelector((state: RootState) => state.auth);
-  const { lang } = useSelector((state: RootState) => state.layout)
+  const { lang } = useSelector((state: RootState) => state.layout);
   const { cart } = useSelector((state: RootState) => state.cart);
 
   const { toast } = useToast();
-  const router = useRouter();
   const { query } = useRouter();
   const dispatch = useDispatch();
 
   const addToBasket = trpc.cart.addToCart.useMutation();
 
   async function addToBasketHandler() {
-    if (!isLogin) {
-      toast({
-        variant: 'destructive',
-        title: 'Please Login or Create Your Account!',
-      });
-      router.push('/login')
-      return;
-    }
-
+    console.log({ event });
     const cartItem = cart?.cartItems?.find(
       (item) => item.event_id === +(query?.id ?? 0),
     );
     const payload = {
       subscription_type: cartItem?.subscription_type ?? null,
-      cart_item_id: cartItem?.id ?? 0,
-      customer_id: user?.id,
       cart_id: cart?.id ?? 0,
       event_id: +(query?.id ?? 0),
       is_subscribe: cartItem?.is_subscribe ?? false,
@@ -57,18 +48,47 @@ const Counter: React.FC<CounterProps> = ({
     };
 
     try {
-      const response = await addToBasket.mutateAsync(payload);
-      console.log({ response });
-      dispatch(addToCart(response.data));
+      if (isLogin) {
+        const apiPayload = {
+          ...payload,
+          cart_item_id: cartItem?.id ?? 0,
+          customer_id: user?.id,
+        };
+        const response = await addToBasket.mutateAsync(apiPayload);
+        dispatch(addToCart(response.data));
+      } else {
+        const updatedCartItem = {
+          ...payload,
+          id: 0,
+          Event: {
+            thumb: event.thumb,
+            price: event.price,
+            end_date: event.end_date,
+            tickets_sold: event.tickets_sold,
+            user_ticket_limit: event.user_ticket_limit,
+            total_tickets: event.total_tickets,
 
+            EventDescription: [
+              {
+                name: event.EventDescription[0].name,
+              },
+            ],
+          },
+        };
+
+        const updatedCart = {
+          id: null,
+          customer_id: null,
+          cartItem: updatedCartItem,
+        };
+        dispatch(addToCart(updatedCart));
+      }
       ticketInBasket.current = payload.quantity;
 
       toast({
         variant: 'success',
         title: 'Item added successfully!',
       });
-
-      console.log({ response });
     } catch (error: any) {
       console.log({ error });
     }
@@ -86,7 +106,9 @@ const Counter: React.FC<CounterProps> = ({
       ) : (
         <>
           <div className="flex items-center justify-between">
-            <p className="text-lg text-white">{lang.lang_id === 2 ? "كم عدد التذاكر" : "How many tickets?" } </p>
+            <p className="text-lg text-white">
+              {lang.lang_id === 2 ? 'كم عدد التذاكر' : 'How many tickets?'}{' '}
+            </p>
             {ticketPurchased ? (
               <p className="text-sm text-white/40 ">
                 {"You've"} purchased{' '}

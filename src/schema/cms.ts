@@ -1,8 +1,9 @@
 import { z } from 'zod';
 
 export const cmsSchema = z.object({
-  content: z.string(),
-  slug: z.string(),
+  content: z.string().optional(),
+  slug: z.string().optional(),
+  type: z.enum(['event_faqs', 'faqs', 'static']).nullable(),
   en: z.object({
     slug: z.string(),
     title: z.string(),
@@ -12,8 +13,9 @@ export const cmsSchema = z.object({
   }),
 });
 export const cmsSchemaInput = z.object({
-  content: z.string(),
-  slug: z.string(),
+  content: z.string().optional(),
+  slug: z.string().optional(),
+  type: z.enum(['event_faqs', 'faqs', 'static']).nullable(),
   en: z.object({
     slug: z.string(),
     title: z.string(),
@@ -33,6 +35,7 @@ export const updateCmsContentById = z.object({
   id: z.number(),
   content: z.string(),
   slug: z.string(),
+  type: z.string(),
   en: z.object({
     slug: z.string(),
     title: z.string(),
@@ -40,4 +43,8 @@ export const updateCmsContentById = z.object({
     metadesc: z.string(),
     desc: z.string(),
   }),
+});
+
+export const cmsStatusUpdateById = z.object({
+  id: z.number(),
 });

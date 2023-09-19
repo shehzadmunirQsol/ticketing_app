@@ -53,11 +53,11 @@ export default function Contact() {
         variant: 'success',
         title: 'Email Sent.',
       });
-      // form.setValue('name', '');
-      // form.setValue('email', '');
-      // form.setValue('code', '');
-      // form.setValue('number', '');
-      // form.setValue('message', '');
+      form.setValue('name', '');
+      form.setValue('email', '');
+      form.setValue('code', '');
+      form.setValue('number', '');
+      form.setValue('message', '');
     },
     onError: (err) => {
       console.log(err.message, 'err');
@@ -114,7 +114,10 @@ export default function Contact() {
                           {...field}
                         />
                       </FormControl>
-                      <FormMessage />
+
+                      <div className='relative pb-2'>
+                        <FormMessage />
+                      </div>
                     </FormItem>
                   )}
                 />
@@ -133,7 +136,10 @@ export default function Contact() {
                           {...field}
                         />
                       </FormControl>
-                      <FormMessage />
+
+                      <div className='relative pb-2'>
+                        <FormMessage />
+                      </div>
                     </FormItem>
                   )}
                 />
@@ -155,8 +161,8 @@ export default function Contact() {
                             value={field.value}
                           >
                             <FormControl className="rounded-md bg-inputColor">
-                              <SelectTrigger defaultValue={"+971"}  className=" rounded-md  ">
-                                <SelectValue  placeholder="+971" />
+                              <SelectTrigger defaultValue={"+971"} className=" rounded-md  ">
+                                <SelectValue placeholder="+971" />
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
@@ -170,7 +176,10 @@ export default function Contact() {
                             </SelectContent>
                           </Select>
 
-                          <FormMessage />
+
+                          <div className='relative pb-2'>
+                            <FormMessage />
+                          </div>
                         </FormItem>
                       )}
                     />
@@ -179,17 +188,19 @@ export default function Contact() {
                       name="number"
                       render={({ field }) => (
                         <FormItem className=" w-full mb-8">
-                          {/* <FormLabel className="text-xs font-thin text-grayColor">
-                            Email
-                          </FormLabel> */}
                           <FormControl className="rounded-md bg-inputColor">
                             <Input
-                              type="text"
+                              type="number"
+                              max={9}
                               placeholder="Enter your phone number"
                               {...field}
+
                             />
                           </FormControl>
-                          <FormMessage />
+
+                          <div className='relative pb-2'>
+                            <FormMessage />
+                          </div>
                         </FormItem>
                       )}
                     />
@@ -210,7 +221,10 @@ export default function Contact() {
                           {...field}
                         />
                       </FormControl>
-                      <FormMessage />
+
+                      <div className='relative pb-2'>
+                        <FormMessage />
+                      </div>
                     </FormItem>
                   )}
                 />
@@ -219,7 +233,7 @@ export default function Contact() {
                 <p className="text-lightColor font-extralight text-xs w-full lg:w-96  md:w-96">
                   Your personal data will be used to process your order, support
                   your experience throughout this website, and for other
-                  purposes described in our privacy policy.
+                  purposes described in our <span> <Link href="/privacy-policy"> privacy policy </Link></span>.
                 </p>
                 <Button
                   className="  lg:w-52 md:w-52 w-full     text-black font-sans font-[900]   text-xl tracking-[-1px]"

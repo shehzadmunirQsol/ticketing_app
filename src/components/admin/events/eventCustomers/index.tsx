@@ -1,5 +1,5 @@
 import React from 'react';
-import SelectWinnerDataTable from '~/components/common/table/selectWinnerTable';
+import SelectWinnerDataTable from '~/components/common/table/eventCustomersTable';
 
 function SelectWinnerTable() {
   return (

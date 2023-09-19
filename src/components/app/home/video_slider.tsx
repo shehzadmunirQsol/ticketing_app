@@ -46,10 +46,10 @@ function VideoSlider(props: producctInterface) {
   });
 
   useEffect(() => {
-    if (videoData) {
-      setVideoCardSlider(videoData)
+    if (videoData?.data) {
+      setVideoCardSlider(videoData?.data);
     }
-  }, [videoData])
+  }, [videoData?.data]);
 
   console.log({ videoCardSlider });
 
@@ -74,17 +74,29 @@ function VideoSlider(props: producctInterface) {
     initialSlide: 0,
     responsive: [
       {
-        breakpoint: props?.breakpointScreens && props?.breakpointScreens[0] !== undefined ? props?.breakpointScreens[0] : 1024,
+        breakpoint:
+          props?.breakpointScreens && props?.breakpointScreens[0] !== undefined
+            ? props?.breakpointScreens[0]
+            : 1024,
         settings: {
-          slidesToShow: props?.breakpoint && props?.breakpoint[0] !== undefined ? props?.breakpoint[0] : 3,
+          slidesToShow:
+            props?.breakpoint && props?.breakpoint[0] !== undefined
+              ? props?.breakpoint[0]
+              : 3,
           slidesToScroll: 1,
           initialSlide: 0,
         },
       },
       {
-        breakpoint: props?.breakpointScreens && props?.breakpointScreens[1] !== undefined ? props?.breakpointScreens[1] : 800,
+        breakpoint:
+          props?.breakpointScreens && props?.breakpointScreens[1] !== undefined
+            ? props?.breakpointScreens[1]
+            : 800,
         settings: {
-          slidesToShow: props?.breakpoint && props?.breakpoint[1] !== undefined ? props?.breakpoint[1] : 2,
+          slidesToShow:
+            props?.breakpoint && props?.breakpoint[1] !== undefined
+              ? props?.breakpoint[1]
+              : 2,
           slidesToScroll: 1,
           initialSlide: 0,
           centerMode: false,
@@ -92,9 +104,15 @@ function VideoSlider(props: producctInterface) {
       },
 
       {
-        breakpoint: props?.breakpointScreens && props?.breakpointScreens[2] !== undefined ? props?.breakpointScreens[2] : 640,
+        breakpoint:
+          props?.breakpointScreens && props?.breakpointScreens[2] !== undefined
+            ? props?.breakpointScreens[2]
+            : 640,
         settings: {
-          slidesToShow: props?.breakpoint && props?.breakpoint[2] !== undefined ? props?.breakpoint[2] : 1,
+          slidesToShow:
+            props?.breakpoint && props?.breakpoint[2] !== undefined
+              ? props?.breakpoint[2]
+              : 1,
           slidesToScroll: 1,
           initialSlide: 0,
           centerMode: false,
@@ -103,8 +121,8 @@ function VideoSlider(props: producctInterface) {
     ],
   };
   return (
-    <div className="relative  w-full ">
-      <div className=" mt-4 md:mt-10 relative flex flex-col md:flex-row h-28 md:h-auto py-6  items-center w-full md:justify-between mb-6">
+    <div className=" relative  w-full ">
+      <div className=" mt-4 md:mt-10 relative flex flex-col md:flex-row h-28 md:h-auto py-6  items-center w-full md:justify-between mb-6 ">
         <div>
           <p className="text-gray-200 !text-xl sm:!text-3xl lg:!text-5xl font-black uppercase  ">
             {props?.title}
@@ -114,8 +132,9 @@ function VideoSlider(props: producctInterface) {
           </p>
         </div>
         <div
-          className={`${lang?.dir == 'rtl' ? ' flex-row-reverse' : 'md:absolute right-10'
-            }  flex gap-2 items-center justify-center `}
+          className={`${
+            lang?.dir == 'rtl' ? ' flex-row-reverse' : 'md:absolute right-10'
+          }  flex gap-2 items-center justify-center `}
         >
           <Button
             variant="rounded"
@@ -138,16 +157,16 @@ function VideoSlider(props: producctInterface) {
         <Slider ref={slide} {...settings}>
           {videoCardSlider
             ? videoCardSlider.map((item, index) => {
-              return (
-                <div key={index} className="cardInfo">
-                  <VideoCard
-                    class={`${props?.class} `}
-                    dir={`${lang?.dir}`}
-                    data={item}
-                  />
-                </div>
-              );
-            })
+                return (
+                  <div key={index} className="cardInfo">
+                    <VideoCard
+                      class={`${props?.class} `}
+                      dir={`${lang?.dir}`}
+                      data={item}
+                    />
+                  </div>
+                );
+              })
             : ''}
 
           {videoCardSlider.length === 0 ? (

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   ColumnDef,
   SortingState,
@@ -28,7 +28,7 @@ import {
   TableRow,
 } from '@/ui/table';
 import { trpc } from '~/utils/trpc';
-import { customEmailTruncateHandler } from '~/utils/helper';
+import { customEmailTruncateHandler, displayDate } from '~/utils/helper';
 import { getCustomerSchema } from '~/schema/customer';
 import {
   Tooltip,
@@ -40,6 +40,8 @@ import { Switch } from '~/components/ui/switch';
 import { CustomerDialog } from '../modal/customers';
 import { useToast } from '~/components/ui/use-toast';
 import { LoadingDialog } from '../modal/loadingModal';
+
+import { TableFilters } from './table_filters';
 
 export type Category = {
   email: string;
@@ -60,26 +62,28 @@ export default function CustomersDataTable() {
 
   // use states
   const [sorting, setSorting] = useState<SortingState>([]);
+  const [filterID, setFilterID] = useState({});
+
   const [filters, setFilters] = useState<getCustomerSchema>({
     first: 0,
     rows: 10,
   });
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
-  const [selectedItem, setSelectedItem] = React.useState({});
-  const [title, setTitle] = React.useState('');
-  const [type, setType] = React.useState('');
-  const [isModal, setIsModal] = React.useState(false);
+  const [selectedItem, setSelectedItem] = useState({});
+  const [title, setTitle] = useState('');
+  const [type, setType] = useState('');
+  const [isModal, setIsModal] = useState(false);
 
   // APi
   const { data, refetch, isLoading } = trpc.customer.getCustomers.useQuery(
-    filters,
+    { ...filters, filters: { ...filterID } },
     {
       refetchOnWindowFocus: false,
     },
   );
 
-  const categoryData = React.useMemo(() => {
+  const categoryData = useMemo(() => {
     return Array.isArray(data?.data) ? data?.data : [];
   }, [data]);
 
@@ -100,7 +104,7 @@ export default function CustomersDataTable() {
   // columns
   const columns: ColumnDef<Category>[] = [
     {
-      accessorKey: 'email',
+      accessorKey: 'Email',
       header: 'Email',
       cell: ({ row }) => {
         return (
@@ -122,25 +126,27 @@ export default function CustomersDataTable() {
       },
     },
     {
-      accessorKey: 'username',
+      accessorKey: 'User Name',
       header: 'User Name',
       cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap ">
-          {row.getValue('username')}
+        <div className=" text-ellipsis whitespace-nowrap ">
+          {row?.original?.username}
         </div>
       ),
     },
     {
-      accessorKey: 'first_name',
+      accessorKey: 'Name',
       header: 'Name',
       cell: ({ row }) => (
         <div className="capitalize text-ellipsis whitespace-nowrap ">
-          {row?.original?.first_name + ' ' + row?.original?.last_name}
+          {(row?.original?.first_name ?? '') +
+            ' ' +
+            (row?.original?.last_name ?? '')}
         </div>
       ),
     },
     {
-      id: 'is_verified',
+      id: 'Verified Status',
       header: 'Verified Status',
 
       cell: ({ row }) => {
@@ -157,19 +163,13 @@ export default function CustomersDataTable() {
     },
 
     {
-      id: 'is_approved',
-      header: 'Approved Status',
-
-      cell: ({ row }) => {
-        return (
-          <div>
-            <Switch
-              checked={row?.original?.is_approved}
-              onCheckedChange={() => handleEnbled(row?.original, 'enabled')}
-            />
-          </div>
-        );
-      },
+      accessorKey: 'Created At',
+      header: 'Created At',
+      cell: ({ row }) => (
+        <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
+          {displayDate(row?.original?.created_at)}
+        </div>
+      ),
     },
   ];
 
@@ -194,6 +194,51 @@ export default function CustomersDataTable() {
     if (page < 0) return;
     setFilters((prevFilters) => ({ ...prevFilters, first: page }));
   }
+  const StatusOptions = [
+    {
+      name: 'Yes',
+      value: true,
+    },
+    {
+      name: 'No',
+      value: false,
+    },
+  ];
+  // FILTER OPTIONS
+  const roleOptions1 = [
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'Search',
+      filtername: 'searchQuery',
+      type: 'text',
+    },
+
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'Verified',
+      filtername: 'is_verified',
+      type: 'select',
+
+      filter: StatusOptions,
+    },
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'From Date',
+      filtername: 'startDate',
+      type: 'date',
+    },
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'To Date',
+      filtername: 'endDate',
+      type: 'date',
+    },
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'Clear Filter',
+      filtername: 'Clear',
+    },
+  ];
 
   return (
     <div className="w-full space-y-4">
@@ -224,12 +269,20 @@ export default function CustomersDataTable() {
               })}
           </DropdownMenuContent>
         </DropdownMenu>
+        <TableFilters
+          inputList={roleOptions1}
+          item_name={'Customers'}
+          value={filterID}
+          setValue={setFilterID}
+          setFilters={setFilters}
+        />
       </div>
+
       <div className="rounded-md border border-border">
         <ScrollArea className="w-full">
           <ScrollBar orientation="horizontal"></ScrollBar>
           <Table>
-            <TableHeader>
+            <TableHeader className="bg-secondary/80">
               {table?.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {

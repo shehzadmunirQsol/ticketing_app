@@ -26,10 +26,10 @@ const VideoCard = (props: cardInterface) => {
     // );
   };
   return (
-    <div className="relative group">
+    <div className={`relative group `}>
       <Dialog>
         <div
-          className={` relative w-[300px] h-[400px] group-hover:cursor-pointer  rounded-sm overflow-hidden  shadow-lg bg-card flex justify-between items-start  ${props?.class}`}
+          className={` relative   h-[400px] ${props?.class} group-hover:cursor-pointer  rounded-sm overflow-hidden  shadow-lg bg-card flex justify-between items-start  `}
         >
           <div className="absolute flex mt-2  justify-between items-center w-full  z-30">
             <div className="relative h-10 w-10  rounded-full bg-black z-40 ml-2">

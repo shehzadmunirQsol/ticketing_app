@@ -25,29 +25,48 @@ import { trpc } from '~/utils/trpc';
 import OtpImage from '~/public/assets/otp-screen.svg';
 import Image from 'next/image';
 import { useRef, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { userAuth } from '~/store/reducers/auth';
 interface OtpVerificationDailogInterface {
   otpIsModal: boolean;
   setOtpIsModal: (e: any) => void;
+  emailOrUser: string;
 }
 export function OtpVerificationDailog(props: OtpVerificationDailogInterface) {
   const { toast } = useToast();
   const router = useRouter();
+  const dispatch = useDispatch();
+
   const inputOne: any = useRef<HTMLInputElement>(null);
   const inputTwo: any = useRef<HTMLInputElement>(null);
   const inputThree: any = useRef<HTMLInputElement>(null);
   const inputFour: any = useRef<HTMLInputElement>(null);
 
-  
+  const [seconds, setSeconds] = useState(60);
+  const [showTimer, setShowTimer] = useState(true);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      if (seconds > 0) {
+        setSeconds(seconds - 1);
+      } else {
+        clearInterval(intervalId);
+        setShowTimer(false);
+      }
+    }, 1000);
+    return () => clearInterval(intervalId);
+  }, [seconds]);
+
   // Response OTP Verification
   const otpVerification = trpc.customer.verificationOtpCustomer.useMutation({
     onSuccess: (res: any) => {
-      console.log(res, 'mein hun res');
       toast({
         variant: 'success',
-        title: 'Your Otp is Verified please wait admin verification ',
+        title: 'Your Otp is Verified ',
       });
+      dispatch(userAuth(res?.user));
       props.setOtpIsModal(false);
-      router.push('/login');
+      router.push('/');
     },
     onError: (err) => {
       console.log(err.message, 'err');
@@ -61,7 +80,6 @@ export function OtpVerificationDailog(props: OtpVerificationDailogInterface) {
   // Response OTP Verification
   const resendOtpCustomer = trpc.customer.resendOtpCustomer.useMutation({
     onSuccess: (res: any) => {
-      console.log(res, 'mein hun res');
       toast({
         variant: 'success',
         title: 'Please check your email',
@@ -137,36 +155,32 @@ export function OtpVerificationDailog(props: OtpVerificationDailogInterface) {
   }
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+    try {
+      event.preventDefault();
 
-    const storedData: string | null = localStorage?.getItem('customer');
-
-    if (storedData !== null) {
-      const userData: any = JSON.parse(storedData);
       const result: any = {
-        email: userData.email,
+        emailOrUser: props?.emailOrUser,
         otp_1: +inputOne.current.value,
         otp_2: +inputTwo.current.value,
         otp_3: +inputThree.current.value,
         otp_4: +inputFour.current.value,
       };
-      console.log(result, 'otp Hun mein ');
+
       const otpResult = await otpVerification.mutateAsync(result);
       console.log(otpResult, 'otpResult');
-      console.log(otpResult, 'otpResult');
+    } catch (error: any) {
+      toast({
+        variant: 'destructive',
+        title: error?.message,
+      });
     }
   }
 
   async function handleResendOtp() {
-    const storedData: string | null = localStorage?.getItem('customer');
-
-    if (storedData !== null) {
-      const userData: any = JSON.parse(storedData);
-      const otpResult = await resendOtpCustomer.mutateAsync({
-        email: userData.email,
-      });
-      console.log(otpResult, 'otpResult');
-    }
+    const otpResult = await resendOtpCustomer.mutateAsync({
+      emailOrUser: props?.emailOrUser,
+    });
+    console.log(otpResult, 'otpResult');
   }
 
   return (
@@ -225,19 +239,21 @@ export function OtpVerificationDailog(props: OtpVerificationDailogInterface) {
                   className="bg-transparent text-center py-8 "
                 />
               </div>
-              <div
-                className="flex flex-row justify-center items-center  "
-                onClick={handleResendOtp}
-              >
+              <div className="flex flex-row justify-center items-center  ">
                 <p className="text-center text-grayColor text-xs pr-4 underline cursor-pointer">
                   Didn’t receive an OTP?{' '}
                 </p>
-                <p className="text-white text-xs underline cursor-pointer">Resend OTP</p>
+                <button
+                  disabled={showTimer}
+                  className="text-white text-xs underline cursor-pointer"
+                >
+                  Resend OTP {seconds ? seconds + 's' : ''}
+                </button>
               </div>
               <div className="w-full mx-auto">
                 <div className=" flex items-center justify-center">
                   <Button
-                    className="align-center  rounded-full px-10   text-black font-sans font-[900]   text-xl tracking-[-1px]"
+                    className="align-center text-uppercase rounded-full px-10   text-black font-sans font-[900]   text-xl tracking-[-1px]"
                     variant="clip"
                   >
                     Enter

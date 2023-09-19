@@ -28,7 +28,7 @@ import { useRouter } from 'next/router';
 import { toggleLang } from '~/store/reducers/layout';
 import { RootState } from '~/store/store';
 import Link from 'next/link';
-import { useToast } from '~/components/ui/use-toast';
+
 interface LinkItemProps {
   name: string;
   link: string;
@@ -44,7 +44,6 @@ function Header() {
   const [color, setColor] = useState(false);
 
   const dispatch = useDispatch();
-  const { toast } = useToast();
 
   useEffect(() => {
     const changeColor = () =>
@@ -63,18 +62,6 @@ function Header() {
     const language = { lang, dir, lang_id };
 
     dispatch(toggleLang(language));
-  }
-
-  function routeHandler(route: string) {
-    if (!isLogin) {
-      toast({
-        variant: 'destructive',
-        title: 'Login to your account first!',
-      });
-      return;
-    }
-
-    router.push(route);
   }
 
   return (
@@ -99,19 +86,20 @@ function Header() {
       <div className="hidden  mdx:flex gap-8 items-center justify-center">
         <ItemMenuDemo />
         <div className="flex items-center justify-center gap-2">
-          <Button
-            variant="outline"
-            size="icon_square"
-            className="border-primary relative"
-            onClick={() => routeHandler('/cart')}
-          >
-            <i className="fa-solid fa-cart-shopping" />
-            {count ? (
-              <span className="absolute -top-3 -right-3 inline-flex items-center my-auto justify-center bg-red-600 text-white rounded-full w-7 h-7 text-xs">
-                {count > 99 ? '99+' : count}
-              </span>
-            ) : null}
-          </Button>
+          <Link href={'/cart'}>
+            <Button
+              variant="outline"
+              size="icon_square"
+              className="border-primary relative"
+            >
+              <i className="fa-solid fa-cart-shopping" />
+              {count ? (
+                <span className="absolute -top-3 -right-3 inline-flex items-center my-auto justify-center bg-red-600 text-white rounded-full w-7 h-7 text-xs">
+                  {count > 99 ? '99+' : count}
+                </span>
+              ) : null}
+            </Button>
+          </Link>
 
           <Link href={isLogin ? '/account' : '/login'}>
             <Button
@@ -145,7 +133,6 @@ function Header() {
 export default Header;
 
 export function DropdownMenuDemo() {
-  const [click, setClick] = useState(false);
   const dispatch = useDispatch();
   function toggleLanguageHandler(lang: 'en' | 'ar') {
     const dir: 'ltr' | 'rtl' = lang === 'ar' ? 'rtl' : 'ltr';
@@ -235,14 +222,14 @@ export function ItemMenuDemo() {
     },
     {
       name: 'About Us',
-      // link: `/about-us`,
-      link: `/`,
+      link: `/about-us`,
+      // link: `/`,
       icon: 'fa-solid fa-image',
     },
     {
       name: 'FAQ',
-      // link: `/faq`,
-      link: `/`,
+      link: `/faq`,
+      // link: `/`,
       icon: 'fa-solid fa-users',
     },
   ];
@@ -252,9 +239,12 @@ export function ItemMenuDemo() {
       id="navbar-sticky"
     >
       <ul className="flex flex-col p-4 md:p-0  text-small font-normal  border  rounded-lg bg-transparent md:flex-row md:space-x-4 md:mt-0 md:border-0 md:bg-white dark:bg-transparent ">
-        {linkItems?.map((item, index) => {
+        {linkItems?.map((item) => {
           return (
-            <li key={index} className="group border-b-2 border-transparent  ">
+            <li
+              key={item.name}
+              className="group border-b-2 border-transparent  "
+            >
               <Link
                 href={item?.link}
                 className="flex flex-col py-2 pl-3 pr-4 text-gray-200  hover:underline hover:bg-gray-100  md:hover:bg-transparent  dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"

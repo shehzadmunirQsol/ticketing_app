@@ -65,13 +65,12 @@ export function SettingDialog(props: SettingDialogInterface) {
 
         toast({
           variant: 'success',
-          title: `${props?.title} ${
-            props?.type === 'enabled'
+          title: `${props?.title} ${props?.type === 'enabled'
               ? props?.selectedItem?.is_enabled
                 ? 'disabled'
                 : 'enabled'
               : 'deleted'
-          } Successfully`,
+            } Successfully`,
         });
         props?.refetch();
       } else {
@@ -93,13 +92,12 @@ export function SettingDialog(props: SettingDialogInterface) {
         <DialogHeader>
           <DialogTitle>{props?.title}</DialogTitle>
           <DialogDescription>
-            {`Are You Sure You want to ${
-              props?.type === 'enabled'
+            {`Are you sure you want to ${props?.type === 'enabled'
                 ? props?.selectedItem?.is_enabled
-                  ? 'disable'
-                  : 'enable'
-                : 'delete'
-            } this ${props?.title}`}
+                  ? 'Disable'
+                  : 'Enable'
+                : 'Delete'
+              } this ${props?.title}`}
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4"></div>

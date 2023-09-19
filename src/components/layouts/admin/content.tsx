@@ -16,8 +16,9 @@ export default function Content() {
     (state: RootState) => state.adminLayout,
   );
 
-  const [open, setOpen] = React.useState<string | null>('/dashboard');
-  const [childActive, setChildActive] = React.useState<string>('/dashboard');
+  const [open, setOpen] = React.useState<string | null>('/admin/dashboard');
+  const [childActive, setChildActive] =
+    React.useState<string>('/admin/dashboard');
 
   const router = useRouter();
 
@@ -177,7 +178,7 @@ const SIDEBAR_DATA = [
   },
   {
     key: '/admin/cms',
-    icon: <i className="fa-solid fa-chart-line p-4 rounded-full"></i>,
+    icon: <i className="fas fa-folder-open p-4 rounded-full"></i>,
     title: 'CMS',
   },
   {
@@ -185,11 +186,11 @@ const SIDEBAR_DATA = [
     icon: <i className="fa-solid fa-chart-line p-4 rounded-full"></i>,
     title: 'Orders',
   },
-  // {
-  //   key: '/admin/subscriptions',
-  //   icon: <i className="fa-solid fa-money-check-dollar p-4 rounded-full"></i>,
-  //   title: 'Subscriptions',
-  // },
+  {
+    key: '/admin/winners',
+    icon: <i className="fa-solid fa-chart-line p-4 rounded-full"></i>,
+    title: 'Winners',
+  },
 
   {
     key: '/settings',

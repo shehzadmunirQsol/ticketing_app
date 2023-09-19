@@ -5,6 +5,7 @@ import {
   getCmsSchema,
   getCmsContentByIdSchema,
   updateCmsContentById,
+  cmsStatusUpdateById,
 } from '~/schema/cms';
 import { prisma } from '~/server/prisma';
 import { hashPass, isSamePass } from '~/utils/hash';
@@ -21,6 +22,7 @@ export const cmsRouter = router({
         const payload: any = {
           user_id: 1,
           slug: input.slug,
+          type: input.type,
         };
 
         const cms = await prisma?.cMS?.create({
@@ -49,7 +51,9 @@ export const cmsRouter = router({
 
   getCmsContent: publicProcedure.input(getCmsSchema).query(async (input) => {
     try {
+      
       const cms = await prisma?.cMS?.findMany({
+        orderBy: { created_at: 'desc' },
         include: {
           CMSDescription: true,
         },
@@ -94,13 +98,13 @@ export const cmsRouter = router({
     .mutation(async ({ input }) => {
       try {
         console.log(input, 'HSJSJSJSHJ ::');
-        const cms:any = await prisma?.cMS?.findUnique({
+        const cms: any = await prisma?.cMS?.findUnique({
           where: { id: input.id },
           include: {
             CMSDescription: true,
           },
         });
-        console.log(cms,"cmscmscmscmscmscmscms")
+        console.log(cms, 'cmscmscmscmscmscmscms');
         if (!cms) {
           throw new TRPCError({
             code: 'NOT_FOUND',
@@ -108,8 +112,9 @@ export const cmsRouter = router({
           });
         }
 
-        const cmsPayload = {
+        const cmsPayload:any = {
           slug: input.slug,
+          type: input.type,
         };
         const cmsDescriptionPayload: any = {
           cms_id: cms?.id,
@@ -134,6 +139,40 @@ export const cmsRouter = router({
         });
 
         return { message: 'Cms updating Successfully' };
+      } catch (error: any) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: error?.message,
+        });
+      }
+    }),
+
+  cmsStatusUpdateById: publicProcedure
+    .input(cmsStatusUpdateById)
+    .mutation(async ({ input }) => {
+      try {
+        const cms: any = await prisma?.cMS?.findUnique({
+          where: { id: input.id },
+        });
+        console.log(cms, 'cmscmscmscmscmscmscms');
+        if (!cms) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Page not found',
+          });
+        }
+
+        const cmsPayload = {
+          is_enabled: cms.is_enabled ? false : true,
+        };
+        const cmsUpdate: any = await prisma.cMS.update({
+          where: {
+            id: input.id,
+          },
+          data: cmsPayload,
+        });
+
+        return { message: 'CMS Status Updated Successfully' };
       } catch (error: any) {
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',

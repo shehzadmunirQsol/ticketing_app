@@ -4,7 +4,7 @@ import { Switch } from '~/components/ui/switch';
 import { Button } from '~/components/ui/button';
 import { useState } from 'react';
 import { trpc } from '~/utils/trpc';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useToast } from '~/components/ui/use-toast';
 import { CartItemInterface, addToCart } from '~/store/reducers/cart';
 import { getAvailableTickets, renderNFTImage } from '~/utils/helper';
@@ -16,6 +16,7 @@ import {
   TooltipTrigger,
 } from '~/components/ui/tooltip';
 import Link from 'next/link';
+import { RootState } from '~/store/store';
 
 type CartItemProp = {
   cartItem: CartItemInterface;
@@ -28,6 +29,8 @@ type SubscriptionType = 'weekly' | 'monthly' | 'quarterly' | null;
 
 export default function CartItem(props: CartItemProp) {
   const { cart_id, customer_id, cartItem } = props;
+
+  const { isLogin } = useSelector((state: RootState) => state.auth);
   const [isSubscribe, setIsSubscribe] = useState(cartItem?.is_subscribe);
   const [isModal, setIsModal] = useState(false);
 
@@ -43,19 +46,15 @@ export default function CartItem(props: CartItemProp) {
   async function addToBasketHandler(
     type: 'increment' | 'decrement' | 'unsubscribe' | 'update_cart',
   ) {
-    const quantity =
-      type === 'increment'
-        ? cartItem?.quantity + 1
-        : type === 'decrement'
-        ? cartItem?.quantity - 1
-        : cartItem?.quantity;
+    let quantity = cartItem.quantity;
+
+    if (type === 'increment') quantity++;
+    if (type === 'decrement') quantity--;
 
     const isSubscription = type === 'unsubscribe' ? false : isSubscribe;
 
     const payload = {
       subscription_type: isSubscription ? subscriptionType : null,
-      cart_item_id: cartItem?.id,
-      customer_id: customer_id,
       cart_id: cart_id,
       event_id: cartItem?.event_id,
       is_subscribe: isSubscription,
@@ -63,8 +62,26 @@ export default function CartItem(props: CartItemProp) {
     };
 
     try {
-      const response = await addToBasket.mutateAsync(payload);
-      dispatch(addToCart(response.data));
+      if (isLogin) {
+        const apiPayload = {
+          ...payload,
+          cart_item_id: cartItem?.id,
+          customer_id: customer_id,
+        };
+        const response = await addToBasket.mutateAsync(apiPayload);
+        dispatch(addToCart(response.data));
+      } else {
+        const updatedCartItem = {
+          ...cartItem,
+          ...payload,
+        };
+        const updatedCart = {
+          id: cart_id,
+          customer_id: customer_id,
+          cartItem: updatedCartItem,
+        };
+        dispatch(addToCart(updatedCart));
+      }
       setIsSubscribe(isSubscription);
       setSubscriptionType(isSubscription ? subscriptionType : null);
 
@@ -72,8 +89,6 @@ export default function CartItem(props: CartItemProp) {
         variant: 'success',
         title: 'Item updated successfully!',
       });
-
-      console.log({ response });
     } catch (error: any) {
       console.log({ error });
     }
@@ -97,10 +112,7 @@ export default function CartItem(props: CartItemProp) {
   });
 
   return (
-    <div
-      data-name="card"
-      className="card py-3 mdx:py-6 border-t border-white/40"
-    >
+    <div data-name="card" className="py-3 mdx:py-6 border-t border-white/40">
       <div className="mb-2 flex items-center justify-between mdx:hidden">
         <p className="text-xl font-bold">
           {cartItem?.Event?.EventDescription[0]?.name}
@@ -131,7 +143,7 @@ export default function CartItem(props: CartItemProp) {
         <div className="flex-1 flex items-center justify-between space-x-4">
           <Link
             href={`/product-detail/${cartItem?.event_id}`}
-            className="hidden mdx:block text-xl xl:text-2xl "
+            className="hidden flex-1 mdx:block text-xl xl:text-2xl "
           >
             {cartItem?.Event?.EventDescription[0]?.name}
             {/* Win This 800BHP Ferrari E63s Night Edition + AED 1,000 Cash! */}
@@ -235,8 +247,10 @@ export default function CartItem(props: CartItemProp) {
       </div>
       <RemoveItemDialog
         isModal={isModal}
+        isLogin={isLogin}
         openChangeHandler={() => setIsModal((preModal) => !preModal)}
         cart_item_id={cartItem.id}
+        event_id={cartItem.event_id}
         item_name={cartItem?.Event?.EventDescription[0]?.name ?? ''}
       />
     </div>

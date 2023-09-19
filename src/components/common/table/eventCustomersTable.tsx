@@ -37,12 +37,15 @@ import { LoadingDialog } from '../modal/loadingModal';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { MoreHorizontal } from 'lucide-react';
+import { SelectWinnerDialog } from '../modal/eventModal';
+import { TableFilters } from './table_filters';
 
 export type EventCustomerType = {
   event_id: number;
   price: number;
   thumb: string;
   event_name: string;
+  end_date: Date;
   customer_id: number;
   email: string;
   first_name: string;
@@ -50,10 +53,22 @@ export type EventCustomerType = {
   quantity: number;
 };
 
+const initialModalProps = {
+  isModal: false,
+  event_id: 0,
+  customer_id: 0,
+  event_name: '',
+  customer_name: '',
+  customer_email: '',
+};
+
 export default function OrdersDataTable() {
+  const [filterID, setFilterID] = useState({});
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
+
+  const [modalProps, setModalProps] = useState(initialModalProps);
 
   const router = useRouter();
   const event_id =
@@ -145,7 +160,7 @@ export default function OrdersDataTable() {
       id: 'actions',
       enableHiding: false,
       cell: ({ row }) => {
-        return (
+        return new Date() > row?.original?.end_date ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="h-8 w-8 p-0">
@@ -156,10 +171,14 @@ export default function OrdersDataTable() {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Select Winner</DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => setModalPropsHandler(row.original)}
+              >
+                Select Winner
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-        );
+        ) : null;
       },
     },
   ];
@@ -180,8 +199,49 @@ export default function OrdersDataTable() {
     },
   });
 
-  console.log({ data });
+  function setModalPropsHandler(params: EventCustomerType) {
+    setModalProps({
+      customer_id: params.customer_id,
+      event_id: params.event_id,
+      event_name: params.event_name,
+      customer_name: params.first_name,
+      customer_email: params.email,
+      isModal: true,
+    });
+  }
+  function openChangeHandler() {
+    setModalProps((prevState) => ({
+      ...initialModalProps,
+      isModal: !prevState.isModal,
+    }));
+  }
+  // FILTER OPTIONS
+  const roleOptions1 = [
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'Search',
+      filtername: 'searchQuery',
+      type: 'text',
+    },
 
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'From Date',
+      filtername: 'startDate',
+      type: 'date',
+    },
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'To Date',
+      filtername: 'endDate',
+      type: 'date',
+    },
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'Clear Filter',
+      filtername: 'Clear',
+    },
+  ];
   return (
     <div className="w-full space-y-4">
       <div className="flex items-center justify-end gap-2">
@@ -211,6 +271,13 @@ export default function OrdersDataTable() {
               })}
           </DropdownMenuContent>
         </DropdownMenu>
+        {/* <TableFilters
+          inputList={roleOptions1}
+          item_name={'Event Customer'}
+          value={filterID}
+          setValue={setFilterID}
+          // setFilters={setFilters}
+        /> */}
       </div>
       <div className="rounded-md border border-border">
         <ScrollArea className="w-full ">
@@ -266,6 +333,10 @@ export default function OrdersDataTable() {
         </ScrollArea>
       </div>
 
+      <SelectWinnerDialog
+        {...modalProps}
+        openChangeHandler={openChangeHandler}
+      />
       <LoadingDialog open={isLoading} text={'Loading data...'} />
     </div>
   );

@@ -133,16 +133,32 @@ export const couponRouter = router({
     }),
   get: publicProcedure.input(getCouponSchema).query(async ({ input }) => {
     try {
-      const where: any = { is_deleted: false };
+      const { filters, ...payload } = input;
+      const filterPayload: any = { ...filters };
 
-      if (input?.startDate) {
-        const startDate = new Date(input?.startDate);
-        where.created_at = { gte: startDate };
+      if (filterPayload?.searchQuery) delete filterPayload.searchQuery;
+      if (filterPayload?.endDate) delete filterPayload.endDate;
+      if (filterPayload?.startDate) delete filterPayload.startDate;
+      const where: any = { is_deleted: false, ...filterPayload };
+
+      if (input?.filters?.searchQuery) {
+        where.OR = [];
+        where.OR.push({
+          name: {
+            contains: input?.filters?.searchQuery,
+            mode: 'insensitive',
+          },
+        });
       }
 
-      if (input?.endDate) {
-        const endDate = new Date(input?.endDate);
-        where.created_at = { lte: endDate };
+      if (input?.filters?.startDate) {
+        const startDate = new Date(input?.filters?.startDate);
+        where.start_date = { gte: startDate };
+      }
+
+      if (input?.filters?.endDate) {
+        const endDate = new Date(input?.filters?.endDate);
+        where.end_date = { lte: endDate };
       }
 
       const totalCategoryPromise = prisma.coupon.count({

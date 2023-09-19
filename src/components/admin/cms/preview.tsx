@@ -1,4 +1,6 @@
+import Head from 'next/head.js';
 import { useRouter } from 'next/router';
+import Script from 'next/script';
 import React, { useEffect, useState } from 'react';
 
 const Preview = () => {
@@ -29,9 +31,10 @@ const Preview = () => {
     };
   }, []);
 
+
+
   return (
     <div>
-      {/* <p>hello</p> */}
       <div
         dangerouslySetInnerHTML={{
           __html: data?.toString() ?? '<>html conte</>',
@@ -40,5 +43,20 @@ const Preview = () => {
     </div>
   );
 };
+
+
+<div className="carousel">
+  <div className="card">
+    <img src="" alt="" />
+    <h4></h4>
+    <p></p>
+
+    <div className="hover">
+    <h4></h4>
+    <p></p>
+
+    </div>
+  </div>
+</div>
 
 export default Preview;

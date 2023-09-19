@@ -24,6 +24,8 @@ import SideImage from '../../common/SideImage';
 import {
   signupCustomerInput,
   loginCustomerInput,
+  loginCustomerSchema,
+  // loginCustomerSchemaInput,
   signupCustomerSchema,
 } from '~/schema/customer';
 import { useToast } from '~/components/ui/use-toast';
@@ -42,22 +44,26 @@ export default function LoginSignup() {
   const dispatch = useDispatch();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  // const formSignup = useForm<signupCustomerInput>();
+  const [user, setUser] = useState(null);
 
   // 1. Define your form.
   const formSignup = useForm<signupCustomerInput>({
     resolver: zodResolver(signupCustomerSchema),
   });
-  const formLogin = useForm<loginCustomerInput>();
+  const formLogin = useForm<loginCustomerInput>({
+    resolver: zodResolver(loginCustomerSchema),
+  });
+
+  // const form</loginCustomerInput>Login = useForm<loginCustomerInput>();
 
   // Handle Forget Password Modal
   const [isModal, setIsModal] = React.useState(false);
   const [otpIsModal, setOtpIsModal] = React.useState(false);
   const [defaultValue, setDefaultValue] = React.useState('login');
-  console.log(defaultValue, 'defaultValue');
   // register customer
   const registerCustomer = trpc.customer.register.useMutation({
     onSuccess: (res: any) => {
+      setUser(res.email);
       const localStorageData = localStorage.setItem(
         'customer',
         JSON.stringify({
@@ -67,10 +73,9 @@ export default function LoginSignup() {
           last_name: res.last_name,
         }),
       );
-      console.log(res, 'res');
       toast({
         variant: 'success',
-        title: 'User Register Successfully Please Check your Email',
+        title: 'Registeration Successful, Please Check your Email',
       });
       // router.push('/login')
       setDefaultValue('login');
@@ -95,7 +100,7 @@ export default function LoginSignup() {
     onSuccess: (response) => {
       toast({
         variant: 'success',
-        title: 'User Login Successfully ',
+        title: 'Login Successful ',
       });
       dispatch(userAuth(response?.user));
 
@@ -134,30 +139,38 @@ export default function LoginSignup() {
   const onSubmitLogin = async (values: any) => {
     if (!values.user && !values.password) {
       toast({
-        variant: "destructive",
-        title: "Please Enter Your Login Information"
-      })
+        variant: 'destructive',
+        title: 'Please Enter Your Login Information',
+      });
       return;
     } else if (!values.user) {
       toast({
-        variant: "destructive",
-        title: "Please Enter Your Email"
-      })
+        variant: 'destructive',
+        title: 'Please Enter Your Email',
+      });
       return;
     } else if (!values.password) {
       toast({
-        variant: "destructive",
-        title: "Please Enter Your Password"
-      })
+        variant: 'destructive',
+        title: 'Please Enter Your Password',
+      });
       return;
     }
 
     try {
       setIsSubmitting(true);
       const loginResult = await loginCustomer.mutateAsync(values);
-      console.log(loginResult, 'loginResult');
+
+      // to check for account verified or not
+      console.log({ loginResult });
     } catch (e: any) {
       setIsSubmitting(false);
+      if (e.shape.message == 'Your Account is Not Verified') {
+        setOtpIsModal(true);
+      } else {
+        setOtpIsModal(false);
+      }
+
       toast({
         variant: 'destructive',
         title: e.message,
@@ -167,8 +180,8 @@ export default function LoginSignup() {
 
   return (
     <section className="body-font   ">
-      <div className="px-5 pt-24 mb-16 lg:pb-0 md:pb-0 lg:py-24 md:py-24 mx-auto flex flex-col-reverse lg:flex-row md:flex-row gap-14 mt-6  w-full max-w-[1300px] ">
-        <div className=" lg:w-2/3 md:w-2/3 w-full h-full  mb-5 lg:mb-0 rounded-lg hidden  lg:block  ">
+      <div className="pt-24 mb-16 lg:pb-0 md:pb-0 lg:py-24 md:py-24 mx-auto flex flex-col-reverse px-4 md:px-14 lg:flex-row md:flex-row justify-between gap-14 mt-6  w-full md:max-w-[1500px] ">
+        <div className=" lg:w-2/3 md:w-2/3 w-full  h-full  mb-5 lg:mb-0 rounded-lg hidden  lg:block  ">
           <SideImage
             image={CarImage}
             text={'Unlock Your Journey Login or Register for'}
@@ -177,17 +190,20 @@ export default function LoginSignup() {
         </div>
         <Tabs
           defaultValue={defaultValue === 'login' ? 'login' : 'signup'}
-          className="flex flex-col flex-wrap   lg:w-2/2 md:w-full  lg:text-left  rounded-none border-none  lg:mr-6 bg-card "
+          className="flex flex-col flex-wrap   lg:w-2/2 md:w-full  lg:text-left  rounded-none border-none   bg-card "
         >
           <>
             <TabsList className=" w-full rounded-none border-none ">
               <TabsTrigger
                 value="login"
-                className="w-full font-black text-md -mt-1 rounded-none border-none m-0  "
+                className="w-full font-black text-md -mt-1 font-sans rounded-none border-none m-0  "
               >
                 Login
               </TabsTrigger>
-              <TabsTrigger value="signup" className="w-full text-md font-black">
+              <TabsTrigger
+                value="signup"
+                className="w-full font-sans text-md font-black"
+              >
                 Register
               </TabsTrigger>
             </TabsList>
@@ -196,14 +212,14 @@ export default function LoginSignup() {
             <Form {...formLogin}>
               <form
                 onSubmit={formLogin.handleSubmit(onSubmitLogin)}
-                className="justify-center items-center px-2 lg:px-8 py-4 space-y-4 w-full"
+                className="justify-center items-center px-2 lg:px-8 py-4 space-y-4 w-full h-full"
               >
-                <div className='w-full'>
+                <div className="w-full">
                   <FormField
                     control={formLogin.control}
                     name="user"
                     render={({ field }) => (
-                      <FormItem className="mb-6">
+                      <FormItem className="mb-4">
                         <FormLabel className="text-xs font-thin text-grayColor">
                           Username or email address*
                         </FormLabel>
@@ -212,9 +228,12 @@ export default function LoginSignup() {
                             type="text"
                             placeholder="Enter Username or Email Address"
                             {...field}
+                            className="rounded-md"
                           />
                         </FormControl>
-                        <FormMessage />
+                        <div className="relative pb-2">
+                          <FormMessage />
+                        </div>
                       </FormItem>
                     )}
                   />
@@ -231,9 +250,12 @@ export default function LoginSignup() {
                             type="password"
                             placeholder="Enter Your Password"
                             {...field}
+                            className="rounded-md"
                           />
                         </FormControl>
-                        <FormMessage />
+                        <div className="relative pb-2">
+                          <FormMessage />
+                        </div>
                       </FormItem>
                     )}
                   />
@@ -260,14 +282,14 @@ export default function LoginSignup() {
             <Form {...formSignup}>
               <form
                 onSubmit={formSignup.handleSubmit(onSubmitSignup)}
-                className="relative justify-center items-center px-2 lg:px-8 py-4 space-y-4 w-full h-[38rem]"
+                className=" justify-center items-center px-2 lg:px-8 py-4 space-y-4 w-full h-full"
               >
                 <div className="">
                   <FormField
                     control={formSignup.control}
                     name="username"
                     render={({ field }) => (
-                      <FormItem className="mb-6 ">
+                      <FormItem className="mb-4 ">
                         <FormLabel className="text-xs font-thin  text-grayColor">
                           Username*
                         </FormLabel>
@@ -276,9 +298,12 @@ export default function LoginSignup() {
                             type="text"
                             placeholder="Enter Your Username "
                             {...field}
+                            className="rounded-md"
                           />
                         </FormControl>
-                        <FormMessage />
+                        <div className="relative pb-2">
+                          <FormMessage />
+                        </div>
                       </FormItem>
                     )}
                   />
@@ -286,7 +311,7 @@ export default function LoginSignup() {
                     control={formSignup.control}
                     name="email"
                     render={({ field }) => (
-                      <FormItem className="mb-6 ">
+                      <FormItem className="mb-4 ">
                         <FormLabel className="text-xs  font-thin text-grayColor">
                           Email Address*
                         </FormLabel>
@@ -295,9 +320,12 @@ export default function LoginSignup() {
                             type="text"
                             placeholder="Enter Your Email Address"
                             {...field}
+                            className="rounded-md"
                           />
                         </FormControl>
-                        <FormMessage />
+                        <div className="relative pb-2">
+                          <FormMessage />
+                        </div>
                       </FormItem>
                     )}
                   />
@@ -305,7 +333,7 @@ export default function LoginSignup() {
                     control={formSignup.control}
                     name="password"
                     render={({ field }) => (
-                      <FormItem className="mb-6 ">
+                      <FormItem className="mb-4 ">
                         <FormLabel className="text-xs font-thin text-grayColor">
                           Password*
                         </FormLabel>
@@ -314,9 +342,12 @@ export default function LoginSignup() {
                             type="password"
                             placeholder="Enter your password"
                             {...field}
+                            className="rounded-md"
                           />
                         </FormControl>
-                        <FormMessage />
+                        <div className="relative pb-2">
+                          <FormMessage />
+                        </div>
                       </FormItem>
                     )}
                   />
@@ -324,7 +355,7 @@ export default function LoginSignup() {
                     control={formSignup.control}
                     name="firstname"
                     render={({ field }) => (
-                      <FormItem className="mb-6 ">
+                      <FormItem className="mb-4 ">
                         <FormLabel className="text-xs font-thin text-grayColor">
                           First Name*
                         </FormLabel>
@@ -333,9 +364,12 @@ export default function LoginSignup() {
                             type="text"
                             placeholder="Enter your first name"
                             {...field}
+                            className="rounded-md"
                           />
                         </FormControl>
-                        <FormMessage />
+                        <div className="relative pb-2">
+                          <FormMessage />
+                        </div>
                       </FormItem>
                     )}
                   />
@@ -343,28 +377,34 @@ export default function LoginSignup() {
                     control={formSignup.control}
                     name="lastname"
                     render={({ field }) => (
-                      <FormItem className="">
+                      <FormItem className="mb-12">
                         <FormLabel className="text-xs font-thin text-grayColor">
-                          Last Name*
+                          Last Name
                         </FormLabel>
                         <FormControl>
                           <Input
                             type="text"
                             placeholder="Enter your last name"
                             {...field}
+                            className="rounded-md"
                           />
                         </FormControl>
-                        <FormMessage />
+                        <div className="relative pb-2">
+                          <FormMessage />
+                        </div>
                       </FormItem>
                     )}
                   />
                 </div>
-                <div className="absolute  bottom-0 flex flex-col lg:flex-row md:flex-row justify-between items-center gap-6 ">
+                <div className="mt-16 flex flex-col lg:flex-row md:flex-row justify-between items-center gap-6 ">
                   <p className="text-lightColor text-gray-400 font-extralight text-xs w-full lg:w-96  md:w-96">
                     Your personal data will be used to process your order,
                     support your experience throughout this website, and for
-                    other purposes described in our privacy policy.
-=
+                    other purposes described in our{' '}
+                    <span className="text-white underline">
+                      {' '}
+                      <Link href="/privacy-policy "> privacy policy. </Link>
+                    </span>
                   </p>
                   <Button
                     className="  lg:w-52 md:w-52 w-full     text-black font-sans font-[900]   text-xl tracking-[-1px]"
@@ -384,6 +424,7 @@ export default function LoginSignup() {
       <OtpVerificationDailog
         otpIsModal={otpIsModal}
         setOtpIsModal={setOtpIsModal}
+        emailOrUser={formLogin.getValues('user') || (user ?? '')}
       />
     </section>
   );

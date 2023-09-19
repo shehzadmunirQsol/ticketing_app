@@ -59,12 +59,13 @@ const BannerSlider = ({ data }: any) => {
     return () => clearTimeout(animationTimeout);
   }, [currentIndex]);
 
-  console.log(
-    data?.EventImages?.length > 0
-      ? data?.EventImages[currentIndex]
-      : data?.thumb,
-    'SBDJASDHSADJSAJDHSAD',
-  );
+  let eventImages:any=[]
+
+  if(data?.EventImages?.length){
+    eventImages = [ {thumb:data?.thumb}, ...data?.EventImages];
+  }
+
+
   return (
     <div className="relative">
       <div className="flex items-center">
@@ -77,14 +78,10 @@ const BannerSlider = ({ data }: any) => {
           <i className="fa-solid fa-chevron-left"></i>
         </Button>
         <div className="relative h-[18rem] lg:h-[38rem]  w-full lg:px-6 md:px-6 ">
-          {data?.EventImages?.length ? (
+          { data?.EventImages?.length ? (
             <Image
               alt="feature"
-              src={renderNFTImage(
-                data?.EventImages?.length > 0
-                  ? data?.EventImages[currentIndex]
-                  : data?.thumb,
-              )}
+              src={renderNFTImage(eventImages[currentIndex])}
               width={5000}
               height={5000}
               className=" object-contain object-center h-full w-full "
@@ -110,13 +107,13 @@ const BannerSlider = ({ data }: any) => {
           variant="rounded"
           className="button next-btn h-10 w-10 md:h-14 md:w-14 absolute top-58 right-0  z-40"
           onClick={() => setCurrentIndex(currentIndex + 1)}
-          disabled={data?.EventImages?.length - 1 === currentIndex}
+          disabled={eventImages?.length - 1 === currentIndex}
         >
           <i className="fa-solid fa-chevron-right"></i>
         </Button>
       </div>
-      <div className="flex flex-row gap-2 mt-4 lg:px-6 md:px-6 ">
-        {data?.EventImages?.map((item: any, i: any) => {
+      <div className="flex flex-row flex-wrap gap-2 mt-4 lg:px-6 md:px-6  ">
+        {eventImages?.map((item: any, i: any) => {
           return (
             <div
               className="flex flex-row gap-2"

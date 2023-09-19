@@ -14,8 +14,10 @@ import { trpc } from '~/utils/trpc';
 
 interface SettingDialogInterface {
   isModal: boolean;
+  isLogin: boolean;
   openChangeHandler: () => void;
   cart_item_id: number;
+  event_id: number;
   item_name: string;
 }
 
@@ -27,10 +29,12 @@ export function RemoveItemDialog(props: SettingDialogInterface) {
 
   async function removeItemHandler() {
     try {
-      const payload = { cart_item_id: props?.cart_item_id };
+      if (props?.isLogin) {
+        const payload = { cart_item_id: props?.cart_item_id };
 
-      await removeCartItem.mutateAsync(payload);
-      dispatch(removeFromCart(payload));
+        await removeCartItem.mutateAsync(payload);
+      }
+      dispatch(removeFromCart({ event_id: props?.event_id }));
       props?.openChangeHandler();
       toast({
         variant: 'success',
