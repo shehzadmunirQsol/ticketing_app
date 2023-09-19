@@ -262,7 +262,7 @@ export default function CouponsDataTable() {
   const roleOptions1 = [
     {
       Icon: 'fal fa-chevron-down',
-      text: 'Name',
+      text: 'Search',
       filtername: 'searchQuery',
       type: 'text',
     },

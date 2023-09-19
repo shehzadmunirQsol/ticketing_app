@@ -219,7 +219,7 @@ export default function CustomersDataTable() {
   const roleOptions1 = [
     {
       Icon: 'fal fa-chevron-down',
-      text: 'Name',
+      text: 'Search',
       filtername: 'searchQuery',
       type: 'text',
     },

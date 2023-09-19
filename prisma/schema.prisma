@@ -187,10 +187,9 @@ model CategoryDescription {
 }
 
 model Event {
-  id         Int  @id @default(autoincrement())
-  charity_id Int
-  faq_id     Int?
-
+  id                Int       @id @default(autoincrement())
+  charity_id        Int
+  faq_id            Int?
   thumb             String
   video_src         String
   price             Int
@@ -219,7 +218,7 @@ model Event {
   OrderSubscription OrderSubscription[]
   Winner            Winner[]
   CartItem          CartItem[]
-  EventImage        EventImage[]
+  EventImages       EventImage[]
   EventFAQ          EventFAQ[]
 
   @@index([user_id, category_id])

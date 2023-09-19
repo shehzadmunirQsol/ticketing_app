@@ -34,6 +34,7 @@ import { LoadingDialog } from '../modal/loadingModal';
 import Image from 'next/image';
 import { GetCartItemsSchema } from '~/schema/cart';
 import { displayDate } from '~/utils/helper';
+import { TableFilters } from './table_filters';
 
 export type CartType = {
   id: number;
@@ -55,6 +56,8 @@ export type CartType = {
 
 export default function OrdersDataTable() {
   const [sorting, setSorting] = useState<SortingState>([]);
+  const [filterID, setFilterID] = useState({});
+
   const [filters, setFilters] = useState<GetCartItemsSchema>({
     first: 0,
     rows: 10,
@@ -167,7 +170,33 @@ export default function OrdersDataTable() {
     if (page < 0) return;
     setFilters((prevFilters) => ({ ...prevFilters, first: page }));
   }
+  // FILTER OPTIONS
+  const roleOptions1 = [
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'Search',
+      filtername: 'searchQuery',
+      type: 'text',
+    },
 
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'From Date',
+      filtername: 'startDate',
+      type: 'date',
+    },
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'To Date',
+      filtername: 'endDate',
+      type: 'date',
+    },
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'Clear Filter',
+      filtername: 'Clear',
+    },
+  ];
   return (
     <div className="w-full space-y-4">
       <div className="flex items-center justify-end gap-2">
@@ -197,6 +226,13 @@ export default function OrdersDataTable() {
               })}
           </DropdownMenuContent>
         </DropdownMenu>
+        <TableFilters
+          inputList={roleOptions1}
+          item_name={'Cart'}
+          value={filterID}
+          setValue={setFilterID}
+          setFilters={setFilters}
+        />
       </div>
       <div className="rounded-md border border-border">
         <ScrollArea className="w-full ">
