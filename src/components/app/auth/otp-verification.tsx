@@ -25,6 +25,8 @@ import { trpc } from '~/utils/trpc';
 import OtpImage from '~/public/assets/otp-screen.svg';
 import Image from 'next/image';
 import { useRef, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { userAuth } from '~/store/reducers/auth';
 interface OtpVerificationDailogInterface {
   otpIsModal: boolean;
   setOtpIsModal: (e: any) => void;
@@ -33,6 +35,8 @@ interface OtpVerificationDailogInterface {
 export function OtpVerificationDailog(props: OtpVerificationDailogInterface) {
   const { toast } = useToast();
   const router = useRouter();
+  const dispatch = useDispatch();
+
   const inputOne: any = useRef<HTMLInputElement>(null);
   const inputTwo: any = useRef<HTMLInputElement>(null);
   const inputThree: any = useRef<HTMLInputElement>(null);
@@ -58,10 +62,11 @@ export function OtpVerificationDailog(props: OtpVerificationDailogInterface) {
     onSuccess: (res: any) => {
       toast({
         variant: 'success',
-        title: 'Your Otp is Verified Please Login!',
+        title: 'Your Otp is Verified ',
       });
+      dispatch(userAuth(res?.user));
       props.setOtpIsModal(false);
-      router.push('/login');
+      router.push('/');
     },
     onError: (err) => {
       console.log(err.message, 'err');
