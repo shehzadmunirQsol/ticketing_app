@@ -255,9 +255,9 @@ export const customerRouter = router({
             message: 'User Not Found',
           });
         }
+
         if (!user.is_approved) {
           const respCode = await generateOTP(4);
-
           const customer = await prisma.customer?.update({
             where: {
               id: user.id,
@@ -279,7 +279,7 @@ export const customerRouter = router({
 
           throw new TRPCError({
             code: 'NOT_FOUND',
-            message: 'Your Email is Not Verified',
+            message: 'Your Account is Not Verified',
           });
         }
 
@@ -398,7 +398,7 @@ export const customerRouter = router({
         } else {
           throw new TRPCError({
             code: 'NOT_FOUND',
-            message: 'please try again',
+            message: 'Please try again',
           });
         }
 
@@ -486,11 +486,14 @@ export const customerRouter = router({
     .input(resendOtpCustomerSchema)
     .mutation(async ({ ctx, input }) => {
       try {
-        console.log(input, 'SJAHHSJSHJA');
-        console.log(input.email, 'HJDJDHDDN');
-        const user: any = await prisma.customer.findFirst({
-          where: { email: input.email },
+        const validity = isValidEmail(input.emailOrUser)
+          ? { email: input.emailOrUser }
+          : { username: input.emailOrUser };
+
+        const user = await prisma.customer.findFirst({
+          where: validity,
         });
+
         console.log(user, 'user HJDJDHDDN');
 
         if (!user) {
@@ -513,11 +516,11 @@ export const customerRouter = router({
           const mailOptions: any = {
             template_id: 2,
             from: 'no-reply@winnar.com',
-            to: input.email,
+            to: updateResponse.email,
             subject: 'Email Verification OTP CODE',
             params: {
               otp: respCode,
-              first_name: input?.email,
+              first_name: updateResponse?.email,
             },
           };
           const mailResponse = await sendEmail(mailOptions);

@@ -160,10 +160,19 @@ export default function LoginSignup() {
     try {
       setIsSubmitting(true);
       const loginResult = await loginCustomer.mutateAsync(values);
-      console.log(loginResult, 'loginResult');
+
+      // to check for account verified or not
+      console.log({ loginResult })
+
     } catch (e: any) {
+
       setIsSubmitting(false);
-      setOtpIsModal(true);
+      if (e.shape.message == 'Your Account is Not Verified') {
+        setOtpIsModal(true);
+      } else {
+        setOtpIsModal(false);
+      }
+
       toast({
         variant: 'destructive',
         title: e.message,

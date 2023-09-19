@@ -28,7 +28,7 @@ import { useRef, useEffect, useState } from 'react';
 interface OtpVerificationDailogInterface {
   otpIsModal: boolean;
   setOtpIsModal: (e: any) => void;
-  emailOrUser?:string
+  emailOrUser: string;
 }
 export function OtpVerificationDailog(props: OtpVerificationDailogInterface) {
   const { toast } = useToast();
@@ -38,16 +38,24 @@ export function OtpVerificationDailog(props: OtpVerificationDailogInterface) {
   const inputThree: any = useRef<HTMLInputElement>(null);
   const inputFour: any = useRef<HTMLInputElement>(null);
 
-
-
   const [seconds, setSeconds] = useState(60);
   const [showTimer, setShowTimer] = useState(true);
-  
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      if (seconds > 0) {
+        setSeconds(seconds - 1);
+      } else {
+        clearInterval(intervalId);
+        setShowTimer(false);
+      }
+    }, 1000);
+    return () => clearInterval(intervalId);
+  }, [seconds]);
 
   // Response OTP Verification
   const otpVerification = trpc.customer.verificationOtpCustomer.useMutation({
     onSuccess: (res: any) => {
-
       toast({
         variant: 'success',
         title: 'Your Otp is Verified Please Login!',
@@ -145,22 +153,17 @@ export function OtpVerificationDailog(props: OtpVerificationDailogInterface) {
     try {
       event.preventDefault();
 
-      
+      const result: any = {
+        emailOrUser: props?.emailOrUser,
+        otp_1: +inputOne.current.value,
+        otp_2: +inputTwo.current.value,
+        otp_3: +inputThree.current.value,
+        otp_4: +inputFour.current.value,
+      };
 
-
-        const result: any = {
-          emailOrUser: props?.emailOrUser,
-          otp_1: +inputOne.current.value,
-          otp_2: +inputTwo.current.value,
-          otp_3: +inputThree.current.value,
-          otp_4: +inputFour.current.value,
-        };
-        
-        const otpResult = await otpVerification.mutateAsync(result);
-        console.log(otpResult, 'otpResult');
-        console.log(otpResult, 'otpResult');
-      
-    } catch (error:any) {
+      const otpResult = await otpVerification.mutateAsync(result);
+      console.log(otpResult, 'otpResult');
+    } catch (error: any) {
       toast({
         variant: 'destructive',
         title: error?.message,
@@ -169,15 +172,10 @@ export function OtpVerificationDailog(props: OtpVerificationDailogInterface) {
   }
 
   async function handleResendOtp() {
-    const storedData: string | null = localStorage?.getItem('customer');
-
-    if (storedData !== null) {
-      const userData: any = JSON.parse(storedData);
-      const otpResult = await resendOtpCustomer.mutateAsync({
-        email: userData.email,
-      });
-      console.log(otpResult, 'otpResult');
-    }
+    const otpResult = await resendOtpCustomer.mutateAsync({
+      emailOrUser: props?.emailOrUser,
+    });
+    console.log(otpResult, 'otpResult');
   }
 
   return (
@@ -236,16 +234,16 @@ export function OtpVerificationDailog(props: OtpVerificationDailogInterface) {
                   className="bg-transparent text-center py-8 "
                 />
               </div>
-              <div
-                className="flex flex-row justify-center items-center  "
-                onClick={handleResendOtp}
-              >
+              <div className="flex flex-row justify-center items-center  ">
                 <p className="text-center text-grayColor text-xs pr-4 underline cursor-pointer">
                   Didn’t receive an OTP?{' '}
                 </p>
-                <p className="text-white text-xs underline cursor-pointer">
-                  Resend OTP
-                </p>
+                <button
+                  disabled={showTimer}
+                  className="text-white text-xs underline cursor-pointer"
+                >
+                  Resend OTP {seconds ? seconds + 's' : ''}
+                </button>
               </div>
               <div className="w-full mx-auto">
                 <div className=" flex items-center justify-center">

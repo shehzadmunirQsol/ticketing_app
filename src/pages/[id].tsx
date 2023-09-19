@@ -59,7 +59,7 @@ const findElementsWithAttribute = (node: any) => {
   }
 };
 
-const AboutUsContent = ` <div>
+const AboutUsContent = ` <div className='bg-background'>
 <div className="w-full relative h-[750px] md:h-[650px] lg:h-[550px] z-40 text-center">
   <Image
     src="https://media.winnar.com/upload/about-page-background.png"
@@ -80,7 +80,7 @@ const AboutUsContent = ` <div>
   </div>
 </div>
 
-<div>
+<div >
   <div className="bg-primary lg:w-[400px] md:w-[400px]  px-8 py-20 aboutus-card   mr-10 lg:ml-20 ml-5  mb-20">
     <p className="font-black lg:text-5xl md:text-3xl text-xl text-black">Our Mission</p>
     <p className="text-background pt-5 text-sm">
@@ -240,7 +240,7 @@ const AboutUsContent = ` <div>
         WIN SUNDAY 8 PM
       </p>
       <Button
-        className=" px-16 mt-5 lg:mt-24 md:mt-24  bg-primary clip-style text-black font-sans font-[900] text-xl"
+        className=" px-16 mt-6  bg-primary clip-style text-black font-sans font-[900] text-xl"
         variant="default"
       >
         Enter Now
@@ -248,7 +248,7 @@ const AboutUsContent = ` <div>
     </div>
   </div>
 </div>
-</div>  `;
+</div> `;
 
 const faqContent = ` <section>
 <div class="w-full relative h-[750px] md:h-[650px] lg:h-[550px] z-40 text-center " >
@@ -632,8 +632,8 @@ const faqContent2 = ` <div >
 `;
 
 export default function CmsPage({ storeBlogsData }: any) {
-  const reactElements = parse(storeBlogsData?.CMSDescription[0]?.content || '', {
-  // const reactElements = parse(faqContent2 || '', {
+   const reactElements = parse(storeBlogsData?.CMSDescription[0]?.content || '', {
+ // const reactElements = parse(AboutUsContent || '', {
     replace: findElementsWithAttribute,
   });
 
