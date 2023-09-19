@@ -44,3 +44,7 @@ export const updateCmsContentById = z.object({
     desc: z.string(),
   }),
 });
+
+export const cmsStatusUpdateById = z.object({
+  id: z.number(),
+});

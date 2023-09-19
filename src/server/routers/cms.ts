@@ -5,6 +5,7 @@ import {
   getCmsSchema,
   getCmsContentByIdSchema,
   updateCmsContentById,
+  cmsStatusUpdateById,
 } from '~/schema/cms';
 import { prisma } from '~/server/prisma';
 import { hashPass, isSamePass } from '~/utils/hash';
@@ -109,8 +110,9 @@ export const cmsRouter = router({
           });
         }
 
-        const cmsPayload = {
+        const cmsPayload:any = {
           slug: input.slug,
+          type: input.type,
         };
         const cmsDescriptionPayload: any = {
           cms_id: cms?.id,
@@ -135,6 +137,40 @@ export const cmsRouter = router({
         });
 
         return { message: 'Cms updating Successfully' };
+      } catch (error: any) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: error?.message,
+        });
+      }
+    }),
+
+  cmsStatusUpdateById: publicProcedure
+    .input(cmsStatusUpdateById)
+    .mutation(async ({ input }) => {
+      try {
+        const cms: any = await prisma?.cMS?.findUnique({
+          where: { id: input.id },
+        });
+        console.log(cms, 'cmscmscmscmscmscmscms');
+        if (!cms) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Page not found',
+          });
+        }
+
+        const cmsPayload = {
+          is_enabled: cms.is_enabled ? false : true,
+        };
+        const cmsUpdate: any = await prisma.cMS.update({
+          where: {
+            id: input.id,
+          },
+          data: cmsPayload,
+        });
+
+        return { message: 'CMS Status Updated Successfully' };
       } catch (error: any) {
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',

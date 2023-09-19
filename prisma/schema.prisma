@@ -187,7 +187,10 @@ model CategoryDescription {
 }
 
 model Event {
-  id                Int       @id @default(autoincrement())
+  id         Int  @id @default(autoincrement())
+  charity_id Int
+  faq_id     Int?
+
   thumb             String
   video_src         String
   price             Int
@@ -200,7 +203,6 @@ model Event {
   is_featured       Boolean   @default(false)
   user_id           Int
   category_id       Int
-  charity_id        Int
   launch_date       DateTime  @default(now()) @db.Timestamp(6)
   end_date          DateTime  @default(now()) @db.Timestamp(6)
   draw_date         DateTime? @db.Timestamp(6)
@@ -211,13 +213,14 @@ model Event {
   User              AdminUser           @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   Category          Category            @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   Charity           Charity             @relation(fields: [charity_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  EventImages       EventImage[]
-  EventFAQs         EventFAQ[]
+  CMS               CMS?                @relation(fields: [faq_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   EventDescription  EventDescription[]
   OrderEvent        OrderEvent[]
   OrderSubscription OrderSubscription[]
   Winner            Winner[]
   CartItem          CartItem[]
+  EventImage        EventImage[]
+  EventFAQ          EventFAQ[]
 
   @@index([user_id, category_id])
   @@map("event")
@@ -484,6 +487,7 @@ model CMS {
 
   User           AdminUser        @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   CMSDescription CMSDescription[]
+  Event          Event[]
 
   @@index([user_id])
   @@map("cms")
