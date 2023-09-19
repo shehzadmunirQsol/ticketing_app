@@ -44,6 +44,7 @@ export default function LoginSignup() {
   const dispatch = useDispatch();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [user, setUser] = useState(null);
 
   // 1. Define your form.
   const formSignup = useForm<signupCustomerInput>({
@@ -63,6 +64,7 @@ export default function LoginSignup() {
   // register customer
   const registerCustomer = trpc.customer.register.useMutation({
     onSuccess: (res: any) => {
+      setUser(res.email);
       const localStorageData = localStorage.setItem(
         'customer',
         JSON.stringify({
@@ -139,21 +141,21 @@ export default function LoginSignup() {
   const onSubmitLogin = async (values: any) => {
     if (!values.user && !values.password) {
       toast({
-        variant: "destructive",
-        title: "Please Enter Your Login Information"
-      })
+        variant: 'destructive',
+        title: 'Please Enter Your Login Information',
+      });
       return;
     } else if (!values.user) {
       toast({
-        variant: "destructive",
-        title: "Please Enter Your Email"
-      })
+        variant: 'destructive',
+        title: 'Please Enter Your Email',
+      });
       return;
     } else if (!values.password) {
       toast({
-        variant: "destructive",
-        title: "Please Enter Your Password"
-      })
+        variant: 'destructive',
+        title: 'Please Enter Your Password',
+      });
       return;
     }
 
@@ -162,10 +164,8 @@ export default function LoginSignup() {
       const loginResult = await loginCustomer.mutateAsync(values);
 
       // to check for account verified or not
-      console.log({ loginResult })
-
+      console.log({ loginResult });
     } catch (e: any) {
-
       setIsSubmitting(false);
       if (e.shape.message == 'Your Account is Not Verified') {
         setOtpIsModal(true);
@@ -202,18 +202,21 @@ export default function LoginSignup() {
               >
                 Login
               </TabsTrigger>
-              <TabsTrigger value="signup" className="w-full font-sans text-md font-black">
+              <TabsTrigger
+                value="signup"
+                className="w-full font-sans text-md font-black"
+              >
                 Register
               </TabsTrigger>
             </TabsList>
           </>
           <TabsContent value="login">
-            <Form {...formLogin} >
+            <Form {...formLogin}>
               <form
                 onSubmit={formLogin.handleSubmit(onSubmitLogin)}
                 className="justify-center items-center px-2 lg:px-8 py-4 space-y-4 w-full h-full"
               >
-                <div className='w-full'>
+                <div className="w-full">
                   <FormField
                     control={formLogin.control}
                     name="user"
@@ -227,10 +230,10 @@ export default function LoginSignup() {
                             type="text"
                             placeholder="Enter Username or Email Address"
                             {...field}
-                            className='rounded-md'
+                            className="rounded-md"
                           />
                         </FormControl>
-                        <div className='relative pb-2'>
+                        <div className="relative pb-2">
                           <FormMessage />
                         </div>
                       </FormItem>
@@ -249,10 +252,10 @@ export default function LoginSignup() {
                             type="password"
                             placeholder="Enter Your Password"
                             {...field}
-                            className='rounded-md'
+                            className="rounded-md"
                           />
                         </FormControl>
-                        <div className='relative pb-2'>
+                        <div className="relative pb-2">
                           <FormMessage />
                         </div>
                       </FormItem>
@@ -278,9 +281,8 @@ export default function LoginSignup() {
           </TabsContent>
           <LoadingDialog open={isSubmitting} text={'Loading...'} />
           <TabsContent value="signup">
-            <Form {...formSignup} >
+            <Form {...formSignup}>
               <form
-
                 onSubmit={formSignup.handleSubmit(onSubmitSignup)}
                 className=" justify-center items-center px-2 lg:px-8 py-4 space-y-4 w-full h-full"
               >
@@ -298,10 +300,10 @@ export default function LoginSignup() {
                             type="text"
                             placeholder="Enter Your Username "
                             {...field}
-                            className='rounded-md'
+                            className="rounded-md"
                           />
                         </FormControl>
-                        <div className='relative pb-2'>
+                        <div className="relative pb-2">
                           <FormMessage />
                         </div>
                       </FormItem>
@@ -320,10 +322,10 @@ export default function LoginSignup() {
                             type="text"
                             placeholder="Enter Your Email Address"
                             {...field}
-                            className='rounded-md'
+                            className="rounded-md"
                           />
                         </FormControl>
-                        <div className='relative pb-2'>
+                        <div className="relative pb-2">
                           <FormMessage />
                         </div>
                       </FormItem>
@@ -342,10 +344,10 @@ export default function LoginSignup() {
                             type="password"
                             placeholder="Enter your password"
                             {...field}
-                            className='rounded-md'
+                            className="rounded-md"
                           />
                         </FormControl>
-                        <div className='relative pb-2'>
+                        <div className="relative pb-2">
                           <FormMessage />
                         </div>
                       </FormItem>
@@ -364,10 +366,10 @@ export default function LoginSignup() {
                             type="text"
                             placeholder="Enter your first name"
                             {...field}
-                            className='rounded-md'
+                            className="rounded-md"
                           />
                         </FormControl>
-                        <div className='relative pb-2'>
+                        <div className="relative pb-2">
                           <FormMessage />
                         </div>
                       </FormItem>
@@ -386,10 +388,10 @@ export default function LoginSignup() {
                             type="text"
                             placeholder="Enter your last name"
                             {...field}
-                            className='rounded-md'
+                            className="rounded-md"
                           />
                         </FormControl>
-                        <div className='relative pb-2'>
+                        <div className="relative pb-2">
                           <FormMessage />
                         </div>
                       </FormItem>
@@ -400,7 +402,11 @@ export default function LoginSignup() {
                   <p className="text-lightColor text-gray-400 font-extralight text-xs w-full lg:w-96  md:w-96">
                     Your personal data will be used to process your order,
                     support your experience throughout this website, and for
-                    other purposes described in our <span className='text-white underline'> <Link href="/privacy-policy "> privacy policy. </Link></span>
+                    other purposes described in our{' '}
+                    <span className="text-white underline">
+                      {' '}
+                      <Link href="/privacy-policy "> privacy policy. </Link>
+                    </span>
                   </p>
                   <Button
                     className="  lg:w-52 md:w-52 w-full     text-black font-sans font-[900]   text-xl tracking-[-1px]"
@@ -420,7 +426,7 @@ export default function LoginSignup() {
       <OtpVerificationDailog
         otpIsModal={otpIsModal}
         setOtpIsModal={setOtpIsModal}
-        emailOrUser={formLogin.getValues("user")}
+        emailOrUser={formLogin.getValues('user') || (user ?? '')}
       />
     </section>
   );
