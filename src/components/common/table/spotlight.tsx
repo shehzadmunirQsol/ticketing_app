@@ -1,4 +1,3 @@
-import * as React from 'react';
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -40,6 +39,7 @@ import { Switch } from '~/components/ui/switch';
 import { SettingDialog } from '../modal/setting';
 import { LoadingDialog } from '../modal/loadingModal';
 import LanguageSelect, { LanguageInterface } from '../language_select';
+import { useMemo, useState } from 'react';
 
 export default function DataTableSpotLight() {
   const initialOrderFilters: any = {
@@ -53,29 +53,27 @@ export default function DataTableSpotLight() {
     first: 0,
     page: 0,
   };
-  const [orderFilters, setOrderFilters] = React.useState({
+  const [orderFilters, setOrderFilters] = useState({
     ...initialOrderFilters,
   });
-  const { data, refetch, isLoading } = trpc.settings.get_banner.useQuery(
-    orderFilters,
-    {
-      refetchOnWindowFocus: false,
+  const {
+    data: spotLightApi,
+    refetch,
+    isLoading,
+  } = trpc.settings.get_banner.useQuery(orderFilters, {
+    refetchOnWindowFocus: false,
 
-      // enabled: user?.id ? true : false,
-    },
-  );
-  const [sorting, setSorting] = React.useState<SortingState>([]);
+    // enabled: user?.id ? true : false,
+  });
+  const [sorting, setSorting] = useState<SortingState>([]);
 
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    [],
-  );
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState({});
-  const [selectedItem, setSelectedItem] = React.useState({});
-  const [title, setTitle] = React.useState('');
-  const [isModal, setIsModal] = React.useState(false);
-  const [type, setType] = React.useState('');
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = useState({});
+  const [selectedItem, setSelectedItem] = useState({});
+  const [title, setTitle] = useState('');
+  const [isModal, setIsModal] = useState(false);
+  const [type, setType] = useState('');
 
   const handleEnbled = (data: any, type: string) => {
     // console.log({ e, data });
@@ -159,7 +157,7 @@ export default function DataTableSpotLight() {
     {
       id: 'actions',
       enableHiding: false,
-      header:"Actions",
+      header: 'Actions',
       cell: ({ row }) => {
         const payment = row?.original;
         console.log(row?.original, 'row?.original');
@@ -173,7 +171,6 @@ export default function DataTableSpotLight() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              
               <Link href={`/admin/settings/spotlight/edit/${payment?.id}`}>
                 <DropdownMenuItem>Edit Spot Light</DropdownMenuItem>
               </Link>
@@ -189,9 +186,9 @@ export default function DataTableSpotLight() {
     },
   ];
 
-  const wondersData = React.useMemo(() => {
-    return Array.isArray(data) ? data : [];
-  }, [data]);
+  const wondersData = useMemo(() => {
+    return Array.isArray(spotLightApi?.data) ? spotLightApi?.data ?? [] : [];
+  }, [spotLightApi]);
 
   const table = useReactTable({
     data: wondersData,
