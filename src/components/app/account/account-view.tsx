@@ -13,20 +13,14 @@ import { trpc } from '~/utils/trpc';
 const grid = ['', ''];
 // { control: Function }
 const AccountView = ({ control }: any) => {
-  const { data: customer, isLoading } = trpc.customer.get.useQuery();
   const { lang } = useSelector((state: RootState) => state.layout);
-
-  console.log({ customer }, 'customer');
-
+  const { user } = useSelector((state: RootState) => state.auth);
   return (
     <div className="py-4 px-6 text-[#eaeaea]">
       <p className="mb-3">
         Hello{' '}
         <span className="font-bold">
-          {customer &&
-            `${customer?.data?.first_name ?? ''} ${
-              customer?.data?.last_name ?? ''
-            }`}
+          {user && `${user?.first_name ?? ''} ${user?.last_name ?? ''}`}
         </span>
       </p>
       <p>
@@ -60,7 +54,7 @@ const AccountView = ({ control }: any) => {
         Once you enter a competition your tickets will appear here.{' '}
         <span className="font-bold">Good luck!</span>
       </p>
-      <CurrentandPast customer_id={customer?.data?.id} />
+      <CurrentandPast customer_id={user?.id} />
     </div>
   );
 };
@@ -71,33 +65,39 @@ interface currentandpastprops {
   customer_id?: number;
 }
 function CurrentandPast({ customer_id }: currentandpastprops) {
-  console.log({ customer_id });
   const { lang } = useSelector((state: RootState) => state.layout);
 
-  const { data: orders, isFetched } = trpc.order.getOrders.useQuery(
-    {
-      customer_id: customer_id as number,
-      lang_id: lang.lang_id,
-    },
-    {
-      refetchOnMount: false,
-      enabled: customer_id ? true : false,
-    },
-  );
   const [select, setSelect] = useState(0);
+  const [filters, setFilters] = useState({
+    customer_id: customer_id,
+    status: 'current',
+    first: 0,
+    rows: 5,
+    lang_id: 1,
+  });
+
   const [displayArray, setDisplayArray] = useState<Array<any>>([]);
 
   const router = useRouter();
   useEffect(() => {
-    console.log(orders, 'data?.current');
     if (select === 0) {
-      setDisplayArray(orders?.current);
+      setFilters({
+        customer_id: customer_id,
+        status: 'current',
+        first: 0,
+        rows: 5,
+        lang_id: 1,
+      });
     } else {
-      setDisplayArray(orders?.past);
+      setFilters({
+        customer_id: customer_id,
+        status: 'past',
+        first: 0,
+        rows: 5,
+        lang_id: 1,
+      });
     }
-  }, [select, orders]);
-
-  console.log({ displayArray }, 'displayArray');
+  }, [select]);
 
   return (
     <>
@@ -129,7 +129,19 @@ function CurrentandPast({ customer_id }: currentandpastprops) {
       </div>
 
       <div className="w-full py-4 border-[1px] border-t-0 border-[#808080] h-fit rounded-b-md">
-        {displayArray == undefined || displayArray?.length === 0 ? (
+        {customer_id != undefined ? (
+          <>
+            {select === 0 ? (
+              <OrdersDataByIdTable filters={filters} setFilters={setFilters} />
+            ) : (
+              <OrdersDataByIdTable filters={filters} setFilters={setFilters} />
+            )}
+          </>
+        ) : (
+          <></>
+        )}
+
+        {/* {displayArray == undefined || displayArray?.length === 0 ? (
           <div className="flex flex-col my-auto h-full items-center justify-center">
             <Image src={Current} alt="/" />
             <p className="text-center text-gray-300 text-md my-2 px-6">
@@ -150,7 +162,7 @@ function CurrentandPast({ customer_id }: currentandpastprops) {
               <OrdersDataByIdTable id={customer_id} />
             </div>
           </>
-        )}
+        )} */}
       </div>
     </>
   );

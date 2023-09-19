@@ -116,10 +116,13 @@ export const getOrder = z.object({
   startDate: z.date().optional(),
   endDate: z.date().optional(),
   customer_id: z.number().optional(),
-  first: z.number().optional(),
-  rows: z.number().optional(),
+  first: z.number(),
+  rows: z.number(),
   lang_id: z.number().optional(),
+  filters: z.any().optional(),
+  status: z.string().optional(),
 });
+export type getOrder = z.infer<typeof getOrder>;
 
 export const getOrderSchema = z.object({
   startDate: z.date().optional(),
@@ -134,8 +137,8 @@ export const getOrderSchema = z.object({
 });
 export const getByIDSchema = z.object({
   order_id: z.number().optional(),
-  customer_id:z.number().optional().nullable(),
-  type:z.string().optional().nullable(),
+  customer_id: z.number().optional().nullable(),
+  type: z.string().optional().nullable(),
   lang_id: z.number().optional(),
 });
 export type CreateCheckoutSchema = z.infer<typeof createCheckoutSchema>;
