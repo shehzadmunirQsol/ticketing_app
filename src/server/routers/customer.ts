@@ -480,7 +480,6 @@ export const customerRouter = router({
 
         return { user: userApiData, jwt };
       } catch (error: any) {
-        console.log({ error });
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: error.message,
