@@ -155,11 +155,13 @@ export default function CartPage() {
             <Glow className="absolute right-0 -z-20 bottom-0 w-1/5 h-40 overflow-hidden" />
           </div>
 
-          <div className="py-10 pl-14 pr-4 -z-40">
+          <div className="py-10 px-8 -z-40">
             <ProductSection
-              class="max-w-sm lg:max-w-[26rem]"
-              slidesToShow={3}
+              class=" mx-auto max-w-md md:max-w-[21.5rem] lg:max-w-[23rem] xl:max-w-[calc(100%-25px)] "
+              slidesToShow={3.5}
               center={false}
+              breakpoint={[3, 2, 1]}
+              breakpointScreens={[1350, 1050, 800]}
               title={'Last chance offer'}
               type="no-glow"
             />
