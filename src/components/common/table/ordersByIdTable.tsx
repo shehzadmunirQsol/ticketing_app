@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ColumnDef,
   // ColumnFiltersState,
@@ -38,6 +38,21 @@ import {
 } from '~/components/ui/dropdown-menu';
 import { MoreHorizontal } from 'lucide-react';
 import Link from 'next/link';
+import { OrderViewDialog } from '../modal/orderView';
+import { RootState } from '~/store/store';
+import { useSelector } from 'react-redux';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '~/components/ui/select';
+import {
+  DoubleArrowLeftIcon,
+  DoubleArrowRightIcon,
+} from '@radix-ui/react-icons';
+import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 
 export type Category = {
   id: number;
@@ -55,6 +70,8 @@ interface OrderTableProps {
 
 export default function OrdersDataByIdTable(props: OrderTableProps) {
   const [sorting, setSorting] = useState<SortingState>([]);
+  const { user } = useSelector((state: RootState) => state.auth);
+
   const router = useRouter();
 
   //   const { customer_id, status, ...filterData } = { ...props.filters };
@@ -69,13 +86,14 @@ export default function OrdersDataByIdTable(props: OrderTableProps) {
   const [rowSelection, setRowSelection] = useState({});
   const [filterID, setFilterID] = useState({});
 
-  const { data, isLoading } = trpc.order.getOrders.useQuery(
-    { ...props.filters },
-    {
-      refetchOnWindowFocus: false,
-      // enabled: props?.filters.customer_id ? true : false,
-    },
-  );
+  const { data, isLoading, isFetching, refetch } =
+    trpc.order.getOrders.useQuery(
+      { ...props.filters },
+      {
+        refetchOnWindowFocus: false,
+        enabled: props?.filters.customer_id ? true : false,
+      },
+    );
 
   const orderData = React.useMemo(() => {
     return Array.isArray(data?.data) ? data?.data : [];
@@ -86,6 +104,12 @@ export default function OrdersDataByIdTable(props: OrderTableProps) {
     setType(type);
     setIsModal(true);
   };
+  useEffect(() => {
+    props?.setFilters((prevFilters: any) => ({
+      ...prevFilters,
+      customer_id: user?.id,
+    }));
+  }, [user?.id]);
   const columns: ColumnDef<Category>[] = [
     {
       accessorKey: 'ID',
@@ -152,13 +176,13 @@ export default function OrdersDataByIdTable(props: OrderTableProps) {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <Link href={`/admin/orders/view/${row?.original?.id}`}>
+              {/* <Link href={`/admin/orders/view/${row?.original?.id}`}>
                 <DropdownMenuItem>View Order</DropdownMenuItem>
-              </Link>
+              </Link> */}
               <DropdownMenuItem
                 onClick={() => handleView(row?.original, 'view')}
               >
-                Delete Banner
+                View Order
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -226,90 +250,190 @@ export default function OrdersDataByIdTable(props: OrderTableProps) {
       <div className="rounded-md border border-border">
         <ScrollArea className="w-full ">
           <ScrollBar orientation="horizontal"></ScrollBar>
-          <Table>
-            <TableHeader className="bg-secondary/80">
-              {table?.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => {
-                    return (
-                      <TableHead key={header.id}>
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext(),
-                            )}
-                      </TableHead>
-                    );
-                  })}
-                </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody>
-              {table?.getRowModel()?.rows?.length ? (
-                table?.getRowModel()?.rows?.map((row) => (
-                  <TableRow
-                    key={row.id}
-                    data-state={row.getIsSelected() && 'selected'}
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext(),
-                        )}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={columns.length} className=" text-center">
-                    <div className="flex flex-col my-auto h-full items-center justify-center">
-                      <Image src={Current} alt="/" />
-                      <p className="text-center text-gray-300 text-md my-2 px-6">
-                        No past competition entries to show. Only entries from
-                        the last 30 days will be shown.
-                      </p>
-                      <Button
-                        variant={'rounded'}
-                        className="text-center font-black tracking-tighter my-4 w-36 text-xs md:w-fit md:text-md "
-                        onClick={() => router.push('/cars')}
+          {table?.getRowModel()?.rows?.length ? (
+            <>
+              <Table>
+                <TableHeader className="bg-secondary/80">
+                  {table?.getHeaderGroups().map((headerGroup) => (
+                    <TableRow key={headerGroup.id}>
+                      {headerGroup.headers.map((header) => {
+                        return (
+                          <TableHead key={header.id}>
+                            {header.isPlaceholder
+                              ? null
+                              : flexRender(
+                                  header.column.columnDef.header,
+                                  header.getContext(),
+                                )}
+                          </TableHead>
+                        );
+                      })}
+                    </TableRow>
+                  ))}
+                </TableHeader>
+                <TableBody>
+                  {table?.getRowModel()?.rows?.length ? (
+                    table?.getRowModel()?.rows?.map((row) => (
+                      <TableRow
+                        key={row.id}
+                        data-state={row.getIsSelected() && 'selected'}
                       >
-                        EXPLORE CURRENT COMPETITIONS
-                      </Button>
-                    </div>
-                    No results.
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
+                        {row.getVisibleCells().map((cell) => (
+                          <TableCell key={cell.id}>
+                            {flexRender(
+                              cell.column.columnDef.cell,
+                              cell.getContext(),
+                            )}
+                          </TableCell>
+                        ))}
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell
+                        colSpan={columns.length}
+                        className=" text-center"
+                      >
+                        <div className="flex flex-col my-auto h-full items-center justify-center">
+                          <Image src={Current} alt="/" />
+                          <p className="text-center text-gray-300 text-md my-2 px-6">
+                            No past competition entries to show. Only entries
+                            from the last 30 days will be shown.
+                          </p>
+                          <Button
+                            variant={'rounded'}
+                            className="text-center font-black tracking-tighter my-4 w-36 text-xs md:w-fit md:text-md "
+                            onClick={() => router.push('/cars')}
+                          >
+                            EXPLORE CURRENT COMPETITIONS
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </>
+          ) : (
+            <>
+              <div className="flex flex-col my-auto h-full items-center justify-center">
+                <Image src={Current} alt="/" />
+                <p className="text-center text-gray-300 text-md my-2 px-6">
+                  No past competition entries to show. Only entries from the
+                  last 30 days will be shown.
+                </p>
+                <Button
+                  variant={'rounded'}
+                  className="text-center font-black tracking-tighter my-4 w-36 text-xs md:w-fit md:text-md "
+                  onClick={() => router.push('/cars')}
+                >
+                  EXPLORE CURRENT COMPETITIONS
+                </Button>
+              </div>
+            </>
+          )}
         </ScrollArea>
       </div>
 
       <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="space-x-2">
-          <Button
-            variant="outline"
-            onClick={() => handlePagination(props.filters.first - 1)}
-            disabled={props.filters.first === 0}
-          >
-            Previous
-          </Button>
-          <Button
-            variant="outline"
-            onClick={() => handlePagination(props.filters.first + 1)}
-            disabled={
-              (props.filters.first + 1) * props.filters.rows >
-              (data?.count || 0)
-            }
-          >
-            Next
-          </Button>
+        {data?.count && (
+          <div className="flex-1 flex w-[100px] items-center justify-start text-sm font-medium">
+            Page {props.filters.first + 1} of{' '}
+            {Math.ceil(data?.count / props.filters.rows)}
+          </div>
+        )}
+        <div className="flex items-center justify-center space-x-6 lg:space-x-8">
+          <div className="flex items-center space-x-2">
+            <p className="text-sm font-medium">Rows per page</p>
+            <Select
+              value={`${props.filters.rows}`}
+              onValueChange={(value) => {
+                props?.setFilters((prevFilters: any) => ({
+                  ...prevFilters,
+                  rows: Number(value),
+                  first: 0,
+                }));
+                table.setPageSize(Number(value));
+              }}
+            >
+              <SelectTrigger className="h-8 w-[70px]">
+                <SelectValue placeholder={props.filters.rows} />
+              </SelectTrigger>
+              <SelectContent side="top">
+                {[5, 10, 20, 30, 40, 50].map((pageSize) => (
+                  <SelectItem key={pageSize} value={`${pageSize}`}>
+                    {pageSize}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="flex items-center space-x-2">
+            <Button
+              variant="outline"
+              className="hidden h-8 w-8 p-0 lg:flex"
+              onClick={() => handlePagination(0)}
+              disabled={props.filters.first === 0}
+            >
+              <span className="sr-only">Go to first page</span>
+              <DoubleArrowLeftIcon className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="outline"
+              className="h-8 w-8 p-0"
+              onClick={() => handlePagination(props.filters.first - 1)}
+              disabled={props.filters.first === 0}
+            >
+              <span className="sr-only">Go to previous page</span>
+              <ChevronLeftIcon className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="outline"
+              className="h-8 w-8 p-0"
+              onClick={() => handlePagination(props.filters.first + 1)}
+              disabled={
+                (props.filters.first + 1) * props.filters.rows >
+                  (data?.count || 0) ||
+                Math.ceil((data?.count ?? 0) / props.filters.rows) ==
+                  props.filters.first + 1
+              }
+            >
+              <span className="sr-only">Go to next page</span>
+              <ChevronRightIcon className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="outline"
+              className="hidden h-8 w-8 p-0 lg:flex"
+              onClick={() =>
+                handlePagination(
+                  Math.ceil((data?.count ?? 0) / props.filters.rows) - 1,
+                )
+              }
+              disabled={
+                (props.filters.first + 1) * props.filters.rows >
+                  (data?.count || 0) ||
+                Math.ceil((data?.count ?? 0) / props.filters.rows) ==
+                  props.filters.first + 1
+              }
+            >
+              <span className="sr-only">Go to last page</span>
+              <DoubleArrowRightIcon className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
       </div>
-      <LoadingDialog open={isLoading} text={'Loading data...'} />
+      <OrderViewDialog
+        selectedItem={selectedItem}
+        setSelectedItem={setSelectedItem}
+        title={title}
+        setTitle={setTitle}
+        isModal={isModal}
+        setIsModal={setIsModal}
+        type={type}
+        setType={setType}
+      />
+      <LoadingDialog open={isFetching} text={'Loading data...'} />
     </div>
   );
 }

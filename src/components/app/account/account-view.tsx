@@ -128,7 +128,7 @@ function CurrentandPast({ customer_id }: currentandpastprops) {
         <div className="border-[1px] border-b-[#808080] w-full border-transparent "></div>
       </div>
 
-      <div className="w-full py-4 border-[1px] border-t-0 border-[#808080] h-fit rounded-b-md">
+      <div className="w-full p-4 border-[1px] border-t-0 border-[#808080] h-fit rounded-b-md">
         {customer_id != undefined ? (
           <>
             {select === 0 ? (

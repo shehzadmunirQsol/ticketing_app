@@ -33,7 +33,7 @@ function AdminLayout({ children }: DefaultLayoutProps) {
   );
 
   return (
-    <div className="relative">
+    <div className="relative overflow-y-hidden">
       {router.asPath === '/admin/login' ? (
         <main className="flex-1 m-auto">{children}</main>
       ) : (
