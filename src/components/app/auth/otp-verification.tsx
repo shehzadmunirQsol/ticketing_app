@@ -57,130 +57,131 @@ export function OtpVerificationDailog(props: OtpVerificationDailogInterface) {
     return () => clearInterval(intervalId);
   }, [seconds]);
 
-  // Response OTP Verification
-  const otpVerification = trpc.customer.verificationOtpCustomer.useMutation({
-    onSuccess: (res: any) => {
-      toast({
-        variant: 'success',
-        title: 'Login successfully ',
-      });
-      dispatch(userAuth(res?.user));
-      props.setOtpIsModal(false);
-      router.push('/');
-    },
-    onError: (err) => {
-      console.log(err.message, 'err');
-      toast({
-        variant: 'destructive',
-        title: err.message,
-      });
-    },
-  });
-
-  // Response OTP Verification
-  const resendOtpCustomer = trpc.customer.resendOtpCustomer.useMutation({
-    onSuccess: (res: any) => {
-      toast({
-        variant: 'success',
-        title: 'Please check your email',
-      });
-      // props.setOtpIsModal(false)
-      // router.push('/login');
-    },
-    onError: (err) => {
-      console.log(err.message, 'err');
-      toast({
-        variant: 'destructive',
-        title: err.message,
-      });
-    },
-  });
-
-  // check isNumber or not
-  const isNumber = (value: any) => {
-    const pattern = /^-?\d+(\.\d+)?$/;
-    return pattern.test(value);
-  };
-  // console.log(user, 'State');
-
-  // Handle Forgot Password
-  function inputChangeHandler(event: React.ChangeEvent<HTMLInputElement>) {
-    const { name, value } = event.target;
-
-    switch (name) {
-      case 'otp_1':
-        // check if number
-        const pattrenInputOne = isNumber(inputOne?.current?.value);
-        if (pattrenInputOne) {
-          inputTwo.current?.focus();
-        } else {
-          if (inputOne.current) inputOne.current.value = '';
-        }
-
-        break;
-      case 'otp_2':
-        // check if number
-        const pattrenInputTwo = isNumber(inputTwo?.current?.value);
-        if (pattrenInputTwo) {
-          inputThree.current?.focus();
-        } else {
-          if (inputTwo.current) inputTwo.current.value = '';
-        }
-
-        break;
-      case 'otp_3':
-        // check if number
-        const pattrenInputThree = isNumber(inputThree?.current?.value);
-        if (pattrenInputThree) {
-          inputFour.current?.focus();
-        } else {
-          if (inputThree.current) inputThree.current.value = '';
-        }
-
-        break;
-      case 'otp_4':
-        // check if number
-        const pattrenInputFour = isNumber(inputFour?.current?.value);
-        if (pattrenInputFour) {
-          inputFour.current?.focus();
-        } else {
-          if (inputFour.current) inputFour.current.value = '';
-        }
-
-        break;
-
-      default:
-        break;
-    }
-  }
-
-  async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
-    try {
-      event.preventDefault();
-
-      const result: any = {
-        emailOrUser: props?.emailOrUser,
-        otp_1: +inputOne.current.value,
-        otp_2: +inputTwo.current.value,
-        otp_3: +inputThree.current.value,
-        otp_4: +inputFour.current.value,
-      };
-
-      const otpResult = await otpVerification.mutateAsync(result);
-    } catch (error: any) {
-      toast({
-        variant: 'destructive',
-        title: error?.message,
-      });
-    }
-  }
-
-  async function handleResendOtp() {
-    const otpResult = await resendOtpCustomer.mutateAsync({
-      emailOrUser: props?.emailOrUser,
+// Response OTP Verification
+const otpVerification = trpc.customer.verificationOtpCustomer.useMutation({
+  onSuccess: (res: any) => {
+    toast({
+      variant: 'success',
+      title: 'Login successfully ',
     });
-    console.log(otpResult, 'otpResult');
+    dispatch(userAuth(res?.user));
+    props.setOtpIsModal(false);
+    router.push('/');
+  },
+  onError: (err) => {
+    console.log(err.message, 'err');
+    toast({
+      variant: 'destructive',
+      title: err.message,
+    });
+  },
+});
+
+// Response OTP Verification
+const resendOtpCustomer = trpc.customer.resendOtpCustomer.useMutation({
+  onSuccess: (res: any) => {
+    toast({
+      variant: 'success',
+      title: 'Please check your email',
+    });
+    // props.setOtpIsModal(false)
+    // router.push('/login');
+  },
+  onError: (err) => {
+    console.log(err.message, 'err');
+    toast({
+      variant: 'destructive',
+      title: err.message,
+    });
+  },
+});
+
+// check isNumber or not
+const isNumber = (value: any) => {
+  const pattern = /^-?\d+(\.\d+)?$/;
+  return pattern.test(value);
+};
+// console.log(user, 'State');
+
+// Handle Forgot Password
+function inputChangeHandler(event: React.ChangeEvent<HTMLInputElement>) {
+  const { name, value } = event.target;
+
+  switch (name) {
+    case 'otp_1':
+      // check if number
+      const pattrenInputOne = isNumber(inputOne?.current?.value);
+      if (pattrenInputOne) {
+        inputTwo.current?.focus();
+      } else {
+        if (inputOne.current) inputOne.current.value = '';
+      }
+
+      break;
+    case 'otp_2':
+      // check if number
+      const pattrenInputTwo = isNumber(inputTwo?.current?.value);
+      if (pattrenInputTwo) {
+        inputThree.current?.focus();
+      } else {
+        if (inputTwo.current) inputTwo.current.value = '';
+      }
+
+      break;
+    case 'otp_3':
+      // check if number
+      const pattrenInputThree = isNumber(inputThree?.current?.value);
+      if (pattrenInputThree) {
+        inputFour.current?.focus();
+      } else {
+        if (inputThree.current) inputThree.current.value = '';
+      }
+
+      break;
+    case 'otp_4':
+      // check if number
+      const pattrenInputFour = isNumber(inputFour?.current?.value);
+      if (pattrenInputFour) {
+        inputFour.current?.focus();
+      } else {
+        if (inputFour.current) inputFour.current.value = '';
+      }
+
+      break;
+
+    default:
+      break;
   }
+}
+
+async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
+  try {
+    event.preventDefault();
+
+    const result: any = {
+      emailOrUser: props?.emailOrUser,
+      otp_1: +inputOne.current.value,
+      otp_2: +inputTwo.current.value,
+      otp_3: +inputThree.current.value,
+      otp_4: +inputFour.current.value,
+    };
+
+    const otpResult = await otpVerification.mutateAsync(result);
+    console.log(otpResult, 'otpResult');
+  } catch (error: any) {
+    toast({
+      variant: 'destructive',
+      title: error?.message,
+    });
+  }
+}
+
+async function handleResendOtp() {
+  const otpResult = await resendOtpCustomer.mutateAsync({
+    emailOrUser: props?.emailOrUser,
+  });
+  console.log(otpResult, 'otpResult');
+}
 
   return (
     <Dialog
