@@ -41,7 +41,7 @@ export function ForgotPasswordDailog(props: ForgotPasswordDialogInterface) {
         props.setIsModal(false);
         toast({
           variant: 'success',
-          title: 'please check your email ',
+          title: 'Please check your email ',
         });
       },
       onError: (err) => {

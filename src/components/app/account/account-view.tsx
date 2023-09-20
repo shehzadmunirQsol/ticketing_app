@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import OrdersDataTable from '~/components/common/table/orders';
+
 import OrdersDataByIdTable from '~/components/common/table/ordersByIdTable';
 import { Button } from '~/components/ui/button';
 import { Separator } from '~/components/ui/separator';

@@ -66,7 +66,7 @@ function Header() {
 
   return (
     <div
-      className={`fixed w-full z-50 top-0 h-24  flex  items-center   ${
+      className={`fixed max-w-[1600px] w-full z-50 top-0 h-24  flex  items-center   ${
         router.route == '/'
           ? color
             ? '!bg-background-footer  duration-500 shadow-xl'
