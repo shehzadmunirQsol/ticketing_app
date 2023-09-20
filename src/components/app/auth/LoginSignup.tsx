@@ -64,7 +64,7 @@ export default function LoginSignup() {
   const registerCustomer = trpc.customer.register.useMutation({
     onSuccess: (res: any) => {
       setUser(res.email);
-      const localStorageData = localStorage.setItem(
+      localStorage.setItem(
         'customer',
         JSON.stringify({
           email: res.email,
@@ -105,9 +105,6 @@ export default function LoginSignup() {
       dispatch(userAuth(response?.user));
 
       router.back();
-      formLogin.setValue('user', '');
-      formLogin.setValue('password', '');
-      router.push('/');
     },
     onError: (err) => {
       console.log(err.message, 'err');
@@ -118,12 +115,9 @@ export default function LoginSignup() {
   const onSubmitSignup = async (values: any) => {
     try {
       setIsSubmitting(true);
-      console.log(values, 'Working');
       const signupResult = await registerCustomer.mutateAsync(values);
       setOtpIsModal(true);
       setIsSubmitting(false);
-
-      console.log(signupResult, 'signupResult');
     } catch (e: any) {
       setIsSubmitting(false);
       setOtpIsModal(false);
