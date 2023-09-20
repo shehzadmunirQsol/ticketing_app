@@ -20,10 +20,10 @@ const CounterStyle = ({ range, setRange, min, max }: token) => {
 
   return (
     <div>
-      <div className="flex items-center mt-10 text-center ">
+      <div className="flex items-center my-10 text-center ">
         <button
           onClick={() => handlerCounter('b')}
-          className="bg-primary lg:w-14 md:w-14 w-10 lg:h-14 md:h-14 h-10 rounded-l-sm "
+          className="bg-primary lg:w-14 md:w-14 w-10 md:h-12 h-8 rounded-l-sm "
         >
           <Image
             src={decrement}
@@ -32,7 +32,7 @@ const CounterStyle = ({ range, setRange, min, max }: token) => {
           />
         </button>
 
-        <div className="flex justify-center border-2 border-backgroundEntires w-full items-center align-middle text-xl text-white  text-center bg-background lg:h-14 md:h-14 h-10 ">
+        <div className="flex justify-center border-2 border-backgroundEntires w-full items-center align-middle text-xl text-white  text-center bg-background md:h-12 h-10 ">
           <p className="text-xs md:text-sm lg:text-xl">
             {' '}
             Number of tickets: <span className="font-black ">{range}</span>
@@ -40,7 +40,7 @@ const CounterStyle = ({ range, setRange, min, max }: token) => {
         </div>
         <button
           onClick={() => handlerCounter('a')}
-          className="bg-primary lg:w-14 md:w-14 w-10 lg:h-14 md:h-14 h-10 rounded-l-sm "
+          className="bg-primary lg:w-14 md:w-14 w-10 md:h-12 h-8 rounded-l-sm "
         >
           <Image
             src={increment}

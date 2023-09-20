@@ -51,13 +51,13 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
         </div>
         <div className="flex flex-col flex-wrap lg:py-6 -mb-10 lg:w-1/2 w-full lg:pl-12 lg:text-left lg:pr-7 pr-7 ">
           <div className="flex flex-col mb-10 lg:items-start items-start">
-            <div className="p-2 z-2 inline-flex bg-primary text-black items-center justify-center   mb-5">
+            {/* <div className="p-2 z-2 inline-flex bg-primary text-black items-center justify-center   mb-5">
               <span className=" font-black mr-2">
                 {' '}
                 {lang.lang_id === 2 ? ' إغلاق اليوم ' : 'CLOSES TODAY '}{' '}
               </span>{' '}
               20:00
-            </div>
+            </div> */}
             <div className="flex-grow w-full">
               <div className="flex flex-col gap-2">
                 <span className=" text-xs text-white ">

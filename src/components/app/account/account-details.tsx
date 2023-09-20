@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Button } from '~/components/ui/button';
 import {
-  accountsDetailSchema,
   accountsDetailSchemaInput,
   passwordChangeSchema,
   passwordChangeSchemaInput,
@@ -12,7 +11,6 @@ import {
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -22,33 +20,34 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '~/components/ui/input';
 import { Textarea } from '~/components/ui/textarea';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
 import { trpc } from '~/utils/trpc';
 import { useToast } from '~/components/ui/use-toast';
+import { userAuth } from '~/store/reducers/auth';
+import { LoadingDialog } from '~/components/common/modal/loadingModal';
 
 const AccountDetails = () => {
   const { toast } = useToast();
-  const { user, isLogin } = useSelector((state: RootState) => state.auth);
-  console.log(user, 'user');
+  const { user } = useSelector((state: RootState) => state.auth);
+  const dispatch = useDispatch();
+
   // 1. Define your form.
   const form = useForm<accountsDetailSchemaInput>({
     resolver: zodResolver(accountsDetailSchemaInput),
+    defaultValues: {
+      email: user?.email,
+      first_name: user?.first_name,
+      last_name: user?.last_name,
+      dob: user?.dob?.toISOString()?.split('T')[0],
+    },
   });
-
-  useEffect(() => {
-    if (user) {
-      form.setValue('email', user?.email);
-      form.setValue('first_name', user?.first_name);
-      form.setValue('last_name', user?.last_name ?? '');
-      form.setValue('dob', user?.dob);
-    }
-  }, [user]);
 
   const updateCustomerAccountDetail =
     trpc.customer.updateCustomerAccountDetail.useMutation({
       onSuccess: async (res: any) => {
-        console.log(res, 'updateCustomerAccountDetail res');
+        dispatch(userAuth(res?.user));
+
         toast({
           variant: 'success',
           title: 'Your Account Info Update Successfully ',
@@ -60,32 +59,25 @@ const AccountDetails = () => {
     });
 
   // handle account detail
-  async function onSubmitAccountDetail(values: any) {
-    if (
-      user.email !== values.email ||
-      user.first_name !== values.first_name ||
-      user.last_name !== values.last_name ||
-      user.dob !== values.dob
-    ) {
-      console.log('condition true');
+  async function onSubmitAccountDetail(values: accountsDetailSchemaInput) {
+    try {
       const resp = await updateCustomerAccountDetail.mutateAsync(values);
-      console.log(resp, 'update res updateCustomerAccountDetail');
-    } else {
-      console.log('condition false');
+      dispatch(userAuth(resp?.user));
+    } catch (error: any) {
+      console.log({ error });
     }
-
-    console.log(values, 'values account');
   }
-  console.log(form.formState.errors, 'form.formState.errors');
 
   return (
     <div className="py-4 px-6 text-[#eaeaea] ">
-      <p className=" font-bold text-2xl text-white">Personal information</p>
+      <p className=" font-bold text-2xl mb-6 text-white">
+        Personal information
+      </p>
       <div className="space-y-32">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmitAccountDetail)}
-            className="justify-center items-center  py-4 space-y-10"
+            className="justify-center items-center  space-y-4"
           >
             <FormField
               control={form.control}
@@ -154,7 +146,7 @@ const AccountDetails = () => {
             <FormField
               control={form.control}
               name="dob"
-              render={({ field }) => (
+              render={() => (
                 <FormItem className=" flex flex-col gap-2 mt-2 w-full">
                   <FormLabel>
                     Date of Birth*
@@ -194,6 +186,11 @@ const AccountDetails = () => {
         <PasswordChange email={user?.email} />
         <DeleteAccount email={user?.email} />
       </div>
+
+      <LoadingDialog
+        open={updateCustomerAccountDetail.isLoading}
+        text="Saving data..."
+      />
     </div>
   );
 };
@@ -242,13 +239,13 @@ function PasswordChange({ email }: any) {
   }
 
   return (
-    <div className="py-4 px-6 text-[#eaeaea]">
-      <p className=" font-bold text-2xl text-white">Password change</p>
+    <div className="py-4 text-[#eaeaea]">
+      <p className=" font-bold text-2xl mb-6 text-white">Password change</p>
       <div>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmitAccountPassword)}
-            className="justify-center items-center  py-4 space-y-10"
+            className="justify-center items-center space-y-4"
           >
             <FormField
               control={form.control}
@@ -260,7 +257,7 @@ function PasswordChange({ email }: any) {
                   </FormLabel>
                   <FormControl className="rounded-md bg-inputColor">
                     <Input
-                      type="text"
+                      type="password"
                       placeholder="Write your password"
                       {...field}
                     />
@@ -281,7 +278,7 @@ function PasswordChange({ email }: any) {
                   </FormLabel>
                   <FormControl className="rounded-md bg-inputColor">
                     <Input
-                      type="text"
+                      type="password"
                       placeholder="Enter your new password"
                       {...field}
                     />
@@ -302,7 +299,7 @@ function PasswordChange({ email }: any) {
                   </FormLabel>
                   <FormControl className="rounded-md bg-inputColor">
                     <Input
-                      type="text"
+                      type="password"
                       placeholder="Reenter your new password"
                       {...field}
                     />
@@ -327,6 +324,11 @@ function PasswordChange({ email }: any) {
       <div>
         <hr className=" opacity-20 mt-4" />
       </div>
+
+      <LoadingDialog
+        open={updateCustomerPassword.isLoading}
+        text="Saving data..."
+      />
     </div>
   );
 }
@@ -375,7 +377,6 @@ function DeleteAccount({ email }: any) {
     }
   }
 
-  console.log(reason, 'reason');
   const accountArgumentsOptions = [
     {
       text: 'I’m not interested in competitions anymore',
@@ -494,6 +495,11 @@ function DeleteAccount({ email }: any) {
           </form>
         </Form>
       </div>
+
+      <LoadingDialog
+        open={deleteAccountRequestCustomer.isLoading}
+        text="Saving data..."
+      />
     </div>
   );
 }
