@@ -38,6 +38,9 @@ export const customerRouter = router({
 
     const user = await prisma.customer.findUnique({
       where: { id: userData.id },
+      include:{
+        CustomerAddress:true
+      }
     });
 
     if (!user)
