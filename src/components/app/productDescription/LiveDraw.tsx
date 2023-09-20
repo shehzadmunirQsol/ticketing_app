@@ -9,7 +9,8 @@ import calender from '~/public/assets/calender.svg';
 import clock from '~/public/assets/watch.svg';
 
 import Image from 'next/image';
-function LiveDraw() {
+import { displayDate } from '~/utils/helper';
+function LiveDraw(props: any) {
   const LiveDraw = [
     {
       title: 'Draw takes place regardless of sell out',
@@ -41,7 +42,9 @@ function LiveDraw() {
                 src={calender.src}
                 alt="Sunset in the mountains"
               />{' '}
-              <p className="text-md font-semibold text-black">04-08-2023</p>
+              <p className="text-md font-semibold text-black">
+                {props?.data?.end_date?.toISOString().split('T')[0]}
+              </p>
             </div>
             <div className="flex justify-center items-center ml-4 my-2">
               <Image
@@ -51,7 +54,10 @@ function LiveDraw() {
                 src={clock.src}
                 alt="Sunset in the mountains"
               />{' '}
-              <p className="text-md font-semibold text-black">8:00 PM GST</p>
+              <p className="text-md font-semibold text-black">
+                {props?.data?.end_date?.getHours()}:
+                {props?.data?.end_date?.getMinutes()} PM GST
+              </p>
             </div>
           </div>
         </div>

@@ -98,7 +98,7 @@ const BannerSlider = () => {
 
   return (
     <div
-      className={`relative w-full h-[40rem] lg:h-screen transition-all ease-in-out overflow-hidden ${
+      className={`relative w-full h-[43rem] sm:h-[41rem] md:h-[40rem] lg:h-[39rem] transition-all ease-in-out overflow-hidden ${
         lang.dir === 'ltr' ? 'banner_img' : 'banner_img_flip'
       }`}
     >
@@ -121,7 +121,7 @@ const BannerSlider = () => {
         />
       </div>
       {isSuccess && carSlider?.length ? (
-        <div className=" w-full mt-52 sm:mt-56 md:mt-0 flex flex-col-reverse  md:!flex-row justify-between z-20">
+        <div className=" relative w-full max-w-[1600px] mx-auto  mt-52 sm:mt-56 md:mt-0 flex flex-col-reverse  lg:!flex-row justify-between z-20">
           {/* text content */}
 
           <div
@@ -129,11 +129,11 @@ const BannerSlider = () => {
               showElement ? 'fading-animation' : ''
             } transition-all  duration-500 ease-in-out items-center   top-32 sm:top-48 h-fit mx-auto  ltr:md:ml-20 rtl:md:mr-20 text-white sm:max-w-[500px] lg:max-w-[700px]`}
           >
-            <p className="px-4 text-3xl  md:text-4xl xl:text-5xl font-[900] tracking-[-2px] ">
+            <p className="px-4 text-2xl  sm:text-4xl md:text-5xl xl:text-[64px] font-[900] tracking-[-2.56px] ">
               {carSlider[currentIndex]?.title}
             </p>
             {carSlider[currentIndex]?.price ? (
-              <p className="px-4 text-2xl md:text-4xl xl:text-5xl tracking-[-2px] my-3 ">
+              <p className="px-4 text-2xl sm:text-4xl md:text-5xl xl:text-[64px] tracking-[-2.56px] py-2 md:py-6 ">
                 + {carSlider[currentIndex]?.price}
               </p>
             ) : (
@@ -157,9 +157,9 @@ const BannerSlider = () => {
 
           {/* text select cards */}
           <div
-            className={`  absolute  top-[100px] ${
+            className={`  absolute   ${
               showElement ? 'fading-animation' : ''
-            } transition-all  duration-500 ease-in-out   sm:mb-8 m-auto    md:top-[260px] lg:top-[240px] xl:top-[170px] ltr:-right-6 rtl:-left-6 md:ltr:-right-32 md:rtl:-left-32  z-20  w-[320px] h-[200px]  sm:max-w-[440px] sm:w-full sm:h-full  sm:max-h-[300px] md:max-w-[500px] md:max-h-[260px] lg:max-w-[680px] xl:max-w-[680px] xl:max-h-[360px]   `}
+            } transition-all  duration-500 ease-in-out   sm:mb-8 m-auto -bottom-64  xl:-bottom-64 ltr:-right-6 rtl:-left-6 md:ltr:-right-32 md:rtl:-left-32  z-20  w-[320px] h-[200px]  sm:max-w-[440px] sm:w-full sm:h-full  sm:max-h-[300px] md:max-w-[500px] md:max-h-[260px] lg:max-w-[680px] xl:max-w-[780px] xl:max-h-[580px]   `}
           >
             <Image
               className="    object-contain  transform rtl:-scale-x-100 ltr:scale-100 ltr:right-6 rtl:left-4 md:ltr:-right-40 md:rtl:-left-16"

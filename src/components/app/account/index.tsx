@@ -38,7 +38,6 @@ const Account = () => {
       });
       localStorage.removeItem('winnar-token');
       localStorage.removeItem('customer');
-      router.replace('/login');
       dispatch(userLogout());
       dispatch(
         addCart({
@@ -50,6 +49,7 @@ const Account = () => {
           cartItems: [],
         }),
       );
+      window.location.replace('/login');
     } catch (error: any) {
       console.log('Error ', error);
       toast({

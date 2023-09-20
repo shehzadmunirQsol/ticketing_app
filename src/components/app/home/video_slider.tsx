@@ -121,8 +121,8 @@ function VideoSlider(props: producctInterface) {
     ],
   };
   return (
-    <div className=" relative  w-full ">
-      <div className=" mt-4 md:mt-10 relative flex flex-col md:flex-row h-28 md:h-auto py-6  items-center w-full md:justify-between mb-6 ">
+    <div className=" relative max-w-[1600px] mx-auto  w-full ">
+      <div className="px-4  mt-4 md:mt-10 relative flex flex-col md:flex-row h-28 md:h-auto py-6  items-center w-full md:justify-between mb-6 ">
         <div>
           <p className="text-gray-200 !text-xl sm:!text-3xl lg:!text-5xl font-black uppercase  ">
             {props?.title}
@@ -133,7 +133,7 @@ function VideoSlider(props: producctInterface) {
         </div>
         <div
           className={`${
-            lang?.dir == 'rtl' ? ' flex-row-reverse' : 'md:absolute right-10'
+            lang?.dir == 'rtl' ? ' flex-row-reverse' : 'md:ml-0'
           }  flex gap-2 items-center justify-center `}
         >
           <Button

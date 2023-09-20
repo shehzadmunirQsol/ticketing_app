@@ -37,7 +37,7 @@ function WhyChoose() {
     },
   ];
   return (
-    <div className="relative   w-full mb-2 px-4 md:px-14 py-8">
+    <div className="relative   w-full max-w-[1600px] mx-auto mb-2 px-4 md:px-14 py-8">
       <div className="text-gray-200 text-5xl font-black uppercase ">
         WHY CHOOSE US?
       </div>

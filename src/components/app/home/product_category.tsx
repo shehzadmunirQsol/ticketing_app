@@ -39,7 +39,7 @@ function CategorySection() {
   // const categoryList = categoryData ? categoryData.data : [];
 
   return (
-    <div className="  w-full bg-background  py-14   px-4 md:px-14">
+    <div className="max-w-[1600px] mx-auto  w-full bg-background  py-14   px-4 md:px-14">
       <div className=" grid sm:grid-cols-1 md:grid-cols-2  mx-auto w-fit">
         {categoryData?.data.map((item, i) => {
           const nameList = item.name.split(' ');
@@ -53,8 +53,8 @@ function CategorySection() {
                 <Image
                   className=" bg-white opacity-30  h-64 md:h-96 object-cover"
                   src={renderNFTImage(item)}
-                  width={700}
-                  height={800}
+                  width={760}
+                  height={840}
                   // fill
                   
                   quality={100}

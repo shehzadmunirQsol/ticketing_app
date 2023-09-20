@@ -35,7 +35,18 @@ import Image from 'next/image';
 import { GetCartItemsSchema } from '~/schema/cart';
 import { displayDate } from '~/utils/helper';
 import { TableFilters } from './table_filters';
-
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '~/components/ui/select';
+import {
+  DoubleArrowLeftIcon,
+  DoubleArrowRightIcon,
+} from '@radix-ui/react-icons';
+import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 export type CartType = {
   id: number;
   is_subscribe: boolean;
@@ -290,21 +301,90 @@ export default function OrdersDataTable() {
         </ScrollArea>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="space-x-2">
-          <Button
-            variant="outline"
-            onClick={() => handlePagination(filters.first - 1)}
-            disabled={filters.first === 0}
-          >
-            Previous
-          </Button>
-          <Button
-            variant="outline"
-            onClick={() => handlePagination(filters.first + 1)}
-            disabled={(filters.first + 1) * filters.rows > (data?.count || 0)}
-          >
-            Next
-          </Button>
+        <div className="flex-1 flex w-[100px] items-center justify-start text-sm font-medium">
+          Page {filters.first + 1} of{' '}
+          {Math.ceil((data?.count ?? 0) / filters.rows)}
+        </div>
+
+        <div className="flex items-center justify-center space-x-6 lg:space-x-8">
+          <div className="flex items-center space-x-2">
+            <p className="text-sm font-medium">Rows per page</p>
+            <Select
+              value={`${filters.rows}`}
+              onValueChange={(value) => {
+                setFilters((prevFilters: any) => ({
+                  ...prevFilters,
+                  rows: Number(value),
+                  first: 0,
+                }));
+                table.setPageSize(Number(value));
+              }}
+            >
+              <SelectTrigger className="h-8 w-[70px]">
+                <SelectValue placeholder={filters.rows} />
+              </SelectTrigger>
+              <SelectContent side="top">
+                {[5, 10, 20, 30, 40, 50].map((pageSize) => (
+                  <SelectItem key={pageSize} value={`${pageSize}`}>
+                    {pageSize}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="flex items-center space-x-2">
+            <Button
+              variant="outline"
+              className="hidden h-8 w-8 p-0 lg:flex"
+              onClick={() => handlePagination(0)}
+              disabled={filters.first === 0}
+            >
+              <span className="sr-only">Go to first page</span>
+              <DoubleArrowLeftIcon className="h-4 w-4" />
+            </Button>
+
+            <Button
+              variant="outline"
+              className="h-8 w-8 p-0"
+              onClick={() => handlePagination(filters?.first - 1)}
+              disabled={filters?.first === 0}
+            >
+              <span className="sr-only">Go to previous page</span>
+              <ChevronLeftIcon className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="outline"
+              className="h-8 w-8 p-0"
+              onClick={() => handlePagination(filters.first + 1)}
+              disabled={
+                (filters.first + 1) * filters.rows > (data?.count ?? 0) ||
+                Math.ceil((data?.count ?? 0) / filters.rows) ==
+                  filters.first + 1
+              }
+            >
+              <span className="sr-only">Go to next page</span>
+              <ChevronRightIcon className="h-4 w-4" />
+            </Button>
+
+            <Button
+              variant="outline"
+              className="hidden h-8 w-8 p-0 lg:flex"
+              onClick={() =>
+                handlePagination(
+                  Math.ceil((data?.count ?? 0) / filters.rows) - 1,
+                )
+              }
+              disabled={
+                (filters.first + 1) * filters.rows > (data?.count ?? 0) ||
+                Math.ceil((data?.count ?? 0) / filters.rows) ==
+                  filters.first + 1
+              }
+            >
+              <span className="sr-only">Go to last page</span>
+              <DoubleArrowRightIcon className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
       </div>
 

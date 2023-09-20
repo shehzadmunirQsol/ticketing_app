@@ -114,13 +114,13 @@ function ProductSection(props: producctInterface) {
     ],
   };
   return (
-    <div className="   w-full ">
-      <div className=" relative flex gap-3 flex-col md:flex-row h-28 md:h-auto py-6  items-center w-full md:justify-between mb-6">
+    <div className=" max-w-[1600px]  mx-auto w-full ">
+      <div className="px-4 relative flex gap-3 flex-col md:flex-row h-28 md:h-auto py-6  z-30 items-center w-full md:justify-between mb-6">
         <p className="text-gray-200 !text-xl sm:!text-3xl lg:!text-5xl font-black uppercase  ">
           {props?.title}
         </p>
         <div
-          className={`${lang?.dir == 'rtl' ? ' flex-row-reverse' : 'md:absolute right-0'
+          className={`${lang?.dir == 'rtl' ? ' flex-row-reverse' : 'md:ml-0'
             }  flex gap-2 z-10 items-center justify-center `}
         >
           <Button
@@ -141,8 +141,10 @@ function ProductSection(props: producctInterface) {
         </div>
       </div>
 
-      <div className="relative z-10">
+      <div className="z-30 px-4">
         {/* glow */}
+        <div className='relative'>
+
         {props.type === 'no-glow' ? (
           ''
         ) : (
@@ -152,17 +154,18 @@ function ProductSection(props: producctInterface) {
           ></div>
 
         )}
+        </div>
 
 
         <Slider ref={slide} {...settings} >
           {products.map((item, index) => {
             return (
-              <div key={index} className="">
+              <div key={index} className={`${props?.class} z-10`}>
                 <ProductCard
                   isLast={index === products.length - 1}
                   nextPage={nextPage}
                   data={item}
-                  class={`${props?.class} `}
+                  class={` `}
                   dir={`${lang?.dir}`}
                 />
               </div>

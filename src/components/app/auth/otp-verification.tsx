@@ -62,7 +62,7 @@ export function OtpVerificationDailog(props: OtpVerificationDailogInterface) {
     onSuccess: (res: any) => {
       toast({
         variant: 'success',
-        title: 'Your Otp is Verified ',
+        title: 'Login successfully ',
       });
       dispatch(userAuth(res?.user));
       props.setOtpIsModal(false);
@@ -240,11 +240,13 @@ export function OtpVerificationDailog(props: OtpVerificationDailogInterface) {
                 />
               </div>
               <div className="flex flex-row justify-center items-center  ">
-                <p className="text-center text-grayColor text-xs pr-4 underline cursor-pointer">
+                <p className="text-center text-grayColor text-xs pr-4  cursor-pointer">
                   Didn’t receive an OTP?{' '}
                 </p>
                 <button
                   disabled={showTimer}
+                  onClick={handleResendOtp}
+                  type="button"
                   className="text-white text-xs underline cursor-pointer"
                 >
                   Resend OTP {seconds ? seconds + 's' : ''}
@@ -253,7 +255,7 @@ export function OtpVerificationDailog(props: OtpVerificationDailogInterface) {
               <div className="w-full mx-auto">
                 <div className=" flex items-center justify-center">
                   <Button
-                    className="align-center text-uppercase rounded-full px-10   text-black font-sans font-[900]   text-xl tracking-[-1px]"
+                    className="align-center uppercase rounded-full px-10   text-black font-sans font-[900]   text-xl tracking-[-1px]"
                     variant="clip"
                   >
                     Enter
