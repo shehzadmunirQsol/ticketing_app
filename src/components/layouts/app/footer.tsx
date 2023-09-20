@@ -17,8 +17,8 @@ interface LinkItemProps {
 function Footer() {
   const router = useRouter()
   return (
-    <footer className="bg-background-footer h-full !z-50">
-      <div className="mx-auto relative w-full max-w-screen h-full ">
+    <footer className="bg-background-footer h-full  !z-50">
+      <div className="relative w-full max-w-screen max-w-[1600px] mx-auto h-full ">
         <div className=" absolute  p-1 w-1/2 z-20  h-full  ">
           <Glow className="absolute bottom-0 -left-16 z-20  p-2   w-1/2 h-1/3  " />
           {/* <div className="absolute bottom-0 -left-16 z-2  p-2  w-1/2 h-1/3  bg-teal-400 bg-opacity-30 rounded-full blur-3xl"></div> */}

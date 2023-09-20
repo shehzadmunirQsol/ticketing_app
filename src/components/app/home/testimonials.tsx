@@ -84,7 +84,7 @@ function Testimonials() {
     },
   ];
   return (
-    <div className="relative flex flex-col gap-14 justify-start   w-full mb-2 py-4">
+    <div className="relative flex flex-col gap-14 justify-start   w-full max-w-[1600px] mx-auto mb-2 py-4">
       <div className="relative w-full m-auto flex flex-col items-center justify-center">
         <div className=" z-10 h-64 w-62 ">
           <Image

@@ -73,14 +73,14 @@
 .banner_img {
   background: url(../public/assets/background.png) center no-repeat;
   background-size: 100vw 100vh;
-  /* max-width: 1600px; 
-  max-height: 100px; */
+  /* max-width: 1366px;
+  max-height: 768px; */
 }
 .banner_img_flip {
   background: url(../public/assets/flip-background.png) center no-repeat;
   background-size: 100vw 100vh;
-  /* max-width: 1600px;
-  max-height: 100px; */
+  /* max-width: 1366px;
+  max-height: 768px; */
 }
 
 .scroll-hide {

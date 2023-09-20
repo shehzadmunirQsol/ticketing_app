@@ -39,8 +39,8 @@ function HowtoSection() {
     },
   ];
   return (
-    <div className="w-full mb-16 bg-primary relative">
-      <div className="relative top-0      grid grid-cols-1 lg:grid-cols-2  p-4 md:p-14 ">
+    <div className="w-full  mb-16 bg-primary relative">
+      <div className="relative top-0  max-w-[1600px] mx-auto    grid grid-cols-1 lg:grid-cols-2  p-4 md:p-14 ">
         <div className=" my-auto   w-full ">
           <p className="mr-auto  py-4 md:py-0 text-left !w-full md:!max-w-[460px] text-black font-[1000] tracking-[-4px] !text-6xl   md:!text-6xl lg:!text-8xl   uppercase">
             HOW TO PLAY?
