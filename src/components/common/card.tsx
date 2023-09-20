@@ -43,10 +43,10 @@ function ProductCard(props: cardInterface) {
     props?.data && (
       <div
         dir={props?.dir}
-        className={`   rounded-sm shadow-lg bg-card ${props?.class}`}
+        className={`rounded-sm shadow-lg bg-card ${props?.class}`}
         ref={cardRef}
       >
-        <div className="relative">
+        <div className="relative ">
           {endDate.toLocaleDateString() === todayDate.toLocaleDateString() ? (
             <div className=" absolute top-0 w-fit p-2 z-2 bg-primary text-black text-sm">
               <span className=" font-bold">CLOSES TODAY</span> 20:00
