@@ -66,7 +66,7 @@ function Footer() {
                     { page: 'Cars', link: '/cars' },
                     { page: 'Cash', link: '/cash' },
                     { page: 'Winners', link: '/winners' },
-                    { page: 'FAQs', link: '/' },
+                    { page: 'FAQs', link: '/faq' },
                   ].map((item, index) => {
                     return (
                       <li key={index} className="text-sm">

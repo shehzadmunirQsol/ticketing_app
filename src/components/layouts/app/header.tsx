@@ -152,29 +152,33 @@ export function DropdownMenuDemo() {
         {/* <DropdownMenuLabel></DropdownMenuLabel> */}
 
         <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <Link href="/cars">Cars</Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Link href="/cash">Cash</Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Link href="/winners">Winners</Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <span>About Us</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <span>FAQ</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <ShoppingCart className="mr-2 h-4 w-4" />
-            <Link href="/cart">Cart</Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <User className="mr-2 h-4 w-4" />
-            <Link href="/account">My Account</Link>
-          </DropdownMenuItem>
+          <Link href="/cars">
+            <DropdownMenuItem>Cars</DropdownMenuItem>
+          </Link>
+          <Link href="/cash">
+            <DropdownMenuItem>Cash</DropdownMenuItem>
+          </Link>
+          <Link href="/winners">
+            <DropdownMenuItem>Winners</DropdownMenuItem>
+          </Link>
+          <Link href="/about-us">
+            <DropdownMenuItem>About Us</DropdownMenuItem>
+          </Link>
+          <Link href="/faq">
+            <DropdownMenuItem>FAQ</DropdownMenuItem>
+          </Link>
+          <Link href="/cart">
+            <DropdownMenuItem>
+              <ShoppingCart className="mr-2 h-4 w-4" />
+              Cart
+            </DropdownMenuItem>
+          </Link>
+          <Link href="/account">
+            <DropdownMenuItem>
+              <User className="mr-2 h-4 w-4" />
+              My Account
+            </DropdownMenuItem>
+          </Link>
         </DropdownMenuGroup>
         <DropdownMenuGroup>
           <DropdownMenuSub>
