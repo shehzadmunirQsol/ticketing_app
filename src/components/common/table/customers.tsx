@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   ColumnDef,
   SortingState,
@@ -40,17 +40,7 @@ import { Switch } from '~/components/ui/switch';
 import { CustomerDialog } from '../modal/customers';
 import { useToast } from '~/components/ui/use-toast';
 import { LoadingDialog } from '../modal/loadingModal';
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '~/components/ui/accordion';
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from '~/components/ui/collapsible';
+
 import { TableFilters } from './table_filters';
 
 export type Category = {
@@ -80,11 +70,10 @@ export default function CustomersDataTable() {
   });
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
-  const [selectedItem, setSelectedItem] = React.useState({});
-  const [title, setTitle] = React.useState('');
-  const [type, setType] = React.useState('');
-  const [isModal, setIsModal] = React.useState(false);
-  console.log({ filterID });
+  const [selectedItem, setSelectedItem] = useState({});
+  const [title, setTitle] = useState('');
+  const [type, setType] = useState('');
+  const [isModal, setIsModal] = useState(false);
 
   // APi
   const { data, refetch, isLoading } = trpc.customer.getCustomers.useQuery(
@@ -94,7 +83,7 @@ export default function CustomersDataTable() {
     },
   );
 
-  const categoryData = React.useMemo(() => {
+  const categoryData = useMemo(() => {
     return Array.isArray(data?.data) ? data?.data : [];
   }, [data]);
 
@@ -293,7 +282,7 @@ export default function CustomersDataTable() {
         <ScrollArea className="w-full">
           <ScrollBar orientation="horizontal"></ScrollBar>
           <Table>
-            <TableHeader>
+            <TableHeader className="bg-secondary/80">
               {table?.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {

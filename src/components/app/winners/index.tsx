@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import BannerTitle from '~/components/common/banner_title';
 import WinnarsBg from '~/public/assets/winner_page.svg';
-import CashBg from '~/public/assets/cash_bg.png';
 import Cash from '~/public/assets/cash-1.png';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
@@ -18,32 +17,26 @@ export const Winners = () => {
     rows: 9,
   });
 
-  const { data: winnersList, refetch } = trpc.winner.getWinnersById.useQuery(
-    filters,
-    {
-      refetchOnWindowFocus: false,
-      // enabled: user?.id ? true : false,
-    },
-  );
-  console.log(winnersList, "winnerList")
-
-
+  const { data: winnersList } = trpc.winner.get.useQuery(filters, {
+    refetchOnWindowFocus: false,
+  });
 
   useEffect(() => {
     if (filters.first > 0 && winnersList?.data?.length) {
-      setProducts([...products, ...winnersList?.data]);
+      if (winnersList?.data?.length) {
+        setProducts([...products, ...winnersList?.data]);
+      }
     } else if (winnersList?.data?.length) {
       setProducts(winnersList?.data);
     }
   }, [winnersList]);
 
   function nextPage() {
-    console.log('Next page emitted');
     if (products.length % filters.rows === 0) {
       setFilters({ ...filters, first: 1 + filters.first });
     }
   }
-  console.log(products, "state")
+
   return (
     <div>
       <div className="relative pt-24 "></div>
@@ -51,28 +44,28 @@ export const Winners = () => {
       <div className="h-full px-10 py-20">
         <Glow className=" absolute  top-[560px] -left-16  p-2   w-1/5 h-[350px]" />
         <Glow className=" absolute bottom-[750px]  lg:bottom-[440px] md:bottom-[440px] -right-16  w-1/5 h-[350px] -z-2 " />
-        {products.length == 0 ?
+        {products.length == 0 ? (
           <h2 className="py-20 md:py-40 lg:py-48 text-center text-2xl md:text-4xl lg:text-5xl font-black uppercase">
             No Winners Selected yet
           </h2>
-          : (<div className=" grid grid-cols-1 md:grid-cols-2     lg:grid-cols-3   justify-between max-w-[1500px] mx-auto ">
+        ) : (
+          <div className="grid gap-2 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-[1500px] m-auto">
             {products?.map((itemList: any, i: any) => {
               return (
-                <div className="mx-auto py-2 md:py-0" key={i}>
+                <div className="m-auto" key={i}>
                   <WinnarsCard
                     isLast={i === products.length - 1}
                     nextPage={nextPage}
                     dir={lang.dir}
                     cash={Cash}
                     data={itemList}
-                    class="z-50 h-full max-w-sm lg:max-w-2xl md:scale-95  w-full  "
+                    class="h-full max-w-sm lg:max-w-2xl md:scale-95 w-full"
                   />
                 </div>
               );
             })}
           </div>
-          )
-        }
+        )}
 
         {/* doudt should it load more on action or automatically */}
         {/* {products.length != winnersList?.count ? (

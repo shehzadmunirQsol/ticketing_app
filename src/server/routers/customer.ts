@@ -86,7 +86,6 @@ export const customerRouter = router({
         const { filters, ...payload } = input;
         const filterPayload: any = { ...filters };
 
-        if (filterPayload?.created_at) delete filterPayload.created_at;
         if (filterPayload?.searchQuery) delete filterPayload.searchQuery;
         if (filterPayload?.endDate) delete filterPayload.endDate;
         if (filterPayload?.startDate) delete filterPayload.startDate;
@@ -394,7 +393,6 @@ export const customerRouter = router({
               otp: '',
             },
           });
-          console.log(updateResponse, 'updateResponse');
         } else {
           throw new TRPCError({
             code: 'NOT_FOUND',
@@ -459,7 +457,6 @@ export const customerRouter = router({
             message: 'Invalid Otp',
           });
         } else {
-          console.log('else HJDJDHDDN');
           const updateResponse = await prisma.customer?.update({
             where: {
               id: user.id,
@@ -470,11 +467,19 @@ export const customerRouter = router({
               otp: '',
             },
           });
-          console.log(updateResponse, 'updateResponse');
         }
-        return { message: 'otp', status: true };
+        const jwt = signJWT({ email: user.email, id: user.id });
+        const serialized = serialize('winnar-token', jwt, {
+          httpOnly: true,
+          path: '/',
+          sameSite: 'strict',
+        });
+
+        ctx?.res?.setHeader('Set-Cookie', serialized);
+        const { password, otp, ...userApiData } = user;
+
+        return { user: userApiData, jwt };
       } catch (error: any) {
-        console.log({ error });
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: error.message,

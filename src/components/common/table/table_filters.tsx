@@ -49,7 +49,8 @@ interface SettingDialogInterface {
   item_name: string;
   value: any;
   setValue: any;
-  setFilters: any;
+  setFilters?: any;
+  initial?: any;
 }
 
 export function TableFilters(props: SettingDialogInterface) {
@@ -67,6 +68,7 @@ export function TableFilters(props: SettingDialogInterface) {
       'is_enabled',
       'is_percentage',
       'is_limit',
+      'is_disabled',
     ];
     const data =
       filter == 'category_id'
@@ -109,22 +111,36 @@ export function TableFilters(props: SettingDialogInterface) {
       setFilterVal({}),
       setFilterDate({}),
       setFilterInput({}),
-      props?.setFilters({
-        first: 0,
-        rows: 10,
-        lang_id: 1,
-      })
+      props?.setFilters &&
+        props?.setFilters(
+          props?.initial
+            ? {
+                ...props?.initial,
+              }
+            : {
+                first: 0,
+                rows: 10,
+                lang_id: 1,
+              },
+        )
     );
   };
   const SubmitFilter = () => {
     return (
       props?.setValue({ ...filterVal, ...filterDate, ...filterInput }),
       setFilter(!filter),
-      props?.setFilters({
-        first: 0,
-        rows: 10,
-        lang_id: 1,
-      })
+      props?.setFilters &&
+        props?.setFilters(
+          props?.initial
+            ? {
+                ...props?.initial,
+              }
+            : {
+                first: 0,
+                rows: 10,
+                lang_id: 1,
+              },
+        )
     );
   };
 
@@ -133,7 +149,13 @@ export function TableFilters(props: SettingDialogInterface) {
   const dateForInput = curr.toISOString().substring(0, 10);
 
   const today = new Date().toISOString().split('T')[0];
-
+  async function onSubmit(values: any) {
+    try {
+      console.log({ values });
+    } catch (error: any) {
+      console.log(error?.message);
+    }
+  }
   return (
     <div>
       <Button
@@ -155,9 +177,9 @@ export function TableFilters(props: SettingDialogInterface) {
             <SheetTitle>{props?.item_name} Filters</SheetTitle>
             <ScrollArea className="w-full h-[calc(100vh-165px)] ">
               <ScrollBar orientation="vertical"></ScrollBar>
-              <SheetDescription className="pt-10">
-                <Form {...form}>
-                  <form>
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)}>
+                  <SheetDescription className="pt-10">
                     <div className=" grid grid-cols-1    items-center p-2">
                       {props?.inputList.map((item: any, i: number) => {
                         if (item?.type == 'text') {
@@ -273,7 +295,7 @@ export function TableFilters(props: SettingDialogInterface) {
                                   value={
                                     filterVal[item.filtername]?.toString() ?? ''
                                   }
-                                  className=" w-full px-2 py-3 border border-border bg-transparent focus:border-primary selection:border-border focus:ring-border"
+                                  className=" w-full px-2 py-3 border border-border bg-black focus:border-primary selection:border-border focus:ring-border"
                                 >
                                   <option
                                     value={'delete'}
@@ -307,9 +329,9 @@ export function TableFilters(props: SettingDialogInterface) {
                         }
                       })}
                     </div>
-                  </form>
-                </Form>
-              </SheetDescription>
+                  </SheetDescription>
+                </form>
+              </Form>
             </ScrollArea>
           </SheetHeader>
           <SheetFooter>

@@ -191,8 +191,7 @@ export default function Contact() {
                           <FormControl className="rounded-md bg-inputColor">
                             <Input
                               type="number"
-
-                              max="50"
+                              max={9}
                               placeholder="Enter your phone number"
                               {...field}
 

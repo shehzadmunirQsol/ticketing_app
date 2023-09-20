@@ -94,8 +94,8 @@ export function SpotLightForm() {
     enabled: index ? true : false,
   });
   useEffect(() => {
-    if (!isLoading && isFetched && BannerApiData !== undefined) {
-      const data: any = { ...BannerApiData[0] };
+    if (!isLoading && isFetched && BannerApiData?.data !== undefined) {
+      const data: any = { ...BannerApiData?.data[0] };
       seteditData(data);
       const json_data = JSON.parse(data?.value);
       form.setValue('link', json_data?.link);
@@ -108,12 +108,12 @@ export function SpotLightForm() {
         form.setValue('ar.description', json_data?.description);
       }
     }
-  }, [isLoading, isFetched, BannerApiData]);
+  }, [isLoading, isFetched, BannerApiData?.data]);
   const formValidateData =
     BannerApiData !== undefined && index
-      ? BannerApiData[0]?.lang_id == 1
+      ? BannerApiData?.data[0]?.lang_id == 1
         ? enFormSchema
-        : BannerApiData[0]?.lang_id == 2
+        : BannerApiData?.data[0]?.lang_id == 2
         ? arFormSchema
         : SpotLightFormSchema
       : SpotLightFormSchema;
@@ -121,9 +121,9 @@ export function SpotLightForm() {
   const form = useForm<z.infer<typeof formValidateData>>({
     resolver: zodResolver(
       BannerApiData !== undefined && index
-        ? BannerApiData[0]?.lang_id == 1
+        ? BannerApiData?.data[0]?.lang_id == 1
           ? enFormSchema
-          : BannerApiData[0]?.lang_id == 2
+          : BannerApiData?.data[0]?.lang_id == 2
           ? arFormSchema
           : SpotLightFormSchema
         : SpotLightFormSchema,
@@ -337,12 +337,12 @@ export function SpotLightForm() {
           <Tabs
             defaultValue={
               index &&
-              BannerApiData !== undefined &&
-              BannerApiData[0]?.lang_id == 1
+              BannerApiData?.data !== undefined &&
+              BannerApiData?.data[0]?.lang_id == 1
                 ? 'en'
                 : index &&
-                  BannerApiData !== undefined &&
-                  BannerApiData[0]?.lang_id == 2
+                  BannerApiData?.data !== undefined &&
+                  BannerApiData?.data[0]?.lang_id == 2
                 ? 'ar'
                 : 'en'
             }

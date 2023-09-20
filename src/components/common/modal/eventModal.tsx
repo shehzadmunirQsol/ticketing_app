@@ -1,4 +1,4 @@
-import { useDispatch } from 'react-redux';
+import { useRouter } from 'next/router';
 import { Button } from '~/components/ui/button';
 import {
   Dialog,
@@ -9,37 +9,40 @@ import {
   DialogTitle,
 } from '~/components/ui/dialog';
 import { useToast } from '~/components/ui/use-toast';
-import { removeFromCart } from '~/store/reducers/cart';
 import { trpc } from '~/utils/trpc';
 
-interface SettingDialogInterface {
+interface SelectCustomerInterface {
   isModal: boolean;
-  isLogin: boolean;
   openChangeHandler: () => void;
-  cart_item_id: number;
   event_id: number;
-  item_name: string;
+  customer_id: number;
+  customer_name: string;
+  event_name: string;
+  customer_email: string;
 }
 
-export function RemoveItemDialog(props: SettingDialogInterface) {
+export function SelectWinnerDialog(props: SelectCustomerInterface) {
   const { toast } = useToast();
-  const dispatch = useDispatch();
+  const router = useRouter();
 
-  const removeCartItem = trpc.cart.removeFromCart.useMutation();
+  const selectWinner = trpc.winner.selectWinner.useMutation();
 
   async function removeItemHandler() {
     try {
-      if (props?.isLogin) {
-        const payload = { cart_item_id: props?.cart_item_id };
+      const payload = {
+        event_id: props?.event_id,
+        customer_id: props?.customer_id,
+        customer_name: props?.customer_name,
+        event_name: props?.event_name,
+        customer_email: props?.customer_email,
+      };
 
-        await removeCartItem.mutateAsync(payload);
-      }
-      dispatch(removeFromCart({ event_id: props?.event_id }));
-      props?.openChangeHandler();
+      await selectWinner.mutateAsync(payload);
       toast({
         variant: 'success',
-        title: 'Item removed successfully!',
+        title: 'Winner Selected successfully!',
       });
+      router.replace('/admin/winners');
     } catch (error: any) {
       props?.openChangeHandler();
       toast({
@@ -53,12 +56,14 @@ export function RemoveItemDialog(props: SettingDialogInterface) {
     <Dialog open={props?.isModal} onOpenChange={props.openChangeHandler}>
       <DialogContent className="">
         <DialogHeader>
-          <DialogTitle>Remove Item</DialogTitle>
+          <DialogTitle>Select Winner</DialogTitle>
           <DialogDescription>
             <p className="text-lg">
-              Are you sure, you want to remove{' '}
-              <strong className="text-primary">{props?.item_name}</strong> from
-              your cart?
+              Are you sure, you want to select{' '}
+              <strong className="text-primary">{props?.customer_name}</strong>{' '}
+              as a winner for{' '}
+              <strong className="text-primary">{props?.event_name}</strong>{' '}
+              event?
             </p>
           </DialogDescription>
         </DialogHeader>
@@ -67,16 +72,16 @@ export function RemoveItemDialog(props: SettingDialogInterface) {
             variant={'secondary'}
             type="button"
             onClick={props.openChangeHandler}
-            disabled={removeCartItem.isLoading}
+            disabled={selectWinner.isLoading}
           >
             Cancel
           </Button>
           <Button
             type="submit"
             onClick={removeItemHandler}
-            disabled={removeCartItem.isLoading}
+            disabled={selectWinner.isLoading}
           >
-            Remove
+            Select
           </Button>
         </DialogFooter>
       </DialogContent>

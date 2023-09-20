@@ -31,16 +31,7 @@ export default function CartPage() {
     },
   );
 
-  const couponApply = trpc.coupon.applyCoupon.useMutation({
-    onSuccess: () => {
-      console.log('upload successfully');
-
-      // router.push('/store/wallet-connect');
-    },
-    onError(error: any) {
-      console.log({ error });
-    },
-  });
+  const couponApply = trpc.coupon.applyCoupon.useMutation();
 
   async function handleApply() {
     try {
@@ -77,8 +68,6 @@ export default function CartPage() {
     ? totalAmount * (cart.discount / 100)
     : cart.discount;
 
-  console.log({ userTicketLimit: userTicketLimits });
-
   return (
     <div className="relative mt-24 z-20">
       {count === 0 ? (
@@ -87,18 +76,19 @@ export default function CartPage() {
         </h2>
       ) : (
         <>
-          <div className="relative bg-background py-6 px-4 space-y-10 md:py-16 md:px-14 md:space-y-14 -z-30 ">
+          <div className="relative py-6 px-4 space-y-10 md:py-16 md:px-14 md:space-y-14 -z-30 ">
             <h2 className="text-2xl md:text-4xl lg:text-5xl z-10 font-black uppercase">
               Basket
             </h2>
-            <div data-name="cards" className="w-full z-10 border-b border-white/40">
+            <div
+              data-name="cards"
+              className="w-full z-10 border-b border-white/40"
+            >
               {cart?.cartItems?.map((cartItem) => {
                 const userTicketLimit = userTicketLimits?.data?.find(
                   (userLimit) => userLimit?.event_id === cartItem?.event_id,
                 );
                 const ticketPurchased = userTicketLimit?._sum?.quantity ?? 0;
-
-                console.log({ ticketPurchased });
 
                 return (
                   <CartItem
@@ -111,7 +101,7 @@ export default function CartPage() {
                 );
               })}
             </div>
-            <div className="bg-transparent space-y-4 w-1/3 z-10 ml-auto">
+            <div className="bg-transparent space-y-4 sm:w-1/2 mdx:w-1/3 z-10 ml-auto">
               <div className="flex bg-card border border-border rounded-md">
                 <Input
                   placeholder="Coupon code"

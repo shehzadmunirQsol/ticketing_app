@@ -17,10 +17,11 @@ export const eventRouter = router({
     try {
       const { filters, ...payload } = input;
       const filterPayload: any = { ...filters };
-      if (filterPayload?.created_at) delete filterPayload.created_at;
+
       if (filterPayload?.searchQuery) delete filterPayload.searchQuery;
       if (filterPayload?.endDate) delete filterPayload.endDate;
       if (filterPayload?.startDate) delete filterPayload.startDate;
+      if (filterPayload?.status) delete filterPayload.status;
       const where: any = {
         is_deleted: false,
         lang_id: input.lang_id,
@@ -34,28 +35,26 @@ export const eventRouter = router({
             mode: 'insensitive',
           },
         });
-
-        // options.where.OR.push({
-        //   price: { contains: input.searchQuery, mode: 'insensitive' },
-        // });
       }
 
-      // if (input?.filters?.startDate) {
-      //   const startDate = new Date(input?.filters?.startDate);
-      //   where.launch_date = { lte: startDate };
-      //   where.end_date = { gte: startDate };
-      // }
       if (input?.filters?.startDate) {
         const startDate = new Date(input?.filters?.startDate);
         where.launch_date = { gte: startDate };
       }
-
+      if (input?.filters?.status == 'active') {
+        const startDate = new Date();
+        where.launch_date = { gte: startDate };
+      }
+      if (input?.filters?.status == 'in-active') {
+        const startDate = new Date();
+        where.end_date = { lte: startDate };
+      }
       if (input?.filters?.endDate) {
         const endDate = new Date(input?.filters?.endDate);
         where.end_date = { lte: endDate };
       }
 
-      if (input.category_id) where.id = input.category_id;
+      if (input.category_id) where.category_id = input.category_id;
 
       // if (input.event_id) where.id = input.event_id;
 
@@ -200,8 +199,9 @@ export const eventRouter = router({
     .input(getEventCustomers)
     .query(async ({ input }) => {
       try {
+        // const where = `e.id = ${input.event_id} AND ed.lang_id=1`;
         const eventCustomers =
-          await prisma.$queryRaw`SELECT e.id AS event_id, e.thumb, e.price, oe.customer_id, c.email,ed.name AS event_name, c.first_name, c.last_name, CAST( SUM( oe.quantity ) AS INT ) AS quantity
+          await prisma.$queryRaw`SELECT e.id AS event_id, e.thumb, e.price, e.end_date, oe.customer_id, c.email,ed.name AS event_name, c.first_name, c.last_name, CAST( SUM( oe.quantity ) AS INT ) AS quantity
           FROM event AS e
           JOIN event_description AS ed
           ON e.id = ed.event_id
@@ -254,8 +254,11 @@ export const eventRouter = router({
     .input(getEventSchema)
     .query(async ({ input }) => {
       try {
-        console.log({ input }, 'event input ');
-        const where: any = { is_deleted: false };
+        const where: any = {
+          is_deleted: false,
+          end_date: { gte: new Date() },
+          draw_date: null,
+        };
 
         if (input?.startDate) {
           const startDate = new Date(input?.startDate);
@@ -276,7 +279,7 @@ export const eventRouter = router({
           orderBy: { created_at: 'asc' },
           skip: input.first * input.rows,
           take: input.rows,
-          where: where,
+          where: { end_date: { lte: new Date() } },
           include: {
             EventDescription: {
               where: {
@@ -333,8 +336,11 @@ export const eventRouter = router({
         // upcoming means its going to start
         if (input?.type == 'upcomming') where.launch_date = { gte: todayDate };
         if (input?.type == 'closing') {
-          where.launch_date = { gte: todayDate };
-          where.end_date = { gte: todayDate, lte: endingDate };
+          where.launch_date = { lte: new Date(todayDate) };
+          where.end_date = {
+            gte: new Date(todayDate),
+            lte: new Date(endingDate),
+          };
         }
         const totalEventPromise = prisma.event.count({
           where: where,
@@ -373,62 +379,8 @@ export const eventRouter = router({
           });
         }
 
-        console.log(totalEvent, event, 'event data');
         return {
           message: 'Events found',
-          count: totalEvent,
-          data: event,
-        };
-      } catch (error: any) {
-        throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: error?.message,
-        });
-      }
-    }),
-
-  getClosingSoon: publicProcedure
-    .input(getClosingSoon)
-    .query(async ({ input }) => {
-      try {
-        const where: any = { is_deleted: false };
-
-        if (input?.startDate) {
-          const startDate = new Date(input?.startDate);
-          where.created_at = { gte: startDate };
-        }
-        if (input?.endDate) {
-          const endDate = new Date(input?.endDate);
-          where.created_at = { lte: endDate };
-        }
-
-        if (input.event_id) where.id = input.event_id;
-
-        const totalEventPromise = prisma.event.count({
-          where: where,
-        });
-
-        const eventPromise = prisma.event.findMany({
-          orderBy: { created_at: 'desc' },
-          skip: input.first,
-          take: input.rows,
-          where: where,
-        });
-
-        const [totalEvent, event] = await Promise.all([
-          totalEventPromise,
-          eventPromise,
-        ]);
-
-        if (!event?.length) {
-          throw new TRPCError({
-            code: 'NOT_FOUND',
-            message: 'Events not found',
-          });
-        }
-
-        return {
-          message: 'events found',
           count: totalEvent,
           data: event,
         };
@@ -444,6 +396,8 @@ export const eventRouter = router({
     try {
       const where: any = {
         is_deleted: false,
+        end_date: { gte: new Date() },
+        draw_date: null,
         EventDescription: { some: { lang_id: input?.lang_id } },
       };
 
@@ -477,7 +431,6 @@ export const eventRouter = router({
         });
       }
 
-      console.log(totalEvent, event, 'event data');
       return {
         message: 'Events found',
         count: totalEvent,

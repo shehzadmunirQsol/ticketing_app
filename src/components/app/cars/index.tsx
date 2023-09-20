@@ -27,12 +27,7 @@ const CarsPage = () => {
     setProducts([]);
   }, [lang.lang_id]);
 
-  const {
-    data: prductsList,
-    isFetched,
-    isLoading,
-    isError,
-  } = trpc.event.getByCategoryId.useQuery(filters, {
+  const { data: prductsList } = trpc.event.getByCategoryId.useQuery(filters, {
     refetchOnWindowFocus: false,
   });
 
@@ -87,7 +82,7 @@ const CarsPage = () => {
           })}
         </div>
 
-        { products.length != prductsList?.count ? (
+        {products.length != prductsList?.count ? (
           <div className="w-fit mx-auto">
             <div className="text-center my-4">
               <p className="tracking-tight font-bold">Load More</p>

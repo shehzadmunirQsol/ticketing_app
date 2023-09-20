@@ -65,9 +65,12 @@ export default function OrdersDataTable() {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
 
-  const { data, isLoading } = trpc.cart.getCartItems.useQuery(filters, {
-    refetchOnWindowFocus: false,
-  });
+  const { data, isLoading } = trpc.cart.getCartItems.useQuery(
+    { ...filters, filters: { ...filterID } },
+    {
+      refetchOnWindowFocus: false,
+    },
+  );
   const cartItemData = React.useMemo(() => {
     return Array.isArray(data?.data) ? data?.data : [];
   }, [data]);
@@ -97,7 +100,7 @@ export default function OrdersDataTable() {
       accessorKey: 'Customer Name',
       header: 'Customer Name',
       cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap ">
+        <div className="w-28 capitalize text-ellipsis whitespace-nowrap ">
           {row?.original?.Cart?.Customer.first_name}
         </div>
       ),
@@ -120,7 +123,6 @@ export default function OrdersDataTable() {
         </div>
       ),
     },
-
     {
       accessorKey: 'Quantity',
       header: 'Quantity',
@@ -238,7 +240,7 @@ export default function OrdersDataTable() {
         <ScrollArea className="w-full ">
           <ScrollBar orientation="horizontal"></ScrollBar>
           <Table>
-            <TableHeader>
+            <TableHeader className="bg-secondary/80">
               {table?.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {

@@ -20,7 +20,7 @@ export function middleware(request: NextRequest) {
   if (request.nextUrl.pathname.startsWith('/')) {
     const storeRequestHeaders = new Headers(request.headers);
 
-    const isProtectedRoutes = ['/cart', '/checkout', '/account'].includes(
+    const isProtectedRoutes = ['/checkout', '/account'].includes(
       request.nextUrl.pathname,
     );
     const token = getToken(storeRequestHeaders);

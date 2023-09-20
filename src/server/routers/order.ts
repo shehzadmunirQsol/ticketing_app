@@ -208,7 +208,15 @@ export const orderRouter = router({
 
         await prisma.cart.update({
           where: { id: cart.id },
-          data: { is_deleted: true },
+          data: {
+            is_deleted: true,
+            CartItems: {
+              updateMany: {
+                where: { cart_id: cart.id },
+                data: { is_deleted: true },
+              },
+            },
+          },
         });
 
         const mailOptions = {
@@ -330,88 +338,110 @@ export const orderRouter = router({
   getOrders: publicProcedure.input(getOrder).query(async ({ input, ctx }) => {
     const todayDate = new Date();
     try {
+      const { filters, ...inputData } = input;
+      const filterPayload: any = { ...filters };
 
-      const where: any = { is_deleted: false };
+      if (filterPayload?.searchQuery) delete filterPayload.searchQuery;
+      if (filterPayload?.endDate) delete filterPayload.endDate;
+      if (filterPayload?.startDate) delete filterPayload.startDate;
+      const where: any = {
+        customer_id: input?.customer_id,
+        is_deleted: false,
+        ...filterPayload,
+      };
+      if (input?.status == 'current') {
+        const startDate = new Date();
+        where.OrderEvent = {
+          every: {
+            Event: {
+              end_date: {
+                gte: startDate,
+              },
+            },
+          },
+        };
+        // where.created_at = { gte: startDate };
+      }
+      if (input?.status == 'past') {
+        const startDate = new Date();
+        where.OrderEvent = {
+          every: {
+            Event: {
+              end_date: {
+                lte: startDate,
+              },
+            },
+          },
+        };
+      }
 
-      if (input?.startDate) {
-        const startDate = new Date(input?.startDate);
+      if (input?.filters?.startDate) {
+        const startDate = new Date(input?.filters?.startDate);
         where.created_at = { gte: startDate };
       }
-      if (input?.endDate) {
-        const endDate = new Date(input?.endDate);
+      if (input?.filters?.endDate) {
+        const endDate = new Date(input?.filters?.endDate);
         where.created_at = { lte: endDate };
       }
+      if (input?.filters?.searchQuery) {
+        where.OR = [];
+        where.OR.push({
+          first_name: {
+            contains: input?.filters?.searchQuery,
+            mode: 'insensitive',
+          },
+        });
+        where.OR.push({
+          last_name: {
+            contains: input?.filters?.searchQuery,
+            mode: 'insensitive',
+          },
+        });
+        where.OR.push({
+          email: {
+            contains: input?.filters?.searchQuery,
+            mode: 'insensitive',
+          },
+        });
+      }
 
+      const totalEventPromise = prisma.order.count({
+        where: where,
+      });
 
-      const curentOrders: any = prisma.order.findMany({
-        where: {
-          customer_id: input?.customer_id,
-
-        },
+      const eventPromise = prisma.order.findMany({
+        orderBy: { created_at: 'desc' },
+        skip: input.first * input.rows,
+        take: input.rows,
+        where: where,
         include: {
-          OrderEvent: {
-            include: {
-              Event: {
-                include: {
-                  EventDescription: {
-                    where: {
-                      lang_id: input.lang_id,
-                    },
-                  },
-                },
-              },
+          Customer: {
+            select: {
+              email: true,
+              first_name: true,
+              last_name: true,
             },
           },
         },
       });
 
-      const pastOrders: any = prisma.order.findMany({
-        where: {
-          customer_id: input?.customer_id,
-        },
-        include: {
-          OrderEvent: {
-            include: {
-              Event: {
-                include: {
-                  EventDescription: {
-                    where: {
-                      lang_id: input.lang_id,
+      const [totalEvent, event] = await Promise.all([
+        totalEventPromise,
+        eventPromise,
+      ]);
 
-                    },
-                  },
-                },
-              },
-            },
-          },
-        },
-      });
+      if (!event?.length) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Events not found',
+        });
+      }
 
-
-      const [current, past] = await Promise.all([curentOrders, pastOrders])
-
-      // console.log({ orders }, 'ordersorders');
-      // if (orders && orders?.length > 0) {
-
-      //   const ret: any = { current: [], past: [] };
-
-      //   for (let i = 0; i < orders.length; i++) {
-      //     if (orders[i].OrderEvent[0].Event?.end_date < todayDate) {
-      //       ret.past.push(orders[i]);
-      //     } else {
-      //       ret.current.push(orders[i]);
-      //     }
-      //   }
-
-      //   return ret;
-      // } else {
-      //   throw new TRPCError({
-      //     code: 'NOT_FOUND',
-      //     message: 'No Orders Found',
-      //   });
-      // }
-
-      return { current, past };
+      return {
+        message: 'events found',
+        count: totalEvent,
+        data: event,
+      };
     } catch (error: any) {
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
@@ -421,15 +451,51 @@ export const orderRouter = router({
   }),
   get: publicProcedure.input(getOrderSchema).query(async ({ input }) => {
     try {
-      const where: any = { is_deleted: false };
+      const { filters, ...inputData } = input;
+      const filterPayload: any = { ...filters };
 
-      if (input?.startDate) {
-        const startDate = new Date(input?.startDate);
+      if (filterPayload?.searchQuery) delete filterPayload.searchQuery;
+      if (filterPayload?.endDate) delete filterPayload.endDate;
+      if (filterPayload?.startDate) delete filterPayload.startDate;
+      const where: any = { is_deleted: false, ...filterPayload };
+
+      if (input?.filters?.startDate) {
+        const startDate = new Date(input?.filters?.startDate);
         where.created_at = { gte: startDate };
       }
-      if (input?.endDate) {
-        const endDate = new Date(input?.endDate);
+      if (input?.filters?.endDate) {
+        const endDate = new Date(input?.filters?.endDate);
         where.created_at = { lte: endDate };
+      }
+      if (input?.filters?.searchQuery) {
+        where.OR = [];
+        where.OR.push({
+          first_name: {
+            contains: input?.filters?.searchQuery,
+            mode: 'insensitive',
+          },
+        });
+        where.OR.push({
+          last_name: {
+            contains: input?.filters?.searchQuery,
+            mode: 'insensitive',
+          },
+        });
+        where.OR.push({
+          email: {
+            contains: input?.filters?.searchQuery,
+            mode: 'insensitive',
+          },
+        });
+
+        where.OR.push({
+          Customer: {
+            email: {
+              contains: input?.filters?.searchQuery,
+              mode: 'insensitive',
+            },
+          },
+        });
       }
 
       const totalEventPromise = prisma.order.count({
@@ -478,7 +544,10 @@ export const orderRouter = router({
   }),
   getByID: publicProcedure.input(getByIDSchema).query(async ({ input }) => {
     try {
-      const where: any = { is_deleted: false, id: input?.order_id };
+      const where: any = { is_deleted: false };
+      if (input?.order_id) where.id = input?.order_id;
+
+      if (input?.customer_id) where.customer_id = input.customer_id;
 
       const eventPromise = prisma.order.findFirst({
         orderBy: { created_at: 'desc' },
@@ -683,7 +752,15 @@ export const orderRouter = router({
 
             await prisma.cart.update({
               where: { id: cart.id },
-              data: { is_deleted: true },
+              data: {
+                is_deleted: true,
+                CartItems: {
+                  updateMany: {
+                    where: { cart_id: cart.id },
+                    data: { is_deleted: true },
+                  },
+                },
+              },
             });
 
             const mailOptions = {
@@ -840,57 +917,57 @@ async function CreatePayment(APidata: any) {
     console.log(tot_amount, 'tot_amount');
     const apiDate: any = APidata?.registrationId
       ? {
-        entityId: process.env.TOTAN_ENTITY_ID,
-        amount: APidata?.total_amount.toFixed(2),
-        currency: 'AED',
-        paymentType: 'DB',
-        'standingInstruction.source': 'CIT',
-        // wpwlOptions: JSON.stringify(APidata?.cart),
-        'customParameters[payload]': JSON.stringify({
-          ...payload,
-        }),
+          entityId: process.env.TOTAN_ENTITY_ID,
+          amount: APidata?.total_amount.toFixed(2),
+          currency: 'AED',
+          paymentType: 'DB',
+          'standingInstruction.source': 'CIT',
+          // wpwlOptions: JSON.stringify(APidata?.cart),
+          'customParameters[payload]': JSON.stringify({
+            ...payload,
+          }),
 
-        'standingInstruction.type': 'UNSCHEDULED',
-      }
+          'standingInstruction.type': 'UNSCHEDULED',
+        }
       : {
-        entityId: process.env.TOTAN_ENTITY_ID,
-        amount: APidata?.total_amount.toFixed(2),
-        currency: 'AED',
-        paymentType: 'DB',
-        paymentBrand: APidata?.paymentBrand,
+          entityId: process.env.TOTAN_ENTITY_ID,
+          amount: APidata?.total_amount.toFixed(2),
+          currency: 'AED',
+          paymentType: 'DB',
+          paymentBrand: APidata?.paymentBrand,
 
-        'card.number':
-          APidata?.card?.number && +APidata?.card?.number.replaceAll(' ', ''),
-        'card.holder': APidata?.card?.holder && APidata?.card?.holder,
-        'card.expiryMonth':
-          APidata?.card?.expiryMonth && APidata?.card?.expiryMonth,
-        'card.expiryYear':
-          APidata?.card?.expiryYear && APidata?.card?.expiryYear,
-        'card.cvv': APidata?.card?.cvv && +APidata?.card?.cvv,
-        'standingInstruction.mode': 'INITIAL',
-        'standingInstruction.source': 'CIT',
-        // createRegistration: 'true',
-        'merchant.name': 'MerchantCo',
-        'merchant.city': 'Munich',
-        'merchant.country': 'DE',
-        'merchant.mcc': '5399',
-        'customer.ip': '192.168.0.1',
-        'customer.browser.acceptHeader': 'text/html',
-        'customer.browser.screenColorDepth': '48',
-        'customer.browser.javaEnabled': 'false',
-        'customer.browser.language': 'de',
-        'customer.browser.screenHeight': '1200',
-        'customer.browser.screenWidth': '1600',
-        'customer.browser.timezone': '60',
-        'customer.browser.challengeWindow': '4',
-        'customer.browser.userAgent':
-          'Mozilla/4.0 (MSIE 6.0; Windows NT 5.0)',
-        testMode: 'EXTERNAL',
+          'card.number':
+            APidata?.card?.number && +APidata?.card?.number.replaceAll(' ', ''),
+          'card.holder': APidata?.card?.holder && APidata?.card?.holder,
+          'card.expiryMonth':
+            APidata?.card?.expiryMonth && APidata?.card?.expiryMonth,
+          'card.expiryYear':
+            APidata?.card?.expiryYear && APidata?.card?.expiryYear,
+          'card.cvv': APidata?.card?.cvv && +APidata?.card?.cvv,
+          'standingInstruction.mode': 'INITIAL',
+          'standingInstruction.source': 'CIT',
+          // createRegistration: 'true',
+          'merchant.name': 'MerchantCo',
+          'merchant.city': 'Munich',
+          'merchant.country': 'DE',
+          'merchant.mcc': '5399',
+          'customer.ip': '192.168.0.1',
+          'customer.browser.acceptHeader': 'text/html',
+          'customer.browser.screenColorDepth': '48',
+          'customer.browser.javaEnabled': 'false',
+          'customer.browser.language': 'de',
+          'customer.browser.screenHeight': '1200',
+          'customer.browser.screenWidth': '1600',
+          'customer.browser.timezone': '60',
+          'customer.browser.challengeWindow': '4',
+          'customer.browser.userAgent':
+            'Mozilla/4.0 (MSIE 6.0; Windows NT 5.0)',
+          testMode: 'EXTERNAL',
 
-        'customParameters[payload]': JSON.stringify({
-          ...payload,
-        }),
-      };
+          'customParameters[payload]': JSON.stringify({
+            ...payload,
+          }),
+        };
 
     const data = new URLSearchParams(apiDate).toString();
     const options = {
