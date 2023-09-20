@@ -100,7 +100,7 @@ export default function LoginSignup() {
     onSuccess: (response) => {
       toast({
         variant: 'success',
-        title: 'Login Successful ',
+        title: 'Login Successfully ',
       });
       dispatch(userAuth(response?.user));
 
