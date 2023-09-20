@@ -138,7 +138,22 @@ function CurrentandPast({ customer_id }: currentandpastprops) {
             )}
           </>
         ) : (
-          <></>
+          <>
+            <div className="flex flex-col my-auto h-full items-center justify-center">
+              <Image src={Current} alt="/" />
+              <p className="text-center text-gray-300 text-md my-2 px-6">
+                No past competition entries to show. Only entries from the last
+                30 days will be shown.
+              </p>
+              <Button
+                variant={'rounded'}
+                className="text-center font-black tracking-tighter my-4 w-36 text-xs md:w-fit md:text-md "
+                onClick={() => router.push('/cars')}
+              >
+                EXPLORE CURRENT COMPETITIONS
+              </Button>
+            </div>
+          </>
         )}
 
         {/* {displayArray == undefined || displayArray?.length === 0 ? (

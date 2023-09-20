@@ -11,18 +11,9 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { ChevronDown, MoreHorizontal } from 'lucide-react';
 
 import { Button } from '@/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/ui/dropdown-menu';
+
 import {
   Table,
   TableBody,
@@ -31,15 +22,22 @@ import {
   TableHeader,
   TableRow,
 } from '@/ui/table';
-import LanguageSelect, { LanguageInterface } from '../language_select';
+import { LanguageInterface } from '../language_select';
 import { trpc } from '~/utils/trpc';
-import Link from 'next/link';
-import { GetEventSchema } from '~/schema/event';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 import { LoadingDialog } from '../modal/loadingModal';
-import { TableFilters } from './table_filters';
 import { displayDate } from '~/utils/helper';
-import { getOrder } from '~/schema/order';
+import Image from 'next/image';
+import Current from '~/public/assets/not-current-entrie.png';
+import { useRouter } from 'next/router';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '~/components/ui/dropdown-menu';
+import { MoreHorizontal } from 'lucide-react';
+import Link from 'next/link';
 
 export type Category = {
   id: number;
@@ -57,10 +55,16 @@ interface OrderTableProps {
 
 export default function OrdersDataByIdTable(props: OrderTableProps) {
   const [sorting, setSorting] = useState<SortingState>([]);
+  const router = useRouter();
+
   //   const { customer_id, status, ...filterData } = { ...props.filters };
   //   const [filters, setFilters] = useState<getOrder>({
   //     ...filterData,
   //   });
+  const [selectedItem, setSelectedItem] = useState({});
+  const [title, setTitle] = useState('');
+  const [type, setType] = useState('');
+  const [isModal, setIsModal] = useState(false);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
   const [filterID, setFilterID] = useState({});
@@ -69,14 +73,19 @@ export default function OrdersDataByIdTable(props: OrderTableProps) {
     { ...props.filters },
     {
       refetchOnWindowFocus: false,
-      enabled: props?.filters.customer_id ? true : false,
+      // enabled: props?.filters.customer_id ? true : false,
     },
   );
 
   const orderData = React.useMemo(() => {
     return Array.isArray(data?.data) ? data?.data : [];
   }, [data]);
-
+  const handleView = (data: any, type: string) => {
+    setSelectedItem(data);
+    setTitle('Banner');
+    setType(type);
+    setIsModal(true);
+  };
   const columns: ColumnDef<Category>[] = [
     {
       accessorKey: 'ID',
@@ -128,6 +137,33 @@ export default function OrdersDataByIdTable(props: OrderTableProps) {
           {displayDate(row?.original?.created_at)}
         </div>
       ),
+    },
+    {
+      id: 'actions',
+      header: 'Actions',
+      enableHiding: false,
+      cell: ({ row }) => {
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <Link href={`/admin/orders/view/${row?.original?.id}`}>
+                <DropdownMenuItem>View Order</DropdownMenuItem>
+              </Link>
+              <DropdownMenuItem
+                onClick={() => handleView(row?.original, 'view')}
+              >
+                Delete Banner
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        );
+      },
     },
   ];
   const table = useReactTable({
@@ -228,10 +264,21 @@ export default function OrdersDataByIdTable(props: OrderTableProps) {
                 ))
               ) : (
                 <TableRow>
-                  <TableCell
-                    colSpan={columns.length}
-                    className="h-24 text-center"
-                  >
+                  <TableCell colSpan={columns.length} className=" text-center">
+                    <div className="flex flex-col my-auto h-full items-center justify-center">
+                      <Image src={Current} alt="/" />
+                      <p className="text-center text-gray-300 text-md my-2 px-6">
+                        No past competition entries to show. Only entries from
+                        the last 30 days will be shown.
+                      </p>
+                      <Button
+                        variant={'rounded'}
+                        className="text-center font-black tracking-tighter my-4 w-36 text-xs md:w-fit md:text-md "
+                        onClick={() => router.push('/cars')}
+                      >
+                        EXPLORE CURRENT COMPETITIONS
+                      </Button>
+                    </div>
                     No results.
                   </TableCell>
                 </TableRow>
