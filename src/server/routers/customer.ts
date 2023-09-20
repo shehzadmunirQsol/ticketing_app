@@ -319,7 +319,6 @@ export const customerRouter = router({
     .input(forgotPasswordCustomerSchema)
     .mutation(async ({ ctx, input }) => {
       try {
-        console.log(input.email, 'input');
         const user = await prisma.customer.findFirst({
           where: { email: input.email },
         });
@@ -480,7 +479,6 @@ export const customerRouter = router({
 
         return { user: userApiData, jwt };
       } catch (error: any) {
-        console.log({ error });
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: error.message,

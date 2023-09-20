@@ -33,6 +33,7 @@ import { LoadingDialog } from '~/components/common/modal/loadingModal';
 import { useToast } from '~/components/ui/use-toast';
 import { addCart } from '~/store/reducers/cart';
 import Link from 'next/link';
+import { userAuth } from '~/store/reducers/auth';
 
 function Checkout() {
   const { cart, totalAmount } = useSelector((state: RootState) => state.cart);
@@ -102,6 +103,7 @@ function Checkout() {
                 variant: 'success',
                 title: 'Order Successful! 🎉',
               });
+              if (Resdata?.user) dispatch(userAuth(Resdata?.user));
               dispatch(
                 addCart({
                   id: null,
@@ -609,6 +611,7 @@ function Checkout() {
               <Glow className=" absolute bottom-[750px]  lg:bottom-[440px] md:bottom-[440px] -right-16  w-1/5 h-[350px] -z-2 opacity-50 " />
 
               <Button
+                disabled={checkoutCreator?.isLoading}
                 className=" px-16 mt-10 w-full  text-black font-sans font-[900]   text-xl tracking-[-1px]"
                 variant="clip"
               >

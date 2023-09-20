@@ -279,7 +279,7 @@ export const eventRouter = router({
           orderBy: { created_at: 'asc' },
           skip: input.first * input.rows,
           take: input.rows,
-          where: { end_date: { lte: new Date() } },
+          where: where,
           include: {
             EventDescription: {
               where: {
@@ -466,17 +466,17 @@ export const eventRouter = router({
               },
             },
             EventImages: true,
-            CMS:{
-              include:{
-                CMSDescription:{
-                  where:{lang_id: input.lang_id},
-                  select:{
-                    content:true,
-                    lang_id:true
-                  }
-                }
-              }
-            }
+            CMS: {
+              include: {
+                CMSDescription: {
+                  where: { lang_id: input.lang_id },
+                  select: {
+                    content: true,
+                    lang_id: true,
+                  },
+                },
+              },
+            },
           },
         });
 

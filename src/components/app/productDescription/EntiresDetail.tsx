@@ -5,27 +5,38 @@ import wordwideImage from '../../../public/assets/wordwide.svg';
 import maxpersonImage from '../../../public/assets/maxperson.svg';
 import Image from 'next/image';
 
-const EntiresDetail = () => {
+const EntiresDetail = (props: any) => {
   return (
-    <div className="bg-backgroundDark border-2 rounded-md border border-border-backgroundEntires">
+    <div className="bg-backgroundDark border-2 rounded-md  border-border-backgroundEntires">
       <div className="container px-10 py-10 w-full">
         <div className="flex flex-col -m-4 text-center justify-center items-start lg:items-center lg:justify-between gap-14 lg:gap-0   lg:flex-row">
           <div className="flex justify-center items-center ">
             <Image src={onlyImage} className="mr-4" alt={'image'} />
             <p className="leading-relaxed lg:text-xl md:text-xl text-lg text-primary font-semibold">
-              Entries only <span className="font-black">AED 20</span>
+              Entries only{' '}
+              <span className="font-black">
+                AED {(props?.data?.price ?? 0)?.toFixed(2)}
+              </span>
             </p>
           </div>
           <div className="flex justify-center items-center ">
             <Image src={entiresImage} className="mr-4" alt={'image'} />
             <p className="leading-relaxed lg:text-xl md:text-xl text-lg text-primary font-semibold">
-              Max Entries <span className="font-black">99999</span>
+              Max Entries{' '}
+              <span className="font-black">
+                {props?.data?.total_tickets ?? 0}
+              </span>
             </p>
           </div>
           <div className="flex justify-center items-center ">
             <Image src={maxpersonImage} className="mr-4" alt={'image'} />
             <p className="leading-relaxed lg:text-xl md:text-xl text-lg text-primary font-semibold">
-              Max <span className="font-black">500</span> per person only
+              Max{' '}
+              <span className="font-black">
+                {' '}
+                {props?.data?.user_ticket_limit ?? 0}
+              </span>{' '}
+              per person only
             </p>
           </div>
           <div>

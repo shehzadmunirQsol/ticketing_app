@@ -61,7 +61,7 @@ function WinnarsCard(props: cardInterface) {
             {props?.data?.Event?.EventDescription[0]?.name}
           </p>
         </div>
-        <div className="opacity-75 text-gray-200  lg:text-lg md:text-lg text-sm font-normal leading-normal">
+        <div className=" text-lightColor lg:text-lg md:text-lg text-sm font-normal leading-normal">
           <p>
             Winning ticket{' '}
             <span className="text-primary lg:text-lg md:text-lg text-sm font-black leading-[18px] ml-6 ">
@@ -77,7 +77,7 @@ function WinnarsCard(props: cardInterface) {
         </div>
         <hr className=" opacity-20 mt-4" />
         <div className=" mt-2">
-          <p className="text-sm opacity-75 text-gray-200">
+          <p className="text-sm opacity-75 text-grayColor">
             {props?.data?.Customer?.first_name} Won a{' '}
             {props?.data?.Event?.EventDescription[0]?.name}
           </p>

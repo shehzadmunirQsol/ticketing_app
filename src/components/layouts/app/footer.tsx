@@ -15,7 +15,7 @@ interface LinkItemProps {
   disable?: boolean;
 }
 function Footer() {
-  const router = useRouter()
+  const router = useRouter();
   return (
     <footer className="bg-background-footer h-full  !z-50">
       <div className="relative w-full max-w-screen max-w-[1600px] mx-auto h-full ">
@@ -62,13 +62,11 @@ function Footer() {
                 <div>
                   <ul className="text-gray-500 dark:text-gray-400 font-medium">
                     {[
-                      { page: "Home", link: "/" },
-                      { page: "Cars", link: "/cars" },
-                      { page: "Cash", link: "/cash" },
-                      { page: "Winners", link: "/winners" },
-                      { page: "FAQs", link: "/" },
-
-
+                      { page: 'Home', link: '/' },
+                      { page: 'Cars', link: '/cars' },
+                      { page: 'Cash', link: '/cash' },
+                      { page: 'Winners', link: '/winners' },
+                      { page: 'FAQs', link: '/' },
                     ].map((item, index) => {
                       return (
                         <li key={index} className=" text-sm">
@@ -83,12 +81,14 @@ function Footer() {
                 <div>
                   <ul className="text-gray-500 dark:text-gray-400 font-medium">
                     {[
-                      { page: "About Us", link: "/about-us" },
-                      { page: "Contact Us", link: "/contact" },
-                      { page: "Terms & Conditions", link: "/terms-condition" },
-                      { page: "Our Team", link: "/about-us" },
-                      { page: "Cookie & Privacy Policy", link: "/privacy-policy" },
-
+                      { page: 'About Us', link: '/about-us' },
+                      { page: 'Contact Us', link: '/contact' },
+                      { page: 'Terms & Conditions', link: '/terms-condition' },
+                      { page: 'Our Team', link: '/about-us' },
+                      {
+                        page: 'Cookie & Privacy Policy',
+                        link: '/privacy-policy',
+                      },
                     ].map((item, index) => {
                       return (
                         <li key={index} className="text-sm">
@@ -110,10 +110,10 @@ function Footer() {
                       <Button
                         variant="outline"
                         size="icon_square"
-                        
                         className="p-1 rounded-md"
-                        onClick={() => router.push("https://www.facebook.com/WinnarUAE")}
-
+                        onClick={() =>
+                          router.push('https://www.facebook.com/WinnarUAE')
+                        }
                       >
                         <i className="fa-brands fa-facebook-f text-xl"></i>
                       </Button>
@@ -121,7 +121,9 @@ function Footer() {
                         variant="outline"
                         size="icon_square"
                         className=" rounded-md"
-                        onClick={() => router.push("https://www.instagram.com/winnar/")}
+                        onClick={() =>
+                          router.push('https://www.instagram.com/winnar/')
+                        }
                       >
                         <i className="fa-brands fa-instagram text-xl"></i>
                       </Button>
@@ -129,7 +131,11 @@ function Footer() {
                         variant="outline"
                         size="icon_square"
                         className=" rounded-md"
-                        onClick={() => router.push("https://www.linkedin.com/company/winnar/")}
+                        onClick={() =>
+                          router.push(
+                            'https://www.linkedin.com/company/winnar/',
+                          )
+                        }
                       >
                         <i className="fa-brands fa-linkedin text-xl"></i>
                       </Button>

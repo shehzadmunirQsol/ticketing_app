@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
 import { useRouter } from 'next/router';
 import { getAvailableTickets } from '~/utils/helper';
+import Glow from '~/components/common/glow';
 
 const ImageSlider = ({ data, ticketPurchased }: any) => {
   const { cart } = useSelector((state: RootState) => state.cart);
@@ -95,7 +96,7 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
               </p>
             </div>
             <div className="w-full relative">
-              <div className="z-50">
+              <div className="relative  z-10">
                 <Counter
                   range={range}
                   ticketInBasket={ticketInBasket}
@@ -105,6 +106,7 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
                   event={data}
                 />
               </div>
+              <Glow className="absolute bottom-0 -right-16   p-2   w-2/5 h-[180px]   " />
             </div>
           </div>
         </div>

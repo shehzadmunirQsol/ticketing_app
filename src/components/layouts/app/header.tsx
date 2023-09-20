@@ -111,7 +111,7 @@ function Header() {
             </Button>
           </Link>
           <Select onValueChange={toggleLanguageHandler}>
-            <SelectTrigger className="h-10 w-10 rounded-none border-primary text-gray-200">
+            <SelectTrigger className="h-9 w-9 rounded-none border-primary text-center  justify-center text-gray-200">
               <SelectValue placeholder="EN" />
             </SelectTrigger>
             <SelectContent>

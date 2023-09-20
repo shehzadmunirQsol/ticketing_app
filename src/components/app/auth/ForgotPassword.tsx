@@ -22,9 +22,10 @@ import {
 import { useForm } from 'react-hook-form';
 import { useToast } from '~/components/ui/use-toast';
 import { trpc } from '~/utils/trpc';
+import { LoadingDialog } from '~/components/common/modal/loadingModal';
 interface ForgotPasswordDialogInterface {
   isModal: boolean;
-  setIsModal: (e:any) => void;
+  setIsModal: (e: any) => void;
 }
 export function ForgotPasswordDailog(props: ForgotPasswordDialogInterface) {
   const { toast } = useToast();
@@ -53,62 +54,68 @@ export function ForgotPasswordDailog(props: ForgotPasswordDialogInterface) {
       },
     });
 
-  console.log(customerForgotPassword, 'customerForgotPassword');
-
   const onSubmit = async (values: any) => {
     console.log(values, 'onSubmit');
-    try{
+    try {
       const resp = await customerForgotPassword.mutateAsync(values);
       console.log(resp, 'final res');
-
-    }catch(error){
-      console.log(error,"forgot password")
+    } catch (error) {
+      console.log(error, 'forgot password');
     }
   };
 
   return (
-    <Dialog open={props?.isModal} onOpenChange={(e:any):any => props.setIsModal(e)}>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Forgot Password</DialogTitle>
-          <DialogDescription>
-            <Form {...formForgotPassword}>
-              <form
-                onSubmit={formForgotPassword.handleSubmit(onSubmit)}
-                className="justify-center items-center px-2 lg:px-8 py-4 space-y-4"
-              >
-                <FormField
-                  control={formForgotPassword.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem className="mb-6">
-                      <FormLabel className="text-xs font-thin text-grayColor !text-left">
-                        Email*
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          type="text"
-                          placeholder="Enter your email"
-                          {...field}
-                        />
-                      </FormControl>
-                      <div className='relative pb-2'>
-                        <FormMessage />
-                        </div>
-                    </FormItem>
-                  )}
-                />
-                <Button
-                  className="w-full     text-black font-sans font-[900]   text-xl tracking-[-1px]"
-                  variant="clip"
+    <>
+      <Dialog
+        open={props?.isModal}
+        onOpenChange={(e: any): any => props.setIsModal(e)}
+      >
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Forgot Password</DialogTitle>
+            <DialogDescription>
+              <Form {...formForgotPassword}>
+                <form
+                  onSubmit={formForgotPassword.handleSubmit(onSubmit)}
+                  className="justify-center items-center px-2 lg:px-8 py-4 space-y-4"
                 >
-                  SUBMIT
-                </Button>
-              </form>
-            </Form>
-          </DialogDescription>
-        </DialogHeader>
-      </DialogContent>
-    </Dialog>
+                  <FormField
+                    control={formForgotPassword.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem className="mb-6">
+                        <FormLabel className="text-xs font-thin text-grayColor !text-left">
+                          Email*
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            type="text"
+                            placeholder="Enter your email"
+                            {...field}
+                          />
+                        </FormControl>
+                        <div className="relative pb-2">
+                          <FormMessage />
+                        </div>
+                      </FormItem>
+                    )}
+                  />
+                  <Button
+                    className="w-full     text-black font-sans font-[900]   text-xl tracking-[-1px]"
+                    variant="clip"
+                  >
+                    SUBMIT
+                  </Button>
+                </form>
+              </Form>
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
+      <LoadingDialog
+        open={customerForgotPassword.isLoading}
+        text={'Loading...'}
+      />
+    </>
   );
 }
