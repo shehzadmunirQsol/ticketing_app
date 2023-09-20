@@ -59,16 +59,11 @@ function Checkout() {
       customer_id: cart.customer_id ?? 0,
       first_name: user?.first_name,
       last_name: user?.last_name,
-      apartment: user?.apartment,
-      street_address: user?.street_address,
-      city: user?.city,
       code: '+971',
-      country: user?.country,
+    
       dob: user?.dob,
       email: user?.email,
       phone_number: user?.phone_number,
-      postal_code: user?.postal_code,
-      state: user?.state,
     },
   });
   const checkoutCreator = trpc.order.createCheckout.useMutation({
@@ -79,6 +74,29 @@ function Checkout() {
       console.log({ error });
     },
   });
+  useEffect(()=>{
+    if(user)
+    {
+
+      form.setValue('cart_id',cart?.id  ?? 0)
+      form.setValue('customer_id',cart?.customer_id ??0)
+      form.setValue('first_name',user?.first_name ??'')
+      form.setValue('last_name',user?.last_name ??'')
+      form.setValue('dob',user?.dob ??'')
+      form.setValue('email',user?.email ??'')
+      if(user?.CustomerAddress && user?.CustomerAddress?.length)
+      {
+  
+        form.setValue('apartment',user?.CustomerAddress[0]?.street_address_2 ??'')
+        form.setValue('street_address',user?.CustomerAddress[0]?.street_address ??'')
+        form.setValue('city',user?.CustomerAddress[0]?.city ??'')
+        form.setValue('country',user?.CustomerAddress[0]?.country ??'')
+        form.setValue('phone_number',user?.phone_number ??'')
+        form.setValue('postal_code',user?.CustomerAddress[0]?.postal_code ??'')
+        form.setValue('state',user?.CustomerAddress[0]?.state ??'')
+      }
+    }
+  },[user,cart])
   const getStatus = trpc.order.getStatus.useMutation({
     onSuccess: () => {
       console.log('upload successfully');
@@ -103,7 +121,6 @@ function Checkout() {
                 variant: 'success',
                 title: 'Order Successful! 🎉',
               });
-              if (Resdata?.user) dispatch(userAuth(Resdata?.user));
               dispatch(
                 addCart({
                   id: null,
@@ -114,6 +131,8 @@ function Checkout() {
                   cartItems: [],
                 }),
               );
+              if (Resdata?.user) dispatch(userAuth(Resdata?.user));
+
             }, 3000);
           }
         }
