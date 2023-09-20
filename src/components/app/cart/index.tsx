@@ -142,7 +142,7 @@ export default function CartPage() {
                   AED {(totalAmount - discountAmount)?.toFixed(2)}
                 </p>
               </div>
-              <Link className="block" href="/checkout">
+              <a className="block" href="/checkout">
                 <Button
                   variant={'clip'}
                   size={'full'}
@@ -150,7 +150,7 @@ export default function CartPage() {
                 >
                   Proceed to Checkout
                 </Button>
-              </Link>
+              </a>
             </div>
             <Glow className="absolute right-0 -z-20 bottom-0 w-1/5 h-40 overflow-hidden" />
           </div>

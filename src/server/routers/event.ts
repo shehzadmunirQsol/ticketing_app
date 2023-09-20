@@ -279,7 +279,7 @@ export const eventRouter = router({
           orderBy: { created_at: 'asc' },
           skip: input.first * input.rows,
           take: input.rows,
-          where: { end_date: { lte: new Date() } },
+          where: where,
           include: {
             EventDescription: {
               where: {

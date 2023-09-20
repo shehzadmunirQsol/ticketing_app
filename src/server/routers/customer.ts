@@ -319,7 +319,6 @@ export const customerRouter = router({
     .input(forgotPasswordCustomerSchema)
     .mutation(async ({ ctx, input }) => {
       try {
-        console.log(input.email, 'input');
         const user = await prisma.customer.findFirst({
           where: { email: input.email },
         });

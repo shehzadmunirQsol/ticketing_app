@@ -53,8 +53,8 @@ function CategorySection() {
                 <Image
                   className=" bg-white opacity-30  h-64 md:h-96 object-cover"
                   src={renderNFTImage(item)}
-                  width={700}
-                  height={800}
+                  width={760}
+                  height={840}
                   // fill
                   
                   quality={100}

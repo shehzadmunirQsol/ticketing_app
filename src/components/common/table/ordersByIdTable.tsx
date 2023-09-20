@@ -247,11 +247,11 @@ export default function OrdersDataByIdTable(props: OrderTableProps) {
   );
   return (
     <div className="w-full p-2">
-      <div className="rounded-md border border-border">
-        <ScrollArea className="w-full ">
-          <ScrollBar orientation="horizontal"></ScrollBar>
-          {table?.getRowModel()?.rows?.length ? (
-            <>
+      {table?.getRowModel()?.rows?.length ? (
+        <>
+          <div className="rounded-md border border-border">
+            <ScrollArea className="w-full ">
+              <ScrollBar orientation="horizontal"></ScrollBar>
               <Table>
                 <TableHeader className="bg-secondary/80">
                   {table?.getHeaderGroups().map((headerGroup) => (
@@ -313,116 +313,116 @@ export default function OrdersDataByIdTable(props: OrderTableProps) {
                   )}
                 </TableBody>
               </Table>
-            </>
-          ) : (
-            <>
-              <div className="flex flex-col my-auto h-full items-center justify-center">
-                <Image src={Current} alt="/" />
-                <p className="text-center text-gray-300 text-md my-2 px-6">
-                  No past competition entries to show. Only entries from the
-                  last 30 days will be shown.
-                </p>
-                <Button
-                  variant={'rounded'}
-                  className="text-center font-black tracking-tighter my-4 w-36 text-xs md:w-fit md:text-md "
-                  onClick={() => router.push('/cars')}
+            </ScrollArea>
+          </div>
+          <div className="flex items-center justify-end space-x-2 py-4">
+            {data?.count && (
+              <div className="flex-1 flex w-[100px] items-center justify-start text-sm font-medium">
+                Page {props.filters.first + 1} of{' '}
+                {Math.ceil(data?.count / props.filters.rows)}
+              </div>
+            )}
+            <div className="flex items-center justify-center space-x-6 lg:space-x-8">
+              <div className="flex items-center space-x-2">
+                <p className="text-sm font-medium">Rows per page</p>
+                <Select
+                  value={`${props.filters.rows}`}
+                  onValueChange={(value) => {
+                    props?.setFilters((prevFilters: any) => ({
+                      ...prevFilters,
+                      rows: Number(value),
+                      first: 0,
+                    }));
+                    table.setPageSize(Number(value));
+                  }}
                 >
-                  EXPLORE CURRENT COMPETITIONS
+                  <SelectTrigger className="h-8 w-[70px]">
+                    <SelectValue placeholder={props.filters.rows} />
+                  </SelectTrigger>
+                  <SelectContent side="top">
+                    {[5, 10, 20, 30, 40, 50].map((pageSize) => (
+                      <SelectItem key={pageSize} value={`${pageSize}`}>
+                        {pageSize}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="flex items-center space-x-2">
+                <Button
+                  variant="outline"
+                  className="hidden h-8 w-8 p-0 lg:flex"
+                  onClick={() => handlePagination(0)}
+                  disabled={props.filters.first === 0}
+                >
+                  <span className="sr-only">Go to first page</span>
+                  <DoubleArrowLeftIcon className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="outline"
+                  className="h-8 w-8 p-0"
+                  onClick={() => handlePagination(props.filters.first - 1)}
+                  disabled={props.filters.first === 0}
+                >
+                  <span className="sr-only">Go to previous page</span>
+                  <ChevronLeftIcon className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="outline"
+                  className="h-8 w-8 p-0"
+                  onClick={() => handlePagination(props.filters.first + 1)}
+                  disabled={
+                    (props.filters.first + 1) * props.filters.rows >
+                      (data?.count || 0) ||
+                    Math.ceil((data?.count ?? 0) / props.filters.rows) ==
+                      props.filters.first + 1
+                  }
+                >
+                  <span className="sr-only">Go to next page</span>
+                  <ChevronRightIcon className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="outline"
+                  className="hidden h-8 w-8 p-0 lg:flex"
+                  onClick={() =>
+                    handlePagination(
+                      Math.ceil((data?.count ?? 0) / props.filters.rows) - 1,
+                    )
+                  }
+                  disabled={
+                    (props.filters.first + 1) * props.filters.rows >
+                      (data?.count || 0) ||
+                    Math.ceil((data?.count ?? 0) / props.filters.rows) ==
+                      props.filters.first + 1
+                  }
+                >
+                  <span className="sr-only">Go to last page</span>
+                  <DoubleArrowRightIcon className="h-4 w-4" />
                 </Button>
               </div>
-            </>
-          )}
-        </ScrollArea>
-      </div>
+            </div>
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="flex flex-col my-auto h-full items-center justify-center">
+            <Image src={Current} alt="/" />
+            <p className="text-center text-gray-300 text-md my-2 px-6">
+              No past competition entries to show. Only entries from the last 30
+              days will be shown.
+            </p>
+            <Button
+              variant={'rounded'}
+              className="text-center font-black tracking-tighter my-4 w-36 text-xs md:w-fit md:text-md "
+              onClick={() => router.push('/cars')}
+            >
+              EXPLORE CURRENT COMPETITIONS
+            </Button>
+          </div>
+        </>
+      )}
 
-      <div className="flex items-center justify-end space-x-2 py-4">
-        {data?.count && (
-          <div className="flex-1 flex w-[100px] items-center justify-start text-sm font-medium">
-            Page {props.filters.first + 1} of{' '}
-            {Math.ceil(data?.count / props.filters.rows)}
-          </div>
-        )}
-        <div className="flex items-center justify-center space-x-6 lg:space-x-8">
-          <div className="flex items-center space-x-2">
-            <p className="text-sm font-medium">Rows per page</p>
-            <Select
-              value={`${props.filters.rows}`}
-              onValueChange={(value) => {
-                props?.setFilters((prevFilters: any) => ({
-                  ...prevFilters,
-                  rows: Number(value),
-                  first: 0,
-                }));
-                table.setPageSize(Number(value));
-              }}
-            >
-              <SelectTrigger className="h-8 w-[70px]">
-                <SelectValue placeholder={props.filters.rows} />
-              </SelectTrigger>
-              <SelectContent side="top">
-                {[5, 10, 20, 30, 40, 50].map((pageSize) => (
-                  <SelectItem key={pageSize} value={`${pageSize}`}>
-                    {pageSize}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="flex items-center space-x-2">
-            <Button
-              variant="outline"
-              className="hidden h-8 w-8 p-0 lg:flex"
-              onClick={() => handlePagination(0)}
-              disabled={props.filters.first === 0}
-            >
-              <span className="sr-only">Go to first page</span>
-              <DoubleArrowLeftIcon className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="outline"
-              className="h-8 w-8 p-0"
-              onClick={() => handlePagination(props.filters.first - 1)}
-              disabled={props.filters.first === 0}
-            >
-              <span className="sr-only">Go to previous page</span>
-              <ChevronLeftIcon className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="outline"
-              className="h-8 w-8 p-0"
-              onClick={() => handlePagination(props.filters.first + 1)}
-              disabled={
-                (props.filters.first + 1) * props.filters.rows >
-                  (data?.count || 0) ||
-                Math.ceil((data?.count ?? 0) / props.filters.rows) ==
-                  props.filters.first + 1
-              }
-            >
-              <span className="sr-only">Go to next page</span>
-              <ChevronRightIcon className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="outline"
-              className="hidden h-8 w-8 p-0 lg:flex"
-              onClick={() =>
-                handlePagination(
-                  Math.ceil((data?.count ?? 0) / props.filters.rows) - 1,
-                )
-              }
-              disabled={
-                (props.filters.first + 1) * props.filters.rows >
-                  (data?.count || 0) ||
-                Math.ceil((data?.count ?? 0) / props.filters.rows) ==
-                  props.filters.first + 1
-              }
-            >
-              <span className="sr-only">Go to last page</span>
-              <DoubleArrowRightIcon className="h-4 w-4" />
-            </Button>
-          </div>
-        </div>
-      </div>
       <OrderViewDialog
         selectedItem={selectedItem}
         setSelectedItem={setSelectedItem}

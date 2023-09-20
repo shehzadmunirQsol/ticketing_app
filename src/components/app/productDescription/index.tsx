@@ -29,19 +29,19 @@ const ProductDetail = () => {
 
   return (
     <div>
-      <Tabs />
+      <Tabs data={data?.data} comp_detail={comp_detail} />
       <div id="BuyTickets" className="px-4 md:px-14">
         <ImageSlider
           data={data?.data}
           ticketPurchased={data?.ticketPurchased}
         />
         <div>
-          <EntiresDetail />
-          <VideoSection />
+          <EntiresDetail data={data?.data} />
+          <VideoSection data={data?.data} />
         </div>
         <div></div>
       </div>
-      <LiveDraw />
+      <LiveDraw data={data?.data} />
 
       <div className="relative px-4 md:px-14  pb-10">
         <div className="relative  z-10 ">
