@@ -132,22 +132,23 @@ function VideoSlider(props: producctInterface) {
           </p>
         </div>
         <div
-          className={`${
-            lang?.dir == 'rtl' ? ' flex-row-reverse' : 'md:ml-0'
-          }  flex gap-2 items-center justify-center `}
+          className={`${lang?.dir == 'rtl' ? ' flex-row-reverse' : 'md:ml-0'
+            }  flex gap-2 items-center justify-center `}
         >
           <Button
             variant="rounded"
-            className="button prev-btn h-10 w-10 md:h-14 md:w-14"
+            className={` ${videoCardSlider?.length === 4 ? "cursor-not-allowed" : "cursor-pointer"} button prev-btn h-10 w-10 md:h-14 md:w-14`}
             onClick={() => previous()}
+            disabled={videoCardSlider?.length === 4 ? true : false}
           >
             {/* <i className="fa-solid fa-left-arrow" /> */}
             <i className="fa-solid fa-chevron-left"></i>
           </Button>
           <Button
             variant="rounded"
-            className="button next-btn h-10 w-10 md:h-14 md:w-14"
+            className={` ${videoCardSlider?.length === 4 ? "cursor-not-allowed" : "cursor-pointer"} button prev-btn h-10 w-10 md:h-14 md:w-14`}
             onClick={() => next()}
+            disabled={videoCardSlider?.length === 4 ? true : false}
           >
             <i className="fa-solid fa-chevron-right"></i>
           </Button>
@@ -157,16 +158,16 @@ function VideoSlider(props: producctInterface) {
         <Slider ref={slide} {...settings}>
           {videoCardSlider
             ? videoCardSlider.map((item, index) => {
-                return (
-                  <div key={index} className="cardInfo">
-                    <VideoCard
-                      class={`${props?.class} `}
-                      dir={`${lang?.dir}`}
-                      data={item}
-                    />
-                  </div>
-                );
-              })
+              return (
+                <div key={index} className="cardInfo">
+                  <VideoCard
+                    class={`${props?.class} `}
+                    dir={`${lang?.dir}`}
+                    data={item}
+                  />
+                </div>
+              );
+            })
             : ''}
 
           {videoCardSlider.length === 0 ? (
