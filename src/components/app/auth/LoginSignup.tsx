@@ -4,28 +4,21 @@ import { Button } from '@/ui/button';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from '@/ui/form';
-
 import { Input } from '@/ui/input';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
-import { FileInput } from '~/components/common/file_input';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { trpc } from '~/utils/trpc';
-import { getS3ImageUrl } from '~/service/api/s3Url.service';
-import { isValidImageType } from '~/utils/helper';
-// import { useToast } from '~/components/ui/use-toast';
 import SideImage from '../../common/SideImage';
 import {
   signupCustomerInput,
   loginCustomerInput,
   loginCustomerSchema,
-  // loginCustomerSchemaInput,
   signupCustomerSchema,
 } from '~/schema/customer';
 import { useToast } from '~/components/ui/use-toast';
@@ -423,5 +416,3 @@ export default function LoginSignup() {
     </section>
   );
 }
-
-// export default LoginSignup;

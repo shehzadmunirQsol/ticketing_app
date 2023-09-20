@@ -50,16 +50,16 @@ function Footer() {
                   <p>Registered Company </p>
                   <p>Number: 11320154, UAE</p>
                 </div>
-                <div className="w-full lg:w-1/3 text-sm text-white">
+                <div className="m-auto flex items-center justify-center w-full sm:w-1/2 md:w-1/3 text-sm text-white">
                   <Image
-                    className="w-full h-full object-contain  "
+                    className="w-full h-full object-contain text-center"
                     src={Group17}
                     quality={100}
                     alt="Sunset in the mountains"
                   />
                 </div>
               </div>
-              <div className="grid grid-cols-1 gap-8 sm:gap-6 sm:grid-cols-2  w-full sm:w-1/3">
+              <div className="grid grid-cols-1 gap-8 md:gap-6 md:grid-cols-2 w-full md:w-1/3">
                 <ul className="text-grayColor opacity-75 space-y-3">
                   {[
                     { page: 'Home', link: '/' },
@@ -98,7 +98,7 @@ function Footer() {
                   })}
                 </ul>
                 <div className=" col-span-2 w-full ">
-                  <div className=" flex items-center justify-between  gap-8 sm:gap-6">
+                  <div className=" flex items-center justify-between  gap-8 md:gap-6">
                     <div className=" text-sm font-bold w-full">
                       CONNECT WITH US
                     </div>

@@ -49,7 +49,7 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
         <div className="lg:w-1/2 w-full mb-10 lg:mb-0 rounded-lg overflow-hidden">
           <ImageSliderStyle data={data} />
         </div>
-        <div className="flex flex-col flex-wrap lg:py-6 -mb-10 lg:w-1/2 w-full lg:pl-12 lg:text-left lg:pr-7 pr-7 ">
+        <div className="flex flex-col flex-wrap lg:py-6 -mb-10 lg:w-1/2 w-full lg:pl-12 lg:text-left  ">
           <div className="flex flex-col mb-10 lg:items-start items-start">
             {/* <div className="p-2 z-2 inline-flex bg-primary text-black items-center justify-center   mb-5">
               <span className=" font-black mr-2">

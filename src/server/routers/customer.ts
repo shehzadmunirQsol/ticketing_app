@@ -437,8 +437,6 @@ export const customerRouter = router({
       try {
         const otpCode = `${input.otp_1}${input.otp_2}${input.otp_3}${input.otp_4}`;
 
-        console.log(otpCode, input.emailOrUser, 'HJDJDHDDN');
-
         const validity = isValidEmail(input.emailOrUser)
           ? { email: input.emailOrUser }
           : { username: input.emailOrUser };

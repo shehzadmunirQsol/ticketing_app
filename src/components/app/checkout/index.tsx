@@ -446,7 +446,7 @@ function Checkout() {
                   )}
                 />
 
-                <div className="flex flex-col items-start md:flex-row gap-2 w-full justify-between">
+                <div className="flex items-start flex-row gap-2 w-full justify-between">
                   <div className="flex-1">
                     <p className="text-sm text-cardGray  mb-3 ">Phone Number</p>
                     <div className="flex flex-row gap-2 ">

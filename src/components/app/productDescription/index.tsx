@@ -28,9 +28,9 @@ const ProductDetail = () => {
   const Faqs: any = data?.data?.CMS;
 
   return (
-    <div className=''>
+    <div className="bg-background">
       <Tabs data={data?.data} comp_detail={comp_detail} />
-      <div id="BuyTickets" className="px-4 md:px-14 max-w-[1600px] ">
+      <div id="BuyTickets" className="px-4 md:px-14 ">
         <ImageSlider
           data={data?.data}
           ticketPurchased={data?.ticketPurchased}
@@ -40,7 +40,7 @@ const ProductDetail = () => {
           <VideoSection data={data?.data} />
         </div>
         <div></div>
-      </div>
+    </div>
       <LiveDraw data={data?.data} />
 
       <div className="relative px-4 md:px-14  pb-10">

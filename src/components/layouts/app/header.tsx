@@ -133,7 +133,10 @@ function Header() {
 export default Header;
 
 export function DropdownMenuDemo() {
+  const { count } = useSelector((state: RootState) => state.cart);
+
   const dispatch = useDispatch();
+
   function toggleLanguageHandler(lang: 'en' | 'ar') {
     const dir: 'ltr' | 'rtl' = lang === 'ar' ? 'rtl' : 'ltr';
     const lang_id: 1 | 2 = lang === 'en' ? 1 : 2;
@@ -141,6 +144,7 @@ export function DropdownMenuDemo() {
 
     dispatch(toggleLang(language));
   }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -171,6 +175,11 @@ export function DropdownMenuDemo() {
             <DropdownMenuItem>
               <ShoppingCart className="mr-2 h-4 w-4" />
               Cart
+              {count ? (
+                <span className="block mx-2 text-red-600">
+                  ( {count > 999 ? '999+' : count} )
+                </span>
+              ) : null}
             </DropdownMenuItem>
           </Link>
           <Link href="/account">
