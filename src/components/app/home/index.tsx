@@ -30,7 +30,7 @@ export default function Home() {
         />
         {/* product section 2 */}
         {/* 11 cards */}
-        <div className='py-4'></div>
+        <div className="py-4"></div>
         <ProductSection
           class="mx-auto md:pl-3 max-w-md md:max-w-xl  xl:max-w-[40rem] max-h-md "
           slidesToShow={2}
