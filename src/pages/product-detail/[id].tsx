@@ -4,7 +4,6 @@ import ProductDetail from '~/components/app/productDescription/index';
 // import { serverRouter } from '~/server/routers/_app';
 
 const ProductDetails: NextPageWithLayout = (props) => {
-  console.log({ props });
   return (
     <div className="bg-background h-auto justify-center items-center  w-screen">
       <ProductDetail />
