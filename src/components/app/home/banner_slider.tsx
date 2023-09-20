@@ -98,12 +98,11 @@ const BannerSlider = () => {
 
   return (
     <div
-      className={`relative w-full h-[42rem] md:h-[44rem] lg:h-[45rem] transition-all ease-in-out overflow-hidden ${lang.dir === 'ltr' ? 'banner_img' : 'banner_img_flip'
-        }`}
+      className={`relative w-full h-[40rem] lg:h-screen transition-all ease-in-out overflow-hidden ${
+        lang.dir === 'ltr' ? 'banner_img' : 'banner_img_flip'
+      }`}
     >
-
-
-      <div className="relative max-w-[1600px] mx-auto">
+      <div className="relative ">
         <Image
           src={Slant}
           alt="/"
@@ -112,8 +111,7 @@ const BannerSlider = () => {
           height={1200}
         />
       </div>
-
-      <div className="hidden md:block relative bg-blend-darken max-w-[1600px] mx-auto">
+      <div className="hidden md:block relative bg-blend-darken">
         <Image
           src={Slant}
           alt="/"
@@ -122,34 +120,34 @@ const BannerSlider = () => {
           height={1200}
         />
       </div>
-
       {isSuccess && carSlider?.length ? (
-        <div className=" relative w-full max-w-[1600px] mx-auto  mt-52 sm:mt-56 md:mt-0 flex flex-col-reverse  md:!flex-row justify-between z-20">
+        <div className=" w-full mt-52 sm:mt-56 md:mt-0 flex flex-col-reverse  md:!flex-row justify-between z-20">
           {/* text content */}
 
           <div
-            className={`relative ${showElement ? 'fading-animation' : ''
-              } transition-all  duration-500 ease-in-out items-center   top-32 sm:top-48 h-fit mx-auto  ltr:md:ml-20 rtl:md:mr-20 text-white max-w-[calc(100%-30px)]`}
+            className={`relative ${
+              showElement ? 'fading-animation' : ''
+            } transition-all  duration-500 ease-in-out items-center   top-32 sm:top-48 h-fit mx-auto  ltr:md:ml-20 rtl:md:mr-20 text-white sm:max-w-[500px] lg:max-w-[700px]`}
           >
-            <p className="px-4 text-3xl  md:text-4xl xl:text-[64px] font-[900] tracking-[-2.56px] ">
+            <p className="px-4 text-3xl  md:text-4xl xl:text-5xl font-[900] tracking-[-2px] ">
               {carSlider[currentIndex]?.title}
             </p>
             {carSlider[currentIndex]?.price ? (
-              <p className="px-4 text-2xl md:text-4xl xl:text-[64px] tracking-[-2.56px] py-6 ">
+              <p className="px-4 text-2xl md:text-4xl xl:text-5xl tracking-[-2px] my-3 ">
                 + {carSlider[currentIndex]?.price}
               </p>
             ) : (
               ''
             )}
-            <p className="sm:block px-4 text-xl lg:text-2xl  font-normal ">
+            <p className="sm:block px-4 text-xl  font-normal ">
               {carSlider[currentIndex]?.description}
             </p>
-            <p className="px-4 text-lg  sm:text-3xl tracking-[-2px] font-[700]  my-3">
+            <p className="px-4 text-lg  sm:text-2xl tracking-[-2px] font-[700]  my-3">
               {carSlider[currentIndex]?.date}
             </p>
             <Link href="/cars">
               <Button
-                className=" mx-4 px-12 text-black font-sans font-[900] text-[1.5rem] leading-[100%]  tracking-[-0.48px]"
+                className="mx-4 text-black font-sans font-[900]  tracking-[-1px]"
                 variant="clip"
               >
                 {lang.lang_id === 1 ? 'ENTER NOW' : 'أدخل الأن'}
@@ -159,16 +157,20 @@ const BannerSlider = () => {
 
           {/* text select cards */}
           <div
-            className={`  absolute   ${showElement ? 'fading-animation' : ''
-              } transition-all  duration-500 ease-in-out   sm:mb-8 m-auto     xl:-bottom-64 ltr:-right-6 rtl:-left-6 md:ltr:-right-32 md:rtl:-left-32  z-20  w-[320px] h-[200px]  sm:max-w-[440px] sm:w-full sm:h-full  sm:max-h-[300px] md:max-w-[500px] md:max-h-[260px] lg:max-w-[680px] xl:max-w-[780px] xl:max-h-[580px]   `}
+            className={`  absolute  top-[100px] ${
+              showElement ? 'fading-animation' : ''
+            } transition-all  duration-500 ease-in-out   sm:mb-8 m-auto    md:top-[260px] lg:top-[240px] xl:top-[170px] ltr:-right-6 rtl:-left-6 md:ltr:-right-32 md:rtl:-left-32  z-20  w-[320px] h-[200px]  sm:max-w-[440px] sm:w-full sm:h-full  sm:max-h-[300px] md:max-w-[500px] md:max-h-[260px] lg:max-w-[680px] xl:max-w-[680px] xl:max-h-[360px]   `}
           >
             <Image
-              className="  object-contain    transform rtl:-scale-x-100 ltr:scale-100 ltr:right-12 rtl:left-4 md:ltr:-right-64 md:rtl:-left-28"
+              className="    object-contain  transform rtl:-scale-x-100 ltr:scale-100 ltr:right-6 rtl:left-4 md:ltr:-right-40 md:rtl:-left-16"
               src={renderNFTImage(carSlider[currentIndex])}
               alt="banner image"
-              width={760}
-              height={550}
+              fill
               quality={100}
+
+              // width={750}
+              // height={400}
+              // sizes="(max-width: 768px) 900px 500px, (max-width: 1200px) 700px 400px"
             />
           </div>
           <div className="relative hidden    ltr:right-16 rtl:left-16 z-30  md:top-[380px]  items-end h-fit lg:flex justify-between  gap-3 mx-auto sm:mx-0">
@@ -179,8 +181,9 @@ const BannerSlider = () => {
                 onClick={() => goToSlide(i)}
               >
                 <div
-                  className={`relative   w-[100px] h-[60px] mx-auto border-2  ${currentIndex === i ? 'border-primary' : 'border-transparent'
-                    } group-hover:border-primary`}
+                  className={`relative   w-[100px] h-[60px] mx-auto border-2  ${
+                    currentIndex === i ? 'border-primary' : 'border-transparent'
+                  } group-hover:border-primary`}
                 >
                   <Image
                     src={renderNFTImage(item)}
@@ -199,7 +202,6 @@ const BannerSlider = () => {
       ) : (
         ''
       )}
-
     </div>
   );
 };

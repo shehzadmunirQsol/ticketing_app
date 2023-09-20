@@ -362,6 +362,7 @@ export default function OrdersDataTable() {
                 setFilters((prevFilters: any) => ({
                   ...prevFilters,
                   rows: Number(value),
+                  first: 0,
                 }));
                 table.setPageSize(Number(value));
               }}
