@@ -60,7 +60,7 @@ function Checkout() {
       first_name: user?.first_name,
       last_name: user?.last_name,
       code: '+971',
-    
+
       dob: user?.dob,
       email: user?.email,
       phone_number: user?.phone_number,
@@ -74,34 +74,41 @@ function Checkout() {
       console.log({ error });
     },
   });
-  useEffect(()=>{
-    if(user)
-    {
-
-      form.setValue('cart_id',cart?.id  ?? 0)
-      form.setValue('customer_id',cart?.customer_id ??0)
-      form.setValue('first_name',user?.first_name ??'')
-      form.setValue('last_name',user?.last_name ??'')
-      form.setValue('dob',user?.dob ??'')
-      form.setValue('email',user?.email ??'')
-      if(user?.CustomerAddress && user?.CustomerAddress?.length)
-      {
-  
-        form.setValue('apartment',user?.CustomerAddress[0]?.street_address_2 ??'')
-        form.setValue('street_address',user?.CustomerAddress[0]?.street_address ??'')
-        form.setValue('city',user?.CustomerAddress[0]?.city ??'')
-        form.setValue('country',user?.CustomerAddress[0]?.country ??'')
-        form.setValue('phone_number',user?.phone_number ??'')
-        form.setValue('postal_code',user?.CustomerAddress[0]?.postal_code ??'')
-        form.setValue('state',user?.CustomerAddress[0]?.state ??'')
+  useEffect(() => {
+    if (user) {
+      form.setValue('cart_id', cart?.id ?? 0);
+      form.setValue('customer_id', cart?.customer_id ?? 0);
+      form.setValue('first_name', user?.first_name ?? '');
+      form.setValue('last_name', user?.last_name ?? '');
+      form.setValue('dob', user?.dob ?? '');
+      form.setValue('email', user?.email ?? '');
+      if (user?.CustomerAddress && user?.CustomerAddress?.length) {
+        form.setValue(
+          'apartment',
+          user?.CustomerAddress[0]?.street_address_2 ?? '',
+        );
+        form.setValue(
+          'street_address',
+          user?.CustomerAddress[0]?.street_address ?? '',
+        );
+        form.setValue('city', user?.CustomerAddress[0]?.city ?? '');
+        form.setValue('country', user?.CustomerAddress[0]?.country ?? '');
+        form.setValue('phone_number', user?.phone_number ?? '');
+        form.setValue(
+          'postal_code',
+          user?.CustomerAddress[0]?.postal_code?.toString() ?? '',
+        );
+        form.setValue('state', user?.CustomerAddress[0]?.state ?? '');
       }
     }
-  },[user,cart])
+  }, [user, cart]);
   const getStatus = trpc.order.getStatus.useMutation({
     onSuccess: () => {
       console.log('upload successfully');
     },
     onError(error: any) {
+      setLoading(false);
+
       console.log({ error });
     },
   });
@@ -132,11 +139,17 @@ function Checkout() {
                 }),
               );
               if (Resdata?.user) dispatch(userAuth(Resdata?.user));
-
             }, 3000);
           }
         }
       } catch (e: any) {
+        setLoading(false);
+        router.push('/checkout');
+
+        toast({
+          variant: 'destructive',
+          title: e?.message,
+        });
         console.log(e?.message, 'error');
       }
     })();
