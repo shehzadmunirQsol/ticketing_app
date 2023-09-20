@@ -124,14 +124,14 @@ const BannerSlider = () => {
       </div>
 
       {isSuccess && carSlider?.length ? (
-        <div className=" relative w-full max-w-[1600px] mx-auto  mt-52 sm:mt-56 md:mt-0 flex flex-col-reverse  lg:!flex-row justify-between z-20">
+      <div className=" relative w-full mx-auto  mt-52 sm:mt-56 md:mt-0 flex flex-col-reverse  lg:!flex-row justify-between z-20">
           {/* text content */}
 
           <div
             className={`relative ${showElement ? 'fading-animation' : ''
               } transition-all  duration-500 ease-in-out items-center   top-32 sm:top-48 h-fit mx-auto  ltr:md:ml-20 rtl:md:mr-20 text-white max-w-[calc(100%-30px)]`}
           >
-            <p className="px-4 text-2xl  sm:text-4xl md:text-5xl xl:text-[64px] font-[900] tracking-[-2.56px] ">
+            <p className="px-4 text-2xl  sm:text-4xl md:text-5xl xl:text-[64px] font-[900] tracking-[0.2em] ">
               {carSlider[currentIndex]?.title}
             </p>
             {carSlider[currentIndex]?.price ? (

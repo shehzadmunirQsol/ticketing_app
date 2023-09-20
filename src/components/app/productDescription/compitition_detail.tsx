@@ -7,7 +7,7 @@ const CompititionDetail = ({data}:any) => {
     <section id="CompititionDetail">
     <div>
       <div className="w-30 my-10 ">
-        <p className="lg:text-5xl md:text-4xl text-3xl  font-black ">Competition Details</p>
+        <p className="lg:text-5xl md:text-4xl text-3xl  font-black uppercase">Competition Details</p>
         <div className="border-b-4 w-16 border-primary mt-4"></div>
 
 
