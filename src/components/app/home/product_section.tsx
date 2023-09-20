@@ -114,7 +114,7 @@ function ProductSection(props: producctInterface) {
     ],
   };
   return (
-    <div className="   w-full ">
+    <div className="  max-w-[1600px] mx-auto w-full ">
       <div className=" relative flex gap-3 flex-col md:flex-row h-28 md:h-auto py-6  items-center w-full md:justify-between mb-6">
         <p className="text-gray-200 !text-xl sm:!text-3xl lg:!text-5xl font-black uppercase  ">
           {props?.title}
