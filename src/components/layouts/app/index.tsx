@@ -108,7 +108,7 @@ function Index({ children }: DefaultLayoutProps) {
     <div
       dir={lang.dir}
       lang={lang.lang}
-      className="relative mx-auto max-w-[2500px] w-full overflow-x-hidden"
+      className="relative mx-auto max-w-[1600px] w-full overflow-x-hidden"
     >
       <Toaster />
       <Header />

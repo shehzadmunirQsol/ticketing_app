@@ -27,7 +27,7 @@ function LiveDraw(props: any) {
     },
   ];
   return (
-    <div className="relative max-w-[1600px] mx-auto w-full mb-20">
+    <div className="relative  mb-20 max-w-[1600px] ">
       <div className="   bg-primary py-10  grid grid-cols-1 lg:grid-cols-2 items-start  ">
         <div className="   flex flex-col justify-center items-center  w-full ">
           <p className="  py-4 md:py-0 text-left !w-full md:!max-w-[310px] sm:!max-w-[310px] xs:!max-w-[310px] md:mb-30 text-black font-[1000] tracking-[-4px] !text-6xl   md:!text-6xl lg:!text-8xl uppercase">
