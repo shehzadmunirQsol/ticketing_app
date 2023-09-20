@@ -129,7 +129,7 @@ const BannerSlider = () => {
               showElement ? 'fading-animation' : ''
             } transition-all  duration-500 ease-in-out items-center   top-32 sm:top-48 h-fit mx-auto  ltr:md:ml-20 rtl:md:mr-20 text-white sm:max-w-[500px] lg:max-w-[700px]`}
           >
-            <p className="px-4 text-2xl  sm:text-4xl md:text-4xl xl:text-6xl font-[900] -tracking-[-2.56px] ">
+            <p className="px-4 text-2xl  sm:text-4xl md:text-4xl xl:text-6xl font-[900]  tracking-[-2.56px] ">
               {carSlider[currentIndex]?.title}
             </p>
             {carSlider[currentIndex]?.price ? (
