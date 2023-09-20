@@ -248,7 +248,7 @@ export function OtpVerificationDailog(props: OtpVerificationDailogInterface) {
               <div className="w-full mx-auto">
                 <div className=" flex items-center justify-center">
                   <Button
-                    className="align-center text-uppercase rounded-full px-10   text-black font-sans font-[900]   text-xl tracking-[-1px]"
+                    className="align-center uppercase rounded-full px-10   text-black font-sans font-[900]   text-xl tracking-[-1px]"
                     variant="clip"
                   >
                     Enter
