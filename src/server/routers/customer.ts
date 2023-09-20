@@ -257,7 +257,7 @@ export const customerRouter = router({
 
         if (!user.is_approved) {
           const respCode = await generateOTP(4);
-          const customer = await prisma.customer?.update({
+          await prisma.customer?.update({
             where: {
               id: user.id,
             },
@@ -292,7 +292,7 @@ export const customerRouter = router({
         if (!checkPass) {
           throw new TRPCError({
             code: 'BAD_REQUEST',
-            message: 'Password is incorrect',
+            message: 'Invalid credentials!',
           });
         }
         const jwt = signJWT({ email: user.email, id: user.id });
@@ -658,8 +658,9 @@ export const customerRouter = router({
             ...payload,
           },
         });
+        const { password, otp, ...userApiData } = updateResponse;
 
-        return { user: user, status: true };
+        return { user: userApiData, status: true };
       } catch (error: any) {
         console.log({ error });
         throw new TRPCError({

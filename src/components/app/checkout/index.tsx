@@ -507,7 +507,7 @@ function Checkout() {
               </div>
             </div>
             <div className="border-r border-lightColorBorder  mx-4"></div>
-            <div className=" flex-[0.45] space-y-12 z-10">
+            <div className="relative bg-background  flex-[0.45] space-y-12 z-10">
               <div className="flex flex-row justify-between items-center">
                 <h3 className="text-lg md:text-xl lg:text-2xl font-bold">
                   Order Summary
@@ -521,7 +521,7 @@ function Checkout() {
                   </p>
                 ) : null}
               </div>
-              <div className="space-y-8">
+              <div className="relative space-y-8">
                 <div className=" max-h-60 overflow-x-auto space-y-8">
                   {cart?.cartItems?.length
                     ? cart?.cartItems?.map((item) => {
