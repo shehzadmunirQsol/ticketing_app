@@ -17,15 +17,16 @@ const ProductDetail = () => {
   const router = useRouter();
   const { lang } = useSelector((state: RootState) => state.layout);
   const id = Number(router.query.id);
-  const { data, isLoading }: any = trpc.event.getEventsById.useQuery(
+  const { data, isLoading } = trpc.event.getEventsById.useQuery(
     { id: id, lang_id: lang.lang_id },
     {
       refetchOnWindowFocus: false,
     },
   );
 
-  const comp_detail: any = data?.data.EventDescription[0]?.comp_details;
-  const Faqs: any = data?.data.CMS;
+  const comp_detail: any = data?.data?.EventDescription[0]?.comp_details;
+  const Faqs: any = data?.data?.CMS;
+
   return (
     <div>
       <Tabs />
