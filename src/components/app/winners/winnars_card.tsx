@@ -70,7 +70,7 @@ function WinnarsCard(props: cardInterface) {
           </p>
           <p>
             Draw date
-            <span className="text-primary lg:text-lg md:text-lg text-smfont-black leading-[18px] ml-16 ">
+            <span className="text-primary lg:text-lg md:text-lg text-sm font-black leading-[18px] ml-16 ">
               {formattedDate}
             </span>
           </p>

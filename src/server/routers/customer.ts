@@ -393,7 +393,6 @@ export const customerRouter = router({
               otp: '',
             },
           });
-          console.log(updateResponse, 'updateResponse');
         } else {
           throw new TRPCError({
             code: 'NOT_FOUND',
@@ -458,7 +457,6 @@ export const customerRouter = router({
             message: 'Invalid Otp',
           });
         } else {
-          console.log('else HJDJDHDDN');
           const updateResponse = await prisma.customer?.update({
             where: {
               id: user.id,
@@ -469,9 +467,18 @@ export const customerRouter = router({
               otp: '',
             },
           });
-          console.log(updateResponse, 'updateResponse');
         }
-        return { message: 'otp', status: true };
+        const jwt = signJWT({ email: user.email, id: user.id });
+        const serialized = serialize('winnar-token', jwt, {
+          httpOnly: true,
+          path: '/',
+          sameSite: 'strict',
+        });
+
+        ctx?.res?.setHeader('Set-Cookie', serialized);
+        const { password, otp, ...userApiData } = user;
+
+        return { user: userApiData, jwt };
       } catch (error: any) {
         console.log({ error });
         throw new TRPCError({

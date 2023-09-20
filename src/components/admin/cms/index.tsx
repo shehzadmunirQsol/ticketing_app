@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button } from '../../ui/button';
 import Link from 'next/link';
 import CouponsDataTable from '~/components/common/table/coupons';
@@ -14,31 +14,26 @@ import {
 } from '@/ui/dropdown-menu';
 import { MoreHorizontal } from 'lucide-react';
 import { useToast } from '~/components/ui/use-toast';
+import { LoadingDialog } from '~/components/common/modal/loadingModal';
+import { CmsDailog } from '~/components/common/modal/cms';
 
 function Cms() {
   const { toast } = useToast();
-  const { data: cms, isLoading } = trpc.cms.getCmsContent.useQuery(
+  const [selectedItem, setSelectedItem] = React.useState({});
+  const [title, setTitle] = React.useState('');
+  const [type, setType] = React.useState('');
+  const [isModal, setIsModal] = React.useState(false);
+
+  const {
+    data: cms,
+    refetch,
+    isLoading,
+  } = trpc.cms.getCmsContent.useQuery(
     {},
     {
       refetchOnWindowFocus: false,
     },
   );
-
-  // Update CMS Status
-  const updateCmsStatusData = trpc.cms.cmsStatusUpdateById.useMutation({
-    onSuccess: (res: any) => {
-      console.log(res);
-      toast({
-        variant: 'success',
-        title: 'Status Updated Successfully',
-      });
-    },
-    onError(error: any) {
-      console.log(error);
-    },
-  });
-
-  console.log(cms, 'AMDIN SHSKA');
 
   // Initialize arrays to store data by type
   const staticData: any = [];
@@ -53,16 +48,11 @@ function Cms() {
     }
   });
 
-  const handleCmsStatus = async (id: any) => {
-    try {
-      const result = await updateCmsStatusData.mutateAsync({ id });
-      console.log(result, 'cmsAboutUs HSJSJSJSHJ');
-    } catch (error: any) {
-      toast({
-        variant: 'destructive',
-        title: error.message,
-      });
-    }
+  const handleCmsStatus = async (id: any, type: any) => {
+    setSelectedItem(id);
+    setTitle('CMS');
+    setType(type);
+    setIsModal(true);
   };
 
   return (
@@ -81,7 +71,7 @@ function Cms() {
 
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3  mb-10 ">
             {staticData?.length ? (
-              staticData?.map((item: any, i:any) => {
+              staticData?.map((item: any, i: any) => {
                 console.log(item, 'items');
                 return (
                   <div
@@ -106,7 +96,14 @@ function Cms() {
                             </Link>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem
-                              onClick={() => handleCmsStatus(item?.id)}
+                              onClick={() =>
+                                handleCmsStatus(
+                                  item?.id,
+                                  item?.is_enabled === false
+                                    ? 'enabled'
+                                    : 'disabled',
+                                )
+                              }
                             >
                               {item.is_enabled === false
                                 ? 'Enabled'
@@ -132,7 +129,7 @@ function Cms() {
 
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3  mb-10 ">
             {eventfaqsData?.length ? (
-              eventfaqsData?.map((item: any, i:any) => {
+              eventfaqsData?.map((item: any, i: any) => {
                 console.log(item, 'items');
                 return (
                   <div
@@ -144,27 +141,15 @@ function Cms() {
                     </p>
                     <div>
                       <div>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="h-8 w-8 p-0">
-                              <span className="sr-only">Open menu</span>
-                              <MoreHorizontal className="h-4 w-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <Link href={`/admin/cms/edit/${item?.id}`}>
-                              <DropdownMenuItem>Edit Events</DropdownMenuItem>
-                            </Link>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem
-                              onClick={() => handleCmsStatus(item?.id)}
-                            >
-                              {item.is_enabled === false
-                                ? 'Enabled'
-                                : 'Disabled'}
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
+                        <Link href={`/admin/cms/edit/${item?.id}`}>
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            className="xl:inline "
+                          >
+                            <i className="fa-solid fa-pen-to-square"></i>
+                          </Button>
+                        </Link>
                       </div>
                     </div>
                   </div>
@@ -178,6 +163,18 @@ function Cms() {
           </div>
         </div>
       </div>
+      <CmsDailog
+        selectedItem={selectedItem}
+        setSelectedItem={setSelectedItem}
+        title={title}
+        setTitle={setTitle}
+        isModal={isModal}
+        setIsModal={setIsModal}
+        refetch={refetch}
+        type={type}
+        setType={setType}
+      />
+      <LoadingDialog open={isLoading} text={'Loading data...'} />
     </div>
   );
 }

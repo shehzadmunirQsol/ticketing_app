@@ -208,7 +208,15 @@ export const orderRouter = router({
 
         await prisma.cart.update({
           where: { id: cart.id },
-          data: { is_deleted: true },
+          data: {
+            is_deleted: true,
+            CartItems: {
+              updateMany: {
+                where: { cart_id: cart.id },
+                data: { is_deleted: true },
+              },
+            },
+          },
         });
 
         const mailOptions = {
@@ -744,7 +752,15 @@ export const orderRouter = router({
 
             await prisma.cart.update({
               where: { id: cart.id },
-              data: { is_deleted: true },
+              data: {
+                is_deleted: true,
+                CartItems: {
+                  updateMany: {
+                    where: { cart_id: cart.id },
+                    data: { is_deleted: true },
+                  },
+                },
+              },
             });
 
             const mailOptions = {

@@ -31,16 +31,7 @@ export default function CartPage() {
     },
   );
 
-  const couponApply = trpc.coupon.applyCoupon.useMutation({
-    onSuccess: () => {
-      console.log('upload successfully');
-
-      // router.push('/store/wallet-connect');
-    },
-    onError(error: any) {
-      console.log({ error });
-    },
-  });
+  const couponApply = trpc.coupon.applyCoupon.useMutation();
 
   async function handleApply() {
     try {
@@ -110,7 +101,7 @@ export default function CartPage() {
                 );
               })}
             </div>
-            <div className="bg-transparent space-y-4 w-1/3 z-10 ml-auto">
+            <div className="bg-transparent space-y-4 sm:w-1/2 mdx:w-1/3 z-10 ml-auto">
               <div className="flex bg-card border border-border rounded-md">
                 <Input
                   placeholder="Coupon code"

@@ -51,6 +51,7 @@ export const deleteEventSchema = z.object({
 
 export const EventFormSchema = z.object({
   event_id: z.number().optional(),
+  faq_id: z.number().optional(),
   removed_images: z.array(z.number()).optional(),
   thumb: z.string(),
   multi_image: z.array(z.string()),
