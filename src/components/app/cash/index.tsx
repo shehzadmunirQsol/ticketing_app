@@ -88,7 +88,6 @@ const CashPage = () => {
           ''
         )}
       </div>
-      <LoadingDialog open={isLoading} text={'Loading...'} />
     </>
   );
 };

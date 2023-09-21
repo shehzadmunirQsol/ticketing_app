@@ -94,7 +94,6 @@ const CarsPage = () => {
         )}
       </div>
       <Testimonials />
-      <LoadingDialog open={isLoading} text={'Loading...'} />
     </div>
   );
 };

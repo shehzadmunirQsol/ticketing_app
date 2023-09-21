@@ -68,7 +68,6 @@ export const Winners = () => {
           </div>
         )}
       </div>
-      <LoadingDialog open={isLoading} text={'Loading...'} />
     </div>
   );
 };
