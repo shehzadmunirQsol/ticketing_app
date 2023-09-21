@@ -19,6 +19,11 @@ import { useForm } from 'react-hook-form';
 import { useToast } from '~/components/ui/use-toast';
 import { trpc } from '~/utils/trpc';
 import { LoadingDialog } from '~/components/common/modal/loadingModal';
+import {
+  forgotPasswordCustomerSchema,
+  forgotPasswordCustomerSchemaInput,
+} from '~/schema/customer';
+import { zodResolver } from '@hookform/resolvers/zod';
 interface ForgotPasswordDialogInterface {
   isModal: boolean;
   setIsModal: (e: any) => void;
@@ -28,7 +33,9 @@ export function ForgotPasswordDailog(props: ForgotPasswordDialogInterface) {
   const { toast } = useToast();
 
   // Handle Forgot Password
-  const formForgotPassword = useForm<any>();
+  const formForgotPassword = useForm<forgotPasswordCustomerSchemaInput>({
+    resolver: zodResolver(forgotPasswordCustomerSchema),
+  });
 
   // forgot password
   const customerForgotPassword =
@@ -41,16 +48,14 @@ export function ForgotPasswordDailog(props: ForgotPasswordDialogInterface) {
         });
       },
       onError: (err) => {
-        console.log(err.message, 'err');
         toast({
           variant: 'destructive',
           title: err.message,
         });
-        return;
       },
     });
 
-  const onSubmit = async (values: any) => {
+  const onSubmit = async (values: forgotPasswordCustomerSchemaInput) => {
     try {
       const resp = await customerForgotPassword.mutateAsync(values);
       console.log(resp, 'final res');
