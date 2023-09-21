@@ -54,7 +54,7 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
           </DialogFooter>
           <DialogHeader>
             {/* <DialogTitle>Remove Item</DialogTitle> */}
-            <DialogDescription className=" max-h-[calc(100%-200px)] overflow-y-scroll scroll-hide">
+            <DialogDescription className=" max-h-[calc(100%-100px)] overflow-y-scroll scroll-hide">
               {OrderApiData && (
                 <div
                   className="bg-card text-gray-400 rounded-lg shadow-lg px-8 py-10 max-w-xl mx-auto "

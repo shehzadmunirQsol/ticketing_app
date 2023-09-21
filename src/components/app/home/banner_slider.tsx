@@ -98,107 +98,93 @@ const BannerSlider = () => {
 
   return (
     <div
-      className={`relative w-full h-[43rem] sm:h-[41rem] md:h-[40rem] lg:h-[39rem] transition-all ease-in-out overflow-hidden ${
+      className={`relative w-full slider-height transition-all ease-in-out overflow-hidden ${
         lang.dir === 'ltr' ? 'banner_img' : 'banner_img_flip'
       }`}
     >
-      <div className="relative ">
-        <Image
-          src={Slant}
-          alt="/"
-          className="absolute ltr:right-0 rtl:left-0 top-0 bg-blend-darken transform rtl:-scale-x-100 ltr:scale-100"
-          width={500}
-          height={1200}
-        />
-      </div>
-      <div className="hidden md:block relative bg-blend-darken">
-        <Image
-          src={Slant}
-          alt="/"
-          className="absolute ltr:left-10 mt-56 transform rtl:-scale-y-100 ltr:-scale-100"
-          width={500}
-          height={1200}
-        />
-      </div>
       {isSuccess && carSlider?.length ? (
-      <div className=" relative w-full mx-auto  mt-52 sm:mt-56 md:mt-0 flex flex-col-reverse  lg:!flex-row justify-between z-20">
-          {/* text content */}
+        <>
+          <div className="banner-slide h-full">
+            {/* text content */}
 
-          <div
-            className={`relative ${
-              showElement ? 'fading-animation' : ''
-            } transition-all  duration-500 ease-in-out items-center   top-32 sm:top-48 h-fit mx-auto  ltr:md:ml-20 rtl:md:mr-20 text-white sm:max-w-[500px] lg:max-w-[700px]`}
-          >
-            <p className="px-4 text-2xl  sm:text-4xl md:text-4xl xl:text-6xl font-[900]  tracking-[-2.56px] ">
-              {carSlider[currentIndex]?.title}
-            </p>
-            {carSlider[currentIndex]?.price ? (
-              <p className="px-4 text-2xl sm:text-4xl md:text-4xl xl:text-6xl tracking-[-2.56px] py-2 md:py-6 ">
-                + {carSlider[currentIndex]?.price}
+            <div
+              className={`banner-slide-text ${
+                showElement ? 'fading-animation' : ''
+              } transition-all  duration-500 ease-in-out items-center text-white z-40`}
+            >
+              <p className="px-4 text-2xl  sm:text-4xl md:text-5xl xl:text-[64px] font-[900] tracking-[-1px] ">
+                {carSlider[currentIndex]?.title}
               </p>
-            ) : (
-              ''
-            )}
-            <p className="sm:block px-4 text-xl  font-normal ">
-              {carSlider[currentIndex]?.description}
-            </p>
-            <p className="px-4 text-lg  sm:text-2xl tracking-[-2px] font-[700]  my-3">
-              {carSlider[currentIndex]?.date}
-            </p>
-            <Link href="/cars">
-              <Button
-                className="mx-4 text-black font-sans font-[900]  tracking-[-1px]"
-                variant="clip"
-              >
-                {lang.lang_id === 1 ? 'ENTER NOW' : 'أدخل الأن'}
-              </Button>
-            </Link>
-          </div>
-
-          {/* text select cards */}
-          <div
-            className={`  absolute   ${
-              showElement ? 'fading-animation' : ''
-            } transition-all  duration-500 ease-in-out   sm:mb-8 m-auto -bottom-64  xl:-bottom-64 ltr:-right-6 rtl:-left-6 md:ltr:-right-32 md:rtl:-left-32  z-20  w-[320px] h-[200px]  sm:max-w-[440px] sm:w-full sm:h-full  sm:max-h-[300px] md:max-w-[500px] md:max-h-[260px] lg:max-w-[680px] xl:max-w-[780px] xl:max-h-[580px]   `}
-          >
-            <Image
-              className="    object-contain  transform rtl:-scale-x-100 ltr:scale-100 ltr:right-6 rtl:left-4 md:ltr:-right-40 md:rtl:-left-16"
-              src={renderNFTImage(carSlider[currentIndex])}
-              alt="banner image"
-              fill
-              quality={100}
-
-              // width={750}
-              // height={400}
-              // sizes="(max-width: 768px) 900px 500px, (max-width: 1200px) 700px 400px"
-            />
-          </div>
-          <div className="relative hidden    ltr:right-16 rtl:left-16 z-30  md:top-[380px]  items-end h-fit lg:flex justify-between  gap-3 mx-auto sm:mx-0">
-            {carSlider.map((item: any, i: number) => (
-              <div
-                key={i}
-                className="group relative top-32 max-w-[120px] text-center font-semibold hover:cursor-pointer"
-                onClick={() => goToSlide(i)}
-              >
-                <div
-                  className={`relative   w-[100px] h-[60px] mx-auto border-2  ${
-                    currentIndex === i ? 'border-primary' : 'border-transparent'
-                  } group-hover:border-primary`}
-                >
-                  <Image
-                    src={renderNFTImage(item)}
-                    alt="/"
-                    fill
-                    className="rounded-md object-contain group-hover:rounded-none transform rtl:-scale-x-100 ltr:scale-100"
-                  />
-                </div>
-                <p className="mt-1 text-xs max-w-[100px] mx-auto">
-                  {item.model}
+              {carSlider[currentIndex]?.price ? (
+                <p className="px-4 text-2xl sm:text-4xl md:text-5xl xl:text-[64px] tracking-[-2.56px] py-2 md:py-1 ">
+                  + {carSlider[currentIndex]?.price}
                 </p>
-              </div>
-            ))}
+              ) : (
+                ''
+              )}
+              <p className="sm:block px-4 text-xl  font-normal ">
+                {carSlider[currentIndex]?.description}
+              </p>
+              <p className="px-4 text-lg  sm:text-2xl tracking-[-2px] font-[700]  my-3">
+                {carSlider[currentIndex]?.date}
+              </p>
+              <Link href="/cars">
+                <Button
+                  className="mx-4 min-w-fit sm:w-44 text-black font-sans font-[900]  tracking-[-1px]"
+                  variant="clip"
+                >
+                  {lang.lang_id === 1 ? 'ENTER NOW' : 'أدخل الأن'}
+                </Button>
+              </Link>
+            </div>
+
+            {/* text select cards */}
+            <div
+              className={`banner-slide-image ${
+                showElement ? 'fading-animation' : ''
+              } transition-all    duration-500 ease-in-out sm:mb-4`}
+            >
+              <Image
+                className="object-contain object-bottom transform rtl:-scale-x-100 ltr:scale-100 ltr:right-6 rtl:left-4 md:ltr:-right-40 md:rtl:-left-16"
+                src={renderNFTImage(carSlider[currentIndex])}
+                alt="banner image"
+                // fill
+                quality={100}
+                width={750}
+                height={800}
+                // sizes="(max-width: 768px) 900px 500px, (max-width: 1200px) 700px 400px"
+              />
+            </div>
           </div>
-        </div>
+          <div className="banner-bottom">
+            <div className="hidden z-30  items-end h-fit lg:flex justify-between gap-3 mx-auto sm:mx-0">
+              {carSlider.map((item: any, i: number) => (
+                <div
+                  key={i}
+                  className="group w-[120px] text-center font-semibold hover:cursor-pointer"
+                  onClick={() => goToSlide(i)}
+                >
+                  <div
+                    className={`border-2 p-3 ${
+                      currentIndex === i
+                        ? 'border-primary'
+                        : 'border-transparent'
+                    } group-hover:border-primary`}
+                  >
+                    <Image
+                      src={renderNFTImage(item)}
+                      alt="/"
+                      width={100}
+                      height={100}
+                      className="rounded-md object-contain object-center group-hover:rounded-none transform rtl:-scale-x-100 ltr:scale-100"
+                    />
+                  </div>
+                  <p className="mt-1 text-xs mx-auto">{item.model}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </>
       ) : (
         ''
       )}

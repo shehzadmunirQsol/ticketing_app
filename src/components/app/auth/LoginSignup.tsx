@@ -107,6 +107,7 @@ export default function LoginSignup() {
   // Signup
   const onSubmitSignup = async (values: any) => {
     try {
+      formLogin.reset();
       setIsSubmitting(true);
       const signupResult = await registerCustomer.mutateAsync(values);
       setOtpIsModal(true);
@@ -145,11 +146,11 @@ export default function LoginSignup() {
     }
 
     try {
+      formSignup.reset();
       setIsSubmitting(true);
       const loginResult = await loginCustomer.mutateAsync(values);
 
       // to check for account verified or not
-      console.log({ loginResult });
     } catch (e: any) {
       setIsSubmitting(false);
       if (e.shape.message == 'Your Account is Not Verified') {
