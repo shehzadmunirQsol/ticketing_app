@@ -111,6 +111,7 @@ const AddressesView = () => {
       }
     } catch (error: any) {}
   }
+  console.log({ isEdit, action }, 'check states after', action.adding.text);
 
   return (
     <div className="py-4 px-6 text-[#eaeaea]">

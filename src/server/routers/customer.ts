@@ -431,7 +431,7 @@ export const customerRouter = router({
       }
     }),
 
-  verificationOtpCustomer: publicProcedure
+    verificationOtpCustomer: publicProcedure
     .input(verificationOtpCustomerSchema)
     .mutation(async ({ ctx, input }) => {
       try {
