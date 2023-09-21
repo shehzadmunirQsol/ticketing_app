@@ -4,28 +4,21 @@ import { Button } from '@/ui/button';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from '@/ui/form';
-
 import { Input } from '@/ui/input';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
-import { FileInput } from '~/components/common/file_input';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { trpc } from '~/utils/trpc';
-import { getS3ImageUrl } from '~/service/api/s3Url.service';
-import { isValidImageType } from '~/utils/helper';
-// import { useToast } from '~/components/ui/use-toast';
 import SideImage from '../../common/SideImage';
 import {
   signupCustomerInput,
   loginCustomerInput,
   loginCustomerSchema,
-  // loginCustomerSchemaInput,
   signupCustomerSchema,
 } from '~/schema/customer';
 import { useToast } from '~/components/ui/use-toast';
@@ -64,7 +57,7 @@ export default function LoginSignup() {
   const registerCustomer = trpc.customer.register.useMutation({
     onSuccess: (res: any) => {
       setUser(res.email);
-      const localStorageData = localStorage.setItem(
+      localStorage.setItem(
         'customer',
         JSON.stringify({
           email: res.email,
@@ -100,14 +93,11 @@ export default function LoginSignup() {
     onSuccess: (response) => {
       toast({
         variant: 'success',
-        title: 'Login Successful ',
+        title: 'Login Successfully ',
       });
       dispatch(userAuth(response?.user));
 
       router.back();
-      formLogin.setValue('user', '');
-      formLogin.setValue('password', '');
-      router.push('/');
     },
     onError: (err) => {
       console.log(err.message, 'err');
@@ -117,13 +107,11 @@ export default function LoginSignup() {
   // Signup
   const onSubmitSignup = async (values: any) => {
     try {
+      formLogin.reset();
       setIsSubmitting(true);
-      console.log(values, 'Working');
       const signupResult = await registerCustomer.mutateAsync(values);
       setOtpIsModal(true);
       setIsSubmitting(false);
-
-      console.log(signupResult, 'signupResult');
     } catch (e: any) {
       setIsSubmitting(false);
       setOtpIsModal(false);
@@ -158,11 +146,11 @@ export default function LoginSignup() {
     }
 
     try {
+      formSignup.reset();
       setIsSubmitting(true);
       const loginResult = await loginCustomer.mutateAsync(values);
 
       // to check for account verified or not
-      console.log({ loginResult });
     } catch (e: any) {
       setIsSubmitting(false);
       if (e.shape.message == 'Your Account is Not Verified') {
@@ -429,5 +417,3 @@ export default function LoginSignup() {
     </section>
   );
 }
-
-// export default LoginSignup;

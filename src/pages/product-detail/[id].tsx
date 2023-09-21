@@ -1,15 +1,10 @@
 import { NextPageWithLayout } from '~/pages/_app';
-import { prisma } from '~/server/prisma';
+// import { prisma } from '~/server/prisma';
 import ProductDetail from '~/components/app/productDescription/index';
-import { serverRouter } from '~/server/routers/_app';
+// import { serverRouter } from '~/server/routers/_app';
 
 const ProductDetails: NextPageWithLayout = (props) => {
-  console.log({ props });
-  return (
-    <div className="bg-background h-auto justify-center items-center  w-screen">
-      <ProductDetail />
-    </div>
-  );
+  return <ProductDetail />;
 };
 
 export default ProductDetails;

@@ -33,6 +33,7 @@ import { LoadingDialog } from '~/components/common/modal/loadingModal';
 import { useToast } from '~/components/ui/use-toast';
 import { addCart } from '~/store/reducers/cart';
 import Link from 'next/link';
+import { userAuth } from '~/store/reducers/auth';
 
 function Checkout() {
   const { cart, totalAmount } = useSelector((state: RootState) => state.cart);
@@ -58,16 +59,11 @@ function Checkout() {
       customer_id: cart.customer_id ?? 0,
       first_name: user?.first_name,
       last_name: user?.last_name,
-      apartment: user?.apartment,
-      street_address: user?.street_address,
-      city: user?.city,
       code: '+971',
-      country: user?.country,
+
       dob: user?.dob,
       email: user?.email,
       phone_number: user?.phone_number,
-      postal_code: user?.postal_code,
-      state: user?.state,
     },
   });
   const checkoutCreator = trpc.order.createCheckout.useMutation({
@@ -78,11 +74,41 @@ function Checkout() {
       console.log({ error });
     },
   });
+  useEffect(() => {
+    if (user) {
+      form.setValue('cart_id', cart?.id ?? 0);
+      form.setValue('customer_id', cart?.customer_id ?? 0);
+      form.setValue('first_name', user?.first_name ?? '');
+      form.setValue('last_name', user?.last_name ?? '');
+      form.setValue('dob', user?.dob ?? '');
+      form.setValue('email', user?.email ?? '');
+      if (user?.CustomerAddress && user?.CustomerAddress?.length) {
+        form.setValue(
+          'apartment',
+          user?.CustomerAddress[0]?.street_address_2 ?? '',
+        );
+        form.setValue(
+          'street_address',
+          user?.CustomerAddress[0]?.street_address ?? '',
+        );
+        form.setValue('city', user?.CustomerAddress[0]?.city ?? '');
+        form.setValue('country', user?.CustomerAddress[0]?.country ?? '');
+        form.setValue('phone_number', user?.phone_number ?? '');
+        form.setValue(
+          'postal_code',
+          user?.CustomerAddress[0]?.postal_code?.toString() ?? '',
+        );
+        form.setValue('state', user?.CustomerAddress[0]?.state ?? '');
+      }
+    }
+  }, [user, cart]);
   const getStatus = trpc.order.getStatus.useMutation({
     onSuccess: () => {
       console.log('upload successfully');
     },
     onError(error: any) {
+      setLoading(false);
+
       console.log({ error });
     },
   });
@@ -112,10 +138,18 @@ function Checkout() {
                   cartItems: [],
                 }),
               );
+              if (Resdata?.user) dispatch(userAuth(Resdata?.user));
             }, 3000);
           }
         }
       } catch (e: any) {
+        setLoading(false);
+        router.push('/checkout');
+
+        toast({
+          variant: 'destructive',
+          title: e?.message,
+        });
         console.log(e?.message, 'error');
       }
     })();
@@ -412,7 +446,7 @@ function Checkout() {
                   )}
                 />
 
-                <div className="flex flex-col items-start md:flex-row gap-2 w-full justify-between">
+                <div className="flex items-start flex-row gap-2 w-full justify-between">
                   <div className="flex-1">
                     <p className="text-sm text-cardGray  mb-3 ">Phone Number</p>
                     <div className="flex flex-row gap-2 ">
@@ -505,7 +539,7 @@ function Checkout() {
               </div>
             </div>
             <div className="border-r border-lightColorBorder  mx-4"></div>
-            <div className=" flex-[0.45] space-y-12 z-10">
+            <div className="relative bg-background  flex-[0.45] space-y-12 z-10">
               <div className="flex flex-row justify-between items-center">
                 <h3 className="text-lg md:text-xl lg:text-2xl font-bold">
                   Order Summary
@@ -519,7 +553,7 @@ function Checkout() {
                   </p>
                 ) : null}
               </div>
-              <div className="space-y-8">
+              <div className="relative space-y-8">
                 <div className=" max-h-60 overflow-x-auto space-y-8">
                   {cart?.cartItems?.length
                     ? cart?.cartItems?.map((item) => {
@@ -609,6 +643,7 @@ function Checkout() {
               <Glow className=" absolute bottom-[750px]  lg:bottom-[440px] md:bottom-[440px] -right-16  w-1/5 h-[350px] -z-2 opacity-50 " />
 
               <Button
+                disabled={checkoutCreator?.isLoading}
                 className=" px-16 mt-10 w-full  text-black font-sans font-[900]   text-xl tracking-[-1px]"
                 variant="clip"
               >
@@ -618,7 +653,10 @@ function Checkout() {
           </div>
         </form>
       </Form>
-      <LoadingDialog open={loading} text={'Order processing...'} />
+      <LoadingDialog
+        open={loading || checkoutCreator?.isLoading}
+        text={'Order processing...'}
+      />
 
       <CouponModal
         isModal={isModal}

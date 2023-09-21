@@ -14,21 +14,27 @@ import {
 } from '@/ui/form';
 import { useForm } from 'react-hook-form';
 import { trpc } from '~/utils/trpc';
+import { LoadingDialog } from '~/components/common/modal/loadingModal';
 
 export default function ResetPassword() {
   const { toast } = useToast();
   const router = useRouter();
+  const [userDetail, setUserDetail] = useState<any>({});
   const query = router.query;
-  console.log(router.query, 'i am router query');
 
   // Handle Reset Password
   const formResetPassword = useForm<any>();
+  useEffect(() => {
+    if (router.query) {
+      setUserDetail({ ...router.query });
+      router.replace('/reset-password');
+    }
+  }, []);
 
   // Reset Password Customer
   const customerResetPassword = trpc.customer.resetPasswordCustomer.useMutation(
     {
       onSuccess: async (res: any) => {
-        console.log(res);
         toast({
           variant: 'success',
           title: 'Reset Password Successfully',
@@ -36,7 +42,6 @@ export default function ResetPassword() {
         router.push('/login');
       },
       onError: (err) => {
-        console.log(err.message, 'err');
         toast({
           variant: 'destructive',
           title: err.message,
@@ -54,14 +59,12 @@ export default function ResetPassword() {
       });
     } else {
       const payload: any = {
-        email: query.email,
-        otp: query.verification_code,
+        email: userDetail.email as string,
+        otp: userDetail.verification_code as string,
         password: values.password,
         confirmPassword: values.confirmPassword,
       };
-      console.log(payload, 'payload');
       const resp: any = await customerResetPassword.mutateAsync(payload);
-      console.log(resp, 'final res');
     }
   };
 
@@ -83,14 +86,14 @@ export default function ResetPassword() {
                 </FormLabel>
                 <FormControl>
                   <Input
-                    type="text"
+                    type="password"
                     placeholder="Enter your password"
                     {...field}
                   />
                 </FormControl>
-                <div className='relative pb-2'>
-                        <FormMessage />
-                        </div>
+                <div className="relative pb-2">
+                  <FormMessage />
+                </div>
               </FormItem>
             )}
           />
@@ -104,14 +107,14 @@ export default function ResetPassword() {
                 </FormLabel>
                 <FormControl>
                   <Input
-                    type="text"
+                    type="password"
                     placeholder="Enter your confirm password"
                     {...field}
                   />
                 </FormControl>
-                <div className='relative pb-2'>
-                        <FormMessage />
-                        </div>
+                <div className="relative pb-2">
+                  <FormMessage />
+                </div>
               </FormItem>
             )}
           />
@@ -123,6 +126,10 @@ export default function ResetPassword() {
           </Button>
         </form>
       </Form>
+      <LoadingDialog
+        open={customerResetPassword.isLoading}
+        text={'Loading...'}
+      />
     </div>
   );
 }

@@ -7,13 +7,12 @@ import 'slick-carousel/slick/slick-theme.css';
 import Group15 from '~/public/assets/icons/Group15.png';
 import Group14 from '~/public/assets/icons/Group14.png';
 
-import Face1 from "~/public/assets/face/face1.png"
-import Face2 from "~/public/assets/face/face2.png"
-import Face3 from "~/public/assets/face/face3.png"
-import Face4 from "~/public/assets/face/face4.png"
-import Face5 from "~/public/assets/face/face5.png"
-import Face6 from "~/public/assets/face/face6.png"
-
+import Face1 from '~/public/assets/face/face1.png';
+import Face2 from '~/public/assets/face/face2.png';
+import Face3 from '~/public/assets/face/face3.png';
+import Face4 from '~/public/assets/face/face4.png';
+import Face5 from '~/public/assets/face/face5.png';
+import Face6 from '~/public/assets/face/face6.png';
 
 import { User } from 'lucide-react';
 
@@ -84,7 +83,7 @@ function Testimonials() {
     },
   ];
   return (
-    <div className="relative flex flex-col gap-14 justify-start   w-full mb-2 py-4">
+    <div className="relative flex flex-col gap-14 justify-start   w-full max-w-[1600px] mx-auto mb-2 py-4">
       <div className="relative w-full m-auto flex flex-col items-center justify-center">
         <div className=" z-10 h-64 w-62 ">
           <Image
@@ -97,7 +96,7 @@ function Testimonials() {
         <div className="absolute bottom-0  ">
           <div className="relative bg-transparent">
             <div className="absolute top-0 p-8  w-full  bg-teal-400 bg-opacity-50 rounded-full blur-3xl"></div>
-            <div className="text-center   text-white  text-xl  uppercase ">
+            <div className="text-center   text-white  text-xl ">
               See Why Our Customers Love
             </div>
             <div className="text-center text-gray-200 text-5xl font-black leading-[48px]">
@@ -108,7 +107,7 @@ function Testimonials() {
         </div>
       </div>
 
-      <div className="     grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 justify-start items-start     gap-4 px-4 md:px-14 py-6 md:py-12   ">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 justify-start items-start gap-4 px-4 md:px-14 py-6 md:py-12 mb-12">
         {TestimonialsData?.map((item, index) => {
           return (
             <div

@@ -9,7 +9,8 @@ import calender from '~/public/assets/calender.svg';
 import clock from '~/public/assets/watch.svg';
 
 import Image from 'next/image';
-function LiveDraw() {
+import { displayDate } from '~/utils/helper';
+function LiveDraw(props: any) {
   const LiveDraw = [
     {
       title: 'Draw takes place regardless of sell out',
@@ -26,7 +27,7 @@ function LiveDraw() {
     },
   ];
   return (
-    <div className="relative w-full mb-20">
+    <div className="relative  mb-20 max-w-[1600px] ">
       <div className="   bg-primary py-10  grid grid-cols-1 lg:grid-cols-2 items-start  ">
         <div className="   flex flex-col justify-center items-center  w-full ">
           <p className="  py-4 md:py-0 text-left !w-full md:!max-w-[310px] sm:!max-w-[310px] xs:!max-w-[310px] md:mb-30 text-black font-[1000] tracking-[-4px] !text-6xl   md:!text-6xl lg:!text-8xl uppercase">
@@ -41,7 +42,9 @@ function LiveDraw() {
                 src={calender.src}
                 alt="Sunset in the mountains"
               />{' '}
-              <p className="text-md font-semibold text-black">04-08-2023</p>
+              <p className="text-md font-semibold text-black">
+                {props?.data?.end_date?.toISOString().split('T')[0]}
+              </p>
             </div>
             <div className="flex justify-center items-center ml-4 my-2">
               <Image
@@ -51,7 +54,10 @@ function LiveDraw() {
                 src={clock.src}
                 alt="Sunset in the mountains"
               />{' '}
-              <p className="text-md font-semibold text-black">8:00 PM GST</p>
+              <p className="text-md font-semibold text-black">
+                {props?.data?.end_date?.getHours()}:
+                {props?.data?.end_date?.getMinutes()} PM GST
+              </p>
             </div>
           </div>
         </div>

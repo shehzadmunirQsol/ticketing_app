@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import OrdersDataTable from '~/components/common/table/orders';
+
 import OrdersDataByIdTable from '~/components/common/table/ordersByIdTable';
 import { Button } from '~/components/ui/button';
 import { Separator } from '~/components/ui/separator';
@@ -128,7 +128,7 @@ function CurrentandPast({ customer_id }: currentandpastprops) {
         <div className="border-[1px] border-b-[#808080] w-full border-transparent "></div>
       </div>
 
-      <div className="w-full py-4 border-[1px] border-t-0 border-[#808080] h-fit rounded-b-md">
+      <div className="w-full p-4 border-[1px] border-t-0 border-[#808080] h-fit rounded-b-md">
         {customer_id != undefined ? (
           <>
             {select === 0 ? (
@@ -138,31 +138,23 @@ function CurrentandPast({ customer_id }: currentandpastprops) {
             )}
           </>
         ) : (
-          <></>
-        )}
-
-        {/* {displayArray == undefined || displayArray?.length === 0 ? (
-          <div className="flex flex-col my-auto h-full items-center justify-center">
-            <Image src={Current} alt="/" />
-            <p className="text-center text-gray-300 text-md my-2 px-6">
-              No past competition entries to show. Only entries from the last 30
-              days will be shown.
-            </p>
-            <Button
-              variant={'rounded'}
-              className="text-center font-black tracking-tighter my-4 w-36 text-xs md:w-fit md:text-md "
-              onClick={() => router.push('/cars')}
-            >
-              EXPLORE CURRENT COMPETITIONS
-            </Button>
-          </div>
-        ) : (
           <>
-            <div className="flex flex-wrap justify-start items-start gap-4">
-              <OrdersDataByIdTable id={customer_id} />
+            <div className="flex flex-col my-auto h-full items-center justify-center">
+              <Image src={Current} alt="/" />
+              <p className="text-center text-gray-300 text-md my-2 px-6">
+                No past competition entries to show. Only entries from the last
+                30 days will be shown.
+              </p>
+              <Button
+                variant={'rounded'}
+                className="text-center font-black tracking-tighter my-4 w-36 text-xs md:w-fit md:text-md "
+                onClick={() => router.push('/cars')}
+              >
+                EXPLORE CURRENT COMPETITIONS
+              </Button>
             </div>
           </>
-        )} */}
+        )}
       </div>
     </>
   );

@@ -634,6 +634,7 @@ export const orderRouter = router({
                 id: payload?.values?.customer_id,
               },
             });
+            let updateCustomer: any;
             if (
               customerData?.total_customer_id === '' ||
               !customerData?.total_customer_id?.includes(
@@ -646,7 +647,7 @@ export const orderRouter = router({
                     ',' +
                     statusData?.registrationId
                   : statusData?.registrationId;
-              const updateCustomer = await prisma.customer.update({
+              updateCustomer = await prisma.customer.update({
                 where: {
                   id: payload?.values?.customer_id,
                 },
@@ -775,9 +776,15 @@ export const orderRouter = router({
             };
 
             await sendEmail(mailOptions);
+            // const { password, otp, ...userApiData } = updateCustomer;
+            const useAPIData = {...updateCustomer};
+            if(useAPIData?.password) delete useAPIData?.password 
+            if(useAPIData?.otp) delete useAPIData?.password 
+
             return {
               message: paymentRes?.data,
               status: true,
+              user: useAPIData,
             };
           }
         }

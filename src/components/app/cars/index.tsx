@@ -8,6 +8,8 @@ import { trpc } from '~/utils/trpc';
 import CarsBg from '~/public/assets/cars-bg-2.png';
 import BannerTitle from '~/components/common/banner_title';
 import FeaturedCars from './featured_cars';
+import Testimonials from '../home/testimonials';
+import { LoadingDialog } from '~/components/common/modal/loadingModal';
 
 const CarsPage = () => {
   const { lang } = useSelector((state: RootState) => state.layout);
@@ -27,7 +29,7 @@ const CarsPage = () => {
     setProducts([]);
   }, [lang.lang_id]);
 
-  const { data: prductsList } = trpc.event.getByCategoryId.useQuery(filters, {
+  const { data: prductsList,isLoading } = trpc.event.getByCategoryId.useQuery(filters, {
     refetchOnWindowFocus: false,
   });
 
@@ -46,13 +48,10 @@ const CarsPage = () => {
     }
   }
 
-  console.log({ prductsList }, 'prductsList');
-  console.log({ products }, 'products');
-  console.log({ filters }, 'filters');
-  console.log(products.length, prductsList?.count, 'check load more');
+
 
   return (
-    <div className="mx-auto max-w-[1600px] w-full">
+    <div className="mx-auto max-w-[1600px] w-full bg-background">
       {/* this div below ↓ it to add spacing to avoid header */}
       <div className="relative pt-24"></div>
       <FeaturedCars />
@@ -62,10 +61,10 @@ const CarsPage = () => {
       <p className="  text-2xl md:text-5xl sm:px-16 px-10 pt-10 sm:pt-10 pb-6     tracking-tighter font-extrabold text-white ">
         CARS COMPETITION
       </p>
-      <div className="h-full  px-10 pb-20 ">
-        <Glow className=" absolute  top-[760px] -right-16     w-1/5 h-[350px] overflow-hidden " />
+      <div className="relative h-full  px-10 pb-20 ">
+        <Glow className=" absolute  top-[760px] -left-16     w-1/5 h-[350px] overflow-hidden " />
 
-        <Glow className=" absolute   bottom-96 -right-16  w-1/5 h-[350px] overflow-x-hidden" />
+        {/* <Glow className=" absolute   bottom-96 -right-16  w-1/5 h-[350px] overflow-x-hidden" /> */}
         <div className=" grid grid-cols-1 md:grid-cols-2 z-40 gap-4 lg:grid-cols-3  justify-between max-w-[1300px] mx-auto ">
           {products?.map((itemList, i) => {
             return (
@@ -93,6 +92,8 @@ const CarsPage = () => {
           ''
         )}
       </div>
+      <Testimonials />
+      <LoadingDialog open={isLoading} text={'Loading...'} />
     </div>
   );
 };

@@ -38,6 +38,9 @@ export const customerRouter = router({
 
     const user = await prisma.customer.findUnique({
       where: { id: userData.id },
+      include:{
+        CustomerAddress:true
+      }
     });
 
     if (!user)
@@ -257,7 +260,7 @@ export const customerRouter = router({
 
         if (!user.is_approved) {
           const respCode = await generateOTP(4);
-          const customer = await prisma.customer?.update({
+          await prisma.customer?.update({
             where: {
               id: user.id,
             },
@@ -292,7 +295,7 @@ export const customerRouter = router({
         if (!checkPass) {
           throw new TRPCError({
             code: 'BAD_REQUEST',
-            message: 'Password is incorrect',
+            message: 'Invalid credentials!',
           });
         }
         const jwt = signJWT({ email: user.email, id: user.id });
@@ -319,7 +322,6 @@ export const customerRouter = router({
     .input(forgotPasswordCustomerSchema)
     .mutation(async ({ ctx, input }) => {
       try {
-        console.log(input.email, 'input');
         const user = await prisma.customer.findFirst({
           where: { email: input.email },
         });
@@ -429,13 +431,11 @@ export const customerRouter = router({
       }
     }),
 
-  verificationOtpCustomer: publicProcedure
+    verificationOtpCustomer: publicProcedure
     .input(verificationOtpCustomerSchema)
     .mutation(async ({ ctx, input }) => {
       try {
         const otpCode = `${input.otp_1}${input.otp_2}${input.otp_3}${input.otp_4}`;
-
-        console.log(otpCode, input.emailOrUser, 'HJDJDHDDN');
 
         const validity = isValidEmail(input.emailOrUser)
           ? { email: input.emailOrUser }
@@ -480,7 +480,6 @@ export const customerRouter = router({
 
         return { user: userApiData, jwt };
       } catch (error: any) {
-        console.log({ error });
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: error.message,
@@ -660,8 +659,9 @@ export const customerRouter = router({
             ...payload,
           },
         });
+        const { password, otp, ...userApiData } = updateResponse;
 
-        return { user: user, status: true };
+        return { user: userApiData, status: true };
       } catch (error: any) {
         console.log({ error });
         throw new TRPCError({
