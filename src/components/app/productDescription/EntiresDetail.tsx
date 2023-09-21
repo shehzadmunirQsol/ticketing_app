@@ -7,7 +7,7 @@ import Image from 'next/image';
 
 const EntiresDetail = (props: any) => {
   return (
-    <div className="bg-backgroundDark border-2 rounded-md  border-border-backgroundEntires">
+    <div className="my-12 bg-backgroundDark  rounded-md border  border-border ">
       <div className="container px-10 py-10 w-full">
         <div className="flex flex-col -m-4 text-center justify-center items-start lg:items-center lg:justify-between gap-14 lg:gap-0   lg:flex-row">
           <div className="flex justify-center items-center ">

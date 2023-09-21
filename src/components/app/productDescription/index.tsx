@@ -17,19 +17,20 @@ const ProductDetail = () => {
   const router = useRouter();
   const { lang } = useSelector((state: RootState) => state.layout);
   const id = Number(router.query.id);
-  const { data, isLoading }: any = trpc.event.getEventsById.useQuery(
+  const { data, isLoading } = trpc.event.getEventsById.useQuery(
     { id: id, lang_id: lang.lang_id },
     {
       refetchOnWindowFocus: false,
     },
   );
 
-  const comp_detail: any = data?.data.EventDescription[0]?.comp_details;
-  const Faqs: any = data?.data.CMS;
+  const comp_detail: any = data?.data?.EventDescription[0]?.comp_details;
+  const Faqs: any = data?.data?.CMS;
+
   return (
-    <div>
+    <div className="bg-background">
       <Tabs data={data?.data} comp_detail={comp_detail} />
-      <div id="BuyTickets" className="px-4 md:px-14">
+      <div id="BuyTickets" className="px-4 md:px-14 ">
         <ImageSlider
           data={data?.data}
           ticketPurchased={data?.ticketPurchased}
@@ -39,7 +40,7 @@ const ProductDetail = () => {
           <VideoSection data={data?.data} />
         </div>
         <div></div>
-      </div>
+    </div>
       <LiveDraw data={data?.data} />
 
       <div className="relative px-4 md:px-14  pb-10">

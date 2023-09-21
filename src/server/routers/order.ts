@@ -776,12 +776,15 @@ export const orderRouter = router({
             };
 
             await sendEmail(mailOptions);
-            const { password, otp, ...userApiData } = updateCustomer;
+            // const { password, otp, ...userApiData } = updateCustomer;
+            const useAPIData = {...updateCustomer};
+            if(useAPIData?.password) delete useAPIData?.password 
+            if(useAPIData?.otp) delete useAPIData?.password 
 
             return {
               message: paymentRes?.data,
               status: true,
-              user: userApiData,
+              user: useAPIData,
             };
           }
         }

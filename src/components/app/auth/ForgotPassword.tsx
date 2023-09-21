@@ -1,19 +1,15 @@
-import { useRouter } from 'next/router';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '~/components/ui/dialog';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -27,9 +23,9 @@ interface ForgotPasswordDialogInterface {
   isModal: boolean;
   setIsModal: (e: any) => void;
 }
+
 export function ForgotPasswordDailog(props: ForgotPasswordDialogInterface) {
   const { toast } = useToast();
-  const router = useRouter();
 
   // Handle Forgot Password
   const formForgotPassword = useForm<any>();
@@ -41,7 +37,7 @@ export function ForgotPasswordDailog(props: ForgotPasswordDialogInterface) {
         props.setIsModal(false);
         toast({
           variant: 'success',
-          title: 'please check your email ',
+          title: 'Please check your email ',
         });
       },
       onError: (err) => {
@@ -55,7 +51,6 @@ export function ForgotPasswordDailog(props: ForgotPasswordDialogInterface) {
     });
 
   const onSubmit = async (values: any) => {
-    console.log(values, 'onSubmit');
     try {
       const resp = await customerForgotPassword.mutateAsync(values);
       console.log(resp, 'final res');
@@ -77,7 +72,7 @@ export function ForgotPasswordDailog(props: ForgotPasswordDialogInterface) {
               <Form {...formForgotPassword}>
                 <form
                   onSubmit={formForgotPassword.handleSubmit(onSubmit)}
-                  className="justify-center items-center px-2 lg:px-8 py-4 space-y-4"
+                  className="px-2 lg:px-8 py-4 space-y-4"
                 >
                   <FormField
                     control={formForgotPassword.control}
@@ -101,7 +96,7 @@ export function ForgotPasswordDailog(props: ForgotPasswordDialogInterface) {
                     )}
                   />
                   <Button
-                    className="w-full     text-black font-sans font-[900]   text-xl tracking-[-1px]"
+                    className="w-full text-black font-sans font-[900] text-xl tracking-[-1px]"
                     variant="clip"
                   >
                     SUBMIT

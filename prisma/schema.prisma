@@ -285,7 +285,7 @@ model Customer {
   first_name        String?
   profile_pic       String?
   last_name         String?
-  total_customer_id String?
+  total_customer_id String?             @default("")
   dob               DateTime?
   is_deleted        Boolean             @default(false)
   is_verified       Boolean             @default(false)

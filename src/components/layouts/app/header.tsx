@@ -66,7 +66,7 @@ function Header() {
 
   return (
     <div
-      className={`fixed w-full z-50 top-0 h-24  flex  items-center   ${
+      className={`fixed max-w-[1600px] w-full z-50 top-0 h-24  flex  items-center   ${
         router.route == '/'
           ? color
             ? '!bg-background-footer  duration-500 shadow-xl'
@@ -133,7 +133,10 @@ function Header() {
 export default Header;
 
 export function DropdownMenuDemo() {
+  const { count } = useSelector((state: RootState) => state.cart);
+
   const dispatch = useDispatch();
+
   function toggleLanguageHandler(lang: 'en' | 'ar') {
     const dir: 'ltr' | 'rtl' = lang === 'ar' ? 'rtl' : 'ltr';
     const lang_id: 1 | 2 = lang === 'en' ? 1 : 2;
@@ -141,6 +144,7 @@ export function DropdownMenuDemo() {
 
     dispatch(toggleLang(language));
   }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -152,29 +156,38 @@ export function DropdownMenuDemo() {
         {/* <DropdownMenuLabel></DropdownMenuLabel> */}
 
         <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <Link href="/cars">Cars</Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Link href="/cash">Cash</Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Link href="/winners">Winners</Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <span>About Us</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <span>FAQ</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <ShoppingCart className="mr-2 h-4 w-4" />
-            <Link href="/cart">Cart</Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <User className="mr-2 h-4 w-4" />
-            <Link href="/account">My Account</Link>
-          </DropdownMenuItem>
+          <Link href="/cars">
+            <DropdownMenuItem>Cars</DropdownMenuItem>
+          </Link>
+          <Link href="/cash">
+            <DropdownMenuItem>Cash</DropdownMenuItem>
+          </Link>
+          <Link href="/winners">
+            <DropdownMenuItem>Winners</DropdownMenuItem>
+          </Link>
+          <Link href="/about-us">
+            <DropdownMenuItem>About Us</DropdownMenuItem>
+          </Link>
+          <Link href="/faq">
+            <DropdownMenuItem>FAQ</DropdownMenuItem>
+          </Link>
+          <Link href="/cart">
+            <DropdownMenuItem>
+              <ShoppingCart className="mr-2 h-4 w-4" />
+              Cart
+              {count ? (
+                <span className="block mx-2 text-red-600">
+                  ( {count > 999 ? '999+' : count} )
+                </span>
+              ) : null}
+            </DropdownMenuItem>
+          </Link>
+          <Link href="/account">
+            <DropdownMenuItem>
+              <User className="mr-2 h-4 w-4" />
+              My Account
+            </DropdownMenuItem>
+          </Link>
         </DropdownMenuGroup>
         <DropdownMenuGroup>
           <DropdownMenuSub>
