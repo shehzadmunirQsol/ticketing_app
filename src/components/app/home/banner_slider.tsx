@@ -130,7 +130,7 @@ const BannerSlider = () => {
               </p>
               <Link href="/cars">
                 <Button
-                  className="mx-4 w-3/12 text-black font-sans font-[900]  tracking-[-1px]"
+                  className="mx-4 min-w-fit sm:w-44 text-black font-sans font-[900]  tracking-[-1px]"
                   variant="clip"
                 >
                   {lang.lang_id === 1 ? 'ENTER NOW' : 'أدخل الأن'}

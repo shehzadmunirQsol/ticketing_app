@@ -50,9 +50,9 @@ function Footer() {
                   <p>Registered Company </p>
                   <p>Number: 11320154, UAE</p>
                 </div>
-                <div className="m-auto flex items-center justify-center w-full sm:w-1/2 md:w-1/3 text-sm text-white">
+                <div className=" flex items-center justify-center md:justify-start  w-full sm:w-1/2 md:w-1/3 text-sm text-white">
                   <Image
-                    className="w-full h-full object-contain text-center"
+                    className="w-full h-full object-contain "
                     src={Group17}
                     quality={100}
                     alt="Sunset in the mountains"
