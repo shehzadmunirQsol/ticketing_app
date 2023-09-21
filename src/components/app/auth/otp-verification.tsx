@@ -27,6 +27,7 @@ import Image from 'next/image';
 import { useRef, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { userAuth } from '~/store/reducers/auth';
+import { LoadingDialog } from '~/components/common/modal/loadingModal';
 interface OtpVerificationDailogInterface {
   otpIsModal: boolean;
   setOtpIsModal: (e: any) => void;
@@ -179,92 +180,97 @@ export function OtpVerificationDailog(props: OtpVerificationDailogInterface) {
     const otpResult = await resendOtpCustomer.mutateAsync({
       emailOrUser: props?.emailOrUser,
     });
-    console.log(otpResult, 'otpResult');
   }
 
   return (
-    <Dialog
-      open={props?.otpIsModal}
-      onOpenChange={(e: any): any => props.setOtpIsModal(e)}
-    >
-      <DialogContent className="  bg-gradient-to-b from-[#444E5566] via-gray-[#3841471A] to-transparent text-center py-8 ">
-        <DialogHeader>
-          <DialogTitle className="text-center ">
-            <p className="font-light text-2xl">OTP</p>
-            <p className="font-bold text-2xl">VERIFICATION</p>
-            <div className="flex items-center justify-center my-6">
-              <Image src={OtpImage} alt="otpImage" className="max-w-full" />
-            </div>
-          </DialogTitle>
-          <DialogDescription>
-            <form
-              onSubmit={onSubmit}
-              className="justify-center items-center px-2 lg:px-8 py-4 space-y-4"
-            >
-              <p className="text-center text-grayColor">
-                We have sent OTP on your email
-              </p>
-              <div className="flex gap-4 mb-2">
-                <Input
-                  name="otp_1"
-                  maxLength={1}
-                  type="text"
-                  ref={inputOne}
-                  onChange={inputChangeHandler}
-                  className="bg-transparent text-center py-8 "
-                />
-                <Input
-                  name="otp_2"
-                  maxLength={1}
-                  type="text"
-                  ref={inputTwo}
-                  onChange={inputChangeHandler}
-                  className="bg-transparent text-center py-8 "
-                />
-                <Input
-                  name="otp_3"
-                  maxLength={1}
-                  type="text"
-                  ref={inputThree}
-                  onChange={inputChangeHandler}
-                  className="bg-transparent text-center py-8 "
-                />
-                <Input
-                  name="otp_4"
-                  maxLength={1}
-                  type="text"
-                  ref={inputFour}
-                  onChange={inputChangeHandler}
-                  className="bg-transparent text-center py-8 "
-                />
+    <>
+      <Dialog
+        open={props?.otpIsModal}
+        onOpenChange={(e: any): any => props.setOtpIsModal(e)}
+      >
+        <DialogContent className="  bg-gradient-to-b from-[#444E5566] via-gray-[#3841471A] to-transparent text-center py-8 ">
+          <DialogHeader>
+            <DialogTitle className="text-center ">
+              <p className="font-light text-2xl">OTP</p>
+              <p className="font-bold text-2xl">VERIFICATION</p>
+              <div className="flex items-center justify-center my-6">
+                <Image src={OtpImage} alt="otpImage" className="max-w-full" />
               </div>
-              <div className="flex flex-row justify-center items-center  ">
-                <p className="text-center text-grayColor text-xs pr-4  cursor-pointer">
-                  Didn’t receive an OTP?{' '}
+            </DialogTitle>
+            <DialogDescription>
+              <form
+                onSubmit={onSubmit}
+                className="justify-center items-center px-2 lg:px-8 py-4 space-y-4"
+              >
+                <p className="text-center text-grayColor">
+                  We have sent OTP on your email
                 </p>
-                <button
-                  disabled={showTimer}
-                  onClick={handleResendOtp}
-                  type="button"
-                  className="text-white text-xs underline cursor-pointer"
-                >
-                  Resend OTP {seconds ? seconds + 's' : ''}
-                </button>
-              </div>
-              <div className="w-full mx-auto">
-                <div className=" flex items-center justify-center">
-                  <Button
-                    className="align-center uppercase rounded-full px-10   text-black font-sans font-[900]   text-xl tracking-[-1px]"
-                    variant="clip"
-                  >
-                    Enter
-                  </Button>
+                <div className="flex gap-4 mb-2">
+                  <Input
+                    name="otp_1"
+                    maxLength={1}
+                    type="text"
+                    ref={inputOne}
+                    onChange={inputChangeHandler}
+                    className="bg-transparent text-center py-8 "
+                  />
+                  <Input
+                    name="otp_2"
+                    maxLength={1}
+                    type="text"
+                    ref={inputTwo}
+                    onChange={inputChangeHandler}
+                    className="bg-transparent text-center py-8 "
+                  />
+                  <Input
+                    name="otp_3"
+                    maxLength={1}
+                    type="text"
+                    ref={inputThree}
+                    onChange={inputChangeHandler}
+                    className="bg-transparent text-center py-8 "
+                  />
+                  <Input
+                    name="otp_4"
+                    maxLength={1}
+                    type="text"
+                    ref={inputFour}
+                    onChange={inputChangeHandler}
+                    className="bg-transparent text-center py-8 "
+                  />
                 </div>
-              </div>
-            </form>
-          </DialogDescription>
-        </DialogHeader>
-      </DialogContent>
-    </Dialog>
+                <div className="flex flex-row justify-center items-center  ">
+                  <p className="text-center text-grayColor text-xs pr-4  cursor-pointer">
+                    Didn’t receive an OTP?{' '}
+                  </p>
+                  <button
+                    disabled={showTimer}
+                    onClick={handleResendOtp}
+                    type="button"
+                    className="text-white text-xs underline cursor-pointer"
+                  >
+                    Resend OTP {seconds ? seconds + 's' : ''}
+                  </button>
+                </div>
+                <div className="w-full mx-auto">
+                  <div className=" flex items-center justify-center">
+                    <Button
+                      className="align-center uppercase rounded-full px-10   text-black font-sans font-[900]   text-xl tracking-[-1px]"
+                      variant="clip"
+                    >
+                      Enter
+                    </Button>
+                  </div>
+                </div>
+              </form>
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
+      <LoadingDialog
+        open={resendOtpCustomer.isLoading || otpVerification?.isLoading}
+        text={'Loading...'}
+      />
+    </>
   );
 }

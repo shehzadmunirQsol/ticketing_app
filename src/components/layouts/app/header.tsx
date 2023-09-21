@@ -134,6 +134,7 @@ export default Header;
 
 export function DropdownMenuDemo() {
   const { count } = useSelector((state: RootState) => state.cart);
+  const { isLogin } = useSelector((state: RootState) => state.auth);
 
   const dispatch = useDispatch();
 
@@ -173,26 +174,24 @@ export function DropdownMenuDemo() {
           </Link>
           <Link href="/cart">
             <DropdownMenuItem>
-              <ShoppingCart className="mr-2 h-4 w-4" />
+              {/* <ShoppingCart className="mr-2 h-4 w-4" /> */}
               Cart
               {count ? (
-                <span className="block mx-2 text-red-600">
+                <span className="block mx-2 text-primary">
                   ( {count > 999 ? '999+' : count} )
                 </span>
               ) : null}
             </DropdownMenuItem>
           </Link>
-          <Link href="/account">
+          <Link href={isLogin ? '/account' : '/login'}>
             <DropdownMenuItem>
-              <User className="mr-2 h-4 w-4" />
-              My Account
+              {isLogin ? 'My Account' : 'Login'}
             </DropdownMenuItem>
           </Link>
         </DropdownMenuGroup>
         <DropdownMenuGroup>
           <DropdownMenuSub>
             <DropdownMenuSubTrigger>
-              <Languages className="mr-2 h-4 w-4" />
               <span>Language</span>
             </DropdownMenuSubTrigger>
             <DropdownMenuPortal>

@@ -315,14 +315,14 @@ export default function OrdersDataByIdTable(props: OrderTableProps) {
               </Table>
             </ScrollArea>
           </div>
-          <div className="flex items-center justify-end space-x-2 py-4">
+          <div className="flex flex-col md:flex-row gap-2 items-center justify-center md:justify-end md:space-x-2 py-4">
             {data?.count && (
               <div className="flex-1 flex w-[100px] items-center justify-start text-sm font-medium">
                 Page {props.filters.first + 1} of{' '}
                 {Math.ceil(data?.count / props.filters.rows)}
               </div>
             )}
-            <div className="flex items-center justify-center space-x-6 lg:space-x-8">
+            <div className="flex flex-col md:flex-row items-center justify-center gap-2 md:space-x-6 lg:space-x-8">
               <div className="flex items-center space-x-2">
                 <p className="text-sm font-medium">Rows per page</p>
                 <Select
@@ -349,7 +349,7 @@ export default function OrdersDataByIdTable(props: OrderTableProps) {
                 </Select>
               </div>
 
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center justify-center gap-2 md:space-x-2">
                 <Button
                   variant="outline"
                   className="hidden h-8 w-8 p-0 lg:flex"

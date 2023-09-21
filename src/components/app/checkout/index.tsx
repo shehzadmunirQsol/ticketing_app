@@ -653,7 +653,10 @@ function Checkout() {
           </div>
         </form>
       </Form>
-      <LoadingDialog open={loading} text={'Order processing...'} />
+      <LoadingDialog
+        open={loading || checkoutCreator?.isLoading}
+        text={'Order processing...'}
+      />
 
       <CouponModal
         isModal={isModal}
