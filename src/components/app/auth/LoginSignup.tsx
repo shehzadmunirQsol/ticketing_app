@@ -98,7 +98,6 @@ export default function LoginSignup() {
       dispatch(userAuth(response?.user));
 
       router.back();
-      window.location.reload();
     },
     onError: (err) => {
       console.log(err.message, 'err');

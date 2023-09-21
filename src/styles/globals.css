@@ -132,9 +132,10 @@
 
 .line-clamp-1 {
   overflow: hidden;
+  text-overflow: clip !important;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
+  -webkit-line-clamp: 2;
 }
 
 @media screen and (max-width: 1024px) {
