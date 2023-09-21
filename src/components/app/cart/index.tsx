@@ -152,10 +152,10 @@ export default function CartPage() {
                 </Button>
               </a>
             </div>
-            <Glow className="absolute right-0 -z-20 bottom-0 w-1/5 h-40 overflow-hidden" />
+            <Glow className="absolute right-0 -z-10 bottom-0 w-1/6 h-40 overflow-hidden" />
           </div>
 
-          <div className="py-10 px-8 -z-40">
+          <div className="relative py-4 px-8 z-10 bg-card-foreground">
             <ProductSection
               class=" mx-auto max-w-md md:max-w-[21.5rem] lg:max-w-[23rem] xl:max-w-[calc(100%-25px)] "
               slidesToShow={3.5}
@@ -165,11 +165,10 @@ export default function CartPage() {
               title={'Last chance offer'}
               type="no-glow"
             />
+            <Glow className="absolute right-0 bottom-0 w-1/6 h-20 overflow-hidden -z-20" />
           </div>
         </>
       )}
-
-      <Glow className="absolute right-0 bottom-0 w-1/5 h-40 overflow-hidden -z-10" />
     </div>
   );
 }

@@ -29,9 +29,12 @@ const CarsPage = () => {
     setProducts([]);
   }, [lang.lang_id]);
 
-  const { data: prductsList,isLoading } = trpc.event.getByCategoryId.useQuery(filters, {
-    refetchOnWindowFocus: false,
-  });
+  const { data: prductsList, isLoading } = trpc.event.getByCategoryId.useQuery(
+    filters,
+    {
+      refetchOnWindowFocus: false,
+    },
+  );
 
   useEffect(() => {
     if (filters.first > 0 && prductsList?.data?.length) {
@@ -48,8 +51,6 @@ const CarsPage = () => {
     }
   }
 
-
-
   return (
     <div className="mx-auto max-w-[1600px] w-full bg-background">
       {/* this div below ↓ it to add spacing to avoid header */}
@@ -62,7 +63,7 @@ const CarsPage = () => {
         CARS COMPETITION
       </p>
       <div className="relative h-full  px-10 pb-20 ">
-        <Glow className=" absolute  top-[760px] -left-16     w-1/5 h-[350px] overflow-hidden " />
+        <Glow className=" absolute  top-1/2 -left-16     w-1/5 h-[350px] overflow-hidden " />
 
         {/* <Glow className=" absolute   bottom-96 -right-16  w-1/5 h-[350px] overflow-x-hidden" /> */}
         <div className=" grid grid-cols-1 md:grid-cols-2 z-40 gap-4 lg:grid-cols-3  justify-between max-w-[1300px] mx-auto ">
