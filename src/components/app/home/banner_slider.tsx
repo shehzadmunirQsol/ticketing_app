@@ -1,7 +1,4 @@
-'use client';
 import React, { useEffect, useState } from 'react';
-
-import Slant from '../../../public/assets/slants.png';
 import Image from 'next/image';
 import { Button } from '~/components/ui/button';
 import { useSelector } from 'react-redux';
@@ -12,9 +9,7 @@ import Link from 'next/link';
 
 const BannerSlider = () => {
   const { lang } = useSelector((state: RootState) => state.layout);
-  const [select, setSelect] = useState(2);
-
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(1);
   const [carSlider, setCarSlider] = useState<Array<any>>([]);
   const [showElement, setShowElement] = useState(false);
 
@@ -27,17 +22,13 @@ const BannerSlider = () => {
     page: 0,
   };
 
-  const {
-    data: BannerApiData,
-    refetch: BannerRefetch,
-    isFetched,
-    isLoading,
-    isError,
-    isSuccess,
-  } = trpc.settings.get_banner.useQuery(initialOrderFilters, {
-    refetchOnWindowFocus: false,
-    // enabled: user?.id ? true : false,
-  });
+  const { data: BannerApiData, isSuccess } = trpc.settings.get_banner.useQuery(
+    initialOrderFilters,
+    {
+      refetchOnWindowFocus: false,
+      // enabled: user?.id ? true : false,
+    },
+  );
 
   useEffect(() => {
     if (BannerApiData?.data) {
@@ -65,7 +56,7 @@ const BannerSlider = () => {
 
   // useEffect for infinite loops
 
-  // 1.useEffect to change the current index
+  // // 1.useEffect to change the current index
   useEffect(() => {
     const interval = setInterval(() => {
       nextSlide();
@@ -98,25 +89,25 @@ const BannerSlider = () => {
 
   return (
     <div
-      className={`relative w-full slider-height transition-all ease-in-out overflow-hidden ${
+      className={`mdx:py-10 lg:py-20 transition-all ease-in-out ${
         lang.dir === 'ltr' ? 'banner_img' : 'banner_img_flip'
       }`}
     >
       {isSuccess && carSlider?.length ? (
         <>
-          <div className="banner-slide h-full">
+          <div className="banner-slide px-2 md:px-12 h-full">
             {/* text content */}
 
             <div
-              className={`banner-slide-text ${
+              className={` md:self-start md:flex-1  ${
                 showElement ? 'fading-animation' : ''
               } transition-all  duration-500 ease-in-out items-center text-white z-40`}
             >
-              <p className="px-4 text-2xl  sm:text-4xl md:text-5xl xl:text-[64px] font-[900] tracking-[-1px] ">
+              <p className="px-4 text-2xl  sm:text-4xl md:text-5xl lg:text-[calc(3vw+10px)] xl:text-[55px] font-[900] tracking-[-1px] ">
                 {carSlider[currentIndex]?.title}
               </p>
               {carSlider[currentIndex]?.price ? (
-                <p className="px-4 text-2xl sm:text-4xl md:text-5xl xl:text-[64px] tracking-[-2.56px] py-2 md:py-1 ">
+                <p className="px-4 text-2xl sm:text-4xl md:text-5xl lg:text-[calc(3vw+10px)] xl:text-[55px] tracking-[-2.56px] py-2 md:py-1 ">
                   + {carSlider[currentIndex]?.price}
                 </p>
               ) : (
@@ -139,25 +130,22 @@ const BannerSlider = () => {
             </div>
 
             {/* text select cards */}
-            <div
-              className={`banner-slide-image ${
-                showElement ? 'fading-animation' : ''
-              } transition-all    duration-500 ease-in-out sm:mb-4`}
-            >
-              <Image
-                className="object-contain object-bottom transform rtl:-scale-x-100 ltr:scale-100 ltr:right-6 rtl:left-4 md:ltr:-right-40 md:rtl:-left-16"
-                src={renderNFTImage(carSlider[currentIndex])}
-                alt="banner image"
-                // fill
-                quality={100}
-                width={750}
-                height={800}
-                // sizes="(max-width: 768px) 900px 500px, (max-width: 1200px) 700px 400px"
-              />
-            </div>
+            <Image
+              className={`w-10/12 lg:w-1/2 self-center object-contain object-bottom transform rtl:-scale-x-100 ltr:scale-100 ltr:right-6 rtl:left-4 md:ltr:-right-40 md:rtl:-left-16                
+                ${
+                  showElement ? 'fading-animation' : ''
+                } transition-all duration-500 ease-in-out items-end
+                
+                `}
+              src={renderNFTImage(carSlider[currentIndex])}
+              alt="banner image"
+              quality={100}
+              width={750}
+              height={800}
+            />
           </div>
           <div className="banner-bottom">
-            <div className="hidden z-30  items-end h-fit lg:flex justify-between gap-3 mx-auto sm:mx-0">
+            <div className="hidden z-30  items-end lg:flex justify-between gap-3 mx-auto sm:mx-0">
               {carSlider.map((item: any, i: number) => (
                 <div
                   key={i}
