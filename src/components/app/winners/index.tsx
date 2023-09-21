@@ -7,6 +7,7 @@ import { RootState } from '~/store/store';
 import WinnarsCard from '~/components/app/winners/winnars_card';
 import Glow from '~/components/common/glow';
 import { trpc } from '~/utils/trpc';
+import { LoadingDialog } from '~/components/common/modal/loadingModal';
 
 export const Winners = () => {
   const { lang } = useSelector((state: RootState) => state.layout);
@@ -17,7 +18,7 @@ export const Winners = () => {
     rows: 9,
   });
 
-  const { data: winnersList } = trpc.winner.get.useQuery(filters, {
+  const { data: winnersList, isLoading } = trpc.winner.get.useQuery(filters, {
     refetchOnWindowFocus: false,
   });
 
@@ -66,19 +67,8 @@ export const Winners = () => {
             })}
           </div>
         )}
-
-        {/* doudt should it load more on action or automatically */}
-        {/* {products.length != winnersList?.count ? (
-          <div className="w-fit mx-auto">
-            <div className="text-center my-4">
-              <p className="tracking-tight font-bold">Load More</p>
-              <i className="fas fa-arrow-down  text-teal-400 text-5xl my-2  "></i>
-            </div>
-          </div>
-        ) : (
-          ''
-        )} */}
       </div>
+      <LoadingDialog open={isLoading} text={'Loading...'} />
     </div>
   );
 };

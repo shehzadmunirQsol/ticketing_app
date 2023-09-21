@@ -110,7 +110,12 @@ export const loginCustomerSchemaInput = z.object({
 export type loginCustomerInput = z.TypeOf<typeof loginCustomerSchemaInput>;
 
 export const forgotPasswordCustomerSchema = z.object({
-  email: z.string().email(),
+  email: z
+    .string({
+      required_error: 'Please enter your email',
+      invalid_type_error: 'Please enter your email',
+    })
+    .email(),
 });
 export type forgotPasswordCustomerSchemaInput = z.TypeOf<
   typeof forgotPasswordCustomerSchema

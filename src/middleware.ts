@@ -26,7 +26,7 @@ export function middleware(request: NextRequest) {
     const token = getToken(storeRequestHeaders);
     if (request.nextUrl.pathname === '/login' && token)
       return NextResponse.redirect(new URL('/', request.url));
-    if (request.nextUrl.pathname === '/reset-password' && token)
+    if (request.nextUrl.pathname.includes('/reset-password') && token)
       return NextResponse.redirect(new URL('/', request.url));
     if (isProtectedRoutes && !token)
       return NextResponse.redirect(new URL('/login', request.url));

@@ -60,6 +60,8 @@ function Checkout() {
       first_name: user?.first_name,
       last_name: user?.last_name,
       code: '+971',
+      country: 'United Arab Emirates',
+      state: 'Abu Dhabi',
 
       dob: user?.dob,
       email: user?.email,
@@ -92,13 +94,16 @@ function Checkout() {
           user?.CustomerAddress[0]?.street_address ?? '',
         );
         form.setValue('city', user?.CustomerAddress[0]?.city ?? '');
-        form.setValue('country', user?.CustomerAddress[0]?.country ?? '');
+        form.setValue(
+          'country',
+          user?.CustomerAddress[0]?.country ?? 'United Arab Emirates',
+        );
         form.setValue('phone_number', user?.phone_number ?? '');
         form.setValue(
           'postal_code',
           user?.CustomerAddress[0]?.postal_code?.toString() ?? '',
         );
-        form.setValue('state', user?.CustomerAddress[0]?.state ?? '');
+        form.setValue('state', user?.CustomerAddress[0]?.state ?? 'Abu Dhabi');
       }
     }
   }, [user, cart]);
@@ -640,7 +645,6 @@ function Checkout() {
                   alt="Sunset in the mountains"
                 />
               </div>
-              <Glow className=" absolute bottom-[750px]  lg:bottom-[440px] md:bottom-[440px] -right-16  w-1/5 h-[350px] -z-2 opacity-50 " />
 
               <Button
                 disabled={checkoutCreator?.isLoading}
@@ -649,6 +653,7 @@ function Checkout() {
               >
                 PAY WITH CARD
               </Button>
+              <Glow className=" absolute bottom-4   -right-16  w-2/6 h-72 -z-2  " />
             </div>
           </div>
         </form>
