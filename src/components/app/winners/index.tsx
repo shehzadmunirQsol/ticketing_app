@@ -41,9 +41,9 @@ export const Winners = () => {
     <div>
       <div className="relative pt-24 "></div>
       <BannerTitle image={WinnarsBg} text={'winners'} />
-      <div className="h-full px-10 py-20">
-        <Glow className=" absolute  top-[560px] -left-16  p-2   w-1/5 h-[350px]" />
-        <Glow className=" absolute bottom-[750px]  lg:bottom-[440px] md:bottom-[440px] -right-16  w-1/5 h-[350px] -z-2 " />
+      <div className="relative h-full px-10 py-20">
+        <Glow className=" absolute  -top-10 -left-16  p-2   w-1/6 h-[150px]" />
+        <Glow className=" absolute -bottom-10 -right-16  w-1/6 h-[150px] -z-10 " />
         {products.length == 0 ? (
           <h2 className="py-20 md:py-40 lg:py-48 text-center text-2xl md:text-4xl lg:text-5xl font-black uppercase">
             No Winners Selected yet
