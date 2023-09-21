@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
 import { Button } from '@/ui/button';
 import {
@@ -97,7 +97,7 @@ export default function LoginSignup() {
       });
       dispatch(userAuth(response?.user));
 
-      router.back();
+      history.back();
     },
     onError: (err) => {
       console.log(err.message, 'err');
