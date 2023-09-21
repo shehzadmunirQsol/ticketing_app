@@ -103,7 +103,7 @@ function ProductCard(props: cardInterface) {
             </span>
           </div>
           <div className="relative w-full opacity-75  text-gray-200  text-md font-normal leading-normal ">
-            <p className="  h-14  ">
+            <p className="  h-12  overflow-hidden ">
               {customTruncate(
                 props?.data?.EventDescription[0]?.comp_details,
                 100,
