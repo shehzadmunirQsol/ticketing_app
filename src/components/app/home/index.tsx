@@ -1,4 +1,3 @@
-import React, { useRef } from 'react';
 import ProductSection from './product_section';
 import CategorySection from './product_category';
 import HowtoSection from './how_to_play';
@@ -6,15 +5,12 @@ import WhyChoose from './why_choose';
 import Testimonials from './testimonials';
 import BannerSlider from './banner_slider';
 import VideoSlider from './video_slider';
-import Glow from '~/components/common/glow';
 
 export default function Home() {
   return (
-    <div className=" flex flex-col min-h-screen w-full ">
+    <div className=" flex flex-col w-full ">
       {/* // <div className=""> */}
-      <div className="relative top-0">
-        <BannerSlider />
-      </div>
+      <BannerSlider />
 
       {/* product section 1 */}
       <div className="relative flex flex-col gap-4 md:gap-14  px-4 md:px-10  py-6 md:py-12  ">

@@ -31,45 +31,41 @@ export function isValidImageType(type: any) {
 }
 
 type EmailOptionsType = {
-  from:string;
-  to:string;
-  subject:string;
-  template_id:number;
-  params?:object;
-}
+  from: string;
+  to: string;
+  subject: string;
+  template_id: number;
+  params?: object;
+};
 
 export const sendEmail = async (mailOptions: EmailOptionsType) => {
   console.log(mailOptions, 'mailOptions');
-  try{
+  try {
     const options = {
-        method: 'POST',
-        headers: {
-          accept: 'application/json',
-          'content-type': 'application/json',
-          'api-key': process.env.BREVO_EMAIL_API_KEY as string
-        },
-        body: JSON.stringify({
-          sender: {name: 'Winnar', email: mailOptions.from},
-          to: [{email: mailOptions.to}],
-          subject: mailOptions.subject,
-          templateId: mailOptions.template_id,
-          params:{...mailOptions.params}
-          //   params: {FNAME: 'HASSAN', LNAME: 'SHAN'},
-        })
-      };
-    const res= await fetch('https://api.brevo.com/v3/smtp/email', options)
+      method: 'POST',
+      headers: {
+        accept: 'application/json',
+        'content-type': 'application/json',
+        'api-key': process.env.BREVO_EMAIL_API_KEY as string,
+      },
+      body: JSON.stringify({
+        sender: { name: 'Winnar', email: mailOptions.from },
+        to: [{ email: mailOptions.to }],
+        subject: mailOptions.subject,
+        templateId: mailOptions.template_id,
+        params: { ...mailOptions.params },
+        //   params: {FNAME: 'HASSAN', LNAME: 'SHAN'},
+      }),
+    };
+    const res = await fetch('https://api.brevo.com/v3/smtp/email', options);
 
-    if(!res.ok) {
-      console.log(res)
-      return console.log("email did not send")
+    if (!res.ok) {
+      console.log(res);
+      return console.log('email did not send');
     }
-
-  }catch(error){
-    console.log(error)
+  } catch (error) {
+    console.log(error);
   }
-
-
-
 };
 
 export async function compressImage(fileImage: File, fileType = 'image/webp') {
@@ -96,6 +92,9 @@ export async function compressImage(fileImage: File, fileType = 'image/webp') {
 export function customTruncateHandler(str = '', n = 15) {
   return str?.length > n ? str?.slice(0, n) + '...' : str;
 }
+export function customTruncate(str = '', n = 15) {
+  return str?.length > n ? str?.slice(0, n) + '' : str;
+}
 export function customEmailTruncateHandler(str = '', n = 15) {
   const myArray: any = str.split('@');
   return myArray[0]?.length > n
@@ -120,7 +119,7 @@ export function isValidEmail(email: any) {
 }
 
 export function createSlug(input: any) {
-  console.log(input,"frontinput")
+  console.log(input, 'frontinput');
   const lowercaseInput = input?.toLowerCase();
   const cleanedInput = lowercaseInput.replace(/[^\w\s-]/g, '');
   const slug = cleanedInput.replace(/\s+/g, '-');

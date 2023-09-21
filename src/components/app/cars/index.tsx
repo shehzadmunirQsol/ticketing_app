@@ -59,10 +59,10 @@ const CarsPage = () => {
       <div className="block slg:hidden">
         <BannerTitle image={CarsBg} text={'Cars'} />
       </div>
-      <p className="  text-2xl md:text-5xl sm:px-16 px-10 pt-10 sm:pt-10 pb-6     tracking-tighter font-extrabold text-white ">
-        CARS COMPETITION
-      </p>
       <div className="relative h-full  px-10 pb-20 ">
+        <p className="  text-2xl md:text-5xl sm:px-0 px-10 pt-10 sm:pt-10 pb-6     tracking-tighter font-extrabold text-white ">
+          CARS COMPETITION
+        </p>
         <Glow className=" absolute  top-1/2 -left-16     w-1/5 h-[350px] overflow-hidden " />
 
         {/* <Glow className=" absolute   bottom-96 -right-16  w-1/5 h-[350px] overflow-x-hidden" /> */}

@@ -4,7 +4,7 @@ import CarImage from '~/public/assets/card_image.png';
 import BottleImage from '~/public/assets/bottle.png';
 import { Progress } from '../ui/progress';
 import { Button } from '../ui/button';
-import { renderNFTImage } from '~/utils/helper';
+import { customTruncate, renderNFTImage } from '~/utils/helper';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
 import Link from 'next/link';
@@ -102,9 +102,12 @@ function ProductCard(props: cardInterface) {
               {props?.data?.EventDescription[0]?.name}
             </span>
           </div>
-          <div className="opacity-75 text-gray-200  text-md font-normal leading-normal line-clamp-1">
-            <p className="line-clamp-1">
-              {props?.data?.EventDescription[0]?.comp_details}
+          <div className="relative w-full opacity-75  text-gray-200  text-md font-normal leading-normal ">
+            <p className="  h-14  ">
+              {customTruncate(
+                props?.data?.EventDescription[0]?.comp_details,
+                100,
+              )}
             </p>
           </div>
           <hr className=" opacity-20 mt-4" />
@@ -117,7 +120,7 @@ function ProductCard(props: cardInterface) {
               AED {(props?.data?.cash_alt ?? 0)?.toFixed(2)}
             </span>
           </div>
-          <div className="flex  justify-between items-center mt-6 gap-4">
+          <div className="flex  justify-between items-center mt-8 gap-4">
             <div className="text-primary text-md xl:text-lg font-black leading-[18px]">
               AED {props?.data?.price?.toFixed(2)}
             </div>
