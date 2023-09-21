@@ -32,18 +32,14 @@ function VideoSlider(props: producctInterface) {
     page: 0,
   };
 
-  const {
-    data: videoData,
-    refetch: videoDataRefetch,
-    isFetched,
-    isLoading,
-    isError,
-    isSuccess,
-  } = trpc.settings.get_banner.useQuery(initialOrderFilters, {
-    refetchOnWindowFocus: false,
+  const { data: videoData } = trpc.settings.get_banner.useQuery(
+    initialOrderFilters,
+    {
+      refetchOnWindowFocus: false,
 
-    // enabled: user?.id ? true : false,
-  });
+      // enabled: user?.id ? true : false,
+    },
+  );
 
   useEffect(() => {
     if (videoData?.data) {
@@ -107,22 +103,27 @@ function VideoSlider(props: producctInterface) {
         breakpoint:
           props?.breakpointScreens && props?.breakpointScreens[2] !== undefined
             ? props?.breakpointScreens[2]
-            : 640,
+            : 600,
         settings: {
           slidesToShow:
             props?.breakpoint && props?.breakpoint[2] !== undefined
               ? props?.breakpoint[2]
               : 1,
           slidesToScroll: 1,
-          initialSlide: 0,
-          centerMode: false,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
         },
       },
     ],
   };
   return (
-    <div className=" relative max-w-[1600px] mx-auto  w-full ">
-      <div className="px-4  mt-4 md:mt-10 relative flex flex-col md:flex-row h-28 md:h-auto py-6  items-center w-full md:justify-between mb-6 ">
+    <div className=" relative  mx-auto  w-full ">
+      <div className="px-4  mt-4 md:mt-6 relative flex flex-col md:flex-row h-28 md:h-auto py-6 justify-center w-full md:justify-between mb-6 gap-4 items-center ">
         <div>
           <p className="text-gray-200 !text-xl sm:!text-3xl lg:!text-5xl font-black uppercase  ">
             {props?.title}
