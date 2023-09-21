@@ -59,12 +59,11 @@ const BannerSlider = ({ data }: any) => {
     return () => clearTimeout(animationTimeout);
   }, [currentIndex]);
 
-  let eventImages:any=[]
+  let eventImages: any = [];
 
-  if(data?.EventImages?.length){
-    eventImages = [ {thumb:data?.thumb}, ...data?.EventImages];
+  if (data?.EventImages?.length) {
+    eventImages = [{ thumb: data?.thumb }, ...data?.EventImages];
   }
-
 
   return (
     <div className="relative">
@@ -78,7 +77,7 @@ const BannerSlider = ({ data }: any) => {
           <i className="fa-solid fa-chevron-left"></i>
         </Button>
         <div className="relative h-[18rem] lg:h-[38rem]  w-full lg:px-6 md:px-6 ">
-          { data?.EventImages?.length ? (
+          {data?.EventImages?.length ? (
             <Image
               alt="feature"
               src={renderNFTImage(eventImages[currentIndex])}
@@ -95,13 +94,13 @@ const BannerSlider = ({ data }: any) => {
               className=" object-contain object-center h-full w-full "
             />
           )}
-        </div>
-        <div className="absolute lg:bottom-36 md:bottom-36 bottom-28  lg:right-10 md:right-10 right-4 rounded-full w-14 p-1 bg-gradient-to-b from-primary to-neutral-900">
-          <Image
-            className="w-14 h-12  lg:w-full lg:h-full object-cover  rounded-full bg-white"
-            src={BottleImage}
-            alt="Sunset in the mountains"
-          />
+          <div className="absolute bottom-0 md:bottom-16  lg:right-10 md:right-10 right-4 rounded-full w-14 p-1 bg-gradient-to-b from-primary to-neutral-900">
+            <Image
+              className="w-14 h-12  lg:w-full lg:h-full object-cover  rounded-full bg-white"
+              src={BottleImage}
+              alt="Sunset in the mountains"
+            />
+          </div>
         </div>
         <Button
           variant="rounded"
