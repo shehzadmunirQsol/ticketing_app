@@ -19,7 +19,7 @@ import { LoadingDialog } from '~/components/common/modal/loadingModal';
 export default function ResetPassword() {
   const { toast } = useToast();
   const router = useRouter();
-  const [userDetail, setUserDetail] = useState<any>({});
+  const [userDetail, setUserDetail] = useState<any>(null);
   const query = router.query;
 
   // Handle Reset Password
@@ -61,8 +61,8 @@ export default function ResetPassword() {
       });
     } else {
       const payload: any = {
-        email: userDetail.email as string,
-        otp: userDetail.verification_code as string,
+        email: userDetail && (userDetail.email as string),
+        otp: userDetail && (userDetail.verification_code as string),
         password: values.password,
         confirmPassword: values.confirmPassword,
       };
