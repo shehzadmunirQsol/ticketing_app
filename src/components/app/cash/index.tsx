@@ -8,6 +8,7 @@ import { RootState } from '~/store/store';
 import ProductCard from '~/components/common/card';
 import Glow from '~/components/common/glow';
 import { trpc } from '~/utils/trpc';
+import { LoadingDialog } from '~/components/common/modal/loadingModal';
 
 const CashPage = () => {
   const { lang } = useSelector((state: RootState) => state.layout);
@@ -23,7 +24,7 @@ const CashPage = () => {
   });
 
   useEffect(() => {
-    setFilters({ ...filters, lang_id: lang.lang_id, first:0 });
+    setFilters({ ...filters, lang_id: lang.lang_id, first: 0 });
     setProducts([]);
   }, [lang.lang_id]);
 
@@ -51,20 +52,13 @@ const CashPage = () => {
     }
   }
 
-  console.log({ prductsList }, 'prductsList');
-  console.log({ products }, 'products');
-  console.log({ filters }, 'filters');
-  console.log(products.length, prductsList?.count, 'check load more');
-
-
-  
   return (
     <>
       <div className="relative pt-24"></div>
       <BannerTitle image={CashBg} text={'Cash'} />
-      <div className="h-full  px-10 py-20">
-        <Glow className=" absolute  top-[560px] -right-16  p-2   w-1/5 h-[350px]  " />
-        <Glow className=" absolute  bottom-96 -right-16  w-1/5 h-[350px] " />
+      <div className="relative h-full  px-10 py-20">
+        <Glow className=" absolute  top-1/4 -right-16  p-2   w-1/6 h-[150px]  " />
+        <Glow className=" absolute  bottom-14 -right-16  w-1/6 h-[150px] " />
         <div className=" grid grid-cols-1 md:grid-cols-2  z-40   lg:grid-cols-3   justify-between max-w-[1300px] mx-auto ">
           {products?.map((itemList, i) => {
             return (
@@ -94,6 +88,7 @@ const CashPage = () => {
           ''
         )}
       </div>
+      <LoadingDialog open={isLoading} text={'Loading...'} />
     </>
   );
 };
