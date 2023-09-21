@@ -20,7 +20,6 @@ interface producctInterface {
   // slide: React.Ref<null>;
 }
 function ProductSection(props: producctInterface) {
-  console.log(props.breakpoint);
   const { lang } = useSelector((state: RootState) => state.layout);
   const [products, setProducts] = useState<Array<any>>([]);
 
@@ -117,12 +116,19 @@ function ProductSection(props: producctInterface) {
         breakpoint:
           props?.breakpointScreens && props?.breakpointScreens[2] !== undefined
             ? props?.breakpointScreens[2]
-            : 640,
+            : 600,
         settings: {
           slidesToShow:
             props?.breakpoint && props?.breakpoint[2] !== undefined
               ? props?.breakpoint[2]
               : 1,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
           slidesToScroll: 1,
         },
       },

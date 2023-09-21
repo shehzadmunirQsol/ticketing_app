@@ -8,7 +8,6 @@ import Frame11 from '~/public/assets/icons/Frame11.svg';
 import Frame12 from '~/public/assets/icons/Frame12.svg';
 import Frame13 from '~/public/assets/icons/Frame13.svg';
 
-
 // import LinesBehind from "~/public/assets/Lines_Text_Big.png"
 // import LinesBehind1 from "~/public/assets/Lines_Text_Big_2.png"
 
@@ -40,7 +39,7 @@ function HowtoSection() {
   ];
   return (
     <div className="w-full  mb-16 bg-primary relative">
-      <div className="relative top-0  max-w-[1600px] mx-auto    grid grid-cols-1 lg:grid-cols-2  p-4 md:p-14 ">
+      <div className="relative top-0  max-w-[1600px] mx-auto    grid grid-cols-1 lg:grid-cols-2 gap-4  p-4 md:p-14 ">
         <div className=" my-auto   w-full ">
           <p className="mr-auto  py-4 md:py-0 text-left !w-full md:!max-w-[460px] text-black font-[1000] tracking-[-4px] !text-6xl   md:!text-6xl lg:!text-8xl   uppercase">
             HOW TO PLAY?

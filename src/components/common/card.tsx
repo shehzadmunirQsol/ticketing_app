@@ -43,7 +43,7 @@ function ProductCard(props: cardInterface) {
     props?.data && (
       <div
         dir={props?.dir}
-        className={`rounded-sm shadow-lg bg-card ${props?.class}`}
+        className={`rounded-sm shadow-lg bg-card ${props?.class} mr-4`}
         ref={cardRef}
       >
         <div className="relative ">
@@ -103,7 +103,7 @@ function ProductCard(props: cardInterface) {
             </span>
           </div>
           <div className="relative w-full opacity-75  text-gray-200  text-md font-normal leading-normal ">
-            <p className="  h-14  ">
+            <p className="  h-12  overflow-hidden ">
               {customTruncate(
                 props?.data?.EventDescription[0]?.comp_details,
                 100,

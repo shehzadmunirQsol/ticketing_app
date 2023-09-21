@@ -7,7 +7,7 @@ import { trpc } from '~/utils/trpc';
 import { renderNFTImage } from '~/utils/helper';
 import Link from 'next/link';
 
-const BannerSlider = () => {
+function BannerSlider() {
   const { lang } = useSelector((state: RootState) => state.layout);
   const [currentIndex, setCurrentIndex] = useState(1);
   const [carSlider, setCarSlider] = useState<Array<any>>([]);
@@ -178,6 +178,6 @@ const BannerSlider = () => {
       )}
     </div>
   );
-};
+}
 
 export default BannerSlider;
