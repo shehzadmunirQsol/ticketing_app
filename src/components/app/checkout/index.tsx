@@ -91,7 +91,7 @@ function Checkout() {
         );
         form.setValue(
           'street_address',
-          user?.CustomerAddress[0]?.street_address ?? '',
+          user?.CustomerAddress[0]?.street_address_1 ?? '',
         );
         form.setValue('city', user?.CustomerAddress[0]?.city ?? '');
         form.setValue(
