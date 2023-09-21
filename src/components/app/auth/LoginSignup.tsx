@@ -97,7 +97,7 @@ export default function LoginSignup() {
       });
       dispatch(userAuth(response?.user));
 
-      history.back();
+      router.back();
     },
     onError: (err) => {
       console.log(err.message, 'err');

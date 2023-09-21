@@ -28,6 +28,8 @@ export default function ResetPassword() {
     if (router.query) {
       setUserDetail({ ...router.query });
       router.replace('/reset-password');
+    } else {
+      router.push('/');
     }
   }, []);
 
