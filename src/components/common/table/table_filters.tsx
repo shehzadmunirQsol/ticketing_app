@@ -179,7 +179,7 @@ export function TableFilters(props: SettingDialogInterface) {
               <ScrollBar orientation="vertical"></ScrollBar>
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)}>
-                  <SheetDescription className="pt-10">
+                  <SheetDescription className="pt-10 pr-2">
                     <div className=" grid grid-cols-1    items-center p-2">
                       {props?.inputList.map((item: any, i: number) => {
                         if (item?.type == 'text') {

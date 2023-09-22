@@ -82,6 +82,7 @@ specifiers:
   react-day-picker: ^8.8.1
   react-dom: ^18.2.0
   react-draft-wysiwyg: ^1.15.0
+  react-google-recaptcha: ^3.1.0
   react-hook-form: ^7.45.4
   react-hot-toast: ^2.4.1
   react-redux: ^8.0.5
@@ -168,6 +169,7 @@ dependencies:
   react-day-picker: 8.8.1_kzhlcyde2l6xjiirkbg7jzhosa
   react-dom: 18.2.0_react@18.2.0
   react-draft-wysiwyg: 1.15.0_u2uddnr2lenfwn7luyp53wziye
+  react-google-recaptcha: 3.1.0_react@18.2.0
   react-hook-form: 7.45.4_react@18.2.0
   react-hot-toast: 2.4.1_biqbaboplfbrettd7655fr4n2y
   react-redux: 8.0.5_2zx2umvpluuhvlq44va5bta2da
@@ -11950,6 +11952,16 @@ packages:
       - react-dom
     dev: false
 
+  /react-async-script/1.2.0_react@18.2.0:
+    resolution: {integrity: sha512-bCpkbm9JiAuMGhkqoAiC0lLkb40DJ0HOEJIku+9JDjxX3Rcs+ztEOG13wbrOskt3n2DTrjshhaQ/iay+SnGg5Q==}
+    peerDependencies:
+      react: '>=16.4.1'
+    dependencies:
+      hoist-non-react-statics: 3.3.2
+      prop-types: 15.8.1
+      react: 18.2.0
+    dev: false
+
   /react-ckeditor-component/1.1.0:
     resolution: {integrity: sha512-dcptPsMKRDGvAGxokwdVDKPgZbTgwngknaQVD+SDTV6XSw57J6LD7cRaqEo6WGLwMZh39Up37fdJjugNd6vEAA==}
     dependencies:
@@ -12055,6 +12067,16 @@ packages:
 
   /react-error-overlay/3.0.0:
     resolution: {integrity: sha512-XzgvowFrwDo6TWcpJ/WTiarb9UI6lhA4PMzS7n1joK3sHfBBBOQHUc0U4u57D6DWO9vHv6lVSWx2Q/Ymfyv4hw==}
+    dev: false
+
+  /react-google-recaptcha/3.1.0_react@18.2.0:
+    resolution: {integrity: sha512-cYW2/DWas8nEKZGD7SCu9BSuVz8iOcOLHChHyi7upUuVhkpkhYG/6N3KDiTQ3XAiZ2UAZkfvYKMfAHOzBOcGEg==}
+    peerDependencies:
+      react: '>=16.4.1'
+    dependencies:
+      prop-types: 15.8.1
+      react: 18.2.0
+      react-async-script: 1.2.0_react@18.2.0
     dev: false
 
   /react-hook-form/7.45.4_react@18.2.0:

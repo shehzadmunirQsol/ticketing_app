@@ -14,7 +14,18 @@ export const signupCustomerSchema = z.object({
       required_error: 'Please enter your email',
       invalid_type_error: 'Please enter your email',
     })
-    .email(),
+    .email({
+      message: 'Please use a valid email ',
+    })
+    .refine(
+      (val) =>
+        val.includes('*')
+          ? false
+          : true,
+      {
+        message: 'Please use a valid email ',
+      },
+    ),
   password: z
     .string({ required_error: 'Please enter your password' })
     .min(6, {
@@ -80,7 +91,8 @@ export const getCustomerSchema = z.object({
 export const updateCustomerSchema = z.object({
   id: z.number(),
   is_approved: z.boolean().optional(),
-  is_deleted: z.boolean().optional(),
+  is_disabled: z.boolean().optional(),
+  is_deleted: z.boolean().optional(),  
 });
 export type getCustomerSchema = z.TypeOf<typeof getCustomerSchema>;
 
