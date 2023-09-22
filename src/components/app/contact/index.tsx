@@ -17,6 +17,8 @@ import {
   SelectGroup,
   SelectValue,
 } from '@/ui/select';
+import ReCAPTCHA from 'react-google-recaptcha';
+
 import { Textarea } from '~/components/ui/textarea';
 import { Input } from '@/ui/input';
 import { useForm } from 'react-hook-form';
@@ -79,23 +81,23 @@ export default function Contact() {
 
   return (
     <section className="body-font  ">
-      <div className="px-5 mb-10 sm:mb-20 pt-16 pb-10 lg:pb-0 md:pb-0 lg:py-24 md:py-24 mx-auto flex flex-col-reverse lg:flex-row md:flex-row gap-14 mt-6 max-w-[1300px]">
-        <div className="lg:w-2/3 md:w-2/3 w-full h-full mb-5 lg:mb-0 rounded-lg hidden  lg:block  ">
+      <div className="px-5 mb-10 sm:mb-20 pt-16 pb-10 lg:pb-0 md:pb-0 lg:py-24 md:py-24 mx-auto flex flex-col-reverse lg:flex-row md:flex-row gap-8 mt-6 max-w-[1300px]">
+        <div className="lg:w-2/5 w-full h-full mb-5 lg:mb-0 rounded-lg hidden  lg:block  ">
           <SideImage
             image={ContactImage}
             text={'Connect with Us for '}
             text2={'Support, Questions'}
           />
         </div>
-        <div className="flex flex-col flex-wrap   lg:w-2/3 md:w-full  lg:text-left  rounded-none border-none  lg:mr-6 bg-card">
+        <div className="flex flex-col flex-wrap   lg:w-3/5 md:w-full  lg:text-left  rounded-none border-none  lg:mr-6 bg-card">
           <div className="font-black  py-4 ">
-            <p className="text-xl pl-6">Contact Us</p>
+            <p className="text-xl pl-6 px-4 lg:px-8">Contact Us</p>
             <hr className=" opacity-20 mt-4" />
           </div>
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmitContact)}
-              className="justify-center items-center px-2 lg:px-8 py-4 space-y-4"
+              className="justify-center items-center px-4 lg:px-8  space-y-4"
             >
               <div className="w-full">
                 <FormField
@@ -103,7 +105,7 @@ export default function Contact() {
                   name="name"
 
                   render={({ field }) => (
-                    <FormItem className="mb-6 lg:mb-10 md:mb-10">
+                    <FormItem className="mb-4 ">
                       <FormLabel className="text-xs font-thin  text-grayColor">
                         Your Name*
                       </FormLabel>
@@ -125,7 +127,7 @@ export default function Contact() {
                   control={form.control}
                   name="email"
                   render={({ field }) => (
-                    <FormItem className="mb-6 lg:mb-10 md:mb-10">
+                    <FormItem className="mb-6 ">
                       <FormLabel className="text-xs  font-thin text-grayColor">
                         Email Address*
                       </FormLabel>
@@ -145,7 +147,7 @@ export default function Contact() {
                 />
 
                 <div className=" w-full ">
-                  <p className="text-xs font-thin text-grayColor  mb-3 ">
+                  <p className="text-xs font-thin text-grayColor  mb-2 ">
                     Phone Number
                   </p>
                   <div className="flex flex-row gap-2 ">
@@ -187,7 +189,7 @@ export default function Contact() {
                       control={form.control}
                       name="number"
                       render={({ field }) => (
-                        <FormItem className=" w-full mb-8">
+                        <FormItem className=" w-full mb-4">
                           <FormControl className="rounded-md bg-inputColor">
                             <Input
                               type="number"
@@ -211,7 +213,7 @@ export default function Contact() {
                   control={form.control}
                   name="message"
                   render={({ field }) => (
-                    <FormItem className="mb-6 lg:mb-10 md:mb-10">
+                    <FormItem className="mb-4 ">
                       <FormLabel className="text-xs  font-thin text-grayColor">
                         Message*
                       </FormLabel>
@@ -229,12 +231,18 @@ export default function Contact() {
                   )}
                 />
               </div>
-              <div className="flex flex-col lg:flex-row md:flex-row justify-between items-center gap-6 mt-56">
-                <p className="text-lightColor font-extralight text-xs w-full lg:w-96  md:w-96">
-                  Your personal data will be used to process your order, support
-                  your experience throughout this website, and for other
-                  purposes described in our <span> <Link href="/privacy-policy"> privacy policy </Link></span>.
-                </p>
+              <div className="flex flex-col lg:flex-row md:flex-row justify-between items-center gap-6 ">
+
+                {/* <div className='overflow-hidden max-w-[295px] max-h-[70px] rounded-md'>
+                  <ReCAPTCHA
+                    // ref={recaptchaRef}
+                    size="normal"
+                    badge="inline"
+                    theme="dark"
+                    sitekey={process.env.NEXT_PUBLIC_SITE_KEY}
+                  // onChange={showResponse}
+                  />
+                </div> */}
                 <Button
                   className="  lg:w-52 md:w-52 w-full     text-black font-sans font-[900]   text-xl tracking-[-1px]"
                   variant="clip"
