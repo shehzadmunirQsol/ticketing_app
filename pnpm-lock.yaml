@@ -35,6 +35,7 @@ specifiers:
   '@trpc/server': ^10.17.0
   '@types/bcrypt': ^5.0.0
   '@types/cookie': ^0.5.1
+  '@types/jquery': ^3.5.19
   '@types/jsonwebtoken': ^9.0.2
   '@types/node': ^18.7.20
   '@types/nodemailer': ^6.4.9
@@ -61,6 +62,7 @@ specifiers:
   eslint-plugin-react-hooks: ^4.6.0
   html-react-parser: ^4.2.2
   https: ^1.0.0
+  jquery: ^3.7.1
   jsonwebtoken: ^9.0.1
   lucide-react: ^0.127.0
   navigation-menu: ^1.0.0
@@ -150,6 +152,7 @@ dependencies:
   draft-js: 0.11.7_biqbaboplfbrettd7655fr4n2y
   html-react-parser: 4.2.2_react@18.2.0
   https: 1.0.0
+  jquery: 3.7.1
   jsonwebtoken: 9.0.1
   lucide-react: 0.127.0_react@18.2.0
   navigation-menu: 1.0.0_jhaguxqfxx2v4alxps2nzei754
@@ -169,14 +172,14 @@ dependencies:
   react-hot-toast: 2.4.1_biqbaboplfbrettd7655fr4n2y
   react-redux: 8.0.5_2zx2umvpluuhvlq44va5bta2da
   react-slick: 0.29.0_biqbaboplfbrettd7655fr4n2y
-  react-summernote: 2.0.2_biqbaboplfbrettd7655fr4n2y
+  react-summernote: 2.0.2_b2n7dceyjx62tehd6yl3udyazy
   react-youtube: 10.1.0_react@18.2.0
   recharts: 2.8.0_biqbaboplfbrettd7655fr4n2y
   select: 1.1.2
   shadcn-ui: 0.3.0
   sib-api-v3-sdk: 8.5.0
   sib-api-v3-typescript: 2.2.2
-  slick-carousel: 1.8.1
+  slick-carousel: 1.8.1_jquery@3.7.1
   superjson: 1.11.0
   tailwind-merge: 1.10.0
   tailwindcss-animate: 1.0.5_tailwindcss@3.2.7
@@ -184,6 +187,7 @@ dependencies:
 
 devDependencies:
   '@playwright/test': 1.28.1
+  '@types/jquery': 3.5.19
   '@types/node': 18.7.20
   '@types/nodemailer': 6.4.9
   '@types/react': 18.0.25
@@ -2385,6 +2389,12 @@ packages:
       hoist-non-react-statics: 3.3.2
     dev: false
 
+  /@types/jquery/3.5.19:
+    resolution: {integrity: sha512-KFbmk+dXfphHGuVCmlopgcNRCegN/21mkeoD4BzuJhVH0SJW3Uo2mLuAwb6oqTNV79EsRp6J7yC1BbKymjpx/g==}
+    dependencies:
+      '@types/sizzle': 2.3.3
+    dev: true
+
   /@types/json-schema/7.0.11:
     resolution: {integrity: sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ==}
     dev: true
@@ -2451,6 +2461,10 @@ packages:
 
   /@types/semver/7.3.13:
     resolution: {integrity: sha512-21cFJr9z3g5dW8B0CVI9g2O9beqaThGQ6ZFBqHfwhzLDKUxaqTIy3vnfah/UPkfOiF2pLq+tGz+W8RyCskuslw==}
+    dev: true
+
+  /@types/sizzle/2.3.3:
+    resolution: {integrity: sha512-JYM8x9EGF163bEyhdJBpR2QX1R5naCJHC8ucJylJ3w9/CVBaskdQ8WqBf8MmQrd1kRvp/a4TS8HJ+bxzR7ZJYQ==}
     dev: true
 
   /@types/use-sync-external-store/0.0.3:
@@ -9243,6 +9257,10 @@ packages:
       '@sideway/pinpoint': 2.0.0
     dev: true
 
+  /jquery/3.7.1:
+    resolution: {integrity: sha512-m4avr8yL8kmFN8psrbFFFmB/If14iN5o9nw/NgnnM+kybDJpRsAynV2BsfpTYrTRysYUdADVD7CkUUizgkpLfg==}
+    dev: false
+
   /js-base64/2.6.4:
     resolution: {integrity: sha512-pZe//GGmwJndub7ZghVHz7vjb2LgC1m8B07Au3eYqeqv9emhESByMXxaEgkUkEqJe87oBbSniGYoQNIBklc7IQ==}
     dev: false
@@ -12284,7 +12302,7 @@ packages:
       tslib: 2.4.1
     dev: false
 
-  /react-summernote/2.0.2_biqbaboplfbrettd7655fr4n2y:
+  /react-summernote/2.0.2_b2n7dceyjx62tehd6yl3udyazy:
     resolution: {integrity: sha512-wVceqtDtz7PaPN7Agh2I22TZY+H0FZpjZuNDQB+Rpx0zSZeeYIBcltI6//XY6vDmOy4AOHpltEBFbYHMyo+Ibw==}
     peerDependencies:
       bootstrap: ^3.3.6
@@ -12293,6 +12311,7 @@ packages:
       react-dom: '*'
     dependencies:
       codemirror: 5.65.15
+      jquery: 3.7.1
       prop-types: 15.8.1
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
@@ -13235,10 +13254,12 @@ packages:
       is-fullwidth-code-point: 4.0.0
     dev: true
 
-  /slick-carousel/1.8.1:
+  /slick-carousel/1.8.1_jquery@3.7.1:
     resolution: {integrity: sha512-XB9Ftrf2EEKfzoQXt3Nitrt/IPbT+f1fgqBdoxO3W/+JYvtEOW6EgxnWfr9GH6nmULv7Y2tPmEX3koxThVmebA==}
     peerDependencies:
       jquery: '>=1.8.0'
+    dependencies:
+      jquery: 3.7.1
     dev: false
 
   /smart-buffer/4.2.0:

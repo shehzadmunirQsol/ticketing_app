@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { Button } from '~/components/ui/button';
-import { redirect } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import jqeury from 'jquery';
+
 import {
   Dialog,
   DialogContent,
@@ -46,102 +46,28 @@ export function CheckoutDialog(props: SettingDialogInterface) {
 
   const { toast } = useToast();
   const [loading, setLoading] = useState<boolean>(false);
-  const formSchema = false ? createPaymentSchema : createFormPaymentSchema;
-  console.log({ formSchema });
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(
-      // user?.total_customer_id ? createPaymentSchema : createFormPaymentSchema,
-      false ? createPaymentSchema : createFormPaymentSchema,
-    ),
-  });
+  const [modelState, setModelState] = useState<boolean>(false);
 
-  const orderCreater = trpc.order.checkout.useMutation({
-    onSuccess: () => {
-      console.log('upload successfully');
-    },
-    onError(error: any) {
-      console.log({ error });
-    },
-  });
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    try {
-      setLoading(true);
-      console.log(values, 'onSubmit');
-      let payload: any = {
-        // registrationId: user?.total_customer_id,
-        customer_id: user?.id,
-        values: {
-          ...props?.selectedItem,
-          cart_id:
-            props?.selectedItem?.cart_id > 0
-              ? props?.selectedItem?.cart_id
-              : cart?.id,
-          customer_id:
-            props?.selectedItem?.customer_id > 0
-              ? props?.selectedItem?.customer_id
-              : user?.id,
-        },
-      };
-      if (true) {
-        payload = {
-          ...values,
-          // registrationId: user?.total_customer_id,
-          customer_id: user?.id,
-          values: {
-            ...props?.selectedItem,
-            cart_id:
-              props?.selectedItem?.cart_id > 0
-                ? props?.selectedItem?.cart_id
-                : cart?.id,
-            customer_id:
-              props?.selectedItem?.customer_id > 0
-                ? props?.selectedItem?.customer_id
-                : user?.id,
-          },
-        };
-      }
-      const data = await orderCreater.mutateAsync({
-        ...payload,
-      });
-      if (data) {
-        toast({
-          variant: 'success',
-          title: 'Order Successful! 🎉',
-        });
-        dispatch(
-          addCart({
-            id: null,
-            customer_id: null,
-            isDiscount: false,
-            discount: 0,
-            isPercentage: false,
-            cartItems: [],
-          }),
-        );
-        setLoading(false);
-
-        window.location.href = '/';
-        window.location.reload();
-      }
-    } catch (e: any) {
-      setLoading(false);
-
-      toast({
-        variant: 'destructive',
-        title: e?.message,
-      });
-    }
+  const wpwlOptions = {
+    registrations: { requireCvv: true, hideInitialPaymentForms: true },
   };
+  useEffect(() => {
+    function addCustomElement() {
+      // Create the HTML elements
+      console.log(
+        jqeury('form.wpwl-form-card').find('.wpwl-button'),
+        'data should be loaded',
+      );
+      const createRegistrationHtml =
+        '<div class="customLabel">Store payment details?</div><div class="customInput"><input type="checkbox" name="createRegistration" value="true" /></div>';
+      jqeury('form.wpwl-form-card')
+        .find('.wpwl-button')
+        .before(createRegistrationHtml);
+    }
 
-  function formatCardNum(v: any) {
-    form.setValue(
-      'card.number',
-      v
-        .replace(/\s/g, '')
-        .replace(/(\d{4})/g, '$1 ')
-        .trim() as string,
-    );
-  }
+    // Delay the execution of addCustomElement by 1000 milliseconds (1 second)
+    setTimeout(addCustomElement, 15000);
+  }, []);
   return (
     <>
       <Dialog open={props?.isModal} onOpenChange={(e) => props.setIsModal(e)}>
@@ -150,6 +76,17 @@ export function CheckoutDialog(props: SettingDialogInterface) {
             src={`https://eu-test.oppwa.com/v1/paymentWidgets.js?checkoutId=${props?.selectedItem?.checkoutID}`}
             onReady={() => {
               console.log('Script has loaded');
+              const wpwlOptions = {
+                registrations: {
+                  requireCvv: true,
+                  hideInitialPaymentForms: true,
+                },
+              };
+              const createRegistrationHtml =
+                '<div class="customLabel">Store payment details?</div><div class="customInput"><input type="checkbox" name="createRegistration" value="true" /></div>';
+              jqeury('form.wpwl-form-card')
+                .find('.wpwl-button')
+                .before(createRegistrationHtml);
             }}
           ></Script>
           <form
