@@ -91,7 +91,8 @@ export const getCustomerSchema = z.object({
 export const updateCustomerSchema = z.object({
   id: z.number(),
   is_approved: z.boolean().optional(),
-  is_deleted: z.boolean().optional(),
+  is_disabled: z.boolean().optional(),
+  is_deleted: z.boolean().optional(),  
 });
 export type getCustomerSchema = z.TypeOf<typeof getCustomerSchema>;
 

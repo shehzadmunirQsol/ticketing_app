@@ -38,8 +38,8 @@ export const customerRouter = router({
 
     const user = await prisma.customer.findUnique({
       where: { id: userData.id },
-      include:{
-        CustomerAddress:true
+      include: {
+        CustomerAddress: true
       }
     });
 
@@ -56,29 +56,13 @@ export const customerRouter = router({
   update: publicProcedure
     .input(updateCustomerSchema)
     .mutation(async ({ input }) => {
-      // const payload = [...input];
-      const payload: any = { ...input };
-      if (input?.id) delete payload?.id;
+      const { id, ...payload } = input ;
+
       const customer = await prisma.customer.update({
-        where: {
-          id: input?.id,
-        },
-        data: { ...payload },
+        where: { id },
+        data: payload,
       });
 
-      if (input.is_approved) {
-        const mailOptions = {
-          template_id: 10,
-          from: 'no-reply@winnar.com',
-          subject: 'Thank you for sigining up for Winnar',
-          to: customer.email,
-          params: {
-            first_name: customer?.first_name,
-          },
-        };
-
-        const mailResponse = await sendEmail(mailOptions);
-      }
       return customer;
     }),
 
@@ -229,7 +213,22 @@ export const customerRouter = router({
               first_name: input?.firstname,
             },
           };
+
+
+          const resgistranMailOptions = {
+            template_id: 10,
+            from: 'no-reply@winnar.com',
+            subject: 'Thank you for sigining up for Winnar',
+            to: customer.email,
+            params: {
+              first_name: customer?.first_name,
+            },
+          };
+
+
           const mailResponse = await sendEmail(mailOptions);
+          const resgistranMailResponse = await sendEmail(resgistranMailOptions);
+
           return customer;
         }
       } catch (error: any) {
@@ -342,8 +341,8 @@ export const customerRouter = router({
         }
 
         const respCode = await generateOTP(4);
-        let res=encodeURIComponent(respCode)
-        let email=encodeURIComponent(user.email)
+        let res = encodeURIComponent(respCode)
+        let email = encodeURIComponent(user.email)
         //  email
         const mailOptions = {
           template_id: 5,
@@ -433,7 +432,7 @@ export const customerRouter = router({
       }
     }),
 
-    verificationOtpCustomer: publicProcedure
+  verificationOtpCustomer: publicProcedure
     .input(verificationOtpCustomerSchema)
     .mutation(async ({ ctx, input }) => {
       try {
@@ -724,7 +723,7 @@ export const customerRouter = router({
     .input(deleteMyAccountCustomerSchema)
     .mutation(async ({ ctx, input }) => {
       try {
-        console.log(input, 'HSJGHSGHSJGSH');
+
         const user: any = await prisma.customer.findFirst({
           where: { email: input.email },
         });

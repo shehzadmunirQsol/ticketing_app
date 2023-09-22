@@ -23,12 +23,12 @@ interface SettingDialogInterface {
   refetch: any;
   type: string;
   setType: any;
+  paragraph: string;
 }
 export function CustomerDialog(props: SettingDialogInterface) {
   const { toast } = useToast();
-  const [loading, setLoading] = useState<boolean>(false);
 
-  const bannerUpdate: any = trpc.customer.update.useMutation({
+  const customerUpdate = trpc.customer.update.useMutation({
     onSuccess: () => {
       console.log('upload successfully');
 
@@ -40,38 +40,36 @@ export function CustomerDialog(props: SettingDialogInterface) {
 
   const handleClick = async () => {
     try {
-      setLoading(true);
-      const payload: any = {
+      type Payload = {
+        id: number;
+        is_deleted?: boolean;
+        is_disabled?: boolean;
+      }
+
+      const payload: Payload = {
         id: props?.selectedItem?.id,
       };
-      if (props?.type == 'enabled')
-        payload.is_approved = !props?.selectedItem?.is_approved;
       if (props?.type == 'delete')
         payload.is_deleted = !props?.selectedItem?.is_deleted;
+      if (props?.type == 'disable')
+        payload.is_disabled = false;
+
       // let data: any;
-      const data = await bannerUpdate.mutateAsync({ ...payload });
-     
+      await customerUpdate.mutateAsync(payload);
 
-      if (data) {
-        setLoading(false);
+      toast({
+        variant: 'success',
+        title: `${props?.title} ${props?.type === 'enabled'
+          ? props?.selectedItem?.is_approved
+            ? 'Disabled'
+            : 'Approved'
+          : props?.type === 'disable' ? "Enabled" : 'Deleted'
+          } Successfully`,
+      });
 
-        props.setIsModal(false);
-
-        toast({
-          variant: 'success',
-          title: `${props?.title} ${props?.type === 'enabled'
-            ? props?.selectedItem?.is_approved
-              ? 'disabled'
-              : 'Approved'
-            : 'deleted'
-            } Successfully`,
-        });
-        props?.refetch();
-      } else {
-        throw new Error('Data update Error');
-      }
+      props.setIsModal(false);
+      props?.refetch();
     } catch (e: any) {
-      setLoading(false);
 
       props.setIsModal(false);
       toast({
@@ -89,8 +87,7 @@ export function CustomerDialog(props: SettingDialogInterface) {
             <DialogDescription>
               <div className="flex flex-col gap-4 mt-4">
                 <div className="  flex gap-2 items-center p-2  ">
-                  Note: By Saving this information customer can perform actions
-                  such as (login and order).
+                  {props?.paragraph}
                 </div>
               </div>
             </DialogDescription>
@@ -103,7 +100,7 @@ export function CustomerDialog(props: SettingDialogInterface) {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      <LoadingDialog open={loading} text={'Saving data...'} />
+      <LoadingDialog open={customerUpdate.isLoading} text={'Saving data...'} />
     </>
   );
 }
