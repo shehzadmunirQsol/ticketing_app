@@ -59,11 +59,7 @@ export function CustomerDialog(props: SettingDialogInterface) {
 
       toast({
         variant: 'success',
-        title: `${props?.title} ${props?.type === 'enabled'
-          ? props?.selectedItem?.is_approved
-            ? 'Disabled'
-            : 'Approved'
-          : props?.type === 'disable' ? "Enabled" : 'Deleted'
+        title: `${props?.title} ${props?.type === 'enable' ? "Enabled" : 'Deleted'
           } Successfully`,
       });
 
@@ -83,17 +79,20 @@ export function CustomerDialog(props: SettingDialogInterface) {
       <Dialog open={props?.isModal} onOpenChange={(e) => props.setIsModal(e)}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>{props?.title}</DialogTitle>
+            <DialogTitle className='capitalize'>{`${props?.type} ${props?.title}`}</DialogTitle>
             <DialogDescription>
-              <div className="flex flex-col gap-4 mt-4">
-                <div className="  flex gap-2 items-center p-2  ">
+              <div className="flex flex-col gap-4  ">
+                <div className="  flex  items-center py-2  ">
                   {props?.paragraph}
                 </div>
               </div>
             </DialogDescription>
           </DialogHeader>
-          <div className=" py-2"></div>
+
           <DialogFooter>
+            <Button type="button" onClick={() => props.setIsModal(false)} variant={"secondary"}>
+              Cancel
+            </Button>
             <Button type="submit" onClick={() => handleClick()}>
               Save changes
             </Button>

@@ -117,7 +117,7 @@ export default function CustomersDataTable() {
   const deleteUser = (data: any, type: string) => {
     setSelectedItem(data);
     setTitle('Customer');
-    { type == 'delete' ? setPara("Are you sure you want to Delete this user?") : type == "disable" ? setPara("Are you sure you want to Enable this user?") : setPara("") }
+    { type == 'delete' ? setPara("Are you sure you want to Delete this customer?") : type == "enable" ? setPara("Are you sure you want to Enable this customer?") : setPara("") }
     setType(type);
     setIsModal(true);
 
@@ -263,8 +263,8 @@ export default function CustomersDataTable() {
 
               {row?.original?.is_disabled ? (
                 <>
-                  <DropdownMenuItem onClick={() => deleteUser(row?.original, "delete")}>Delete User</DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => deleteUser(row?.original, "disable")}>Enable User</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => deleteUser(row?.original, "delete")}>Delete Customer</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => deleteUser(row?.original, "enable")}>Enable Customer</DropdownMenuItem>
                 </>
               ) : (
                 <>
