@@ -66,7 +66,7 @@ export function CheckoutDialog(props: SettingDialogInterface) {
     }
 
     // Delay the execution of addCustomElement by 1000 milliseconds (1 second)
-    setTimeout(addCustomElement, 20000);
+    setTimeout(addCustomElement, 10000);
   }, []);
   return (
     <>
