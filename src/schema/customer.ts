@@ -14,7 +14,18 @@ export const signupCustomerSchema = z.object({
       required_error: 'Please enter your email',
       invalid_type_error: 'Please enter your email',
     })
-    .email(),
+    .email({
+      message: 'Please use a valid email ',
+    })
+    .refine(
+      (val) =>
+        val.includes('*')
+          ? false
+          : true,
+      {
+        message: 'Please use a valid email ',
+      },
+    ),
   password: z
     .string({ required_error: 'Please enter your password' })
     .min(6, {
@@ -80,7 +91,8 @@ export const getCustomerSchema = z.object({
 export const updateCustomerSchema = z.object({
   id: z.number(),
   is_approved: z.boolean().optional(),
-  is_deleted: z.boolean().optional(),
+  is_disabled: z.boolean().optional(),
+  is_deleted: z.boolean().optional(),  
 });
 export type getCustomerSchema = z.TypeOf<typeof getCustomerSchema>;
 
@@ -146,11 +158,26 @@ export const resendOtpCustomerSchema = z.object({
 export const addCustomerAddress = z.object({
   id: z.number().optional(),
   customer_id: z.number(),
-  street_address_1: z.string().optional(),
-  city: z.string().optional(),
-  country: z.string().optional(),
-  phone_number: z.string().optional(),
-  postal_code: z.number().optional(),
+  street_address_1: z.string({
+    required_error: 'Please enter your street address',
+    invalid_type_error: 'Please enter your street address',
+  }),
+  city: z.string({
+    required_error: 'Please enter your city',
+    invalid_type_error: 'Please enter your city',
+  }),
+  country: z.string({
+    required_error: 'Please enter your country',
+    invalid_type_error: 'Please enter your country',
+  }),
+  phone_number: z.string({
+    required_error: 'Please enter your phone no',
+    invalid_type_error: 'Please enter your phone no',
+  }),
+  postal_code: z.number({
+    required_error: 'Please enter your postal code',
+    invalid_type_error: 'Please enter your postal code',
+  }),
 });
 
 export const getCustomerAddress = z.object({

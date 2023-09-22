@@ -40,7 +40,7 @@ export async function getStaticProps({ params }: any) {
     },
   });
 
-  return { props: { storeBlogsData: response } };
+  return { props: { storeBlogsData: response }, revalidate: 10 };
 }
 
 const CmsFunc = dynamic(() => import('~/components/app/cms/index'), {
@@ -64,39 +64,42 @@ const findElementsWithAttribute = (node: any) => {
 };
 
 const AboutUsContent = ` <div className='bg-background'>
-<div className="w-full relative h-[750px] md:h-[650px] lg:h-[550px] z-40 text-center">
-  <Image
-    src="https://media.winnar.com/upload/about-page-background.png"
-    alt="/"
-    fill
-    quality={100}
-    className=" object-cover  w-full h-full block bg-black/50"
-  />
-  <div className="absolute h-[35px] w-full text-center top-[50%] flex items-center">
-    <div className="w-full text-center ">
-      <p className=" text-white drop-shadow-2xl text-center w-full text-4xl  lg:text-5xl tracking-tighter  uppercase font-[900]">
-        PRESTIGE CAR
-      </p>
-      <p className="relative h-[35px] -top-[50%]   mt-6 text-white drop-shadow-2xl text-center w-full text-4xl  lg:text-5xl tracking-tighter  uppercase font-[900]">
-        RAFFLES
-      </p>
-    </div>
-  </div>
-</div>
 
-<div >
-  <div className="bg-primary lg:w-[400px] md:w-[400px]  px-8 py-20 aboutus-card   mr-10 lg:ml-20 ml-5  mb-20">
-    <p className="font-black lg:text-5xl md:text-3xl text-xl text-black">Our Mission</p>
-    <p className="text-background pt-5 text-sm">
-      Winnar, the prestige car ra e company that o ers car enthusiasts the
-      thrilling opportunity to win their coveted dream car and many other
-      prizes. Through our captivating experiences and philanthropic
-      initiatives, we aim to create memorable moments that extend beyond
-      the thrill of winning! Join Winnar.com today and get ready to drive
-      away in the car of your dreams.
-    </p>
-  </div>
-</div>
+<div className="w-full relative h-[750px] md:h-[650px] lg:h-[550px] text-center">
+    <div className="relative w-full h-full">
+      <Image
+        src="https://media.winnar.com/upload/about-page-background.png"
+        alt="/"
+        fill
+        quality={100}
+        className=" relative object-cover  w-full h-full block bg-black/50"
+      />
+      <div className="absolute h-[35px] w-full text-center top-[50%] flex items-center">
+        <div className="w-full text-center ">
+          <p className=" text-white drop-shadow-2xl text-center w-full text-4xl  tracking-wide lg:text-5xl uppercase font-[900]">
+            PRESTIGE CAR
+          </p>
+          <p className="relative h-[35px] -top-[50%]   mt-3 text-white drop-shadow-2xl text-center w-full text-4xl  lg:text-5xl   uppercase font-[900]">
+            RAFFLES
+          </p>
+        </div>
+      </div>
+    </div>
+    </div>
+    <div className="w-full z-50 -mt-24">
+      <div className="bg-primary lg:w-[400px] md:w-[400px]  px-8 py-20 aboutus-card   mr-10 lg:ml-20 ml-5  mb-20">
+        <p className="font-black lg:text-5xl md:text-3xl text-xl text-black">Our Mission</p>
+        <p className="text-background pt-5 text-sm">
+          Winnar, the prestige car ra e company that o ers car enthusiasts the
+          thrilling opportunity to win their coveted dream car and many other
+          prizes. Through our captivating experiences and philanthropic
+          initiatives, we aim to create memorable moments that extend beyond
+          the thrill of winning! Join Winnar.com today and get ready to drive
+          away in the car of your dreams.
+        </p>
+      </div>
+    </div>
+
 
 <div className="absolute top-[610px] right-64 px-8 xl:block hidden">
   <svg
@@ -201,7 +204,7 @@ const AboutUsContent = ` <div className='bg-background'>
       }
     ]
 </div>
-<div className="w-full py-32 z-40 text-center bg-Image">
+<div className="w-full py-32 lg:px-14 md:px-14 px-4 z-40 text-center bg-Image">
     <div className=" text-center flex flex-col lg:flex-row gap-x-4 justify-center items-start font-sans lg:mx-auto">
       <p className=" text-white drop-shadow-2xl text-center  font-black text-2xl  lg:text-3xl lg:w-fit">
         OUR MVP
@@ -243,16 +246,18 @@ const AboutUsContent = ` <div className='bg-background'>
       <p className="relative h-[35px] -top-[50%]   mt-6 text-white drop-shadow-2xl text-center w-full text-2xl  lg:text-4xl font-[900]">
         WIN SUNDAY 8 PM
       </p>
-      <Button
-        className=" px-16 mt-6  bg-primary clip-style text-black font-sans font-[900] text-xl"
-        variant="default"
-      >
-        Enter Now
-      </Button>
-    </div>
+      <a href="/cars">
+          <Button
+            className=" px-8 mt-6 py-2  bg-primary clip-style text-black font-sans font-[900] text-xl"
+            variant="default"
+          >
+          Enter Now
+          </Button>
+      </a>
+      </div>
   </div>
 </div>
-</div> `;
+</div>`;
 
 const AboutUsContentTwo = `<div className='bg-background'>
 
@@ -690,11 +695,11 @@ const faqContent = ` <section>
 </div>
 </section>`;
 
-const faqContent2 = ` <div >
+const faqContent2 = `<div >
 
 <div class="w-full relative h-[750px] md:h-[650px] lg:h-[550px] z-40 text-center " >
 <Image
-  src="https://media.winnar.com/upload/about-page-background.png"
+  src="https://media.winnar.com/upload/faq-banner.png"
   alt="/"
   fill
   quality={100}
@@ -702,7 +707,7 @@ const faqContent2 = ` <div >
 />
 <div class="absolute h-[35px] w-full text-center top-[50%] flex items-center">
 <div class="w-full text-center">
-<p class="text-white drop-shadow-2xl text-center w-full text-4xl  lg:text-5xl tracking-tighter  uppercase font-[900]">FAQS</p>
+<p class="text-white drop-shadow-2xl text-center w-full text-4xl  lg:text-5xl tracking-tighter   font-[900]">FAQs</p>
 </div>
 </div>
 </div>
@@ -751,6 +756,8 @@ const faqContent2 = ` <div >
     </defs>
   </svg>
 </div>
+
+
 
 <div class="relative  min-h-screen w-full flex flex-col gap-8  lg:px-14 md:px-14 px-4 mt-16">
 <div>
@@ -826,14 +833,13 @@ const faqContent2 = ` <div >
 
 </div>
 </div>
-
 `;
 
 export default function CmsPage({ storeBlogsData }: any) {
   const reactElements = parse(
     storeBlogsData?.CMSDescription[0]?.content || '',
     {
-      // const reactElements = parse(AboutUsContentTwo || '', {
+      // const reactElements = parse(AboutUsContent || '', {
       replace: findElementsWithAttribute,
     },
   );

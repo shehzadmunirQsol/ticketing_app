@@ -143,7 +143,6 @@ function Checkout() {
                   cartItems: [],
                 }),
               );
-              if (Resdata?.user) dispatch(userAuth(Resdata?.user));
             }, 3000);
           }
         }
@@ -451,8 +450,8 @@ function Checkout() {
                   )}
                 />
 
-                <div className="flex items-start flex-row gap-2 w-full justify-between">
-                  <div className="flex-1">
+                <div className="flex items-start flex-col lg:flex-row gap-2 w-full justify-between">
+                  <div className="w-full">
                     <p className="text-sm text-cardGray  mb-3 ">Phone Number</p>
                     <div className="flex flex-row gap-2 ">
                       <FormField
@@ -502,6 +501,7 @@ function Checkout() {
                               <Input
                                 max={999999999}
                                 type="number"
+                                className="w-full"
                                 placeholder="Enter your phone number"
                                 {...field}
                               />
@@ -515,7 +515,7 @@ function Checkout() {
                       />
                     </div>
                   </div>
-                  <div className="">
+                  <div className="w-full">
                     <FormField
                       control={form.control}
                       name="dob"
@@ -617,12 +617,16 @@ function Checkout() {
                 </p>
                 <div className="flex flex-row gap-2 justify-start   items-start w-full  md:w-[65%] lg:w-[85%]">
                   <input
+                    id="terms-and-conditions"
                     type="checkbox"
                     className="accent-white  my-1"
                     required
                   />
 
-                  <p className="text-sm text-cardGray ">
+                  <label
+                    htmlFor="terms-and-conditions"
+                    className="text-sm text-cardGray cursor-pointer"
+                  >
                     I’m 18 years old or over and i have read and agree to the
                     website
                     <span className="text-white">
@@ -632,7 +636,7 @@ function Checkout() {
                       </Link>
                     </span>
                     .
-                  </p>
+                  </label>
                 </div>
               </div>
 
@@ -648,7 +652,7 @@ function Checkout() {
 
               <Button
                 disabled={checkoutCreator?.isLoading}
-                className=" px-16 mt-10 w-full  text-black font-sans font-[900]   text-xl tracking-[-1px]"
+                className="min-w-max w-full  px-16 mt-10  text-black font-sans font-[900]   text-xl tracking-[-1px]"
                 variant="clip"
               >
                 PAY WITH CARD

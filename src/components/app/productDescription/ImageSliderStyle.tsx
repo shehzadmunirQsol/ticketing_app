@@ -67,7 +67,9 @@ const BannerSlider = ({ data }: any) => {
 
   return (
     <div className="relative">
-      <div className="flex items-center">
+      <div
+        className={`flex items-center  ease-in animate-in  transition-transform duration-500 transform translate-x-[calc(-100% * var(${currentIndex}))]`}
+      >
         <Button
           variant="rounded"
           className="button prev-btn h-10 w-10 md:h-14 md:w-14 absolute top-58 left-0  z-40"
@@ -76,14 +78,19 @@ const BannerSlider = ({ data }: any) => {
         >
           <i className="fa-solid fa-chevron-left"></i>
         </Button>
-        <div className="relative h-[18rem] lg:h-[38rem]  w-full lg:px-6 md:px-6 ">
+        <div
+          className={`relative h-[18rem] lg:h-[38rem]  w-full lg:px-6 md:px-6  ease-in animate-in  transition-transform duration-500 transform translate-x-[calc(-100% * var(${currentIndex}))]`}
+          id="default-carousel"
+          data-carousel="slide"
+        >
           {data?.EventImages?.length ? (
             <Image
               alt="feature"
               src={renderNFTImage(eventImages[currentIndex])}
               width={5000}
               height={5000}
-              className=" object-contain object-center h-full w-full "
+              loading="lazy"
+              className=" object-cover rounded-sm object-center h-full w-full  duration-700 ease-in-out"
             />
           ) : (
             <Image
@@ -91,10 +98,11 @@ const BannerSlider = ({ data }: any) => {
               src={placeHolderImage}
               width={5000}
               height={5000}
-              className=" object-contain object-center h-full w-full "
+              loading="lazy"
+              className=" object-cover rounded-sm object-center h-full w-full  transition-all ease-in-out animate-slide-in  duration-500"
             />
           )}
-          <div className="absolute bottom-0 md:bottom-16  lg:right-10 md:right-10 right-4 rounded-full w-14 p-1 bg-gradient-to-b from-primary to-neutral-900">
+          <div className="absolute bottom-0 md:bottom-8  lg:right-10 md:right-10 right-4 rounded-full w-14 p-1 bg-gradient-to-b from-primary to-neutral-900">
             <Image
               className="w-14 h-12  lg:w-full lg:h-full object-cover  rounded-full bg-white"
               src={BottleImage}

@@ -10,13 +10,16 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, MoreHorizontal } from 'lucide-react';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 import { Button } from '@/ui/button';
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/ui/dropdown-menu';
 import {
@@ -28,7 +31,11 @@ import {
   TableRow,
 } from '@/ui/table';
 import { trpc } from '~/utils/trpc';
-import { customEmailTruncateHandler, displayDate } from '~/utils/helper';
+import {
+  customEmailTruncateHandler,
+  customTruncate,
+  displayDate,
+} from '~/utils/helper';
 import { getCustomerSchema } from '~/schema/customer';
 import {
   Tooltip,
@@ -54,12 +61,15 @@ import {
   DoubleArrowRightIcon,
 } from '@radix-ui/react-icons';
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
-export type Category = {
+import Link from 'next/link';
+
+export type CustomerType = {
   email: string;
   username: string | null;
   first_name: string;
   last_name: string;
   is_approved: boolean;
+  is_disabled: boolean;
   is_verified: boolean;
   id: number;
   dob: Date;
@@ -85,6 +95,7 @@ export default function CustomersDataTable() {
   const [title, setTitle] = useState('');
   const [type, setType] = useState('');
   const [isModal, setIsModal] = useState(false);
+  const [para, setPara] = useState('');
 
   // APi
   const { data, refetch, isLoading } = trpc.customer.getCustomers.useQuery(
@@ -98,11 +109,58 @@ export default function CustomersDataTable() {
     return Array.isArray(data?.data) ? data?.data : [];
   }, [data]);
 
+  const deleteCustomer: any = trpc.customer.update.useMutation({
+    onSuccess: () => {
+      console.log('updated successfully');
+    },
+    onError(error: any) {
+      console.log({ error });
+    },
+  });
+
+  const deleteUser = (data: any, type: string) => {
+    setSelectedItem(data);
+    setTitle('Customer');
+    {
+      type == 'delete'
+        ? setPara('Are you sure you want to Delete this customer?')
+        : type == 'enable'
+        ? setPara('Are you sure you want to Enable this customer?')
+        : setPara('');
+    }
+    setType(type);
+    setIsModal(true);
+  };
+
+  const displayName = (data: any) => {
+    if (data.is_disabled) {
+      return (
+        <div className="flex gap-2 items-center">
+          <p className="text-ellipsis text-left whitespace-nowrap overflow-hidden w-fit  text-white">
+            {data.first_name + ' ' + data.last_name}
+          </p>
+          <div>
+            <i className="fas fa-flag p-1 text-gray-200 bg-red-900 hover:bg-red-900/70 rounded-lg shadow-md text-xs"></i>
+          </div>
+        </div>
+      );
+    } else {
+      return (
+        <p className="text-ellipsis text-left whitespace-nowrap overflow-hidden w-48  text-white">
+          {data.first_name + ' ' + data.last_name}
+        </p>
+      );
+    }
+  };
+
   // handle modal
   const handleEnbled = (data: any, type: string) => {
     if (!data?.is_approved) {
       setSelectedItem(data);
       setTitle('Customer');
+      setPara(
+        'Note: By Saving this information customer can perform actionssuch as (login and order).',
+      );
       setType(type);
       setIsModal(true);
     } else {
@@ -113,7 +171,28 @@ export default function CustomersDataTable() {
     }
   };
   // columns
-  const columns: ColumnDef<Category>[] = [
+  const columns: ColumnDef<CustomerType>[] = [
+    {
+      accessorKey: 'Name',
+
+      header: 'Name',
+      cell: ({ row }) => (
+        <div className="capitalize ">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>{displayName(row?.original)}</TooltipTrigger>
+              <TooltipContent>
+                <p className="text-base font-normal">
+                  {(row?.original?.first_name ?? '') +
+                    ' ' +
+                    (row?.original?.last_name ?? '')}
+                </p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
+      ),
+    },
     {
       accessorKey: 'Email',
       header: 'Email',
@@ -145,17 +224,7 @@ export default function CustomersDataTable() {
         </div>
       ),
     },
-    {
-      accessorKey: 'Name',
-      header: 'Name',
-      cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap ">
-          {(row?.original?.first_name ?? '') +
-            ' ' +
-            (row?.original?.last_name ?? '')}
-        </div>
-      ),
-    },
+
     {
       id: 'Verified Status',
       header: 'Verified Status',
@@ -182,10 +251,50 @@ export default function CustomersDataTable() {
         </div>
       ),
     },
+    {
+      id: 'actions',
+      enableHiding: false,
+      header: 'Actions',
+      cell: ({ row }) => {
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+
+              {row?.original?.is_disabled ? (
+                <>
+                  <DropdownMenuItem
+                    onClick={() => deleteUser(row?.original, 'delete')}
+                  >
+                    Delete Customer
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => deleteUser(row?.original, 'enable')}
+                  >
+                    Enable Customer
+                  </DropdownMenuItem>
+                </>
+              ) : (
+                <>
+                  <DropdownMenuItem>No Actions Yet</DropdownMenuItem>
+                </>
+              )}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        );
+      },
+    },
   ];
 
   const table = useReactTable({
-    data: categoryData as Category[],
+    data: categoryData as CustomerType[],
     columns,
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
@@ -223,15 +332,6 @@ export default function CustomersDataTable() {
       filtername: 'searchQuery',
       type: 'text',
     },
-
-    {
-      Icon: 'fal fa-chevron-down',
-      text: 'Verified',
-      filtername: 'is_verified',
-      type: 'select',
-
-      filter: StatusOptions,
-    },
     {
       Icon: 'fal fa-chevron-down',
       text: 'From Date',
@@ -244,6 +344,23 @@ export default function CustomersDataTable() {
       filtername: 'endDate',
       type: 'date',
     },
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'Verified',
+      filtername: 'is_verified',
+      type: 'select',
+
+      filter: StatusOptions,
+    },
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'Delete Request',
+      filtername: 'is_disabled',
+      type: 'select',
+
+      filter: StatusOptions,
+    },
+
     {
       Icon: 'fal fa-chevron-down',
       text: 'Clear Filter',
@@ -439,6 +556,7 @@ export default function CustomersDataTable() {
         refetch={refetch}
         type={type}
         setType={setType}
+        paragraph={para}
       />
       <LoadingDialog open={isLoading} text={'Loading data...'} />
     </div>

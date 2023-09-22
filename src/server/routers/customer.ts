@@ -38,9 +38,9 @@ export const customerRouter = router({
 
     const user = await prisma.customer.findUnique({
       where: { id: userData.id },
-      include:{
-        CustomerAddress:true
-      }
+      include: {
+        CustomerAddress: true,
+      },
     });
 
     if (!user)
@@ -56,29 +56,13 @@ export const customerRouter = router({
   update: publicProcedure
     .input(updateCustomerSchema)
     .mutation(async ({ input }) => {
-      // const payload = [...input];
-      const payload: any = { ...input };
-      if (input?.id) delete payload?.id;
+      const { id, ...payload } = input;
+
       const customer = await prisma.customer.update({
-        where: {
-          id: input?.id,
-        },
-        data: { ...payload },
+        where: { id },
+        data: payload,
       });
 
-      if (input.is_approved) {
-        const mailOptions = {
-          template_id: 10,
-          from: 'no-reply@winnar.com',
-          subject: 'Thank you for sigining up for Winnar',
-          to: customer.email,
-          params: {
-            first_name: customer?.first_name,
-          },
-        };
-
-        const mailResponse = await sendEmail(mailOptions);
-      }
       return customer;
     }),
 
@@ -229,7 +213,20 @@ export const customerRouter = router({
               first_name: input?.firstname,
             },
           };
-          const mailResponse = await sendEmail(mailOptions);
+
+          const resgistranMailOptions = {
+            template_id: 10,
+            from: 'no-reply@winnar.com',
+            subject: 'Thank you for sigining up for Winnar',
+            to: customer.email,
+            params: {
+              first_name: customer?.first_name,
+            },
+          };
+
+          await sendEmail(mailOptions);
+          // await sendEmail(resgistranMailOptions);
+
           return customer;
         }
       } catch (error: any) {
@@ -337,20 +334,22 @@ export const customerRouter = router({
           throw new TRPCError({
             code: 'NOT_FOUND',
             message:
-              'Your Account is Disabled Kindly Contact From Admin Thankyou!',
+              'Your Account is Disabled Kindly Contact From Admin Thank you!',
           });
         }
 
         const respCode = await generateOTP(4);
-
+        const res = encodeURIComponent(respCode);
+        const email = encodeURIComponent(user.email);
         //  email
         const mailOptions = {
           template_id: 5,
           from: 'no-reply@winnar.com',
           to: input.email,
           subject: 'Forgot Password request to Winnar',
+
           params: {
-            link: `${process.env.NEXT_PUBLIC_BASE_URL}/reset-password?verification_code=${respCode}&email=${user.email}`,
+            link: `${process.env.NEXT_PUBLIC_BASE_URL}/reset-password?verification_code=${res}&email=${email}`,
           },
         };
         const mailResponse = await sendEmail(mailOptions);
@@ -431,7 +430,7 @@ export const customerRouter = router({
       }
     }),
 
-    verificationOtpCustomer: publicProcedure
+  verificationOtpCustomer: publicProcedure
     .input(verificationOtpCustomerSchema)
     .mutation(async ({ ctx, input }) => {
       try {
@@ -586,7 +585,7 @@ export const customerRouter = router({
         // here u will do the mutation
 
         const payload = {
-          postal_code: Number(input.postal_code),
+          // postal_code: Number(input?.postal_code),
           state: '',
           street_address_2: '',
           ...input,
@@ -722,7 +721,6 @@ export const customerRouter = router({
     .input(deleteMyAccountCustomerSchema)
     .mutation(async ({ ctx, input }) => {
       try {
-        console.log(input, 'HSJGHSGHSJGSH');
         const user: any = await prisma.customer.findFirst({
           where: { email: input.email },
         });

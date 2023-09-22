@@ -27,9 +27,10 @@ export default function ResetPassword() {
   useEffect(() => {
     if (router.query) {
       setUserDetail({ ...router.query });
-      router.replace('/reset-password');
+      // router.replace('/reset-password');
     }
   }, []);
+  console.log({userDetail})
 
   // Reset Password Customer
   const customerResetPassword = trpc.customer.resetPasswordCustomer.useMutation(
@@ -70,7 +71,7 @@ export default function ResetPassword() {
 
   return (
     <div className="w-full  lg:w-2/3 md:w-2/3  mt-36 mb-20 mx-auto bg-card py-10 px-5 lg:px-10 md:px-10 max-w-[1300px]">
-      <p className="text-3xl text-primary font-black">Reset Password</p>
+      <p className="text-3xl text-primary font-black px-2 lg:px-8 uppercase">Reset Password</p>
       <Form {...formResetPassword}>
         <form
           onSubmit={formResetPassword.handleSubmit(onSubmit)}
@@ -119,7 +120,7 @@ export default function ResetPassword() {
             )}
           />
           <Button
-            className="w-full text-black font-sans font-[900]   text-xl tracking-[-1px]"
+            className="w-full text-black font-sans font-[900]   text-xl tracking-[-1px] uppercase"
             variant="clip"
           >
             Change Password

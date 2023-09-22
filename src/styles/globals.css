@@ -134,13 +134,13 @@
 }
 
 @media screen and (max-width: 1024px) {
-  .banner_img_flip {
+  /* .banner_img_flip {
     background: none;
   }
 
   .banner_img {
     background: none;
-  }
+  } */
   .banner-slide {
     flex-direction: column-reverse;
     /* display: block !important; */

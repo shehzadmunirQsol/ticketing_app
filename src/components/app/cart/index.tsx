@@ -138,7 +138,7 @@ export default function CartPage() {
 
               <div className="flex items-center justify-between z-10 ">
                 <p className="text-lg">Total:</p>
-                <p className="text-xl text-primary font-bold">
+                <p className="text-xl text-primary font-black">
                   AED {(totalAmount - discountAmount)?.toFixed(2)}
                 </p>
               </div>
@@ -146,7 +146,7 @@ export default function CartPage() {
                 <Button
                   variant={'clip'}
                   size={'full'}
-                  className="uppercase text-lg font-bold z-10 "
+                  className="uppercase text-lg font-black z-10 "
                 >
                   Proceed to Checkout
                 </Button>
@@ -157,8 +157,8 @@ export default function CartPage() {
 
           <div className="relative py-4 px-8 z-10 bg-card-foreground">
             <ProductSection
-              class=" mx-auto max-w-md md:max-w-[21.5rem] lg:max-w-[23rem] xl:max-w-[calc(100%-25px)] "
-              slidesToShow={3.5}
+              class="mx-auto w-3/5 md:w-full"
+              slidesToShow={3}
               center={false}
               breakpoint={[3, 2, 1]}
               breakpointScreens={[1350, 1050, 800]}

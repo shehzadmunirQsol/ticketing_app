@@ -4,10 +4,10 @@ const CompititionDetail = ({ data }: any) => {
   console.log(data?.EventDescription[0].comp_details, 'NSJSHSHJJHAGDHSJ');
   const dataCode: any = data?.EventDescription[0].comp_details;
   return (
-    <section id="CompititionDetail">
+    <section id="CompititionDetail" className="space-x-4">
       <div>
-        <div className="w-30 my-10 ">
-          <p className="lg:text-5xl md:text-4xl text-3xl  font-black uppercase">
+        <div className="w-30 my-10  space-x-4 ">
+          <p className="lg:text-5xl md:text-4xl text-2xl   font-black uppercase  indent-4">
             Competition Details
           </p>
           <div className="border-b-4 w-16 border-primary mt-4 mb-8"></div>

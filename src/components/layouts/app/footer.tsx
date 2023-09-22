@@ -50,7 +50,7 @@ function Footer() {
                   <p>Registered Company </p>
                   <p>Number: 11320154, UAE</p>
                 </div>
-                <div className=" flex items-center justify-center md:justify-start  w-full sm:w-1/2 md:w-1/3 text-sm text-white">
+                <div className=" flex items-center justify-center md:justify-start  w-64  text-sm text-white">
                   <Image
                     className="w-full h-full object-contain "
                     src={Group17}
@@ -60,49 +60,52 @@ function Footer() {
                 </div>
               </div>
               <div className="grid grid-cols-1 gap-8 md:gap-6 md:grid-cols-2 w-full md:w-1/3">
-                <ul className="text-grayColor opacity-75 space-y-3">
-                  {[
-                    { page: 'Home', link: '/' },
-                    { page: 'Cars', link: '/cars' },
-                    { page: 'Cash', link: '/cash' },
-                    { page: 'Winners', link: '/winners' },
-                    { page: 'FAQs', link: '/faq' },
-                  ].map((item, index) => {
-                    return (
-                      <li key={index} className="text-sm">
-                        <a href={item.link} className="hover:underline">
-                          {item.page}
-                        </a>
-                      </li>
-                    );
-                  })}
-                </ul>
-                <ul className="text-grayColor opacity-75 space-y-3">
-                  {[
-                    { page: 'About Us', link: '/about-us' },
-                    { page: 'Contact Us', link: '/contact-us' },
-                    { page: 'Terms & Conditions', link: '/terms-condition' },
-                    { page: 'Our Team', link: '/about-us' },
-                    {
-                      page: 'Cookie & Privacy Policy',
-                      link: '/privacy-policy',
-                    },
-                  ].map((item, index) => {
-                    return (
-                      <li key={index} className="text-sm">
-                        <Link href={item.link} className="hover:underline">
-                          {item.page}
-                        </Link>
-                      </li>
-                    );
-                  })}
-                </ul>
+                <div className="col-span-2 flex items-center justify-between">
+                  <ul className="flex-1 text-grayColor opacity-75  space-y-2 sm:space-y-3">
+                    {[
+                      { page: 'Home', link: '/' },
+                      { page: 'Cars', link: '/cars' },
+                      { page: 'Cash', link: '/cash' },
+                      { page: 'Winners', link: '/winners' },
+                      { page: 'FAQs', link: '/faq' },
+                    ].map((item, index) => {
+                      return (
+                        <li key={index} className="text-sm">
+                          <Link href={item.link} className="hover:underline">
+                            {item.page}
+                          </Link>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                  <ul className="flex-1 text-grayColor opacity-75 space-y-2 sm:space-y-2">
+                    {[
+                      { page: 'About Us', link: '/about-us' },
+                      { page: 'Contact Us', link: '/contact-us' },
+                      { page: 'Terms & Conditions', link: '/terms-condition' },
+                      { page: 'Our Team', link: '/about-us' },
+                      {
+                        page: 'Cookie & Privacy Policy',
+                        link: '/privacy-policy',
+                      },
+                    ].map((item, index) => {
+                      return (
+                        <li key={index} className="text-sm">
+                          <Link href={item.link} className="hover:underline">
+                            {item.page}
+                          </Link>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+
                 <div className=" col-span-2 w-full ">
-                  <div className=" flex items-center justify-between  gap-8 md:gap-6">
-                    <div className=" text-sm font-bold w-full">
+                  <div className="flex-1 flex items-center gap-2 mdx:justify-between">
+                    <div className=" text-sm font-bold w-full min-w-max">
                       CONNECT WITH US
                     </div>
-                    <div className="w-full  flex  gap-4  justify-start items-center">
+                    <div className="w-full flex gap-2 items-center">
                       {' '}
                       <Link
                         target="_blank"
@@ -147,7 +150,7 @@ function Footer() {
             </div>
           </div>
 
-          <div className="flex h-32  w-full relative justify-end items-end px-8 mt-8 ">
+          <div className="flex h-20 sm:mt-8  md:h-32  w-full relative justify-end items-end px-8 ">
             <Image
               className="w-full h-full object-contain  z-40"
               src={Group16}

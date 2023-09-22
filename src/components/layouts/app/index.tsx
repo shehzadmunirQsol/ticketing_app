@@ -7,6 +7,7 @@ import { trpc } from '~/utils/trpc';
 import { CartItemInterface, addCart } from '~/store/reducers/cart';
 import { Toaster } from '~/components/ui/toaster';
 import { userAuth } from '~/store/reducers/auth';
+import { LoadingDialog } from '~/components/common/modal/loadingModal';
 
 type DefaultLayoutProps = { children: ReactNode };
 
@@ -104,6 +105,8 @@ function Index({ children }: DefaultLayoutProps) {
     }
   }
 
+  console.log(user, 'user header');
+
   return (
     <div
       dir={lang.dir}
@@ -113,6 +116,7 @@ function Index({ children }: DefaultLayoutProps) {
       <Toaster />
       <Header />
       {children}
+      <LoadingDialog open={createCart.isLoading} text={'Loading...'} />
       <Footer />
     </div>
   );
