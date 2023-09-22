@@ -337,20 +337,22 @@ export const customerRouter = router({
           throw new TRPCError({
             code: 'NOT_FOUND',
             message:
-              'Your Account is Disabled Kindly Contact From Admin Thankyou!',
+              'Your Account is Disabled Kindly Contact From Admin Thank you!',
           });
         }
 
         const respCode = await generateOTP(4);
-
+        let res=encodeURIComponent(respCode)
+        let email=encodeURIComponent(user.email)
         //  email
         const mailOptions = {
           template_id: 5,
           from: 'no-reply@winnar.com',
           to: input.email,
           subject: 'Forgot Password request to Winnar',
+
           params: {
-            link: `${process.env.NEXT_PUBLIC_BASE_URL}/reset-password?verification_code=${respCode}&email=${user.email}`,
+            link: `${process.env.NEXT_PUBLIC_BASE_URL}/reset-password?verification_code=${res}&email=${email}`,
           },
         };
         const mailResponse = await sendEmail(mailOptions);

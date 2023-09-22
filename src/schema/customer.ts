@@ -14,14 +14,12 @@ export const signupCustomerSchema = z.object({
       required_error: 'Please enter your email',
       invalid_type_error: 'Please enter your email',
     })
-    .email()
+    .email({
+      message: 'Please use a valid email ',
+    })
     .refine(
       (val) =>
-        val.includes('+') ||
-        val.includes('#') ||
-        val.startsWith('.') ||
-        val.includes('-@') ||
-        val.includes('..')
+        val.includes('*')
           ? false
           : true,
       {
