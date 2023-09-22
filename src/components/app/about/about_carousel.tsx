@@ -83,7 +83,7 @@ function AboutCarousel(props: any) {
   };
   return (
     <div className="   w-full lg:px-14 md:px-14 px-4 ">
-      <div className=" relative flex gap-3 flex-col md:flex-row h-28 md:h-auto py-6  items-center w-full md:justify-between mb-6">
+      <div className=" relative flex gap-3 flex-col md:flex-row h-28 md:h-auto py-6  items-center w-full md:justify-between mb-12  lg:mb-6 ">
         <div>
           <p className="font-black text-white text-xl lg:text-4xl uppercase">
             Meet Our Driving Force
@@ -116,14 +116,21 @@ function AboutCarousel(props: any) {
         </div>
       </div>
 
-      <div >
+      <div>
         <Slider ref={slide} {...settings}>
           {props?.imageCrousel &&
             props?.imageCrousel?.map((item: any, index: any) => {
               const isEven = index % 2 === 0;
               console.log({ item });
               return (
-                <div key={index} className={`down mr-6 ${isEven ? 'mb-0 sm:mb-64 md:mb-64 lg:mb-64 ' : 'mt-0 sm:mt-36 md:mt-36 lg:mt-36 '}`}>
+                <div
+                  key={index}
+                  className={`down mr-6 ${
+                    isEven
+                      ? 'mb-0 sm:mb-64 md:mb-64 lg:mb-64 '
+                      : 'mt-0 sm:mt-36 md:mt-36 lg:mt-36 '
+                  }`}
+                >
                   <div className="content">
                     <div className="content-overlay"></div>
                     <div className="w-full h-full">
@@ -150,30 +157,8 @@ function AboutCarousel(props: any) {
                     </div>
                   </div>
                 </div>
-                // </div>
-
-                // <div key={index} className="">
-                //   <Image src={item.img} alt="hello" width={40} height={40} />
-                //   <p>{item.text}</p>
-                //   {/* <Image src={item.img} alt="hello"/> */}
-                //   {/* <ProductCard
-                //   isLast={index === products.length - 1}
-                //   nextPage={nextPage}
-                //   data={item}
-                //   className={`${props?.class} `}
-                //   dir={`${lang?.dir}`}
-                // /> */}
-                // </div>
               );
             })}
-
-          {/* {products.length === 0 ? (
-            <div className="text-center w-full py-10 text-lg">
-              Coming Soon...
-            </div>
-          ) : (
-            ''
-          )} */}
         </Slider>
       </div>
     </div>
