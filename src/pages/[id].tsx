@@ -40,7 +40,7 @@ export async function getStaticProps({ params }: any) {
     },
   });
 
-  return { props: { storeBlogsData: response } };
+  return { props: { storeBlogsData: response }, revalidate: 10 };
 }
 
 const CmsFunc = dynamic(() => import('~/components/app/cms/index'), {
@@ -690,11 +690,11 @@ const faqContent = ` <section>
 </div>
 </section>`;
 
-const faqContent2 = ` <div >
+const faqContent2 = `<div >
 
 <div class="w-full relative h-[750px] md:h-[650px] lg:h-[550px] z-40 text-center " >
 <Image
-  src="https://media.winnar.com/upload/about-page-background.png"
+  src="https://media.winnar.com/upload/faq-banner.png"
   alt="/"
   fill
   quality={100}
@@ -702,7 +702,7 @@ const faqContent2 = ` <div >
 />
 <div class="absolute h-[35px] w-full text-center top-[50%] flex items-center">
 <div class="w-full text-center">
-<p class="text-white drop-shadow-2xl text-center w-full text-4xl  lg:text-5xl tracking-tighter  uppercase font-[900]">FAQS</p>
+<p class="text-white drop-shadow-2xl text-center w-full text-4xl  lg:text-5xl tracking-tighter   font-[900]">FAQs</p>
 </div>
 </div>
 </div>
@@ -751,6 +751,8 @@ const faqContent2 = ` <div >
     </defs>
   </svg>
 </div>
+
+
 
 <div class="relative  min-h-screen w-full flex flex-col gap-8  lg:px-14 md:px-14 px-4 mt-16">
 <div>
@@ -826,14 +828,13 @@ const faqContent2 = ` <div >
 
 </div>
 </div>
-
 `;
 
 export default function CmsPage({ storeBlogsData }: any) {
   const reactElements = parse(
     storeBlogsData?.CMSDescription[0]?.content || '',
     {
-      // const reactElements = parse(AboutUsContentTwo || '', {
+      // const reactElements = parse(faqContent2 || '', {
       replace: findElementsWithAttribute,
     },
   );

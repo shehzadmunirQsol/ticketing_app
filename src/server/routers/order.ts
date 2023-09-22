@@ -777,9 +777,9 @@ export const orderRouter = router({
 
             await sendEmail(mailOptions);
             // const { password, otp, ...userApiData } = updateCustomer;
-            const useAPIData = {...updateCustomer};
-            if(useAPIData?.password) delete useAPIData?.password 
-            if(useAPIData?.otp) delete useAPIData?.password 
+            const useAPIData = { ...updateCustomer };
+            if (useAPIData?.password) delete useAPIData?.password;
+            if (useAPIData?.otp) delete useAPIData?.password;
 
             return {
               message: paymentRes?.data,
@@ -826,7 +826,6 @@ async function CreateCheckout(APidata: any) {
       paymentType: 'DB',
       // wpwlOptions: JSON.stringify(APidata?.cart),
       ...regPayload,
-      createRegistration: 'true',
       'standingInstruction.source': 'CIT',
       'standingInstruction.mode': 'REPEATED',
       'standingInstruction.type': 'UNSCHEDULED',

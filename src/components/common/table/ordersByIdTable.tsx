@@ -414,7 +414,7 @@ export default function OrdersDataByIdTable(props: OrderTableProps) {
             </p>
             <Button
               variant={'rounded'}
-              className="text-center font-black tracking-tighter my-4 w-36 text-xs md:w-fit md:text-md "
+              className="text-center font-black tracking-tighter my-4 w-full h-fit text-xs sm:w-fit md:text-md "
               onClick={() => router.push('/cars')}
             >
               EXPLORE CURRENT COMPETITIONS
