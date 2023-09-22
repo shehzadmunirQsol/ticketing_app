@@ -69,7 +69,7 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
               </div>
             </div>
             <div>
-              <p className="mt-6 text-2xl  md:text-4xl xl:text-5xl font-normal tracking-[-2px] text-white  ">
+              <p className="mt-6 text-2xl  md:text-4xl xl:text-5xl font-normal tracking-[1px] sm:tracking-[-1px] text-white  ">
                 <span className=" font-black mr-1">
                   {lang.lang_id === 2 ? 'يفوز' : 'WIN '}{' '}
                 </span>

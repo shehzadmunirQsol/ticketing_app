@@ -585,7 +585,7 @@ export const customerRouter = router({
         // here u will do the mutation
 
         const payload = {
-          postal_code: Number(input.postal_code),
+          // postal_code: Number(input?.postal_code),
           state: '',
           street_address_2: '',
           ...input,
