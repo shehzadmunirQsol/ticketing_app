@@ -831,12 +831,13 @@ const faqContent2 = `<div >
 `;
 
 export default function CmsPage({ storeBlogsData }: any) {
-  // const reactElements = parse(
-  //   storeBlogsData?.CMSDescription[0]?.content || '',
-  //   {
-  const reactElements = parse(faqContent2 || '', {
-    replace: findElementsWithAttribute,
-  });
+  const reactElements = parse(
+    storeBlogsData?.CMSDescription[0]?.content || '',
+    {
+      // const reactElements = parse(faqContent2 || '', {
+      replace: findElementsWithAttribute,
+    },
+  );
 
   const reactElementsForFAQs = parse(
     storeBlogsData?.CMSDescription[0]?.content || '',
