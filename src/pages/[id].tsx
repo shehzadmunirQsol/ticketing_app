@@ -40,7 +40,7 @@ export async function getStaticProps({ params }: any) {
     },
   });
 
-  return { props: { storeBlogsData: response }, revalidate: 60 };
+  return { props: { storeBlogsData: response }, revalidate: 10 };
 }
 
 const CmsFunc = dynamic(() => import('~/components/app/cms/index'), {
