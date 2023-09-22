@@ -5,6 +5,7 @@ import { useToast } from '~/components/ui/use-toast';
 import { RootState } from '~/store/store';
 import { trpc } from '~/utils/trpc';
 import { addAddressInput } from '~/schema/customer';
+import { formatTrpcError } from '~/utils/helper';
 
 const AddressesView = () => {
   const { toast } = useToast();
@@ -49,7 +50,6 @@ const AddressesView = () => {
       },
     );
 
-  console.log({ data }, 'refetching this now');
   const createAddress = trpc.customer.addAddress.useMutation({
     onSuccess: (res) => {
       console.log(res);
@@ -60,10 +60,11 @@ const AddressesView = () => {
       setEdit(false);
     },
     onError(error) {
-      console.log(error);
+      const errorMessage = formatTrpcError(error?.shape?.message);
+
       toast({
         variant: 'destructive',
-        title: error.message,
+        title: errorMessage,
       });
     },
   });
@@ -77,18 +78,18 @@ const AddressesView = () => {
       setEdit(false);
     },
     onError(error) {
-      console.log(error);
+      const errorMessage = formatTrpcError(error?.shape?.message);
+
       toast({
         variant: 'destructive',
-        title: error.message,
+        title: errorMessage,
       });
     },
   });
 
   async function onSubmit(values: any) {
-    console.log({ values }, 'values');
-
     try {
+      console.log({ values });
       const payload = {
         customer_id: user.id,
         postal_code: Number(+values.postal_code),
@@ -111,8 +112,7 @@ const AddressesView = () => {
       }
     } catch (error: any) {}
   }
-  console.log({ isEdit, action }, 'check states after', action.adding.text);
-
+  console.log({ data }, 'values');
   return (
     <div className="py-4 px-6 text-[#eaeaea]">
       <p className="text-[#808080] text-sm">
@@ -180,53 +180,55 @@ const AddressesView = () => {
                 <div className="h-fit ">
                   <input
                     className="bg-primary-foreground p-0.5 font-sans  "
-                    value={user.first_name + ' ' + user.last_name}
+                    value={
+                      user.first_name && user.first_name + ' ' + user.last_name
+                    }
                     placeholder="Name"
                     type="text"
-                    readOnly
+                    required={true}
                   />
                   <input
                     className="bg-primary-foreground p-0.5 font-sans"
-                    defaultValue={data?.postal_code}
+                    value={data && data?.postal_code}
                     placeholder="P.O Box"
                     {...register('postal_code', {
                       valueAsNumber: true,
                     })}
                     type="number"
-                    required
+                    required={true}
                   />
                   <input
                     className="bg-primary-foreground p-0.5 font-sans"
-                    defaultValue={data?.street_address_1}
+                    value={data && data?.street_address_1}
                     placeholder="Street Address"
                     {...register('street_address_1')}
                     type="text"
-                    required
+                    required={true}
                   />
                   <input
                     className="bg-primary-foreground p-0.5 font-sans"
-                    defaultValue={data?.phone_number}
+                    value={data && data?.phone_number}
                     {...register('phone_number')}
                     placeholder="Mobile"
                     type="text"
                     maxLength={9}
-                    required
+                    required={true}
                   />
                   <input
                     className="bg-primary-foreground p-0.5 font-sans"
-                    defaultValue={data?.city}
+                    value={data && data?.city}
                     placeholder="City"
                     {...register('city')}
                     type="text"
-                    required
+                    required={true}
                   />
                   <input
                     className="bg-primary-foreground p-0.5 font-sans"
-                    defaultValue={data?.country}
+                    value={data?.country}
                     placeholder="Country"
                     {...register('country')}
                     type="text"
-                    required
+                    required={true}
                   />
                 </div>
               ) : (

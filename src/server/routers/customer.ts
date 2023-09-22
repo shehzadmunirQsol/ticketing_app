@@ -38,9 +38,9 @@ export const customerRouter = router({
 
     const user = await prisma.customer.findUnique({
       where: { id: userData.id },
-      include:{
-        CustomerAddress:true
-      }
+      include: {
+        CustomerAddress: true,
+      },
     });
 
     if (!user)
@@ -431,7 +431,7 @@ export const customerRouter = router({
       }
     }),
 
-    verificationOtpCustomer: publicProcedure
+  verificationOtpCustomer: publicProcedure
     .input(verificationOtpCustomerSchema)
     .mutation(async ({ ctx, input }) => {
       try {
@@ -586,7 +586,7 @@ export const customerRouter = router({
         // here u will do the mutation
 
         const payload = {
-          postal_code: Number(input.postal_code),
+          // postal_code: Number(input?.postal_code),
           state: '',
           street_address_2: '',
           ...input,
