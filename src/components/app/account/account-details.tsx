@@ -337,17 +337,20 @@ function PasswordChange({ email }: any) {
 // Password Change
 function DeleteAccount({ email }: any) {
   const { toast } = useToast();
+  const { user } = useSelector((state: RootState) => state.auth);
 
   // 1. Define your form.
   const form = useForm<deleteMyAccountCustomerSchemaInput>({
     resolver: zodResolver(deleteMyAccountCustomerSchema),
   });
   const [reason, setReason] = useState<any>([]);
+  const dispatch = useDispatch()
 
   const deleteAccountRequestCustomer =
     trpc.customer.deleteMyAccountCustomer.useMutation({
       onSuccess: async (res: any) => {
         console.log(res, 'updateCustomerAccountDetail res');
+        dispatch(userAuth(res?.user));
         toast({
           variant: 'success',
           title: 'Your Account is Deleted Successfully ',
@@ -430,6 +433,7 @@ function DeleteAccount({ email }: any) {
                 <Input
                   type="checkbox"
                   className="accent-white text-2xl "
+                  disabled={user?.is_disabled}
                   required
                 />
               </div>
@@ -456,6 +460,7 @@ function DeleteAccount({ email }: any) {
                       type="checkbox"
                       className="accent-white text-2xl "
                       checked={reason.includes(item?.text)}
+                      disabled={user?.is_disabled}
                     />
                   </div>
                   <p className="text-lightTextColor text-sm">{item.text}</p>
@@ -475,6 +480,7 @@ function DeleteAccount({ email }: any) {
                     <Textarea
                       placeholder="Type your message here..."
                       {...field}
+                      disabled={user?.is_disabled}
                     />
                   </FormControl>
                   <div className="relative pb-2">
@@ -488,6 +494,7 @@ function DeleteAccount({ email }: any) {
               <Button
                 className="align-center  rounded-full px-5 text-base   text-black font-sans font-[900]   tracking-[-1px]"
                 variant="clip"
+                disabled={user?.is_disabled}
               >
                 DELETE MY ACCOUNT
               </Button>

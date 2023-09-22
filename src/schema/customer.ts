@@ -13,10 +13,21 @@ export const signupCustomerSchema = z.object({
     .string({
       required_error: 'Please enter your email',
       invalid_type_error: 'Please enter your email',
-    }).email().refine((val) => val.includes("+") ? false : true, {
-      message: "Please do not use + sign",
-
-    }),
+    })
+    .email()
+    .refine(
+      (val) =>
+        val.includes('+') ||
+        val.includes('#') ||
+        val.startsWith('.') ||
+        val.includes('-@') ||
+        val.includes('..')
+          ? false
+          : true,
+      {
+        message: 'Please use a valid email ',
+      },
+    ),
   password: z
     .string({ required_error: 'Please enter your password' })
     .min(6, {
