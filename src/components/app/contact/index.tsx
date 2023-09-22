@@ -231,7 +231,7 @@ export default function Contact() {
                   )}
                 />
               </div>
-              <div className="flex flex-col lg:flex-row md:flex-row justify-between items-center gap-6 ">
+              <div className="flex flex-col lg:flex-row md:flex-row justify-end items-center gap-6 ">
 
                 {/* <div className='overflow-hidden max-w-[295px] max-h-[70px] rounded-md'>
                   <ReCAPTCHA
