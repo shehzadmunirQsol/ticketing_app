@@ -48,13 +48,13 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
   return (
     <>
       <Dialog open={props?.isModal} onOpenChange={(e) => props.setIsModal(e)}>
-        <DialogContent className="  max-h-[calc(100%-100px)]  ">
+        <DialogContent className=" my-auto max-h-[calc(100%-100px)]  overflow-y-hidden ">
           <DialogFooter className=" sm:justify-start items-start w-full   ">
             {/* <Button onClick={()=>onPrint()} type="submit">Print</Button> */}
           </DialogFooter>
           <DialogHeader>
             {/* <DialogTitle>Remove Item</DialogTitle> */}
-            <DialogDescription className=" max-h-[calc(100%-100px)] overflow-y-scroll scroll-hide">
+            <DialogDescription className="relative max-h-[calc(100%-105px)] rounded-lg overflow-y-scroll scroll-hide ">
               {OrderApiData && (
                 <div
                   className="bg-card text-gray-400 rounded-lg shadow-lg px-8 py-10 max-w-xl mx-auto "
@@ -97,11 +97,11 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
                     </div>
                     <div className="">{OrderApiData?.data?.email}</div>
                   </div>
-                  <ScrollArea className="w-full ">
+                  <ScrollArea className="w-full  ">
                     <ScrollBar orientation="horizontal"></ScrollBar>
 
-                    <table className="w-full text-left mb-8  overflow-x-scroll">
-                      <thead>
+                    <table className="w-full text-left mb-8  ">
+                      <thead className="gap-2 space-x-2">
                         <tr>
                           <th className=" font-bold uppercase py-2">
                             Description
@@ -118,7 +118,7 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
                           OrderApiData?.data?.OrderEvent?.map(
                             (item: any, index: number) => {
                               return (
-                                <tr key={index}>
+                                <tr key={index} className="gap-2 space-x-2">
                                   <td className="py-4 ">
                                     {item?.Event?.EventDescription[0]?.name}
                                   </td>
