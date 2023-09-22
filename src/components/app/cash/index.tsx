@@ -56,20 +56,19 @@ const CashPage = () => {
     <>
       <div className="relative pt-24"></div>
       <BannerTitle image={CashBg} text={'Cash'} />
-      <div className="relative h-full  px-10 py-20">
+      <div className="relative h-full px-4 md:px-14 py-20">
         <Glow className=" absolute  top-1/4 -right-16  p-2   w-1/6 h-[150px]  " />
         <Glow className=" absolute  bottom-14 -right-16  w-1/6 h-[150px] " />
-        <div className=" grid grid-cols-1 md:grid-cols-2  z-40   lg:grid-cols-3   justify-between max-w-[1300px] mx-auto ">
+        <div className=" grid gap-6 grid-cols-1 md:grid-cols-2  z-40  lg:grid-cols-3   justify-between ">
           {products?.map((itemList, i) => {
             return (
-              <div className="mx-auto py-2 md:py-0 z-40" key={i}>
+              <div className="z-40" key={i}>
                 <ProductCard
                   isLast={i === products.length - 1}
                   nextPage={nextPage}
                   dir={lang.dir}
                   cash={Cash}
                   data={itemList}
-                  class="z-50 h-full max-w-sm lg:max-w-2xl md:scale-95  w-full  "
                 />
               </div>
             );

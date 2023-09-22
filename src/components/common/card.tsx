@@ -43,7 +43,7 @@ function ProductCard(props: cardInterface) {
     props?.data && (
       <div
         dir={props?.dir}
-        className={`rounded-sm shadow-lg bg-card ${props?.class} mr-4`}
+        className={`rounded-sm shadow-lg bg-card ${props?.class}`}
         ref={cardRef}
       >
         <div className="relative ">

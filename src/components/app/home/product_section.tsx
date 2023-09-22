@@ -185,7 +185,7 @@ function ProductSection(props: producctInterface) {
                   isLast={index === products.length - 1}
                   nextPage={nextPage}
                   data={item}
-                  class={` `}
+                  class={`mr-4 `}
                   dir={`${lang?.dir}`}
                 />
               </div>

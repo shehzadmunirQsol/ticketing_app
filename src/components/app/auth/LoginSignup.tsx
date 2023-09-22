@@ -36,7 +36,6 @@ export default function LoginSignup() {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [user, setUser] = useState(null);
 
   // 1. Define your form.
@@ -77,7 +76,6 @@ export default function LoginSignup() {
       formSignup.setValue('password', '');
       formSignup.setValue('firstname', '');
       formSignup.setValue('lastname', '');
-      setIsSubmitting(false);
     },
     onError: (err) => {
       console.log(err.message, 'err');
@@ -89,31 +87,15 @@ export default function LoginSignup() {
   });
 
   // login customer
-  const loginCustomer = trpc.customer.loginCustomer.useMutation({
-    onSuccess: (response) => {
-      toast({
-        variant: 'success',
-        title: 'Login Successfully ',
-      });
-      dispatch(userAuth(response?.user));
-
-      router.back();
-    },
-    onError: (err) => {
-      console.log(err.message, 'err');
-    },
-  });
+  const loginCustomer = trpc.customer.loginCustomer.useMutation({});
 
   // Signup
   const onSubmitSignup = async (values: any) => {
     try {
       formLogin.reset();
-      setIsSubmitting(true);
       const signupResult = await registerCustomer.mutateAsync(values);
       setOtpIsModal(true);
-      setIsSubmitting(false);
     } catch (e: any) {
-      setIsSubmitting(false);
       setOtpIsModal(false);
       toast({
         variant: 'destructive',
@@ -147,12 +129,18 @@ export default function LoginSignup() {
 
     try {
       formSignup.reset();
-      setIsSubmitting(true);
       const loginResult = await loginCustomer.mutateAsync(values);
+
+      dispatch(userAuth(loginResult?.user));
+      toast({
+        variant: 'success',
+        title: 'Login Successfully ',
+      });
+
+      router.back();
 
       // to check for account verified or not
     } catch (e: any) {
-      setIsSubmitting(false);
       if (e.shape.message == 'Your Account is Not Verified') {
         setOtpIsModal(true);
       } else {
@@ -167,9 +155,9 @@ export default function LoginSignup() {
   };
 
   return (
-    <section className="body-font   ">
-      <div className="pt-24 mb-16 lg:pb-0 md:pb-0 lg:py-24 md:py-24 mx-auto flex flex-col-reverse px-4 md:px-14 lg:flex-row md:flex-row justify-between gap-14 mt-6  w-full md:max-w-[1500px] ">
-        <div className=" lg:w-2/3 md:w-2/3 w-full  h-full  mb-5 lg:mb-0 rounded-lg hidden  lg:block  ">
+    <section className="body-font pt-24 space-y-24">
+      <div className=" mb-24 lg:pb-0 md:pb-0 lg:py-24 md:py-24 mx-auto flex flex-col-reverse px-4 md:px-14 lg:flex-row md:flex-row justify-between gap-10 w-full">
+        <div className="hidden w-full h-full md:w-2/3 lg:mb-0 rounded-lg lg:block">
           <SideImage
             image={CarImage}
             text={'Unlock Your Journey Login or Register for'}
@@ -178,24 +166,22 @@ export default function LoginSignup() {
         </div>
         <Tabs
           defaultValue={defaultValue === 'login' ? 'login' : 'signup'}
-          className="flex flex-col flex-wrap   lg:w-2/2 md:w-full  lg:text-left  rounded-none border-none   bg-card "
+          className="flex flex-col flex-wrap  w-full  lg:text-left  rounded-none border-none   bg-card "
         >
-          <>
-            <TabsList className=" w-full rounded-none border-none ">
-              <TabsTrigger
-                value="login"
-                className="w-full font-black text-md -mt-1 font-sans rounded-none border-none m-0  "
-              >
-                Login
-              </TabsTrigger>
-              <TabsTrigger
-                value="signup"
-                className="w-full font-sans text-md font-black"
-              >
-                Register
-              </TabsTrigger>
-            </TabsList>
-          </>
+          <TabsList className=" w-full rounded-none border-none ">
+            <TabsTrigger
+              value="login"
+              className="w-full font-black text-md -mt-1 font-sans rounded-none border-none m-0  "
+            >
+              Login
+            </TabsTrigger>
+            <TabsTrigger
+              value="signup"
+              className="w-full font-sans text-md font-black"
+            >
+              Register
+            </TabsTrigger>
+          </TabsList>
           <TabsContent value="login">
             <Form {...formLogin}>
               <form
@@ -265,7 +251,6 @@ export default function LoginSignup() {
               </form>
             </Form>
           </TabsContent>
-          <LoadingDialog open={isSubmitting} text={'Loading...'} />
           <TabsContent value="signup">
             <Form {...formSignup}>
               <form
@@ -405,8 +390,11 @@ export default function LoginSignup() {
             </Form>
           </TabsContent>
         </Tabs>
-        {/* </div> */}
       </div>
+      <LoadingDialog
+        open={registerCustomer.isLoading || loginCustomer.isLoading}
+        text={'Loading...'}
+      />
 
       <ForgotPasswordDailog isModal={isModal} setIsModal={setIsModal} />
       <OtpVerificationDailog

@@ -7,7 +7,6 @@ import { RootState } from '~/store/store';
 import WinnarsCard from '~/components/app/winners/winnars_card';
 import Glow from '~/components/common/glow';
 import { trpc } from '~/utils/trpc';
-import { LoadingDialog } from '~/components/common/modal/loadingModal';
 
 export const Winners = () => {
   const { lang } = useSelector((state: RootState) => state.layout);
@@ -18,7 +17,7 @@ export const Winners = () => {
     rows: 9,
   });
 
-  const { data: winnersList, isLoading } = trpc.winner.get.useQuery(filters, {
+  const { data: winnersList } = trpc.winner.get.useQuery(filters, {
     refetchOnWindowFocus: false,
   });
 
@@ -42,7 +41,7 @@ export const Winners = () => {
     <div>
       <div className="relative pt-24 "></div>
       <BannerTitle image={WinnarsBg} text={'winners'} />
-      <div className="relative h-full px-10 py-20">
+      <div className="relative h-full px-4 md:px-14  py-20">
         <Glow className=" absolute  -top-10 -left-16  p-2   w-1/6 h-[150px]" />
         <Glow className=" absolute -bottom-10 -right-16  w-1/6 h-[150px] -z-10 " />
         {products.length == 0 ? (
@@ -50,7 +49,7 @@ export const Winners = () => {
             No Winners Selected yet
           </h2>
         ) : (
-          <div className="grid gap-2 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-[1500px] m-auto">
+          <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 ">
             {products?.map((itemList: any, i: any) => {
               return (
                 <div className="m-auto" key={i}>
@@ -60,7 +59,7 @@ export const Winners = () => {
                     dir={lang.dir}
                     cash={Cash}
                     data={itemList}
-                    class="h-full max-w-sm lg:max-w-2xl md:scale-95 w-full"
+                    class=""
                   />
                 </div>
               );

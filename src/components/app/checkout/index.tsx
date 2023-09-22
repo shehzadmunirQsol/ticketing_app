@@ -451,8 +451,8 @@ function Checkout() {
                   )}
                 />
 
-                <div className="flex items-start flex-row gap-2 w-full justify-between">
-                  <div className="flex-1">
+                <div className="flex items-start flex-col lg:flex-row gap-2 w-full justify-between">
+                  <div className="w-full">
                     <p className="text-sm text-cardGray  mb-3 ">Phone Number</p>
                     <div className="flex flex-row gap-2 ">
                       <FormField
@@ -502,6 +502,7 @@ function Checkout() {
                               <Input
                                 max={999999999}
                                 type="number"
+                                className="w-full"
                                 placeholder="Enter your phone number"
                                 {...field}
                               />
@@ -515,7 +516,7 @@ function Checkout() {
                       />
                     </div>
                   </div>
-                  <div className="">
+                  <div className="w-full">
                     <FormField
                       control={form.control}
                       name="dob"
@@ -648,7 +649,7 @@ function Checkout() {
 
               <Button
                 disabled={checkoutCreator?.isLoading}
-                className=" px-16 mt-10 w-full  text-black font-sans font-[900]   text-xl tracking-[-1px]"
+                className="w-full md:w-max px-16 mt-10  text-black font-sans font-[900]   text-xl tracking-[-1px]"
                 variant="clip"
               >
                 PAY WITH CARD

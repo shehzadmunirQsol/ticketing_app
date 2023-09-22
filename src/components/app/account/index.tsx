@@ -49,7 +49,7 @@ const Account = () => {
           cartItems: [],
         }),
       );
-      window.location.replace('/login');
+      router.replace('/login');
     } catch (error: any) {
       console.log('Error ', error);
       toast({
