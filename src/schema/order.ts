@@ -22,10 +22,10 @@ export const createCheckoutSchema = z.object({
   }),
   apartment: z.string().optional(),
   country: z.string().min(1, {
-    message: 'Please enter country',
+    message: 'Please select country',
   }),
   state: z.string().min(1, {
-    message: 'Please enter state',
+    message: 'Please select state',
   }),
   city: z.string().min(1, {
     message: 'Please enter city',
