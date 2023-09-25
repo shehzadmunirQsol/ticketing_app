@@ -12,7 +12,7 @@ interface token {
 const TokenRange = ({ range, setRange, min, max }: token) => {
   const percentage: any = ((range && range.length ? range[0] : 1) / max) * 100;
   console.log({ percentage });
-  console.log(range[0],"range[0]");
+  console.log(range[0], 'range[0]');
   // cons
   return (
     <div>
@@ -36,8 +36,8 @@ const TokenRange = ({ range, setRange, min, max }: token) => {
         </div>
       </div>
       <div className="flex justify-between">
-        <p className="text-card-gray font-black">{min}</p>
-        <p className="text-card-gray font-black">{max}</p>
+        <p className="text-card-gray font-black">{min?.toLocaleString()}</p>
+        <p className="text-card-gray font-black">{max?.toLocaleString()}</p>
       </div>
     </div>
   );

@@ -5,7 +5,7 @@ import ImageSliderStyle from './ImageSliderStyle';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
 import { useRouter } from 'next/router';
-import { getAvailableTickets } from '~/utils/helper';
+import { customTruncate, getAvailableTickets } from '~/utils/helper';
 import Glow from '~/components/common/glow';
 
 const ImageSlider = ({ data, ticketPurchased }: any) => {
@@ -61,9 +61,9 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
             <div className="flex-grow w-full">
               <div className="flex flex-col gap-2">
                 <span className=" text-xs text-white ">
-                  {data?.tickets_sold}{' '}
+                  {data?.tickets_sold?.toLocaleString()}{' '}
                   {lang.lang_id === 2 ? 'بيعت من' : 'Sold out of '}{' '}
-                  {data?.total_tickets}
+                  {data?.total_tickets?.toLocaleString()}
                 </span>
                 <Progress value={percentageSold} className="w-full" />
               </div>
@@ -78,9 +78,7 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
             </div>
             <div>
               <p className="lg:text-xl text-md text-white opacity-75 mt-6">
-                {lang.lang_id === 2
-                  ? 'قم بشراء زجاجة مياه إيفيان وتبرع لشريكنا الخيري'
-                  : 'Buy Evian Water Bottle and Donate to our Charity Partner '}
+                {customTruncate(data?.EventDescription[0]?.desc, 100)}
               </p>
             </div>
             <div className="flex flex-col lg:flex-row  py-6 mb-12 justify-between  w-full">
@@ -88,11 +86,11 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
                 {lang.lang_id === 2 ? 'البديل النقدي' : 'Cash Alternative '}{' '}
                 <span color=""></span>{' '}
                 <span className=" font-black mr-1 text-primary">
-                  AED {(data?.cash_alt ?? 0)?.toFixed(2)}
+                  AED {(data?.cash_alt ?? 0)?.toFixed(2)?.toLocaleString()}
                 </span>
               </p>
               <p className=" lg:text-2xl text-xl  pl-0 text-primary font-black ">
-                AED {(price ?? 0)?.toFixed(2)}
+                AED {(price ?? 0)?.toFixed(2)?.toLocaleString()}
               </p>
             </div>
             <div className="w-full relative">
