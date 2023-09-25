@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { displayDate } from '~/utils/helper';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 import { LoadingDialog } from '~/components/common/modal/loadingModal';
+import { Separator } from '~/components/ui/separator';
 
 export default function OrderView() {
   const router = useRouter();
@@ -107,7 +108,7 @@ export default function OrderView() {
           </ScrollArea>
 
           <div className=" flex justify-between items-center">
-            <div></div>
+
             <div>
               <div className="flex justify-between items-center mb-6">
                 <div className="text-gray-700 mr-2">Subtotal:</div>
@@ -115,6 +116,7 @@ export default function OrderView() {
                   AED {(OrderApiData?.data?.sub_total_amount).toFixed(2)}
                 </div>
               </div>
+
               {OrderApiData?.data?.discount_amount > 0 && (
                 <div className="flex justify-between items-center  mb-6">
                   <div className="text-gray-700 mr-2">Discount:</div>
@@ -124,7 +126,8 @@ export default function OrderView() {
                 </div>
               )}
 
-              <div className="flex justify-between items-center mb-6">
+              
+              <div className="flex justify-between items-center mb-6 border-t-2  border-gray-300">
                 <div className="text-gray-700 mr-2">Total:</div>
                 <div className="text-gray-700 font-bold text-xl">
                   AED {(OrderApiData?.data?.total_amount).toFixed(2)}

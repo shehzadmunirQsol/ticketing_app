@@ -69,7 +69,8 @@ export function TableFilters(props: SettingDialogInterface) {
       'is_percentage',
       'is_limit',
       'is_disabled',
-      'is_limited'
+      'is_limited',
+
     ];
     const data =
       filter == 'category_id' || e.target.value == 'delete'

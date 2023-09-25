@@ -142,6 +142,13 @@ export const cartRouter = router({
         if (input?.filters?.endDate &&  input?.filters?.startDate) {
           const startDate = new Date(input?.filters?.startDate);
           const endDate = new Date(input?.filters?.endDate);
+          
+        if(startDate>endDate){
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: "Please add the dates correctly",
+          });
+        }
           payload.created_at = {gte:startDate, lte: endDate };
         }
 

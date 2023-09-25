@@ -122,19 +122,28 @@ export const customerRouter = router({
           // });
         }
 
-        if (input?.filters?.startDate &&  !input?.filters?.endDate) {
+        if (input?.filters?.startDate && !input?.filters?.endDate) {
           const startDate = new Date(input?.filters?.startDate);
           where.created_at = { gte: startDate };
         }
-        if (input?.filters?.endDate &&  !input?.filters?.startDate) {
+        if (input?.filters?.endDate && !input?.filters?.startDate) {
           const endDate = new Date(input?.filters?.endDate);
           where.created_at = { lte: endDate };
         }
-        if (input?.filters?.endDate &&  input?.filters?.startDate) {
+        if (input?.filters?.endDate && input?.filters?.startDate) {
           const startDate = new Date(input?.filters?.startDate);
           const endDate = new Date(input?.filters?.endDate);
-          where.created_at = {gte:startDate, lte: endDate };
+
+          if (startDate > endDate) {
+            throw new TRPCError({
+              code: 'NOT_FOUND',
+              message: "Please add the dates correctly",
+            });
+          }
+
+          where.created_at = { gte: startDate, lte: endDate };
         }
+
 
         const totalCategoryPromise = prisma.customer.count({
           where: where,
