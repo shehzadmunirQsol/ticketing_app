@@ -18,22 +18,17 @@ import {
   SelectValue,
 } from '@/ui/select';
 
-
 import { Textarea } from '~/components/ui/textarea';
 import { Input } from '@/ui/input';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import { FileInput } from '~/components/common/file_input';
-import { useEffect, useState } from 'react';
 import { trpc } from '~/utils/trpc';
 import { getS3ImageUrl } from '~/service/api/s3Url.service';
-import { isValidImageType } from '~/utils/helper';
-// import { useToast } from '~/components/ui/use-toast';
 import SideImage from '../../common/SideImage';
 import { contactSchema, contactSchemaInput } from '~/schema/contact';
 import { useToast } from '~/components/ui/use-toast';
 import Link from 'next/link';
-// import { ForgotPasswordDailog } from './ForgotPassword';
 import ContactImage from '../../../public/assets/contact-us.svg';
 import { zodResolver } from '@hookform/resolvers/zod';
 
@@ -74,22 +69,20 @@ export default function Contact() {
 
   // Contact
   const onSubmitContact = async (values: any) => {
-    console.log(values, 'Working');
-    const resp = await contactUs.mutateAsync(values);
-    console.log(resp, 'customer resp');
+    await contactUs.mutateAsync(values);
   };
 
   return (
-    <section className="body-font  ">
-      <div className="px-5 mb-10 sm:mb-20 pt-16 pb-10 lg:pb-0 md:pb-0 lg:py-24 md:py-24 mx-auto flex flex-col-reverse lg:flex-row md:flex-row gap-8 mt-6 max-w-[1300px]">
-        <div className="lg:w-2/5 w-full h-full mb-5 lg:mb-0 rounded-lg hidden  lg:block  ">
+    <section className="body-font pt-24 space-y-24">
+      <div className="px-4 my-10 md:px-14 md:my-24 flex gap-14 w-full">
+        <div className="w-2/5 mb-5 lg:mb-0 rounded-lg hidden lg:block">
           <SideImage
             image={ContactImage}
             text={'Connect with Us for '}
             text2={'Support, Questions'}
           />
         </div>
-        <div className="flex flex-col flex-wrap   lg:w-3/5 md:w-full  lg:text-left  rounded-none border-none  lg:mr-6 bg-card">
+        <div className="w-96 pb-6 flex flex-col flex-wrap   lg:w-3/5 md:w-full  lg:text-left  rounded-none border-none  bg-card">
           <div className="font-black  py-4 ">
             <p className="text-xl pl-6 px-4 lg:px-8">Contact Us</p>
             <hr className=" opacity-20 mt-4" />
@@ -103,7 +96,6 @@ export default function Contact() {
                 <FormField
                   control={form.control}
                   name="name"
-
                   render={({ field }) => (
                     <FormItem className="mb-4 ">
                       <FormLabel className="text-xs font-thin  text-grayColor">
@@ -117,7 +109,7 @@ export default function Contact() {
                         />
                       </FormControl>
 
-                      <div className='relative pb-2'>
+                      <div className="relative pb-2">
                         <FormMessage />
                       </div>
                     </FormItem>
@@ -139,7 +131,7 @@ export default function Contact() {
                         />
                       </FormControl>
 
-                      <div className='relative pb-2'>
+                      <div className="relative pb-2">
                         <FormMessage />
                       </div>
                     </FormItem>
@@ -150,11 +142,11 @@ export default function Contact() {
                   <p className="text-xs font-thin text-grayColor  mb-2 ">
                     Phone Number
                   </p>
-                  <div className="flex flex-row gap-2 ">
+                  <div className="flex items-center flex-row gap-2 ">
                     <FormField
                       control={form.control}
                       name="code"
-                      defaultValue='+971'
+                      defaultValue="+971"
                       render={({ field }) => (
                         <FormItem>
                           <Select
@@ -163,7 +155,10 @@ export default function Contact() {
                             value={field.value}
                           >
                             <FormControl className="rounded-md bg-inputColor">
-                              <SelectTrigger defaultValue={"+971"} className=" rounded-md  ">
+                              <SelectTrigger
+                                defaultValue={'+971'}
+                                className=" rounded-md  "
+                              >
                                 <SelectValue placeholder="+971" />
                               </SelectTrigger>
                             </FormControl>
@@ -178,8 +173,7 @@ export default function Contact() {
                             </SelectContent>
                           </Select>
 
-
-                          <div className='relative pb-2'>
+                          <div className="relative pb-2">
                             <FormMessage />
                           </div>
                         </FormItem>
@@ -189,18 +183,17 @@ export default function Contact() {
                       control={form.control}
                       name="number"
                       render={({ field }) => (
-                        <FormItem className=" w-full mb-4">
+                        <FormItem className=" w-full">
                           <FormControl className="rounded-md bg-inputColor">
                             <Input
                               type="number"
                               max={9}
                               placeholder="Enter your phone number"
                               {...field}
-
                             />
                           </FormControl>
 
-                          <div className='relative pb-2'>
+                          <div className="relative pb-2">
                             <FormMessage />
                           </div>
                         </FormItem>
@@ -224,7 +217,7 @@ export default function Contact() {
                         />
                       </FormControl>
 
-                      <div className='relative pb-2'>
+                      <div className="relative pb-2">
                         <FormMessage />
                       </div>
                     </FormItem>
@@ -232,17 +225,6 @@ export default function Contact() {
                 />
               </div>
               <div className="flex flex-col lg:flex-row md:flex-row justify-end items-center gap-6 ">
-
-                {/* <div className='overflow-hidden max-w-[295px] max-h-[70px] rounded-md'>
-                  <ReCAPTCHA
-                    // ref={recaptchaRef}
-                    size="normal"
-                    badge="inline"
-                    theme="dark"
-                    sitekey={process.env.NEXT_PUBLIC_SITE_KEY}
-                  // onChange={showResponse}
-                  />
-                </div> */}
                 <Button
                   className="  lg:w-52 md:w-52 w-full     text-black font-sans font-[900]   text-xl tracking-[-1px]"
                   variant="clip"

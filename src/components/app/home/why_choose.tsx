@@ -38,7 +38,7 @@ function WhyChoose() {
   ];
   return (
     <div className="relative   w-full max-w-[1600px] mx-auto mb-2 px-4 md:px-14 py-8">
-      <div className="text-gray-200 text-5xl font-black uppercase ">
+      <div className="text-gray-200 text-3xl xsm:text-5xl font-black uppercase ">
         WHY CHOOSE US?
       </div>
 
@@ -47,9 +47,9 @@ function WhyChoose() {
           return (
             <div
               key={index}
-              className=" py-6 max-w-2xl space-y-4 text-white items-center border-t-2  md:border-b-2 md:border-b-border  border-t-primary "
+              className=" py-6 w-full space-y-4 text-white items-center border-t-2  md:border-b-2 md:border-b-border  border-t-primary "
             >
-              <div className=" h-20 w-20">
+              <div className="w-full h-20 xs:w-20">
                 <Image
                   className="w-full h-full object-contain "
                   src={item?.icon}

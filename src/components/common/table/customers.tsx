@@ -31,7 +31,11 @@ import {
   TableRow,
 } from '@/ui/table';
 import { trpc } from '~/utils/trpc';
-import { customEmailTruncateHandler, customTruncate, displayDate } from '~/utils/helper';
+import {
+  customEmailTruncateHandler,
+  customTruncate,
+  displayDate,
+} from '~/utils/helper';
 import { getCustomerSchema } from '~/schema/customer';
 import {
   Tooltip,
@@ -58,12 +62,14 @@ import {
 } from '@radix-ui/react-icons';
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 import Link from 'next/link';
-export type Category = {
+
+export type CustomerType = {
   email: string;
   username: string | null;
   first_name: string;
   last_name: string;
   is_approved: boolean;
+  is_disabled: boolean;
   is_verified: boolean;
   is_disabled: boolean;
   id: number;
@@ -90,7 +96,7 @@ export default function CustomersDataTable() {
   const [title, setTitle] = useState('');
   const [type, setType] = useState('');
   const [isModal, setIsModal] = useState(false);
-  const [para, setPara] = useState("");
+  const [para, setPara] = useState('');
 
   // APi
   const { data, refetch, isLoading } = trpc.customer.getCustomers.useQuery(
@@ -104,11 +110,9 @@ export default function CustomersDataTable() {
     return Array.isArray(data?.data) ? data?.data : [];
   }, [data]);
 
-
   const deleteCustomer: any = trpc.customer.update.useMutation({
     onSuccess: () => {
       console.log('updated successfully');
-
     },
     onError(error: any) {
       console.log({ error });
@@ -118,41 +122,46 @@ export default function CustomersDataTable() {
   const deleteUser = (data: any, type: string) => {
     setSelectedItem(data);
     setTitle('Customer');
-    { type == 'delete' ? setPara("Are you sure you want to Delete this customer?") : type == "enable" ? setPara("Are you sure you want to Enable this customer?") : setPara("") }
+    {
+      type == 'delete'
+        ? setPara('Are you sure you want to Delete this customer?')
+        : type == 'enable'
+        ? setPara('Are you sure you want to Enable this customer?')
+        : setPara('');
+    }
     setType(type);
     setIsModal(true);
-
-  }
+  };
 
   const displayName = (data: any) => {
     if (data.is_disabled) {
       return (
-        <div className='flex gap-2 items-center'>
-          <p className='text-ellipsis text-left whitespace-nowrap overflow-hidden w-fit  text-white'>
-            {data.first_name + " " + data.last_name}
+        <div className="flex gap-2 items-center">
+          <p className="text-ellipsis text-left whitespace-nowrap overflow-hidden w-fit  text-white">
+            {data.first_name + ' ' + data.last_name}
           </p>
           <div>
-            <i className='fas fa-flag p-1 text-gray-200 bg-red-900 hover:bg-red-900/70 rounded-lg shadow-md text-xs'></i>
+            <i className="fas fa-flag p-1 text-gray-200 bg-red-900 hover:bg-red-900/70 rounded-lg shadow-md text-xs"></i>
           </div>
-
         </div>
-      )
+      );
     } else {
       return (
-        <p className='text-ellipsis text-left whitespace-nowrap overflow-hidden w-48  text-white'>
-          {data.first_name + " " + data.last_name}
+        <p className="text-ellipsis text-left whitespace-nowrap overflow-hidden w-48  text-white">
+          {data.first_name + ' ' + data.last_name}
         </p>
-      )
+      );
     }
-
-  }
+  };
 
   // handle modal
   const handleEnbled = (data: any, type: string) => {
     if (!data?.is_approved) {
       setSelectedItem(data);
       setTitle('Customer');
-      setPara("Note: By Saving this information customer can perform actionssuch as (login and order).")
+      setPara(
+        'Note: By Saving this information customer can perform actionssuch as (login and order).',
+      );
       setType(type);
       setIsModal(true);
     } else {
@@ -163,7 +172,7 @@ export default function CustomersDataTable() {
     }
   };
   // columns
-  const columns: ColumnDef<Category>[] = [
+  const columns: ColumnDef<CustomerType>[] = [
     {
       accessorKey: 'Name',
 
@@ -172,9 +181,7 @@ export default function CustomersDataTable() {
         <div className="capitalize ">
           <TooltipProvider>
             <Tooltip>
-              <TooltipTrigger >
-                {displayName(row?.original)}
-              </TooltipTrigger>
+              <TooltipTrigger>{displayName(row?.original)}</TooltipTrigger>
               <TooltipContent>
                 <p className="text-base font-normal">
                   {(row?.original?.first_name ?? '') +
@@ -229,7 +236,7 @@ export default function CustomersDataTable() {
             <Switch
               checked={row?.original?.is_verified}
               disabled={true}
-            // onCheckedChange={() => handleEnbled(row?.original, 'enabled')}
+              // onCheckedChange={() => handleEnbled(row?.original, 'enabled')}
             />
           </div>
         );
@@ -264,16 +271,22 @@ export default function CustomersDataTable() {
 
               {row?.original?.is_disabled ? (
                 <>
-                  <DropdownMenuItem onClick={() => deleteUser(row?.original, "delete")}>Delete Customer</DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => deleteUser(row?.original, "enable")}>Enable Customer</DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => deleteUser(row?.original, 'delete')}
+                  >
+                    Delete Customer
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => deleteUser(row?.original, 'enable')}
+                  >
+                    Enable Customer
+                  </DropdownMenuItem>
                 </>
               ) : (
                 <>
-                  <DropdownMenuItem >No Actions Yet</DropdownMenuItem>
+                  <DropdownMenuItem>No Actions Yet</DropdownMenuItem>
                 </>
               )}
-
-
             </DropdownMenuContent>
           </DropdownMenu>
         );
@@ -282,7 +295,7 @@ export default function CustomersDataTable() {
   ];
 
   const table = useReactTable({
-    data: categoryData as Category[],
+    data: categoryData as CustomerType[],
     columns,
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
@@ -354,7 +367,6 @@ export default function CustomersDataTable() {
       text: 'Clear Filter',
       filtername: 'Clear',
     },
-
   ];
 
   return (
@@ -408,9 +420,9 @@ export default function CustomersDataTable() {
                         {header.isPlaceholder
                           ? null
                           : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
+                              header.column.columnDef.header,
+                              header.getContext(),
+                            )}
                       </TableHead>
                     );
                   })}
@@ -508,7 +520,7 @@ export default function CustomersDataTable() {
               disabled={
                 (filters.first + 1) * filters.rows > (data?.count ?? 0) ||
                 Math.ceil((data?.count ?? 0) / filters.rows) ==
-                filters.first + 1
+                  filters.first + 1
               }
             >
               <span className="sr-only">Go to next page</span>
@@ -526,7 +538,7 @@ export default function CustomersDataTable() {
               disabled={
                 (filters.first + 1) * filters.rows > (data?.count ?? 0) ||
                 Math.ceil((data?.count ?? 0) / filters.rows) ==
-                filters.first + 1
+                  filters.first + 1
               }
             >
               <span className="sr-only">Go to last page</span>

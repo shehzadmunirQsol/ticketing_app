@@ -39,8 +39,8 @@ export const customerRouter = router({
     const user = await prisma.customer.findUnique({
       where: { id: userData.id },
       include: {
-        CustomerAddress: true
-      }
+        CustomerAddress: true,
+      },
     });
 
     if (!user)
@@ -56,7 +56,7 @@ export const customerRouter = router({
   update: publicProcedure
     .input(updateCustomerSchema)
     .mutation(async ({ input }) => {
-      const { id, ...payload } = input ;
+      const { id, ...payload } = input;
 
       const customer = await prisma.customer.update({
         where: { id },
@@ -214,7 +214,6 @@ export const customerRouter = router({
             },
           };
 
-
           const resgistranMailOptions = {
             template_id: 10,
             from: 'no-reply@winnar.com',
@@ -225,9 +224,8 @@ export const customerRouter = router({
             },
           };
 
-
-          const mailResponse = await sendEmail(mailOptions);
-          const resgistranMailResponse = await sendEmail(resgistranMailOptions);
+          await sendEmail(mailOptions);
+          // await sendEmail(resgistranMailOptions);
 
           return customer;
         }
@@ -586,7 +584,7 @@ export const customerRouter = router({
         // here u will do the mutation
 
         const payload = {
-          postal_code: Number(input.postal_code),
+          // postal_code: Number(input?.postal_code),
           state: '',
           street_address_2: '',
           ...input,
@@ -722,7 +720,6 @@ export const customerRouter = router({
     .input(deleteMyAccountCustomerSchema)
     .mutation(async ({ ctx, input }) => {
       try {
-
         const user: any = await prisma.customer.findFirst({
           where: { email: input.email },
         });

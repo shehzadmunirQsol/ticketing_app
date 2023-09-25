@@ -169,6 +169,9 @@ export function DropdownMenuDemo() {
           <Link href="/about-us">
             <DropdownMenuItem>About Us</DropdownMenuItem>
           </Link>
+          <Link href="/contact-us">
+            <DropdownMenuItem>Contact Us</DropdownMenuItem>
+          </Link>
           <Link href="/faq">
             <DropdownMenuItem>FAQ</DropdownMenuItem>
           </Link>
