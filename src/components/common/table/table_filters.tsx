@@ -69,16 +69,16 @@ export function TableFilters(props: SettingDialogInterface) {
       'is_percentage',
       'is_limit',
       'is_disabled',
+      'is_limited'
     ];
     const data =
-      filter == 'category_id'
+      filter == 'category_id' || e.target.value == 'delete'
         ? +e.target.value
         : filterData.includes(filter)
         ? e.target.value == 'true'
           ? true
           : false
         : e.target.value;
-    console.log({ data });
 
     if (data !== 'delete') {
       setFilterVal({
@@ -179,7 +179,7 @@ export function TableFilters(props: SettingDialogInterface) {
               <ScrollBar orientation="vertical"></ScrollBar>
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)}>
-                  <SheetDescription className="pt-10 pr-2">
+                  <SheetDescription className="pt-10 pr-3">
                     <div className=" grid grid-cols-1    items-center p-2">
                       {props?.inputList.map((item: any, i: number) => {
                         if (item?.type == 'text') {

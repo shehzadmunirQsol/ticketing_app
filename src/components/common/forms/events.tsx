@@ -411,7 +411,7 @@ export default function EventForm() {
               )}
             </div>
             <Tabs defaultValue={'en'} className="w-full">
-              <TabsList>
+              <TabsList className='overflow-hidden'>
                 <TabsTrigger value="en">English</TabsTrigger>
                 <TabsTrigger value="ar">Arabic</TabsTrigger>
               </TabsList>
@@ -430,7 +430,7 @@ export default function EventForm() {
                         />
                       </FormControl>
 
-                      <div className="relative pb-2">
+                      <div className="relative pb-4">
                         <FormMessage />
                       </div>
                     </FormItem>
@@ -449,7 +449,7 @@ export default function EventForm() {
                         />
                       </FormControl>
 
-                      <div className="relative pb-2">
+                      <div className="relative pb-4">
                         <FormMessage />
                       </div>
                     </FormItem>
@@ -459,7 +459,7 @@ export default function EventForm() {
                   control={form.control}
                   name="en.comp_details"
                   render={({ field }) => (
-                    <FormItem className=" bg-black">
+                    <FormItem className=" ">
                       <FormLabel>Competiton Details</FormLabel>
                       <FormControl>
                         <Editor
@@ -475,7 +475,7 @@ export default function EventForm() {
                         {/* <Textarea placeholder="Enter Description..." {...field} /> */}
                       </FormControl>
 
-                      <div className="relative pb-2">
+                      <div className="relative pb-4">
                         <FormMessage />
                       </div>
                     </FormItem>
@@ -498,7 +498,7 @@ export default function EventForm() {
                           />
                         </FormControl>
 
-                        <div className="relative pb-2">
+                        <div className="relative pb-4">
                           <FormMessage />
                         </div>
                       </FormItem>
@@ -517,7 +517,7 @@ export default function EventForm() {
                           />
                         </FormControl>
 
-                        <div className="relative pb-2">
+                        <div className="relative pb-4">
                           <FormMessage />
                         </div>
                       </FormItem>
@@ -527,7 +527,7 @@ export default function EventForm() {
                     control={form.control}
                     name="ar.comp_details"
                     render={({ field }) => (
-                      <FormItem className=" bg-black">
+                      <FormItem >
                         <FormLabel>Competiton Details</FormLabel>
                         <FormControl>
                           <div dir="rtl">
@@ -548,7 +548,7 @@ export default function EventForm() {
                           {/* <Textarea placeholder="Enter Description..." {...field} /> */}
                         </FormControl>
 
-                        <div className="relative pb-2">
+                        <div className="relative pb-4">
                           <FormMessage />
                         </div>
                       </FormItem>
@@ -577,7 +577,7 @@ export default function EventForm() {
                               />
                             </FormControl>
 
-                            <div className="relative pb-2">
+                            <div className="relative pb-4">
                               <FormMessage />
                             </div>
                           </FormItem>
@@ -612,7 +612,7 @@ export default function EventForm() {
                               />
                             </FormControl>
 
-                            <div className="relative pb-2">
+                            <div className="relative pb-4">
                               <FormMessage />
                             </div>
                           </FormItem>
@@ -661,7 +661,7 @@ export default function EventForm() {
                               />
                             </FormControl>
 
-                            <div className="relative pb-2">
+                            <div className="relative pb-4">
                               <FormMessage />
                             </div>
                           </FormItem>
@@ -685,7 +685,7 @@ export default function EventForm() {
                                 />
                               </FormControl>
 
-                              <div className="relative pb-2">
+                              <div className="relative pb-4">
                                 <FormMessage />
                               </div>
                             </FormItem>
@@ -737,7 +737,7 @@ export default function EventForm() {
                                 </SelectContent>
                               </Select>
 
-                              <div className="relative pb-2">
+                              <div className="relative pb-4">
                                 <FormMessage />
                               </div>
                             </FormItem>
@@ -768,7 +768,7 @@ export default function EventForm() {
                                   />
                                 </FormControl>
 
-                                <div className="relative pb-2">
+                                <div className="relative pb-4">
                                   <FormMessage />
                                 </div>
                               </FormItem>

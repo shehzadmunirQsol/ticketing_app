@@ -260,13 +260,18 @@ export const eventRouter = router({
           draw_date: null,
         };
 
-        if (input?.startDate) {
-          const startDate = new Date(input?.startDate);
+        if (input?.filters?.startDate &&  !input?.filters?.endDate) {
+          const startDate = new Date(input?.filters?.startDate);
           where.created_at = { gte: startDate };
         }
-        if (input?.endDate) {
-          const endDate = new Date(input?.endDate);
+        if (input?.filters?.endDate &&  !input?.filters?.startDate) {
+          const endDate = new Date(input?.filters?.endDate);
           where.created_at = { lte: endDate };
+        }
+        if (input?.filters?.endDate &&  input?.filters?.startDate) {
+          const startDate = new Date(input?.filters?.startDate);
+          const endDate = new Date(input?.filters?.endDate);
+          where.created_at = {gte:startDate, lte: endDate };
         }
 
         if (input.category_id) where.category_id = input.category_id;

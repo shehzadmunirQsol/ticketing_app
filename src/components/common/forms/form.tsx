@@ -63,7 +63,7 @@ export default function ExampleForm() {
                 This is your public display name.
               </FormDescription>
 
-              <div className='relative pb-2'>
+              <div className='relative pb-4'>
                 <FormMessage />
               </div>
             </FormItem>
@@ -137,7 +137,7 @@ export function LoginForm() {
                   <Input type="email" placeholder="Enter Email" {...field} />
                 </FormControl>
 
-                <div className='relative pb-2'>
+                <div className='relative pb-4'>
                   <FormMessage />
                 </div>
               </FormItem>
@@ -157,7 +157,7 @@ export function LoginForm() {
                   />
                 </FormControl>
 
-                <div className='relative pb-2'>
+                <div className='relative pb-4'>
                   <FormMessage />
                 </div>
               </FormItem>

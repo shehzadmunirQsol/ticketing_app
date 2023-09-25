@@ -71,7 +71,6 @@ export type CustomerType = {
   is_approved: boolean;
   is_disabled: boolean;
   is_verified: boolean;
-  is_disabled: boolean;
   id: number;
   dob: Date;
   created_at: Date;
@@ -333,18 +332,7 @@ export default function CustomersDataTable() {
       filtername: 'searchQuery',
       type: 'text',
     },
-    {
-      Icon: 'fal fa-chevron-down',
-      text: 'From Date',
-      filtername: 'startDate',
-      type: 'date',
-    },
-    {
-      Icon: 'fal fa-chevron-down',
-      text: 'To Date',
-      filtername: 'endDate',
-      type: 'date',
-    },
+    
     {
       Icon: 'fal fa-chevron-down',
       text: 'Verified',
@@ -360,6 +348,18 @@ export default function CustomersDataTable() {
       type: 'select',
 
       filter: StatusOptions,
+    },
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'From Date',
+      filtername: 'startDate',
+      type: 'date',
+    },
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'To Date',
+      filtername: 'endDate',
+      type: 'date',
     },
 
     {

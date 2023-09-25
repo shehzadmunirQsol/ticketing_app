@@ -343,6 +343,7 @@ export default function EventsDataTable() {
           value={filterID}
           setValue={setFilterID}
           setFilters={setFilters}
+          initial={filters}
         />
       </div>
       <div className="rounded-md border border-border">
