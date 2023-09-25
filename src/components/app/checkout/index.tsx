@@ -85,25 +85,28 @@ function Checkout() {
       form.setValue('dob', user?.dob ?? '');
       form.setValue('email', user?.email ?? '');
       if (user?.CustomerAddress && user?.CustomerAddress?.length) {
-        form.setValue(
-          'apartment',
-          user?.CustomerAddress[0]?.street_address_2 ?? '',
-        );
-        form.setValue(
-          'street_address',
-          user?.CustomerAddress[0]?.street_address_1 ?? '',
-        );
+        // form.setValue(
+        //   'apartment',
+        //   user?.CustomerAddress[0]?.street_address_2 ?? '',
+        // );
+        // form.setValue(
+        //   'street_address',
+        //   user?.CustomerAddress[0]?.street_address_1 ?? '',
+        // );
         form.setValue('city', user?.CustomerAddress[0]?.city ?? '');
         form.setValue(
           'country',
           user?.CustomerAddress[0]?.country ?? 'United Arab Emirates',
         );
-        form.setValue('phone_number', user?.phone_number ?? '');
+        form.setValue(
+          'phone_number',
+          user?.CustomerAddress[0]?.phone_number ?? '',
+        );
         form.setValue(
           'postal_code',
           user?.CustomerAddress[0]?.postal_code?.toString() ?? '',
         );
-        form.setValue('state', user?.CustomerAddress[0]?.state ?? 'Abu Dhabi');
+        // form.setValue('state', user?.CustomerAddress[0]?.state ?? 'Abu Dhabi');
       }
     }
   }, [user, cart]);
@@ -465,7 +468,7 @@ function Checkout() {
                               value={field.value}
                             >
                               <FormControl>
-                                <SelectTrigger className=" rounded-none  ">
+                                <SelectTrigger className=" h-10  ">
                                   <SelectValue placeholder="+971" />
                                 </SelectTrigger>
                               </FormControl>
