@@ -85,19 +85,19 @@ function Checkout() {
       form.setValue('dob', user?.dob ?? '');
       form.setValue('email', user?.email ?? '');
       if (user?.CustomerAddress && user?.CustomerAddress?.length) {
-        // form.setValue(
-        //   'apartment',
-        //   user?.CustomerAddress[0]?.street_address_2 ?? '',
-        // );
-        // form.setValue(
-        //   'street_address',
-        //   user?.CustomerAddress[0]?.street_address_1 ?? '',
-        // );
-        form.setValue('city', user?.CustomerAddress[0]?.city ?? '');
         form.setValue(
-          'country',
-          user?.CustomerAddress[0]?.country ?? 'United Arab Emirates',
+          'apartment',
+          user?.CustomerAddress[0]?.street_address_2 ?? '',
         );
+        form.setValue(
+          'street_address',
+          user?.CustomerAddress[0]?.street_address_1 ?? '',
+        );
+        form.setValue('city', user?.CustomerAddress[0]?.city ?? '');
+        // form.setValue(
+        //   'country',
+        //   user?.CustomerAddress[0]?.country ?? 'United Arab Emirates',
+        // );
         form.setValue(
           'phone_number',
           user?.CustomerAddress[0]?.phone_number ?? '',
