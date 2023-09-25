@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import BannerTitle from '~/components/common/banner_title';
 import WinnarsBg from '~/public/assets/winner_page.svg';
 import Cash from '~/public/assets/cash-1.png';
@@ -19,21 +19,21 @@ export const Winners = () => {
 
   const { data: winnersList } = trpc.winner.get.useQuery(filters, {
     refetchOnWindowFocus: false,
+    onSuccess(data) {
+      if (filters.first > 0 && data?.data?.length) {
+        setProducts([...products, ...data.data]);
+      } else if (data?.data?.length) {
+        setProducts(data.data);
+      }
+    },
   });
 
-  useEffect(() => {
-    if (filters.first > 0 && winnersList?.data?.length) {
-      if (winnersList?.data?.length) {
-        setProducts([...products, ...winnersList?.data]);
-      }
-    } else if (winnersList?.data?.length) {
-      setProducts(winnersList?.data);
-    }
-  }, [winnersList]);
-
   function nextPage() {
-    if (products.length % filters.rows === 0) {
-      setFilters({ ...filters, first: 1 + filters.first });
+    if (
+      winnersList?.data?.length === filters.rows &&
+      winnersList?.count > products.length
+    ) {
+      setFilters({ ...filters, first: ++filters.first });
     }
   }
 
