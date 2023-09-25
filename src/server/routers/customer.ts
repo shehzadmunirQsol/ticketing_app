@@ -56,14 +56,14 @@ export const customerRouter = router({
   update: publicProcedure
     .input(updateCustomerSchema)
     .mutation(async ({ input }) => {
-      const { id, ...payload } = input;
+      const { id, type,...payload } = input;
 
       const customer = await prisma.customer.update({
         where: { id },
         data: payload,
       });
 
-      if (payload.type === 'delete') {
+      if (type === 'delete') {
         const mailOptions = {
           template_id: 11,
           from: 'no-reply@winnar.com',

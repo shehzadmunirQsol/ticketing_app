@@ -159,7 +159,7 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
                       </div>
                     </div>
 
-                    <div className="flex justify-between items-center mb-6">
+                    <div className="flex justify-between items-center border-t-2 border-gray-300 mb-6">
                       <div className=" mr-2">Total:</div>
                       <div className=" font-bold text-lg">
                         AED {(OrderApiData?.data?.total_amount).toFixed(2)}

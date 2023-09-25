@@ -136,7 +136,7 @@ export default function OrderView() {
             </div>
           </div>
 
-          {/* <div className="border-t-2 border-gray-300 pt-8 mb-8">
+          <div className="border-t-2 border-gray-300 pt-8 mb-8">
             <div className="text-gray-700 mb-2">
               Payment is due within 30 days. Late payments are subject to fees.
             </div>
@@ -146,7 +146,7 @@ export default function OrderView() {
             <div className="text-gray-700">
               123 Main St., Anytown, USA 12345
             </div>
-          </div> */}
+          </div> 
         </div>
       )}
       <LoadingDialog open={isLoading} text={'Loading data...'} />
