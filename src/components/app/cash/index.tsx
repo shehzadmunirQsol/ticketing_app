@@ -8,7 +8,6 @@ import { RootState } from '~/store/store';
 import ProductCard from '~/components/common/card';
 import Glow from '~/components/common/glow';
 import { trpc } from '~/utils/trpc';
-import { LoadingDialog } from '~/components/common/modal/loadingModal';
 
 const CashPage = () => {
   const { lang } = useSelector((state: RootState) => state.layout);
@@ -28,27 +27,23 @@ const CashPage = () => {
     setProducts([]);
   }, [lang.lang_id]);
 
-  const {
-    data: prductsList,
-    isFetched,
-    isLoading,
-    isError,
-  } = trpc.event.getByCategoryId.useQuery(filters, {
+  const { data: prductsList } = trpc.event.getByCategoryId.useQuery(filters, {
     refetchOnWindowFocus: false,
+    onSuccess(data) {
+      if (filters.first > 0 && data?.data?.length) {
+        setProducts([...products, ...data.data]);
+      } else if (data?.data?.length) {
+        setProducts(data.data);
+      }
+    },
   });
 
-  useEffect(() => {
-    if (filters.first > 0 && prductsList?.data?.length) {
-      setProducts([...products, ...prductsList?.data]);
-    } else if (prductsList?.data?.length) {
-      setProducts(prductsList?.data);
-    }
-  }, [prductsList]);
-
   function nextPage() {
-    console.log('Next page emitted');
-    if (products.length % filters.rows === 0) {
-      setFilters({ ...filters, first: 1 + filters.first });
+    if (
+      prductsList?.data?.length === filters.rows &&
+      prductsList?.count > products.length
+    ) {
+      setFilters({ ...filters, first: ++filters.first });
     }
   }
 
