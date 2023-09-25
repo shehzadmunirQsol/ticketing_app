@@ -34,6 +34,8 @@ import { useToast } from '~/components/ui/use-toast';
 import { addCart } from '~/store/reducers/cart';
 import Link from 'next/link';
 import { userAuth } from '~/store/reducers/auth';
+import Script from 'next/script';
+import jqeury from 'jquery';
 
 function Checkout() {
   const { cart, totalAmount } = useSelector((state: RootState) => state.cart);
@@ -44,6 +46,7 @@ function Checkout() {
 
   // Handle Coupon Dailog
   const [loading, setLoading] = useState<boolean>(false);
+  const [totalID, setTotalID] = useState<any>(null);
 
   const [isModal, setIsModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState({});
@@ -174,11 +177,12 @@ function Checkout() {
       });
       console.log(data?.checkout?.data?.id, 'get checkout id');
       if (data?.checkout?.data) {
-        setIsCardModal(true);
-        setSelectedItem({
-          values: { ...values },
-          checkoutID: data?.checkout?.data?.id,
-        });
+        // setIsCardModal(true);
+        // setSelectedItem({
+        //   values: { ...values },
+        //   checkoutID: data?.checkout?.data?.id,
+        // });
+        setTotalID(data?.checkout?.data?.id);
       }
     } catch (err) {
       setIsCardModal(false);
@@ -660,6 +664,47 @@ function Checkout() {
               >
                 PAY WITH CARD
               </Button>
+              {totalID && (
+                <>
+                  <Script
+                    src={`https://eu-test.oppwa.com/v1/paymentWidgets.js?checkoutId=${totalID}`}
+                    onReady={() => {
+                      console.log('Script has loaded');
+                      const wpwlOptions = {
+                        registrations: {
+                          requireCvv: true,
+                          hideInitialPaymentForms: true,
+                        },
+                      };
+                      const createRegistrationHtml =
+                        '<div class="customLabel">Store payment details?</div><div class="customInput"><input type="checkbox" name="createRegistration" value="true" /></div>';
+                      jqeury('form.wpwl-form-card')
+                        .find('.wpwl-button')
+                        .before(createRegistrationHtml);
+                      function addCustomElement() {
+                        // Create the HTML elements
+                        console.log(
+                          jqeury('form.wpwl-form-card').find('.wpwl-button'),
+                          'data should be loaded',
+                        );
+                        const createRegistrationHtml =
+                          '<div class="customLabel">Store payment details?</div><div class="customInput"><input type="checkbox" name="createRegistration" value="true" /></div>';
+                        jqeury('form.wpwl-form-card')
+                          .find('.wpwl-button')
+                          .before(createRegistrationHtml);
+                      }
+
+                      // Delay the execution of addCustomElement by 1000 milliseconds (1 second)
+                      setTimeout(addCustomElement, 10000);
+                    }}
+                  ></Script>
+                  <form
+                    action={`${process.env.NEXT_PUBLIC_BASE_URL}/checkout`}
+                    className="paymentWidgets justify-start   lg:justify-center md:justify-center items-center px-2 lg:px-6 py-2 space-y-2 text-black"
+                    data-brands="VISA MASTER AMEX "
+                  ></form>
+                </>
+              )}
               <Glow className=" absolute bottom-4   -right-16  w-2/6 h-72 -z-2  " />
             </div>
           </div>

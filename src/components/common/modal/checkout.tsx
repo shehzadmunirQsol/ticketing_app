@@ -87,6 +87,21 @@ export function CheckoutDialog(props: SettingDialogInterface) {
               jqeury('form.wpwl-form-card')
                 .find('.wpwl-button')
                 .before(createRegistrationHtml);
+              function addCustomElement() {
+                // Create the HTML elements
+                console.log(
+                  jqeury('form.wpwl-form-card').find('.wpwl-button'),
+                  'data should be loaded',
+                );
+                const createRegistrationHtml =
+                  '<div class="customLabel">Store payment details?</div><div class="customInput"><input type="checkbox" name="createRegistration" value="true" /></div>';
+                jqeury('form.wpwl-form-card')
+                  .find('.wpwl-button')
+                  .before(createRegistrationHtml);
+              }
+
+              // Delay the execution of addCustomElement by 1000 milliseconds (1 second)
+              setTimeout(addCustomElement, 10000);
             }}
           ></Script>
           <form
