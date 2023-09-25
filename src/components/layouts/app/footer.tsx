@@ -150,7 +150,7 @@ function Footer() {
             </div>
           </div>
 
-          <div className="flex h-20 sm:mt-8  md:h-32  w-full relative justify-end items-end px-8 ">
+          <div className="flex h-20  px-4 sm:mt-8 md:px-8 md:h-32  w-full relative justify-end items-end ">
             <Image
               className="w-full h-full object-contain  z-40"
               src={Group16}

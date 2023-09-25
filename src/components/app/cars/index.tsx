@@ -30,19 +30,20 @@ const CarsPage = () => {
 
   const { data: prductsList } = trpc.event.getByCategoryId.useQuery(filters, {
     refetchOnWindowFocus: false,
+    onSuccess(data) {
+      if (filters.first > 0 && data?.data?.length) {
+        setProducts([...products, ...data.data]);
+      } else if (data?.data?.length) {
+        setProducts(data.data);
+      }
+    },
   });
 
-  useEffect(() => {
-    if (filters.first > 0 && prductsList?.data?.length) {
-      setProducts([...products, ...prductsList.data]);
-    } else if (prductsList?.data?.length) {
-      setProducts(prductsList.data);
-    }
-  }, [prductsList]);
-
   function nextPage() {
-    console.log('Next page emitted');
-    if (products.length % filters.rows === 0) {
+    if (
+      prductsList?.data?.length === filters.rows &&
+      prductsList?.count > products.length
+    ) {
       setFilters({ ...filters, first: ++filters.first });
     }
   }
@@ -61,11 +62,11 @@ const CarsPage = () => {
         </p>
         <Glow className=" absolute  top-1/2 -left-16 w-1/5 h-[350px] overflow-hidden " />
 
-        {/* <Glow className=" absolute   bottom-96 -right-16  w-1/5 h-[350px] overflow-x-hidden" /> */}
+        {/* <Glow className=" absolute bottom-96 -right-16  w-1/5 h-[350px] overflow-x-hidden" /> */}
         <div className=" grid gap-6 grid-cols-1 md:grid-cols-2 z-40 lg:grid-cols-3  justify-between mx-auto ">
           {products?.map((itemList, i) => {
             return (
-              <div className="z-40" key={i}>
+              <div className="z-40" key={itemList?.id}>
                 <ProductCard
                   isLast={i === products.length - 1}
                   nextPage={nextPage}

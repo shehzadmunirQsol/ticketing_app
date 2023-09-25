@@ -17,15 +17,27 @@ export const createCheckoutSchema = z.object({
     .max(24, {
       message: 'Name must not exceed 24 characters',
     }),
-  street_address: z.string(),
+  street_address: z.string().min(1, {
+    message: 'Please enter street address',
+  }),
   apartment: z.string().optional(),
-  country: z.string(),
-  state: z.string(),
-  city: z.string(),
-  postal_code: z.string(),
+  country: z.string().min(1, {
+    message: 'Please select country',
+  }),
+  state: z.string().min(1, {
+    message: 'Please select state',
+  }),
+  city: z.string().min(1, {
+    message: 'Please enter city',
+  }),
+  postal_code: z.string().min(1, {
+    message: 'Please enter postal code',
+  }),
   email: z.string().email(),
   code: z.string(),
-  phone_number: z.string(),
+  phone_number: z.string().min(1, {
+    message: 'Please enter phone number',
+  }),
   dob: z.date(),
   cart_id: z.number(),
   customer_id: z.number(),

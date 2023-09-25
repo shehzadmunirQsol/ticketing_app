@@ -95,7 +95,7 @@ function BannerSlider() {
     >
       {isSuccess && carSlider?.length ? (
         <>
-          <div className="banner-slide px-2 md:px-12 h-full">
+          <div className="mt-[20vh] flex flex-col-reverse lg:flex-row px-2 md:px-12 h-full">
             {/* text content */}
 
             <div
@@ -107,7 +107,7 @@ function BannerSlider() {
                 {carSlider[currentIndex]?.title}
               </p>
               {carSlider[currentIndex]?.price ? (
-                <p className="px-4 text-2xl sm:text-4xl md:text-5xl lg:text-[calc(3vw+10px)] xl:text-[55px] tracking-[-2.56px] py-2 md:py-1 ">
+                <p className="px-4 text-2xl sm:text-4xl md:text-5xl lg:text-[calc(3vw+10px)] xl:text-[55px] tracking-[-1px] py-2 md:py-1 ">
                   + {carSlider[currentIndex]?.price}
                 </p>
               ) : (
@@ -116,12 +116,12 @@ function BannerSlider() {
               <p className="sm:block px-4 text-xl  font-normal ">
                 {carSlider[currentIndex]?.description}
               </p>
-              <p className="px-4 text-lg  sm:text-2xl tracking-[-2px] font-[700]  my-3">
+              <p className="px-4 text-lg  sm:text-2xl tracking-[-1px] font-[700]  my-3">
                 {carSlider[currentIndex]?.date}
               </p>
               <Link href="/cars">
                 <Button
-                  className="mx-4 min-w-fit sm:w-44 text-black font-sans font-[900]  tracking-[-1px]"
+                  className=" mb-2 lg:mb-0 mx-4 min-w-fit sm:w-44 text-black font-sans font-[900]  tracking-[-1px]"
                   variant="clip"
                 >
                   {lang.lang_id === 1 ? 'ENTER NOW' : 'أدخل الأن'}

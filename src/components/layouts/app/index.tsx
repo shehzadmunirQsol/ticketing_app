@@ -105,8 +105,6 @@ function Index({ children }: DefaultLayoutProps) {
     }
   }
 
-  console.log(user, 'user header');
-
   return (
     <div
       dir={lang.dir}
