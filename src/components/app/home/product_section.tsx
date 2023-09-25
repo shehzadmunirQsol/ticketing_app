@@ -42,7 +42,6 @@ function ProductSection(props: producctInterface) {
   );
 
   function nextPage() {
-    console.log('Next page emitted');
     if (products.length % filters.rows === 0) {
       setFilters({ ...filters, first: 1 + filters.first });
     }
@@ -67,7 +66,6 @@ function ProductSection(props: producctInterface) {
   const previous = () => {
     slide?.current?.slickPrev();
   };
-  console.log({ products }, products.length, props?.type);
   const settings = {
     className: 'center slider variable-width flex gap-3',
 
@@ -185,7 +183,7 @@ function ProductSection(props: producctInterface) {
                   isLast={index === products.length - 1}
                   nextPage={nextPage}
                   data={item}
-                  class={`mr-4 `}
+                  class={`xsm:mr-4 `}
                   dir={`${lang?.dir}`}
                 />
               </div>

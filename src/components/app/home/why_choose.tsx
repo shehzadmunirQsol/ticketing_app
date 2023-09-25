@@ -36,20 +36,21 @@ function WhyChoose() {
       icon: Frame13,
     },
   ];
+
   return (
-    <div className="relative   w-full max-w-[1600px] mx-auto mb-2 px-4 md:px-14 py-8">
-      <div className="text-gray-200 text-3xl xsm:text-5xl font-black uppercase ">
+    <div className="relative w-full mx-auto mb-2 px-4 md:px-14 sm:py-8">
+      <div className="text-gray-200 text-center text-3xl sm:text-left sm:text-5xl font-black uppercase ">
         WHY CHOOSE US?
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8   py-8 ">
+      <div className="grid grid-cols-1  gap-8 py-8 md:grid-cols-3">
         {HowtoStart?.map((item, index) => {
           return (
             <div
               key={index}
-              className=" py-6 w-full space-y-4 text-white items-center border-t-2  md:border-b-2 md:border-b-border  border-t-primary "
+              className="text-center sm:text-left py-3 sm:py-6 w-full space-y-4 text-white items-center border-t-2  md:border-b-2 md:border-b-border  border-t-primary "
             >
-              <div className="w-full h-20 xs:w-20">
+              <div className="h-20 mx-auto sm:m-0 w-20">
                 <Image
                   className="w-full h-full object-contain "
                   src={item?.icon}
@@ -59,7 +60,9 @@ function WhyChoose() {
               </div>
               <div>
                 <div>
-                  <div className=" text-4xl  leading-tight">{item?.title}</div>
+                  <div className="text-2xl sm:text-4xl  leading-tight">
+                    {item?.title}
+                  </div>
                   <div className=" text-base font-normal text-gray-500 text-border leading-tight">
                     {item?.desc}
                   </div>
