@@ -65,6 +65,7 @@ export type Category = {
   last_name: string;
   is_approved: boolean;
   is_verified: boolean;
+  is_disabled: boolean;
   id: number;
   dob: Date;
   created_at: Date;

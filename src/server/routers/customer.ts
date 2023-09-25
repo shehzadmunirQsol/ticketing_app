@@ -341,8 +341,7 @@ export const customerRouter = router({
         }
 
         const respCode = await generateOTP(4);
-        let res = encodeURIComponent(respCode)
-        let email = encodeURIComponent(user.email)
+         
         //  email
         const mailOptions = {
           template_id: 5,
@@ -351,7 +350,7 @@ export const customerRouter = router({
           subject: 'Forgot Password request to Winnar',
 
           params: {
-            link: `${process.env.NEXT_PUBLIC_BASE_URL}/reset-password?verification_code=${res}&email=${email}`,
+            link: `${process.env.NEXT_PUBLIC_BASE_URL}/reset-password?verification_code=${encodeURIComponent(respCode)}&email=${encodeURIComponent(user.email)}`,
           },
         };
         const mailResponse = await sendEmail(mailOptions);
