@@ -77,8 +77,12 @@ function ProductCard(props: cardInterface) {
         <div className="px-6 mt-6 py-4">
           <div className="flex flex-col gap-1">
             <span className=" text-xs ">
-              {props?.data?.tickets_sold} Sold out of{' '}
-              {props?.data?.total_tickets}
+              {(
+                (Number(props?.data?.tickets_sold) /
+                  Number(props?.data?.total_tickets)) *
+                100
+              ).toFixed(props?.data?.tickets_sold ? 2 : 0)}
+              % Sold
             </span>
             <Progress
               value={
@@ -107,10 +111,7 @@ function ProductCard(props: cardInterface) {
           </div>
           <div className="relative w-full opacity-75  text-gray-200  text-md font-normal leading-normal ">
             <p className="  h-12  overflow-hidden ">
-              {customTruncate(
-                props?.data?.EventDescription[0]?.comp_details,
-                100,
-              )}
+              {customTruncate(props?.data?.EventDescription[0]?.desc, 100)}
             </p>
           </div>
           <hr className=" opacity-20 mt-4" />

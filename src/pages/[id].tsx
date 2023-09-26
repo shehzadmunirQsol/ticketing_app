@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { prisma } from '~/server/prisma';
 import parse from 'html-react-parser';
 import AboutCarousel from '~/components/app/about/about_carousel';
+import jqeury from 'jquery';
 
 export async function getStaticPaths() {
   const response: any = await prisma.cMS.findMany({
@@ -774,72 +775,145 @@ const faqContent2 = `<div >
 
 
 <div class="mt-8 overflow-hidden">
-  <!-- accordion-tab  -->
-  <div class="group outline-none accordion-section" tabindex="1">
-    <div class="group border-b group-focus:border-b-0 border-t py-4 border-lightColorBorder hover:border-b-primary shadow-lg hover:shadow-2xl flex justify-between  items-center text-gray-500 transition ease duration-200 cursor-pointer pr-10 relative">
-      <div class="group-focus:text-white transition ease duration-200 lg:text-3xl text-xl font-bold text-white">
-      Competition Rules
-      </div>
-      <div class=" h-8 w-8  rounded-full items-center inline-flex justify-center transform transition ease duration-150  group-focus:text-white group-focus:-rotate-180 absolute top-0 right-0 mb-auto ml-auto mt-2 mr-2">
-        <i class="fas fa-chevron-down group-focus:text-primary "></i>
-      </div>
-    </div>
-    <div class="group-focus:max-h-screen max-h-0 group-focus:border-b group-focus:pb-10 border-b-primary  text-base  text-grayColor overflow-hidden ease duration-200">
-    <p class="text-base mt-4 text-grayColor">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold">&lsquo;My Account&rsquo;</span> and in your email confirmation.</p>
-    </div>
-  </div>
-  <!-- accordion-tab  -->
-  <div class="group outline-none accordion-section" tabindex="1">
-    <div class="group border-b group-focus:border-b-0 border-t py-4 border-lightColorBorder hover:border-b-primary shadow-lg hover:shadow-2xl flex justify-between  items-center text-gray-500 transition ease duration-200 cursor-pointer pr-10 relative">
-      <div class="group-focus:text-white transition ease duration-200 lg:text-3xl text-xl font-bold text-white">
-      When do I get my number?
-      </div>
-      <div class=" h-8 w-8  rounded-full items-center inline-flex justify-center transform transition ease duration-200 group-focus:text-white group-focus:-rotate-180 absolute top-0 right-0 mb-auto ml-auto mt-2 mr-2">
-        <i class="fas fa-chevron-down group-focus:text-primary "></i>
-      </div>
-    </div>
-    <div class="group-focus:max-h-screen max-h-0 group-focus:border-b group-focus:pb-10 border-b-primary  text-base  text-grayColor overflow-hidden ease duration-200">
-    <p class="text-base mt-4 text-grayColor">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold">&lsquo;My Account&rsquo;</span> and in your email confirmation.</p>
-    </div>
-  </div>
-  <!-- accordion-tab  -->
-  <div class="group outline-none accordion-section" tabindex="1">
-    <div class="group border-b group-focus:border-b-0 border-t py-4 border-lightColorBorder hover:border-b-primary shadow-lg hover:shadow-2xl flex justify-between  items-center text-gray-500 transition ease duration-200 cursor-pointer pr-10 relative">
-      <div class="group-focus:text-white transition ease duration-200 lg:text-3xl text-xl font-bold text-white">
-      How do you do the draw?
-      </div>
-      <div class=" h-8 w-8  rounded-full items-center inline-flex justify-center transform transition ease duration-200 group-focus:text-white group-focus:-rotate-180 absolute top-0 right-0 mb-auto ml-auto mt-2 mr-2">
-        <i class="fas fa-chevron-down group-focus:text-primary "></i>
-      </div>
-    </div>
-    <div class="group-focus:max-h-screen max-h-0 group-focus:border-b group-focus:pb-10 border-b-primary  text-base  text-grayColor overflow-hidden ease duration-200">
-    <p class="text-base mt-4 text-grayColor">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold">&lsquo;My Account&rsquo;</span> and in your email confirmation.</p>
-    </div>
-  </div>
-  <!-- accordion-tab  -->
-  <div class="group outline-none accordion-section" tabindex="1">
-    <div class="group border-b group-focus:border-b-0 border-t py-4 border-lightColorBorder hover:border-b-primary shadow-lg hover:shadow-2xl flex justify-between  items-center text-gray-500 transition ease duration-200 cursor-pointer pr-10 relative">
-      <div class="group-focus:text-white transition ease duration-200 lg:text-3xl text-xl font-bold text-white">
-      When is the draw?
-      </div>
-      <div class=" h-8 w-8  rounded-full items-center inline-flex justify-center transform transition ease duration-200 group-focus:text-white group-focus:-rotate-180 absolute top-0 right-0 mb-auto ml-auto mt-2 mr-2">
-        <i class="fas fa-chevron-down group-focus:text-primary "></i>
-      </div>
-    </div>
-    <div class="group-focus:max-h-screen max-h-0 group-focus:border-b group-focus:pb-10 border-b-primary  text-base  text-grayColor overflow-hidden ease duration-200">
-    <p class="text-base mt-4 text-grayColor">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold">&lsquo;My Account&rsquo;</span> and in your email confirmation.</p>
-    </div>
-  </div>
+      
+      <details  class="group outline-none accordion-section  [&_i]:open:-rotate-180 [&_i]:open:text-primary " tabindex="1">
+        <summary class="group border-b group-open:border-b-0 border-t py-4 border-lightColorBorder hover:border-b-primary shadow-lg hover:shadow-2xl flex justify-between  items-center text-gray-500 transition ease duration-200 cursor-pointer pr-10 relative">
+        <div class="group-open:text-white transition ease-in-out duration-200 lg:text-3xl text-xl font-bold text-white">
+          Competition Rules
+          </div>
+          <div class=" h-8 w-8  rounded-full items-center inline-flex justify-center transform transition ease-in-out duration-150  open:text-white open:-rotate-180 absolute top-0 right-0 mb-auto ml-auto mt-2 mr-2">
+            <i class="fas fa-chevron-down group-open:text-primary "></i>
+          </div>
+        </summary>
+        <div class="group-open:max-h-screen   group-open:border-b group-open:pb-10  border-b-primary  text-base  text-grayColor overflow-hidden group-open:transition-all ease duration-200">
+        <p class="text-base mt-4 text-grayColor">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold">&lsquo;My Account&rsquo;</span> and in your email confirmation.</p>
+        </div>
+      </details>
+      <details  class="group outline-none accordion-section  [&_i]:open:-rotate-180 [&_i]:open:text-primary " tabindex="1">
+        <summary class="group border-b group-open:border-b-0 border-t py-4 border-lightColorBorder hover:border-b-primary shadow-lg hover:shadow-2xl flex justify-between  items-center text-gray-500 transition ease duration-200 cursor-pointer pr-10 relative">
+        <div class="group-open:text-white transition ease-in-out duration-200 lg:text-3xl text-xl font-bold text-white">
+          When do I get my number?
+          </div>
+          <div class=" h-8 w-8  rounded-full items-center inline-flex justify-center transform transition ease-in-out duration-150  open:text-white open:-rotate-180 absolute top-0 right-0 mb-auto ml-auto mt-2 mr-2">
+            <i class="fas fa-chevron-down group-open:text-primary "></i>
+          </div>
+        </summary>
+        <div class="group-open:max-h-screen   group-open:border-b group-open:pb-10  border-b-primary  text-base  text-grayColor overflow-hidden group-open:transition-all ease duration-200">
+        <p class="text-base mt-4 text-grayColor">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold">&lsquo;My Account&rsquo;</span> and in your email confirmation.</p>
+        </div>
+      </details>
+       <details  class="group outline-none accordion-section  [&_i]:open:-rotate-180 [&_i]:open:text-primary " tabindex="1">
+        <summary class="group border-b group-open:border-b-0 border-t py-4 border-lightColorBorder hover:border-b-primary shadow-lg hover:shadow-2xl flex justify-between  items-center text-gray-500 transition ease duration-200 cursor-pointer pr-10 relative">
+        <div class="group-open:text-white transition ease-in-out duration-200 lg:text-3xl text-xl font-bold text-white">
+          How do you do the draw?
+          </div>
+          <div class=" h-8 w-8  rounded-full items-center inline-flex justify-center transform transition ease-in-out duration-150  open:text-white open:-rotate-180 absolute top-0 right-0 mb-auto ml-auto mt-2 mr-2">
+            <i class="fas fa-chevron-down group-open:text-primary "></i>
+          </div>
+        </summary>
+        <div class="group-open:max-h-screen   group-open:border-b group-open:pb-10  border-b-primary  text-base  text-grayColor overflow-hidden group-open:transition-all ease duration-200">
+        <p class="text-base mt-4 text-grayColor">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold">&lsquo;My Account&rsquo;</span> and in your email confirmation.</p>
+        </div>
+      </details>
+      <details  class="group outline-none accordion-section  [&_i]:open:-rotate-180 [&_i]:open:text-primary " tabindex="1">
+        <summary class="group border-b group-open:border-b-0 border-t py-4 border-lightColorBorder hover:border-b-primary shadow-lg hover:shadow-2xl flex justify-between  items-center text-gray-500 transition ease duration-200 cursor-pointer pr-10 relative">
+        <div class="group-open:text-white transition ease-in-out duration-200 lg:text-3xl text-xl font-bold text-white">
+          When is the draw?
+          </div>
+          <div class=" h-8 w-8  rounded-full items-center inline-flex justify-center transform transition ease-in-out duration-150  open:text-white open:-rotate-180 absolute top-0 right-0 mb-auto ml-auto mt-2 mr-2">
+            <i class="fas fa-chevron-down group-open:text-primary "></i>
+          </div>
+        </summary>
+        <div class="group-open:max-h-screen   group-open:border-b group-open:pb-10  border-b-primary  text-base  text-grayColor overflow-hidden group-open:transition-all ease duration-200">
+        <p class="text-base mt-4 text-grayColor">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold">&lsquo;My Account&rsquo;</span> and in your email confirmation.</p>
+        </div>
+      </details>
+      
+   
+
+  
 
 </div>
 </div>
 `;
+const faqContent3 = `<div>
+<div class="w-full relative h-[750px] md:h-[650px] lg:h-[550px] z-40 text-center "><img alt="/" class="object-cover  w-full h-full block bg-black/50" fill="" quality="{100}" src="https://media.winnar.com/upload/faq-banner.png" />
+<div class="absolute h-[35px] w-full text-center top-[50%] flex items-center">
+<div class="w-full text-center">
+<p class="text-white drop-shadow-2xl text-center w-full text-4xl  lg:text-5xl tracking-tighter   font-[900]">FAQs</p>
+</div>
+</div>
+</div>
 
+<div classname="absolute top-[40px] right-64 px-8 xl:block hidden"><svg fill="none" height="895" viewbox="0 0 674 1095" width="474" xmlns="http://www.w3.org/2000/svg"> <path d="M1.11379 547.5L486.887 1093.73H819.886L334.113 547.5H1.11379Z" stroke="url(#paint0_linear_190_685)"></path> <path d="M1.11379 546.728L486.887 0.5H819.886L334.113 546.728H1.11379Z" stroke="url(#paint1_linear_190_685)"></path> <defs> <lineargradient gradientunits="userSpaceOnUse" id="paint0_linear_190_685" x1="706" x2="220" y1="1094.23" y2="531.228"> {/* <stop stop-opacity="0"></stop> */} {/* <stop offset="1" stop-color="#454545"></stop> */} </lineargradient> <lineargradient gradientunits="userSpaceOnUse" id="paint1_linear_190_685" x1="706" x2="220" y1="-1.26162e-05" y2="563"> {/* <stop stop-opacity="0"></stop> */} {/* <stop offset="1" stop-color="#454545"></stop> */} </lineargradient> </defs> </svg></div>
+
+<div class="relative  min-h-screen w-full flex flex-col gap-8  lg:px-14 md:px-14 px-4 mt-16">
+<div>
+<p class="lg:text-5xl md:text-4xl text-3xl text-start  font-black uppercase ">Frequently asked questions</p>
+
+<div class="border-b-4 w-16 border-primary">&nbsp;</div>
+
+<div class="mt-8 overflow-hidden"><!-- accordion-tab  -->
+<div class="group outline-none accordion-section" tabindex="1">
+<div class="group border-b group-focus:border-b-0 border-t py-4 border-lightColorBorder hover:border-b-primary shadow-lg hover:shadow-2xl flex justify-between  items-center text-gray-500 transition ease duration-200 cursor-pointer pr-10 relative">
+<div class="group-focus:text-white transition ease duration-200 lg:text-3xl text-xl font-bold text-white">Competition Rules</div>
+
+<div class="h-8 w-8  rounded-full items-center inline-flex justify-center transform transition ease duration-150  group-focus:text-white group-focus:-rotate-180 absolute top-0 right-0 mb-auto ml-auto mt-2 mr-2">&nbsp;</div>
+</div>
+
+<div class="group-focus:max-h-screen max-h-0 group-focus:border-b group-focus:pb-10 border-b-primary  text-base  text-grayColor overflow-hidden ease duration-200">
+<p class="text-base mt-4 text-grayColor">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold">&lsquo;My Account&rsquo;</span> and in your email confirmation.</p>
+</div>
+</div>
+<!-- accordion-tab  -->
+
+<div class="group outline-none accordion-section" tabindex="1">
+<div class="group border-b group-focus:border-b-0 border-t py-4 border-lightColorBorder hover:border-b-primary shadow-lg hover:shadow-2xl flex justify-between  items-center text-gray-500 transition ease duration-200 cursor-pointer pr-10 relative">
+<div class="group-focus:text-white transition ease duration-200 lg:text-3xl text-xl font-bold text-white">When do I get my number?</div>
+
+<div class="h-8 w-8  rounded-full items-center inline-flex justify-center transform transition ease duration-200 group-focus:text-white group-focus:-rotate-180 absolute top-0 right-0 mb-auto ml-auto mt-2 mr-2">&nbsp;</div>
+</div>
+
+<div class="group-focus:max-h-screen max-h-0 group-focus:border-b group-focus:pb-10 border-b-primary  text-base  text-grayColor overflow-hidden ease duration-200">
+<p class="text-base mt-4 text-grayColor">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold">&lsquo;My Account&rsquo;</span> and in your email confirmation.</p>
+</div>
+</div>
+<!-- accordion-tab  -->
+
+<div class="group outline-none accordion-section" tabindex="1">
+<div class="group border-b group-focus:border-b-0 border-t py-4 border-lightColorBorder hover:border-b-primary shadow-lg hover:shadow-2xl flex justify-between  items-center text-gray-500 transition ease duration-200 cursor-pointer pr-10 relative">
+<div class="group-focus:text-white transition ease duration-200 lg:text-3xl text-xl font-bold text-white">How do you do the draw?</div>
+
+<div class="h-8 w-8  rounded-full items-center inline-flex justify-center transform transition ease duration-200 group-focus:text-white group-focus:-rotate-180 absolute top-0 right-0 mb-auto ml-auto mt-2 mr-2">&nbsp;</div>
+</div>
+
+<div class="group-focus:max-h-screen max-h-0 group-focus:border-b group-focus:pb-10 border-b-primary  text-base  text-grayColor overflow-hidden ease duration-200">
+<p class="text-base mt-4 text-grayColor">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold">&lsquo;My Account&rsquo;</span> and in your email confirmation.</p>
+</div>
+</div>
+<!-- accordion-tab  -->
+
+<div class="group outline-none accordion-section" tabindex="1">
+<div class="group border-b group-focus:border-b-0 border-t py-4 border-lightColorBorder hover:border-b-primary shadow-lg hover:shadow-2xl flex justify-between  items-center text-gray-500 transition ease duration-200 cursor-pointer pr-10 relative">
+<div class="group-focus:text-white transition ease duration-200 lg:text-3xl text-xl font-bold text-white">When is the draw?</div>
+
+<div class="h-8 w-8  rounded-full items-center inline-flex justify-center transform transition ease duration-200 group-focus:text-white group-focus:-rotate-180 absolute top-0 right-0 mb-auto ml-auto mt-2 mr-2">&nbsp;</div>
+</div>
+
+<div class="group-focus:max-h-screen max-h-0 group-focus:border-b group-focus:pb-10 border-b-primary  text-base  text-grayColor overflow-hidden ease duration-200">
+<p class="text-base mt-4 text-grayColor">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold">&lsquo;My Account&rsquo;</span> and in your email confirmation.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+`;
 export default function CmsPage({ storeBlogsData }: any) {
   const reactElements = parse(
     storeBlogsData?.CMSDescription[0]?.content || '',
     {
-      // const reactElements = parse(AboutUsContent || '', {
+      // const reactElements = parse(faqContent2 || '', {
       replace: findElementsWithAttribute,
     },
   );
@@ -850,10 +924,15 @@ export default function CmsPage({ storeBlogsData }: any) {
       replace: (node) => node,
     },
   );
+  if (typeof window !== 'undefined') {
+    jqeury('details').click(function (event) {
+      jqeury('details').not(this).removeAttr('open');
+    });
+  }
 
   return (
     <div className=" w-full bg-bg-1 py-2">
-      <div className="mx-auto max-w-[1600px]">{reactElements}</div>
+      <div className="">{reactElements}</div>
     </div>
   );
 }

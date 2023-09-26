@@ -33,6 +33,10 @@ import { LoadingDialog } from '~/components/common/modal/loadingModal';
 import { useToast } from '~/components/ui/use-toast';
 import { addCart } from '~/store/reducers/cart';
 import Link from 'next/link';
+import { userAuth } from '~/store/reducers/auth';
+import Script from 'next/script';
+import jqeury from 'jquery';
+import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 
 function Checkout() {
   const { cart, totalAmount } = useSelector((state: RootState) => state.cart);
@@ -43,6 +47,7 @@ function Checkout() {
 
   // Handle Coupon Dailog
   const [loading, setLoading] = useState<boolean>(false);
+  const [totalID, setTotalID] = useState<any>(null);
 
   const [isModal, setIsModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState({});
@@ -173,11 +178,12 @@ function Checkout() {
       });
       console.log(data?.checkout?.data?.id, 'get checkout id');
       if (data?.checkout?.data) {
-        setIsCardModal(true);
-        setSelectedItem({
-          values: { ...values },
-          checkoutID: data?.checkout?.data?.id,
-        });
+        // setIsCardModal(true);
+        // setSelectedItem({
+        //   values: { ...values },
+        //   checkoutID: data?.checkout?.data?.id,
+        // });
+        setTotalID(data?.checkout?.data?.id);
       }
     } catch (err) {
       setIsCardModal(false);
@@ -202,313 +208,100 @@ function Checkout() {
 
   return (
     <div className="relative mt-20 bg-background py-6 px-4 space-y-10 md:py-16 md:px-14 md:space-y-14">
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmitCheckout)}
-          className="justify-center items-center  py-4"
-        >
-          <h2 className="lg:text-5xl md:text-4xl text-2xl font-black uppercase mb-6">
-            Checkout
-          </h2>
-          <div className="flex flex-col gap-8 lg:flex-row md:flex-row justify-between w-full ">
-            <div className="flex-[0.55] space-y-6">
-              <h3 className="text-lg md:text-xl lg:text-2xl font-bold ">
-                Billing Details
-              </h3>
-              <div className="space-y-6">
-                <div className="flex flex-col lg:flex-row md:flex-row gap-2  w-full justify-between">
-                  <FormField
-                    control={form.control}
-                    name="first_name"
-                    render={({ field }) => (
-                      <FormItem className=" w-full ">
-                        <FormLabel className="text-sm text-cardGray ">
-                          Name <sup className="text-red-500">*</sup>
-                        </FormLabel>
-                        <FormControl className="rounded-md bg-inputColor">
-                          <Input
-                            type="text"
-                            placeholder="Enter your name"
-                            {...field}
-                          />
-                        </FormControl>
-                        <div className="relative pb-2">
-                          <FormMessage />
-                        </div>
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="last_name"
-                    render={({ field }) => (
-                      <FormItem className=" w-full ">
-                        <FormLabel className="text-sm text-cardGray">
-                          Last Name <sup className="text-red-500">*</sup>
-                        </FormLabel>
-                        <FormControl className="rounded-md bg-inputColor">
-                          <Input
-                            type="text"
-                            placeholder="Enter last name"
-                            {...field}
-                          />
-                        </FormControl>
-                        <div className="relative pb-2">
-                          <FormMessage />
-                        </div>
-                      </FormItem>
-                    )}
-                  />
-                </div>
+      {totalID ? (
+        <>
+          <Script
+            src={`https://eu-test.oppwa.com/v1/paymentWidgets.js?checkoutId=${totalID}`}
+            onReady={() => {
+              console.log('Script has loaded');
+              const wpwlOptions = {
+                registrations: {
+                  requireCvv: true,
+                },
+              };
+              // const createRegistrationHtml =
+              //   '<div class="customLabel">Store payment details?</div><div class="customInput"><input type="checkbox" name="createRegistration" value="true" /></div>';
+              // jqeury('form.wpwl-form-card')
+              //   .find('.wpwl-button')
+              //   .before(createRegistrationHtml);
+              function addCustomElement() {
+                // Create the HTML elements
 
-                <div className="flex flex-col gap-y-3">
-                  <FormField
-                    control={form.control}
-                    name="street_address"
-                    render={({ field }) => (
-                      <FormItem className="w-full ">
-                        <FormLabel className="text-sm text-cardGray">
-                          Street Address <sup className="text-red-500">*</sup>
-                        </FormLabel>
-                        <FormControl className="rounded-md bg-inputColor">
-                          <Input
-                            type="text"
-                            placeholder="House number and street name"
-                            {...field}
-                          />
-                        </FormControl>
-                        <div className="relative pb-2">
-                          <FormMessage />
-                        </div>
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="apartment"
-                    render={({ field }) => (
-                      <FormItem className="w-full ">
-                        <FormControl className="rounded-md bg-inputColor">
-                          <Input
-                            type="text"
-                            placeholder="Apartment, suit, unit etc. (Optional) "
-                            {...field}
-                          />
-                        </FormControl>
-                        <div className="relative pb-2">
-                          <FormMessage />
-                        </div>
-                      </FormItem>
-                    )}
-                  />
-                </div>
+                const createRegistrationHtml =
+                  '<div class="customLabel">Store payment details?</div><div class="customInput"><input type="checkbox" name="createRegistration" value="true" /></div>';
+                jqeury('form.wpwl-form-card')
+                  .find('.wpwl-button')
+                  .before(createRegistrationHtml);
+              }
 
-                <div className="flex flex-col lg:flex-row md:flex-row gap-2  w-full justify-between">
-                  <div className="w-full ">
-                    <FormField
-                      control={form.control}
-                      name="country"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-sm text-cardGray">
-                            Country/ Region{' '}
-                            <sup className="text-red-500">*</sup>
-                          </FormLabel>
-                          <Select
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                            value={field.value}
-                          >
-                            <FormControl>
-                              <SelectTrigger className=" rounded-none  ">
-                                <SelectValue placeholder="Select your country" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              <SelectGroup>
-                                {countries?.map((item) => (
-                                  <SelectItem
-                                    key={item.country}
-                                    value={item.country}
-                                  >
-                                    {item?.country?.toUpperCase()}
-                                  </SelectItem>
-                                ))}
-                              </SelectGroup>
-                            </SelectContent>
-                          </Select>
-
-                          <div className="relative pb-2">
-                            <FormMessage />
-                          </div>
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                  <div className="w-full ">
-                    <FormField
-                      control={form.control}
-                      name="state"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-sm text-cardGray">
-                            State <sup className="text-red-500">*</sup>
-                          </FormLabel>
-                          <Select
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                            value={field.value}
-                          >
-                            <FormControl>
-                              <SelectTrigger className=" rounded-none  ">
-                                <SelectValue placeholder="Select your state" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              <SelectGroup>
-                                {states?.map((item) => (
-                                  <SelectItem
-                                    key={item.state}
-                                    value={item.state}
-                                  >
-                                    {item?.state?.toUpperCase()}
-                                  </SelectItem>
-                                ))}
-                              </SelectGroup>
-                            </SelectContent>
-                          </Select>
-
-                          <div className="relative pb-2">
-                            <FormMessage />
-                          </div>
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                </div>
-                <div className="flex flex-col lg:flex-row md:flex-row gap-2  w-full justify-between">
-                  <FormField
-                    control={form.control}
-                    name="city"
-                    render={({ field }) => (
-                      <FormItem className=" w-full ">
-                        <FormLabel className="text-sm text-cardGray">
-                          Town/City <sup className="text-red-500">*</sup>
-                        </FormLabel>
-                        <FormControl className="rounded-md bg-inputColor">
-                          <Input
-                            type="text"
-                            placeholder="Enter the city"
-                            {...field}
-                          />
-                        </FormControl>
-                        <div className="relative pb-2">
-                          <FormMessage />
-                        </div>
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="postal_code"
-                    render={({ field }) => (
-                      <FormItem className=" w-full ">
-                        <FormLabel className="text-sm text-cardGray">
-                          Postcode <sup className="text-red-500">*</sup>
-                        </FormLabel>
-                        <FormControl className="rounded-md bg-inputColor">
-                          <Input
-                            type="text"
-                            placeholder="Enter your postcode"
-                            {...field}
-                          />
-                        </FormControl>
-                        <div className="relative pb-2">
-                          <FormMessage />
-                        </div>
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem className=" w-full">
-                      <FormLabel className="text-sm text-cardGray">
-                        Email <sup className="text-red-500">*</sup>
-                      </FormLabel>
-                      <FormControl className="rounded-md bg-inputColor">
-                        <Input
-                          type="email"
-                          placeholder="Enter your email address"
-                          {...field}
-                        />
-                      </FormControl>
-                      <div className="relative pb-2">
-                        <FormMessage />
-                      </div>
-                    </FormItem>
-                  )}
-                />
-
-                <div className="flex items-start flex-col lg:flex-row gap-2 w-full justify-between">
-                  <div className="w-full">
-                    <p className="text-sm text-cardGray  mb-3 ">Phone Number</p>
-                    <div className="flex flex-row gap-2 ">
+              // Delay the execution of addCustomElement by 1000 milliseconds (1 second)
+              setTimeout(addCustomElement, 6000);
+            }}
+          ></Script>
+          <div className=" relative  bg-background   ">
+            <h2 className="lg:text-4xl md:text-4xl text-2xl font-black uppercase mb-6">
+              Payment
+            </h2>
+            <form
+              action={`${process.env.NEXT_PUBLIC_BASE_URL}/checkout`}
+              className="paymentWidgets justify-start   lg:justify-center md:justify-center items-center px-2 lg:px-6 py-2 space-y-2 text-black"
+              data-brands="VISA MASTER AMEX "
+            ></form>
+          </div>
+        </>
+      ) : (
+        <>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmitCheckout)}
+              className="justify-center items-center  py-4"
+            >
+              <h2 className="lg:text-5xl md:text-4xl text-2xl font-black uppercase mb-6">
+                Checkout
+              </h2>
+              <div className="flex flex-col gap-8 lg:flex-row md:flex-row justify-between w-full ">
+                <div className="flex-[0.55] space-y-6">
+                  <h3 className="text-lg md:text-xl lg:text-2xl font-bold ">
+                    Billing Details
+                  </h3>
+                  <div className="space-y-6">
+                    <div className="flex flex-col lg:flex-row md:flex-row gap-2  w-full justify-between">
                       <FormField
                         control={form.control}
-                        name="code"
+                        name="first_name"
                         render={({ field }) => (
-                          <FormItem>
-                            <Select
-                              onValueChange={field.onChange}
-                              defaultValue={field.value}
-                              value={field.value}
-                            >
-                              <FormControl>
-                                <SelectTrigger className=" h-10  ">
-                                  <SelectValue placeholder="+971" />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                <SelectGroup>
-                                  {countryCode?.map((item) => (
-                                    <SelectItem
-                                      key={item.code}
-                                      value={item.code}
-                                    >
-                                      {item?.code}
-                                    </SelectItem>
-                                  ))}
-                                </SelectGroup>
-                              </SelectContent>
-                            </Select>
-
-                            <div className="relative pb-2">
-                              <FormMessage />
-                            </div>
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="phone_number"
-                        render={({ field }) => (
-                          <FormItem className=" w-full">
-                            {/* <FormLabel className="text-sm text-cardGray">
-                            Email  <sup className="text-red-500">*</sup>
-                          </FormLabel> */}
+                          <FormItem className=" w-full ">
+                            <FormLabel className="text-sm text-cardGray ">
+                              Name <sup className="text-red-500">*</sup>
+                            </FormLabel>
                             <FormControl className="rounded-md bg-inputColor">
                               <Input
-                                max={999999999}
-                                type="number"
-                                className="w-full"
-                                placeholder="Enter your phone number"
+                                type="text"
+                                placeholder="Enter your name"
                                 {...field}
                               />
                             </FormControl>
-
+                            <div className="relative pb-2">
+                              <FormMessage />
+                            </div>
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="last_name"
+                        render={({ field }) => (
+                          <FormItem className=" w-full ">
+                            <FormLabel className="text-sm text-cardGray">
+                              Last Name <sup className="text-red-500">*</sup>
+                            </FormLabel>
+                            <FormControl className="rounded-md bg-inputColor">
+                              <Input
+                                type="text"
+                                placeholder="Enter last name"
+                                {...field}
+                              />
+                            </FormControl>
                             <div className="relative pb-2">
                               <FormMessage />
                             </div>
@@ -516,154 +309,421 @@ function Checkout() {
                         )}
                       />
                     </div>
-                  </div>
-                  <div className="w-full">
+
+                    <div className="flex flex-col gap-y-3">
+                      <FormField
+                        control={form.control}
+                        name="street_address"
+                        render={({ field }) => (
+                          <FormItem className="w-full ">
+                            <FormLabel className="text-sm text-cardGray">
+                              Street Address{' '}
+                              <sup className="text-red-500">*</sup>
+                            </FormLabel>
+                            <FormControl className="rounded-md bg-inputColor">
+                              <Input
+                                type="text"
+                                placeholder="House number and street name"
+                                {...field}
+                              />
+                            </FormControl>
+                            <div className="relative pb-2">
+                              <FormMessage />
+                            </div>
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="apartment"
+                        render={({ field }) => (
+                          <FormItem className="w-full ">
+                            <FormControl className="rounded-md bg-inputColor">
+                              <Input
+                                type="text"
+                                placeholder="Apartment, suit, unit etc. (Optional) "
+                                {...field}
+                              />
+                            </FormControl>
+                            <div className="relative pb-2">
+                              <FormMessage />
+                            </div>
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+
+                    <div className="flex flex-col lg:flex-row md:flex-row gap-2  w-full justify-between">
+                      <div className="w-full ">
+                        <FormField
+                          control={form.control}
+                          name="country"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-sm text-cardGray">
+                                Country/ Region{' '}
+                                <sup className="text-red-500">*</sup>
+                              </FormLabel>
+                              <Select
+                                onValueChange={field.onChange}
+                                defaultValue={field.value}
+                                value={field.value}
+                              >
+                                <FormControl>
+                                  <SelectTrigger className=" rounded-none  ">
+                                    <SelectValue placeholder="Select your country" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  <SelectGroup>
+                                    {countries?.map((item) => (
+                                      <SelectItem
+                                        key={item.country}
+                                        value={item.country}
+                                      >
+                                        {item?.country?.toUpperCase()}
+                                      </SelectItem>
+                                    ))}
+                                  </SelectGroup>
+                                </SelectContent>
+                              </Select>
+
+                              <div className="relative pb-2">
+                                <FormMessage />
+                              </div>
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      <div className="w-full ">
+                        <FormField
+                          control={form.control}
+                          name="state"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-sm text-cardGray">
+                                State <sup className="text-red-500">*</sup>
+                              </FormLabel>
+                              <Select
+                                onValueChange={field.onChange}
+                                defaultValue={field.value}
+                                value={field.value}
+                              >
+                                <FormControl>
+                                  <SelectTrigger className=" rounded-none  ">
+                                    <SelectValue placeholder="Select your state" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  <SelectGroup>
+                                    {states?.map((item) => (
+                                      <SelectItem
+                                        key={item.state}
+                                        value={item.state}
+                                      >
+                                        {item?.state?.toUpperCase()}
+                                      </SelectItem>
+                                    ))}
+                                  </SelectGroup>
+                                </SelectContent>
+                              </Select>
+
+                              <div className="relative pb-2">
+                                <FormMessage />
+                              </div>
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                    </div>
+                    <div className="flex flex-col lg:flex-row md:flex-row gap-2  w-full justify-between">
+                      <FormField
+                        control={form.control}
+                        name="city"
+                        render={({ field }) => (
+                          <FormItem className=" w-full ">
+                            <FormLabel className="text-sm text-cardGray">
+                              Town/City <sup className="text-red-500">*</sup>
+                            </FormLabel>
+                            <FormControl className="rounded-md bg-inputColor">
+                              <Input
+                                type="text"
+                                placeholder="Enter the city"
+                                {...field}
+                              />
+                            </FormControl>
+                            <div className="relative pb-2">
+                              <FormMessage />
+                            </div>
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="postal_code"
+                        render={({ field }) => (
+                          <FormItem className=" w-full ">
+                            <FormLabel className="text-sm text-cardGray">
+                              Postcode <sup className="text-red-500">*</sup>
+                            </FormLabel>
+                            <FormControl className="rounded-md bg-inputColor">
+                              <Input
+                                type="text"
+                                placeholder="Enter your postcode"
+                                {...field}
+                              />
+                            </FormControl>
+                            <div className="relative pb-2">
+                              <FormMessage />
+                            </div>
+                          </FormItem>
+                        )}
+                      />
+                    </div>
                     <FormField
                       control={form.control}
-                      name="dob"
-                      render={() => (
-                        <FormItem>
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem className=" w-full">
                           <FormLabel className="text-sm text-cardGray">
-                            Date of Birth <sup className="text-red-500">*</sup>
+                            Email <sup className="text-red-500">*</sup>
                           </FormLabel>
                           <FormControl className="rounded-md bg-inputColor">
                             <Input
-                              max={minDateFormatted}
-                              type="date"
-                              placeholder="Enter your Date of Birth"
-                              {...form.register('dob', {
-                                valueAsDate: true,
-                                required: 'required',
-                              })}
+                              type="email"
+                              placeholder="Enter your email address"
+                              {...field}
                             />
                           </FormControl>
-                          <FormMessage />
+                          <div className="relative pb-2">
+                            <FormMessage />
+                          </div>
                         </FormItem>
                       )}
                     />
+
+                    <div className="flex items-start flex-col lg:flex-row gap-2 w-full justify-between">
+                      <div className="w-full">
+                        <p className="text-sm text-cardGray  mb-3 ">
+                          Phone Number
+                        </p>
+                        <div className="flex flex-row gap-2 ">
+                          <FormField
+                            control={form.control}
+                            name="code"
+                            render={({ field }) => (
+                              <FormItem>
+                                <Select
+                                  onValueChange={field.onChange}
+                                  defaultValue={field.value}
+                                  value={field.value}
+                                >
+                                  <FormControl>
+                                    <SelectTrigger className=" h-10  ">
+                                      <SelectValue placeholder="+971" />
+                                    </SelectTrigger>
+                                  </FormControl>
+                                  <SelectContent>
+                                    <SelectGroup>
+                                      {countryCode?.map((item) => (
+                                        <SelectItem
+                                          key={item.code}
+                                          value={item.code}
+                                        >
+                                          {item?.code}
+                                        </SelectItem>
+                                      ))}
+                                    </SelectGroup>
+                                  </SelectContent>
+                                </Select>
+
+                                <div className="relative pb-2">
+                                  <FormMessage />
+                                </div>
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={form.control}
+                            name="phone_number"
+                            render={({ field }) => (
+                              <FormItem className=" w-full">
+                                {/* <FormLabel className="text-sm text-cardGray">
+                            Email  <sup className="text-red-500">*</sup>
+                          </FormLabel> */}
+                                <FormControl className="rounded-md bg-inputColor">
+                                  <Input
+                                    max={999999999}
+                                    type="number"
+                                    className="w-full"
+                                    placeholder="Enter your phone number"
+                                    {...field}
+                                  />
+                                </FormControl>
+
+                                <div className="relative pb-2">
+                                  <FormMessage />
+                                </div>
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                      </div>
+                      <div className="w-full">
+                        <FormField
+                          control={form.control}
+                          name="dob"
+                          render={() => (
+                            <FormItem>
+                              <FormLabel className="text-sm text-cardGray">
+                                Date of Birth{' '}
+                                <sup className="text-red-500">*</sup>
+                              </FormLabel>
+                              <FormControl className="rounded-md bg-inputColor">
+                                <Input
+                                  max={minDateFormatted}
+                                  type="date"
+                                  placeholder="Enter your Date of Birth"
+                                  {...form.register('dob', {
+                                    valueAsDate: true,
+                                    required: 'required',
+                                  })}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
-            <div className="border-r border-lightColorBorder  mx-4"></div>
-            <div className="relative bg-background  flex-[0.45] space-y-12 z-10">
-              <div className="flex flex-row justify-between items-center">
-                <h3 className="text-lg md:text-xl lg:text-2xl font-bold">
-                  Order Summary
-                </h3>
-                {!cart.isDiscount ? (
-                  <p
-                    className="text-white/40 text-sm lg:text-base cursor-pointer"
-                    onClick={() => setIsModal(true)}
-                  >
-                    Have a coupon code?
-                  </p>
-                ) : null}
-              </div>
-              <div className="relative space-y-8">
-                <div className=" max-h-60 overflow-x-auto space-y-8">
-                  {cart?.cartItems?.length
-                    ? cart?.cartItems?.map((item) => {
-                        return (
-                          <div
-                            className="flex flex-row justify-between "
-                            key={item.id}
-                          >
-                            <p className="lg:text-2xl md:lg:text-xl   w-[60%]">
-                              {item?.Event?.EventDescription[0]?.name}
-                            </p>
-                            <p className="font-black text-lg lg:text-xl ">
-                              AED{' '}
-                              {(item?.Event?.price * item?.quantity)?.toFixed(
-                                2,
-                              )}
-                            </p>
-                          </div>
-                        );
-                      })
-                    : null}
-                </div>
-                {cart?.isDiscount ? (
-                  <div className="space-y-6">
-                    <div className="h-[1px] bg-white/40" />
-
-                    <div className="flex items-center justify-between z-10 ">
-                      <p className="text-white/40  text-lg">Sub Total:</p>
-                      <p className="text-xl">AED {totalAmount?.toFixed(2)}</p>
+                <div className="border-r border-lightColorBorder  mx-4"></div>
+                <div className="relative bg-background  flex-[0.45] space-y-12 z-10">
+                  <div className="flex flex-row justify-between items-center">
+                    <h3 className="text-lg md:text-xl lg:text-2xl font-bold">
+                      Order Summary
+                    </h3>
+                    {!cart.isDiscount ? (
+                      <p
+                        className="text-white/40 text-sm lg:text-base cursor-pointer"
+                        onClick={() => setIsModal(true)}
+                      >
+                        Have a coupon code?
+                      </p>
+                    ) : null}
+                  </div>
+                  <div className="relative space-y-8">
+                    <div className=" max-h-60 overflow-x-auto space-y-8">
+                      {cart?.cartItems?.length
+                        ? cart?.cartItems?.map((item) => {
+                            return (
+                              <div
+                                className="flex flex-row justify-between "
+                                key={item.id}
+                              >
+                                <p className="lg:text-2xl md:lg:text-xl   w-[60%]">
+                                  {item?.Event?.EventDescription[0]?.name}
+                                </p>
+                                <p className="font-black text-lg lg:text-xl ">
+                                  AED{' '}
+                                  {(
+                                    item?.Event?.price * item?.quantity
+                                  )?.toFixed(2)}
+                                </p>
+                              </div>
+                            );
+                          })
+                        : null}
                     </div>
-                    <div className="flex items-center justify-between z-10 ">
-                      <p className="text-white/40  text-lg">Discount:</p>
-                      <p className="text-xl">
-                        {' '}
-                        - AED {discountAmount?.toFixed(2)}
+                    {cart?.isDiscount ? (
+                      <div className="space-y-6">
+                        <div className="h-[1px] bg-white/40" />
+
+                        <div className="flex items-center justify-between z-10 ">
+                          <p className="text-white/40  text-lg">Sub Total:</p>
+                          <p className="text-xl">
+                            AED {totalAmount?.toFixed(2)}
+                          </p>
+                        </div>
+                        <div className="flex items-center justify-between z-10 ">
+                          <p className="text-white/40  text-lg">Discount:</p>
+                          <p className="text-xl">
+                            {' '}
+                            - AED {discountAmount?.toFixed(2)}
+                          </p>
+                        </div>
+                      </div>
+                    ) : null}
+
+                    <div className="flex flex-row justify-between py-6 border-t border-b border-white/40">
+                      <p className="lg:text-2xl md:lg:text-xl font-black">
+                        Total:
+                      </p>
+                      <p className="font-black text-lg lg:text-xl text-primary">
+                        AED {(totalAmount - discountAmount)?.toFixed(2)}
                       </p>
                     </div>
-                  </div>
-                ) : null}
-
-                <div className="flex flex-row justify-between py-6 border-t border-b border-white/40">
-                  <p className="lg:text-2xl md:lg:text-xl font-black">Total:</p>
-                  <p className="font-black text-lg lg:text-xl text-primary">
-                    AED {(totalAmount - discountAmount)?.toFixed(2)}
-                  </p>
-                </div>
-                <p className="lg:text-base md:text-sm text-sm text-cardGray md:w-[65%] lg:w-[85%]">
-                  Your personal data will be used to process your order, support
-                  your experience throughout this website, and for other
-                  purposes described in our{' '}
-                  <span className="text-white">
-                    {' '}
-                    <Link href="/privacy-policy"> privacy policy </Link>
-                  </span>
-                  .
-                </p>
-                <div className="flex flex-row gap-2 justify-start   items-start w-full  md:w-[65%] lg:w-[85%]">
-                  <input
-                    id="terms-and-conditions"
-                    type="checkbox"
-                    className="accent-white  my-1"
-                    required
-                  />
-
-                  <label
-                    htmlFor="terms-and-conditions"
-                    className="text-sm text-cardGray cursor-pointer"
-                  >
-                    I’m 18 years old or over and i have read and agree to the
-                    website
-                    <span className="text-white">
-                      <Link href="/cms/terms-condition">
+                    <p className="lg:text-base md:text-sm text-sm text-cardGray md:w-[65%] lg:w-[85%]">
+                      Your personal data will be used to process your order,
+                      support your experience throughout this website, and for
+                      other purposes described in our{' '}
+                      <span className="text-white">
                         {' '}
-                        Terms & Conditions{' '}
-                      </Link>
-                    </span>
-                    .
-                  </label>
+                        <Link href="/privacy-policy"> privacy policy </Link>
+                      </span>
+                      .
+                    </p>
+                    <div className="flex flex-row gap-2 justify-start   items-start w-full  md:w-[65%] lg:w-[85%]">
+                      <input
+                        id="terms-and-conditions"
+                        type="checkbox"
+                        className="accent-white  my-1"
+                        required
+                      />
+
+                      <label
+                        htmlFor="terms-and-conditions"
+                        className="text-sm text-cardGray cursor-pointer"
+                      >
+                        I’m 18 years old or over and i have read and agree to
+                        the website
+                        <span className="text-white">
+                          <Link href="/cms/terms-condition">
+                            {' '}
+                            Terms & Conditions{' '}
+                          </Link>
+                        </span>
+                        .
+                      </label>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-row gap-4 justify-center ">
+                    <p className="text-sm text-cardGray">We accept</p>
+                    <Image
+                      className="w-64 object-contain  "
+                      src={Group17}
+                      quality={100}
+                      alt="Sunset in the mountains"
+                    />
+                  </div>
+
+                  <Button
+                    disabled={checkoutCreator?.isLoading}
+                    className="min-w-max w-full  px-16 mt-10  text-black font-sans font-[900]   text-xl tracking-[-1px]"
+                    variant="clip"
+                  >
+                    PAY WITH CARD
+                  </Button>
+
+                  <Glow className=" absolute bottom-4   -right-16  w-2/6 h-72 -z-2  " />
                 </div>
               </div>
-
-              <div className="flex flex-row gap-4 justify-center ">
-                <p className="text-sm text-cardGray">We accept</p>
-                <Image
-                  className="w-64 object-contain  "
-                  src={Group17}
-                  quality={100}
-                  alt="Sunset in the mountains"
-                />
-              </div>
-
-              <Button
-                disabled={checkoutCreator?.isLoading}
-                className="min-w-max w-full  px-16 mt-10  text-black font-sans font-[900]   text-xl tracking-[-1px]"
-                variant="clip"
-              >
-                PAY WITH CARD
-              </Button>
-              <Glow className=" absolute bottom-4   -right-16  w-2/6 h-72 -z-2  " />
-            </div>
-          </div>
-        </form>
-      </Form>
+            </form>
+          </Form>
+        </>
+      )}
       <LoadingDialog
         open={loading || checkoutCreator?.isLoading}
         text={'Order processing...'}

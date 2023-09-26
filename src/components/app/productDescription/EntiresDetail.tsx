@@ -15,7 +15,7 @@ const EntiresDetail = (props: any) => {
             <p className="leading-relaxed  text-lg md:text-xl text-primary font-semibold">
               Entries only{' '}
               <span className="font-black">
-                AED {(props?.data?.price ?? 0)?.toFixed(2)}
+                AED {(props?.data?.price ?? 0)?.toFixed(2)?.toLocaleString()}
               </span>
             </p>
           </div>
@@ -24,7 +24,7 @@ const EntiresDetail = (props: any) => {
             <p className="leading-relaxed lg:text-xl md:text-xl text-lg text-primary font-semibold">
               Max Entries{' '}
               <span className="font-black">
-                {props?.data?.total_tickets ?? 0}
+                {props?.data?.total_tickets?.toLocaleString() ?? 0}
               </span>
             </p>
           </div>
@@ -34,7 +34,7 @@ const EntiresDetail = (props: any) => {
               Max{' '}
               <span className="font-black">
                 {' '}
-                {props?.data?.user_ticket_limit ?? 0}
+                {props?.data?.user_ticket_limit?.toLocaleString() ?? 0}
               </span>{' '}
               per person only
             </p>

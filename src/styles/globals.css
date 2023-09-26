@@ -797,3 +797,34 @@ input.wpwl-control {
 
 @media (min-height: 768px) {
 }
+
+details[open] summary ~ * {
+  transition: height 3s ease-in;
+  animation: sweep 0.5s ease-in-out;
+}
+details:not([open]) summary ~ * {
+  transition: height 3s ease-in;
+  animation: sweepUp 0.5s ease-out;
+}
+
+@keyframes sweep {
+  0% {
+    opacity: 0;
+    margin-top: -10px;
+  }
+  100% {
+    opacity: 1;
+    margin-top: 0px;
+  }
+}
+
+@keyframes sweepUp {
+  0% {
+    opacity: 1;
+    margin-top: 0px;
+  }
+  100% {
+    opacity: 0;
+    margin-top: -10px;
+  }
+}
