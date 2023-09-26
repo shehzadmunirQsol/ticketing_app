@@ -9,10 +9,10 @@ const EntiresDetail = (props: any) => {
   return (
     <div className="my-12 bg-backgroundDark  rounded-md border  border-border ">
       <div className="container px-10 py-10 w-full">
-        <div className="flex flex-col -m-4 text-center justify-center items-start lg:items-center lg:justify-between gap-14 lg:gap-0   lg:flex-row">
+        <div className="flex flex-col -m-4 text-center justify-center items-start gap-4 md:gap-8 lg:items-center lg:justify-between lg:gap-0  lg:flex-row">
           <div className="flex justify-center items-center ">
             <Image src={onlyImage} className="mr-4" alt={'image'} />
-            <p className="leading-relaxed lg:text-xl md:text-xl text-lg text-primary font-semibold">
+            <p className="leading-relaxed  text-lg md:text-xl text-primary font-semibold">
               Entries only{' '}
               <span className="font-black">
                 AED {(props?.data?.price ?? 0)?.toFixed(2)}
@@ -20,7 +20,7 @@ const EntiresDetail = (props: any) => {
             </p>
           </div>
           <div className="flex justify-center items-center ">
-            <Image src={entiresImage} className="mr-4" alt={'image'} />
+            <Image src={entiresImage} className="mr-6" alt={'image'} />
             <p className="leading-relaxed lg:text-xl md:text-xl text-lg text-primary font-semibold">
               Max Entries{' '}
               <span className="font-black">

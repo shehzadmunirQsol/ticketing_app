@@ -33,7 +33,6 @@ import { LoadingDialog } from '~/components/common/modal/loadingModal';
 import { useToast } from '~/components/ui/use-toast';
 import { addCart } from '~/store/reducers/cart';
 import Link from 'next/link';
-import { userAuth } from '~/store/reducers/auth';
 
 function Checkout() {
   const { cart, totalAmount } = useSelector((state: RootState) => state.cart);
@@ -82,7 +81,10 @@ function Checkout() {
       form.setValue('customer_id', cart?.customer_id ?? 0);
       form.setValue('first_name', user?.first_name ?? '');
       form.setValue('last_name', user?.last_name ?? '');
-      form.setValue('dob',user?.dob ? user?.dob?.toISOString().split('T')[0] ?? '');
+      form.setValue(
+        'dob',
+        user?.dob ? user?.dob?.toISOString().split('T')[0] : '',
+      );
       form.setValue('email', user?.email ?? '');
       if (user?.CustomerAddress && user?.CustomerAddress?.length) {
         form.setValue(
@@ -94,10 +96,6 @@ function Checkout() {
           user?.CustomerAddress[0]?.street_address_1 ?? '',
         );
         form.setValue('city', user?.CustomerAddress[0]?.city ?? '');
-        // form.setValue(
-        //   'country',
-        //   user?.CustomerAddress[0]?.country ?? 'United Arab Emirates',
-        // );
         form.setValue(
           'phone_number',
           user?.CustomerAddress[0]?.phone_number ?? '',
@@ -106,10 +104,10 @@ function Checkout() {
           'postal_code',
           user?.CustomerAddress[0]?.postal_code?.toString() ?? '',
         );
-        // form.setValue('state', user?.CustomerAddress[0]?.state ?? 'Abu Dhabi');
       }
     }
   }, [user, cart]);
+
   const getStatus = trpc.order.getStatus.useMutation({
     onSuccess: () => {
       console.log('upload successfully');
@@ -120,6 +118,7 @@ function Checkout() {
       console.log({ error });
     },
   });
+
   useEffect(() => {
     (async () => {
       try {

@@ -15,6 +15,7 @@ interface cardInterface {
   data?: any;
   nextPage?: () => void;
   isLast?: boolean;
+  isCash?: boolean;
 }
 
 function ProductCard(props: cardInterface) {
@@ -38,6 +39,8 @@ function ProductCard(props: cardInterface) {
 
     observer.observe(cardRef.current);
   }, [props?.isLast]);
+
+  const spaceElement = props?.isCash ? null : <div className="h-8" />;
 
   return (
     props?.data && (
@@ -111,15 +114,21 @@ function ProductCard(props: cardInterface) {
             </p>
           </div>
           <hr className=" opacity-20 mt-4" />
-          <div className=" mt-2">
-            <span className="text-gray-200 text-md xl:text-lg font-normal leading-[18px]">
-              Cash Alternative
-            </span>
-            <span className="text-primary text-md xl:text-lg font-black leading-[18px]">
-              {' '}
-              AED {(props?.data?.cash_alt ?? 0)?.toFixed(2)}
-            </span>
-          </div>
+
+          {props?.data?.category_id === 1 ? (
+            <div className=" mt-2">
+              <span className="text-gray-200 text-md xl:text-lg font-normal leading-[18px]">
+                Cash Alternative
+              </span>
+              <span className="text-primary text-md xl:text-lg font-black leading-[18px]">
+                {' '}
+                AED {(props?.data?.cash_alt ?? 0)?.toFixed(2)}
+              </span>
+            </div>
+          ) : (
+            spaceElement
+          )}
+
           <div className="flex  justify-between items-center mt-8 gap-4">
             <div className="text-primary text-md xl:text-lg font-black leading-[18px]">
               AED {props?.data?.price?.toFixed(2)}
