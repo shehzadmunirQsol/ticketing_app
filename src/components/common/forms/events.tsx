@@ -622,8 +622,7 @@ export default function EventForm() {
                   }
                   if (item?.type == 'date') {
                     const launchMinDate = new Date();
-                    console.log(form?.watch('launch_date'));
-                    console.log(form?.watch('end_date'));
+                   
 
                     const launchDate = isNaN(
                       form?.watch('launch_date')?.getTime(),

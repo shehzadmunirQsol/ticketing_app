@@ -125,8 +125,8 @@ export default function CustomersDataTable() {
       type == 'delete'
         ? setPara('Are you sure you want to Delete this customer?')
         : type == 'enable'
-        ? setPara('Are you sure you want to Enable this customer?')
-        : setPara('');
+          ? setPara('Are you sure you want to Enable this customer?')
+          : setPara('');
     }
     setType(type);
     setIsModal(true);
@@ -139,9 +139,19 @@ export default function CustomersDataTable() {
           <p className="text-ellipsis text-left whitespace-nowrap overflow-hidden w-fit  text-white">
             {data.first_name + ' ' + data.last_name}
           </p>
-          <div>
-            <i className="fas fa-flag p-1 text-gray-200 bg-red-900 hover:bg-red-900/70 rounded-lg shadow-md text-xs"></i>
-          </div>
+
+          <TooltipProvider >
+            <Tooltip >
+              <TooltipTrigger>
+                <div>
+                  <i className="fas fa-flag p-1 text-gray-200 bg-red-900  rounded-lg shadow-md text-xs"></i>
+                </div>
+              </TooltipTrigger>
+              <TooltipContent >
+                Delete Request
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
       );
     } else {
@@ -235,7 +245,7 @@ export default function CustomersDataTable() {
             <Switch
               checked={row?.original?.is_verified}
               disabled={true}
-              // onCheckedChange={() => handleEnbled(row?.original, 'enabled')}
+
             />
           </div>
         );
@@ -332,7 +342,7 @@ export default function CustomersDataTable() {
       filtername: 'searchQuery',
       type: 'text',
     },
-    
+
     {
       Icon: 'fal fa-chevron-down',
       text: 'Verified',
@@ -420,9 +430,9 @@ export default function CustomersDataTable() {
                         {header.isPlaceholder
                           ? null
                           : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext(),
-                            )}
+                            header.column.columnDef.header,
+                            header.getContext(),
+                          )}
                       </TableHead>
                     );
                   })}
@@ -520,7 +530,7 @@ export default function CustomersDataTable() {
               disabled={
                 (filters.first + 1) * filters.rows > (data?.count ?? 0) ||
                 Math.ceil((data?.count ?? 0) / filters.rows) ==
-                  filters.first + 1
+                filters.first + 1
               }
             >
               <span className="sr-only">Go to next page</span>
@@ -538,7 +548,7 @@ export default function CustomersDataTable() {
               disabled={
                 (filters.first + 1) * filters.rows > (data?.count ?? 0) ||
                 Math.ceil((data?.count ?? 0) / filters.rows) ==
-                  filters.first + 1
+                filters.first + 1
               }
             >
               <span className="sr-only">Go to last page</span>

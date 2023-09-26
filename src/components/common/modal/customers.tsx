@@ -44,12 +44,12 @@ export function CustomerDialog(props: SettingDialogInterface) {
         id: number;
         is_deleted?: boolean;
         is_disabled?: boolean;
-        type?:string;
+        type?: string;
       }
 
       const payload: Payload = {
         id: props?.selectedItem?.id,
-        type:props?.type
+        type: props?.type
       };
       if (props?.type == 'delete')
         payload.is_deleted = !props?.selectedItem?.is_deleted;
@@ -60,7 +60,7 @@ export function CustomerDialog(props: SettingDialogInterface) {
       await customerUpdate.mutateAsync(payload);
 
       toast({
-        variant: 'success',
+        variant: `${props?.type === 'enable' ? "success" : 'disable'}`,
         title: `${props?.title} ${props?.type === 'enable' ? "Enabled" : 'Deleted'
           } Successfully`,
       });

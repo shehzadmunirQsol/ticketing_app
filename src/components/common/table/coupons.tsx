@@ -117,7 +117,7 @@ export default function CouponsDataTable() {
       setIsModal(true);
     } else {
       toast({
-        variant: 'success',
+        variant: 'disable',
         title: `Customer is Already Approved!`,
       });
     }

@@ -149,6 +149,12 @@ export const couponRouter = router({
             mode: 'insensitive',
           },
         });
+        where.OR.push({
+          coupon_code: {
+            contains: input?.filters?.searchQuery,
+            mode: 'insensitive',
+          },
+        });
       }
 
       if (input?.filters?.startDate &&  !input?.filters?.endDate) {
@@ -163,12 +169,7 @@ export const couponRouter = router({
         const startDate = new Date(input?.filters?.startDate);
         const endDate = new Date(input?.filters?.endDate);
         
-        if(startDate>endDate){
-          throw new TRPCError({
-            code: 'NOT_FOUND',
-            message: "Please add the dates correctly",
-          });
-        }
+       
         where.created_at = {gte:startDate, lte: endDate };
       }
 
