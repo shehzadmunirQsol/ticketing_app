@@ -44,21 +44,23 @@ export function CustomerDialog(props: SettingDialogInterface) {
         id: number;
         is_deleted?: boolean;
         is_disabled?: boolean;
+        type?: string;
       }
 
       const payload: Payload = {
         id: props?.selectedItem?.id,
+        type: props?.type
       };
       if (props?.type == 'delete')
         payload.is_deleted = !props?.selectedItem?.is_deleted;
-      if (props?.type == 'disable')
+      if (props?.type == 'enable')
         payload.is_disabled = false;
 
       // let data: any;
       await customerUpdate.mutateAsync(payload);
 
       toast({
-        variant: 'success',
+        variant: `${props?.type === 'enable' ? "success" : 'disable'}`,
         title: `${props?.title} ${props?.type === 'enable' ? "Enabled" : 'Deleted'
           } Successfully`,
       });

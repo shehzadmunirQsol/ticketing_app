@@ -56,12 +56,25 @@ export const customerRouter = router({
   update: publicProcedure
     .input(updateCustomerSchema)
     .mutation(async ({ input }) => {
-      const { id, ...payload } = input;
+      const { id, type,...payload } = input;
 
       const customer = await prisma.customer.update({
         where: { id },
         data: payload,
       });
+
+      if (type === 'delete') {
+        const mailOptions = {
+          template_id: 11,
+          from: 'no-reply@winnar.com',
+          subject: 'Your Account is Deleted',
+          to: customer.email,
+          params: {
+            first_name: customer?.first_name,
+          },
+        };
+        await sendEmail(mailOptions);
+      }
 
       return customer;
     }),
@@ -98,19 +111,33 @@ export const customerRouter = router({
               mode: 'insensitive',
             },
           });
+          where.OR.push({
+            email: {
+              contains: input?.filters?.searchQuery,
+              mode: 'insensitive',
+            },
+          });
           // options.where.OR.push({
           //   price: { contains: input.searchQuery, mode: 'insensitive' },
           // });
         }
 
-        if (input?.filters?.startDate) {
+        if (input?.filters?.startDate && !input?.filters?.endDate) {
           const startDate = new Date(input?.filters?.startDate);
           where.created_at = { gte: startDate };
         }
-        if (input?.filters?.endDate) {
+        if (input?.filters?.endDate && !input?.filters?.startDate) {
           const endDate = new Date(input?.filters?.endDate);
           where.created_at = { lte: endDate };
         }
+        if (input?.filters?.endDate && input?.filters?.startDate) {
+          const startDate = new Date(input?.filters?.startDate);
+          const endDate = new Date(input?.filters?.endDate);
+
+
+          where.created_at = { gte: startDate, lte: endDate };
+        }
+
 
         const totalCategoryPromise = prisma.customer.count({
           where: where,
@@ -214,18 +241,7 @@ export const customerRouter = router({
             },
           };
 
-          const resgistranMailOptions = {
-            template_id: 10,
-            from: 'no-reply@winnar.com',
-            subject: 'Thank you for sigining up for Winnar',
-            to: customer.email,
-            params: {
-              first_name: customer?.first_name,
-            },
-          };
-
           await sendEmail(mailOptions);
-          // await sendEmail(resgistranMailOptions);
 
           return customer;
         }
@@ -339,8 +355,7 @@ export const customerRouter = router({
         }
 
         const respCode = await generateOTP(4);
-        const res = encodeURIComponent(respCode);
-        const email = encodeURIComponent(user.email);
+
         //  email
         const mailOptions = {
           template_id: 5,
@@ -349,7 +364,10 @@ export const customerRouter = router({
           subject: 'Forgot Password request to Winnar',
 
           params: {
-            link: `${process.env.NEXT_PUBLIC_BASE_URL}/reset-password?verification_code=${res}&email=${email}`,
+            link: `${process.env.NEXT_PUBLIC_BASE_URL
+              }/reset-password?verification_code=${encodeURIComponent(
+                respCode,
+              )}&email=${encodeURIComponent(user.email)}`,
           },
         };
         const mailResponse = await sendEmail(mailOptions);
@@ -466,6 +484,16 @@ export const customerRouter = router({
               otp: '',
             },
           });
+          const resgistranMailOptions = {
+            template_id: 10,
+            from: 'no-reply@winnar.com',
+            subject: 'Thank you for sigining up for Winnar',
+            to: user.email,
+            params: {
+              first_name: user?.first_name,
+            },
+          };
+          await sendEmail(resgistranMailOptions);
         }
         const jwt = signJWT({ email: user.email, id: user.id });
         const serialized = serialize('winnar-token', jwt, {
@@ -498,15 +526,12 @@ export const customerRouter = router({
           where: validity,
         });
 
-        console.log(user, 'user HJDJDHDDN');
-
         if (!user) {
           throw new TRPCError({
             code: 'NOT_FOUND',
             message: 'User not found',
           });
         } else {
-          console.log('else HJDJDHDDN');
           const respCode = await generateOTP(4);
           const updateResponse = await prisma.customer?.update({
             where: {
@@ -516,7 +541,7 @@ export const customerRouter = router({
               otp: respCode,
             },
           });
-          console.log(updateResponse, 'updateResponse');
+
           const mailOptions: any = {
             template_id: 2,
             from: 'no-reply@winnar.com',

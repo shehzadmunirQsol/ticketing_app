@@ -118,7 +118,7 @@ export default function OrdersDataTable() {
     },
 
     {
-      accessorKey: 'Phone No.',
+      accessorKey: 'Phone',
       header: 'Phone No.',
       cell: ({ row }) => (
         <div className="capitalize text-ellipsis whitespace-nowrap ">

@@ -198,8 +198,17 @@ export default function CmsForm(props: CategoryFormInterface) {
 
   // Handle CMS Preview
   const handlePreview = () => {
-    window.localStorage.setItem('cmscontent', content);
-    window.open('/admin/cms/preview', '_blank');
+    console.log({content},"content")
+    if(content){
+
+      window.localStorage.setItem('cmscontent', content);
+      window.open('/admin/cms/preview', '_blank');
+    }else{
+      toast({
+        variant:"destructive",
+        title:"Please add source content to view preview."
+      })
+    }
   };
 
   // Editor Config

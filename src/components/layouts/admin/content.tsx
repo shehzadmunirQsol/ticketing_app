@@ -148,7 +148,7 @@ export default function Content() {
 const SIDEBAR_DATA = [
   {
     key: '/admin/dashboard',
-    icon: <i className="fa-solid fa-home p-4 rounded-full" />,
+    icon: <i className="fa-solid fa-home p-4 rounded-full " />,
     title: 'Dashboard',
   },
   {
@@ -163,7 +163,7 @@ const SIDEBAR_DATA = [
   },
   {
     key: '/admin/customers',
-    icon: <i className="fa-solid fa-users p-4 rounded-full" />,
+    icon: <i className="fa-solid fa-users  px-3.5 py-4 text-md rounded-full text-center" />,
     title: 'Customers',
   },
   {

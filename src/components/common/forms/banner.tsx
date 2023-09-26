@@ -24,21 +24,51 @@ import { LoadingDialog } from '../modal/loadingModal';
 
 const BannerFormSchema = z.object({
   thumb: z.any(),
-  link: z.string(),
+  link: z.string({
+    required_error: "Please enter a video link"
+  }),
 
   en: z.object({
-    model: z.string(),
-    title: z.string(),
-    price: z.string(),
-    description: z.string(),
-    date: z.string(),
+    model: z.string({
+      required_error: "Please enter a model name"
+    }),
+    title: z.string(
+      {
+        required_error: "Please enter a title"
+      }
+    ),
+    price: z.string({
+      required_error: "Please enter a price"
+    }),
+    description: z.string({
+      required_error: "Please enter a description"
+    }),
+    date: z.string(
+      {
+        required_error: "Please enter a date"
+      }
+    ),
   }),
   ar: z.object({
-    model: z.string(),
-    title: z.string(),
-    price: z.string(),
-    description: z.string(),
-    date: z.string(),
+    model: z.string({
+      required_error: "Please enter a model name"
+    }),
+    title: z.string(
+      {
+        required_error: "Please enter a title"
+      }
+    ),
+    price: z.string({
+      required_error: "Please enter a price"
+    }),
+    description: z.string({
+      required_error: "Please enter a description"
+    }),
+    date: z.string(
+      {
+        required_error: "Please enter a date"
+      }
+    ),
   }),
 });
 const enFormSchema = z.object({
@@ -113,8 +143,8 @@ export function BannerForm() {
       ? BannerApiData?.data[0]?.lang_id
         ? enFormSchema
         : BannerApiData?.data[0]?.lang_id == 2
-        ? arFormSchema
-        : BannerFormSchema
+          ? arFormSchema
+          : BannerFormSchema
       : BannerFormSchema;
 
   const form = useForm<z.infer<typeof formValidateData>>({
@@ -123,8 +153,8 @@ export function BannerForm() {
         ? BannerApiData?.data[0]?.lang_id == 1
           ? enFormSchema
           : BannerApiData?.data[0]?.lang_id == 2
-          ? arFormSchema
-          : BannerFormSchema
+            ? arFormSchema
+            : BannerFormSchema
         : BannerFormSchema,
     ),
   });
@@ -314,9 +344,9 @@ export function BannerForm() {
                 <FormItem>
                   <FormLabel>Link</FormLabel>
                   <FormControl>
-                    <Input type="text" placeholder="Enter LInk" {...field} />
+                    <Input type="text" placeholder="Enter Link"  {...field} />
                   </FormControl>
-                  <div className="relative pb-2">
+                  <div className="relative pb-4">
                     <FormMessage />
                   </div>
                 </FormItem>
@@ -348,14 +378,14 @@ export function BannerForm() {
           <Tabs
             defaultValue={
               index &&
-              BannerApiData?.data !== undefined &&
-              BannerApiData?.data[0]?.lang_id == 1
+                BannerApiData?.data !== undefined &&
+                BannerApiData?.data[0]?.lang_id == 1
                 ? 'en'
                 : index &&
                   BannerApiData?.data !== undefined &&
                   BannerApiData?.data[0]?.lang_id == 2
-                ? 'ar'
-                : 'en'
+                  ? 'ar'
+                  : 'en'
             }
             className="w-full"
           >
@@ -363,7 +393,7 @@ export function BannerForm() {
               <></>
             ) : (
               <>
-                <TabsList>
+                <TabsList className='overflow-hidden'>
                   <TabsTrigger value="en">English</TabsTrigger>
                   <TabsTrigger value="ar">Arabic</TabsTrigger>
                 </TabsList>
@@ -377,9 +407,9 @@ export function BannerForm() {
                   <FormItem>
                     <FormLabel>Modal</FormLabel>
                     <FormControl>
-                      <Input type="text" placeholder="Enter Modal" {...field} />
+                      <Input type="text" placeholder="Enter Modal"  {...field} />
                     </FormControl>
-                    <div className="relative pb-2">
+                    <div className="relative pb-4">
                       <FormMessage />
                     </div>
                   </FormItem>
@@ -394,7 +424,7 @@ export function BannerForm() {
                     <FormControl>
                       <Input type="text" placeholder="Enter Title" {...field} />
                     </FormControl>
-                    <div className="relative pb-2">
+                    <div className="relative pb-4">
                       <FormMessage />
                     </div>
                   </FormItem>
@@ -409,7 +439,7 @@ export function BannerForm() {
                     <FormControl>
                       <Input type="text" placeholder="Enter Price" {...field} />
                     </FormControl>
-                    <div className="relative pb-2">
+                    <div className="relative pb-4">
                       <FormMessage />
                     </div>
                   </FormItem>
@@ -420,7 +450,7 @@ export function BannerForm() {
                 name="en.description"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>description</FormLabel>
+                    <FormLabel>Description</FormLabel>
                     <FormControl>
                       <Input
                         type="text"
@@ -429,7 +459,7 @@ export function BannerForm() {
                       />
                     </FormControl>
 
-                    <div className="relative pb-2">
+                    <div className="relative pb-4">
                       <FormMessage />
                     </div>
                   </FormItem>
@@ -445,7 +475,7 @@ export function BannerForm() {
                       <Input type="text" placeholder="Enter Date" {...field} />
                     </FormControl>
 
-                    <div className="relative pb-2">
+                    <div className="relative pb-4">
                       <FormMessage />
                     </div>
                   </FormItem>
@@ -468,7 +498,7 @@ export function BannerForm() {
                         />
                       </FormControl>
 
-                      <div className="relative pb-2">
+                      <div className="relative pb-4">
                         <FormMessage />
                       </div>
                     </FormItem>
@@ -488,7 +518,7 @@ export function BannerForm() {
                         />
                       </FormControl>
 
-                      <div className="relative pb-2">
+                      <div className="relative pb-4">
                         <FormMessage />
                       </div>
                     </FormItem>
@@ -504,7 +534,7 @@ export function BannerForm() {
                         <Input type="text" placeholder="مَشرُوع" {...field} />
                       </FormControl>
 
-                      <div className="relative pb-2">
+                      <div className="relative pb-4">
                         <FormMessage />
                       </div>
                     </FormItem>
@@ -524,7 +554,7 @@ export function BannerForm() {
                         />
                       </FormControl>
 
-                      <div className="relative pb-2">
+                      <div className="relative pb-4">
                         <FormMessage />
                       </div>
                     </FormItem>
@@ -544,7 +574,7 @@ export function BannerForm() {
                         />
                       </FormControl>
 
-                      <div className="relative pb-2">
+                      <div className="relative pb-4">
                         <FormMessage />
                       </div>
                     </FormItem>
