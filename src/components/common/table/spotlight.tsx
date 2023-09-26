@@ -33,7 +33,7 @@ import {
 } from '@/ui/table';
 import { trpc } from '~/utils/trpc';
 import Image from 'next/image';
-import { renderNFTImage } from '~/utils/helper';
+import { displayDate, renderNFTImage } from '~/utils/helper';
 import Link from 'next/link';
 import { Switch } from '~/components/ui/switch';
 import { SettingDialog } from '../modal/setting';
@@ -167,6 +167,15 @@ export default function DataTableSpotLight() {
           </>
         );
       },
+    },
+    {
+      accessorKey: 'Created At',
+      header: 'Created At',
+      cell: ({ row }) => (
+        <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
+          {displayDate(row?.original?.created_at)}
+        </div>
+      ),
     },
 
     {

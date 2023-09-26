@@ -101,10 +101,6 @@ function Checkout() {
           user?.CustomerAddress[0]?.street_address_1 ?? '',
         );
         form.setValue('city', user?.CustomerAddress[0]?.city ?? '');
-        // form.setValue(
-        //   'country',
-        //   user?.CustomerAddress[0]?.country ?? 'United Arab Emirates',
-        // );
         form.setValue(
           'phone_number',
           user?.CustomerAddress[0]?.phone_number ?? '',
@@ -113,10 +109,10 @@ function Checkout() {
           'postal_code',
           user?.CustomerAddress[0]?.postal_code?.toString() ?? '',
         );
-        // form.setValue('state', user?.CustomerAddress[0]?.state ?? 'Abu Dhabi');
       }
     }
   }, [user, cart]);
+
   const getStatus = trpc.order.getStatus.useMutation({
     onSuccess: () => {
       console.log('upload successfully');
@@ -127,6 +123,7 @@ function Checkout() {
       console.log({ error });
     },
   });
+
   useEffect(() => {
     (async () => {
       try {

@@ -64,12 +64,17 @@ export function SettingDialog(props: SettingDialogInterface) {
         props.setIsModal(false);
 
         toast({
-          variant: 'success',
+          variant: `${props?.type === 'enabled'
+            ? props?.selectedItem?.is_enabled
+              ? 'disable'
+              : 'success'
+            : 'success'
+            }`,
           title: `${props?.title} ${props?.type === 'enabled'
-              ? props?.selectedItem?.is_enabled
-                ? 'disabled'
-                : 'enabled'
-              : 'deleted'
+            ? props?.selectedItem?.is_enabled
+              ? 'Disabled'
+              : 'Enabled'
+            : 'deleted'
             } Successfully`,
         });
         props?.refetch();
@@ -93,10 +98,10 @@ export function SettingDialog(props: SettingDialogInterface) {
           <DialogTitle>{props?.title}</DialogTitle>
           <DialogDescription>
             {`Are you sure you want to ${props?.type === 'enabled'
-                ? props?.selectedItem?.is_enabled
-                  ? 'Disable'
-                  : 'Enable'
-                : 'Delete'
+              ? props?.selectedItem?.is_enabled
+                ? 'Disable'
+                : 'Enable'
+              : 'Delete'
               } this ${props?.title}`}
           </DialogDescription>
         </DialogHeader>

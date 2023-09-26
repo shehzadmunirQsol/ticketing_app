@@ -5,7 +5,7 @@ import Link from 'next/link';
 const Tabs = (props: any) => {
   return (
     <div className="bg-card-foreground  mt-24">
-      <div className="px-10 py-8 w-full">
+      <div className="px-10 py-8 w-full hidden sm:block">
         <div className="flex flex-row -m-4 text-center justify-center items-start lg:items-center gap-2 md:gap-14 lg:flex-row ">
           <div className="flex justify-center items-lg:flex-row center ">
             <Link href="#BuyTickets" className="font-sans">

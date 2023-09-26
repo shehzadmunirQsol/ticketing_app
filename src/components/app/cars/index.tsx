@@ -61,8 +61,8 @@ const CarsPage = () => {
           CARS COMPETITION
         </p>
         <Glow className=" absolute  top-1/2 -left-16 w-1/5 h-[350px] overflow-hidden " />
+        <Glow className=" absolute  bottom-0 -right-16 w-1/5 h-[350px] overflow-hidden " />
 
-        {/* <Glow className=" absolute bottom-96 -right-16  w-1/5 h-[350px] overflow-x-hidden" /> */}
         <div className=" grid gap-6 grid-cols-1 md:grid-cols-2 z-40 lg:grid-cols-3  justify-between mx-auto ">
           {products?.map((itemList, i) => {
             return (

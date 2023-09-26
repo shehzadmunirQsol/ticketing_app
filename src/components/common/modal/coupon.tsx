@@ -58,7 +58,7 @@ export function CouponDialog(props: SettingDialogInterface) {
         props.setIsModal(false);
 
         toast({
-          variant: 'success',
+          variant: `${props?.type === 'enabled' ? "disable" : "success"}`,
           title: `${props?.title} ${props?.type === 'enabled' ? 'Disabled' : 'Enabled'
             } Successfully`,
         });

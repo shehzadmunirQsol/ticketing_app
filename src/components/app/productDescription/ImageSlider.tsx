@@ -51,19 +51,14 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
         </div>
         <div className="flex flex-col flex-wrap lg:py-6 -mb-10 lg:w-1/2 w-full lg:pl-12 lg:text-left  ">
           <div className="flex flex-col mb-10 lg:items-start items-start">
-            {/* <div className="p-2 z-2 inline-flex bg-primary text-black items-center justify-center   mb-5">
-              <span className=" font-black mr-2">
-                {' '}
-                {lang.lang_id === 2 ? ' إغلاق اليوم ' : 'CLOSES TODAY '}{' '}
-              </span>{' '}
-              20:00
-            </div> */}
             <div className="flex-grow w-full">
               <div className="flex flex-col gap-2">
                 <span className=" text-xs text-white ">
-                  {data?.tickets_sold?.toLocaleString()}{' '}
-                  {lang.lang_id === 2 ? 'بيعت من' : 'Sold out of '}{' '}
-                  {data?.total_tickets?.toLocaleString()}
+                  {(
+                    (Number(data?.tickets_sold) / Number(data?.total_tickets)) *
+                    100
+                  ).toFixed(data?.tickets_sold ? 2 : 0)}
+                  % Sold
                 </span>
                 <Progress value={percentageSold} className="w-full" />
               </div>
