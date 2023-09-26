@@ -62,6 +62,7 @@ import {
 } from '@radix-ui/react-icons';
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 export type CustomerType = {
   email: string;
@@ -80,6 +81,8 @@ export type CustomerType = {
 export default function CustomersDataTable() {
   // use toast
   const { toast } = useToast();
+  const router = useRouter()
+  const { is_verified } = router.query
 
   // use states
   const [sorting, setSorting] = useState<SortingState>([]);

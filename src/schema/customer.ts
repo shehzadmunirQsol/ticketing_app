@@ -84,6 +84,7 @@ export const getCustomerSchema = z.object({
   startDate: z.date().optional(),
   endDate: z.date().optional(),
   searchQuery: z.string().optional(),
+  is_verified:z.boolean().optional(),
   first: z.number(),
   rows: z.number(),
   filters: z.any().optional(),

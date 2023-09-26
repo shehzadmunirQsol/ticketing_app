@@ -60,6 +60,7 @@ import {
   DoubleArrowRightIcon,
 } from '@radix-ui/react-icons';
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
+import { useRouter } from 'next/router';
 export type Category = {
   id: number;
   is_enabled: boolean;
@@ -79,6 +80,8 @@ export type Category = {
 export default function CouponsDataTable() {
   // use toast
   const { toast } = useToast();
+  const router = useRouter()
+  const { is_enabled } = router.query
 
   // use states
   const [sorting, setSorting] = useState<SortingState>([]);

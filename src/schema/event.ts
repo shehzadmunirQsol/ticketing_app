@@ -4,6 +4,7 @@ export const getEventSchema = z.object({
   startDate: z.date().optional(),
   endDate: z.date().optional(),
   searchQuery: z.string().optional(),
+  launch_date: z.string().optional(),
   category_id: z.number().optional(),
   event_id: z.number().optional(),
   first: z.number(),

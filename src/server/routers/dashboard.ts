@@ -59,6 +59,7 @@ export const dashboardRouter = router({
         eventsPromise,
         ordersAmountPromise,
       ]);
+      const date = (new Date()).toISOString().split('T')[0]
       const analyticsData: any = [
         {
           title: 'Active Customers',
@@ -66,7 +67,7 @@ export const dashboardRouter = router({
           symbol: '',
           icon: 'fas fa-users',
           cols: true,
-          link: '/admin/customers',
+          link: '/admin/customers?is_verified=true',
         },
         {
           title: 'Pending Customers',
@@ -74,7 +75,7 @@ export const dashboardRouter = router({
           symbol: '',
           icon: 'fa-solid fa-user-clock',
           cols: true,
-          link: '/admin/customers',
+          link: '/admin/customers?is_verified=false',
         },
         {
           title: 'Active Coupon',
@@ -82,7 +83,7 @@ export const dashboardRouter = router({
           symbol: '',
           icon: 'fa-solid fa-tag',
           cols: false,
-          link: '/admin/coupons',
+          link: '/admin/coupons?is_enabled=true',
         },
         {
           title: 'Active Events',
@@ -90,7 +91,7 @@ export const dashboardRouter = router({
           symbol: '',
           icon: 'fa-solid fa-calendar-days',
           cols: false,
-          link: '/admin/events',
+          link: `/admin/events?launch_date=${date}`,
         },
         {
           title: 'Order Amount',

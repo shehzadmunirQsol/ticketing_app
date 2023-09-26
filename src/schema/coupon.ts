@@ -23,6 +23,7 @@ export const getCouponSchema = z.object({
   first: z.number(),
   rows: z.number(),
   filters: z.any().optional(),
+  is_enabled:z.boolean().optional(),
 });
 
 export const createCouponSchema = z.object({
