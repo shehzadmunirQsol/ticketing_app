@@ -1,15 +1,19 @@
 import { z } from 'zod';
 
 export const cmsSchema = z.object({
-  content: z.string().optional(),
-  slug: z.string().optional(),
-  type: z.enum(['event_faqs', 'faqs', 'static']).nullable(),
+  slug: z.string(),
+  type: z.enum(['event_faqs', 'faqs', 'static']),
   en: z.object({
-    slug: z.string(),
     title: z.string(),
-    metatitle: z.string(),
-    metadesc: z.string(),
+    meta_keywords: z.string(),
     desc: z.string(),
+    content: z.string(),
+  }),
+  ar: z.object({
+    title: z.string(),
+    meta_keywords: z.string(),
+    desc: z.string(),
+    content: z.string(),
   }),
 });
 export const cmsSchemaInput = z.object({
@@ -24,7 +28,7 @@ export const cmsSchemaInput = z.object({
     desc: z.string(),
   }),
 });
-export type cmsSchemaInput = z.infer<typeof cmsSchemaInput>;
+export type cmsSchemaForm = z.infer<typeof cmsSchema>;
 
 export const getCmsSchema = z.object({});
 export const getCmsContentByIdSchema = z.object({
@@ -33,15 +37,20 @@ export const getCmsContentByIdSchema = z.object({
 
 export const updateCmsContentById = z.object({
   id: z.number(),
-  content: z.string(),
   slug: z.string(),
-  type: z.string(),
+  type: z.enum(['event_faqs', 'faqs', 'static']),
+
   en: z.object({
-    slug: z.string(),
     title: z.string(),
-    metatitle: z.string(),
-    metadesc: z.string(),
+    meta_keywords: z.string(),
     desc: z.string(),
+    content: z.string(),
+  }),
+  ar: z.object({
+    title: z.string(),
+    meta_keywords: z.string(),
+    desc: z.string(),
+    content: z.string(),
   }),
 });
 

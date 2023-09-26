@@ -23,8 +23,6 @@ interface SettingDialogInterface {
   setType: any;
 }
 export function CmsDailog(props: SettingDialogInterface) {
-  console.log(props, 'props');
-  console.log(props?.selectedItem, 'props?.selectedItem?.id');
   const { toast } = useToast();
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -84,10 +82,11 @@ export function CmsDailog(props: SettingDialogInterface) {
               <div className="flex flex-col gap-4 mt-4">
                 <div className="  flex gap-2 items-center p-2  ">
                   <p>
-                   Are You Sure You Want to  {' '}
-                    <span className="text-primary">
-                      {props?.type == 'enabled' ? 'Enabled' : 'Disabled'}
-                    </span>{' '} This Page?
+                    Are You Sure You Want to{' '}
+                    <span className="text-primary capitalize">
+                      {props?.type}
+                    </span>{' '}
+                    This Page?
                   </p>
                 </div>
               </div>

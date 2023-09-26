@@ -118,7 +118,7 @@ export function isValidEmail(email: any) {
   return pattern.test(email);
 }
 
-export function createSlug(input: any) {
+export async function createSlug(input: any) {
   console.log(input, 'frontinput');
   const lowercaseInput = input?.toLowerCase();
   const cleanedInput = lowercaseInput.replace(/[^\w\s-]/g, '');

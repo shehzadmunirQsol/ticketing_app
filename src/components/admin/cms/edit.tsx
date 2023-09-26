@@ -21,10 +21,6 @@ export default function EditCms() {
       <div className="flex items-center justify-between">
         <h2 className="text-4xl font-medium">Edit CMS</h2>
         {/* <LanguageSelect languageHandler={languageHandler} /> */}
-
-        <div className="flex items-center  gap-4">
-          <LanguageSelect languageHandler={languageHandler} />
-        </div>
       </div>
       <CmsForm language={language} />
     </div>
