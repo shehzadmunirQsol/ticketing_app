@@ -448,7 +448,7 @@ function DeleteAccount({ email }: any) {
                 />
               </div>
               <p className="text-sm">
-                I understand that I will lose all data (including tickets)
+                I understand that I will lose all data (including entries)
                 related to my account
               </p>
             </div>
