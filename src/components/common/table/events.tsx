@@ -54,6 +54,7 @@ import {
   DoubleArrowRightIcon,
 } from '@radix-ui/react-icons';
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
+import { useRouter } from 'next/router';
 
 export type Category = {
   thumb: string;
@@ -73,6 +74,8 @@ export type Category = {
 export default function EventsDataTable() {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [filterID, setFilterID] = useState({});
+  const router = useRouter()
+  
 
   const [filters, setFilters] = useState<GetEventSchema>({
     first: 0,
@@ -186,6 +189,15 @@ export default function EventsDataTable() {
       cell: ({ row }) => (
         <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
           {displayDate(row?.original?.end_date)}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'Created At',
+      header: 'Created At',
+      cell: ({ row }) => (
+        <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
+          {displayDate(row?.original?.created_at)}
         </div>
       ),
     },
@@ -359,9 +371,9 @@ export default function EventsDataTable() {
                         {header.isPlaceholder
                           ? null
                           : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext(),
-                            )}
+                            header.column.columnDef.header,
+                            header.getContext(),
+                          )}
                       </TableHead>
                     );
                   })}
@@ -459,7 +471,7 @@ export default function EventsDataTable() {
               disabled={
                 (filters.first + 1) * filters.rows > (data?.count ?? 0) ||
                 Math.ceil((data?.count ?? 0) / filters.rows) ==
-                  filters.first + 1
+                filters.first + 1
               }
             >
               <span className="sr-only">Go to next page</span>
@@ -477,7 +489,7 @@ export default function EventsDataTable() {
               disabled={
                 (filters.first + 1) * filters.rows > (data?.count ?? 0) ||
                 Math.ceil((data?.count ?? 0) / filters.rows) ==
-                  filters.first + 1
+                filters.first + 1
               }
             >
               <span className="sr-only">Go to last page</span>

@@ -20,6 +20,7 @@ import {
   loginCustomerInput,
   loginCustomerSchema,
   signupCustomerSchema,
+  signupCustomerSchemaInput,
 } from '~/schema/customer';
 import { useToast } from '~/components/ui/use-toast';
 import Link from 'next/link';
@@ -30,6 +31,14 @@ import { useDispatch } from 'react-redux';
 import { OtpVerificationDailog } from './otp-verification';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { LoadingDialog } from '~/components/common/modal/loadingModal';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '~/components/ui/select';
 
 export default function LoginSignup() {
   const { toast } = useToast();
@@ -40,7 +49,10 @@ export default function LoginSignup() {
 
   // 1. Define your form.
   const formSignup = useForm<signupCustomerInput>({
-    resolver: zodResolver(signupCustomerSchema),
+    resolver: zodResolver(signupCustomerSchemaInput),
+    defaultValues: {
+      code: '+971',
+    },
   });
   const formLogin = useForm<loginCustomerInput>({
     resolver: zodResolver(loginCustomerSchema),
@@ -71,11 +83,7 @@ export default function LoginSignup() {
       });
       // router.push('/login')
       setDefaultValue('login');
-      formSignup.setValue('username', '');
-      formSignup.setValue('email', '');
-      formSignup.setValue('password', '');
-      formSignup.setValue('firstname', '');
-      formSignup.setValue('lastname', '');
+      formSignup.reset();
     },
     onError: (err) => {
       console.log(err.message, 'err');
@@ -153,7 +161,17 @@ export default function LoginSignup() {
       });
     }
   };
+  const today = new Date();
 
+  // Calculate the minimum date (18 years ago from today)
+  const minDate = new Date(
+    today.getFullYear() - 18,
+    today.getMonth(),
+    today.getDate(),
+  );
+
+  // Format the minimum date as "YYYY-MM-DD" for the input field
+  const minDateFormatted = minDate.toISOString().split('T')[0];
   return (
     <section className="body-font pt-24 space-y-24">
       <div className=" mb-24 lg:pb-0 md:pb-0 lg:py-24 md:py-24 mx-auto flex flex-col-reverse px-4 md:px-14 lg:flex-row md:flex-row justify-between gap-10 w-full">
@@ -195,12 +213,12 @@ export default function LoginSignup() {
                     render={({ field }) => (
                       <FormItem className="mb-4">
                         <FormLabel className="text-xs font-thin text-grayColor">
-                          Username or email address*
+                          Email address <sup className="">*</sup>
                         </FormLabel>
                         <FormControl>
                           <Input
                             type="text"
-                            placeholder="Enter Username or Email Address"
+                            placeholder="Enter Email Address"
                             {...field}
                             className="rounded-md"
                           />
@@ -217,7 +235,7 @@ export default function LoginSignup() {
                     render={({ field }) => (
                       <FormItem className="mb-6">
                         <FormLabel className="text-xs font-thin text-grayColor">
-                          Password*
+                          Password <sup className="">*</sup>
                         </FormLabel>
                         <FormControl>
                           <Input
@@ -258,35 +276,191 @@ export default function LoginSignup() {
                 className=" justify-center items-center px-2 lg:px-8 py-4 space-y-4 w-full h-full"
               >
                 <div className="">
-                  <FormField
-                    control={formSignup.control}
-                    name="username"
-                    render={({ field }) => (
-                      <FormItem className="mb-4 ">
-                        <FormLabel className="text-xs font-thin  text-grayColor">
-                          Username*
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            type="text"
-                            placeholder="Enter Your Username "
-                            {...field}
-                            className="rounded-md"
-                          />
-                        </FormControl>
-                        <div className="relative pb-2">
-                          <FormMessage />
-                        </div>
-                      </FormItem>
-                    )}
-                  />
+                  <div className="flex flex-col sm:flex-row justify-center items-center gap-2">
+                    <FormField
+                      control={formSignup.control}
+                      name="first_name"
+                      render={({ field }) => (
+                        <FormItem className="mb-4  w-full">
+                          <FormLabel className="text-xs font-thin text-grayColor">
+                            First Name <sup className="">*</sup>
+                          </FormLabel>
+                          <FormControl>
+                            <Input
+                              type="text"
+                              placeholder="Enter your first name"
+                              {...field}
+                              className="rounded-md"
+                            />
+                          </FormControl>
+                          <div className="relative pb-2">
+                            <FormMessage />
+                          </div>
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={formSignup.control}
+                      name="last_name"
+                      render={({ field }) => (
+                        <FormItem className="mb-4 w-full">
+                          <FormLabel className="text-xs font-thin text-grayColor">
+                            Last Name <sup className="">*</sup>
+                          </FormLabel>
+                          <FormControl>
+                            <Input
+                              type="text"
+                              placeholder="Enter your last name"
+                              {...field}
+                              className="rounded-md"
+                            />
+                          </FormControl>
+                          <div className="relative pb-2">
+                            <FormMessage />
+                          </div>
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="w-full">
+                    <p className="text-xs text-grayColor  mb-3 ">
+                      Phone Number <sup className="">*</sup>
+                    </p>
+                    <div className="flex flex-row gap-2 ">
+                      <FormField
+                        control={formSignup.control}
+                        name="code"
+                        render={({ field }) => (
+                          <FormItem>
+                            <Select
+                              onValueChange={field.onChange}
+                              defaultValue={field.value}
+                              value={field.value}
+                            >
+                              <FormControl>
+                                <SelectTrigger className=" h-10  ">
+                                  <SelectValue placeholder="+971" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                <SelectGroup>
+                                  {countryCode?.map((item) => (
+                                    <SelectItem
+                                      key={item.code}
+                                      value={item.code}
+                                    >
+                                      {item?.code}
+                                    </SelectItem>
+                                  ))}
+                                </SelectGroup>
+                              </SelectContent>
+                            </Select>
+
+                            <div className="relative pb-2">
+                              <FormMessage />
+                            </div>
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={formSignup.control}
+                        name="phone_number"
+                        render={({ field }) => (
+                          <FormItem className=" w-full">
+                            {/* <FormLabel className="text-sm text-cardGray">
+                            Email  <sup className="">*</sup>
+                          </FormLabel> */}
+                            <FormControl className="rounded-md ">
+                              <Input
+                                max={999999999}
+                                type="number"
+                                className="w-full"
+                                placeholder="Enter your phone number"
+                                {...field}
+                              />
+                            </FormControl>
+
+                            <div className="relative pb-2">
+                              <FormMessage />
+                            </div>
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  </div>
+                  <div className="flex flex-col sm:flex-row justify-center items-center gap-2">
+                    <FormField
+                      control={formSignup.control}
+                      name="gender"
+                      render={({ field }) => (
+                        <FormItem className="mb-4  w-full">
+                          <FormLabel className="text-xs font-thin text-grayColor">
+                            Gender <sup className="">*</sup>
+                          </FormLabel>
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                            value={field.value}
+                          >
+                            <FormControl>
+                              <SelectTrigger className=" h-10  ">
+                                <SelectValue placeholder={`Select Gender`} />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              <SelectGroup>
+                                <SelectItem value={'male'}>{'Male'}</SelectItem>
+                                <SelectItem value={'female'}>
+                                  {'Female'}
+                                </SelectItem>
+                              </SelectGroup>
+                            </SelectContent>
+                          </Select>
+                          <div className="relative pb-2">
+                            <FormMessage />
+                          </div>
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={formSignup.control}
+                      name="dob"
+                      render={({ field }) => (
+                        <FormItem className="mb-4 w-full">
+                          <FormLabel className="text-xs font-thin text-grayColor">
+                            Date of Birth <sup className="">*</sup>
+                          </FormLabel>
+                          <FormControl>
+                            {/* <Input
+                              type="date"
+                              placeholder="Enter your dob"
+                              {...field}
+                              className="rounded-md"
+                            /> */}
+                            <Input
+                              type={'date'}
+                              placeholder={'Enter DOB'}
+                              max={minDateFormatted}
+                              {...formSignup.register('dob', {
+                                valueAsDate: true,
+                              })}
+                              className="rounded-md"
+                            />
+                          </FormControl>
+                          <div className="relative pb-2">
+                            <FormMessage />
+                          </div>
+                        </FormItem>
+                      )}
+                    />
+                  </div>
                   <FormField
                     control={formSignup.control}
                     name="email"
                     render={({ field }) => (
                       <FormItem className="mb-4 ">
                         <FormLabel className="text-xs  font-thin text-grayColor">
-                          Email Address*
+                          Email Address <sup className="">*</sup>
                         </FormLabel>
                         <FormControl>
                           <Input
@@ -306,58 +480,14 @@ export default function LoginSignup() {
                     control={formSignup.control}
                     name="password"
                     render={({ field }) => (
-                      <FormItem className="mb-4 ">
+                      <FormItem className="mb-12 ">
                         <FormLabel className="text-xs font-thin text-grayColor">
-                          Password*
+                          Password <sup className="">*</sup>
                         </FormLabel>
                         <FormControl>
                           <Input
                             type="password"
                             placeholder="Enter your password"
-                            {...field}
-                            className="rounded-md"
-                          />
-                        </FormControl>
-                        <div className="relative pb-2">
-                          <FormMessage />
-                        </div>
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={formSignup.control}
-                    name="firstname"
-                    render={({ field }) => (
-                      <FormItem className="mb-4 ">
-                        <FormLabel className="text-xs font-thin text-grayColor">
-                          First Name*
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            type="text"
-                            placeholder="Enter your first name"
-                            {...field}
-                            className="rounded-md"
-                          />
-                        </FormControl>
-                        <div className="relative pb-2">
-                          <FormMessage />
-                        </div>
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={formSignup.control}
-                    name="lastname"
-                    render={({ field }) => (
-                      <FormItem className="mb-12">
-                        <FormLabel className="text-xs font-thin text-grayColor">
-                          Last Name
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            type="text"
-                            placeholder="Enter your last name"
                             {...field}
                             className="rounded-md"
                           />
@@ -405,3 +535,8 @@ export default function LoginSignup() {
     </section>
   );
 }
+const countryCode = [
+  {
+    code: '+971',
+  },
+];

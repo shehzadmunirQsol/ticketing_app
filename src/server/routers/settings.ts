@@ -140,14 +140,20 @@ export const settingRouter = router({
             });
           }
         }
-        if (input?.filters?.startDate) {
-          const startDate = new Date(input?.filters?.startDate);
-          options.where.created_at = { gte: startDate };
+        if (input?.filters?.startDate && !input?.filters?.endDate) {
+          const startDate = (new Date(input?.filters?.startDate))?.toISOString().split("T")[0] as string;
+          options.where.created_at = { gte: new Date(startDate) };
         }
-        if (input?.filters?.endDate) {
-          const endDate = new Date(input?.filters?.endDate);
-          options.where.created_at = { lte: endDate };
+        if (input?.filters?.endDate && !input?.filters?.startDate) {
+          const endDate = (new Date(input?.filters?.endDate))?.toISOString().split("T")[0] as string;
+          options.where.created_at = { lte: new Date(endDate) };
         }
+        if (input?.filters?.endDate && input?.filters?.startDate) {
+          const startDate = (new Date(input?.filters?.startDate))?.toISOString().split("T")[0] as string;
+          const endDate = (new Date(input?.filters?.endDate))?.toISOString().split("T")[0] as string;
+          options.where.created_at = { gte: new Date(startDate), lte: new Date(endDate) };
+        }
+  
         if (input?.lang_id) options.where.lang_id = input?.lang_id;
 
         if (input?.is_enabled) options.where.is_enabled = true;

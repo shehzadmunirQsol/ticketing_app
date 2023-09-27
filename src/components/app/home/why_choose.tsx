@@ -20,7 +20,7 @@ function WhyChoose() {
     {
       step: 1,
       title: 'Great Odds',
-      desc: 'Limited tickets in each draw',
+      desc: 'Limited entries in each draw',
       icon: Frame11,
     },
     {

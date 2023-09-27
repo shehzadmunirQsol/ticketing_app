@@ -29,7 +29,6 @@ const FeaturedCars = () => {
   const [products, setProducts] = useState<Array<any>>([]);
 
   const [filters, setFilters] = useState({
-    lang_id: lang.lang_id,
     first: 0,
     rows: 9,
     is_featured: 1,
@@ -40,10 +39,13 @@ const FeaturedCars = () => {
     isFetched,
     isLoading,
     isError,
-  } = trpc.event.getFeatured.useQuery(filters, {
-    refetchOnWindowFocus: false,
-  });
-
+  } = trpc.event.getFeatured.useQuery(
+    { ...filters, lang_id: lang.lang_id },
+    {
+      refetchOnWindowFocus: false,
+    },
+  );
+  console.log({ prductsList });
   const next = () => {
     slide?.current.slickNext();
   };

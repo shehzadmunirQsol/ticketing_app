@@ -29,11 +29,11 @@ const SpotLightFormSchema = z.object({
 
   en: z.object({
     name: z.string(),
-    description: z.string().optional(),
+    description: z.string(),
   }),
   ar: z.object({
     name: z.string(),
-    description: z.string().optional(),
+    description: z.string(),
   }),
 });
 const enFormSchema = z.object({
@@ -42,7 +42,7 @@ const enFormSchema = z.object({
 
   en: z.object({
     name: z.string(),
-    description: z.string().optional(),
+    description: z.string(),
   }),
   ar: z
     .object({
@@ -62,7 +62,7 @@ const arFormSchema = z.object({
     .optional(),
   ar: z.object({
     name: z.string(),
-    description: z.string().optional(),
+    description: z.string(),
   }),
 });
 export function SpotLightForm() {
@@ -352,7 +352,7 @@ export function SpotLightForm() {
               <></>
             ) : (
               <>
-                <TabsList className='overflow-hidden'>
+                <TabsList className="overflow-hidden">
                   <TabsTrigger value="en">English</TabsTrigger>
                   <TabsTrigger value="ar">Arabic</TabsTrigger>
                 </TabsList>
@@ -369,7 +369,7 @@ export function SpotLightForm() {
                       <Input type="text" placeholder="Enter Name" {...field} />
                     </FormControl>
 
-                    <div className="relative pb-2">
+                    <div className="relative pb-4">
                       <FormMessage />
                     </div>
                   </FormItem>
@@ -385,7 +385,7 @@ export function SpotLightForm() {
                       <Textarea placeholder="Enter Description..." {...field} />
                     </FormControl>
 
-                    <div className="relative pb-2">
+                    <div className="relative pb-4">
                       <FormMessage />
                     </div>
                   </FormItem>
@@ -408,7 +408,7 @@ export function SpotLightForm() {
                         />
                       </FormControl>
 
-                      <div className="relative pb-2">
+                      <div className="relative pb-4">
                         <FormMessage />
                       </div>
                     </FormItem>
@@ -427,7 +427,7 @@ export function SpotLightForm() {
                         />
                       </FormControl>
 
-                      <div className="relative pb-2">
+                      <div className="relative pb-4">
                         <FormMessage />
                       </div>
                     </FormItem>

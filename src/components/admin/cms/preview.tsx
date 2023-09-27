@@ -35,7 +35,7 @@ const Preview = () => {
   return (
     <div className="p-8 space-y-8 ">
       <Tabs defaultValue={'en'} className="w-full">
-        <TabsList>
+        <TabsList className='overflow-hidden'>
           <TabsTrigger value="en">English</TabsTrigger>
           <TabsTrigger value="ar">Arabic</TabsTrigger>
         </TabsList>

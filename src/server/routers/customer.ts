@@ -56,7 +56,7 @@ export const customerRouter = router({
   update: publicProcedure
     .input(updateCustomerSchema)
     .mutation(async ({ input }) => {
-      const { id, type,...payload } = input;
+      const { id, type, ...payload } = input;
 
       const customer = await prisma.customer.update({
         where: { id },
@@ -123,21 +123,30 @@ export const customerRouter = router({
         }
 
         if (input?.filters?.startDate && !input?.filters?.endDate) {
-          const startDate = new Date(input?.filters?.startDate);
-          where.created_at = { gte: startDate };
+          const startDate = new Date(input?.filters?.startDate)
+            ?.toISOString()
+            .split('T')[0] as string;
+          where.created_at = { gte: new Date(startDate) };
         }
         if (input?.filters?.endDate && !input?.filters?.startDate) {
-          const endDate = new Date(input?.filters?.endDate);
-          where.created_at = { lte: endDate };
+          const endDate = new Date(input?.filters?.endDate)
+            ?.toISOString()
+            .split('T')[0] as string;
+          where.created_at = { lte: new Date(endDate) };
         }
         if (input?.filters?.endDate && input?.filters?.startDate) {
-          const startDate = new Date(input?.filters?.startDate);
-          const endDate = new Date(input?.filters?.endDate);
+          const startDate = new Date(input?.filters?.startDate)
+            ?.toISOString()
+            .split('T')[0] as string;
+          const endDate = new Date(input?.filters?.endDate)
+            ?.toISOString()
+            .split('T')[0] as string;
 
-
-          where.created_at = { gte: startDate, lte: endDate };
+          where.created_at = {
+            gte: new Date(startDate),
+            lte: new Date(endDate),
+          };
         }
-
 
         const totalCategoryPromise = prisma.customer.count({
           where: where,
@@ -191,22 +200,11 @@ export const customerRouter = router({
               email: input.email,
             },
           });
-          const isUsernameExist = await prisma.customer?.findFirst({
-            where: {
-              username: input.username,
-            },
-          });
 
           if (isEmailExist) {
             throw new TRPCError({
               code: 'FORBIDDEN',
               message: 'Email Already Exists!',
-            });
-          }
-          if (isUsernameExist) {
-            throw new TRPCError({
-              code: 'FORBIDDEN',
-              message: 'Username Already Exists!',
             });
           }
 
@@ -216,15 +214,14 @@ export const customerRouter = router({
           console.log('HASH Pass : ', hashPassword);
 
           // CustomerData Payload
-          const payload = {
-            username: input.username,
-            email: input.email,
+          const payload: any = {
+            ...input,
+            phone_number: input?.code + input?.phone_number,
+
             password: hashPassword,
-            first_name: input.firstname,
-            last_name: input.lastname,
             otp: respCode,
           };
-          console.log(payload, 'payload');
+          if (input?.code) delete payload?.code;
 
           const customer = await prisma.customer?.create({
             data: payload,
@@ -237,7 +234,7 @@ export const customerRouter = router({
             subject: 'Email Verification OTP CODE',
             params: {
               otp: respCode,
-              first_name: input?.firstname,
+              first_name: input?.first_name,
             },
           };
 
@@ -364,10 +361,11 @@ export const customerRouter = router({
           subject: 'Forgot Password request to Winnar',
 
           params: {
-            link: `${process.env.NEXT_PUBLIC_BASE_URL
-              }/reset-password?verification_code=${encodeURIComponent(
-                respCode,
-              )}&email=${encodeURIComponent(user.email)}`,
+            link: `${
+              process.env.NEXT_PUBLIC_BASE_URL
+            }/reset-password?verification_code=${encodeURIComponent(
+              respCode,
+            )}&email=${encodeURIComponent(user.email)}`,
           },
         };
         const mailResponse = await sendEmail(mailOptions);

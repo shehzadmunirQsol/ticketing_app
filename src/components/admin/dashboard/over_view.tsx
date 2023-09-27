@@ -70,7 +70,7 @@ const AnalyticsCard = () => {
               key={index}
               className={`${
                 item?.cols ? ' lg:col-span-6 ' : 'lg:col-span-4'
-              } text-white   group cursor-pointer w-full border  rounded-lg shadow  `}
+              } text-white hover:drop-shadow-md hover:shadow-primary  group cursor-pointer w-full border  rounded-lg shadow  `}
             >
               <Link href={item?.link}>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">

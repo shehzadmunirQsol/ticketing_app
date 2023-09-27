@@ -37,21 +37,25 @@ export const eventRouter = router({
         });
       }
 
-      if (input?.filters?.startDate) {
-        const startDate = new Date(input?.filters?.startDate);
-        where.launch_date = { gte: startDate };
-      }
       if (input?.filters?.status == 'active') {
-        const startDate = new Date();
-        where.launch_date = { gte: startDate };
+        const startDate = new Date()?.toISOString().split('T')[0] as string;
+        where.launch_date = { gte: new Date(startDate) };
       }
       if (input?.filters?.status == 'in-active') {
-        const startDate = new Date();
-        where.end_date = { lte: startDate };
+        const startDate = new Date()?.toISOString().split('T')[0] as string;
+        where.end_date = { lte: new Date(startDate) };
       }
       if (input?.filters?.endDate) {
-        const endDate = new Date(input?.filters?.endDate);
-        where.end_date = { lte: endDate };
+        const endDate = new Date(input?.filters?.endDate)
+          ?.toISOString()
+          .split('T')[0] as string;
+        where.end_date = { lte: new Date(endDate) };
+      }
+      if (input?.filters?.startDate) {
+        const startDate = new Date(input?.filters?.startDate)
+          ?.toISOString()
+          .split('T')[0] as string;
+        where.launch_date = { gte: new Date(startDate) };
       }
 
       if (input.category_id) where.category_id = input.category_id;
@@ -260,20 +264,19 @@ export const eventRouter = router({
           draw_date: null,
         };
 
-        if (input?.filters?.startDate &&  !input?.filters?.endDate) {
+        if (input?.filters?.startDate && !input?.filters?.endDate) {
           const startDate = new Date(input?.filters?.startDate);
           where.created_at = { gte: startDate };
         }
-        if (input?.filters?.endDate &&  !input?.filters?.startDate) {
+        if (input?.filters?.endDate && !input?.filters?.startDate) {
           const endDate = new Date(input?.filters?.endDate);
           where.created_at = { lte: endDate };
         }
-        if (input?.filters?.endDate &&  input?.filters?.startDate) {
+        if (input?.filters?.endDate && input?.filters?.startDate) {
           const startDate = new Date(input?.filters?.startDate);
           const endDate = new Date(input?.filters?.endDate);
-          
-        
-          where.created_at = {gte:startDate, lte: endDate };
+
+          where.created_at = { gte: startDate, lte: endDate };
         }
 
         if (input.category_id) where.category_id = input.category_id;
@@ -405,6 +408,7 @@ export const eventRouter = router({
         is_deleted: false,
         end_date: { gte: new Date() },
         draw_date: null,
+        category_id: 1,
         EventDescription: { some: { lang_id: input?.lang_id } },
       };
 
@@ -422,7 +426,18 @@ export const eventRouter = router({
         where: where,
         include: {
           EventImages: {},
-          EventDescription: {},
+          EventDescription: {
+            where: {
+              lang_id: input?.lang_id,
+            },
+            select: {
+              id: true,
+              lang_id: true,
+              desc: true,
+              name: true,
+              comp_details: true,
+            },
+          },
         },
       });
 

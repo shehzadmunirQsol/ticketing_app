@@ -1,14 +1,6 @@
 import { z } from 'zod';
 
 export const signupCustomerSchema = z.object({
-  username: z
-    .string({ required_error: 'Please enter your username' })
-    .min(3, {
-      message: 'Username must be at least 3 characters',
-    })
-    .max(24, {
-      message: 'Username must not exceed 24 characters',
-    }),
   email: z
     .string({
       required_error: 'Please enter your email',
@@ -17,15 +9,9 @@ export const signupCustomerSchema = z.object({
     .email({
       message: 'Please use a valid email ',
     })
-    .refine(
-      (val) =>
-        val.includes('*')
-          ? false
-          : true,
-      {
-        message: 'Please use a valid email ',
-      },
-    ),
+    .refine((val) => (val.includes('*') ? false : true), {
+      message: 'Please use a valid email ',
+    }),
   password: z
     .string({ required_error: 'Please enter your password' })
     .min(6, {
@@ -35,7 +21,7 @@ export const signupCustomerSchema = z.object({
       message: 'Password must not exceed 30 characters',
     }),
 
-  firstname: z
+  first_name: z
     .string({ required_error: 'Please enter your firstname' })
     .min(2, {
       message: 'firstname must be at least 2 characters',
@@ -43,23 +29,28 @@ export const signupCustomerSchema = z.object({
     .max(30, {
       message: 'firstname must not exceed 30 characters',
     }),
-  lastname: z.string().optional(),
+  last_name: z.string().optional(),
+  code: z.string(),
+  phone_number: z.string().min(1, {
+    message: 'Please enter phone number',
+  }),
+  dob: z.date(),
+  gender: z.enum(['male', 'female'], {
+    required_error: 'Please enter your gender',
+  }),
 });
 export const signupCustomerSchemaInput = z.object({
-  username: z
-    .string({ required_error: 'Please enter your username' })
-    .min(3, {
-      message: 'Username must be at least 3 characters',
-    })
-    .max(24, {
-      message: 'Username must not exceed 24 characters',
-    }),
   email: z
     .string({
       required_error: 'Please enter your email',
       invalid_type_error: 'Please enter your email',
     })
-    .email(),
+    .email({
+      message: 'Please enter your email',
+    })
+    .refine((val) => (val.includes('*') ? false : true), {
+      message: 'Please use a valid email ',
+    }),
   password: z
     .string({ required_error: 'Please enter your password' })
     .min(6, {
@@ -68,7 +59,7 @@ export const signupCustomerSchemaInput = z.object({
     .max(30, {
       message: 'Password must not exceed 30 characters',
     }),
-  firstname: z
+  first_name: z
     .string({ required_error: 'Please enter your firstname' })
     .min(2, {
       message: 'firstname must be at least 2 characters',
@@ -76,7 +67,27 @@ export const signupCustomerSchemaInput = z.object({
     .max(30, {
       message: 'firstname must not exceed 30 characters',
     }),
-  lastname: z.string().optional(),
+  last_name: z
+    .string({ required_error: 'Please enter your lastname' })
+    .min(2, {
+      message: 'lastname must be at least 2 characters',
+    })
+    .max(30, {
+      message: 'lastname must not exceed 30 characters',
+    }),
+  code: z.string(),
+  phone_number: z
+    .string({
+      required_error: 'Please enter your phone no',
+      invalid_type_error: 'Please enter your phone no',
+    })
+    .min(1, {
+      message: 'Please enter phone no',
+    }),
+  dob: z.date(),
+  gender: z.enum(['male', 'female'], {
+    required_error: 'Please enter your gender',
+  }),
 });
 export type signupCustomerInput = z.TypeOf<typeof signupCustomerSchemaInput>;
 
@@ -84,6 +95,7 @@ export const getCustomerSchema = z.object({
   startDate: z.date().optional(),
   endDate: z.date().optional(),
   searchQuery: z.string().optional(),
+  is_verified: z.boolean().optional(),
   first: z.number(),
   rows: z.number(),
   filters: z.any().optional(),
@@ -92,13 +104,23 @@ export const updateCustomerSchema = z.object({
   id: z.number(),
   is_approved: z.boolean().optional(),
   is_disabled: z.boolean().optional(),
-  is_deleted: z.boolean().optional(),  
-  type:z.string().optional(),
+  is_deleted: z.boolean().optional(),
+  type: z.string().optional(),
 });
 export type getCustomerSchema = z.TypeOf<typeof getCustomerSchema>;
 
 export const loginCustomerSchema = z.object({
-  user: z.string({ required_error: 'Please enter your username' }),
+  user: z
+    .string({
+      required_error: 'Please enter your email',
+      invalid_type_error: 'Please enter your email',
+    })
+    .email({
+      message: 'Please use a valid email',
+    })
+    .refine((val) => (val.includes('*') ? false : true), {
+      message: 'Please use a valid email',
+    }),
   password: z
     .string({ required_error: 'Please enter your password' })
     .min(6, {
@@ -120,7 +142,7 @@ export const loginCustomerSchemaInput = z.object({
     }),
 });
 
-export type loginCustomerInput = z.TypeOf<typeof loginCustomerSchemaInput>;
+export type loginCustomerInput = z.TypeOf<typeof loginCustomerSchema>;
 
 export const forgotPasswordCustomerSchema = z.object({
   email: z

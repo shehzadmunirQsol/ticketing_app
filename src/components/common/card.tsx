@@ -50,7 +50,8 @@ function ProductCard(props: cardInterface) {
         ref={cardRef}
       >
         <div className="relative ">
-          {endDate.toLocaleDateString() === todayDate.toLocaleDateString() ? (
+          {endDate.toISOString().split('T')[0] ==
+          todayDate.toISOString().split('T')[0] ? (
             <div className=" absolute top-0 w-fit p-2 z-2 bg-primary text-black text-sm">
               <span className=" font-bold">CLOSES TODAY</span> 20:00
             </div>
@@ -116,14 +117,14 @@ function ProductCard(props: cardInterface) {
           </div>
           <hr className=" opacity-20 mt-4" />
 
-          {props?.data?.category_id === 1 ? (
+          {props?.data?.category_id === 1 && props?.data?.cash_alt ? (
             <div className=" mt-2">
-              <span className="text-gray-200 text-md xl:text-lg font-normal leading-[18px]">
-                Cash Alternative
+              <span className="text-gray-200 text-md xl:text-lg font-semibold leading-[18px]">
+                Cash Prize Alternative
               </span>
               <span className="text-primary text-md xl:text-lg font-black leading-[18px]">
                 {' '}
-                AED {(props?.data?.cash_alt ?? 0)?.toFixed(2)}
+                AED {(props?.data?.cash_alt ?? 0)?.toLocaleString()}
               </span>
             </div>
           ) : (
@@ -132,7 +133,7 @@ function ProductCard(props: cardInterface) {
 
           <div className="flex  justify-between items-center mt-8 gap-4">
             <div className="text-primary text-md xl:text-lg font-black leading-[18px]">
-              AED {props?.data?.price?.toFixed(2)}
+              AED {props?.data?.price}
             </div>
             <Link href={`/product-detail/${props?.data?.id}`}>
               <Button

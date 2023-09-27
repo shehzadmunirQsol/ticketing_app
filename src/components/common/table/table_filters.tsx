@@ -1,18 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Button } from '~/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '~/components/ui/dialog';
+
 import { useToast } from '~/components/ui/use-toast';
-import { removeFromCart } from '~/store/reducers/cart';
-import { trpc } from '~/utils/trpc';
-import { LoginForm } from '../forms/form';
+
 import {
   Sheet,
   SheetContent,
@@ -33,16 +24,11 @@ import {
 } from '~/components/ui/form';
 import { Input } from '~/components/ui/input';
 import { Switch } from '~/components/ui/switch';
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '~/components/ui/select';
+
 import { useForm } from 'react-hook-form';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
+import { useRouter } from 'next/router';
+import { boolean } from 'zod';
 
 interface SettingDialogInterface {
   inputList: object[];
@@ -61,6 +47,38 @@ export function TableFilters(props: SettingDialogInterface) {
   const [filterDate, setFilterDate] = useState<any>({});
   const [filterInput, setFilterInput] = useState<any>({});
   const form = useForm<any>({});
+  const router = useRouter();
+  const { is_enabled, is_verified, status } = router.query;
+
+  useEffect(() => {
+    if (router.isReady) {
+      if (is_enabled) {
+        props?.setValue({ is_enabled: is_enabled == 'true' ? true : false });
+        setFilterVal({
+          ...filterVal,
+          is_enabled: is_enabled == 'true' ? true : false,
+        });
+      }
+      if (is_verified) {
+        props?.setValue({ is_verified: is_verified == 'true' ? true : false });
+        setFilterVal({
+          ...filterVal,
+          is_verified: is_verified == 'true' ? true : false,
+        });
+        console.log(
+          { is_verified: is_verified == 'true' ? true : false },
+          'is_verified',
+        );
+      }
+      if (status) {
+        props?.setValue({ status });
+        setFilterVal({
+          ...filterVal,
+          status,
+        });
+      }
+    }
+  }, [router.isReady, router.query]);
 
   const dispatch = useDispatch();
   const HandleFilterChange = (e: any, filter: string) => {
@@ -107,6 +125,7 @@ export function TableFilters(props: SettingDialogInterface) {
 
   const handleDeleteFilter = () => {
     return (
+      router.replace(router.pathname),
       props.setValue({}),
       setFilter(!filter),
       setFilterVal({}),
@@ -180,7 +199,7 @@ export function TableFilters(props: SettingDialogInterface) {
               <ScrollBar orientation="vertical"></ScrollBar>
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)}>
-                  <SheetDescription className="pt-10 pr-3">
+                  <SheetDescription className=" pr-3">
                     <div className=" grid grid-cols-1    items-center p-2">
                       {props?.inputList.map((item: any, i: number) => {
                         if (item?.type == 'text') {
@@ -241,9 +260,9 @@ export function TableFilters(props: SettingDialogInterface) {
                         if (
                           item?.type == 'date' &&
                           (item?.text === 'From Date' ||
-                            item?.text === 'Start Date')
+                            item?.text === 'Start Date' ||
+                            item?.text === 'Launch Date')
                         ) {
-                          console.log({ minEndDate }, 'start');
                           return (
                             <div key={i} className=" h-full">
                               <FormItem className=" flex flex-col gap-1  w-full">
@@ -252,6 +271,7 @@ export function TableFilters(props: SettingDialogInterface) {
                                   <Input
                                     type={'date'}
                                     placeholder={item?.text}
+                                    disabled={filterVal?.status ? true : false}
                                     onChange={(e) => {
                                       filterDateHandler(
                                         item?.filtername,
@@ -279,7 +299,6 @@ export function TableFilters(props: SettingDialogInterface) {
                           (item?.text === 'To Date' ||
                             item?.text === 'End Date')
                         ) {
-                          console.log({ minEndDate }, 'end');
                           return (
                             <div key={i} className=" h-full">
                               <FormItem className=" flex flex-col gap-1  w-full">
@@ -288,6 +307,7 @@ export function TableFilters(props: SettingDialogInterface) {
                                   <Input
                                     type={'date'}
                                     placeholder={item?.text}
+                                    disabled={filterVal?.status ? true : false}
                                     onChange={(e) =>
                                       filterDateHandler(
                                         item?.filtername,
@@ -316,6 +336,7 @@ export function TableFilters(props: SettingDialogInterface) {
                                   <Input
                                     type={'date'}
                                     placeholder={item?.text}
+                                    disabled={filterVal?.status ? true : false}
                                     onChange={(e) =>
                                       filterDateHandler(
                                         item?.filtername,
