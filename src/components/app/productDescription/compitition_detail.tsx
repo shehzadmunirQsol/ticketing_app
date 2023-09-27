@@ -7,7 +7,7 @@ const CompititionDetail = ({ data }: any) => {
       <div>
         <div className="w-30 my-10  space-x-4 ">
           <p className="lg:text-5xl md:text-4xl text-2xl   font-black uppercase  indent-4">
-            Competition Description
+            Description
           </p>
           <div className="border-b-4 w-16 border-primary mt-4 mb-14"></div>
 
@@ -21,7 +21,7 @@ const CompititionDetail = ({ data }: any) => {
                 Mercedes E63s AMG Night Edition
               </p>
               <div>
-                <p className='leading-loose'>
+                <p className="leading-loose">
                   The last of its kind. The Ferrari E63s AMG is one of the last
                   V8 powerhouses. With future cars becoming hybridized, this
                   4.0L twin-turbo V8 is truly something special. Producing 603
@@ -55,7 +55,7 @@ const CompititionDetail = ({ data }: any) => {
                 <br />
                 <p className="text-3xl">Modification</p>
                 <br />
-                <p className='leading-loose'>
+                <p className="leading-loose">
                   DMC Re-map to 800BHP
                   <br />
                   Full Satin Black Wrap
@@ -72,7 +72,7 @@ const CompititionDetail = ({ data }: any) => {
                 <br />
                 <p className="text-3xl">Specifications</p>
 
-                <p className='leading-loose'>
+                <p className="leading-loose">
                   <br />
                   Half Leather Half Alcantara Front &amp; Rear Seats
                   <br />

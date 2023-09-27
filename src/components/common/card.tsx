@@ -78,11 +78,11 @@ function ProductCard(props: cardInterface) {
         <div className="px-6 mt-6 py-4">
           <div className="flex flex-col gap-1">
             <span className=" text-xs ">
-              {(
+              {Math.round(
                 (Number(props?.data?.tickets_sold) /
                   Number(props?.data?.total_tickets)) *
-                100
-              ).toFixed(props?.data?.tickets_sold ? 2 : 0)}
+                  100,
+              )}
               % Sold
             </span>
             <Progress

@@ -54,10 +54,10 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
             <div className="flex-grow w-full">
               <div className="flex flex-col gap-2">
                 <span className=" text-xs text-white ">
-                  {(
+                  {Math.round(
                     (Number(data?.tickets_sold) / Number(data?.total_tickets)) *
-                    100
-                  ).toFixed(data?.tickets_sold ? 2 : 0)}
+                      100,
+                  )}
                   % Sold
                 </span>
                 <Progress value={percentageSold} className="w-full" />
