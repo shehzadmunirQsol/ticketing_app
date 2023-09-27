@@ -45,6 +45,12 @@ const AddressesView = () => {
                 icon: 'fa-pencil',
               },
             });
+            console.log({ data });
+            setValue('city', data.city);
+            setValue('phone_number', data.phone_number);
+            setValue('country', data.country);
+            setValue('postal_code', data.postal_code);
+            setValue('street_address_1', data.street_address_1);
           }
         },
       },
@@ -189,7 +195,6 @@ const AddressesView = () => {
                   />
                   <input
                     className="bg-primary-foreground p-0.5 font-sans"
-                    value={data && data?.postal_code}
                     placeholder="P.O Box"
                     {...register('postal_code', {
                       valueAsNumber: true,
@@ -199,7 +204,6 @@ const AddressesView = () => {
                   />
                   <input
                     className="bg-primary-foreground p-0.5 font-sans"
-                    value={data && data?.street_address_1}
                     placeholder="Street Address"
                     {...register('street_address_1')}
                     type="text"
@@ -207,7 +211,6 @@ const AddressesView = () => {
                   />
                   <input
                     className="bg-primary-foreground p-0.5 font-sans"
-                    value={data && data?.phone_number}
                     {...register('phone_number')}
                     placeholder="Mobile"
                     type="text"
@@ -216,7 +219,6 @@ const AddressesView = () => {
                   />
                   <input
                     className="bg-primary-foreground p-0.5 font-sans"
-                    value={data && data?.city}
                     placeholder="City"
                     {...register('city')}
                     type="text"
@@ -224,7 +226,6 @@ const AddressesView = () => {
                   />
                   <input
                     className="bg-primary-foreground p-0.5 font-sans"
-                    value={data?.country}
                     placeholder="Country"
                     {...register('country')}
                     type="text"

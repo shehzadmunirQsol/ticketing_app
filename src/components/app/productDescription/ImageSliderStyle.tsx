@@ -119,7 +119,7 @@ const BannerSlider = ({ data }: any) => {
           <i className="fa-solid fa-chevron-right"></i>
         </Button>
       </div>
-      <div className="flex flex-row flex-wrap gap-2 mt-4 lg:px-6 md:px-6  ">
+      <div className="hidden sm:flex flex-row flex-wrap gap-2 mt-4 lg:px-6 md:px-6  ">
         {eventImages?.map((item: any, i: any) => {
           return (
             <div

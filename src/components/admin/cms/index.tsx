@@ -1,14 +1,11 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Button } from '../../ui/button';
 import Link from 'next/link';
-import CouponsDataTable from '~/components/common/table/coupons';
 import { trpc } from '~/utils/trpc';
 import {
   DropdownMenu,
-  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/ui/dropdown-menu';
@@ -18,7 +15,6 @@ import { LoadingDialog } from '~/components/common/modal/loadingModal';
 import { CmsDailog } from '~/components/common/modal/cms';
 
 function Cms() {
-  const { toast } = useToast();
   const [selectedItem, setSelectedItem] = React.useState({});
   const [title, setTitle] = React.useState('');
   const [type, setType] = React.useState('');
@@ -65,20 +61,21 @@ function Cms() {
           </Button>
         </Link>
       </div>
-      <div className="py-4 px-4  w-full flex flex-col lg:flex-row md:flex-row items-center space-y-4 flex-wrap  gap-4">
-        <div className="w-[calc(100vw-20%)]">
-          <p className=" text-4xl font-semibold mb-10">Static CMS</p>
+      <div className="py-4  w-full flex flex-col lg:flex-row md:flex-row items-center  flex-wrap  gap-4">
+        <div className="w-full">
+          <p className=" text-3xl text-gray-400 font-semibold mb-4">
+            Static CMS
+          </p>
 
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3  mb-10 ">
+          <div className="w-full grid grid-cols-1 gap-4  md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4     mb-10 ">
             {staticData?.length ? (
               staticData?.map((item: any, i: any) => {
-                console.log(item, 'items');
                 return (
                   <div
                     key={i}
-                    className="bg-background py-4 px-4 rounded-md xl:w-96 w-full  mb-10 shadow-lg flex flex-row items-center justify-between  "
+                    className="bg-background py-4 px-4 rounded-md  w-full   shadow-lg flex flex-row items-center justify-between  "
                   >
-                    <p className="text-2xl text-primary font-bold">
+                    <p className="text-lg capitalize text-primary font-semibold">
                       {item?.CMSDescription[0]?.title}
                     </p>
                     <div>
@@ -100,12 +97,12 @@ function Cms() {
                                 handleCmsStatus(
                                   item?.id,
                                   item?.is_enabled === false
-                                    ? 'enabled'
-                                    : 'disabled',
+                                    ? 'enable'
+                                    : 'disable',
                                 )
                               }
                             >
-                              {item.is_enabled === false
+                              {item.is_enabled === true
                                 ? 'Enabled'
                                 : 'Disabled'}
                             </DropdownMenuItem>
@@ -124,31 +121,29 @@ function Cms() {
           </div>
         </div>
 
-        <div className="w-[calc(100vw-20%)]">
-          <p className=" text-4xl font-semibold mb-10">Events CMS</p>
+        <div className="w-full">
+          <p className=" text-3xl text-gray-400 font-semibold mb-4">
+            Events CMS
+          </p>
 
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3  mb-10 ">
+          <div className="w-full grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4  mb-10 ">
             {eventfaqsData?.length ? (
               eventfaqsData?.map((item: any, i: any) => {
-                console.log(item, 'items');
                 return (
                   <div
                     key={i}
-                    className="bg-background py-4 px-4 rounded-md xl:w-96 w-full  mb-10 shadow-lg flex flex-row items-center justify-between  "
+                    className="bg-background py-4 px-4 rounded-md  w-full   shadow-lg flex flex-row items-center justify-between  "
                   >
-                    <p className="text-2xl text-primary font-bold">
+                    <p className="text-lg capitalize text-primary font-semibold ">
                       {item?.CMSDescription[0]?.title}
                     </p>
                     <div>
                       <div>
-                        <Link href={`/admin/cms/edit/${item?.id}`}>
-                          <Button
-                            variant="outline"
-                            size="icon"
-                            className="xl:inline "
-                          >
-                            <i className="fa-solid fa-pen-to-square"></i>
-                          </Button>
+                        <Link
+                          href={`/admin/cms/edit/${item?.id}`}
+                          className=" rounded-full border-border"
+                        >
+                          <i className="fa-solid fa-pen-to-square hover:text-primary"></i>
                         </Link>
                       </div>
                     </div>

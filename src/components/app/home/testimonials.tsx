@@ -13,6 +13,7 @@ import Face3 from '~/public/assets/face/face3.png';
 import Face4 from '~/public/assets/face/face4.png';
 import Face5 from '~/public/assets/face/face5.png';
 import Face6 from '~/public/assets/face/face6.png';
+import LogoImage from '~/public/assets/logo.png';
 
 import { User } from 'lucide-react';
 
@@ -99,9 +100,15 @@ function Testimonials() {
             <div className="text-center   text-white  text-xl ">
               See Why Our Customers Love
             </div>
-            <div className="text-center text-gray-200 text-5xl font-black leading-[48px]">
+            <div className="mt-2  text-center text-gray-200 text-5xl font-black leading-[48px]">
               {' '}
-              WINNAR
+              <Image
+                src={LogoImage}
+                alt="Logo Image"
+                width={150}
+                height={140}
+                className="mx-auto h-6  w-56 "
+              />
             </div>
           </div>
         </div>

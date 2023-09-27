@@ -67,7 +67,17 @@ const AccountDetails = () => {
       console.log({ error });
     }
   }
+  const today = new Date();
 
+  // Calculate the minimum date (18 years ago from today)
+  const minDate = new Date(
+    today.getFullYear() - 18,
+    today.getMonth(),
+    today.getDate(),
+  );
+
+  // Format the minimum date as "YYYY-MM-DD" for the input field
+  const minDateFormatted = minDate.toISOString().split('T')[0];
   return (
     <div className="py-4 px-6 text-[#eaeaea] ">
       <p className=" font-bold text-2xl mb-6 text-white">
@@ -156,6 +166,7 @@ const AccountDetails = () => {
                     <Input
                       type={'date'}
                       placeholder={'Start Date'}
+                      max={minDateFormatted}
                       {...form.register('dob', {
                         valueAsDate: true,
                       })}
@@ -344,7 +355,7 @@ function DeleteAccount({ email }: any) {
     resolver: zodResolver(deleteMyAccountCustomerSchema),
   });
   const [reason, setReason] = useState<any>([]);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const deleteAccountRequestCustomer =
     trpc.customer.deleteMyAccountCustomer.useMutation({

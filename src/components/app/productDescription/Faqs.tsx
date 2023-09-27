@@ -9,7 +9,7 @@ import {
 import parse from 'html-react-parser';
 
 const AccordianFaqs = ({ data }: any) => {
-  const dataCode: any = data?.CMS?.CMSDescription[0].content;
+  const dataCode: any = data?.CMS?.CMSDescription[0]?.content;
   const reactElementsForFAQs = parse(dataCode || '', {
     replace: (node: any) => node,
   });

@@ -477,7 +477,7 @@ model Winner {
 model CMS {
   id         Int      @id @default(autoincrement())
   user_id    Int
-  slug       String
+  slug       String   @unique
   type       CMSEnums @default(static)
   is_deleted Boolean  @default(false)
   is_enabled Boolean  @default(false)
