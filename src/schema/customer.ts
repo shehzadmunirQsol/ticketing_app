@@ -67,7 +67,14 @@ export const signupCustomerSchemaInput = z.object({
     .max(30, {
       message: 'firstname must not exceed 30 characters',
     }),
-  last_name: z.string().optional(),
+  last_name: z
+    .string({ required_error: 'Please enter your lastname' })
+    .min(2, {
+      message: 'lastname must be at least 2 characters',
+    })
+    .max(30, {
+      message: 'lastname must not exceed 30 characters',
+    }),
   code: z.string(),
   phone_number: z
     .string({

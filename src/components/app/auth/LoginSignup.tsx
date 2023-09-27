@@ -161,17 +161,17 @@ export default function LoginSignup() {
       });
     }
   };
- const today = new Date();
+  const today = new Date();
 
- // Calculate the minimum date (18 years ago from today)
- const minDate = new Date(
-   today.getFullYear() - 18,
-   today.getMonth(),
-   today.getDate(),
- );
+  // Calculate the minimum date (18 years ago from today)
+  const minDate = new Date(
+    today.getFullYear() - 18,
+    today.getMonth(),
+    today.getDate(),
+  );
 
- // Format the minimum date as "YYYY-MM-DD" for the input field
- const minDateFormatted = minDate.toISOString().split('T')[0];
+  // Format the minimum date as "YYYY-MM-DD" for the input field
+  const minDateFormatted = minDate.toISOString().split('T')[0];
   return (
     <section className="body-font pt-24 space-y-24">
       <div className=" mb-24 lg:pb-0 md:pb-0 lg:py-24 md:py-24 mx-auto flex flex-col-reverse px-4 md:px-14 lg:flex-row md:flex-row justify-between gap-10 w-full">
@@ -305,7 +305,7 @@ export default function LoginSignup() {
                       render={({ field }) => (
                         <FormItem className="mb-4 w-full">
                           <FormLabel className="text-xs font-thin text-grayColor">
-                            Last Name
+                            Last Name <sup className="">*</sup>
                           </FormLabel>
                           <FormControl>
                             <Input

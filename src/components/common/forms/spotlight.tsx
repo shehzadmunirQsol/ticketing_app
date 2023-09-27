@@ -47,7 +47,7 @@ const enFormSchema = z.object({
   ar: z
     .object({
       name: z.string(),
-      description: z.string(),
+      description: z.string().optional(),
     })
     .optional(),
 });
@@ -62,7 +62,7 @@ const arFormSchema = z.object({
     .optional(),
   ar: z.object({
     name: z.string(),
-    description: z.string().optional(),
+    description: z.string(),
   }),
 });
 export function SpotLightForm() {
