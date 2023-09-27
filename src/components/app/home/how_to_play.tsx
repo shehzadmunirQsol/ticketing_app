@@ -28,7 +28,8 @@ function HowtoSection() {
     },
     {
       step: 2,
-      title: 'Purchase water bottle automatically donated to our charity partner',
+      title:
+        'Purchase water bottle automatically donated to our charity partner',
       icon: Frame12,
     },
     {
@@ -39,7 +40,7 @@ function HowtoSection() {
   ];
   return (
     <div className="w-full  mb-16 bg-primary relative">
-      <div className="relative top-0  max-w-[1600px] mx-auto    grid grid-cols-1 lg:grid-cols-2 gap-4  p-4 md:p-14 ">
+      <div className="relative top-0   mx-auto    grid grid-cols-1 lg:grid-cols-2 gap-4  p-4 md:p-14 ">
         <div className=" my-auto   w-full ">
           <p className="w-full md:!max-w-[460px] mr-auto  py-4 md:py-0 text-left text-black font-[1000] tracking-[-1px] text-3xl   xsm:text-6xl lg:text-8xl">
             HOW TO PLAY?
@@ -49,22 +50,22 @@ function HowtoSection() {
         <div className="flex flex-col gap-8 space-y-4 ">
           {HowtoStart?.map((item, index) => {
             return (
-              <div key={index} className="flex gap-4  items-center">
-                <div className=" h-12 w-12">
+              <div key={index} className="relative flex gap-4   items-center">
+                <div className="relative  h-12 w-12">
                   <Image
-                    className="w-full h-full object-cover "
+                    className="w-full h-full  object-cover "
                     src={item?.icon}
-                    height={400}
+                    fill
                     quality={100}
                     alt="Sunset in the mountains"
                   />
                 </div>
-                <div>
+                <div className="w-fit">
                   <div>
-                    <div className="text-background text-sm font-normal leading-tight">
+                    <div className="text-background text-sm font-normal ">
                       0{item?.step} STEP
                     </div>
-                    <div className="text-background text-lg font-extrabold leading-2 ">
+                    <div className="text-background text-lg font-extrabold  ">
                       {item?.title}
                     </div>
                   </div>
