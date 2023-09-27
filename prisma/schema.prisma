@@ -278,13 +278,15 @@ model EventFAQ {
 model Customer {
   id                Int                 @id @default(autoincrement())
   email             String              @unique
-  username          String              @unique
+  username          String?             @default("")
   password          String
   is_approved       Boolean             @default(false)
   otp               String              @default("")
   first_name        String?
   profile_pic       String?
   last_name         String?
+  phone_number      String?
+  gender            GenderEnums         @default(male)
   total_customer_id String?             @default("")
   dob               DateTime?
   is_deleted        Boolean             @default(false)
@@ -614,6 +616,11 @@ enum SubscriptionEnums {
   weekly
   monthly
   quarterly
+}
+
+enum GenderEnums {
+  male
+  female
 }
 
 enum CMSEnums {

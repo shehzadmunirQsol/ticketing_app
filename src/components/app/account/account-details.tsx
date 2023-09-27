@@ -116,7 +116,7 @@ const AccountDetails = () => {
               render={({ field }) => (
                 <FormItem className=" w-full ">
                   <FormLabel className="text-xs font-thin text-grayColor">
-                    Last Name*
+                    Last Name *
                   </FormLabel>
                   <FormControl className="rounded-md bg-inputColor">
                     <Input
@@ -137,7 +137,7 @@ const AccountDetails = () => {
               render={({ field }) => (
                 <FormItem className=" w-full ">
                   <FormLabel className="text-xs font-thin text-grayColor">
-                    Email Address*
+                    Email Address *
                   </FormLabel>
                   <FormControl className="rounded-md bg-inputColor">
                     <Input
@@ -158,9 +158,8 @@ const AccountDetails = () => {
               name="dob"
               render={() => (
                 <FormItem className=" flex flex-col gap-2 mt-2 w-full">
-                  <FormLabel>
-                    Date of Birth*
-                    {/* <sup className="text-md text-red-500">*</sup> */}
+                  <FormLabel className="text-xs font-thin text-grayColor">
+                    Date of Birth *
                   </FormLabel>
                   <FormControl className="rounded-md bg-inputColor">
                     <Input

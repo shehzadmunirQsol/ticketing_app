@@ -81,9 +81,9 @@ export type CustomerType = {
 export default function CustomersDataTable() {
   // use toast
   const { toast } = useToast();
-  const router = useRouter()
-  const { is_verified } = router.query
-  console.log({is_verified})
+  const router = useRouter();
+  const { is_verified } = router.query;
+  console.log({ is_verified });
 
   // use states
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -129,8 +129,8 @@ export default function CustomersDataTable() {
       type == 'delete'
         ? setPara('Are you sure you want to Delete this customer?')
         : type == 'enable'
-          ? setPara('Are you sure you want to Enable this customer?')
-          : setPara('');
+        ? setPara('Are you sure you want to Enable this customer?')
+        : setPara('');
     }
     setType(type);
     setIsModal(true);
@@ -144,16 +144,14 @@ export default function CustomersDataTable() {
             {data.first_name + ' ' + data.last_name}
           </p>
 
-          <TooltipProvider >
-            <Tooltip >
+          <TooltipProvider>
+            <Tooltip>
               <TooltipTrigger>
                 <div>
                   <i className="fas fa-flag p-1 text-gray-200 bg-red-900  rounded-lg shadow-md text-xs"></i>
                 </div>
               </TooltipTrigger>
-              <TooltipContent >
-                Delete Request
-              </TooltipContent>
+              <TooltipContent>Delete Request</TooltipContent>
             </Tooltip>
           </TooltipProvider>
         </div>
@@ -229,15 +227,6 @@ export default function CustomersDataTable() {
         );
       },
     },
-    {
-      accessorKey: 'User Name',
-      header: 'User Name',
-      cell: ({ row }) => (
-        <div className=" text-ellipsis whitespace-nowrap ">
-          {row?.original?.username}
-        </div>
-      ),
-    },
 
     {
       id: 'Verified Status',
@@ -246,11 +235,7 @@ export default function CustomersDataTable() {
       cell: ({ row }) => {
         return (
           <div>
-            <Switch
-              checked={row?.original?.is_verified}
-              disabled={true}
-
-            />
+            <Switch checked={row?.original?.is_verified} disabled={true} />
           </div>
         );
       },
@@ -434,9 +419,9 @@ export default function CustomersDataTable() {
                         {header.isPlaceholder
                           ? null
                           : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
+                              header.column.columnDef.header,
+                              header.getContext(),
+                            )}
                       </TableHead>
                     );
                   })}
@@ -534,7 +519,7 @@ export default function CustomersDataTable() {
               disabled={
                 (filters.first + 1) * filters.rows > (data?.count ?? 0) ||
                 Math.ceil((data?.count ?? 0) / filters.rows) ==
-                filters.first + 1
+                  filters.first + 1
               }
             >
               <span className="sr-only">Go to next page</span>
@@ -552,7 +537,7 @@ export default function CustomersDataTable() {
               disabled={
                 (filters.first + 1) * filters.rows > (data?.count ?? 0) ||
                 Math.ceil((data?.count ?? 0) / filters.rows) ==
-                filters.first + 1
+                  filters.first + 1
               }
             >
               <span className="sr-only">Go to last page</span>
