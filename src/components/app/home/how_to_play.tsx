@@ -28,7 +28,7 @@ function HowtoSection() {
     },
     {
       step: 2,
-      title: 'Answer the question correctly',
+      title: 'Purchase water bottle automatically donated to our charity partner',
       icon: Frame12,
     },
     {

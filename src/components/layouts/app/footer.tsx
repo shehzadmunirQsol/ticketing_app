@@ -143,6 +143,18 @@ function Footer() {
                           <i className="fa-brands fa-linkedin text-xl"></i>
                         </Button>
                       </Link>
+                      <Link
+                        target="_blank"
+                        href="https://www.youtube.com/@Winnarofficial"
+                      >
+                        <Button
+                          variant="outline"
+                          size="icon_square"
+                          className="p-1 rounded-md"
+                        >
+                          <i className="fa-brands fa-youtube text-xl"></i>
+                        </Button>
+                      </Link>
                     </div>
                   </div>
                 </div>
