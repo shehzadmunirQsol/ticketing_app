@@ -32,13 +32,11 @@ import Link from 'next/link';
 import ContactImage from '../../../public/assets/contact-us.svg';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import ReCAPTCHA from "react-google-recaptcha"
+
 
 export default function Contact() {
   const { toast } = useToast();
   const router = useRouter();
-  const recaptchaRef: any = createRef();
-  const [recaptchaToken, setRecapthaToken] = useState<string>('');
 
   // 1. Define your form.
   const form = useForm<contactSchemaInput>({
@@ -46,14 +44,6 @@ export default function Contact() {
   });
 
 
-  const showResponse = (response: any) => {
-    console.log({ response });
-    if (response) {
-      setRecapthaToken(() => recaptchaRef.current.getValue());
-    }
-
-    //call to a backend to verify against recaptcha with private key
-  };
   // Handle Contact us
   const contactUs = trpc.contact.contact.useMutation({
     onSuccess: async (res: any) => {
@@ -68,8 +58,6 @@ export default function Contact() {
       form.setValue('code', '+971');
       form.setValue('number', '');
       form.setValue('message', '');
-      recaptchaRef.current.reset();
-      setRecapthaToken("");
     },
     onError: (err) => {
       console.log(err.message, 'err');
@@ -84,13 +72,6 @@ export default function Contact() {
 
   // Contact
   const onSubmitContact = async (values: any) => {
-    if (!recaptchaToken) {
-      toast({
-        variant: 'destructive',
-        title: 'Invalid Captcha: Please try again.',
-      });
-      return;
-    }
 
     try {
       await contactUs.mutateAsync(values);
@@ -251,17 +232,7 @@ export default function Contact() {
                   )}
                 />
 
-              <div className="flex flex-col md:flex-row justify-between items-center gap-y-2 md:gap-x-6 md:gap-y-0 h-16">
-                <div className='w-fit mr-auto' style={{transform:"scale(0.85)", transformOrigin:"0 0", height:"fit-content"}}>
-                  <ReCAPTCHA
-                    ref={recaptchaRef}
-                    size="normal"
-                    badge="inline"
-                    theme='dark'
-                    sitekey={process.env.NEXT_PUBLIC_SITE_KEY as string}
-                    onChange={showResponse}
-                  />
-                </div>
+              <div className="flex flex-col md:flex-row justify-end items-center gap-y-2 md:gap-x-6 md:gap-y-0 h-16">
 
                 <Button
                   className="  lg:w-52 md:w-52 w-full     text-black font-sans font-[900]   text-xl tracking-[-1px]"
