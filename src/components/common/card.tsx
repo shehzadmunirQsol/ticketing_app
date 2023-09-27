@@ -42,6 +42,8 @@ function ProductCard(props: cardInterface) {
 
   const spaceElement = props?.isCash ? null : <div className="h-8" />;
 
+  console.log(endDate?.toISOString()?.split("T")[0] , todayDate?.toISOString()?.split("T")[0],endDate?.toISOString()?.split("T")[0] == todayDate?.toISOString()?.split("T")[0],`endDate.toISOString().split("T")[0] == todayDate.toISOString().split("T")[0]`)
+
   return (
     props?.data && (
       <div
@@ -50,7 +52,7 @@ function ProductCard(props: cardInterface) {
         ref={cardRef}
       >
         <div className="relative ">
-          {endDate.toISOString().split("T")[0] === todayDate.toISOString().split("T")[0] ? (
+          {endDate.toISOString().split("T")[0] == todayDate.toISOString().split("T")[0] ? (
             <div className=" absolute top-0 w-fit p-2 z-2 bg-primary text-black text-sm">
               <span className=" font-bold">CLOSES TODAY</span> 20:00
             </div>
