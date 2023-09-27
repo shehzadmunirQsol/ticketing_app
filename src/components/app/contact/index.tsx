@@ -102,24 +102,24 @@ export default function Contact() {
   return (
     <section className="body-font pt-24 space-y-24">
       <div className="px-4 my-10 md:px-14 md:my-24 flex gap-14 w-full ">
-        <div className="w-2/5 mb-5 lg:mb-0 rounded-lg hidden lg:block  ">
+        <div className="w-2/5 mb-5 lg:mb-0  hidden lg:block  ">
           <SideImage
             image={ContactImage}
             text={'Connect with Us for '}
             text2={'Support, Questions'}
           />
         </div>
-        <div className="w-96 pb-6 flex flex-col flex-wrap   lg:w-3/5 md:w-full  lg:text-left  rounded-none border-none  bg-card">
+        <div className="w-96 pb-6 flex flex-col flex-wrap   lg:w-3/5 md:w-full  lg:text-left  rounded-sm border-none  bg-card">
           <div className="font-black  py-4 ">
             <p className="text-xl pl-6 px-4 lg:px-8">Contact Us</p>
             <hr className=" opacity-20 mt-4" />
           </div>
-          <Form {...form}>
+          <Form {...form} >
             <form
               onSubmit={form.handleSubmit(onSubmitContact)}
-              className="justify-center items-center px-4 lg:px-8   space-y-4"
+              className="justify-center items-center px-4 lg:px-8 h-[620px] md:h-[560px] "
             >
-              <div className="w-full">
+              <div className="w-full ">
                 <FormField
                   control={form.control}
                   name="name"
@@ -250,16 +250,18 @@ export default function Contact() {
                     </FormItem>
                   )}
                 />
-              </div>
-              <div className="flex flex-col lg:flex-row md:flex-row justify-between items-center gap-6 ">
-                <ReCAPTCHA
-                  ref={recaptchaRef}
-                  size="normal"
-                  badge="inline"
-                  theme='dark'
-                  sitekey={process.env.NEXT_PUBLIC_SITE_KEY as string}
-                  onChange={showResponse}
-                />
+
+              <div className="flex flex-col md:flex-row justify-between items-center gap-y-2 md:gap-x-6 md:gap-y-0 h-16">
+                <div className='w-fit mr-auto' style={{transform:"scale(0.85)", transformOrigin:"0 0", height:"fit-content"}}>
+                  <ReCAPTCHA
+                    ref={recaptchaRef}
+                    size="normal"
+                    badge="inline"
+                    theme='dark'
+                    sitekey={process.env.NEXT_PUBLIC_SITE_KEY as string}
+                    onChange={showResponse}
+                  />
+                </div>
 
                 <Button
                   className="  lg:w-52 md:w-52 w-full     text-black font-sans font-[900]   text-xl tracking-[-1px]"
@@ -268,6 +270,8 @@ export default function Contact() {
                   SEND MESSAGE
                 </Button>
               </div>
+              </div>
+
             </form>
           </Form>
         </div>
