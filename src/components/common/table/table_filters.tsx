@@ -57,6 +57,7 @@ export function TableFilters(props: SettingDialogInterface) {
   const { toast } = useToast();
   const [filter, setFilter] = useState(false);
   const [filterVal, setFilterVal] = useState<any>({});
+  const [minEndDate, setMinEndDate] = useState<string>();
   const [filterDate, setFilterDate] = useState<any>({});
   const [filterInput, setFilterInput] = useState<any>({});
   const form = useForm<any>({});
@@ -69,17 +70,16 @@ export function TableFilters(props: SettingDialogInterface) {
       'is_percentage',
       'is_limit',
       'is_disabled',
+      'is_limited',
     ];
     const data =
-      filter == 'category_id'
+      filter == 'category_id' && e.target.value !== 'delete'
         ? +e.target.value
-        : filterData.includes(filter)
+        : filterData.includes(filter) && e.target.value !== 'delete'
         ? e.target.value == 'true'
           ? true
           : false
         : e.target.value;
-    console.log({ data });
-
     if (data !== 'delete') {
       setFilterVal({
         ...filterVal,
@@ -89,6 +89,7 @@ export function TableFilters(props: SettingDialogInterface) {
       setFilterVal((current: any) => {
         // remove cost key from object
         const { [filter]: data, ...rest } = current;
+        console.log({ ...rest });
         return rest;
       });
     }
@@ -179,7 +180,7 @@ export function TableFilters(props: SettingDialogInterface) {
               <ScrollBar orientation="vertical"></ScrollBar>
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)}>
-                  <SheetDescription className="pt-10 pr-2">
+                  <SheetDescription className="pt-10 pr-3">
                     <div className=" grid grid-cols-1    items-center p-2">
                       {props?.inputList.map((item: any, i: number) => {
                         if (item?.type == 'text') {
@@ -236,6 +237,76 @@ export function TableFilters(props: SettingDialogInterface) {
                             </div>
                           );
                         }
+
+                        if (
+                          item?.type == 'date' &&
+                          (item?.text === 'From Date' ||
+                            item?.text === 'Start Date')
+                        ) {
+                          console.log({ minEndDate }, 'start');
+                          return (
+                            <div key={i} className=" h-full">
+                              <FormItem className=" flex flex-col gap-1  w-full">
+                                <FormLabel>{item?.text}</FormLabel>
+                                <FormControl>
+                                  <Input
+                                    type={'date'}
+                                    placeholder={item?.text}
+                                    onChange={(e) => {
+                                      filterDateHandler(
+                                        item?.filtername,
+                                        e.target.value,
+                                      );
+                                      const date = new Date(e.target.value)
+                                        ?.toISOString()
+                                        ?.split('T')[0];
+                                      setMinEndDate(date);
+                                    }}
+                                    value={filterDate[item?.filtername]}
+                                  />
+                                </FormControl>
+
+                                <div className="relative pb-2">
+                                  <FormMessage />
+                                </div>
+                              </FormItem>
+                            </div>
+                          );
+                        }
+
+                        if (
+                          item?.type == 'date' &&
+                          (item?.text === 'To Date' ||
+                            item?.text === 'End Date')
+                        ) {
+                          console.log({ minEndDate }, 'end');
+                          return (
+                            <div key={i} className=" h-full">
+                              <FormItem className=" flex flex-col gap-1  w-full">
+                                <FormLabel>{item?.text}</FormLabel>
+                                <FormControl>
+                                  <Input
+                                    type={'date'}
+                                    placeholder={item?.text}
+                                    onChange={(e) =>
+                                      filterDateHandler(
+                                        item?.filtername,
+                                        e.target.value,
+                                      )
+                                    }
+                                    min={minEndDate}
+                                    value={filterDate[item?.filtername]}
+                                  />
+                                </FormControl>
+
+                                <div className="relative pb-2">
+                                  <FormMessage />
+                                </div>
+                              </FormItem>
+                            </div>
+                          );
+                        }
+
                         if (item?.type == 'date') {
                           return (
                             <div key={i} className=" h-full">
@@ -262,6 +333,7 @@ export function TableFilters(props: SettingDialogInterface) {
                             </div>
                           );
                         }
+
                         if (item?.type == 'switch') {
                           return (
                             <div key={i} className=" h-full">

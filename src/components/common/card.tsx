@@ -15,6 +15,7 @@ interface cardInterface {
   data?: any;
   nextPage?: () => void;
   isLast?: boolean;
+  isCash?: boolean;
 }
 
 function ProductCard(props: cardInterface) {
@@ -38,6 +39,8 @@ function ProductCard(props: cardInterface) {
 
     observer.observe(cardRef.current);
   }, [props?.isLast]);
+
+  const spaceElement = props?.isCash ? null : <div className="h-8" />;
 
   return (
     props?.data && (
@@ -74,8 +77,12 @@ function ProductCard(props: cardInterface) {
         <div className="px-6 mt-6 py-4">
           <div className="flex flex-col gap-1">
             <span className=" text-xs ">
-              {props?.data?.tickets_sold} Sold out of{' '}
-              {props?.data?.total_tickets}
+              {(
+                (Number(props?.data?.tickets_sold) /
+                  Number(props?.data?.total_tickets)) *
+                100
+              ).toFixed(props?.data?.tickets_sold ? 2 : 0)}
+              % Sold
             </span>
             <Progress
               value={
@@ -104,22 +111,25 @@ function ProductCard(props: cardInterface) {
           </div>
           <div className="relative w-full opacity-75  text-gray-200  text-md font-normal leading-normal ">
             <p className="  h-12  overflow-hidden ">
-              {customTruncate(
-                props?.data?.EventDescription[0]?.comp_details,
-                100,
-              )}
+              {customTruncate(props?.data?.EventDescription[0]?.desc, 100)}
             </p>
           </div>
           <hr className=" opacity-20 mt-4" />
-          <div className=" mt-2">
-            <span className="text-gray-200 text-md xl:text-lg font-normal leading-[18px]">
-              Cash Alternative
-            </span>
-            <span className="text-primary text-md xl:text-lg font-black leading-[18px]">
-              {' '}
-              AED {(props?.data?.cash_alt ?? 0)?.toFixed(2)}
-            </span>
-          </div>
+
+          {props?.data?.category_id === 1 ? (
+            <div className=" mt-2">
+              <span className="text-gray-200 text-md xl:text-lg font-normal leading-[18px]">
+                Cash Alternative
+              </span>
+              <span className="text-primary text-md xl:text-lg font-black leading-[18px]">
+                {' '}
+                AED {(props?.data?.cash_alt ?? 0)?.toFixed(2)}
+              </span>
+            </div>
+          ) : (
+            spaceElement
+          )}
+
           <div className="flex  justify-between items-center mt-8 gap-4">
             <div className="text-primary text-md xl:text-lg font-black leading-[18px]">
               AED {props?.data?.price?.toFixed(2)}

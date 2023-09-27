@@ -150,10 +150,10 @@ export default function CouponForm() {
                 <FormControl>
                   <Input placeholder="Enter Coupon Name" {...field} />
                 </FormControl>
-                
-                <div className='relative pb-2'>
-                        <FormMessage />
-                        </div>
+
+                <div className="relative pb-4">
+                  <FormMessage />
+                </div>
               </FormItem>
             )}
           />
@@ -173,10 +173,10 @@ export default function CouponForm() {
                     {...field}
                   />
                 </FormControl>
-                
-                <div className='relative pb-2'>
-                        <FormMessage />
-                        </div>
+
+                <div className="relative pb-4">
+                  <FormMessage />
+                </div>
               </FormItem>
             )}
           />
@@ -208,10 +208,10 @@ export default function CouponForm() {
                     </SelectContent>
                   </Select>
                 </FormControl>
-                
-                <div className='relative pb-2'>
-                        <FormMessage />
-                        </div>
+
+                <div className="relative pb-4">
+                  <FormMessage />
+                </div>
               </FormItem>
             )}
           />
@@ -236,10 +236,10 @@ export default function CouponForm() {
                     })}
                   />
                 </FormControl>
-                
-                <div className='relative pb-2'>
-                        <FormMessage />
-                        </div>
+
+                <div className="relative pb-4">
+                  <FormMessage />
+                </div>
               </FormItem>
             )}
           />
@@ -263,10 +263,10 @@ export default function CouponForm() {
                       })}
                     />
                   </FormControl>
-                  
-                  <div className='relative pb-2'>
-                        <FormMessage />
-                        </div>
+
+                  <div className="relative pb-4">
+                    <FormMessage />
+                  </div>
                 </FormItem>
               )}
             />
@@ -288,14 +288,14 @@ export default function CouponForm() {
                       min={endDate}
                       {...form.register('end_date', {
                         valueAsDate: true,
-                        required:true
+                        required: true,
                       })}
                     />
                   </FormControl>
-                  
-                  <div className='relative pb-2'>
-                        <FormMessage />
-                        </div>
+
+                  <div className="relative pb-4">
+                    <FormMessage />
+                  </div>
                 </FormItem>
               )}
             />
@@ -327,10 +327,9 @@ export default function CouponForm() {
                   </SelectContent>
                 </Select>
 
-                
-                <div className='relative pb-2'>
-                        <FormMessage />
-                        </div>
+                <div className="relative pb-4">
+                  <FormMessage />
+                </div>
               </FormItem>
             )}
           />
@@ -350,14 +349,14 @@ export default function CouponForm() {
                       placeholder="Enter Coupon Limit"
                       {...form.register('coupon_limit', {
                         valueAsNumber: true,
-                        required:true
+                        required: true,
                       })}
                     />
                   </FormControl>
-                  
-                  <div className='relative pb-2'>
-                        <FormMessage />
-                        </div>
+
+                  <div className="relative pb-4">
+                    <FormMessage />
+                  </div>
                 </FormItem>
               )}
             />

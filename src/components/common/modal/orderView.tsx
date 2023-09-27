@@ -58,7 +58,7 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
           <DialogDescription className="relative bg-card h-full rounded-lg  overflow-y-scroll   scroll-hide">
             {OrderApiData && (
               <div
-                className="bg-card h-full text-gray-400 rounded-lg shadow-lg px-8 py-10 max-w-xl mx-auto  "
+                className="bg-card h-full text-gray-400 rounded-lg  px-8 py-10 max-w-xl mx-auto  "
                 id="divToPrint"
               >
                 <div className="flex flex-col md:flex-row items-center justify-between mb-8">
@@ -159,7 +159,7 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
                       </div>
                     </div>
 
-                    <div className="flex justify-between items-center mb-6">
+                    <div className="flex justify-between items-center border-t-2 border-gray-300 mb-6">
                       <div className=" mr-2">Total:</div>
                       <div className=" font-bold text-lg">
                         AED {(OrderApiData?.data?.total_amount).toFixed(2)}

@@ -93,15 +93,27 @@ export const EventFormSchema = z.object({
     name: z.string({
       required_error: 'Please enter a event name',
     }),
-    desc: z.string(),
-    comp_details: z.string(),
+    desc: z.string({
+      required_error: 'Please enter a description',
+    }),
+    comp_details: z.string({
+      required_error: 'Please enter the competition details',
+    }),
   }),
   ar: z.object({
     name: z.string({
-      required_error: 'الرجاء إدخال اسم الحدث',
+      required_error: 'Please enter a event name',
     }),
-    desc: z.string().optional(),
-    comp_details: z.string().optional(),
+    desc: z
+      .string({
+        required_error: 'Please enter a description',
+      })
+      .optional(),
+    comp_details: z
+      .string({
+        required_error: 'Please enter the competition details',
+      })
+      .optional(),
   }),
 });
 

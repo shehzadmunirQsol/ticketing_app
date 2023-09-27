@@ -51,7 +51,7 @@ function Header() {
           onClick={toggleSidebarHandler}
           variant="outline"
           size="icon"
-          className="xl:inline hidden"
+          className="xl:inline hidden border-border"
         >
           <i className="fa-solid fa-bars" />
         </Button>
@@ -116,15 +116,14 @@ function DrawerFunction() {
   return (
     <Sheet>
       <SheetOverlay />
-      <SheetTrigger className="flex items-center mb-2  p-3 border-2 rounded-full hover:bg-secondary/80 hover:text-primary align-middle justify-between cursor-pointer">
+      <SheetTrigger className="flex items-center mb-2  p-3 border border-border rounded-full hover:bg-secondary/80 hover:text-primary align-middle justify-between cursor-pointer">
         <i className="fa-solid fa-bars" />
       </SheetTrigger>
-      <SheetContent className="w-64 border-border" side={'left'}>
-        <SheetHeader>
-          <SheetDescription className="pt-10">
-            <Content />
-          </SheetDescription>
-        </SheetHeader>
+      <SheetContent className=" w-64 border-border " side={'left'}>
+        <SheetHeader className="sticky top-0"></SheetHeader>
+        <SheetDescription className="pt-10  h-full overflow-y-scroll scroll-hide  ">
+          <Content />
+        </SheetDescription>
       </SheetContent>
     </Sheet>
   );

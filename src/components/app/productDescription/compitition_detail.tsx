@@ -1,7 +1,6 @@
 import React from 'react';
 
 const CompititionDetail = ({ data }: any) => {
-  console.log(data?.EventDescription[0].comp_details, 'NSJSHSHJJHAGDHSJ');
   const dataCode: any = data?.EventDescription[0].comp_details;
   return (
     <section id="CompititionDetail" className="space-x-4">

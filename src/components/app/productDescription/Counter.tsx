@@ -112,7 +112,9 @@ const Counter: React.FC<CounterProps> = ({
             {ticketPurchased ? (
               <p className="text-sm text-white/40 ">
                 {"You've"} purchased{' '}
-                <strong className="text-primary">{ticketPurchased}</strong>{' '}
+                <strong className="text-primary">
+                  {ticketPurchased?.toLocaleString()}
+                </strong>{' '}
                 tickets
               </p>
             ) : null}

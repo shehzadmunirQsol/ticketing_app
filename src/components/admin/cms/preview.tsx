@@ -2,16 +2,17 @@ import Head from 'next/head.js';
 import { useRouter } from 'next/router';
 import Script from 'next/script';
 import React, { useEffect, useState } from 'react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
 
 const Preview = () => {
   const router = useRouter();
   // const { data } = router.query;
   // console.log(data, 'HSJSGJSJHGUSJSHS');
-  const [data, setData] = useState('');
+  const [data, setData] = useState<any>({});
 
   // Function to read data from localStorage
   const getDataFromLocalStorage = () => {
-    const storedData = localStorage.getItem('cmscontent');
+    const storedData = JSON.parse(localStorage.getItem('cmscontent') as string);
     if (storedData) {
       setData(storedData);
     }
@@ -31,19 +32,32 @@ const Preview = () => {
     };
   }, []);
 
-
-
   return (
-    <div>
-      <div
-        dangerouslySetInnerHTML={{
-          __html: data?.toString() ?? '<>html conte</>',
-        }}
-      ></div>
+    <div className="p-8 space-y-8 ">
+      <Tabs defaultValue={'en'} className="w-full">
+        <TabsList>
+          <TabsTrigger value="en">English</TabsTrigger>
+          <TabsTrigger value="ar">Arabic</TabsTrigger>
+        </TabsList>
+        <TabsContent value="en">
+          <div
+            dangerouslySetInnerHTML={{
+              __html: data?.en?.toString() ?? '<>html conte</>',
+            }}
+          ></div>
+        </TabsContent>
+        <TabsContent value="ar">
+          <div
+            dir="rtl"
+            dangerouslySetInnerHTML={{
+              __html: data?.ar?.toString() ?? '<>html conte</>',
+            }}
+          ></div>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };
-
 
 <div className="carousel">
   <div className="card">
@@ -52,11 +66,10 @@ const Preview = () => {
     <p></p>
 
     <div className="hover">
-    <h4></h4>
-    <p></p>
-
+      <h4></h4>
+      <p></p>
     </div>
   </div>
-</div>
+</div>;
 
 export default Preview;

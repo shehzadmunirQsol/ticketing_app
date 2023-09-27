@@ -17,29 +17,23 @@ export const cmsRouter = router({
     .input(cmsSchema)
     .mutation(async ({ input }) => {
       try {
-        console.log('INPUT :: ', input);
-
+        const { en, ar, ...eventPayload } = input;
+        const eventDescPayload = [
+          { ...en, lang_id: 1 },
+          { ...ar, lang_id: 2 },
+        ];
         const payload: any = {
           user_id: 1,
-          slug: input.slug,
-          type: input.type,
+          ...eventPayload,
         };
 
         const cms = await prisma?.cMS?.create({
-          data: payload,
+          data: {
+            ...payload,
+            CMSDescription: { createMany: { data: eventDescPayload } },
+          },
         });
 
-        const descriptionPayload: any = {
-          cms_id: cms?.id,
-          title: input.en.title,
-          desc: input.en.desc,
-          meta_keywords: input.en.metadesc,
-          lang_id: 1,
-          content: input?.content,
-        };
-        const cmsDescription = await prisma?.cMSDescription?.create({
-          data: descriptionPayload,
-        });
         return { status: 'success' };
       } catch (error: any) {
         throw new TRPCError({
@@ -51,7 +45,6 @@ export const cmsRouter = router({
 
   getCmsContent: publicProcedure.input(getCmsSchema).query(async (input) => {
     try {
-      
       const cms = await prisma?.cMS?.findMany({
         orderBy: { created_at: 'desc' },
         include: {
@@ -97,46 +90,41 @@ export const cmsRouter = router({
     .input(updateCmsContentById)
     .mutation(async ({ input }) => {
       try {
-        console.log(input, 'HSJSJSJSHJ ::');
         const cms: any = await prisma?.cMS?.findUnique({
           where: { id: input.id },
           include: {
             CMSDescription: true,
           },
         });
-        console.log(cms, 'cmscmscmscmscmscmscms');
         if (!cms) {
           throw new TRPCError({
             code: 'NOT_FOUND',
             message: 'Page not found',
           });
         }
+        const { en, ar, ...eventPayload } = input;
 
-        const cmsPayload:any = {
-          slug: input.slug,
-          type: input.type,
-        };
-        const cmsDescriptionPayload: any = {
-          cms_id: cms?.id,
-          title: input.en.title,
-          desc: input.en.desc,
-          meta_keywords: input.en.metadesc,
-          lang_id: 1,
-          content: input?.content,
+        const payload: any = {
+          user_id: 1,
+          ...eventPayload,
         };
 
         const cmsUpdate: any = await prisma.cMS.update({
           where: {
             id: input.id,
           },
-          data: cmsPayload,
+          data: { ...payload },
         });
-        const cmsDescriptionUpdate: any = await prisma.cMSDescription.update({
-          where: {
-            id: cms?.CMSDescription[0].id,
-          },
-          data: cmsDescriptionPayload,
+        const eventEnPromise = prisma.cMSDescription.updateMany({
+          where: { cms_id: cms?.id, lang_id: 1 },
+          data: en,
         });
+
+        const eventArPromise = prisma.cMSDescription.updateMany({
+          where: { cms_id: cms?.id, lang_id: 2 },
+          data: ar,
+        });
+        await Promise.all([eventEnPromise, eventArPromise]);
 
         return { message: 'Cms updating Successfully' };
       } catch (error: any) {
