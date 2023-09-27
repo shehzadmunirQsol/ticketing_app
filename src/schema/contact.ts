@@ -23,11 +23,8 @@ export const contactUsSchema = z.object({
 export const contactSchema = z.object({
   name: z
     .string({ required_error: 'Please enter your name' })
-    .min(2, {
-      message: 'Name must be at least 2 characters',
-    })
     .max(24, {
-      message: 'Name must not exceed 24 characters',
+      message: 'Name must not exceed 30 characters',
     }),
   email: z.string({ required_error: 'Please enter your email' }).email(),
   code: z.string({

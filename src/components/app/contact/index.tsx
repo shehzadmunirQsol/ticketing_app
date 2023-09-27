@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createRef, useState } from 'react';
 import { Button } from '@/ui/button';
 import {
   Form,
@@ -32,15 +32,28 @@ import Link from 'next/link';
 import ContactImage from '../../../public/assets/contact-us.svg';
 import { zodResolver } from '@hookform/resolvers/zod';
 
+import ReCAPTCHA from "react-google-recaptcha"
+
 export default function Contact() {
   const { toast } = useToast();
   const router = useRouter();
+  const recaptchaRef: any = createRef();
+  const [recaptchaToken, setRecapthaToken] = useState<string>('');
 
   // 1. Define your form.
   const form = useForm<contactSchemaInput>({
     resolver: zodResolver(contactSchema),
   });
 
+
+  const showResponse = (response: any) => {
+    console.log({ response });
+    if (response) {
+      setRecapthaToken(() => recaptchaRef.current.getValue());
+    }
+
+    //call to a backend to verify against recaptcha with private key
+  };
   // Handle Contact us
   const contactUs = trpc.contact.contact.useMutation({
     onSuccess: async (res: any) => {
@@ -52,9 +65,11 @@ export default function Contact() {
       });
       form.setValue('name', '');
       form.setValue('email', '');
-      form.setValue('code', '');
+      form.setValue('code', '+971');
       form.setValue('number', '');
       form.setValue('message', '');
+      recaptchaRef.current.reset();
+      setRecapthaToken("");
     },
     onError: (err) => {
       console.log(err.message, 'err');
@@ -69,7 +84,19 @@ export default function Contact() {
 
   // Contact
   const onSubmitContact = async (values: any) => {
-    await contactUs.mutateAsync(values);
+    if (!recaptchaToken) {
+      toast({
+        variant: 'destructive',
+        title: 'Invalid Captcha: Please try again.',
+      });
+      return;
+    }
+
+    try {
+      await contactUs.mutateAsync(values);
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   return (
@@ -140,7 +167,7 @@ export default function Contact() {
 
                 <div className=" w-full ">
                   <p className="text-xs font-thin text-grayColor  mb-2 ">
-                    Phone Number
+                    Phone Number*
                   </p>
                   <div className="flex items-center flex-row gap-2 ">
                     <FormField
@@ -187,7 +214,7 @@ export default function Contact() {
                           <FormControl className="rounded-md bg-inputColor">
                             <Input
                               type="number"
-                              max={9}
+                              maxLength={9}
                               placeholder="Enter your phone number"
                               {...field}
                             />
@@ -224,7 +251,15 @@ export default function Contact() {
                   )}
                 />
               </div>
-              <div className="flex flex-col lg:flex-row md:flex-row justify-end items-center gap-6 ">
+              <div className="flex flex-col lg:flex-row md:flex-row justify-between items-center gap-6 ">
+                <ReCAPTCHA
+                  ref={recaptchaRef}
+                  size="normal"
+                  badge="inline"
+                  sitekey={process.env.NEXT_PUBLIC_SITE_KEY as string}
+                  onChange={showResponse}
+                />
+
                 <Button
                   className="  lg:w-52 md:w-52 w-full     text-black font-sans font-[900]   text-xl tracking-[-1px]"
                   variant="clip"
