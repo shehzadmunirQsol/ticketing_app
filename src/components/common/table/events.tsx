@@ -75,7 +75,7 @@ export default function EventsDataTable() {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [filterID, setFilterID] = useState({});
   const router = useRouter()
-  const { launch_date } = router.query
+  
 
   const [filters, setFilters] = useState<GetEventSchema>({
     first: 0,
@@ -189,6 +189,15 @@ export default function EventsDataTable() {
       cell: ({ row }) => (
         <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
           {displayDate(row?.original?.end_date)}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'Created At',
+      header: 'Created At',
+      cell: ({ row }) => (
+        <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
+          {displayDate(row?.original?.created_at)}
         </div>
       ),
     },

@@ -91,7 +91,7 @@ export const dashboardRouter = router({
           symbol: '',
           icon: 'fa-solid fa-calendar-days',
           cols: false,
-          link: `/admin/events?launch_date=${date}`,
+          link: `/admin/events?status=active`
         },
         {
           title: 'Order Amount',

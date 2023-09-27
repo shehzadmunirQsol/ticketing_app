@@ -43,6 +43,7 @@ import {
 } from '~/components/ui/select';
 import { useForm } from 'react-hook-form';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
+import { useRouter } from 'next/router';
 
 interface SettingDialogInterface {
   inputList: object[];
@@ -61,6 +62,10 @@ export function TableFilters(props: SettingDialogInterface) {
   const [filterDate, setFilterDate] = useState<any>({});
   const [filterInput, setFilterInput] = useState<any>({});
   const form = useForm<any>({});
+  const router = useRouter();
+  const payload = router.query;
+  console.log({payload});
+  
 
   const dispatch = useDispatch();
   const HandleFilterChange = (e: any, filter: string) => {
@@ -180,7 +185,7 @@ export function TableFilters(props: SettingDialogInterface) {
               <ScrollBar orientation="vertical"></ScrollBar>
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)}>
-                  <SheetDescription className="pt-10 pr-3">
+                  <SheetDescription className=" pr-3">
                     <div className=" grid grid-cols-1    items-center p-2">
                       {props?.inputList.map((item: any, i: number) => {
                         if (item?.type == 'text') {
@@ -241,7 +246,7 @@ export function TableFilters(props: SettingDialogInterface) {
                         if (
                           item?.type == 'date' &&
                           (item?.text === 'From Date' ||
-                            item?.text === 'Start Date')
+                            item?.text === 'Start Date' || item?.text === 'Launch Date')
                         ) {
                           console.log({ minEndDate }, 'start');
                           return (

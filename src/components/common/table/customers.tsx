@@ -83,6 +83,7 @@ export default function CustomersDataTable() {
   const { toast } = useToast();
   const router = useRouter()
   const { is_verified } = router.query
+  console.log({is_verified})
 
   // use states
   const [sorting, setSorting] = useState<SortingState>([]);

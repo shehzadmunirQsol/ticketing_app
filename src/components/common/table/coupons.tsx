@@ -82,7 +82,7 @@ export default function CouponsDataTable() {
   const { toast } = useToast();
   const router = useRouter()
   const { is_enabled } = router.query
-
+  console.log({is_enabled})
   // use states
   const [sorting, setSorting] = useState<SortingState>([]);
   const [filterID, setFilterID] = useState({});

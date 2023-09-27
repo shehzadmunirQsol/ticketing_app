@@ -157,20 +157,18 @@ export const couponRouter = router({
         });
       }
 
-      if (input?.filters?.startDate &&  !input?.filters?.endDate) {
-        const startDate = new Date(input?.filters?.startDate);
-        where.created_at = { gte: startDate };
+      if (input?.filters?.startDate && !input?.filters?.endDate) {
+        const startDate = (new Date(input?.filters?.startDate))?.toISOString().split("T")[0] as string;
+        where.created_at = { gte: new Date(startDate) };
       }
-      if (input?.filters?.endDate &&  !input?.filters?.startDate) {
-        const endDate = new Date(input?.filters?.endDate);
-        where.created_at = { lte: endDate };
+      if (input?.filters?.endDate && !input?.filters?.startDate) {
+        const endDate = (new Date(input?.filters?.endDate))?.toISOString().split("T")[0] as string;
+        where.created_at = { lte: new Date(endDate) };
       }
-      if (input?.filters?.endDate &&  input?.filters?.startDate) {
-        const startDate = new Date(input?.filters?.startDate);
-        const endDate = new Date(input?.filters?.endDate);
-        
-       
-        where.created_at = {gte:startDate, lte: endDate };
+      if (input?.filters?.endDate && input?.filters?.startDate) {
+        const startDate = (new Date(input?.filters?.startDate))?.toISOString().split("T")[0] as string;
+        const endDate = (new Date(input?.filters?.endDate))?.toISOString().split("T")[0] as string;
+        where.created_at = { gte: new Date(startDate), lte: new Date(endDate) };
       }
 
       const totalCategoryPromise = prisma.coupon.count({
