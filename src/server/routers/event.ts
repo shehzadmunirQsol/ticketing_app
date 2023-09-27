@@ -408,6 +408,7 @@ export const eventRouter = router({
         is_deleted: false,
         end_date: { gte: new Date() },
         draw_date: null,
+        category_id: 1,
         EventDescription: { some: { lang_id: input?.lang_id } },
       };
 
@@ -425,7 +426,18 @@ export const eventRouter = router({
         where: where,
         include: {
           EventImages: {},
-          EventDescription: {},
+          EventDescription: {
+            where: {
+              lang_id: input?.lang_id,
+            },
+            select: {
+              id: true,
+              lang_id: true,
+              desc: true,
+              name: true,
+              comp_details: true,
+            },
+          },
         },
       });
 

@@ -107,9 +107,7 @@ function ProductCard(props: cardInterface) {
               ''
             )}
             <span className="text-gray-200  font-semibold leading-loose mx-2 ">
-              {props?.data?.category_id === 1
-                ? props?.data?.EventDescription[0]?.name
-                : (props?.data?.cash_alt ?? 0)?.toLocaleString() + ' AED'}
+              {props?.data?.EventDescription[0]?.name}
             </span>
           </div>
           <div className="relative w-full opacity-75  text-gray-200  text-md font-normal leading-normal ">
