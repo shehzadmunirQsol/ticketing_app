@@ -19,7 +19,7 @@ export default function Home() {
           class="mx-auto w-3/5 md:w-full"
           slidesToShow={3}
           center={false}
-          title={'ENDING SOON COMPETITIONS'}
+          title={'DRAWING SOON'}
           type="closing"
           breakpoint={[3, 2, 1.5]}
           breakpointScreens={[1350, 1050, 800]}

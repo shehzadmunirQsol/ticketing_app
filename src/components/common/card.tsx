@@ -50,7 +50,7 @@ function ProductCard(props: cardInterface) {
         ref={cardRef}
       >
         <div className="relative ">
-          {endDate.toLocaleDateString() === todayDate.toLocaleDateString() ? (
+          {endDate.toISOString().split("T")[0] === todayDate.toISOString().split("T")[0] ? (
             <div className=" absolute top-0 w-fit p-2 z-2 bg-primary text-black text-sm">
               <span className=" font-bold">CLOSES TODAY</span> 20:00
             </div>

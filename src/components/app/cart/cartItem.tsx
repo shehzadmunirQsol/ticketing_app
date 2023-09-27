@@ -172,7 +172,7 @@ export default function CartItem(props: CartItemProp) {
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent>
-                      <p>Cannot buy more tickets</p>
+                      <p>Cannot buy more entries</p>
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>

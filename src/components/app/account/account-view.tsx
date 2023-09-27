@@ -51,7 +51,7 @@ const AccountView = ({ control }: any) => {
       </p>
       <p className="text-xs my-2">Showing entries for last 30 days</p>
       <p className="text-base my-2">
-        Once you enter a competition your tickets will appear here.{' '}
+        Once you enter a competition your entry will appear here.{' '}
         <span className="font-bold">Good luck!</span>
       </p>
       <CurrentandPast customer_id={user?.id} />
