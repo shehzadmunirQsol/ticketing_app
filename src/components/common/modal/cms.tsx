@@ -53,9 +53,9 @@ export function CmsDailog(props: SettingDialogInterface) {
         setLoading(false);
         props.setIsModal(false);
         toast({
-          variant: 'success',
+          variant: `${props?.type === 'enable' ? 'success' : 'disable'}`,
           title: `${props?.title} ${
-            props?.type === 'enabled' ? 'Disabled' : 'Enabled'
+            props?.type === 'enable' ? 'Enabled' : 'Disabled'
           } Successfully`,
         });
         props?.refetch();

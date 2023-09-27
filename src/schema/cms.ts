@@ -1,19 +1,43 @@
 import { z } from 'zod';
 
 export const cmsSchema = z.object({
-  slug: z.string(),
-  type: z.enum(['event_faqs', 'faqs', 'static']),
+  slug: z.string({ required_error: 'Please enter your slug' }).min(1, {
+    message: 'Please enter your slug',
+  }),
+  type: z.enum(['event_faqs', 'faqs', 'static'], {
+    required_error: 'Please enter your CMS type',
+  }),
   en: z.object({
-    title: z.string(),
-    meta_keywords: z.string(),
-    desc: z.string(),
-    content: z.string(),
+    title: z.string({ required_error: 'Please enter your title' }).min(1, {
+      message: 'Please enter your title',
+    }),
+    meta_keywords: z
+      .string({ required_error: 'Please enter your meta keywords' })
+      .min(1, {
+        message: 'Please enter your meta keywords',
+      }),
+    desc: z.string({ required_error: 'Please enter your description' }).min(1, {
+      message: 'Please enter your description',
+    }),
+    content: z.string({ required_error: 'Please enter your content' }).min(1, {
+      message: 'Please enter your content',
+    }),
   }),
   ar: z.object({
-    title: z.string(),
-    meta_keywords: z.string(),
-    desc: z.string(),
-    content: z.string(),
+    title: z.string({ required_error: 'Please enter your title' }).min(1, {
+      message: 'Please enter your title',
+    }),
+    meta_keywords: z
+      .string({ required_error: 'Please enter your meta keywords' })
+      .min(1, {
+        message: 'Please enter your meta keywords',
+      }),
+    desc: z.string({ required_error: 'Please enter your description' }).min(1, {
+      message: 'Please enter your description',
+    }),
+    content: z.string({ required_error: 'Please enter your content' }).min(1, {
+      message: 'Please enter your content',
+    }),
   }),
 });
 export const cmsSchemaInput = z.object({

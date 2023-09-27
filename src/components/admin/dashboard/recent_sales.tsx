@@ -11,13 +11,16 @@ export function RecentSales() {
   return (
     <div className="space-y-8">
       {isLoading ? (
-        <div className=" col-span-2 lg:col-span-4 items-center m-auto">
+        <div className="  items-center m-auto">
           <i className="fa-solid fa-circle-notch transition-all animate-spin text-lg  "></i>
         </div>
       ) : recentOrders?.data ? (
         recentOrders?.data.map((item: any, index: number) => {
           return (
-            <div key={index} className="flex items-center text-white">
+            <div
+              key={index}
+              className="flex flex-row gap-2 jus w-full items-center text-white"
+            >
               <Avatar className="h-9 w-9">
                 <AvatarImage src="/avatars/05.png" alt="Avatar" />
                 <AvatarFallback>SD</AvatarFallback>

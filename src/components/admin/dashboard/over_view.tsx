@@ -18,7 +18,7 @@ export default function DashboardPage() {
         <div className="">
           <div className="flex h-6 items-center px-4"></div>
         </div>
-        <div className="flex-1 space-y-2 px-8 ">
+        <div className="flex-1 space-y-2 px-2 lg:px-8 ">
           <div className="flex items-center justify-between space-y-2">
             <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
             <div className="flex items-center space-x-2"></div>
@@ -26,8 +26,8 @@ export default function DashboardPage() {
           <Tabs defaultValue="overview" className="space-y-4">
             <TabsContent value="overview" className="space-y-4">
               <AnalyticsCard />
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-                <Card className="col-span-4 bg-transparent">
+              <div className="w-full grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+                <Card className="w-full lg:col-span-4 bg-transparent">
                   <CardHeader className="text-muted-foreground ">
                     <CardTitle>Sales Overview</CardTitle>
                   </CardHeader>
@@ -35,7 +35,7 @@ export default function DashboardPage() {
                     <Overview />
                   </CardContent>
                 </Card>
-                <Card className="col-span-3">
+                <Card className="w-full lg:col-span-3">
                   <CardHeader className="text-muted-foreground ">
                     <CardTitle>Recent Sales</CardTitle>
                     <CardDescription></CardDescription>
@@ -69,8 +69,8 @@ const AnalyticsCard = () => {
             <Card
               key={index}
               className={`${
-                item?.cols ? ' col-span-6 ' : 'col-span-4'
-              } text-white   group cursor-pointer xss:max-w-2xl xs:max-w-2xl sm:max-w-2xl md:max-w-4xl border  rounded-lg shadow  `}
+                item?.cols ? ' lg:col-span-6 ' : 'lg:col-span-4'
+              } text-white   group cursor-pointer w-full border  rounded-lg shadow  `}
             >
               <Link href={item?.link}>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">

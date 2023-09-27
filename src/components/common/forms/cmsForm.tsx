@@ -249,7 +249,7 @@ export default function CmsForm(props: CategoryFormInterface) {
               : 'hidden lg:space-y-4 space-y-4'
           }
         >
-          <div className="flex flex-col lg:flex-row md:flex-row justify-between  gap-2">
+          <div className="flex flex-col lg:flex-row md:flex-row justify-between  gap-2 ">
             <FormField
               control={form.control}
               name="slug"
@@ -276,7 +276,7 @@ export default function CmsForm(props: CategoryFormInterface) {
               control={form.control}
               name="type"
               render={({ field }) => (
-                <FormItem className="w-full">
+                <FormItem className="w-full ">
                   <FormLabel>
                     Cms Type<sup className="text-md text-red-500">*</sup>
                   </FormLabel>
@@ -286,7 +286,7 @@ export default function CmsForm(props: CategoryFormInterface) {
                     value={field.value}
                   >
                     <FormControl className="rounded-md bg-[#060B0E]">
-                      <SelectTrigger className=" rounded-none  ">
+                      <SelectTrigger className="h-10 rounded-none  ">
                         <SelectValue placeholder="Select Cms Type" />
                       </SelectTrigger>
                     </FormControl>
@@ -320,13 +320,13 @@ export default function CmsForm(props: CategoryFormInterface) {
           ) : (
             ''
           )}
-          <Tabs defaultValue={'en'} className="w-full">
-            <TabsList>
+          <Tabs defaultValue={'en'} className="w-full ">
+            <TabsList className="overflow-hidden">
               <TabsTrigger value="en">English</TabsTrigger>
               <TabsTrigger value="ar">Arabic</TabsTrigger>
             </TabsList>
-            <TabsContent value="en">
-              <div className="flex flex-col lg:flex-row md:flex-row justify-between gap-2 ">
+            <TabsContent className="space-y-4" value="en">
+              <div className="flex flex-col lg:flex-row md:flex-row justify-between gap-2  ">
                 <FormField
                   control={form.control}
                   name="en.title"
@@ -414,7 +414,7 @@ export default function CmsForm(props: CategoryFormInterface) {
               />
             </TabsContent>
             <TabsContent value="ar">
-              <div dir="rtl">
+              <div className="space-y-4" dir="rtl">
                 <div className="flex flex-col lg:flex-row md:flex-row justify-between gap-2 ">
                   <FormField
                     control={form.control}
@@ -523,7 +523,7 @@ export default function CmsForm(props: CategoryFormInterface) {
             updateCmsId.isLoading ||
             isFetching
           }
-          text={`${id ? 'Updating' : 'Adding'} CMS...`}
+          text={`${isFetching ? 'Loading' : id ? 'Updating' : 'Adding'} CMS...`}
         />
       </form>
     </Form>

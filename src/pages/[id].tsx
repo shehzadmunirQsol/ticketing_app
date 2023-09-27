@@ -4,6 +4,8 @@ import { prisma } from '~/server/prisma';
 import parse from 'html-react-parser';
 import AboutCarousel from '~/components/app/about/about_carousel';
 import jqeury from 'jquery';
+import { useSelector } from 'react-redux';
+import { RootState } from '~/store/store';
 
 export async function getStaticPaths() {
   const response: any = await prisma.cMS.findMany({
@@ -913,20 +915,17 @@ const faqContent3 = `<div>
 </div>
 `;
 export default function CmsPage({ storeBlogsData }: any) {
+  const { lang } = useSelector((state: RootState) => state.layout);
+
+  console.log({ storeBlogsData });
   const reactElements = parse(
-    storeBlogsData?.CMSDescription[0]?.content || '',
+    storeBlogsData?.CMSDescription[lang.lang_id == 1 ? 0 : 1]?.content || '',
     {
       // const reactElements = parse(faqContent2 || '', {
       replace: findElementsWithAttribute,
     },
   );
 
-  const reactElementsForFAQs = parse(
-    storeBlogsData?.CMSDescription[0]?.content || '',
-    {
-      replace: (node) => node,
-    },
-  );
   if (typeof window !== 'undefined') {
     jqeury('details').click(function (event) {
       jqeury('details').not(this).removeAttr('open');
@@ -935,7 +934,17 @@ export default function CmsPage({ storeBlogsData }: any) {
 
   return (
     <div className=" w-full bg-bg-1 py-2">
-      <div className="min-h-screen">{reactElements}</div>
+      {lang.lang_id == 1 ? (
+        <>
+          <div className="min-h-screen">{reactElements}</div>
+        </>
+      ) : (
+        <>
+          <div dir={'rtl'} className="min-h-screen">
+            {reactElements}
+          </div>
+        </>
+      )}
     </div>
   );
 }

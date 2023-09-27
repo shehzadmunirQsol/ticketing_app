@@ -1,14 +1,11 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Button } from '../../ui/button';
 import Link from 'next/link';
-import CouponsDataTable from '~/components/common/table/coupons';
 import { trpc } from '~/utils/trpc';
 import {
   DropdownMenu,
-  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/ui/dropdown-menu';
@@ -18,7 +15,6 @@ import { LoadingDialog } from '~/components/common/modal/loadingModal';
 import { CmsDailog } from '~/components/common/modal/cms';
 
 function Cms() {
-  const { toast } = useToast();
   const [selectedItem, setSelectedItem] = React.useState({});
   const [title, setTitle] = React.useState('');
   const [type, setType] = React.useState('');
@@ -133,7 +129,6 @@ function Cms() {
           <div className="w-full grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4  mb-10 ">
             {eventfaqsData?.length ? (
               eventfaqsData?.map((item: any, i: any) => {
-                console.log(item, 'items');
                 return (
                   <div
                     key={i}
