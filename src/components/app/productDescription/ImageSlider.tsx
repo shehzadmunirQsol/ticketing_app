@@ -68,7 +68,9 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
                 <span className=" font-black mr-1">
                   {lang.lang_id === 2 ? 'يفوز' : 'WIN '}{' '}
                 </span>
-                {data?.EventDescription[0]?.name}
+                {data?.category_id === 1
+                  ? data?.EventDescription[0]?.name
+                  : (data?.cash_alt ?? 0)?.toLocaleString() + ' AED'}
               </p>
             </div>
             <div>
@@ -76,10 +78,12 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
                 {customTruncate(data?.EventDescription[0]?.desc, 100)}
               </p>
             </div>
-            <div className="flex flex-col lg:flex-row  py-6 mb-12 justify-between  w-full">
+            <div className="flex flex-col lg:flex-row  py-6 mb-4 justify-between  w-full">
               {data?.category_id == 1 && (
                 <p className=" text-white text-xl  lg:text-2xl mb-2">
-                  {lang.lang_id === 2 ? 'البديل النقدي' : 'Cash Alternative '}{' '}
+                  {lang.lang_id === 2
+                    ? 'البديل النقدي'
+                    : 'Cash Prize Alternative '}{' '}
                   <span color=""></span>{' '}
                   <span className=" font-black mr-1 text-primary">
                     AED {(data?.cash_alt ?? 0)?.toLocaleString()}
