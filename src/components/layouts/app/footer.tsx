@@ -61,7 +61,7 @@ function Footer() {
               </div>
               <div className="grid grid-cols-1 gap-8 md:gap-6 md:grid-cols-2 w-full md:w-1/3">
                 <div className="col-span-2 flex items-center justify-between">
-                  <ul className="flex-1 text-grayColor opacity-75  space-y-2 sm:space-y-3">
+                  <ul className="flex-1 text-grayColor opacity-75  space-y-2 sm:space-y-2">
                     {[
                       { page: 'Home', link: '/' },
                       { page: 'Cars', link: '/cars' },
