@@ -101,8 +101,8 @@ export default function Contact() {
 
   return (
     <section className="body-font pt-24 space-y-24">
-      <div className="px-4 my-10 md:px-14 md:my-24 flex gap-14 w-full">
-        <div className="w-2/5 mb-5 lg:mb-0 rounded-lg hidden lg:block">
+      <div className="px-4 my-10 md:px-14 md:my-24 flex gap-14 w-full ">
+        <div className="w-2/5 mb-5 lg:mb-0 rounded-lg hidden lg:block  ">
           <SideImage
             image={ContactImage}
             text={'Connect with Us for '}
@@ -117,7 +117,7 @@ export default function Contact() {
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmitContact)}
-              className="justify-center items-center px-4 lg:px-8  space-y-4"
+              className="justify-center items-center px-4 lg:px-8   space-y-4"
             >
               <div className="w-full">
                 <FormField
@@ -256,6 +256,7 @@ export default function Contact() {
                   ref={recaptchaRef}
                   size="normal"
                   badge="inline"
+                  theme='dark'
                   sitekey={process.env.NEXT_PUBLIC_SITE_KEY as string}
                   onChange={showResponse}
                 />
