@@ -1,18 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Button } from '~/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '~/components/ui/dialog';
+
 import { useToast } from '~/components/ui/use-toast';
-import { removeFromCart } from '~/store/reducers/cart';
-import { trpc } from '~/utils/trpc';
-import { LoginForm } from '../forms/form';
+
 import {
   Sheet,
   SheetContent,
@@ -33,14 +24,7 @@ import {
 } from '~/components/ui/form';
 import { Input } from '~/components/ui/input';
 import { Switch } from '~/components/ui/switch';
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '~/components/ui/select';
+
 import { useForm } from 'react-hook-form';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 import { useRouter } from 'next/router';
@@ -55,7 +39,6 @@ interface SettingDialogInterface {
   initial?: any;
 }
 
-
 export function TableFilters(props: SettingDialogInterface) {
   const { toast } = useToast();
   const [filter, setFilter] = useState(false);
@@ -69,33 +52,33 @@ export function TableFilters(props: SettingDialogInterface) {
 
   useEffect(() => {
     if (router.isReady) {
-
       if (is_enabled) {
-        props?.setValue({ is_enabled: is_enabled == 'true' ? true : false })
+        props?.setValue({ is_enabled: is_enabled == 'true' ? true : false });
         setFilterVal({
           ...filterVal,
-          is_enabled: is_enabled == 'true' ? true : false
+          is_enabled: is_enabled == 'true' ? true : false,
         });
       }
       if (is_verified) {
-        props?.setValue({ is_verified: is_verified == 'true' ? true : false })
+        props?.setValue({ is_verified: is_verified == 'true' ? true : false });
         setFilterVal({
           ...filterVal,
-          is_verified: is_verified == 'true' ? true : false
+          is_verified: is_verified == 'true' ? true : false,
         });
-        console.log({ is_verified: is_verified == 'true' ? true : false }, "is_verified")
+        console.log(
+          { is_verified: is_verified == 'true' ? true : false },
+          'is_verified',
+        );
       }
       if (status) {
-        props?.setValue({ status })
+        props?.setValue({ status });
         setFilterVal({
           ...filterVal,
-          status
+          status,
         });
-
       }
     }
-  }, [router.isReady, router.query])
-
+  }, [router.isReady, router.query]);
 
   const dispatch = useDispatch();
   const HandleFilterChange = (e: any, filter: string) => {
@@ -111,10 +94,10 @@ export function TableFilters(props: SettingDialogInterface) {
       filter == 'category_id' && e.target.value !== 'delete'
         ? +e.target.value
         : filterData.includes(filter) && e.target.value !== 'delete'
-          ? e.target.value == 'true'
-            ? true
-            : false
-          : e.target.value;
+        ? e.target.value == 'true'
+          ? true
+          : false
+        : e.target.value;
     if (data !== 'delete') {
       setFilterVal({
         ...filterVal,
@@ -149,17 +132,17 @@ export function TableFilters(props: SettingDialogInterface) {
       setFilterDate({}),
       setFilterInput({}),
       props?.setFilters &&
-      props?.setFilters(
-        props?.initial
-          ? {
-            ...props?.initial,
-          }
-          : {
-            first: 0,
-            rows: 10,
-            lang_id: 1,
-          },
-      )
+        props?.setFilters(
+          props?.initial
+            ? {
+                ...props?.initial,
+              }
+            : {
+                first: 0,
+                rows: 10,
+                lang_id: 1,
+              },
+        )
     );
   };
   const SubmitFilter = () => {
@@ -167,20 +150,19 @@ export function TableFilters(props: SettingDialogInterface) {
       props?.setValue({ ...filterVal, ...filterDate, ...filterInput }),
       setFilter(!filter),
       props?.setFilters &&
-      props?.setFilters(
-        props?.initial
-          ? {
-            ...props?.initial,
-          }
-          : {
-            first: 0,
-            rows: 10,
-            lang_id: 1,
-          },
-      )
+        props?.setFilters(
+          props?.initial
+            ? {
+                ...props?.initial,
+              }
+            : {
+                first: 0,
+                rows: 10,
+                lang_id: 1,
+              },
+        )
     );
   };
-
 
   const curr = new Date();
   curr.setDate(curr.getDate());
@@ -198,8 +180,9 @@ export function TableFilters(props: SettingDialogInterface) {
     <div>
       <Button
         variant="outline"
-        className={`${Object.keys(props?.value)?.length ? ' text-primary' : ' text-white '
-          } `}
+        className={`${
+          Object.keys(props?.value)?.length ? ' text-primary' : ' text-white '
+        } `}
         onClick={() => setFilter(!filter)}
       >
         Filters <i className={`fa-solid fa fa-filter   ml-2 h-4 w-4`}></i>
@@ -235,7 +218,7 @@ export function TableFilters(props: SettingDialogInterface) {
                                         e.target.value,
                                       );
                                     }}
-                                  // {...form.register(item.name)}
+                                    // {...form.register(item.name)}
                                   />
                                 </FormControl>
 
@@ -277,9 +260,9 @@ export function TableFilters(props: SettingDialogInterface) {
                         if (
                           item?.type == 'date' &&
                           (item?.text === 'From Date' ||
-                            item?.text === 'Start Date' || item?.text === 'Launch Date')
+                            item?.text === 'Start Date' ||
+                            item?.text === 'Launch Date')
                         ) {
-
                           return (
                             <div key={i} className=" h-full">
                               <FormItem className=" flex flex-col gap-1  w-full">
@@ -288,6 +271,7 @@ export function TableFilters(props: SettingDialogInterface) {
                                   <Input
                                     type={'date'}
                                     placeholder={item?.text}
+                                    disabled={filterVal?.status ? true : false}
                                     onChange={(e) => {
                                       filterDateHandler(
                                         item?.filtername,
@@ -315,7 +299,6 @@ export function TableFilters(props: SettingDialogInterface) {
                           (item?.text === 'To Date' ||
                             item?.text === 'End Date')
                         ) {
-
                           return (
                             <div key={i} className=" h-full">
                               <FormItem className=" flex flex-col gap-1  w-full">
@@ -324,6 +307,7 @@ export function TableFilters(props: SettingDialogInterface) {
                                   <Input
                                     type={'date'}
                                     placeholder={item?.text}
+                                    disabled={filterVal?.status ? true : false}
                                     onChange={(e) =>
                                       filterDateHandler(
                                         item?.filtername,
@@ -352,6 +336,7 @@ export function TableFilters(props: SettingDialogInterface) {
                                   <Input
                                     type={'date'}
                                     placeholder={item?.text}
+                                    disabled={filterVal?.status ? true : false}
                                     onChange={(e) =>
                                       filterDateHandler(
                                         item?.filtername,
@@ -407,7 +392,7 @@ export function TableFilters(props: SettingDialogInterface) {
                                 >
                                   <option
                                     value={'delete'}
-                                  //   selectOptions={'delete'}
+                                    //   selectOptions={'delete'}
                                   >
                                     Select {item.text}
                                   </option>
@@ -417,7 +402,7 @@ export function TableFilters(props: SettingDialogInterface) {
                                         <option
                                           key={index}
                                           value={list?.id || list?.value}
-                                        //   selectOptions={list?.id || list?.value}
+                                          //   selectOptions={list?.id || list?.value}
                                         >
                                           {list?.name}
                                         </option>

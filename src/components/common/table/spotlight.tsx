@@ -154,7 +154,7 @@ export default function DataTableSpotLight() {
       },
     },
     {
-      id: 'is_enabled',
+      id: 'Enabled',
       header: 'Enabled',
 
       cell: ({ row }) => {
