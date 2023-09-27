@@ -36,6 +36,7 @@ function CategorySection() {
   });
 
   console.log({ categoryData }, 'categoryData');
+  
   // const categoryList = categoryData ? categoryData.data : [];
 
   return (
