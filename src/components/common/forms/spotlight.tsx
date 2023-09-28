@@ -25,28 +25,54 @@ import { LoadingDialog } from '../modal/loadingModal';
 
 const SpotLightFormSchema = z.object({
   thumb: z.any(),
-  link: z.string(),
+  link: z.string({
+    required_error:"Please add link"
+  }),
 
   en: z.object({
-    name: z.string(),
-    description: z.string(),
+    name: z.string(
+      {
+        required_error:"Please add name"
+      }
+    ),
+    description: z.string(
+      {
+        required_error:"Please add description"
+      }
+    ),
   }),
   ar: z.object({
-    name: z.string(),
-    description: z.string(),
+    name: z.string({
+      required_error:"Please add name"
+    }),
+    description: z.string({
+      required_error:"Please add description"
+    }),
   }),
 });
 const enFormSchema = z.object({
   thumb: z.any(),
-  link: z.string(),
+  link: z.string({
+    required_error:"Please add link"
+  }),
 
   en: z.object({
-    name: z.string(),
-    description: z.string(),
+    name: z.string(
+      {
+        required_error:"Please add name"
+      }
+    ),
+    description: z.string(
+      {
+        required_error:"Please add description"
+      }
+    ),
   }),
   ar: z
     .object({
-      name: z.string(),
+      name: z.string({
+        required_error:"Please add name"
+      }),
       description: z.string().optional(),
     })
     .optional(),

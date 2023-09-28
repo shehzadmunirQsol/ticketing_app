@@ -828,3 +828,76 @@ details:not([open]) summary ~ * {
     margin-top: -10px;
   }
 }
+
+
+/* finally css update */
+.accordion input {
+	display: none;
+}
+.box {
+	position: relative;
+  transition: all 0.5s;
+}
+header .box-title {
+	margin: 0;
+	font-weight: normal;
+	font-size: 16pt;
+	color: white;
+	cursor: initial;
+}
+.box-title {
+	display: flex;
+	cursor: pointer;
+	-webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;
+}
+.box-content {
+	display: none;
+  transition: 0.5s ease-in-out;
+}
+.box-close {
+	position: absolute;
+	height: 64px;
+	width: 100%;
+	top: 0;
+	left: 0;
+	cursor: pointer;
+	display: none;
+}
+.icon-class{
+  font-size:1.4rem
+  }
+  
+input:checked + .box {
+	height: auto;
+	margin: 16px 0;
+    box-shadow: 0 0 6px rgba(0,0,0,.16),0 6px 12px rgba(0,0,0,.32);
+  /* transition: 0.5s ease-in-out; */
+
+}
+input:checked + .box .box-title {
+	border-bottom: 1px solid rgba(0,0,0,.18);
+}
+input:checked + .box .box-content,
+input:checked + .box .box-close {
+	display: inline-block;
+}
+input:checked + section.box .icon-class {
+	transform: rotate(180deg);
+  transition: transform 0.3s ease-in-out;
+  color: #23D2B3;
+}
+input:checked + section.box  {
+  border-bottom-color: #23D2B3;
+}
+input[type="radio"]:not(:checked) + section.box .icon-class {
+	transform: rotate(0deg);
+  transition: transform 0.3s ease-in-out;
+  color:white;
+}
+
+
+
+
+
+
+
