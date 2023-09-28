@@ -71,14 +71,9 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
                 {data?.EventDescription[0]?.name}
               </p>
             </div>
-            <div>
-              <p className="lg:text-xl text-md text-white opacity-75 mt-6">
-                {customTruncate(data?.EventDescription[0]?.desc, 100)}
-              </p>
-            </div>
-            <div className="flex flex-col lg:flex-row  py-6 mb-4 justify-between  w-full">
+            <div className="flex flex-col lg:flex-row  mt-6 lg:items-center  justify-between  w-full">
               {data?.category_id == 1 && (
-                <p className=" text-white text-xl  lg:text-2xl mb-2">
+                <p className=" text-white text-xl  lg:text-2xl ">
                   {lang.lang_id === 2
                     ? 'البديل النقدي'
                     : 'Cash Prize Alternative '}{' '}
@@ -93,6 +88,12 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
                 AED {(price ?? 0)?.toLocaleString()}
               </p>
             </div>
+            <div className="mb-4 py-6">
+              <p className="lg:text-xl text-md text-white opacity-75 ">
+                {customTruncate(data?.EventDescription[0]?.desc, 100)}
+              </p>
+            </div>
+
             <div className="w-full relative">
               <div className="relative  z-10">
                 <Counter
