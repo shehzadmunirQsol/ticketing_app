@@ -14,15 +14,16 @@ export const contactUsSchema = z.object({
   }),
   number: z.string({
     required_error: 'Please enter your number',
-  }),
+  }).length(9),
   message: z.string({
     required_error: 'Please write your message',
   }),
 });
 
+const regexNumber=/^[0-9]/;
 export const contactSchema = z.object({
   name: z
-    .string({ required_error: 'Please enter your name' })
+    .string({ required_error: 'Please enter your name' }).regex(regexNumber)
     .max(24, {
       message: 'Name must not exceed 30 characters',
     }),
@@ -37,7 +38,7 @@ export const contactSchema = z.object({
     })
     .max(9, {
       message: 'Number must not exceed 9 characters',
-    }),
+    }).length(9),
   message: z.string({ required_error: 'Please write your message' }),
 });
 
