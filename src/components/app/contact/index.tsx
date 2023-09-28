@@ -87,7 +87,7 @@ export default function Contact() {
     const matches = value.match(
       /^[0-9]/
     );
-    return matches?.length > 0 || "Please enter a valid number";
+    return matches && matches?.length > 0 || "Please enter a valid number";
   };
 
   // Contact
@@ -217,12 +217,12 @@ export default function Contact() {
                     <FormField
                       control={form.control}
                       name="number"
-                      rules={{validate}}
+                      rules={{ validate }}
                       render={({ field }) => (
                         <FormItem className=" w-full">
                           <FormControl className="rounded-md bg-inputColor">
                             <Input
-                              type="text" 
+                              type="text"
                               maxLength={9}
                               placeholder="Enter your phone number"
                               {...field}
@@ -262,14 +262,14 @@ export default function Contact() {
               </div>
               <div className="flex flex-col sm:flex-row justify-between items-center gap-6 h-18">
                 <div className='h-fit object-contain w-fit ' >
-                <ReCAPTCHA
-                  ref={recaptchaRef}
-                  size="normal"
-                  badge="inline"
-                  theme='dark'
-                  sitekey={process.env.NEXT_PUBLIC_SITE_KEY as string}
-                  onChange={showResponse}
-                />
+                  <ReCAPTCHA
+                    ref={recaptchaRef}
+                    size="normal"
+                    badge="inline"
+                    theme='dark'
+                    sitekey={process.env.NEXT_PUBLIC_SITE_KEY as string}
+                    onChange={showResponse}
+                  />
                 </div>
 
                 <Button
