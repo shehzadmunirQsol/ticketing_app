@@ -1,4 +1,4 @@
-import React, { createRef, useState } from 'react';
+import React, { createRef, useRef, useState } from 'react';
 import { Button } from '@/ui/button';
 import {
   Form,
@@ -37,8 +37,8 @@ import ReCAPTCHA from "react-google-recaptcha"
 export default function Contact() {
   const { toast } = useToast();
   const router = useRouter();
-  const recaptchaRef: any = createRef();
-  const [recaptchaToken, setRecapthaToken] = useState<string>('');
+  const recaptchaRef: any = useRef({});
+  const [recaptchaToken, setRecapthaToken] = useState<any>();
 
   // 1. Define your form.
   const form = useForm<contactSchemaInput>({
@@ -52,17 +52,18 @@ export default function Contact() {
       setRecapthaToken(() => recaptchaRef.current.getValue());
     }
 
+
     //call to a backend to verify against recaptcha with private key
   };
+  console.log({ recaptchaToken })
   // Handle Contact us
   const contactUs = trpc.contact.contact.useMutation({
     onSuccess: async (res: any) => {
+      setRecapthaToken(false);
+
       console.log(res, 'res');
       // props.setIsModal(false);
-      toast({
-        variant: 'success',
-        title: 'Email Sent.',
-      });
+
       form.setValue('name', '');
       form.setValue('email', '');
       form.setValue('code', '+971');
@@ -70,6 +71,8 @@ export default function Contact() {
       form.setValue('message', '');
       recaptchaRef.current.reset();
       setRecapthaToken("");
+
+
     },
     onError: (err) => {
       console.log(err.message, 'err');
@@ -101,7 +104,13 @@ export default function Contact() {
     }
 
     try {
-      await contactUs.mutateAsync(values);
+      const contact = await contactUs.mutateAsync(values);
+      if (contact) {
+        toast({
+          variant: 'success',
+          title: 'Email Sent.',
+        });
+      }
     } catch (error) {
       console.log(error)
     }
