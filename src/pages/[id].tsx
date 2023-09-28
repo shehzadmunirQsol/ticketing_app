@@ -17,7 +17,6 @@ export async function getStaticPaths() {
       is_enabled: true,
     },
   });
-  console.log(response, 'params?.id');
 
   const paths = response?.map((post: any) => ({
     params: { id: post?.slug },
@@ -26,7 +25,6 @@ export async function getStaticPaths() {
   return { paths, fallback: true };
 }
 export async function getStaticProps({ params }: any) {
-  console.log(params?.id, 'params?.id');
   const response = await prisma.cMS.findFirst({
     where: {
       slug: params?.id,
@@ -44,7 +42,6 @@ export async function getStaticProps({ params }: any) {
       },
     },
   });
-  console.log({ response }, 'params?.idsdasddsaresponse');
 
   return { props: { storeBlogsData: response }, revalidate: 10 };
 }
@@ -369,7 +366,6 @@ const faqUpdateArea = `
 export default function CmsPage({ storeBlogsData }: any) {
   const { lang } = useSelector((state: RootState) => state.layout);
 
-  console.log({ storeBlogsData });
   const reactElements = parse(
     storeBlogsData?.CMSDescription[lang.lang_id == 1 ? 0 : 1]?.content || '',
     {
