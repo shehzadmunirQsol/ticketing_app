@@ -21,15 +21,11 @@ interface cardInterface {
   data?: any;
 }
 const VideoCard = (props: cardInterface) => {
-  const openModal = () => {
-    // return (
-    // );
-  };
   return (
-    <div className={`relative group  ${props?.class} xsm:mr-4`}>
+    <div className={`relative group  ${props?.class} `}>
       <Dialog>
         <div
-          className={`mr-4 relative   h-[400px]  group-hover:cursor-pointer  rounded-sm   shadow-lg bg-card flex justify-between items-start  `}
+          className={`relative xsm:mr-4  h-[400px]  group-hover:cursor-pointer  rounded-sm   shadow-lg bg-card flex justify-between items-start`}
         >
           <div className="absolute flex mt-2  justify-between items-center w-full  z-30">
             <div className="relative h-10 w-10  rounded-full bg-black z-40 ml-2">

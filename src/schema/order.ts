@@ -124,6 +124,13 @@ export const getCheckoutIDSchema = z.object({
 export const getPaymentStatusSchema = z.object({
   checkout_id: z.string(),
 });
+export const deleteCardSchema = z.object({
+  checkout_id: z.string(),
+  registration_id: z.string(),
+  customer_id: z.number(),
+  total_customer_id: z.string(),
+  index: z.number(),
+});
 export const getOrder = z.object({
   startDate: z.date().optional(),
   endDate: z.date().optional(),

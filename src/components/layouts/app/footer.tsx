@@ -32,8 +32,8 @@ function Footer() {
         </div>
         <div className="relative z-30 ">
           <div className="relative p-4 py-6 md:px-14 md:py-14">
-            <div className="md:flex md:justify-between ">
-              <div className="mb-6 md:mb-0 flex flex-col gap-8 lg:w-2/3">
+            <div className="sm:flex sm:justify-between ">
+              <div className=" mb-6 md:mb-0 flex flex-col gap-8 w-10/12 sm:w-[300px] lg:w-[360px]">
                 <div>
                   <Button
                     variant="rounded-outline"
@@ -45,10 +45,22 @@ function Footer() {
                     </div>
                   </Button>
                 </div>
-                <div className="w-full opacity-75 text-sm text-colorGray">
-                  <p>© Copyright WINNAR 2023</p>
+                <div className="w-full opacity-75 text-sm text-colorGray space-y-1 md:space-y-2">
+                  <p> Winnar LLC,</p>
+                  <p>Office 16, 17th Floor,</p>
+                  <p>Centrum Business Lounge,</p>
+                  <p>Bay Gate Tower, Business Bay,</p>
+                  <p>Dubai, UAE</p>
+
+                  <p>
+                    Winnar Trading LLC Regulated by Dubai Economic Department
+                    and Department of Economy and Tourism Trade License No.:
+                    1193751
+                  </p>
+
+                  {/* <p>© Copyright WINNAR 2023</p>
                   <p>Registered Company </p>
-                  <p>Number: 11320154, UAE</p>
+                  <p>Number: 11320154, UAE</p> */}
                 </div>
                 <div className=" flex items-center justify-center md:justify-start  w-64  text-sm text-white">
                   <Image
@@ -59,7 +71,7 @@ function Footer() {
                   />
                 </div>
               </div>
-              <div className="grid grid-cols-1 gap-8 md:gap-6 md:grid-cols-2 w-full md:w-1/3">
+              <div className=" grid grid-cols-1 gap-8 md:gap-6 md:grid-cols-2 w-full sm:w-[300px] lg:w-[360px]">
                 <div className="col-span-2 flex items-center justify-between">
                   <ul className="flex-1 text-grayColor opacity-75  space-y-2 sm:space-y-2">
                     {[

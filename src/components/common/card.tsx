@@ -44,108 +44,109 @@ function ProductCard(props: cardInterface) {
 
   return (
     props?.data && (
-      <div
-        dir={props?.dir}
-        className={`rounded-sm shadow-lg bg-card ${props?.class}`}
-        ref={cardRef}
-      >
-        <div className="relative ">
-          {endDate.toISOString().split('T')[0] ==
-          todayDate.toISOString().split('T')[0] ? (
-            <div className=" absolute top-0 w-fit p-2 z-2 bg-primary text-black text-sm">
-              <span className=" font-bold">CLOSES TODAY</span> 20:00
-            </div>
-          ) : (
-            ''
-          )}
-          <Image
-            width={550}
-            height={450}
-            className="w-full h-[230px] object-cover bg-white"
-            src={props?.cash ?? renderNFTImage(props?.data) ?? CarImage}
-            quality={100}
-            alt="Sunset in the mountains"
-          />
-          <div className="absolute -bottom-8 left-4 rounded-full w-20 p-1 bg-gradient-to-b from-primary to-neutral-900">
-            <Image
-              className="w-full h-full object-cover  rounded-full bg-white"
-              src={BottleImage}
-              alt="Sunset in the mountains"
-            />
-          </div>
-        </div>
-
-        <div className="px-6 mt-6 py-4">
-          <div className="flex flex-col gap-1">
-            <span className=" text-xs ">
-              {Math.round(
-                (Number(props?.data?.tickets_sold) /
-                  Number(props?.data?.total_tickets)) *
-                  100,
-              )}
-              % Sold
-            </span>
-            <Progress
-              value={
-                (Number(props?.data?.tickets_sold) /
-                  Number(props?.data?.total_tickets)) *
-                100
-              }
-              className="w-full"
-            />
-          </div>
-          <div className="font-bold text-xl lg:text-2xl xl:text-3xl line-clamp-1">
-            {lang.lang_id === 1 ? (
-              <span className="font-[800] text-gray-200 leading-loose">
-                WIN
-              </span>
-            ) : lang.lang_id === 2 ? (
-              <span className="font-[900] font-sans text-gray-200 leading-loose">
-                يفوز
-              </span>
+      <Link href={`/product-detail/${props?.data?.id}`}>
+        <div
+          dir={props?.dir}
+          className={`rounded-sm shadow-lg bg-card ${props?.class}`}
+          ref={cardRef}
+        >
+          <div className="relative ">
+            {endDate.toISOString().split('T')[0] ==
+            todayDate.toISOString().split('T')[0] ? (
+              <div className=" absolute top-0 w-fit p-2 z-2 bg-primary text-black text-sm">
+                <span className=" font-bold">CLOSES TODAY</span>{' '}
+                {endDate?.getHours()}:{endDate?.getMinutes()}
+              </div>
             ) : (
               ''
             )}
-            <span className="text-gray-200  font-semibold leading-loose mx-2 ">
-              {props?.data?.EventDescription[0]?.name}
-            </span>
+            <Image
+              width={550}
+              height={450}
+              className="w-full h-[230px] object-cover bg-white"
+              src={props?.cash ?? renderNFTImage(props?.data) ?? CarImage}
+              quality={100}
+              alt="Sunset in the mountains"
+            />
+            <div className="absolute -bottom-8 left-4 rounded-full w-20 p-1 bg-gradient-to-b from-primary to-neutral-900">
+              <Image
+                className="w-full h-full object-cover  rounded-full bg-white"
+                src={BottleImage}
+                alt="Sunset in the mountains"
+              />
+            </div>
           </div>
-          <div className="relative w-full opacity-75  text-gray-200  text-md font-normal leading-normal ">
-            <p className="  h-12  overflow-hidden ">
-              {customTruncate(props?.data?.EventDescription[0]?.desc, 100)}
-            </p>
-          </div>
-          <hr className=" opacity-20 mt-4" />
 
-          {props?.data?.category_id === 1 && props?.data?.cash_alt ? (
-            <div className=" mt-2">
-              <span className="text-gray-200 text-md xl:text-lg font-semibold leading-[18px]">
-                Cash Prize Alternative
+          <div className="px-6 mt-6 py-4">
+            <div className="flex flex-col gap-1">
+              <span className=" text-xs ">
+                {Math.round(
+                  (Number(props?.data?.tickets_sold) /
+                    Number(props?.data?.total_tickets)) *
+                    100,
+                )}
+                % Sold
               </span>
-              <span className="text-primary text-md xl:text-lg font-black leading-[18px]">
-                {' '}
-                AED {(props?.data?.cash_alt ?? 0)?.toLocaleString()}
+              <Progress
+                value={
+                  (Number(props?.data?.tickets_sold) /
+                    Number(props?.data?.total_tickets)) *
+                  100
+                }
+                className="w-full"
+              />
+            </div>
+            <div className="font-bold text-xl lg:text-2xl xl:text-3xl line-clamp-1">
+              {lang.lang_id === 1 ? (
+                <span className="font-[800] text-gray-200 leading-loose">
+                  WIN
+                </span>
+              ) : lang.lang_id === 2 ? (
+                <span className="font-[900] font-sans text-gray-200 leading-loose">
+                  يفوز
+                </span>
+              ) : (
+                ''
+              )}
+              <span className="text-gray-200  font-semibold leading-loose mx-2 ">
+                {props?.data?.EventDescription[0]?.name}
               </span>
             </div>
-          ) : (
-            spaceElement
-          )}
-
-          <div className="flex  justify-between items-center mt-8 gap-4">
-            <div className="text-primary text-md xl:text-lg font-black leading-[18px]">
-              AED {props?.data?.price}
+            <div className="relative w-full opacity-75  text-gray-200  text-md font-normal leading-normal ">
+              <p className="  h-12  overflow-hidden ">
+                {customTruncate(props?.data?.EventDescription[0]?.desc, 100)}
+              </p>
             </div>
-            <Link href={`/product-detail/${props?.data?.id}`}>
+            <hr className=" opacity-20 mt-4" />
+
+            {props?.data?.category_id === 1 && props?.data?.cash_alt ? (
+              <div className=" mt-2">
+                <span className="text-gray-200 text-md xl:text-lg font-semibold leading-[18px]">
+                  Cash Prize Alternative
+                </span>
+                <span className="text-primary text-md xl:text-lg font-black leading-[18px]">
+                  {' '}
+                  AED {(props?.data?.cash_alt ?? 0)?.toLocaleString()}
+                </span>
+              </div>
+            ) : (
+              spaceElement
+            )}
+
+            <div className="flex  justify-between items-center mt-8 gap-4">
+              <div className="text-primary text-md xl:text-lg font-black leading-[18px]">
+                AED {props?.data?.price}
+              </div>
               <Button
                 variant="rounded"
                 className="font-[800] tracking-tight text-md xl:text-lg "
               >
                 ENTER NOW
               </Button>
-            </Link>
+            </div>
           </div>
         </div>
-      </div>
+      </Link>
     )
   );
 }
