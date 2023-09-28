@@ -8,6 +8,8 @@ import Face3 from '~/public/assets/face/face3.png';
 import Face4 from '~/public/assets/face/face4.png';
 import Face5 from '~/public/assets/face/face5.png';
 import Face6 from '~/public/assets/face/face6.png';
+import Group15 from '~/public/assets/icons/Group15.png';
+import LogoImage from '~/public/assets/logo.png';
 import Image from 'next/image';
 import { Button } from '~/components/ui/button';
 import { RootState } from '~/store/store';
@@ -25,7 +27,7 @@ function Testimonials() {
     slider?.current?.slickPrev();
   };
   const settings = {
-    className: 'center slider variable-width flex gap-3',
+    className: 'center slider variable-width flex pb-8',
 
     dots: false,
     infinite: false,
@@ -54,37 +56,70 @@ function Testimonials() {
   };
 
   return (
-    <div className="relative flex flex-col sm:gap-14 justify-start   w-full  mx-auto mb-2 sm:py-4">
-      <div className="block sm:hidden space-y-4">
-        <div className="flex flex-col items-center gap-4 ">
-          <p className="text-gray-200 !text-xl sm:!text-3xl lg:!text-5xl font-black uppercase  ">
-            Testimonials
-          </p>
-          <div
-            className={`${
-              lang?.dir == 'rtl' ? ' flex-row-reverse' : 'md:ml-0'
-            }  flex gap-2 z-10 items-center justify-center `}
-          >
-            <Button
-              variant="rounded"
-              className="button prev-btn h-10 w-10 md:h-14 md:w-14"
-              onClick={() => previous()}
-            >
-              <i className="fa-solid fa-chevron-left"></i>
-            </Button>
-            <Button
-              variant="rounded"
-              className="button next-btn h-10 w-10 md:h-14 md:w-14"
-              onClick={() => next()}
-            >
-              <i className="fa-solid fa-chevron-right"></i>
-            </Button>
+    <div className="relative flex flex-col sm:gap-14 justify-start w-full mx-auto mb-2 sm:py-4">
+      <div className="relative w-full m-auto flex flex-col items-center justify-center">
+        <div className=" z-10 h-64 w-62 ">
+          <Image
+            className="w-full h-full object-contain "
+            src={Group15}
+            quality={100}
+            alt="Sunset in the mountains"
+          />
+        </div>
+        <div className="absolute bottom-0  ">
+          <div className="relative bg-transparent">
+            <div className="absolute top-0 p-8  w-full  bg-teal-400 bg-opacity-50 rounded-full blur-3xl"></div>
+            <div className="text-center   text-white  text-xl ">
+              See Why Our Customers Love
+            </div>
+            <div className="mt-2  text-center text-gray-200 text-5xl font-black leading-[48px]">
+              {' '}
+              <Image
+                src={LogoImage}
+                alt="Logo Image"
+                width={150}
+                height={140}
+                className="mx-auto h-6  w-56 "
+              />
+            </div>
           </div>
         </div>
-        <div className="z-30 px-4 w-full mx-auto">
+      </div>
+
+      <div className="block sm:hidden py-6 space-y-8">
+        <div
+          className={`${
+            lang?.dir == 'rtl' ? ' flex-row-reverse' : 'md:ml-0'
+          }  flex gap-2 z-10 items-center justify-center `}
+        >
+          <Button
+            variant="rounded"
+            className="button prev-btn h-10 w-10 md:h-14 md:w-14"
+            onClick={previous}
+          >
+            <i className="fa-solid fa-chevron-left"></i>
+          </Button>
+          <Button
+            variant="rounded"
+            className="button next-btn h-10 w-10 md:h-14 md:w-14"
+            onClick={next}
+          >
+            <i className="fa-solid fa-chevron-right"></i>
+          </Button>
+        </div>
+        <div className="z-30 px-4 relative h-full w-full mx-auto ">
           <Slider ref={slider} {...settings}>
             {TestimonialsData?.map((item, index) => {
-              return <Review key={index} {...item} index={index} />;
+              return (
+                <Review
+                  key={index}
+                  {...item}
+                  class={`${
+                    TestimonialsData.length != index + 1 ? 'xsm:mr-4' : ''
+                  }  min-h-[14rem]`}
+                  index={index}
+                />
+              );
             })}
           </Slider>
         </div>
@@ -173,17 +208,19 @@ type ReviewType = {
 function Review(item: ReviewType) {
   return (
     <div
-      className={`relative flex  h-full  sm:h-fit p-6 gap-x-4  w-full border-t border-l  border-white/20 bg-testimonials backdrop-blur-lg rounded-md bg-clip-padding backdrop-filter  bg-opacity-10  ${item?.class}`}
+      className={`relative flex  h-full  mdx:h-fit p-6 gap-x-4  sm:w-full border-t border-l  border-white/20 bg-testimonials backdrop-blur-lg rounded-md bg-clip-padding backdrop-filter  bg-opacity-10  ${item?.class}`}
     >
-      <div className="   z-10 h-12 w-14  rounded-full  bg-white">
+      <div className="z-10 h-12 w-14  rounded-full  bg-white">
         <Image
           className="w-full h-full object-cover rounded-full"
           src={item.face}
           quality={100}
           alt="Sunset in the mountains"
         />
+        {/* <User className='h-4 w-4 m-2'/> */}
       </div>
       <div className="flex flex-col gap-2 w-full">
+        {/* name */}
         <div>{item?.name}</div>
         <div className="flex gap-2 text-xs items-center">
           {Array.from(Array(+item?.stars), (_, index) => (
