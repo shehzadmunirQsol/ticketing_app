@@ -139,7 +139,7 @@ const AddressesView = () => {
               type={isEdit ? 'submit' : 'button'}
               disabled={isRefetching || isLoading}
               onClick={isEdit ? handleSubmit(onSubmit) : handleChange}
-              className="px-2 py-1.5 bg-primary text-sm text-[#101417] font-extrabold tracking-tight leading-tight w-fit rounded-full flex justify-center gap-1 hover:cursor-pointer hover:opacity-90"
+              className="px-2 py-1.5 bg-primary text-sm text-[#101417] font-extrabold tracking-tight leading-tight w-fit rounded-full flex items-center justify-center gap-1 hover:cursor-pointer hover:opacity-90"
             >
               <span>
                 <i
