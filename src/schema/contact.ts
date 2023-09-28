@@ -20,10 +20,10 @@ export const contactUsSchema = z.object({
   }),
 });
 
-const regexNumber=/^[0-9]/;
+
 export const contactSchema = z.object({
   name: z
-    .string({ required_error: 'Please enter your name' }).regex(regexNumber)
+    .string({ required_error: 'Please enter your name' })
     .max(24, {
       message: 'Name must not exceed 30 characters',
     }),
@@ -32,13 +32,13 @@ export const contactSchema = z.object({
     required_error: 'Please select your code',
   }),
   number: z
-    .string({ required_error: 'Please enter your number' })
+    .string({ required_error: 'Please enter your number' }).regex(new RegExp(/^[0-9]+$/),"Please enter a valid phone number")
     .min(9, {
       message: 'Number must be at least 9 characters',
     })
     .max(9, {
       message: 'Number must not exceed 9 characters',
-    }).length(9),
+    }),
   message: z.string({ required_error: 'Please write your message' }),
 });
 

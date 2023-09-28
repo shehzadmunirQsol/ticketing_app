@@ -82,6 +82,14 @@ export default function Contact() {
     },
   ];
 
+
+  const validate = (value: string) => {
+    const matches = value.match(
+      /^[0-9]/
+    );
+    return matches?.length > 0 || "Please enter a valid number";
+  };
+
   // Contact
   const onSubmitContact = async (values: any) => {
     if (!recaptchaToken) {
@@ -209,11 +217,12 @@ export default function Contact() {
                     <FormField
                       control={form.control}
                       name="number"
+                      rules={{validate}}
                       render={({ field }) => (
                         <FormItem className=" w-full">
                           <FormControl className="rounded-md bg-inputColor">
                             <Input
-                              type="number"
+                              type="text" 
                               maxLength={9}
                               placeholder="Enter your phone number"
                               {...field}
