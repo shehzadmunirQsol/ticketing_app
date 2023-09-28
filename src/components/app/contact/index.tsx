@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createRef, useState } from 'react';
 import { Button } from '@/ui/button';
 import {
   Form,
@@ -32,15 +32,28 @@ import Link from 'next/link';
 import ContactImage from '../../../public/assets/contact-us.svg';
 import { zodResolver } from '@hookform/resolvers/zod';
 
+import ReCAPTCHA from "react-google-recaptcha"
+
 export default function Contact() {
   const { toast } = useToast();
   const router = useRouter();
+  const recaptchaRef: any = createRef();
+  const [recaptchaToken, setRecapthaToken] = useState<string>('');
 
   // 1. Define your form.
   const form = useForm<contactSchemaInput>({
     resolver: zodResolver(contactSchema),
   });
 
+
+  const showResponse = (response: any) => {
+    console.log({ response });
+    if (response) {
+      setRecapthaToken(() => recaptchaRef.current.getValue());
+    }
+
+    //call to a backend to verify against recaptcha with private key
+  };
   // Handle Contact us
   const contactUs = trpc.contact.contact.useMutation({
     onSuccess: async (res: any) => {
@@ -52,9 +65,11 @@ export default function Contact() {
       });
       form.setValue('name', '');
       form.setValue('email', '');
-      form.setValue('code', '');
+      form.setValue('code', '+971');
       form.setValue('number', '');
       form.setValue('message', '');
+      recaptchaRef.current.reset();
+      setRecapthaToken("");
     },
     onError: (err) => {
       console.log(err.message, 'err');
@@ -67,22 +82,42 @@ export default function Contact() {
     },
   ];
 
+
+  const validate = (value: string) => {
+    const matches = value.match(
+      /^[0-9]/
+    );
+    return matches && matches?.length > 0 || "Please enter a valid number";
+  };
+
   // Contact
   const onSubmitContact = async (values: any) => {
-    await contactUs.mutateAsync(values);
+    if (!recaptchaToken) {
+      toast({
+        variant: 'destructive',
+        title: 'Invalid Captcha: Please try again.',
+      });
+      return;
+    }
+
+    try {
+      await contactUs.mutateAsync(values);
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   return (
     <section className="body-font pt-24 space-y-24">
-      <div className="px-4 my-10 md:px-14 md:my-24 flex gap-14 w-full">
-        <div className="w-2/5 mb-5 lg:mb-0 rounded-lg hidden lg:block">
+      <div className="px-4 my-10 md:px-14 md:my-24 flex gap-14 w-full ">
+        <div className="w-2/5 mb-5 lg:mb-0 rounded-lg hidden lg:block  ">
           <SideImage
             image={ContactImage}
             text={'Connect with Us for '}
             text2={'Support, Questions'}
           />
         </div>
-        <div className="w-96 pb-6 flex flex-col flex-wrap   lg:w-3/5 md:w-full  lg:text-left  rounded-none border-none  bg-card">
+        <div className="pb-6 flex flex-col h-full lg:max-h-[700px] w-full    lg:w-3/5  mx-auto lg:mx-0  lg:text-left  rounded-none border-none  bg-card ">
           <div className="font-black  py-4 ">
             <p className="text-xl pl-6 px-4 lg:px-8">Contact Us</p>
             <hr className=" opacity-20 mt-4" />
@@ -90,7 +125,7 @@ export default function Contact() {
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmitContact)}
-              className="justify-center items-center px-4 lg:px-8  space-y-4"
+              className="justify-center items-center px-4 lg:px-8   space-y-4"
             >
               <div className="w-full">
                 <FormField
@@ -140,7 +175,7 @@ export default function Contact() {
 
                 <div className=" w-full ">
                   <p className="text-xs font-thin text-grayColor  mb-2 ">
-                    Phone Number
+                    Phone Number*
                   </p>
                   <div className="flex items-center flex-row gap-2 ">
                     <FormField
@@ -182,12 +217,13 @@ export default function Contact() {
                     <FormField
                       control={form.control}
                       name="number"
+                      rules={{ validate }}
                       render={({ field }) => (
                         <FormItem className=" w-full">
                           <FormControl className="rounded-md bg-inputColor">
                             <Input
-                              type="number"
-                              max={9}
+                              type="text"
+                              maxLength={9}
                               placeholder="Enter your phone number"
                               {...field}
                             />
@@ -224,7 +260,18 @@ export default function Contact() {
                   )}
                 />
               </div>
-              <div className="flex flex-col lg:flex-row md:flex-row justify-end items-center gap-6 ">
+              <div className="flex flex-col sm:flex-row justify-between items-center gap-6 h-18">
+                <div className='h-fit object-contain w-fit ' >
+                  <ReCAPTCHA
+                    ref={recaptchaRef}
+                    size="normal"
+                    badge="inline"
+                    theme='dark'
+                    sitekey={process.env.NEXT_PUBLIC_SITE_KEY as string}
+                    onChange={showResponse}
+                  />
+                </div>
+
                 <Button
                   className="  lg:w-52 md:w-52 w-full     text-black font-sans font-[900]   text-xl tracking-[-1px]"
                   variant="clip"

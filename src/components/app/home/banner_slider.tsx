@@ -11,7 +11,7 @@ import { useRouter } from 'next/router';
 
 function BannerSlider() {
   const { lang } = useSelector((state: RootState) => state.layout);
-  const [currentIndex, setCurrentIndex] = useState(1);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [carSlider, setCarSlider] = useState<Array<any>>([]);
   const [showElement, setShowElement] = useState(false);
   const router=useRouter()
@@ -122,15 +122,15 @@ function BannerSlider() {
               <p className="px-4 text-lg  sm:text-2xl tracking-[-1px] font-[700]  my-3">
                 {carSlider[currentIndex]?.date}
               </p>
-              <Link href="/cars">
+              <>
                 <Button
                   className=" mb-2 lg:mb-0 mx-4 min-w-fit sm:w-44 text-black font-sans font-[900]  tracking-[-1px]"
                   variant="clip"
-                  onClick={()=>{router.push("/product-detail/13")}}
+                  onClick={()=>{router.push(carSlider[currentIndex]?.link)}}
                 >
                   {lang.lang_id === 1 ? 'ENTER NOW' : 'أدخل الأن'}
                 </Button>
-              </Link>
+              </>
             </div>
 
             {/* text select cards */}
