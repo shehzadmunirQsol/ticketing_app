@@ -53,9 +53,9 @@ function Footer() {
                   <p>Dubai, UAE</p>
 
                   <p>
-                    Winnar Trading LLC Regulated by Dubai Economic Department
-                    and Department of Economy and Tourism Trade License No.:
-                    1193751
+                    © Copyright Winnar Trading LLC Regulated by Dubai Economic
+                    Department and Department of Economy and Tourism Trade
+                    License No.: 1193751
                   </p>
 
                   {/* <p>© Copyright WINNAR 2023</p>
