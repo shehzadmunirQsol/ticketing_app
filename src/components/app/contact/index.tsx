@@ -32,11 +32,13 @@ import Link from 'next/link';
 import ContactImage from '../../../public/assets/contact-us.svg';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-
+import ReCAPTCHA from "react-google-recaptcha"
 
 export default function Contact() {
   const { toast } = useToast();
   const router = useRouter();
+  const recaptchaRef: any = createRef();
+  const [recaptchaToken, setRecapthaToken] = useState<string>('');
 
   // 1. Define your form.
   const form = useForm<contactSchemaInput>({
@@ -44,6 +46,14 @@ export default function Contact() {
   });
 
 
+  const showResponse = (response: any) => {
+    console.log({ response });
+    if (response) {
+      setRecapthaToken(() => recaptchaRef.current.getValue());
+    }
+
+    //call to a backend to verify against recaptcha with private key
+  };
   // Handle Contact us
   const contactUs = trpc.contact.contact.useMutation({
     onSuccess: async (res: any) => {
@@ -58,6 +68,8 @@ export default function Contact() {
       form.setValue('code', '+971');
       form.setValue('number', '');
       form.setValue('message', '');
+      recaptchaRef.current.reset();
+      setRecapthaToken("");
     },
     onError: (err) => {
       console.log(err.message, 'err');
@@ -72,6 +84,13 @@ export default function Contact() {
 
   // Contact
   const onSubmitContact = async (values: any) => {
+    if (!recaptchaToken) {
+      toast({
+        variant: 'destructive',
+        title: 'Invalid Captcha: Please try again.',
+      });
+      return;
+    }
 
     try {
       await contactUs.mutateAsync(values);
@@ -83,24 +102,24 @@ export default function Contact() {
   return (
     <section className="body-font pt-24 space-y-24">
       <div className="px-4 my-10 md:px-14 md:my-24 flex gap-14 w-full ">
-        <div className="w-2/5 mb-5 lg:mb-0  hidden lg:block  ">
+        <div className="w-2/5 mb-5 lg:mb-0 rounded-lg hidden lg:block  ">
           <SideImage
             image={ContactImage}
             text={'Connect with Us for '}
             text2={'Support, Questions'}
           />
         </div>
-        <div className="w-96 pb-6 flex flex-col flex-wrap   lg:w-3/5 md:w-full  lg:text-left  rounded-sm border-none  bg-card">
+        <div className="pb-6 flex flex-col h-full lg:max-h-[700px] w-full    lg:w-3/5  mx-auto lg:mx-0  lg:text-left  rounded-none border-none  bg-card ">
           <div className="font-black  py-4 ">
             <p className="text-xl pl-6 px-4 lg:px-8">Contact Us</p>
             <hr className=" opacity-20 mt-4" />
           </div>
-          <Form {...form} >
+          <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmitContact)}
-              className="justify-center items-center px-4 lg:px-8 h-[620px] md:h-[560px] "
+              className="justify-center items-center px-4 lg:px-8   space-y-4"
             >
-              <div className="w-full ">
+              <div className="w-full">
                 <FormField
                   control={form.control}
                   name="name"
@@ -231,8 +250,18 @@ export default function Contact() {
                     </FormItem>
                   )}
                 />
-
-              <div className="flex flex-col md:flex-row justify-end items-center gap-y-2 md:gap-x-6 md:gap-y-0 h-16">
+              </div>
+              <div className="flex flex-col sm:flex-row justify-between items-center gap-6 h-18">
+                <div className='h-fit object-contain w-fit ' >
+                <ReCAPTCHA
+                  ref={recaptchaRef}
+                  size="normal"
+                  badge="inline"
+                  theme='dark'
+                  sitekey={process.env.NEXT_PUBLIC_SITE_KEY as string}
+                  onChange={showResponse}
+                />
+                </div>
 
                 <Button
                   className="  lg:w-52 md:w-52 w-full     text-black font-sans font-[900]   text-xl tracking-[-1px]"
@@ -241,8 +270,6 @@ export default function Contact() {
                   SEND MESSAGE
                 </Button>
               </div>
-              </div>
-
             </form>
           </Form>
         </div>
