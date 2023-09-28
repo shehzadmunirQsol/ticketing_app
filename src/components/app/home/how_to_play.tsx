@@ -47,11 +47,12 @@ function HowtoSection() {
           </p>
         </div>
 
-        <div className="flex flex-col gap-8 space-y-4 ">
+        <div className="flex flex-col gap-8 sm:space-y-4 ">
           {HowtoStart?.map((item, index) => {
             return (
-              <div key={index} className="relative flex gap-4   items-center">
-                <div className="relative  h-12 w-12">
+              <div key={index} className="relative flex gap-2 md:gap-4   items-center ">
+                
+                <div className={`relative h-10 w-10  sm:h-12 sm:w-12 rounded-md overflow-hidden`}>
                   <Image
                     className="w-full h-full  object-cover "
                     src={item?.icon}
@@ -60,12 +61,13 @@ function HowtoSection() {
                     alt="Sunset in the mountains"
                   />
                 </div>
-                <div className="w-fit">
+
+                <div className="w-72 sm:w-[34rem]">
                   <div>
-                    <div className="text-background text-sm font-normal ">
+                    <div className="text-background text-xs sm:text-sm font-normal ">
                       0{item?.step} STEP
                     </div>
-                    <div className="text-background text-lg font-extrabold  ">
+                    <div className="text-background text-xs sm:text-md md:text-lg font-bold sm:font-extrabold  ">
                       {item?.title}
                     </div>
                   </div>

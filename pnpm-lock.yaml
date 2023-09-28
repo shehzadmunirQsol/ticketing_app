@@ -40,6 +40,7 @@ specifiers:
   '@types/node': ^18.7.20
   '@types/nodemailer': ^6.4.9
   '@types/react': ^18.0.9
+  '@types/react-google-recaptcha': ^2.1.6
   '@types/react-slick': ^0.23.10
   '@types/uuid': ^9.0.2
   '@typescript-eslint/eslint-plugin': ^5.47.0
@@ -193,6 +194,7 @@ devDependencies:
   '@types/node': 18.7.20
   '@types/nodemailer': 6.4.9
   '@types/react': 18.0.25
+  '@types/react-google-recaptcha': 2.1.6
   '@types/uuid': 9.0.2
   '@typescript-eslint/eslint-plugin': 5.47.0_jhaguxqfxx2v4alxps2nzei754
   '@typescript-eslint/parser': 5.47.0_yvgxsonm4ikac5pm5z5getdq5e
@@ -2432,6 +2434,12 @@ packages:
 
   /@types/prop-types/15.7.5:
     resolution: {integrity: sha512-JCB8C6SnDoQf0cNycqd/35A7MjcnK+ZTqE7judS6o7utxUCg6imJg3QK2qzHKszlTjcj2cn+NwMB2i96ubpj7w==}
+
+  /@types/react-google-recaptcha/2.1.6:
+    resolution: {integrity: sha512-U+dLY6lGoa9sDfArZAmAItk9MpOaNV7TJtRqEox74zkXL4Qx6FnakIeM9e3HQaWYwfBgoOa7SMhWBgpnyycdvQ==}
+    dependencies:
+      '@types/react': 18.0.25
+    dev: true
 
   /@types/react-slick/0.23.10:
     resolution: {integrity: sha512-ZiqdencANDZy6sWOWJ54LDvebuXFEhDlHtXU9FFipQR2BcYU2QJxZhvJPW6YK7cocibUiNn+YvDTbt1HtCIBVA==}

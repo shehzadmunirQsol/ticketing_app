@@ -1,20 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { Dispatch, useEffect, useState } from 'react';
 import { Button } from '@/ui/button';
 import LogoImage from '~/public/assets/logo.png';
 import Image from 'next/image';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuPortal,
-  DropdownMenuSeparator,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
-  DropdownMenuTrigger,
-} from '@/ui/dropdown-menu';
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from '@/ui/collapsible';
+
 import { User, ShoppingCart, Languages } from 'lucide-react';
 import {
   Select,
@@ -42,6 +36,7 @@ function Header() {
   const { count } = useSelector((state: RootState) => state.cart);
 
   const [color, setColor] = useState(false);
+  const [nav, setNav] = useState<boolean>(false);
 
   const dispatch = useDispatch();
 
@@ -74,7 +69,7 @@ function Header() {
           : '!bg-background-footer'
       }   transform ease-in-out justify-between py-8 px-4 md:px-14 `}
     >
-      <Link href="/">
+      <Link href="/" className="z-50">
         <Image
           src={LogoImage}
           alt="Logo Image"
@@ -110,6 +105,7 @@ function Header() {
               <i className="fa-solid fa-user" />
             </Button>
           </Link>
+
           <Select onValueChange={toggleLanguageHandler}>
             <SelectTrigger className="h-9 w-9 rounded-none border-primary text-center  justify-center text-gray-200">
               <SelectValue placeholder="EN" />
@@ -123,19 +119,54 @@ function Header() {
           </Select>
         </div>
       </div>
-      <div className="z-50 mdx:hidden">
-        <DropdownMenuDemo />
+
+      <div className="mdx:hidden flex justify-between gap-2 items-center">
+        <Select onValueChange={toggleLanguageHandler}>
+          <SelectTrigger className="h-9 w-9 rounded-none border-primary text-center  justify-center text-gray-200">
+            <SelectValue placeholder="EN" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectItem value="en">EN</SelectItem>
+              <SelectItem value="ar">AR</SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+
+        <div
+          
+          onClick={() => setNav((prev) => !prev)}
+        >
+          <Button variant="outline" size="icon_square" className='border-primary relative z-50'>
+            {nav ? (
+              <i className="fa-solid fa-xmark text-lg text-center text-gray-200"></i>
+            ) : (
+              <i className="fa-solid fa-bars text-lg text-center text-gray-200"></i>
+            )}
+          </Button>
+        </div>
       </div>
+      <SideBarMenuDemo nav={nav} closeFn={setNav} />
     </div>
   );
 }
 
 export default Header;
 
-export function DropdownMenuDemo() {
-  const { count } = useSelector((state: RootState) => state.cart);
-  const { isLogin } = useSelector((state: RootState) => state.auth);
+interface SideBarMenuDemoProps {
+  nav: boolean;
+  closeFn: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
+export const SideBarMenuDemo: React.FC<SideBarMenuDemoProps> = ({
+  nav,
+  closeFn,
+}) => {
+  const { count } = useSelector((state: RootState) => state.cart);
+  const { lang } = useSelector((state: RootState) => state.layout);
+  const { isLogin } = useSelector((state: RootState) => state.auth);
+  const [hide, setHide] = useState(false);
+  const router = useRouter();
   const dispatch = useDispatch();
 
   function toggleLanguageHandler(lang: 'en' | 'ar') {
@@ -146,74 +177,105 @@ export function DropdownMenuDemo() {
     dispatch(toggleLang(language));
   }
 
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline">
-          <i className="fas fa-bars"></i>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-40" side={'bottom-end' as 'bottom'}>
-        {/* <DropdownMenuLabel></DropdownMenuLabel> */}
+  useEffect(() => {
+    if (window?.innerWidth !== undefined) {
+      const changeColor = () =>
+        window?.innerWidth >= 1500 ? setHide(true) : setHide(false);
 
-        <DropdownMenuGroup>
-          <Link href="/cars">
-            <DropdownMenuItem>Cars</DropdownMenuItem>
-          </Link>
-          <Link href="/cash">
-            <DropdownMenuItem>Cash</DropdownMenuItem>
-          </Link>
-          <Link href="/winners">
-            <DropdownMenuItem>Winners</DropdownMenuItem>
-          </Link>
-          <Link href="/about-us">
-            <DropdownMenuItem>About Us</DropdownMenuItem>
-          </Link>
-          <Link href="/contact-us">
-            <DropdownMenuItem>Contact Us</DropdownMenuItem>
-          </Link>
-          <Link href="/faq">
-            <DropdownMenuItem>FAQ</DropdownMenuItem>
-          </Link>
-          <Link href="/cart">
-            <DropdownMenuItem>
-              {/* <ShoppingCart className="mr-2 h-4 w-4" /> */}
-              Cart
-              {count ? (
-                <span className="block mx-2 text-primary">
-                  ( {count > 999 ? '999+' : count} )
-                </span>
-              ) : null}
-            </DropdownMenuItem>
-          </Link>
-          <Link href={isLogin ? '/account' : '/login'}>
-            <DropdownMenuItem>
-              {isLogin ? 'My Account' : 'Login'}
-            </DropdownMenuItem>
-          </Link>
-        </DropdownMenuGroup>
-        <DropdownMenuGroup>
-          <DropdownMenuSub>
-            <DropdownMenuSubTrigger>
-              <span>Language</span>
-            </DropdownMenuSubTrigger>
-            <DropdownMenuPortal>
-              <DropdownMenuSubContent className="!w-14">
-                <DropdownMenuItem onClick={() => toggleLanguageHandler('en')}>
-                  <span>EN</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => toggleLanguageHandler('ar')}>
-                  <span>AR</span>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-              </DropdownMenuSubContent>
-            </DropdownMenuPortal>
-          </DropdownMenuSub>
-        </DropdownMenuGroup>
-      </DropdownMenuContent>
-    </DropdownMenu>
+      window.addEventListener('scroll', changeColor);
+
+      return () => {
+        window.removeEventListener('scroll', changeColor);
+      };
+    }
+  }, []);
+
+  return (
+    <>
+      <ul
+        className={`${
+          hide ? ' hidden ' : ' block '
+        }  transition-all ease-linear font-sans scroll-hide ${
+          nav
+            ? 'absolute top-0 left-0 duration-500 w-full h-screen !bg-background-footer flex flex-col justify-start items-center   pt-24'
+            : 'absolute top-24 left-[-100%]  duration-700  '
+        }`}
+      >
+        <li
+          className="py-2 text-xl w-full text-center border-t-[1px] border-muted-foreground hover:bg-muted-foreground hover:text-primary-foreground transition-colors duration-500 ease-in-out cursor-pointer"
+          onClick={() => {
+            router.push('/cars');
+            closeFn(false);
+          }}
+        >
+          Cars
+        </li>
+        <li
+          className="py-2 text-xl w-full text-center border-t-[1px] border-muted-foreground hover:bg-muted-foreground hover:text-primary-foreground transition-colors duration-500 ease-in-out cursor-pointer"
+          onClick={() => {
+            router.push('/cash');
+            closeFn(false);
+          }}
+        >
+          Cash
+        </li>
+        <li
+          className="py-2 text-xl w-full text-center border-t-[1px] border-muted-foreground hover:bg-muted-foreground hover:text-primary-foreground transition-colors duration-500 ease-in-out cursor-pointer"
+          onClick={() => {
+            router.push('/winners');
+            closeFn(false);
+          }}
+        >
+          Winners
+        </li>
+        <li
+          className="py-2 text-xl w-full text-center border-t-[1px] border-muted-foreground hover:bg-muted-foreground hover:text-primary-foreground transition-colors duration-500 ease-in-out cursor-pointer"
+          onClick={() => {
+            router.push('/about-us');
+            closeFn(false);
+          }}
+        >
+          About Us
+        </li>
+        <li
+          className="py-2 text-xl w-full text-center border-t-[1px] border-muted-foreground hover:bg-muted-foreground hover:text-primary-foreground transition-colors duration-500 ease-in-out cursor-pointer"
+          onClick={() => {
+            router.push('/contact-us');
+            closeFn(false);
+          }}
+        >
+          Contact Us
+        </li>
+        <li
+          className="group py-2 text-xl w-full text-center border-t-[1px] border-muted-foreground hover:bg-muted-foreground hover:text-primary-foreground transition-colors duration-500 ease-in-out cursor-pointer"
+          onClick={() => {
+            router.push('/cart');
+            closeFn(false);
+          }}
+        >
+          <div className="flex items-center justify-center">
+            <span className="w-fit">Cart</span>
+            {count ? (
+              <span className="block mx-2 text-primary group-hover:text-primary-foreground transition-colors duration-500 w-fit">
+                ( {count > 999 ? '999+' : count} )
+              </span>
+            ) : null}
+          </div>
+        </li>
+
+        <li
+          className="py-2 text-xl w-full text-center border-y-[1px] border-muted-foreground hover:bg-muted-foreground hover:text-primary-foreground transition-colors duration-500 ease-in-out cursor-pointer"
+          onClick={() => {
+            router.push(isLogin ? '/account' : '/login');
+            closeFn(false);
+          }}
+        >
+          <>{isLogin ? 'My Account' : 'Login'}</>
+        </li>
+      </ul>
+    </>
   );
-}
+};
 
 export function ItemMenuDemo() {
   const linkItems: Array<LinkItemProps> = [

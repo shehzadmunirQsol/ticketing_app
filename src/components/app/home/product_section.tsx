@@ -183,7 +183,7 @@ function ProductSection(props: producctInterface) {
                   isLast={index === products.length - 1}
                   nextPage={nextPage}
                   data={item}
-                  class={`xsm:mr-4 `}
+                  class={products.length != index + 1 ? 'xsm:mr-4' : ''}
                   dir={`${lang?.dir}`}
                 />
               </div>
