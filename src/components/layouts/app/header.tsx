@@ -7,7 +7,7 @@ import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@/ui/collapsible"
+} from '@/ui/collapsible';
 
 import { User, ShoppingCart, Languages } from 'lucide-react';
 import {
@@ -61,12 +61,13 @@ function Header() {
 
   return (
     <div
-      className={`fixed max-w-[1600px] w-full z-50 top-0 h-24  flex  items-center   ${router.route == '/'
-        ? color
-          ? '!bg-background-footer  duration-500 shadow-xl'
-          : '!bg-transparent  duration-500'
-        : '!bg-background-footer'
-        }   transform ease-in-out justify-between py-8 px-4 md:px-14 `}
+      className={`fixed max-w-[1600px] w-full z-50 top-0 h-24  flex  items-center   ${
+        router.route == '/'
+          ? color
+            ? '!bg-background-footer  duration-500 shadow-xl'
+            : '!bg-transparent  duration-500'
+          : '!bg-background-footer'
+      }   transform ease-in-out justify-between py-8 px-4 md:px-14 `}
     >
       <Link href="/" className="z-50">
         <Image
@@ -104,6 +105,7 @@ function Header() {
               <i className="fa-solid fa-user" />
             </Button>
           </Link>
+
           <Select onValueChange={toggleLanguageHandler}>
             <SelectTrigger className="h-9 w-9 rounded-none border-primary text-center  justify-center text-gray-200">
               <SelectValue placeholder="EN" />
@@ -117,15 +119,32 @@ function Header() {
           </Select>
         </div>
       </div>
-      <div
-        className="z-40 mdx:hidden text-white"
-        onClick={() => setNav((prev) => !prev)}
-      >
-        {nav ? (
-          <i className="fa-solid fa-xmark text-lg"></i>
-        ) : (
-          <i className="fa-solid fa-bars text-lg"></i>
-        )}
+
+      <div className="mdx:hidden flex justify-between gap-2 items-center">
+        <Select onValueChange={toggleLanguageHandler}>
+          <SelectTrigger className="h-9 w-9 rounded-none border-primary text-center  justify-center text-gray-200">
+            <SelectValue placeholder="EN" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectItem value="en">EN</SelectItem>
+              <SelectItem value="ar">AR</SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+
+        <div
+          
+          onClick={() => setNav((prev) => !prev)}
+        >
+          <Button variant="outline" size="icon_square" className='border-primary relative z-50'>
+            {nav ? (
+              <i className="fa-solid fa-xmark text-lg text-center text-gray-200"></i>
+            ) : (
+              <i className="fa-solid fa-bars text-lg text-center text-gray-200"></i>
+            )}
+          </Button>
+        </div>
       </div>
       <SideBarMenuDemo nav={nav} closeFn={setNav} />
     </div>
@@ -144,6 +163,7 @@ export const SideBarMenuDemo: React.FC<SideBarMenuDemoProps> = ({
   closeFn,
 }) => {
   const { count } = useSelector((state: RootState) => state.cart);
+  const { lang } = useSelector((state: RootState) => state.layout);
   const { isLogin } = useSelector((state: RootState) => state.auth);
   const [hide, setHide] = useState(false);
   const router = useRouter();
@@ -173,11 +193,13 @@ export const SideBarMenuDemo: React.FC<SideBarMenuDemoProps> = ({
   return (
     <>
       <ul
-        className={`${hide ? ' hidden ' : ' block '
-          }  transition-all ease-linear font-sans  ${nav
+        className={`${
+          hide ? ' hidden ' : ' block '
+        }  transition-all ease-linear font-sans scroll-hide ${
+          nav
             ? 'absolute top-0 left-0 duration-500 w-full h-screen !bg-background-footer flex flex-col justify-start items-center   pt-24'
             : 'absolute top-24 left-[-100%]  duration-700  '
-          }`}
+        }`}
       >
         <li
           className="py-2 text-xl w-full text-center border-t-[1px] border-muted-foreground hover:bg-muted-foreground hover:text-primary-foreground transition-colors duration-500 ease-in-out cursor-pointer"
@@ -250,23 +272,7 @@ export const SideBarMenuDemo: React.FC<SideBarMenuDemoProps> = ({
         >
           <>{isLogin ? 'My Account' : 'Login'}</>
         </li>
-
-        <div className='relative flex justify-start items-center w-full  mt-32 px-4'>
-          <Select onValueChange={toggleLanguageHandler} >
-            <SelectTrigger  className=" h-9 w-9 rounded-none border-muted-foreground text-center  justify-center text-gray-200">
-              <SelectValue placeholder="EN" />
-            </SelectTrigger>
-            <SelectContent >
-              <SelectGroup className='top-0 left-10'>
-                <SelectItem value="en" onClick={() => closeFn(false)}>EN</SelectItem>
-                <SelectItem value="ar" onClick={() => closeFn(false)}>AR</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        </div>
-
       </ul>
-
     </>
   );
 };
