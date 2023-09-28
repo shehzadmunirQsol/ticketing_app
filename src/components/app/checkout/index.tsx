@@ -216,11 +216,6 @@ function Checkout() {
                   requireCvv: true,
                 },
               };
-              // const createRegistrationHtml =
-              //   '<div class="customLabel">Store payment details?</div><div class="customInput"><input type="checkbox" name="createRegistration" value="true" /></div>';
-              // jqeury('form.wpwl-form-card')
-              //   .find('.wpwl-button')
-              //   .before(createRegistrationHtml);
 
               function addCustomElement() {
                 // Create the HTML elements
@@ -742,7 +737,7 @@ function Checkout() {
         customer_id={cart?.customer_id ?? 0}
         cart_id={cart?.id ?? 0}
       />
-      <CheckoutDialog
+      {/* <CheckoutDialog
         selectedItem={selectedItem}
         setSelectedItem={setSelectedItem}
         title={title}
@@ -751,7 +746,7 @@ function Checkout() {
         setIsModal={setIsCardModal}
         type={type}
         setType={setType}
-      />
+      /> */}
       <CardDailog
         selectedItem={selectedItem}
         setSelectedItem={setSelectedItem}
