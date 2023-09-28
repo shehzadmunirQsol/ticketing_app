@@ -35,13 +35,6 @@ export function CardDailog(props: CardDialogInterface) {
 
   // Update CMS Status
   const deleteCardData = trpc.order.deleteCard.useMutation({
-    onSuccess: (res: any) => {
-      console.log(res);
-      toast({
-        variant: 'success',
-        title: 'Status Updated Successfully',
-      });
-    },
     onError(error: any) {
       console.log(error);
     },
@@ -126,7 +119,7 @@ export function CardDailog(props: CardDialogInterface) {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      <LoadingDialog open={loading} text={'Deleting data...'} />
+      <LoadingDialog open={loading} text={'Deleting card...'} />
     </>
   );
 }
