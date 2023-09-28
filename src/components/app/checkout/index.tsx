@@ -37,6 +37,7 @@ import { userAuth } from '~/store/reducers/auth';
 import Script from 'next/script';
 import jqeury from 'jquery';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
+import { CardDailog } from '~/components/common/modal/cardModal';
 
 function Checkout() {
   const { cart, totalAmount } = useSelector((state: RootState) => state.cart);
@@ -50,11 +51,13 @@ function Checkout() {
   const [totalID, setTotalID] = useState<any>(null);
 
   const [isModal, setIsModal] = useState(false);
+  const [isDeleteModal, setIsDeleteModal] = useState(false);
+  const [index, setIndex] = useState(null);
   const [selectedItem, setSelectedItem] = useState({});
   const [title, setTitle] = useState('Enter Payment Detail');
   const [type, setType] = useState('');
   const [isCardModal, setIsCardModal] = useState(false);
-
+  console.log(isDeleteModal, 'isDeleteModal', index, 'index');
   // 1. Define your form.
   const form = useForm<CreateCheckoutSchema>({
     resolver: zodResolver(createCheckoutSchema),
@@ -176,13 +179,7 @@ function Checkout() {
           total_id: user?.total_customer_id,
         },
       });
-      console.log(data?.checkout?.data?.id, 'get checkout id');
       if (data?.checkout?.data) {
-        // setIsCardModal(true);
-        // setSelectedItem({
-        //   values: { ...values },
-        //   checkoutID: data?.checkout?.data?.id,
-        // });
         setTotalID(data?.checkout?.data?.id);
       }
     } catch (err) {
@@ -224,6 +221,7 @@ function Checkout() {
               // jqeury('form.wpwl-form-card')
               //   .find('.wpwl-button')
               //   .before(createRegistrationHtml);
+
               function addCustomElement() {
                 // Create the HTML elements
 
@@ -232,10 +230,19 @@ function Checkout() {
                 jqeury('form.wpwl-form-card')
                   .find('.wpwl-button')
                   .before(createRegistrationHtml);
+                const createDeleteOption = `<div class="customLabel  relative w-full  ml-auto flex justify-end items-center"><i  class="fa-regular border border-border deletefunction p-2 rounded-full fa-trash-can  text-cardGray cursor-pointer hover:text-white hover:border-white "></i></div>`;
+                jqeury('.wpwl-group-registration')
+                  .find('.wpwl-registration')
+                  .before(createDeleteOption);
+
+                jqeury('.deletefunction').click(function (event) {
+                  console.log('i am running');
+                  setIsDeleteModal(true);
+                  setIndex(jqeury('.deletefunction').index(this) as any);
+                });
               }
 
-              // Delay the execution of addCustomElement by 1000 milliseconds (1 second)
-              setTimeout(addCustomElement, 6000);
+              setTimeout(addCustomElement, 4000);
             }}
           ></Script>
           <div className=" relative  bg-background   ">
@@ -744,6 +751,19 @@ function Checkout() {
         setIsModal={setIsCardModal}
         type={type}
         setType={setType}
+      />
+      <CardDailog
+        selectedItem={selectedItem}
+        setSelectedItem={setSelectedItem}
+        isModal={isDeleteModal}
+        setIsModal={setIsDeleteModal}
+        type={type}
+        setType={setType}
+        totalID={totalID}
+        setTotalID={setTotalID}
+        index={index}
+        setIndex={setIndex}
+        values={form.getValues()}
       />
     </div>
   );
