@@ -8,6 +8,7 @@ import {
   getOrderSchema,
   getCheckoutIDSchema,
   getPaymentStatusSchema,
+  deleteCardSchema,
 } from '~/schema/order';
 import https from 'https';
 
@@ -822,6 +823,66 @@ export const orderRouter = router({
         });
       }
     }),
+  deleteCard: publicProcedure
+    .input(deleteCardSchema)
+    .mutation(async ({ input }) => {
+      try {
+        // Total Processing Initial Payment Process
+        const paymentPayload: any = {
+          id: input?.registration_id,
+        };
+
+        const paymentRes: any = await deleteCard({
+          ...paymentPayload,
+        })
+          .then((response: any) => {
+            console.log(
+              response?.result?.parameterErrors,
+              'response?.result?.parameterErrors',
+            );
+            if (!response?.result?.parameterErrors) {
+              return { data: response, success: true };
+            }
+            throw new Error(response?.result?.parameterErrors[0].message);
+          })
+          .catch((error) => {
+            console.log(
+              error?.parameterErrors,
+              'response?.result?.parameterErrors',
+            );
+            throw new Error(error.message);
+          });
+        console.log({ paymentRes });
+        if (paymentRes?.data) {
+          const regID = input?.total_customer_id.split(',');
+          const filterArray = regID.filter(
+            (word, index) => index !== input?.index,
+          );
+          const updateCustomer = await prisma.customer.update({
+            where: {
+              id: input?.customer_id,
+            },
+            data: {
+              total_customer_id: filterArray?.join(),
+            },
+          });
+          return {
+            message: paymentRes?.data,
+            status: true,
+          };
+        }
+        // throw new TRPCError({
+        //   code: 'BAD_REQUEST',
+        //   message: 'Something Went Wrong',
+        // });
+      } catch (error: any) {
+        console.log({ error }, 'error message');
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: error?.message,
+        });
+      }
+    }),
 });
 
 async function CreateCheckout(APidata: any) {
@@ -903,6 +964,44 @@ async function getPaymentStatus(APidata: any) {
       host: 'eu-test.oppwa.com',
       path: path,
       method: 'GET',
+      headers: {
+        Authorization: process.env.TOTAL_PROCESSING_BEARER,
+      },
+    };
+    return new Promise((resolve, reject) => {
+      const postRequest = https.request(options, function (res) {
+        const buf: any = [];
+        res.on('data', (chunk) => {
+          buf.push(Buffer.from(chunk));
+        });
+        res.on('end', () => {
+          const jsonString = Buffer.concat(buf).toString('utf8');
+          try {
+            resolve(JSON.parse(jsonString));
+          } catch (error) {
+            console.log(error, 'error error error error');
+            reject(error);
+          }
+        });
+      });
+      postRequest.on('error', reject);
+      postRequest.end();
+    });
+  } catch (error: any) {
+    console.log({ error }, 'function error');
+    throw new Error(error.message);
+  }
+}
+async function deleteCard(APidata: any) {
+  try {
+    const path = `/v1/registrations/${APidata?.id}?entityId=${process.env.TOTAN_ENTITY_ID}`;
+    // path += '?entityId=${process.env.TOTAN_ENTITY_ID}';
+
+    const options = {
+      port: 443,
+      host: 'eu-test.oppwa.com',
+      path: path,
+      method: 'DELETE',
       headers: {
         Authorization: process.env.TOTAL_PROCESSING_BEARER,
       },
