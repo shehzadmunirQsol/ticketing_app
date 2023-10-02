@@ -153,14 +153,14 @@ export function getAvailableTickets({
 }
 
 export function URIGenerator(title: string, id: number) {
-  const url = `${title.replaceAll(' ', '-')}-${id}`;
+  const url = `${title?.replaceAll(' ', '-')}-${id}`;
   return encodeURI(url);
 }
 
 export function URIDecoder(url: any) {
   const decodedURI = decodeURI(url);
-  const id = decodedURI.split('-').at(-1) ?? '';
-  const title = decodedURI.substring(0, decodedURI.length - (id?.length + 2));
+  const id = decodedURI?.split('-').at(-1) ?? '';
+  const title = decodedURI?.substring(0, decodedURI?.length - (id?.length + 2));
   return { id, title };
 }
 
