@@ -7,7 +7,6 @@ const CompititionDetail = ({ data }: any) => {
     replace: (node: any) => node,
   });
 
-  console.log(dataCode, ':: dataCode');
   return (
     <section id="CompititionDetail" className="space-x-4">
       <div>
