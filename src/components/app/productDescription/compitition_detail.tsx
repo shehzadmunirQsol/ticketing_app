@@ -1,7 +1,12 @@
 import React from 'react';
+import parse from 'html-react-parser';
 
 const CompititionDetail = ({ data }: any) => {
   const dataCode: any = data?.EventDescription[0].comp_details;
+  const reactElementsForCompDetail = parse(dataCode || '', {
+    replace: (node: any) => node,
+  });
+
   return (
     <section id="CompititionDetail" className="space-x-4">
       <div>
@@ -11,9 +16,9 @@ const CompititionDetail = ({ data }: any) => {
           </p>
           <div className="border-b-4 w-16 border-primary mt-4 mb-14"></div>
 
-          {false ? (
-            <div className="my-10">
-              <p className="mb-20">{dataCode}</p>
+          {dataCode ? (
+            <div className="mt-10 mb-10 relative pb-20 ">
+              {reactElementsForCompDetail}
             </div>
           ) : (
             <>
