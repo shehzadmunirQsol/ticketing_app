@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import { trpc } from '~/utils/trpc';
 import { useToast } from '~/components/ui/use-toast';
 import { addToCart } from '~/store/reducers/cart';
+import { URIDecoder } from '~/utils/helper';
 
 interface CounterProps {
   range: number[];
@@ -35,14 +36,14 @@ const Counter: React.FC<CounterProps> = ({
   const addToBasket = trpc.cart.addToCart.useMutation();
 
   async function addToBasketHandler() {
-    console.log({ event });
-    const cartItem = cart?.cartItems?.find(
-      (item) => item.event_id === +(query?.id ?? 0),
-    );
+    const { id } = URIDecoder(query?.id ?? '');
+    const eventId = Number(id);
+
+    const cartItem = cart?.cartItems?.find((item) => item.event_id === eventId);
     const payload = {
       subscription_type: cartItem?.subscription_type ?? null,
       cart_id: cart?.id ?? 0,
-      event_id: +(query?.id ?? 0),
+      event_id: eventId,
       is_subscribe: cartItem?.is_subscribe ?? false,
       quantity: range[0] ?? 0,
     };
