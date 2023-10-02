@@ -4,7 +4,7 @@ import CarImage from '~/public/assets/card_image.png';
 import BottleImage from '~/public/assets/bottle.png';
 import { Progress } from '../ui/progress';
 import { Button } from '../ui/button';
-import { customTruncate, renderNFTImage } from '~/utils/helper';
+import { URIGenerator, customTruncate, renderNFTImage } from '~/utils/helper';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
 import Link from 'next/link';
@@ -44,7 +44,12 @@ function ProductCard(props: cardInterface) {
 
   return (
     props?.data && (
-      <Link href={`/product-detail/${props?.data?.id}`}>
+      <Link
+        href={`/product-detail/${URIGenerator(
+          props?.data?.EventDescription[0]?.name,
+          props?.data?.id,
+        )}`}
+      >
         <div
           dir={props?.dir}
           className={`rounded-sm shadow-lg bg-card ${props?.class}`}
