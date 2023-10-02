@@ -587,7 +587,11 @@ export const orderRouter = router({
             include: {
               Event: {
                 include: {
-                  EventDescription: true,
+                  EventDescription: {
+                    where: {
+                      lang_id: input?.lang_id,
+                    },
+                  },
                 },
               },
             },

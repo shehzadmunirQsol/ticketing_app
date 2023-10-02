@@ -1,4 +1,4 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Button } from '~/components/ui/button';
 import {
   Dialog,
@@ -16,6 +16,7 @@ import Image from 'next/image';
 import { displayDate } from '~/utils/helper';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 import LogoImage from '~/public/assets/logo.png';
+import { RootState } from '~/store/store';
 
 interface OrderViewDialogInterface {
   selectedItem: any;
@@ -31,13 +32,15 @@ interface OrderViewDialogInterface {
 export function OrderViewDialog(props: OrderViewDialogInterface) {
   const { toast } = useToast();
   const dispatch = useDispatch();
+  const { lang } = useSelector((state: RootState) => state.layout);
+
   const {
     data: OrderApiData,
     isFetched,
     isLoading,
     isFetching,
   } = trpc.order.getByID.useQuery(
-    { order_id: props?.selectedItem?.id },
+    { order_id: props?.selectedItem?.id, lang_id: lang.lang_id },
     {
       refetchOnWindowFocus: false,
 
