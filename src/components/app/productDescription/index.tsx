@@ -12,13 +12,14 @@ import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
 import { LoadingDialog } from '~/components/common/modal/loadingModal';
 import Glow from '~/components/common/glow';
+import { URIDecoder } from '~/utils/helper';
 
 const ProductDetail = () => {
   const router = useRouter();
   const { lang } = useSelector((state: RootState) => state.layout);
-  const id = Number(router.query.id);
+  const { id } = URIDecoder(router?.query?.id ?? '');
   const { data, isLoading } = trpc.event.getEventsById.useQuery(
-    { id: id, lang_id: lang.lang_id },
+    { id: Number(id), lang_id: lang.lang_id },
     {
       refetchOnWindowFocus: false,
     },
@@ -49,10 +50,7 @@ const ProductDetail = () => {
           {Faqs ? <AccordianFaqs data={data?.data} /> : <></>}
         </div>
         <Glow className="absolute bottom-0 -right-16   p-2   w-1/5 h-[80px]   " />
-
-        {/* <Glow className=" absolute   bottom-0 -right-16  w-1/5 h-[150px] overflow-x-hidden" /> */}
       </div>
-      {/* <div className="mb-10"></div> */}
       <LoadingDialog open={isLoading} text={'Loading data...'} />
     </div>
   );
