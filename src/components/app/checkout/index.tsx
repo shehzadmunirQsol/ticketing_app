@@ -57,7 +57,6 @@ function Checkout() {
   const [title, setTitle] = useState('Enter Payment Detail');
   const [type, setType] = useState('');
   const [isCardModal, setIsCardModal] = useState(false);
-  console.log(isDeleteModal, 'isDeleteModal', index, 'index');
   // 1. Define your form.
   const form = useForm<CreateCheckoutSchema>({
     resolver: zodResolver(createCheckoutSchema),
