@@ -26,7 +26,7 @@ export const createCategorySchema = z.object({
       })
       .max(24, {
         message: 'Name must not exceed 24 characters',
-      }),
+      }).trim(),
     desc: z
       .string()
       .min(6, {
@@ -34,7 +34,7 @@ export const createCategorySchema = z.object({
       })
       .max(5000, {
         message: 'Description must not exceed 5000 characters',
-      })
+      }).trim()
       .optional(),
     lang_id: z.number(),
   }),
@@ -46,7 +46,7 @@ export const createCategorySchema = z.object({
       })
       .max(24, {
         message: 'Name must not exceed 24 characters',
-      }),
+      }).trim(),
     desc: z
       .string()
       .min(6, {
@@ -54,7 +54,7 @@ export const createCategorySchema = z.object({
       })
       .max(5000, {
         message: 'Description must not exceed 5000 characters',
-      }),
+      }).trim(),
     lang_id: z.number(),
   }),
 });
@@ -71,7 +71,7 @@ export const updateCategorySchema = z.object({
       })
       .max(24, {
         message: 'Name must not exceed 24 characters',
-      }),
+      }).trim(),
     desc: z
       .string()
       .min(6, {
@@ -79,7 +79,7 @@ export const updateCategorySchema = z.object({
       })
       .max(5000, {
         message: 'Description must not exceed 5000 characters',
-      })
+      }).trim()
       .optional(),
     lang_id: z.number(),
   }),
@@ -91,7 +91,7 @@ export const updateCategorySchema = z.object({
       })
       .max(24, {
         message: 'Name must not exceed 24 characters',
-      }),
+      }).trim(),
     desc: z
       .string()
       .min(6, {
@@ -99,7 +99,7 @@ export const updateCategorySchema = z.object({
       })
       .max(5000, {
         message: 'Description must not exceed 5000 characters',
-      }),
+      }).trim(),
     lang_id: z.number(),
   }),
 });

@@ -29,7 +29,7 @@ export const getCouponSchema = z.object({
 export const createCouponSchema = z.object({
   user_id: z.number(),
   coupon_id: z.number().optional(),
-  name: z.string({ required_error: ' Please enter a name' }),
+  name: z.string({ required_error: ' Please enter a name' }).trim(),
   coupon_code: z
     .string({ required_error: ' Please enter a coupon code' })
     .min(6, {
@@ -37,7 +37,7 @@ export const createCouponSchema = z.object({
     })
     .max(6, {
       message: 'Coupon Code must be 6 characters',
-    }),
+    }).trim().refine(s => !s.includes(' '), `Please don't use spaces`),
   is_percentage: z.string({ required_error: ' Please select a discount type' }),
   is_limited: z.string(),
   coupon_limit: z.number().optional(),
@@ -54,7 +54,7 @@ export const createCouponSchema = z.object({
 export const updateSchema = z.object({
   user_id: z.number(),
   coupon_id: z.number().optional(),
-  name: z.string(),
+  name: z.string().trim(),
   coupon_code: z
     .string()
     .max(6, {
@@ -62,7 +62,7 @@ export const updateSchema = z.object({
     })
     .max(6, {
       message: 'Coupon Code must be at least 6 characters',
-    }),
+    }).trim().refine(s => !s.includes(' '), `Please don't use spaces`),
   is_percentage: z.string(),
   is_limited: z.string(),
   coupon_limit: z.number().optional(),

@@ -31,44 +31,44 @@ const BannerFormSchema = z.object({
   en: z.object({
     model: z.string({
       required_error: "Please enter a model name"
-    }),
+    }).trim(),
     title: z.string(
       {
         required_error: "Please enter a title"
       }
-    ),
+    ).trim(),
     price: z.string({
       required_error: "Please enter a price"
-    }),
+    }).trim(),
     description: z.string({
       required_error: "Please enter a description"
-    }),
+    }).trim(),
     date: z.string(
       {
         required_error: "Please enter a date"
       }
-    ),
+    ).trim(),
   }),
   ar: z.object({
     model: z.string({
       required_error: "Please enter a model name"
-    }),
+    }).trim(),
     title: z.string(
       {
         required_error: "Please enter a title"
       }
-    ),
+    ).trim(),
     price: z.string({
       required_error: "Please enter a price"
-    }),
+    }).trim(),
     description: z.string({
       required_error: "Please enter a description"
-    }),
+    }).trim(),
     date: z.string(
       {
         required_error: "Please enter a date"
       }
-    ),
+    ).trim(),
   }),
 });
 const enFormSchema = z.object({
@@ -76,19 +76,19 @@ const enFormSchema = z.object({
   link: z.string(),
 
   en: z.object({
-    model: z.string(),
-    title: z.string(),
-    price: z.string(),
-    description: z.string(),
-    date: z.string(),
+    model: z.string().trim(),
+    title: z.string().trim(),
+    price: z.string().trim(),
+    description: z.string().trim(),
+    date: z.string().trim(),
   }),
   ar: z
     .object({
-      model: z.string(),
-      title: z.string(),
-      price: z.string(),
-      description: z.string(),
-      date: z.string(),
+      model: z.string().trim(),
+      title: z.string().trim(),
+      price: z.string().trim(),
+      description: z.string().trim(),
+      date: z.string().trim(),
     })
     .optional(),
 });
@@ -97,19 +97,19 @@ const arFormSchema = z.object({
   link: z.string(),
   en: z
     .object({
-      model: z.string(),
-      title: z.string(),
-      price: z.string(),
-      description: z.string(),
-      date: z.string(),
+      model: z.string().trim(),
+      title: z.string().trim(),
+      price: z.string().trim(),
+      description: z.string().trim(),
+      date: z.string().trim(),
     })
     .optional(),
   ar: z.object({
-    model: z.string(),
-    title: z.string(),
-    price: z.string(),
-    description: z.string(),
-    date: z.string(),
+    model: z.string().trim(),
+    title: z.string().trim(),
+    price: z.string().trim(),
+    description: z.string().trim(),
+    date: z.string().trim(),
   }),
 });
 

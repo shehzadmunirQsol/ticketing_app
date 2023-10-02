@@ -26,69 +26,69 @@ import { LoadingDialog } from '../modal/loadingModal';
 const SpotLightFormSchema = z.object({
   thumb: z.any(),
   link: z.string({
-    required_error:"Please add link"
-  }),
+    required_error: "Please add link"
+  }).min(1, {message:"Please add link"}),
 
   en: z.object({
     name: z.string(
       {
-        required_error:"Please add name"
+        required_error: "Please add name"
       }
-    ),
+    ).min(1, {message:"Please add name"}).trim(),
     description: z.string(
       {
-        required_error:"Please add description"
+        required_error: "Please add description"
       }
-    ),
+    ).min(1, {message:"Please add description"}).trim(),
   }),
   ar: z.object({
     name: z.string({
-      required_error:"Please add name"
-    }),
+      required_error: "Please add name"
+    }).min(1, {message:"Please add name"}).trim(),
     description: z.string({
-      required_error:"Please add description"
-    }),
+      required_error: "Please add description"
+    }).min(1, {message:"Please add description"}).trim(),
   }),
 });
 const enFormSchema = z.object({
   thumb: z.any(),
   link: z.string({
-    required_error:"Please add link"
-  }),
+    required_error: "Please add link"
+  }).min(1,{message:"Please add link"}),
 
   en: z.object({
     name: z.string(
       {
-        required_error:"Please add name"
+        required_error: "Please add name"
       }
-    ),
+    ).min(1,{message:"Please add name"}).trim(),
     description: z.string(
       {
-        required_error:"Please add description"
+        required_error: "Please add description"
       }
-    ),
+    ).min(1,{message:"Please add description"}).trim(),
   }),
   ar: z
     .object({
       name: z.string({
-        required_error:"Please add name"
-      }),
-      description: z.string().optional(),
+        required_error: "Please add name"
+      }).min(1,{message:"Please add name"}).trim(),
+      description: z.string().min(1,{message:"Please add description"}).trim().optional(),
     })
     .optional(),
 });
 const arFormSchema = z.object({
   thumb: z.any(),
-  link: z.string(),
+  link: z.string().min(1,{message:"Please add link"}),
   en: z
     .object({
-      name: z.string(),
-      description: z.string().optional(),
+      name: z.string().min(1,{message:"Please add name"}).trim(),
+      description: z.string().min(1,{message:"Please add description"}).trim().optional(),
     })
     .optional(),
   ar: z.object({
-    name: z.string(),
-    description: z.string(),
+    name: z.string().min(1,{message:"Please add name"}).trim(),
+    description: z.string().min(1,{message:"Please add description"}).trim(),
   }),
 });
 export function SpotLightForm() {
@@ -140,8 +140,8 @@ export function SpotLightForm() {
       ? BannerApiData?.data[0]?.lang_id == 1
         ? enFormSchema
         : BannerApiData?.data[0]?.lang_id == 2
-        ? arFormSchema
-        : SpotLightFormSchema
+          ? arFormSchema
+          : SpotLightFormSchema
       : SpotLightFormSchema;
 
   const form = useForm<z.infer<typeof formValidateData>>({
@@ -150,8 +150,8 @@ export function SpotLightForm() {
         ? BannerApiData?.data[0]?.lang_id == 1
           ? enFormSchema
           : BannerApiData?.data[0]?.lang_id == 2
-          ? arFormSchema
-          : SpotLightFormSchema
+            ? arFormSchema
+            : SpotLightFormSchema
         : SpotLightFormSchema,
     ),
   });
@@ -363,14 +363,14 @@ export function SpotLightForm() {
           <Tabs
             defaultValue={
               index &&
-              BannerApiData?.data !== undefined &&
-              BannerApiData?.data[0]?.lang_id == 1
+                BannerApiData?.data !== undefined &&
+                BannerApiData?.data[0]?.lang_id == 1
                 ? 'en'
                 : index &&
                   BannerApiData?.data !== undefined &&
                   BannerApiData?.data[0]?.lang_id == 2
-                ? 'ar'
-                : 'en'
+                  ? 'ar'
+                  : 'en'
             }
             className="w-full"
           >

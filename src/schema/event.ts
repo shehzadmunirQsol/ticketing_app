@@ -61,7 +61,7 @@ export const EventFormSchema = z.object({
     required_error: 'Please enter a price',
   }),
 
-  video_src: z.string(),
+  video_src: z.string().trim(),
   cash_alt: z
     .number({
       required_error: 'Please enter a price',
@@ -93,27 +93,27 @@ export const EventFormSchema = z.object({
   en: z.object({
     name: z.string({
       required_error: 'Please enter a event name',
-    }),
+    }).trim(),
     desc: z.string({
       required_error: 'Please enter a description',
-    }),
+    }).trim(),
     comp_details: z.string({
       required_error: 'Please enter the competition details',
-    }),
+    }).trim(),
   }),
   ar: z.object({
     name: z.string({
       required_error: 'Please enter a event name',
-    }),
+    }).trim(),
     desc: z
       .string({
         required_error: 'Please enter a description',
-      })
+      }).trim()
       .optional(),
     comp_details: z
       .string({
         required_error: 'Please enter the competition details',
-      })
+      }).trim()
       .optional(),
   }),
 });
@@ -123,13 +123,13 @@ export const enFormSchema = z.object({
   link: z.string(),
 
   en: z.object({
-    name: z.string(),
-    description: z.string().optional(),
+    name: z.string().trim(),
+    description: z.string().trim().optional(),
   }),
   ar: z
     .object({
-      name: z.string(),
-      description: z.string().optional(),
+      name: z.string().trim(),
+      description: z.string().trim().optional(),
     })
     .optional(),
 });
@@ -138,13 +138,13 @@ export const arFormSchema = z.object({
   link: z.string(),
   en: z
     .object({
-      name: z.string(),
-      description: z.string().optional(),
+      name: z.string().trim(),
+      description: z.string().trim().optional(),
     })
     .optional(),
   ar: z.object({
-    name: z.string(),
-    description: z.string().optional(),
+    name: z.string().trim(),
+    description: z.string().trim().optional(),
   }),
 });
 
