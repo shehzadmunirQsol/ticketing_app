@@ -19,6 +19,7 @@ interface CounterProps {
   ticketPurchased: number;
   event: any;
 }
+
 const Counter: React.FC<CounterProps> = ({
   range,
   setRange,

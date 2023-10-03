@@ -44,7 +44,7 @@ model Setting {
 
 model SettingDescription {
   id         Int @id @default(autoincrement())
-  setting_id Int @unique
+  setting_id Int 
   group      SettingEnums
   key        String
   value      String

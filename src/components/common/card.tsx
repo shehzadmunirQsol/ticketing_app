@@ -42,7 +42,7 @@ function ProductCard(props: cardInterface) {
     observer.observe(cardRef.current);
   }, [props?.isLast]);
 
-  const spaceElement = props?.isCash ? null : <div className="h-8" />;
+  const spaceElement = props?.isCash ? null : <div className="h-6 xl:h-9" />;
 
   return (
     props?.data && (
@@ -86,7 +86,7 @@ function ProductCard(props: cardInterface) {
 
           <div className="px-6 mt-6 py-4">
             <div className="flex flex-col gap-1">
-              <span className=" text-xs ">
+              <span className=" text-xs text-gray-300">
                 {Math.round(
                   (Number(props?.data?.tickets_sold) /
                     Number(props?.data?.total_tickets)) *
@@ -102,6 +102,7 @@ function ProductCard(props: cardInterface) {
                 }
                 className="w-full"
               />
+              <span className='w-full text-center text-xs text-gray-300'>{(props?.data?.tickets_sold).toLocaleString()} /{(props?.data?.total_tickets).toLocaleString()}</span>
             </div>
             <div className="font-bold text-xl lg:text-2xl xl:text-3xl line-clamp-1">
             {langContent[lang.lang].Index.productcard.WIN_TITLE ?? ""}

@@ -50,13 +50,13 @@ function Footer() {
                     </div>
                   </Button>
                 </div>
-                <div className="w-full opacity-75 text-sm text-colorGray space-y-1 md:space-y-2">
+                <div className="w-full opacity-75 text-sm text-colorGray  ">
                   <p>{langContent[lang.lang].Footer.ADDRESS_TITLE}</p>
                   <p>{langContent[lang.lang].Footer.ADDRESS_SUB_TITLE}</p>
                   <p>{langContent[lang.lang].Footer.ADDRESS_SUB_TITLE_ONE}</p>
                   <p>{langContent[lang.lang].Footer.ADDRESS_SUB_TITLE_TWO}</p>
                   <p>{langContent[lang.lang].Footer.ADDRESS_SUB_TITLE_THREE}</p>
-                  <p>{langContent[lang.lang].Footer.ADDRESS_SUB_TITLE_FOUR}</p>
+                  <p className='text-xs my-2'>{langContent[lang.lang].Footer.ADDRESS_SUB_TITLE_FOUR}</p>
                 </div>
                 <div className=" flex items-center justify-center md:justify-start  w-64  text-sm text-white">
                   <Image
