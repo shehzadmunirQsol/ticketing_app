@@ -33,25 +33,40 @@ const BannerFormSchema = z.object({
       .string({
         required_error: 'Please enter a model name',
       })
+      .min(1, {
+        message: 'Please enter a model name',
+      })
       .trim(),
     title: z
       .string({
         required_error: 'Please enter a title',
+      })
+      .min(1, {
+        message: 'Please enter a title',
       })
       .trim(),
     price: z
       .string({
         required_error: 'Please enter a price',
       })
+      .min(1, {
+        message: 'Please enter a price',
+      })
       .trim(),
     description: z
       .string({
         required_error: 'Please enter a description',
       })
+      .min(1, {
+        message: 'Please enter a description',
+      })
       .trim(),
     date: z
       .string({
         required_error: 'Please enter a date',
+      })
+      .min(1, {
+        message: 'Please enter a date',
       })
       .trim(),
   }),
@@ -60,25 +75,40 @@ const BannerFormSchema = z.object({
       .string({
         required_error: 'Please enter a model name',
       })
+      .min(1, {
+        message: 'Please enter a model name',
+      })
       .trim(),
     title: z
       .string({
         required_error: 'Please enter a title',
+      })
+      .min(1, {
+        message: 'Please enter a title',
       })
       .trim(),
     price: z
       .string({
         required_error: 'Please enter a price',
       })
+      .min(1, {
+        message: 'Please enter a price',
+      })
       .trim(),
     description: z
       .string({
         required_error: 'Please enter a description',
       })
+      .min(1, {
+        message: 'Please enter a description',
+      })
       .trim(),
     date: z
       .string({
         required_error: 'Please enter a date',
+      })
+      .min(1, {
+        message: 'Please enter a date',
       })
       .trim(),
   }),
