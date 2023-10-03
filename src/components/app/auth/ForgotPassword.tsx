@@ -24,12 +24,18 @@ import {
   forgotPasswordCustomerSchemaInput,
 } from '~/schema/customer';
 import { zodResolver } from '@hookform/resolvers/zod';
+import langContent from '~/locales';
+import { useSelector } from 'react-redux';
+import { RootState } from '~/store/store';
+
 interface ForgotPasswordDialogInterface {
   isModal: boolean;
   setIsModal: (e: any) => void;
 }
 
 export function ForgotPasswordDailog(props: ForgotPasswordDialogInterface) {
+  const { lang } = useSelector((state: RootState) => state.layout);
+
   const { toast } = useToast();
 
   // Handle Forgot Password
@@ -72,7 +78,7 @@ export function ForgotPasswordDailog(props: ForgotPasswordDialogInterface) {
       >
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Forgot Password</DialogTitle>
+            <DialogTitle className='text-left'>{langContent[lang.lang].Auth.FORGOTPASSWORD.HEADING} </DialogTitle>
             <DialogDescription>
               <Form {...formForgotPassword}>
                 <form
@@ -83,8 +89,8 @@ export function ForgotPasswordDailog(props: ForgotPasswordDialogInterface) {
                     control={formForgotPassword.control}
                     name="email"
                     render={({ field }) => (
-                      <FormItem className="mb-6">
-                        <FormLabel className="text-xs font-thin text-grayColor !text-left">
+                      <FormItem className="mb-6 text-left">
+                        <FormLabel className="text-xs font-thin text-grayColor ">
                           Email*
                         </FormLabel>
                         <FormControl>
@@ -104,7 +110,7 @@ export function ForgotPasswordDailog(props: ForgotPasswordDialogInterface) {
                     className="w-full text-black font-sans font-[900] text-xl tracking-[-1px]"
                     variant="clip"
                   >
-                    SUBMIT
+                    {langContent[lang.lang].Auth.FORGOTPASSWORD.BUTTON}
                   </Button>
                 </form>
               </Form>

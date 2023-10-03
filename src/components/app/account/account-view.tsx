@@ -9,6 +9,7 @@ import { Separator } from '~/components/ui/separator';
 import Current from '~/public/assets/not-current-entrie.png';
 import { RootState } from '~/store/store';
 import { trpc } from '~/utils/trpc';
+import langContent from '~/locales';
 
 const grid = ['', ''];
 // { control: Function }
@@ -18,41 +19,41 @@ const AccountView = ({ control }: any) => {
   return (
     <div className="py-4 px-6 text-[#eaeaea]">
       <p className="mb-3">
-        Hello{' '}
+        {langContent[lang.lang].MyAccount.AccountView.HELLO}{}
         <span className="font-bold">
           {user && `${user?.first_name ?? ''} ${user?.last_name ?? ''}`}
         </span>
       </p>
       <p>
-        From your account dashboard you can view your recent orders, manage your{' '}
+      {langContent[lang.lang].MyAccount.AccountView.ACCOUNT}
         <span
           className="underline cursor-pointer"
           onClick={() => {
             control(1);
           }}
         >
-          shipping and billing addresses
+          {langContent[lang.lang].MyAccount.AccountView.ADDRESS}
         </span>{' '}
-        , and{' '}
+        , {langContent[lang.lang].MyAccount.AccountView.AND}{' '}
         <span
           className="underline cursor-pointer"
           onClick={() => {
             control(2);
           }}
         >
-          edit your password and account details.
+          {langContent[lang.lang].MyAccount.AccountView.EDIT}
         </span>
       </p>
 
       <Separator className="my-6" />
 
       <p className="text-xl font-bold leading-tight  ">
-        Your Competition Entries
+      {langContent[lang.lang].MyAccount.AccountView.ENTRIES}
       </p>
-      <p className="text-xs my-2">Showing entries for last 30 days</p>
+      <p className="text-xs my-2">{langContent[lang.lang].MyAccount.AccountView.DAYS}</p>
       <p className="text-base my-2">
-        Once you enter a competition your entry will appear here.{' '}
-        <span className="font-bold">Good luck!</span>
+      {langContent[lang.lang].MyAccount.AccountView.COMPETITION}{' '}
+        <span className="font-bold">{langContent[lang.lang].MyAccount.AccountView.LUCK}</span>
       </p>
       <CurrentandPast customer_id={user?.id} />
     </div>
@@ -76,7 +77,6 @@ function CurrentandPast({ customer_id }: currentandpastprops) {
     lang_id: 1,
   });
 
-  const [displayArray, setDisplayArray] = useState<Array<any>>([]);
 
   const router = useRouter();
   useEffect(() => {
@@ -111,7 +111,7 @@ function CurrentandPast({ customer_id }: currentandpastprops) {
                 : 'border-transparent border-b-[#808080] text-[#808080]'
             } `}
           >
-            Current
+            {langContent[lang.lang].MyAccount.AccountView.CURRENT}
           </div>
           <div
             onClick={() => setSelect(1)}
@@ -121,7 +121,7 @@ function CurrentandPast({ customer_id }: currentandpastprops) {
                 : 'border-transparent border-b-[#808080] text-[#808080]'
             } `}
           >
-            Past
+                        {langContent[lang.lang].MyAccount.AccountView.PAST}
           </div>
         </div>
 
@@ -142,15 +142,16 @@ function CurrentandPast({ customer_id }: currentandpastprops) {
             <div className="flex flex-col my-auto h-full items-center justify-center">
               <Image src={Current} alt="/" />
               <p className="text-center text-gray-300 text-md my-2 px-6">
-                No past competition entries to show. Only entries from the last
-                30 days will be shown.
+              {langContent[lang.lang].MyAccount.AccountView.INFO}
+
               </p>
               <Button
                 variant={'rounded'}
                 className="text-center font-black tracking-tighter my-4 w-full h-fit text-xs sm:w-fit md:text-md "
                 onClick={() => router.push('/cars')}
               >
-                EXPLORE CURRENT COMPETITIONS
+                              {langContent[lang.lang].MyAccount.AccountView.INFO_HEADING}
+
               </Button>
             </div>
           </>

@@ -13,7 +13,7 @@ const BannerTitle = ({ image, text }: any) => {
           alt="/"
           fill
           quality={100}
-          className={`object-cover block bg-black/50 ${lang.lang === "ar" ? 'transform -scale-x-100' : ""}  `} 
+          className="object-cover block bg-black/50" 
         />
         <div className="relative h-[35px] top-[50%] flex items-center">
           <p className="relative h-[35px] -top-[50%] text-white drop-shadow-2xl text-center w-full text-4xl  lg:text-5xl  uppercase font-[900]">

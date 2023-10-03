@@ -6,10 +6,16 @@ import { RootState } from '~/store/store';
 import { trpc } from '~/utils/trpc';
 import { addAddressInput } from '~/schema/customer';
 import { formatTrpcError } from '~/utils/helper';
+import langContent from '~/locales';
+
 
 const AddressesView = () => {
   const { toast } = useToast();
   const { user } = useSelector((state: RootState) => state.auth);
+  const { lang } = useSelector((state: RootState) => state.layout);
+
+
+
   const { handleSubmit, register, setValue, getValues } =
     useForm<addAddressInput>();
   console.log({ user }, 'user');
@@ -122,7 +128,7 @@ const AddressesView = () => {
   return (
     <div className="py-4 px-6 text-[#eaeaea]">
       <p className="text-[#808080] text-sm">
-        The following addresses will be used on the checkout page by default.
+      {langContent[lang.lang].MyAccount.AddressView.INFO}
       </p>
 
       <form className="mt-4 flex ">
@@ -133,7 +139,7 @@ const AddressesView = () => {
         >
           <div className="flex justify-between items-center">
             <p className="text-md font-bold tracking-tight lead">
-              Billing Address
+            {langContent[lang.lang].MyAccount.AddressView.INFO_HEADING}
             </p>
             <button
               type={isEdit ? 'submit' : 'button'}
@@ -165,7 +171,8 @@ const AddressesView = () => {
 
             {!isRefetching && !isEdit && data === null && (
               <p className=" h-24">
-                You have not set up this type of address yet.
+                      {langContent[lang.lang].MyAccount.AddressView.SUB_INFO}
+
               </p>
             )}
 
@@ -175,7 +182,7 @@ const AddressesView = () => {
                   <p>
                     {data?.Customer.first_name} {data?.Customer.last_name}
                   </p>
-                  <p>P.O Box {data.postal_code}</p>
+                  <p>      {langContent[lang.lang].MyAccount.AddressView.BOX} {data.postal_code}</p>
                   <p>{data?.street_address_1}</p>
                   <p>{data?.phone_number}</p>
                   <p>

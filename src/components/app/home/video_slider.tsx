@@ -125,10 +125,10 @@ function VideoSlider(props: producctInterface) {
     <div className=" relative  mx-auto  w-full ">
       <div className="mt-4 md:mt-6 relative flex flex-col md:flex-row h-28 md:h-auto py-6 justify-center w-full md:justify-between mb-6 gap-4 items-center ">
         <div>
-          <p className="text-gray-200 text-center text-3xl sm:text-left sm:text-5xl font-black uppercase  ">
+          <p className="text-gray-200 text-center text-3xl ltr:sm:text-left rtl:sm:text-right  sm:text-5xl font-black uppercase  ">
             {props?.title}
           </p>
-          <p className="text-gray-200 !text-xl sm:!text-3xl text-center sm:text-left lg:!text-5xl font-light uppercase  ">
+          <p className="text-gray-200 !text-xl sm:!text-3xl text-center ltr:sm:text-left rtl:sm:text-right lg:!text-5xl font-light uppercase  ">
             {props?.subTitle}
           </p>
         </div>

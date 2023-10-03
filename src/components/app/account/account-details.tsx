@@ -26,10 +26,14 @@ import { trpc } from '~/utils/trpc';
 import { useToast } from '~/components/ui/use-toast';
 import { userAuth } from '~/store/reducers/auth';
 import { LoadingDialog } from '~/components/common/modal/loadingModal';
+import langContent from '~/locales';
+
 
 const AccountDetails = () => {
   const { toast } = useToast();
   const { user } = useSelector((state: RootState) => state.auth);
+  const { lang } = useSelector((state: RootState) => state.layout);
+
   const dispatch = useDispatch();
 
   // 1. Define your form.
@@ -81,7 +85,7 @@ const AccountDetails = () => {
   return (
     <div className="py-4 px-6 text-[#eaeaea] ">
       <p className=" font-bold text-2xl mb-6 text-white">
-        Personal information
+      {langContent[lang.lang].MyAccount.AccountDetail.HEADING}
       </p>
       <div className="space-y-32">
         <Form {...form}>
@@ -183,7 +187,7 @@ const AccountDetails = () => {
                 className="align-center  rounded-full px-5 text-base   text-black font-sans font-[900]   tracking-[-1px]"
                 variant="clip"
               >
-                SAVE CHANGES
+                {langContent[lang.lang].MyAccount.AccountDetail.BUTTON}
               </Button>
             </div>
           </form>
@@ -209,6 +213,8 @@ export default AccountDetails;
 
 // Password Change
 function PasswordChange({ email }: any) {
+  const { lang } = useSelector((state: RootState) => state.layout);
+
   const { toast } = useToast();
 
   // 1. Define your form.
@@ -250,7 +256,7 @@ function PasswordChange({ email }: any) {
 
   return (
     <div className="py-4 text-[#eaeaea]">
-      <p className=" font-bold text-2xl mb-6 text-white">Password change</p>
+      <p className=" font-bold text-2xl mb-6 text-white">{langContent[lang.lang].MyAccount.AccountDetail.SUB_HEADING}</p>
       <div>
         <Form {...form}>
           <form
@@ -325,7 +331,7 @@ function PasswordChange({ email }: any) {
                 className="align-center  rounded-full px-5 text-base   text-black font-sans font-[900]   tracking-[-1px]"
                 variant="clip"
               >
-                SAVE CHANGES
+                {langContent[lang.lang].MyAccount.AccountDetail.BUTTON}
               </Button>
             </div>
           </form>
@@ -348,6 +354,8 @@ function PasswordChange({ email }: any) {
 function DeleteAccount({ email }: any) {
   const { toast } = useToast();
   const { user } = useSelector((state: RootState) => state.auth);
+  const { lang } = useSelector((state: RootState) => state.layout);
+
 
   // 1. Define your form.
   const form = useForm<deleteMyAccountCustomerSchemaInput>({
@@ -424,13 +432,10 @@ function DeleteAccount({ email }: any) {
   return (
     <div className="py-4 px-6 text-[#eaeaea]">
       <p className=" font-bold text-2xl text-white">
-        Delete account & personal details
+      {langContent[lang.lang].MyAccount.AccountDetail.DELETE_HEADING}
       </p>
       <p className="text-grayColor text-sm">
-        If you want to delete your account and all personal details, we will
-        start a process to delete your account. You won’t be able to use your
-        account. This process takes 14 days and after that time, we won’t be
-        able to recover your data.
+      {langContent[lang.lang].MyAccount.AccountDetail.DELETE_INFO}
       </p>
       <div>
         <Form {...form}>
@@ -448,21 +453,19 @@ function DeleteAccount({ email }: any) {
                 />
               </div>
               <p className="text-sm">
-                I understand that I will lose all data (including entries)
-                related to my account
+              {langContent[lang.lang].MyAccount.AccountDetail.UNDERSTAND}
               </p>
             </div>
 
             <p className="  text-xl text-white mb-5 mt-10 ">
-              Why are you deleting your account? (optional)
+            {langContent[lang.lang].MyAccount.AccountDetail.OPTIONAL}
             </p>
 
-            {accountArgumentsOptions?.map((item, i) => {
+            {langContent[lang.lang].MyAccount.AccountDetail.accountArgumentsOptions?.map((item, i) => {
               return (
                 <div
                   className="flex flex-row gap-2 justify-start w-full  items-center cursor-pointer"
                   key={i}
-                  // onChange={(e:any)=>setReason((previous:any)=>[...previous,item?.text])}
                   onClick={() => handleDivClick(item.text)}
                 >
                   <div>
@@ -506,7 +509,7 @@ function DeleteAccount({ email }: any) {
                 variant="clip"
                 disabled={user?.is_disabled}
               >
-                DELETE MY ACCOUNT
+                      {langContent[lang.lang].MyAccount.AccountDetail.BUTTON_CONTENT}
               </Button>
             </div>
           </form>
