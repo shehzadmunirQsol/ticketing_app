@@ -6,9 +6,14 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '~/components/ui/accordion';
+import langContent from '~/locales';
 import parse from 'html-react-parser';
+import { RootState } from '~/store/store';
+import { useSelector } from 'react-redux';
 
 const AccordianFaqs = ({ data }: any) => {
+  const { lang } = useSelector((state: RootState) => state.layout);
+
   const dataCode: any = data?.CMS?.CMSDescription[0]?.content;
   const reactElementsForFAQs = parse(dataCode || '', {
     replace: (node: any) => node,
@@ -19,7 +24,8 @@ const AccordianFaqs = ({ data }: any) => {
       {dataCode ? (
         <>
           <div className="mt-10 ">
-            <p className="text-5xl font-black">FAQs</p>
+            <p className="text-5xl font-black">          {langContent[lang.lang].ProductDetail.faqs.HEADING}
+</p>
             <div className="border-b-4 w-16 border-primary mt-4"></div>
           </div>
           <div className="mt-10 mb-10 relative pb-20 ">

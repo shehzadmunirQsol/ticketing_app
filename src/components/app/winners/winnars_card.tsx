@@ -1,6 +1,9 @@
 import Image from 'next/image';
 import React, { useEffect, useRef } from 'react';
 import WinnerImage from '~/public/assets/winner.svg';
+import langContent from '~/locales';
+import { useSelector } from 'react-redux';
+import { RootState } from '~/store/store';
 
 interface cardInterface {
   class?: string;
@@ -12,6 +15,8 @@ interface cardInterface {
 }
 
 function WinnarsCard(props: cardInterface) {
+  const { lang } = useSelector((state: RootState) => state.layout);
+
   const cardRef = useRef<HTMLDivElement>(null);
 
   /**
@@ -55,7 +60,7 @@ function WinnarsCard(props: cardInterface) {
       <div className="px-4 mt-6 py-4">
         <div className=" text-lg md:text-2xl lg:text-3xl mb-2">
           <p className="text-gray-200   font-extrabold leading-loose">
-            {props?.data?.Customer?.first_name} Won
+            {props?.data?.Customer?.first_name} {langContent[lang.lang].Winners.WINNER_HEADING}
           </p>
           <p className="text-gray-200  leading-loose lg:-mt-5 md:-mt-5 -mt-2">
             {props?.data?.Event?.EventDescription[0]?.name}
@@ -63,13 +68,13 @@ function WinnarsCard(props: cardInterface) {
         </div>
         <div className=" text-lightColor lg:text-lg md:text-lg text-sm font-normal leading-normal">
           <p>
-            Winning ticket{' '}
+          {langContent[lang.lang].Winners.WINNER_TICKET}{' '}
             <span className="text-primary lg:text-lg md:text-lg text-sm font-black leading-[18px] ml-6 ">
               #{props?.data?.ticket_num}
             </span>
           </p>
           <p>
-            Draw date
+          {langContent[lang.lang].Winners.WINNER_DATE}
             <span className="text-primary lg:text-lg md:text-lg text-sm font-black leading-[18px] ml-16 ">
               {formattedDate}
             </span>
@@ -78,7 +83,7 @@ function WinnarsCard(props: cardInterface) {
         <hr className=" opacity-20 mt-4" />
         <div className=" mt-2">
           <p className="text-sm opacity-75 text-grayColor">
-            {props?.data?.Customer?.first_name} Won a{' '}
+            {props?.data?.Customer?.first_name} {langContent[lang.lang].Winners.WINNER_SUB_HEADING}{' '}
             {props?.data?.Event?.EventDescription[0]?.name}
           </p>
         </div>

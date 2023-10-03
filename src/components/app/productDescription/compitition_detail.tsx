@@ -1,7 +1,12 @@
 import React from 'react';
 import parse from 'html-react-parser';
+import langContent from '~/locales';
+import { RootState } from '~/store/store';
+import { useSelector } from 'react-redux';
 
 const CompititionDetail = ({ data }: any) => {
+  const { lang } = useSelector((state: RootState) => state.layout);
+
   const dataCode: any = data?.EventDescription[0].comp_details;
   const reactElementsForCompDetail = parse(dataCode || '', {
     replace: (node: any) => node,
@@ -12,7 +17,7 @@ const CompititionDetail = ({ data }: any) => {
       <div>
         <div className="w-30 my-10  space-x-4 ">
           <p className="lg:text-5xl md:text-4xl text-2xl   font-black uppercase  indent-4">
-            Description
+          {langContent[lang.lang].ProductDetail.description.HEADING}
           </p>
           <div className="border-b-4 w-16 border-primary mt-4 mb-14"></div>
 

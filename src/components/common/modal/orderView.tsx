@@ -48,7 +48,7 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
         <DialogContent className=" my-auto h-[calc(100%-100px)]  overflow-y-hidden mb-2 ">
           <DialogFooter className=" sm:justify-start items-start w-full   "></DialogFooter>
           <DialogHeader className=""></DialogHeader>
-          <DialogDescription className="relative bg-card h-full rounded-lg  overflow-y-scroll   scroll-hide">
+          <DialogDescription className="relative bg-card h-fit rounded-lg  overflow-y-scroll   scroll-hide">
             {OrderApiData && (
               <div
                 className="bg-card h-full text-gray-400 rounded-lg  px-8 py-10 max-w-xl mx-auto  "
@@ -74,19 +74,19 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
                 </div>
                 <div className="border-b-2 border-gray-300 pb-8 mb-8">
                   <h2 className="text-2xl  font-bold mb-4">Bill To:</h2>
-                  <div className=" mb-2">
+                  <p className=" mb-2">
                     {OrderApiData?.data?.first_name +
                       ' ' +
                       OrderApiData?.data?.last_name}
-                  </div>
-                  <div className=" mb-2">
+                  </p>
+                  <p className=" mb-2">
                     {OrderApiData?.data?.street_address}
-                  </div>
-                  <div className=" mb-2">
+                  </p>
+                  <p className=" mb-2">
                     {OrderApiData?.data?.city}, {OrderApiData?.data?.country}{' '}
                     {OrderApiData?.data?.postal_code}
-                  </div>
-                  <div className="">{OrderApiData?.data?.email}</div>
+                  </p>
+                  <p className="">{OrderApiData?.data?.email}</p>
                 </div>
                 <ScrollArea className="w-full  ">
                   <ScrollBar orientation="horizontal"></ScrollBar>

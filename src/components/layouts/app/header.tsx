@@ -4,13 +4,6 @@ import LogoImage from '~/public/assets/logo.png';
 import Image from 'next/image';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from '@/ui/collapsible';
-
-import { User, ShoppingCart, Languages } from 'lucide-react';
-import {
   Select,
   SelectContent,
   SelectGroup,
@@ -22,13 +15,7 @@ import { useRouter } from 'next/router';
 import { toggleLang } from '~/store/reducers/layout';
 import { RootState } from '~/store/store';
 import Link from 'next/link';
-
-interface LinkItemProps {
-  name: string;
-  link: string;
-  icon: string;
-  disable?: boolean;
-}
+import langContent from '~/locales';
 
 function Header() {
   const router = useRouter();
@@ -61,13 +48,12 @@ function Header() {
 
   return (
     <div
-      className={`fixed max-w-[1600px] w-full z-50 top-0 h-24  flex  items-center   ${
-        router.route == '/'
-          ? color
-            ? '!bg-background-footer  duration-500 shadow-xl'
-            : '!bg-transparent  duration-500'
-          : '!bg-background-footer'
-      }   transform ease-in-out justify-between py-8 px-4 md:px-14 `}
+      className={`fixed max-w-[1600px] w-full z-50 top-0 h-24  flex  items-center   ${router.route == '/'
+        ? color
+          ? '!bg-background-footer  duration-500 shadow-xl'
+          : '!bg-transparent  duration-500'
+        : '!bg-background-footer'
+        }   transform ease-in-out justify-between py-8 px-4 md:px-14 `}
     >
       <Link href="/" className="z-50">
         <Image
@@ -133,11 +119,12 @@ function Header() {
           </SelectContent>
         </Select>
 
-        <div
-          
-          onClick={() => setNav((prev) => !prev)}
-        >
-          <Button variant="outline" size="icon_square" className='border-primary relative z-50'>
+        <div onClick={() => setNav((prev) => !prev)}>
+          <Button
+            variant="outline"
+            size="icon_square"
+            className="border-primary relative z-50"
+          >
             {nav ? (
               <i className="fa-solid fa-xmark text-lg text-center text-gray-200"></i>
             ) : (
@@ -180,7 +167,12 @@ export const SideBarMenuDemo: React.FC<SideBarMenuDemoProps> = ({
   useEffect(() => {
     if (window?.innerWidth !== undefined) {
       const changeColor = () =>
-        window?.innerWidth >= 1500 ? setHide(true) : setHide(false);
+        window?.innerWidth >= 1000 ?
+          () => {
+            setHide(true)
+            closeFn(false)
+          }
+          : setHide(false);
 
       window.addEventListener('scroll', changeColor);
 
@@ -190,133 +182,91 @@ export const SideBarMenuDemo: React.FC<SideBarMenuDemoProps> = ({
     }
   }, []);
 
+  useEffect(() => {
+    window.addEventListener('resize', () => closeFn(false));
+    return () => {
+      window.removeEventListener('resize', () => closeFn(false));
+    };
+  }, []);
+
+  const menuList = [
+    {
+      text: langContent[lang.lang].Header.title_one,
+      link: "/cars",
+    },
+    {
+      text: langContent[lang.lang].Header.title_two,
+      link: "/cash",
+    },
+    {
+      text: langContent[lang.lang].Header.title_three,
+      link: "/winners",
+    },
+    {
+      text: langContent[lang.lang].Header.title_four,
+      link: "/about-us",
+    },
+    {
+      text: langContent[lang.lang].Header.title_five,
+      link: "/contact-us",
+    },
+    {
+      text: langContent[lang.lang].Header.title_six,
+      link: "/cart",
+    },
+    {
+      text: isLogin ? langContent[lang.lang].Header.sub_title_seven : langContent[lang.lang].Header.title_seven,
+      link: isLogin ? '/account' : '/login',
+    },
+  ]
+
   return (
     <>
       <ul
-        className={`${
-          hide ? ' hidden ' : ' block '
-        }  transition-all ease-linear font-sans scroll-hide ${
-          nav
-            ? 'absolute top-0 left-0 duration-500 w-full h-screen !bg-background-footer flex flex-col justify-start items-center   pt-24'
-            : 'absolute top-24 left-[-100%]  duration-700  '
-        }`}
+        className={`${hide ? ' hidden ' : ' block '
+          }  transition-all ease-linear font-sans scroll-hide ${nav
+            ? 'absolute top-0 left-0 duration-100 w-full h-screen bg-background-footer flex flex-col justify-start items-center   pt-24'
+            : 'absolute top-24 left-[-100%]  duration-100  '
+          }`}
       >
-        <li
-          className="py-2 text-xl w-full text-center border-t-[1px] border-muted-foreground hover:bg-muted-foreground hover:text-primary-foreground transition-colors duration-500 ease-in-out cursor-pointer"
-          onClick={() => {
-            router.push('/cars');
-            closeFn(false);
-          }}
-        >
-          Cars
-        </li>
-        <li
-          className="py-2 text-xl w-full text-center border-t-[1px] border-muted-foreground hover:bg-muted-foreground hover:text-primary-foreground transition-colors duration-500 ease-in-out cursor-pointer"
-          onClick={() => {
-            router.push('/cash');
-            closeFn(false);
-          }}
-        >
-          Cash
-        </li>
-        <li
-          className="py-2 text-xl w-full text-center border-t-[1px] border-muted-foreground hover:bg-muted-foreground hover:text-primary-foreground transition-colors duration-500 ease-in-out cursor-pointer"
-          onClick={() => {
-            router.push('/winners');
-            closeFn(false);
-          }}
-        >
-          Winners
-        </li>
-        <li
-          className="py-2 text-xl w-full text-center border-t-[1px] border-muted-foreground hover:bg-muted-foreground hover:text-primary-foreground transition-colors duration-500 ease-in-out cursor-pointer"
-          onClick={() => {
-            router.push('/about-us');
-            closeFn(false);
-          }}
-        >
-          About Us
-        </li>
-        <li
-          className="py-2 text-xl w-full text-center border-t-[1px] border-muted-foreground hover:bg-muted-foreground hover:text-primary-foreground transition-colors duration-500 ease-in-out cursor-pointer"
-          onClick={() => {
-            router.push('/contact-us');
-            closeFn(false);
-          }}
-        >
-          Contact Us
-        </li>
-        <li
-          className="group py-2 text-xl w-full text-center border-t-[1px] border-muted-foreground hover:bg-muted-foreground hover:text-primary-foreground transition-colors duration-500 ease-in-out cursor-pointer"
-          onClick={() => {
-            router.push('/cart');
-            closeFn(false);
-          }}
-        >
-          <div className="flex items-center justify-center">
-            <span className="w-fit">Cart</span>
-            {count ? (
-              <span className="block mx-2 text-primary group-hover:text-primary-foreground transition-colors duration-500 w-fit">
-                ( {count > 999 ? '999+' : count} )
-              </span>
-            ) : null}
-          </div>
-        </li>
+        {menuList.map((item, i) => (
+          <li key={i} className={`group py-3 text-lg w-full text-center ${i == 6 ? "border-y-[1px]" : "border-t-[1px]"} border-gray-700 hover:bg-gray-200 hover:text-primary-foreground hover:border-transparent transition-colors duration-300 ease-in-out cursor-pointer`}
+            onClick={() => {
+              router.push(item.link);
+              closeFn(false);
+            }}
+          >
 
-        <li
-          className="py-2 text-xl w-full text-center border-y-[1px] border-muted-foreground hover:bg-muted-foreground hover:text-primary-foreground transition-colors duration-500 ease-in-out cursor-pointer"
-          onClick={() => {
-            router.push(isLogin ? '/account' : '/login');
-            closeFn(false);
-          }}
-        >
-          <>{isLogin ? 'My Account' : 'Login'}</>
-        </li>
+            {i == 5 ? (
+              count ? (
+                <div className='flex justify-center'>
+
+                  <span>
+                    {item.text}
+                  </span>
+                  <span className="block mx-2 text-primary group-hover:text-primary-foreground transition-colors duration-500 w-fit">
+                    ( {count > 99 ? '99+' : count} )
+                  </span>
+                </div>
+              ) : null
+            ) : item.text}
+          </li>
+        ))}
+
       </ul>
     </>
   );
 };
 
 export function ItemMenuDemo() {
-  const linkItems: Array<LinkItemProps> = [
-    {
-      name: 'Cars',
-      link: '/cars',
-      // link: `/`,
-      icon: 'fas fa-house',
-    },
-    {
-      name: 'Cash',
-      link: `/cash`,
-      // link: `/`,
-      icon: 'fa-solid fa-globe',
-    },
-    {
-      name: 'Winners',
-      link: `/winners`,
-      // link: `/`,
-      icon: 'fa-sharp fa-regular fa-images',
-    },
-    {
-      name: 'About Us',
-      link: `/about-us`,
-      // link: `/`,
-      icon: 'fa-solid fa-image',
-    },
-    {
-      name: 'FAQ',
-      link: `/faq`,
-      // link: `/`,
-      icon: 'fa-solid fa-users',
-    },
-  ];
+  const { lang } = useSelector((state: RootState) => state.layout);
   return (
     <div
       className="items-center justify-between hidden w-full md:flex md:w-auto "
       id="navbar-sticky"
     >
       <ul className="flex flex-col p-4 md:p-0  text-small font-normal  border  rounded-lg bg-transparent md:flex-row md:space-x-4 md:mt-0 md:border-0 md:bg-white dark:bg-transparent ">
-        {linkItems?.map((item) => {
+        {langContent[lang.lang].Header.array.map((item) => {
           return (
             <li
               key={item.name}
@@ -336,3 +286,25 @@ export function ItemMenuDemo() {
     </div>
   );
 }
+
+
+{/* <li
+          className="py-3 text-lg w-full text-center border-t-[1px] border-gray-700 hover:bg-primary hover:text-primary-foreground hover:border-transparent transition-colors duration-300 ease-in-out cursor-pointer"<li
+          className="group py-3 text-lg w-full text-center border-t-[1px] border-gray-700 hover:bg-muted-foreground hover:text-primary-foreground hover:border-transparent transition-colors duration-300 ease-in-out cursor-pointer"
+          onClick={() => {
+            router.push('/cart');
+            closeFn(false);
+          }}
+        >
+          <div className="flex items-center justify-center">
+            <span className="w-fit">{langContent[lang.lang].Header.title_six}</span>
+            
+          </div>
+        </li>
+          onClick={() => {
+            router.push('/cars');
+            closeFn(false);
+          }}
+        >
+          {langContent[lang.lang].Header.title_one}
+        </li> */}
