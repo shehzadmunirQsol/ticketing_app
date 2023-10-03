@@ -897,3 +897,15 @@ input[type='radio']:not(:checked) + section.box .icon-class {
   transition: transform 0.3s ease-in-out;
   color: white;
 }
+.wpwl-group-registration {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+}
+.wpwl-registration {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}

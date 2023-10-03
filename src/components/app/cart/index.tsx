@@ -159,12 +159,12 @@ export default function CartPage() {
             <Glow className="absolute right-0 -z-10 bottom-0 w-1/6 h-40 overflow-hidden" />
           </div>
 
-          <div className="relative py-4 px-8 z-10 bg-card-foreground">
+          <div className="relative py-4 sm:px-10 z-10 bg-card-foreground">
             <ProductSection
               class="mx-auto w-3/5 md:w-full"
               slidesToShow={3}
               center={false}
-              breakpoint={[3, 2, 1]}
+              breakpoint={[3, 2, 1.5]}
               breakpointScreens={[1350, 1050, 800]}
               title={langContent[lang.lang].Cart.LAST_OFFER}
               type="no-glow"

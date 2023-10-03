@@ -7,9 +7,9 @@ import { useRouter } from 'next/router';
 import { trpc } from '~/utils/trpc';
 import { useToast } from '~/components/ui/use-toast';
 import { addToCart } from '~/store/reducers/cart';
+import { URIDecoder } from '~/utils/helper';
 import langContent from '~/locales';
 
-import { URIDecoder } from '~/utils/helper';
 
 interface CounterProps {
   range: number[];
@@ -19,6 +19,7 @@ interface CounterProps {
   ticketPurchased: number;
   event: any;
 }
+
 const Counter: React.FC<CounterProps> = ({
   range,
   setRange,

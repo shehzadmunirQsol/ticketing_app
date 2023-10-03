@@ -226,10 +226,10 @@ function Checkout() {
                 jqeury('form.wpwl-form-card')
                   .find('.wpwl-button')
                   .before(createRegistrationHtml);
-                const createDeleteOption = `<div class="customLabel  relative w-full  ml-auto flex justify-end items-center"><i  class="fa-regular border border-border deletefunction p-2 rounded-full fa-trash-can  text-cardGray cursor-pointer hover:text-white hover:border-white "></i></div>`;
+                const createDeleteOption = `<div class="customLabel flex-1 relative w-full  ml-auto flex justify-end items-center"><i  class="fa-regular border border-border deletefunction p-2 rounded-full fa-trash-can  text-cardGray cursor-pointer hover:text-white hover:border-white "></i></div>`;
                 jqeury('.wpwl-group-registration')
                   .find('.wpwl-registration')
-                  .before(createDeleteOption);
+                  .after(createDeleteOption);
 
                 jqeury('.deletefunction').click(function (event) {
                   console.log('i am running');

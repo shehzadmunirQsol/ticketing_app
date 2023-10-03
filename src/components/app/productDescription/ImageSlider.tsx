@@ -61,7 +61,7 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
           <div className="flex flex-col mb-10 lg:items-start items-start">
             <div className="flex-grow w-full">
               <div className="flex flex-col gap-2">
-                <span className=" text-xs text-white ">
+                <span className=" text-xs text-gray-300 ">
                   {Math.round(
                     (Number(data?.tickets_sold) / Number(data?.total_tickets)) *
                       100,
@@ -69,6 +69,8 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
                   % {langContent[lang.lang].ProductDetail.description.SOLD}
                 </span>
                 <Progress value={percentageSold} className="w-full" />
+                <span className='w-full text-center text-xs text-gray-300'>{(data?.tickets_sold)?.toLocaleString()} /{(data?.total_tickets)?.toLocaleString()}</span>
+
               </div>
             </div>
             <div>

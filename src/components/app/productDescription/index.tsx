@@ -40,7 +40,7 @@ const ProductDetail = () => {
           <EntiresDetail data={data?.data} />
           <VideoSection data={data?.data} />
         </div>
-        <div></div>
+        
       </div>
       <LiveDraw data={data?.data} />
 
