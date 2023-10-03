@@ -174,10 +174,10 @@ export const SideBarMenuDemo: React.FC<SideBarMenuDemoProps> = ({
           }
           : setHide(false);
 
-      window.addEventListener('scroll', changeColor);
+      window.addEventListener('resize', changeColor);
 
       return () => {
-        window.removeEventListener('scroll', changeColor);
+        window.removeEventListener('resize', changeColor);
       };
     }
   }, []);
@@ -223,35 +223,33 @@ export const SideBarMenuDemo: React.FC<SideBarMenuDemoProps> = ({
   return (
     <>
       <ul
-        className={`${hide ? ' hidden ' : ' block '
-          }  transition-all ease-linear font-sans scroll-hide ${nav
+        className={`block mdx:hidden  transition-all ease-linear font-sans scroll-hide ${nav
             ? 'absolute top-0 left-0 duration-100 w-full h-screen bg-background-footer flex flex-col justify-start items-center   pt-24'
             : 'absolute top-24 left-[-100%]  duration-100  '
           }`}
       >
-        {menuList.map((item, i) => (
-          <li key={i} className={`group py-3 text-lg w-full text-center ${i == 6 ? "border-y-[1px]" : "border-t-[1px]"} border-gray-700 hover:bg-gray-200 hover:text-primary-foreground hover:border-transparent transition-colors duration-300 ease-in-out cursor-pointer`}
-            onClick={() => {
-              router.push(item.link);
-              closeFn(false);
-            }}
-          >
+        {menuList.map((item, i) => {
+          return (
+            <li key={i} className={`group py-3 text-lg w-full text-center ${i == 6 ? "border-y-[1px]" : "border-t-[1px]"} border-gray-700 hover:bg-primary hover:text-primary-foreground hover:border-transparent transition-colors duration-300 ease-in-out cursor-pointer`}
+              onClick={() => {
+                router.push(item.link);
+                closeFn(false);
+              }}
+            >
 
-            {i == 5 ? (
-              count ? (
-                <div className='flex justify-center'>
-
-                  <span>
-                    {item.text}
-                  </span>
-                  <span className="block mx-2 text-primary group-hover:text-primary-foreground transition-colors duration-500 w-fit">
-                    ( {count > 99 ? '99+' : count} )
-                  </span>
-                </div>
-              ) : null
-            ) : item.text}
-          </li>
-        ))}
+              {i == 5 ? (
+                <p className='flex justify-center'>
+                  {item.text}
+                  {count ? (
+                    <span className="block mx-2 text-primary group-hover:text-primary-foreground transition-colors duration-500 w-fit">
+                      ( {count > 99 ? '99+' : count} )
+                    </span>
+                  ) : null}
+                </p>
+              ) : item.text}
+            </li>
+          )
+        })}
 
       </ul>
     </>

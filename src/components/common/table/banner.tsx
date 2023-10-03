@@ -110,13 +110,13 @@ export default function DataTableBanner() {
           row?.original?.value && JSON?.parse(row?.original?.value);
 
         return (
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
             <Image
-              className="object-contain bg-ac-2 h-10 w-16 rounded-lg"
+              className="object-cover bg-ac-2 h-10 w-16 rounded-lg"
               src={renderNFTImage(payment)}
               alt={row?.original?.title}
-              width={32}
-              height={32}
+              width={100}
+              height={100}
             />
 
             <p className="w-40 text-ellipsis whitespace-nowrap overflow-hidden">
@@ -391,7 +391,6 @@ export default function DataTableBanner() {
                   <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && 'selected'}
-                    dir={filters?.lang_id == 1 ? 'ltr' : 'rtl'}
                   >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id}>

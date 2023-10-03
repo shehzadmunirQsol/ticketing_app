@@ -105,7 +105,6 @@ export function SettingDialog(props: SettingDialogInterface) {
             } this ${props?.title}`}
           </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4"></div>
         <DialogFooter>
           <Button type="submit" onClick={() => handleClick()}>
             Save changes
