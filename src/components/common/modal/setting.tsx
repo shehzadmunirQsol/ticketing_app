@@ -52,30 +52,29 @@ export function SettingDialog(props: SettingDialogInterface) {
         payload.is_enabled = !props?.selectedItem?.is_enabled;
       if (props?.type == 'delete')
         payload.is_deleted = !props?.selectedItem?.is_deleted;
-      let data: any;
-      if (props?.type == 'delete') {
-        data = await bannerDelete.mutateAsync({ ...payload });
-      } else {
-        data = await bannerUpdate.mutateAsync({ ...payload });
-      }
+
+      const data = await bannerDelete.mutateAsync({ ...payload });
+
       if (data) {
         setLoading(false);
 
         props.setIsModal(false);
 
         toast({
-          variant: `${props?.type === 'enabled'
-            ? props?.selectedItem?.is_enabled
-              ? 'disable'
+          variant: `${
+            props?.type === 'enabled'
+              ? props?.selectedItem?.is_enabled
+                ? 'disable'
+                : 'success'
               : 'success'
-            : 'success'
-            }`,
-          title: `${props?.title} ${props?.type === 'enabled'
-            ? props?.selectedItem?.is_enabled
-              ? 'Disabled'
-              : 'Enabled'
-            : 'deleted'
-            } Successfully`,
+          }`,
+          title: `${props?.title} ${
+            props?.type === 'enabled'
+              ? props?.selectedItem?.is_enabled
+                ? 'Disabled'
+                : 'Enabled'
+              : 'deleted'
+          } Successfully`,
         });
         props?.refetch();
       } else {
@@ -97,12 +96,13 @@ export function SettingDialog(props: SettingDialogInterface) {
         <DialogHeader>
           <DialogTitle>{props?.title}</DialogTitle>
           <DialogDescription>
-            {`Are you sure you want to ${props?.type === 'enabled'
-              ? props?.selectedItem?.is_enabled
-                ? 'Disable'
-                : 'Enable'
-              : 'Delete'
-              } this ${props?.title}`}
+            {`Are you sure you want to ${
+              props?.type === 'enabled'
+                ? props?.selectedItem?.is_enabled
+                  ? 'Disable'
+                  : 'Enable'
+                : 'Delete'
+            } this ${props?.title}`}
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4"></div>
