@@ -7,7 +7,11 @@ import { trpc } from '~/utils/trpc';
 import { useDispatch, useSelector } from 'react-redux';
 import { useToast } from '~/components/ui/use-toast';
 import { CartItemInterface, addToCart } from '~/store/reducers/cart';
-import { getAvailableTickets, renderNFTImage } from '~/utils/helper';
+import {
+  URIGenerator,
+  getAvailableTickets,
+  renderNFTImage,
+} from '~/utils/helper';
 import { RemoveItemDialog } from '~/components/common/modal/cartModal';
 import {
   Tooltip,
@@ -142,7 +146,10 @@ export default function CartItem(props: CartItemProp) {
         </div>
         <div className="flex-1 flex items-center justify-between space-x-4">
           <Link
-            href={`/product-detail/${cartItem?.event_id}`}
+            href={`/product-detail/${URIGenerator(
+              cartItem?.Event?.EventDescription[0]?.name ?? '',
+              cartItem?.event_id,
+            )}`}
             className="hidden flex-1 mdx:block text-xl xl:text-2xl "
           >
             {cartItem?.Event?.EventDescription[0]?.name}

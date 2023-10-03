@@ -16,7 +16,7 @@ const TokenRange = ({ range, setRange, min, max }: token) => {
   // cons
   return (
     <div>
-      <div className="range-slider-container mt-14">
+      <div className="range-slider-container mt-14 cursor-pointer">
         <Slider
           defaultValue={range}
           value={range}
@@ -29,7 +29,7 @@ const TokenRange = ({ range, setRange, min, max }: token) => {
         />
         <br />
         <div
-          className="absolute left-1/2 transform -translate-x-1/2 bottom-3 p-2 font-black bg-opacity-70  text-primary rounded-md text-lg whitespace-nowrap"
+          className="absolute left-1/2  transform -translate-x-1/2 bottom-3 p-2 font-black bg-opacity-70  text-primary rounded-md text-lg whitespace-nowrap"
           style={{ left: `${percentage}%` }}
         >
           {range}

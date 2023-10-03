@@ -5,7 +5,11 @@ import ImageSliderStyle from './ImageSliderStyle';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
 import { useRouter } from 'next/router';
-import { customTruncate, getAvailableTickets } from '~/utils/helper';
+import {
+  URIDecoder,
+  customTruncate,
+  getAvailableTickets,
+} from '~/utils/helper';
 import Glow from '~/components/common/glow';
 
 const ImageSlider = ({ data, ticketPurchased }: any) => {
@@ -17,8 +21,10 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
 
   const ticketInBasket = useRef<number>(0);
 
+  const { id: eventId } = URIDecoder(query?.id ?? '');
+
   const cartItem = cart?.cartItems?.find(
-    (item) => item.event_id === +(query?.id ?? 0),
+    (item) => item.event_id === +(eventId ?? 0),
   );
 
   useEffect(() => {

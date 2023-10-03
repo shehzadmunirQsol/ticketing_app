@@ -66,7 +66,6 @@ const CashPage = () => {
                   dir={lang.dir}
                   cash={Cash}
                   data={itemList}
-                  isCash
                 />
               </div>
             );

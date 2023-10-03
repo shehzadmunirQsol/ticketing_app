@@ -1,15 +1,12 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { Button } from '~/components/ui/button';
+import { useSelector } from 'react-redux';
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
-  DialogTitle,
 } from '~/components/ui/dialog';
-import { useToast } from '~/components/ui/use-toast';
-import { removeFromCart } from '~/store/reducers/cart';
+
 import { trpc } from '~/utils/trpc';
 import { LoadingDialog } from './loadingModal';
 import Image from 'next/image';
@@ -30,14 +27,11 @@ interface OrderViewDialogInterface {
 }
 
 export function OrderViewDialog(props: OrderViewDialogInterface) {
-  const { toast } = useToast();
-  const dispatch = useDispatch();
   const { lang } = useSelector((state: RootState) => state.layout);
 
   const {
     data: OrderApiData,
-    isFetched,
-    isLoading,
+
     isFetching,
   } = trpc.order.getByID.useQuery(
     { order_id: props?.selectedItem?.id, lang_id: lang.lang_id },
@@ -52,12 +46,8 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
     <>
       <Dialog open={props?.isModal} onOpenChange={(e) => props.setIsModal(e)}>
         <DialogContent className=" my-auto h-[calc(100%-100px)]  overflow-y-hidden mb-2 ">
-          <DialogFooter className=" sm:justify-start items-start w-full   ">
-            {/* <Button onClick={()=>onPrint()} type="submit">Print</Button> */}
-          </DialogFooter>
-          <DialogHeader className="">
-            {/* <DialogTitle>Remove Item</DialogTitle> */}
-          </DialogHeader>
+          <DialogFooter className=" sm:justify-start items-start w-full   "></DialogFooter>
+          <DialogHeader className=""></DialogHeader>
           <DialogDescription className="relative bg-card h-full rounded-lg  overflow-y-scroll   scroll-hide">
             {OrderApiData && (
               <div
@@ -71,9 +61,6 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
                       src={LogoImage}
                       alt="Logo"
                     />
-                    {/* <div className=" font-semibold text-lg">
-                Your Company Name
-              </div> */}
                   </div>
                   <div className="text-gray-400 xs:text-center sm:text-left">
                     <div className="font-bold text-xl mb-2">INVOICE</div>

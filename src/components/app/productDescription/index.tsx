@@ -12,13 +12,14 @@ import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
 import { LoadingDialog } from '~/components/common/modal/loadingModal';
 import Glow from '~/components/common/glow';
+import { URIDecoder } from '~/utils/helper';
 
 const ProductDetail = () => {
   const router = useRouter();
   const { lang } = useSelector((state: RootState) => state.layout);
-  const id = Number(router.query.id);
+  const { id } = URIDecoder(router?.query?.id ?? '');
   const { data, isLoading } = trpc.event.getEventsById.useQuery(
-    { id: id, lang_id: lang.lang_id },
+    { id: Number(id), lang_id: lang.lang_id },
     {
       refetchOnWindowFocus: false,
     },
