@@ -1,10 +1,11 @@
 import { z } from 'zod';
 
-export const createBannerSchema = z.array(z.any());
+export const createBannerSchema = z.any();
 export const updateBannerSchema = z.any();
 export const deleteBannerSchema = z.object({
   id: z.number(),
-  is_deleted: z.boolean(),
+  is_deleted: z.boolean().optional(),
+  is_enabled: z.boolean().optional(),
 });
 export const getBannerSchema = z.object({
   startDate: z.date().nullable().optional(),
