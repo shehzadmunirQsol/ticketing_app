@@ -8,6 +8,8 @@ import { customTruncate, renderNFTImage } from '~/utils/helper';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
 import Link from 'next/link';
+import langContent from '~/locales';
+
 interface cardInterface {
   class?: string;
   dir?: string;
@@ -85,7 +87,7 @@ function ProductCard(props: cardInterface) {
                     Number(props?.data?.total_tickets)) *
                     100,
                 )}
-                % Sold
+                % {langContent[lang.lang].Index.productcard.SOLD_TITLE}
               </span>
               <Progress
                 value={
@@ -97,17 +99,8 @@ function ProductCard(props: cardInterface) {
               />
             </div>
             <div className="font-bold text-xl lg:text-2xl xl:text-3xl line-clamp-1">
-              {lang.lang_id === 1 ? (
-                <span className="font-[800] text-gray-200 leading-loose">
-                  WIN
-                </span>
-              ) : lang.lang_id === 2 ? (
-                <span className="font-[900] font-sans text-gray-200 leading-loose">
-                  يفوز
-                </span>
-              ) : (
-                ''
-              )}
+            {langContent[lang.lang].Index.productcard.WIN_TITLE ?? ""}
+              
               <span className="text-gray-200  font-semibold leading-loose mx-2 ">
                 {props?.data?.EventDescription[0]?.name}
               </span>
@@ -122,7 +115,7 @@ function ProductCard(props: cardInterface) {
             {props?.data?.category_id === 1 && props?.data?.cash_alt ? (
               <div className=" mt-2">
                 <span className="text-gray-200 text-md xl:text-lg font-semibold leading-[18px]">
-                  Cash Prize Alternative
+                  {langContent[lang.lang].Index.productcard.ALTERNATIVE_TITLE}
                 </span>
                 <span className="text-primary text-md xl:text-lg font-black leading-[18px]">
                   {' '}
@@ -141,7 +134,7 @@ function ProductCard(props: cardInterface) {
                 variant="rounded"
                 className="font-[800] tracking-tight text-md xl:text-lg "
               >
-                ENTER NOW
+                {langContent[lang.lang].Index.productcard.ENTER_BTN}
               </Button>
             </div>
           </div>

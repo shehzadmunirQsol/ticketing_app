@@ -9,6 +9,8 @@ import CarsBg from '~/public/assets/cars-bg-2.png';
 import BannerTitle from '~/components/common/banner_title';
 import FeaturedCars from './featured_cars';
 import Testimonials from '../home/testimonials';
+import langContent from '~/locales';
+
 
 const CarsPage = () => {
   const { lang } = useSelector((state: RootState) => state.layout);
@@ -58,7 +60,8 @@ const CarsPage = () => {
       </div>
       <div className="relative h-full px-4 md:px-14 pb-20">
         <p className="hidden slg:block text-2xl md:text-5xl pt-24 pb-10 tracking-tighter font-extrabold text-white ">
-          CARS COMPETITION
+        {langContent[lang.lang].Cars.HEADING}
+
         </p>
         <Glow className=" absolute  top-1/2 -left-16 w-1/5 h-[350px] overflow-hidden " />
         <Glow className=" absolute  bottom-0 -right-16 w-1/5 h-[350px] overflow-hidden " />

@@ -49,10 +49,7 @@ const ProductDetail = () => {
           {Faqs ? <AccordianFaqs data={data?.data} /> : <></>}
         </div>
         <Glow className="absolute bottom-0 -right-16   p-2   w-1/5 h-[80px]   " />
-
-        {/* <Glow className=" absolute   bottom-0 -right-16  w-1/5 h-[150px] overflow-x-hidden" /> */}
       </div>
-      {/* <div className="mb-10"></div> */}
       <LoadingDialog open={isLoading} text={'Loading data...'} />
     </div>
   );

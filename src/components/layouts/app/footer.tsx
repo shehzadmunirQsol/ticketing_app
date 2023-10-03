@@ -6,6 +6,10 @@ import Group16 from '~/public/assets/icons/Group16.svg';
 import Group17 from '~/public/assets/icons/Group17.png';
 import Glow from '~/components/common/glow';
 import Link from 'next/link';
+import langContent from '~/locales';
+import { useSelector } from 'react-redux';
+import { RootState } from '~/store/store';
+
 
 interface LinkItemProps {
   name: string;
@@ -14,13 +18,13 @@ interface LinkItemProps {
   disable?: boolean;
 }
 function Footer() {
+  const { lang } = useSelector((state: RootState) => state.layout);
+
   return (
     <footer className="h-full  bg-background-footer !z-50">
       <div className="relative w-full max-w-screen max-w-[1600px] mx-auto h-full ">
         <div className=" absolute  p-1 w-1/2 z-20  h-full  ">
           <Glow className="absolute bottom-0 -left-16 z-20  p-2   w-1/2 h-1/3  " />
-          {/* <div className="absolute bottom-0 -left-16 z-2  p-2  w-1/2 h-1/3  bg-teal-400 bg-opacity-30 rounded-full blur-3xl"></div> */}
-          {/* <div className="absolute bottom-0 -left-16 z-4  p-2  w-1/3 h-1/3  bg-teal-400 bg-opacity-10 rounded-full blur-3xl"></div> */}
           <div className="absolute top-0   p-2  w-full h-full z-4   ">
             <Image
               className="w-full h-full object-contain "
@@ -40,27 +44,19 @@ function Footer() {
                     className="z-30 font-bold bg-transparent"
                   >
                     <div>
-                      SUBSCRIBE TO NEWSLETTER &nbsp;
+                    {langContent[lang.lang].Footer.SUBSCRIBE_BTN}
+                     &nbsp;
                       <i className="fa-solid fa-arrow-right -rotate-45 "></i>
                     </div>
                   </Button>
                 </div>
                 <div className="w-full opacity-75 text-sm text-colorGray space-y-1 md:space-y-2">
-                  <p> Winnar LLC,</p>
-                  <p>Office 16, 17th Floor,</p>
-                  <p>Centrum Business Lounge,</p>
-                  <p>Bay Gate Tower, Business Bay,</p>
-                  <p>Dubai, UAE</p>
-
-                  <p>
-                    © Copyright Winnar Trading LLC Regulated by Dubai Economic
-                    Department and Department of Economy and Tourism Trade
-                    License No.: 1193751
-                  </p>
-
-                  {/* <p>© Copyright WINNAR 2023</p>
-                  <p>Registered Company </p>
-                  <p>Number: 11320154, UAE</p> */}
+                  <p>{langContent[lang.lang].Footer.ADDRESS_TITLE}</p>
+                  <p>{langContent[lang.lang].Footer.ADDRESS_SUB_TITLE}</p>
+                  <p>{langContent[lang.lang].Footer.ADDRESS_SUB_TITLE_ONE}</p>
+                  <p>{langContent[lang.lang].Footer.ADDRESS_SUB_TITLE_TWO}</p>
+                  <p>{langContent[lang.lang].Footer.ADDRESS_SUB_TITLE_THREE}</p>
+                  <p>{langContent[lang.lang].Footer.ADDRESS_SUB_TITLE_FOUR}</p>
                 </div>
                 <div className=" flex items-center justify-center md:justify-start  w-64  text-sm text-white">
                   <Image
@@ -74,37 +70,22 @@ function Footer() {
               <div className=" grid grid-cols-1 gap-8 md:gap-6 md:grid-cols-2 w-full sm:w-[300px] lg:w-[360px]">
                 <div className="col-span-2 flex items-center justify-between">
                   <ul className="flex-1 text-grayColor opacity-75  space-y-2 sm:space-y-2">
-                    {[
-                      { page: 'Home', link: '/' },
-                      { page: 'Cars', link: '/cars' },
-                      { page: 'Cash', link: '/cash' },
-                      { page: 'Winners', link: '/winners' },
-                      { page: 'FAQs', link: '/faq' },
-                    ].map((item, index) => {
+                    {langContent[lang.lang].Footer.array.map((item, index) => {
                       return (
                         <li key={index} className="text-sm">
                           <Link href={item.link} className="hover:underline">
-                            {item.page}
+                            {item.name}
                           </Link>
                         </li>
                       );
                     })}
                   </ul>
                   <ul className="flex-1 text-grayColor opacity-75 space-y-2 sm:space-y-2">
-                    {[
-                      { page: 'About Us', link: '/about-us' },
-                      { page: 'Contact Us', link: '/contact-us' },
-                      { page: 'Terms & Conditions', link: '/terms-condition' },
-                      { page: 'Our Team', link: '/about-us' },
-                      {
-                        page: 'Cookie & Privacy Policy',
-                        link: '/privacy-policy',
-                      },
-                    ].map((item, index) => {
+                    {langContent[lang.lang].Footer.arrayTwo.map((item, index) => {
                       return (
                         <li key={index} className="text-sm">
                           <Link href={item.link} className="hover:underline">
-                            {item.page}
+                            {item.name}
                           </Link>
                         </li>
                       );
@@ -115,7 +96,7 @@ function Footer() {
                 <div className=" col-span-2 w-full ">
                   <div className="flex-1 flex items-center gap-2 mdx:justify-between">
                     <div className=" text-sm font-bold w-full min-w-max">
-                      CONNECT WITH US
+                    {langContent[lang.lang].Footer.CONNECT_TITLE}
                     </div>
                     <div className="w-full flex gap-2 items-center">
                       {' '}
