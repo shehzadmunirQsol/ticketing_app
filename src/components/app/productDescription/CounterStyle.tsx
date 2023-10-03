@@ -15,12 +15,13 @@ interface token {
 const CounterStyle = ({ range, setRange, min, max }: token) => {
   const { lang } = useSelector((state: RootState) => state.layout);
 
-  const rangeType: any = range && range?.length ? range[0] : 1;
+  const rangeType: any = range && range?.length ? range[0] : 0;
+
   const handlerCounter = (type: string) => {
-    if (type == 'a' && rangeType < max) {
-      setRange([rangeType + 1]);
-    } else if (type == 'b' && rangeType > min) {
-      setRange([rangeType - 1]);
+    if (type == 'a' && rangeType <= (max - 10)) {
+      setRange([rangeType + 10]);
+    } else if (type == 'b' && rangeType >= (min + 10)) {
+      setRange([rangeType - 10]);
     }
   };
 

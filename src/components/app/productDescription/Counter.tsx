@@ -126,7 +126,7 @@ const Counter: React.FC<CounterProps> = ({
           <TokenRange
             range={range}
             setRange={setRange}
-            min={1}
+            min={0}
             max={user_ticket_limit}
           />
           <CounterStyle

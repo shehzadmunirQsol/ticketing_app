@@ -16,7 +16,7 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
   const { cart } = useSelector((state: RootState) => state.cart);
   const { lang } = useSelector((state: RootState) => state.layout);
 
-  const [range, setRange] = useState<number[]>([1]);
+  const [range, setRange] = useState<number[]>([10]);
   const { query } = useRouter();
 
   const ticketInBasket = useRef<number>(0);
