@@ -2,7 +2,6 @@ import { router, publicProcedure } from '../trpc';
 import { TRPCError } from '@trpc/server';
 import {
   createCheckoutPaymentSchema,
-  createCheckoutSchema,
   getOrder,
   getByIDSchema,
   getOrderSchema,
@@ -336,8 +335,7 @@ export const orderRouter = router({
       }
     }),
 
-  getOrders: publicProcedure.input(getOrder).query(async ({ input, ctx }) => {
-    const todayDate = new Date();
+  getOrders: publicProcedure.input(getOrder).query(async ({ input }) => {
     try {
       const { filters, ...inputData } = input;
       const filterPayload: any = { ...filters };
@@ -346,7 +344,7 @@ export const orderRouter = router({
       if (filterPayload?.endDate) delete filterPayload.endDate;
       if (filterPayload?.startDate) delete filterPayload.startDate;
       const where: any = {
-        customer_id: input?.customer_id,
+        customer_id: inputData?.customer_id,
         is_deleted: false,
         ...filterPayload,
       };
@@ -361,7 +359,6 @@ export const orderRouter = router({
             },
           },
         };
-        // where.created_at = { gte: startDate };
       }
       if (input?.status == 'past') {
         const startDate = new Date();
@@ -410,8 +407,6 @@ export const orderRouter = router({
           },
         });
       }
-
-      console.log('condition', where);
 
       const totalEventPromise = prisma.order.count({
         where: where,
@@ -527,7 +522,7 @@ export const orderRouter = router({
       const eventPromise = prisma.order.findMany({
         orderBy: { created_at: 'desc' },
         skip: input.first * input.rows,
-        take: input.rows,
+        take: inputData.rows,
         where: where,
         include: {
           Customer: {
@@ -587,7 +582,11 @@ export const orderRouter = router({
             include: {
               Event: {
                 include: {
-                  EventDescription: true,
+                  EventDescription: {
+                    where: {
+                      lang_id: input?.lang_id,
+                    },
+                  },
                 },
               },
             },

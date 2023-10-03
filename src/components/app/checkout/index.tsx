@@ -24,7 +24,6 @@ import { CouponModal } from './Coupon';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
-import { CheckoutDialog } from '~/components/common/modal/checkout';
 import { CreateCheckoutSchema, createCheckoutSchema } from '~/schema/order';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { trpc } from '~/utils/trpc';
@@ -33,10 +32,8 @@ import { LoadingDialog } from '~/components/common/modal/loadingModal';
 import { useToast } from '~/components/ui/use-toast';
 import { addCart } from '~/store/reducers/cart';
 import Link from 'next/link';
-import { userAuth } from '~/store/reducers/auth';
 import Script from 'next/script';
 import jqeury from 'jquery';
-import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 import { CardDailog } from '~/components/common/modal/cardModal';
 
 function Checkout() {
@@ -54,10 +51,7 @@ function Checkout() {
   const [isDeleteModal, setIsDeleteModal] = useState(false);
   const [index, setIndex] = useState(null);
   const [selectedItem, setSelectedItem] = useState({});
-  const [title, setTitle] = useState('Enter Payment Detail');
   const [type, setType] = useState('');
-  const [isCardModal, setIsCardModal] = useState(false);
-  console.log(isDeleteModal, 'isDeleteModal', index, 'index');
   // 1. Define your form.
   const form = useForm<CreateCheckoutSchema>({
     resolver: zodResolver(createCheckoutSchema),
@@ -182,8 +176,11 @@ function Checkout() {
       if (data?.checkout?.data) {
         setTotalID(data?.checkout?.data?.id);
       }
-    } catch (err) {
-      setIsCardModal(false);
+    } catch (err: any) {
+      toast({
+        variant: 'destructive',
+        title: err?.message,
+      });
     }
   };
 
@@ -225,10 +222,10 @@ function Checkout() {
                 jqeury('form.wpwl-form-card')
                   .find('.wpwl-button')
                   .before(createRegistrationHtml);
-                const createDeleteOption = `<div class="customLabel  relative w-full  ml-auto flex justify-end items-center"><i  class="fa-regular border border-border deletefunction p-2 rounded-full fa-trash-can  text-cardGray cursor-pointer hover:text-white hover:border-white "></i></div>`;
+                const createDeleteOption = `<div class="customLabel flex-1 relative w-full  ml-auto flex justify-end items-center"><i  class="fa-regular border border-border deletefunction p-2 rounded-full fa-trash-can  text-cardGray cursor-pointer hover:text-white hover:border-white "></i></div>`;
                 jqeury('.wpwl-group-registration')
                   .find('.wpwl-registration')
-                  .before(createDeleteOption);
+                  .after(createDeleteOption);
 
                 jqeury('.deletefunction').click(function (event) {
                   console.log('i am running');
@@ -737,16 +734,7 @@ function Checkout() {
         customer_id={cart?.customer_id ?? 0}
         cart_id={cart?.id ?? 0}
       />
-      {/* <CheckoutDialog
-        selectedItem={selectedItem}
-        setSelectedItem={setSelectedItem}
-        title={title}
-        setTitle={setTitle}
-        isModal={isCardModal}
-        setIsModal={setIsCardModal}
-        type={type}
-        setType={setType}
-      /> */}
+
       <CardDailog
         selectedItem={selectedItem}
         setSelectedItem={setSelectedItem}

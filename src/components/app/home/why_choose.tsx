@@ -1,50 +1,24 @@
-import React, { useRef } from 'react';
-import Slider from 'react-slick';
-
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
+import React from 'react';
 
 import Frame11 from '~/public/assets/icons/Frame16.svg';
 import Frame12 from '~/public/assets/icons/Group14.png';
 import Frame13 from '~/public/assets/icons/Frame15.svg';
-
+import langContent from '~/locales';
 import Image from 'next/image';
-interface producctInterface {
-  class?: string;
-  title: string;
-  center: boolean;
-  slidesToShow?: number;
-}
+import { useSelector } from 'react-redux';
+import { RootState } from '~/store/store';
+
 function WhyChoose() {
-  const HowtoStart = [
-    {
-      step: 1,
-      title: 'Great Odds',
-      desc: 'Limited entries in each draw',
-      icon: Frame11,
-    },
-    {
-      step: 2,
-      title: 'Transparent',
-      desc: 'We show the number of entries in every draw',
-      icon: Frame12,
-    },
-    {
-      step: 3,
-      title: 'Guaranteed',
-      desc: "Guaranteed winner even if we don't sell out",
-      icon: Frame13,
-    },
-  ];
+  const { lang } = useSelector((state: RootState) => state.layout);
 
   return (
     <div className="relative w-full mx-auto mb-2 px-4 md:px-14 sm:py-8">
       <div className="text-gray-200 text-center text-3xl sm:text-left sm:text-5xl font-black uppercase ">
-        WHY CHOOSE US?
+        {langContent[lang.lang].Index.choose.HEADING}
       </div>
 
       <div className="grid grid-cols-1  gap-8 py-8 md:grid-cols-3">
-        {HowtoStart?.map((item, index) => {
+        {langContent[lang.lang].Index.choose.array?.map((item, index) => {
           return (
             <div
               key={index}
@@ -53,7 +27,7 @@ function WhyChoose() {
               <div className="h-20 mx-auto sm:m-0 w-20">
                 <Image
                   className="w-full h-full object-contain "
-                  src={item?.icon}
+                  src={images[item.img]}
                   quality={100}
                   alt="Sunset in the mountains"
                 />
@@ -77,3 +51,10 @@ function WhyChoose() {
 }
 
 export default WhyChoose;
+
+
+const images:any ={
+  1:Frame11,
+  2:Frame12,
+  3:Frame13
+}

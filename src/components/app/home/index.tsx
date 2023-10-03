@@ -5,8 +5,13 @@ import WhyChoose from './why_choose';
 import Testimonials from './testimonials';
 import BannerSlider from './banner_slider';
 import VideoSlider from './video_slider';
+import langContent from '~/locales';
+import { RootState } from '~/store/store';
+import { useSelector } from 'react-redux';
+
 
 export default function Home() {
+  const { lang } = useSelector((state: RootState) => state.layout);
   return (
     <div className=" flex flex-col w-full ">
       {/* // <div className=""> */}
@@ -19,7 +24,7 @@ export default function Home() {
           class="mx-auto w-3/5 md:w-full"
           slidesToShow={3}
           center={false}
-          title={'DRAWING SOON'}
+          title={langContent[lang.lang].Index.products.HEADING}
           type="closing"
           breakpoint={[3, 2, 1.5]}
           breakpointScreens={[1350, 1050, 800]}
@@ -31,7 +36,7 @@ export default function Home() {
           class="mx-auto w-3/5 md:w-full"
           slidesToShow={2.5}
           center={false}
-          title="UPCOMING COMPETITIONS"
+          title={langContent[lang.lang].Index.upcoming.HEADING}
           type="upcomming"
           breakpoint={[2, 1, 1]}
           breakpointScreens={[900, 850, 600]}
@@ -48,8 +53,8 @@ export default function Home() {
           class="mx-auto w-full"
           slidesToShow={4}
           center={false}
-          title="Winnar Wonders: "
-          subTitle="A Glimpse of Excellence"
+          title={langContent[lang.lang].Index.wonders.HEADING}
+          subTitle={langContent[lang.lang].Index.wonders.SUB_HEADING}
           breakpoint={[3, 2, 1]}
           breakpointScreens={[1100, 830, 500]}
         />

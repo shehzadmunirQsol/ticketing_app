@@ -1,12 +1,290 @@
 {
   "Index": {
-    "title": "Home",
-    "description": "This is the home page."
+    "banner":{
+      "ENTER_BTN":"ENTER NOW"
+    },
+    "products":{
+      "HEADING":"DRAWING SOON"
+    },
+    "upcoming":{
+      "HEADING":"UPCOMING COMPETITIONS"
+    },
+    "wonders":{
+      "HEADING":"Winnar Wonders: ",
+      "SUB_HEADING":"A Glimpse of Excellence"
+    },
+    "choose":{
+      "HEADING":"WHY CHOOSE US",
+      "array":[
+        {
+          "step": 1,
+          "img":1,
+          "title": "Great Odds",
+          "desc": "Limited entries in each draw"
+        },
+        {
+          "step": 2,
+          "img":2,
+          "title": "Transparent",
+          "desc": "We show the number of entries in every draw"
+        },
+        {
+          "step": 1,
+          "img":1,
+          "title": "Guaranteed",
+          "desc": "Guaranteed winner even if we don't sell out"
+        }
+      ]
+    },
+    "howtoplay":{
+      "HEADING":"HOW TO PLAY?",
+      "array":[
+        {
+          "step":"Step 01",
+          "title":"Select your prize and entry",
+          "img":1
+        },
+        {
+          "step":"Step 02",
+          "title":"Purchase water bottle automatically donated to our charity partner's",
+          "img":2
+        },
+        {
+          "step":"Step 03",
+          "title":"Winner announced on Live Draw",
+          "img":3
+        }
+      ]
+    },
+    "productcard":{
+      "WIN_TITLE":"WIN",
+      "ENTER_BTN":"ENTER NOW",
+      "ALTERNATIVE_TITLE":"Cash Prize Alternative",
+      "SOLD_TITLE":"Sold"
+    },
+    "testimonials":{
+      "HEADING":"See Why Our Customers Love",
+      "array":[
+        {
+          "step": 1,
+          "img":1,
+          "name": "Adam S",
+          "stars": 5,
+          "publish": "Last year",
+          "class": "row-span-2",
+          "desc": "100% legit company for those sceptical people out there, I was one of them too to begin with but then i bagged 20k on my second time of playing. Money was in my account within 24 hours. Honestly these guys are genuinely nice people they were happy for me and made the process so easy and simple! I’ll be playing again put it that way…… got to be in it to win it!!!"
+        },
+        {
+          "step": 1,
+          "img":2,
+          "name": "Oliver Bailey",
+          "stars": 5,
+          "publish": "Last year",
+          "class": "row-span-1",
+          "desc": "5* Won a Mercedes c63s AMG for just £10 off just 10 tickets on their raffle competitions!"
+        },
+        {
+          "step": 1,
+          "img":3,
+          "name": "Andy Bone",
+          "stars": 5,
+          "publish": "Last year",
+          "class": "row-span-1",
+          "desc": "Excellent friendly service and would highly recommend. Won a few times and goods arrived quickly. Cash alternative in bank within a few hours. Excellent and great."
+        },
+        {
+          "step": 1,
+          "img":4,
+          "name": "Tom Macca",
+          "stars": 5,
+          "publish": "Last year",
+          "class": "row-span-2",
+          "desc": "Won the Toyota Supra which is a amazing car the staff where great will definitely be entering again"
+        },
+        {
+          "step": 1,
+          "img":5,
+          "name": "Michael Jolley",
+          "stars": 5,
+          "publish": "Last year",
+          "class": "row-span-2",
+          "desc": "Wow what can I say I won an Audi RS5 absolutely over the moon, cracking blokes to deal with with brilliant communication, thanks once again for our car it's amazing all from a few £0:99p tickets. Is definitely recommend 7 days performance to anyone 10/10 well done guys"
+        },
+        {
+          "step": 1,
+          "img":6,
+          "name": "Daniel Lloyd Mechanic",
+          "stars": 5,
+          "publish": "Last year",
+          "class": "row-span-2",
+          "desc": "I have played in many competitions with 7 days the last few years and finally bagged a winner on tickets I forgot all about. I won the £5000 tui voucher but chose the cash instead."
+        }
+      ]
+    }
   },
-  "LocaleSwitcher": {
-    "switchLocale": "Switch to {locale, select, de {German} en {English} other {Unknown}}"
+  "ProductDetail":{
+    "counter":{
+      "TICKETS":"How many tickets?",
+      "NUMBERS_OF_TICKET":"Number of Tickets",
+      "BASKET_BUTTON":"ADD TICKETS TO BASKET"
+    },
+    "entries":{
+      "array":[
+        {
+
+            "data":1,
+            "HEADING":"Entries",
+            "SUB_HEADING":"only"
+        },
+        {
+          "data":2,
+            "HEADING":"Max",
+            "SUB_HEADING":"Entries"
+        },
+        {
+          "data":3,
+            "HEADING":"Max",
+            "SUB_HEADING":"per person only"
+        },
+        {
+          "data":4,
+            "HEADING":"Worldwide",
+            "SUB_HEADING":"Shipping",
+            "LINK":"T & C's Apply"
+        }
+      ]
+    },
+    "description":{
+      "HEADING":"DESCRIPTION"
+    },
+    "faqs":{
+      "HEADING":"FAQs"
+    },
+    "livedraw":{
+      "HEADING":"LIVE DRAW",
+      "array":[
+        {
+            "description":"Draw takes place regardless of sell out"
+        },
+        {
+            "description":"Competition will close sooner if the maximum entries are received"
+        },
+        {
+            "description":"Interactive live draw on our Facebook and Youtube page"
+        }
+      ]
+    },
+    "tabs":{
+      "HEADING_ONE":"BUY TICKETS",
+      "HEADING_TWO":"COMPETITIONS",
+      "SUB_HEADING_TWO":"DETAILS",
+      "HEADING_THREE":"FAQs"
+    },
+    "range":{
+      "HEADING":"SOLD"
+    }
+
+    
   },
-  "PageLayout": {
-    "pageTitle": "next-intl"
+
+  "Header":{
+      "title_one":"Cars",
+      "title_two":"Cash",
+      "title_three":"Winners",
+      "title_four":"About Us",
+      "title_five":"Contact Us",
+      "title_six":"Cart",
+      "title_seven":"Login",
+      "sub_title_seven":"My Account",
+      "array":[
+        {
+          "name": "Cars",
+          "link": "/cars"
+        },
+        {
+          "name": "Cash",
+          "link": "/cash"
+        },
+        {
+          "name": "Winners",
+          "link": "/winners"
+        },
+        {
+          "name": "About Us",
+          "link": "/about-us"
+        },
+        {
+          "name": "FAQ",
+          "link": "/faq"
+        }
+      ]
+  },
+  "Footer":{
+    "SUBSCRIBE_BTN":"SUBSCRIBE TO NEWSLETTER",
+    "ADDRESS_TITLE":"Winnar LLC",
+    "ADDRESS_SUB_TITLE":"Office 16, 17th Floor,",
+    "ADDRESS_SUB_TITLE_ONE":"Centrum Business Lounge",
+    "ADDRESS_SUB_TITLE_TWO":"Bay Gate Tower, Business Bay,",
+    "ADDRESS_SUB_TITLE_THREE":"Dubai, UAE,",
+    "ADDRESS_SUB_TITLE_FOUR":"© Copyright Winnar Trading LLC Regulated by Dubai Economic Department and Department of Economy and Tourism Trade License No.: 1193751",
+    "CONNECT_TITLE":" CONNECT WITH US",
+    "array":[
+      {
+        "name": "Cars",
+        "link": "/cars"
+      },
+      {
+        "name": "Cash",
+        "link": "/cash"
+      },
+      {
+        "name": "Winners",
+        "link": "/winners"
+      },
+      {
+        "name": "About Us",
+        "link": "/about-us"
+      },
+      {
+        "name": "FAQ",
+        "link": "/faq"
+      }
+    ],
+    "arrayTwo":[
+      {
+        "name": "About Us",
+        "link": "/about-us"
+      },
+      {
+        "name": "Contact Us",
+        "link": "/contact-us"
+      },
+      {
+        "name": "Terms & Conditions",
+        "link": "/terms-condition"
+      },
+      {
+        "name": "Our Team",
+        "link": "/about-us"
+      },
+      {
+        "name": "Cookie & Privacy Policy",
+        "link": "/privacy-policy"
+      }
+    ]
+  },
+  "Cars":{
+    "HEADING":"CARS COMPETITION"
+  },
+  "Cash":{
+    "HEADING":"CASH"
+  },
+  "Winners":{
+    "HEADING":"WINNERS",
+    "WINNER_HEADING":"Won",
+    "WINNER_TICKET":"Winning ticket",
+    "WINNER_DATE":"Draw date",
+    "WINNER_SUB_HEADING":"Won a"
   }
+
 }

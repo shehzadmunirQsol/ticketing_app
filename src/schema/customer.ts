@@ -184,19 +184,19 @@ export const addCustomerAddress = z.object({
   street_address_1: z.string({
     required_error: 'Please enter your street address',
     invalid_type_error: 'Please enter your street address',
-  }),
+  }).trim(),
   city: z.string({
     required_error: 'Please enter your city',
     invalid_type_error: 'Please enter your city',
-  }),
+  }).trim(),
   country: z.string({
     required_error: 'Please enter your country',
     invalid_type_error: 'Please enter your country',
-  }),
+  }).trim(),
   phone_number: z.string({
     required_error: 'Please enter your phone no',
     invalid_type_error: 'Please enter your phone no',
-  }),
+  }).trim(),
   postal_code: z.number({
     required_error: 'Please enter your postal code',
     invalid_type_error: 'Please enter your postal code',
@@ -218,20 +218,20 @@ export const accountsDetailSchemaInput = z.object({
   first_name: z
     .string()
     .min(1, {
-      message: 'Required',
+      message: 'Please enter your first name',
     })
     .max(24, {
       message: 'Name must not exceed 24 characters',
-    }),
+    }).trim(),
   last_name: z
     .string()
     .min(1, {
-      message: 'Required',
+      message: 'Please enter your last name',
     })
     .max(24, {
       message: 'Name must not exceed 24 characters',
-    }),
-  email: z.string().email(),
+    }).trim(),
+  email: z.string().trim().email(),
   dob: z.date().optional().nullable(),
 });
 
@@ -240,15 +240,15 @@ export type accountsDetailSchemaInput = z.infer<
 >;
 
 export const passwordChangeSchema = z.object({
-  email: z.string().email().optional(),
-  currentPassword: z.string(),
-  newPassword: z.string(),
-  confirmPassword: z.string(),
+  email: z.string().trim().email().optional(),
+  currentPassword: z.string().trim(),
+  newPassword: z.string().trim(),
+  confirmPassword: z.string().trim(),
 });
 
 export const passwordChangeSchemaInput = z.object({
-  email: z.string().email().optional(),
-  currentPassword: z.string(),
+  email: z.string().trim().email().optional(),
+  currentPassword: z.string().trim(),
   newPassword: z
     .string()
     .min(6, {
@@ -256,7 +256,7 @@ export const passwordChangeSchemaInput = z.object({
     })
     .max(30, {
       message: 'Password must not exceed 30 characters',
-    }),
+    }).trim(),
   confirmPassword: z
     .string()
     .min(6, {
@@ -264,7 +264,7 @@ export const passwordChangeSchemaInput = z.object({
     })
     .max(30, {
       message: 'Confirm Password must not exceed 30 characters',
-    }),
+    }).trim(),
 });
 
 export type passwordChangeSchemaInput = z.infer<
@@ -272,14 +272,14 @@ export type passwordChangeSchemaInput = z.infer<
 >;
 
 export const deleteMyAccountCustomerSchema = z.object({
-  email: z.string().email().optional(),
-  message: z.string().optional(),
+  email: z.string().trim().email().optional(),
+  message: z.string().trim().optional(),
   reasons: z.array(z.string()).optional(),
 });
 
 export const deleteMyAccountCustomerSchemaInput = z.object({
-  email: z.string().email().optional(),
-  message: z.string().optional(),
+  email: z.string().trim().email().optional(),
+  message: z.string().trim().optional(),
   reasons: z.array(z.string()).optional(),
 });
 

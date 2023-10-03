@@ -163,7 +163,9 @@ const SIDEBAR_DATA = [
   },
   {
     key: '/admin/customers',
-    icon: <i className="fa-solid fa-users  px-3.5 py-4 text-md rounded-full text-center" />,
+    icon: (
+      <i className="fa-solid fa-users  px-3.5 py-4 text-md rounded-full text-center" />
+    ),
     title: 'Customers',
   },
   {
@@ -188,7 +190,7 @@ const SIDEBAR_DATA = [
   },
   {
     key: '/admin/winners',
-    icon: <i className="fa-solid fa-chart-line p-4 rounded-full"></i>,
+    icon: <i className="fa-solid fa-trophy p-4 rounded-full"></i>,
     title: 'Winners',
   },
 

@@ -152,6 +152,18 @@ export function getAvailableTickets({
   return { userTicketLimit, availableTickets, isTicketLimit };
 }
 
+export function URIGenerator(title: string, id: number) {
+  const url = `${title?.replaceAll(' ', '-')}-${id}`;
+  return encodeURI(url);
+}
+
+export function URIDecoder(url: any) {
+  const decodedURI = decodeURI(url);
+  const id = decodedURI?.split('-').at(-1) ?? '';
+  const title = decodedURI?.substring(0, decodedURI?.length - (id?.length + 2));
+  return { id, title };
+}
+
 export const EMAIL_TEMPLATE_IDS = {
   REGISTRATION_OTP: 2,
   CONTACT_MAIN: 4,

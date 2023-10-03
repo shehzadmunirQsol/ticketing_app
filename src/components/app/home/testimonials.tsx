@@ -14,6 +14,8 @@ import Image from 'next/image';
 import { Button } from '~/components/ui/button';
 import { RootState } from '~/store/store';
 import { useSelector } from 'react-redux';
+import langContent from '~/locales';
+
 
 function Testimonials() {
   const { lang } = useSelector((state: RootState) => state.layout);
@@ -70,7 +72,8 @@ function Testimonials() {
           <div className="relative bg-transparent">
             <div className="absolute top-0 p-8  w-full  bg-teal-400 bg-opacity-50 rounded-full blur-3xl"></div>
             <div className="text-center   text-white  text-xl ">
-              See Why Our Customers Love
+            {langContent[lang.lang].Index.testimonials.HEADING}
+
             </div>
             <div className="mt-2  text-center text-gray-200 text-5xl font-black leading-[48px]">
               {' '}
@@ -109,13 +112,13 @@ function Testimonials() {
         </div>
         <div className="z-30 px-4 relative h-full w-full mx-auto ">
           <Slider ref={slider} {...settings}>
-            {TestimonialsData?.map((item, index) => {
+            {langContent[lang.lang].Index.testimonials.array?.map((item, index) => {
               return (
                 <Review
                   key={index}
                   {...item}
                   class={`${
-                    TestimonialsData.length != index + 1 ? 'xsm:mr-4' : ''
+                    langContent[lang.lang].Index.testimonials.array?.length != index + 1 ? 'xsm:mr-4' : ''
                   }  min-h-[14rem]`}
                   index={index}
                 />
@@ -126,7 +129,7 @@ function Testimonials() {
       </div>
 
       <div className="hidden sm:grid grid-cols-2 lg:grid-cols-3 justify-start items-start gap-4 px-4 md:px-14 py-6 md:py-12 mb-4">
-        {TestimonialsData?.map((item, index) => {
+        {langContent[lang.lang].Index.testimonials.array.map((item, index) => {
           return <Review key={index} {...item} index={index} />;
         })}
       </div>
@@ -136,64 +139,6 @@ function Testimonials() {
 
 export default Testimonials;
 
-const TestimonialsData = [
-  {
-    step: 1,
-    face: Face1,
-    name: 'Adam S',
-    stars: 5,
-    publish: 'Last year',
-    class: 'row-span-2',
-    desc: '100% legit company for those sceptical people out there, I was one of them too to begin with but then i bagged 20k on my second time of playing. Money was in my account within 24 hours. Honestly these guys are genuinely nice people they were happy for me and made the process so easy and simple! I’ll be playing again put it that way…… got to be in it to win it!!!',
-  },
-  {
-    step: 1,
-    name: 'Oliver Bailey',
-    stars: 5,
-    class: 'row-span-1',
-    face: Face2,
-    publish: 'Last year',
-    desc: '5* Won a Mercedes c63s AMG for just £10 off just 10 tickets on their raffle competitions!',
-  },
-  {
-    step: 1,
-    name: 'Andy Bone',
-    class: 'row-span-1',
-    face: Face3,
-    stars: 5,
-    publish: 'Last year',
-    desc: 'Excellent friendly service and would highly recommend. Won a few times and goods arrived quickly. Cash alternative in bank within a few hours. Excellent and great.',
-  },
-  {
-    step: 1,
-    name: 'Tom Macca',
-    stars: 5,
-    class: 'row-span-2',
-    face: Face4,
-    publish: 'Last year',
-    desc: 'Won the Toyota Supra which is a amazing car the staff where great will definitely be entering again',
-  },
-  {
-    step: 1,
-    name: 'Michael Jolley',
-    stars: 5,
-    class: 'row-span-2',
-    face: Face5,
-
-    publish: 'Last year',
-    desc: "Wow what can I say I won an Audi RS5 absolutely over the moon, cracking blokes to deal with with brilliant communication, thanks once again for our car it's amazing all from a few £0:99p tickets. Is definitely recommend 7 days performance to anyone 10/10 well done guys",
-  },
-  {
-    step: 1,
-    name: 'Daniel Lloyd Mechanic',
-    stars: 5,
-    class: 'row-span-1',
-    face: Face6,
-
-    publish: 'Last year',
-    desc: 'I have played in many competitions with 7 days the last few years and finally bagged a winner on tickets I forgot all about. I won the £5000 tui voucher but chose the cash instead.',
-  },
-];
 
 type ReviewType = {
   class: string;
@@ -201,8 +146,8 @@ type ReviewType = {
   desc: string;
   publish: string;
   stars: number;
+  img: number;
   index: number;
-  face: typeof Face5;
 };
 
 function Review(item: ReviewType) {
@@ -213,7 +158,8 @@ function Review(item: ReviewType) {
       <div className="z-10 h-12 w-14  rounded-full  bg-white">
         <Image
           className="w-full h-full object-cover rounded-full"
-          src={item.face}
+          // src={item.face}
+          src={images[item.img] as any}
           quality={100}
           alt="Sunset in the mountains"
         />
@@ -232,4 +178,14 @@ function Review(item: ReviewType) {
       </div>
     </div>
   );
+}
+
+
+const images:any= {
+  1:Face1,
+  2:Face2,
+  3:Face3,
+  4:Face4,
+  5:Face5,
+  6:Face6
 }

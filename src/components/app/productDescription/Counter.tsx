@@ -7,6 +7,9 @@ import { useRouter } from 'next/router';
 import { trpc } from '~/utils/trpc';
 import { useToast } from '~/components/ui/use-toast';
 import { addToCart } from '~/store/reducers/cart';
+import { URIDecoder } from '~/utils/helper';
+import langContent from '~/locales';
+
 
 interface CounterProps {
   range: number[];
@@ -16,6 +19,7 @@ interface CounterProps {
   ticketPurchased: number;
   event: any;
 }
+
 const Counter: React.FC<CounterProps> = ({
   range,
   setRange,
@@ -35,14 +39,14 @@ const Counter: React.FC<CounterProps> = ({
   const addToBasket = trpc.cart.addToCart.useMutation();
 
   async function addToBasketHandler() {
-    console.log({ event });
-    const cartItem = cart?.cartItems?.find(
-      (item) => item.event_id === +(query?.id ?? 0),
-    );
+    const { id } = URIDecoder(query?.id ?? '');
+    const eventId = Number(id);
+
+    const cartItem = cart?.cartItems?.find((item) => item.event_id === eventId);
     const payload = {
       subscription_type: cartItem?.subscription_type ?? null,
       cart_id: cart?.id ?? 0,
-      event_id: +(query?.id ?? 0),
+      event_id: eventId,
       is_subscribe: cartItem?.is_subscribe ?? false,
       quantity: range[0] ?? 0,
     };
@@ -107,7 +111,7 @@ const Counter: React.FC<CounterProps> = ({
         <>
           <div className="flex items-center justify-between">
             <p className="text-lg text-white">
-              {lang.lang_id === 2 ? 'كم عدد التذاكر' : 'How many tickets?'}{' '}
+            {langContent[lang.lang].ProductDetail.counter.TICKETS}
             </p>
             {ticketPurchased ? (
               <p className="text-sm text-white/40 ">
@@ -122,7 +126,7 @@ const Counter: React.FC<CounterProps> = ({
           <TokenRange
             range={range}
             setRange={setRange}
-            min={1}
+            min={0}
             max={user_ticket_limit}
           />
           <CounterStyle
@@ -138,7 +142,7 @@ const Counter: React.FC<CounterProps> = ({
               onClick={addToBasketHandler}
               disabled={ticketInBasket.current === range[0]}
             >
-              ADD TICKETS TO BASKET
+              {langContent[lang.lang].ProductDetail.counter.BASKET_BUTTON}
             </Button>
           </div>
         </>

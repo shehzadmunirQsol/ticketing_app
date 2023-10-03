@@ -113,8 +113,14 @@ export function CardDailog(props: CardDialogInterface) {
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
+            <Button
+              variant={'secondary'}
+              onClick={() => props.setIsModal(false)}
+            >
+              NO
+            </Button>
             <Button type="submit" onClick={() => handleClick()}>
-              Save changes
+              YES
             </Button>
           </DialogFooter>
         </DialogContent>

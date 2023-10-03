@@ -28,7 +28,7 @@ import { LoadingDialog } from '../modal/loadingModal';
 const exampleFormSchema = z.object({
   username: z.string().min(2, {
     message: 'Username must be at least 2 characters.',
-  }),
+  }).trim(),
 });
 
 export default function ExampleForm() {
@@ -78,10 +78,10 @@ export default function ExampleForm() {
 }
 
 const loginFormSchema = z.object({
-  email: z.string().email(),
+  email: z.string().trim().email(),
   password: z.string().min(6, {
     message: 'Password must be at least 6 characters.',
-  }),
+  }).trim(),
 });
 
 export function LoginForm() {

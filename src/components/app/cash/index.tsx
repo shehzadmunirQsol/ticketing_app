@@ -8,6 +8,8 @@ import { RootState } from '~/store/store';
 import ProductCard from '~/components/common/card';
 import Glow from '~/components/common/glow';
 import { trpc } from '~/utils/trpc';
+import langContent from '~/locales';
+
 
 const CashPage = () => {
   const { lang } = useSelector((state: RootState) => state.layout);
@@ -50,7 +52,7 @@ const CashPage = () => {
   return (
     <>
       <div className="relative pt-24"></div>
-      <BannerTitle image={CashBg} text={'Cash'} />
+      <BannerTitle image={CashBg} text={langContent[lang.lang].Cash.HEADING} />
       <div className="relative h-full px-4 md:px-14 py-20">
         <Glow className=" absolute  top-1/4 -right-16  p-2   w-1/6 h-[150px]  " />
         <Glow className=" absolute  bottom-14 -right-16  w-1/6 h-[150px] " />
@@ -64,7 +66,6 @@ const CashPage = () => {
                   dir={lang.dir}
                   cash={Cash}
                   data={itemList}
-                  isCash
                 />
               </div>
             );

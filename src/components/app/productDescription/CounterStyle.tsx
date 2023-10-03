@@ -2,6 +2,10 @@ import React from 'react';
 import Image from 'next/image';
 import increment from '../../../public/assets/increment.svg';
 import decrement from '../../../public/assets/decrement.svg';
+import langContent from '~/locales';
+import { useSelector } from 'react-redux';
+import { RootState } from '~/store/store';
+
 interface token {
   range: number[];
   setRange: any;
@@ -9,12 +13,15 @@ interface token {
   max: number;
 }
 const CounterStyle = ({ range, setRange, min, max }: token) => {
-  const rangeType: any = range && range?.length ? range[0] : 1;
+  const { lang } = useSelector((state: RootState) => state.layout);
+
+  const rangeType: any = range && range?.length ? range[0] : 0;
+
   const handlerCounter = (type: string) => {
-    if (type == 'a' && rangeType < max) {
-      setRange([rangeType + 1]);
-    } else if (type == 'b' && rangeType > min) {
-      setRange([rangeType - 1]);
+    if (type == 'a' && rangeType <= (max - 10)) {
+      setRange([rangeType + 10]);
+    } else if (type == 'b' && rangeType >= (min + 10)) {
+      setRange([rangeType - 10]);
     }
   };
 
@@ -35,7 +42,7 @@ const CounterStyle = ({ range, setRange, min, max }: token) => {
         <div className="flex justify-center border-2 border-backgroundEntires w-full items-center align-middle text-xl text-white  text-center bg-background md:h-12 h-10 ">
           <p className="text-xs md:text-sm lg:text-xl">
             {' '}
-            Number of tickets: <span className="font-black ">{range}</span>
+            {langContent[lang.lang].ProductDetail.counter.NUMBERS_OF_TICKET}: <span className="font-black ">{range}</span>
           </p>
         </div>
         <button

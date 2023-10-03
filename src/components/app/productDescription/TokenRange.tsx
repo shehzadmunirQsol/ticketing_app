@@ -11,17 +11,16 @@ interface token {
 }
 const TokenRange = ({ range, setRange, min, max }: token) => {
   const percentage: any = ((range && range.length ? range[0] : 1) / max) * 100;
-  console.log({ percentage });
-  console.log(range[0], 'range[0]');
+
   // cons
   return (
     <div>
-      <div className="range-slider-container mt-14">
+      <div className="range-slider-container mt-14 cursor-pointer">
         <Slider
           defaultValue={range}
           value={range}
           max={max}
-          min={min}
+          min={1}
           step={1}
           onValueChange={(e: any) => {
             setRange(e);
@@ -29,7 +28,7 @@ const TokenRange = ({ range, setRange, min, max }: token) => {
         />
         <br />
         <div
-          className="absolute left-1/2 transform -translate-x-1/2 bottom-3 p-2 font-black bg-opacity-70  text-primary rounded-md text-lg whitespace-nowrap"
+          className="absolute left-1/2  transform -translate-x-1/2 bottom-3 p-2 font-black bg-opacity-70  text-primary rounded-md text-lg whitespace-nowrap"
           style={{ left: `${percentage}%` }}
         >
           {range}

@@ -1,21 +1,19 @@
-import { useDispatch } from 'react-redux';
-import { Button } from '~/components/ui/button';
+import { useSelector } from 'react-redux';
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
-  DialogTitle,
 } from '~/components/ui/dialog';
-import { useToast } from '~/components/ui/use-toast';
-import { removeFromCart } from '~/store/reducers/cart';
+
 import { trpc } from '~/utils/trpc';
 import { LoadingDialog } from './loadingModal';
 import Image from 'next/image';
 import { displayDate } from '~/utils/helper';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 import LogoImage from '~/public/assets/logo.png';
+import { RootState } from '~/store/store';
 
 interface OrderViewDialogInterface {
   selectedItem: any;
@@ -29,15 +27,14 @@ interface OrderViewDialogInterface {
 }
 
 export function OrderViewDialog(props: OrderViewDialogInterface) {
-  const { toast } = useToast();
-  const dispatch = useDispatch();
+  const { lang } = useSelector((state: RootState) => state.layout);
+
   const {
     data: OrderApiData,
-    isFetched,
-    isLoading,
+
     isFetching,
   } = trpc.order.getByID.useQuery(
-    { order_id: props?.selectedItem?.id },
+    { order_id: props?.selectedItem?.id, lang_id: lang.lang_id },
     {
       refetchOnWindowFocus: false,
 
@@ -48,13 +45,8 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
   return (
     <>
       <Dialog open={props?.isModal} onOpenChange={(e) => props.setIsModal(e)}>
-        <DialogContent className=" my-auto h-[calc(100%-100px)]  overflow-y-hidden mb-2 ">
-          <DialogFooter className=" sm:justify-start items-start w-full   ">
-            {/* <Button onClick={()=>onPrint()} type="submit">Print</Button> */}
-          </DialogFooter>
-          <DialogHeader className="">
-            {/* <DialogTitle>Remove Item</DialogTitle> */}
-          </DialogHeader>
+        <DialogContent className=" my-auto max-h-[800px] h-[calc(100%-100px)]  overflow-y-hidden  ">
+          <DialogFooter className=" sm:justify-start items-start w-full   "></DialogFooter>
           <DialogDescription className="relative bg-card h-full rounded-lg  overflow-y-scroll   scroll-hide">
             {OrderApiData && (
               <div
@@ -68,9 +60,6 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
                       src={LogoImage}
                       alt="Logo"
                     />
-                    {/* <div className=" font-semibold text-lg">
-                Your Company Name
-              </div> */}
                   </div>
                   <div className="text-gray-400 xs:text-center sm:text-left">
                     <div className="font-bold text-xl mb-2">INVOICE</div>
@@ -84,19 +73,17 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
                 </div>
                 <div className="border-b-2 border-gray-300 pb-8 mb-8">
                   <h2 className="text-2xl  font-bold mb-4">Bill To:</h2>
-                  <div className=" mb-2">
+                  <p className=" ">
                     {OrderApiData?.data?.first_name +
                       ' ' +
                       OrderApiData?.data?.last_name}
-                  </div>
-                  <div className=" mb-2">
-                    {OrderApiData?.data?.street_address}
-                  </div>
-                  <div className=" mb-2">
+                  </p>
+                  <p className=" ">{OrderApiData?.data?.street_address}</p>
+                  <p className=" ">
                     {OrderApiData?.data?.city}, {OrderApiData?.data?.country}{' '}
                     {OrderApiData?.data?.postal_code}
-                  </div>
-                  <div className="">{OrderApiData?.data?.email}</div>
+                  </p>
+                  <p className="mt-2">{OrderApiData?.data?.email}</p>
                 </div>
                 <ScrollArea className="w-full  ">
                   <ScrollBar orientation="horizontal"></ScrollBar>
