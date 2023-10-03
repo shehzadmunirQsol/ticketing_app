@@ -59,7 +59,7 @@ export const dashboardRouter = router({
         eventsPromise,
         ordersAmountPromise,
       ]);
-      const date = (new Date()).toISOString().split('T')[0]
+      const date = new Date().toISOString().split('T')[0];
       const analyticsData: any = [
         {
           title: 'Active Customers',
@@ -91,7 +91,7 @@ export const dashboardRouter = router({
           symbol: '',
           icon: 'fa-solid fa-calendar-days',
           cols: false,
-          link: `/admin/events?status=active`
+          link: `/admin/events?status=active`,
         },
         {
           title: 'Order Amount',
@@ -122,10 +122,13 @@ export const dashboardRouter = router({
         return { data: null };
       }
 
-      const chartData =
-        await prisma.$queryRaw`SELECT to_char( o.created_at,'yyyy-mm-dd') as NAME,CAST(COUNT(*) AS CHAR) as count,SUM(o.total_amount) as total,CAST(SUM(o.sub_total_amount) AS DECIMAL(10, 2)) as sub_total_amount,CAST(SUM(o.discount_amount) AS DECIMAL(10, 2)) as discount_amount FROM PUBLIC."order" o GROUP BY  name`;
+      const chartData: any =
+        await prisma.$queryRaw`SELECT to_char( o.created_at,'yyyy-mm-dd') as NAME,CAST(COUNT(*) AS CHAR) as count,SUM(o.total_amount) as total,CAST(SUM(o.sub_total_amount) AS DECIMAL(10, 2)) as sub_total_amount,CAST(SUM(o.discount_amount) AS DECIMAL(10, 2)) as discount_amount FROM PUBLIC."order" o GROUP BY  name order by NAME desc limit 7`;
 
-      return { message: 'Chart Data', data: chartData };
+      return {
+        message: 'Chart Data',
+        data: chartData.length ? chartData?.reverse() : [],
+      };
     } catch (error: any) {
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
