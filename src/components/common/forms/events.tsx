@@ -51,7 +51,7 @@ export default function EventForm() {
   });
 
   // Get Data From Cms
-  const { data: cms, isLoading } = trpc.cms.getCmsContent.useQuery(
+  const { data: cms } = trpc.cms.getCmsContent.useQuery(
     {},
     {
       refetchOnWindowFocus: false,
@@ -65,8 +65,6 @@ export default function EventForm() {
     id: item.id,
     name: item.CMSDescription[0]?.title || '', // Access the first "title" in CMSDescription
   }));
-
-  console.log({ modifiedArray });
 
   const formSchema = [
     {
@@ -101,7 +99,7 @@ export default function EventForm() {
     {
       type: 'select',
       name: 'faq_id',
-      label: 'Event Faqs',
+      label: 'Product Faqs',
       list: modifiedArray,
 
       placeholder: 'Please Enter Faqs Type',
@@ -221,12 +219,11 @@ export default function EventForm() {
 
       toast({
         variant: 'success',
-        title: 'Event Uploaded Successfully',
+        title: 'Product Uploaded Successfully',
       });
       setIsSubmitting(false);
       router.back();
     } catch (e: any) {
-      console.log(e, 'evensh eissues');
       setIsSubmitting(false);
 
       toast({
@@ -299,7 +296,7 @@ export default function EventForm() {
       form.setValue('ar.desc', ar?.desc as string);
       form.setValue('ar.comp_details', ar?.desc as string);
       form.setValue('cash_alt', payload.data?.cash_alt);
-      form.setValue('category_id', payload.data?.category_id );
+      form.setValue('category_id', payload.data?.category_id);
       form.setValue('faq_id', payload.data?.faq_id as any);
       form.setValue('is_cash_alt', payload.data?.is_cash_alt);
       form.setValue(
@@ -385,7 +382,7 @@ export default function EventForm() {
                 setRemovedImages={setRemovedImages}
                 eventImages={eventData?.data?.EventImages}
                 required={true}
-                placeholder={'Upload Multiple file'}
+                placeholder={'Upload Multiple images'}
               />
             </div>
             <div>
@@ -411,7 +408,7 @@ export default function EventForm() {
               )}
             </div>
             <Tabs defaultValue={'en'} className="w-full">
-              <TabsList className='overflow-hidden'>
+              <TabsList className="overflow-hidden">
                 <TabsTrigger value="en">English</TabsTrigger>
                 <TabsTrigger value="ar">Arabic</TabsTrigger>
               </TabsList>
@@ -527,7 +524,7 @@ export default function EventForm() {
                     control={form.control}
                     name="ar.comp_details"
                     render={({ field }) => (
-                      <FormItem >
+                      <FormItem>
                         <FormLabel>Competiton Details</FormLabel>
                         <FormControl>
                           <div dir="rtl">
@@ -622,7 +619,6 @@ export default function EventForm() {
                   }
                   if (item?.type == 'date') {
                     const launchMinDate = new Date();
-                   
 
                     const launchDate = isNaN(
                       form?.watch('launch_date')?.getTime(),
@@ -786,7 +782,7 @@ export default function EventForm() {
           <div className="flex items-center justify-between">
             <div></div>
             <Button type="submit" variant={'clip'} className="w-1/2">
-              {eventId > 0 ? 'Edit Event' : 'Add Event'}
+              {eventId > 0 ? 'Edit Product' : 'Add Product'}
             </Button>
           </div>
         </form>

@@ -7,7 +7,7 @@ function EventsForm() {
   return (
     <div className=" px-8 py-4">
       <div className="flex items-center justify-between mb-4">
-        <div className=" text-4xl font-semibold">Events</div>
+        <div className=" text-4xl font-semibold">Products</div>
         <Link href="/admin/events/add">
           <Button type="submit" variant={'clip'} className="w-28">
             Add

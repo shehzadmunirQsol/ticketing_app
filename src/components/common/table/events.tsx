@@ -74,15 +74,12 @@ export type Category = {
 export default function EventsDataTable() {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [filterID, setFilterID] = useState({});
-  const router = useRouter()
-  
 
   const [filters, setFilters] = useState<GetEventSchema>({
     first: 0,
     rows: 10,
     lang_id: 1,
   });
-  console.log({ filterID });
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
 
@@ -219,7 +216,7 @@ export default function EventsDataTable() {
               <DropdownMenuSeparator />
 
               <Link href={`/admin/events/edit/${row?.original?.id}`}>
-                <DropdownMenuItem>Edit Event</DropdownMenuItem>
+                <DropdownMenuItem>Edit Product</DropdownMenuItem>
               </Link>
 
               {row?.original?.tickets_sold > 0 ? (
@@ -229,7 +226,7 @@ export default function EventsDataTable() {
                     onClick={() => dispatch(setSelectedEvent(row.original))}
                     href={`/admin/events/event-customers/${row.original.id}`}
                   >
-                    <DropdownMenuItem>Event Customers</DropdownMenuItem>
+                    <DropdownMenuItem>Product Customers</DropdownMenuItem>
                   </Link>
                 </>
               ) : null}
@@ -275,7 +272,7 @@ export default function EventsDataTable() {
     },
     {
       Icon: 'fal fa-chevron-down',
-      text: 'Event Status',
+      text: 'Product Status',
       filtername: 'status',
       type: 'select',
 
@@ -351,7 +348,7 @@ export default function EventsDataTable() {
         </DropdownMenu>
         <TableFilters
           inputList={roleOptions1}
-          item_name={'Events'}
+          item_name={'Products'}
           value={filterID}
           setValue={setFilterID}
           setFilters={setFilters}
@@ -371,9 +368,9 @@ export default function EventsDataTable() {
                         {header.isPlaceholder
                           ? null
                           : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
+                              header.column.columnDef.header,
+                              header.getContext(),
+                            )}
                       </TableHead>
                     );
                   })}
@@ -471,7 +468,7 @@ export default function EventsDataTable() {
               disabled={
                 (filters.first + 1) * filters.rows > (data?.count ?? 0) ||
                 Math.ceil((data?.count ?? 0) / filters.rows) ==
-                filters.first + 1
+                  filters.first + 1
               }
             >
               <span className="sr-only">Go to next page</span>
@@ -489,7 +486,7 @@ export default function EventsDataTable() {
               disabled={
                 (filters.first + 1) * filters.rows > (data?.count ?? 0) ||
                 Math.ceil((data?.count ?? 0) / filters.rows) ==
-                filters.first + 1
+                  filters.first + 1
               }
             >
               <span className="sr-only">Go to last page</span>
