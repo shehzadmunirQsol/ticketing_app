@@ -7,6 +7,7 @@ import { RootState } from '~/store/store';
 import WinnarsCard from '~/components/app/winners/winnars_card';
 import Glow from '~/components/common/glow';
 import { trpc } from '~/utils/trpc';
+import langContent from '~/locales';
 
 export const Winners = () => {
   const { lang } = useSelector((state: RootState) => state.layout);
@@ -40,7 +41,7 @@ export const Winners = () => {
   return (
     <div>
       <div className="relative pt-24 "></div>
-      <BannerTitle image={WinnarsBg} text={'winners'} />
+      <BannerTitle image={WinnarsBg} text={langContent[lang.lang].Winners.HEADING}/>
       <div className="relative h-full px-4 md:px-14  py-20">
         <Glow className=" absolute  -top-10 -left-16  p-2   w-1/6 h-[150px]" />
         <Glow className=" absolute -bottom-10 -right-16  w-1/6 h-[150px] -z-10 " />

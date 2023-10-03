@@ -8,6 +8,8 @@ import { trpc } from '~/utils/trpc';
 import { useToast } from '~/components/ui/use-toast';
 import { addToCart } from '~/store/reducers/cart';
 import { URIDecoder } from '~/utils/helper';
+import langContent from '~/locales';
+
 
 interface CounterProps {
   range: number[];
@@ -108,7 +110,7 @@ const Counter: React.FC<CounterProps> = ({
         <>
           <div className="flex items-center justify-between">
             <p className="text-lg text-white">
-              {lang.lang_id === 2 ? 'كم عدد التذاكر' : 'How many tickets?'}{' '}
+            {langContent[lang.lang].ProductDetail.counter.TICKETS}
             </p>
             {ticketPurchased ? (
               <p className="text-sm text-white/40 ">
@@ -139,7 +141,7 @@ const Counter: React.FC<CounterProps> = ({
               onClick={addToBasketHandler}
               disabled={ticketInBasket.current === range[0]}
             >
-              ADD TICKETS TO BASKET
+              {langContent[lang.lang].ProductDetail.counter.BASKET_BUTTON}
             </Button>
           </div>
         </>

@@ -8,6 +8,7 @@ import { renderNFTImage } from '~/utils/helper';
 import Link from 'next/link';
 import { router } from '~/server/trpc';
 import { useRouter } from 'next/router';
+import langContent from '~/locales';
 
 function BannerSlider() {
   const { lang } = useSelector((state: RootState) => state.layout);
@@ -130,7 +131,7 @@ function BannerSlider() {
                     router.push(carSlider[currentIndex]?.link);
                   }}
                 >
-                  {lang.lang_id === 1 ? 'ENTER NOW' : 'أدخل الأن'}
+                  {langContent[lang.lang].Index.banner.ENTER_BTN}
                 </Button>
               </>
             </div>

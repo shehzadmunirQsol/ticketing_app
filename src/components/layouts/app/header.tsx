@@ -4,13 +4,6 @@ import LogoImage from '~/public/assets/logo.png';
 import Image from 'next/image';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from '@/ui/collapsible';
-
-import { User, ShoppingCart, Languages } from 'lucide-react';
-import {
   Select,
   SelectContent,
   SelectGroup,
@@ -22,13 +15,7 @@ import { useRouter } from 'next/router';
 import { toggleLang } from '~/store/reducers/layout';
 import { RootState } from '~/store/store';
 import Link from 'next/link';
-
-interface LinkItemProps {
-  name: string;
-  link: string;
-  icon: string;
-  disable?: boolean;
-}
+import langContent from '~/locales';
 
 function Header() {
   const router = useRouter();
@@ -133,11 +120,12 @@ function Header() {
           </SelectContent>
         </Select>
 
-        <div
-          
-          onClick={() => setNav((prev) => !prev)}
-        >
-          <Button variant="outline" size="icon_square" className='border-primary relative z-50'>
+        <div onClick={() => setNav((prev) => !prev)}>
+          <Button
+            variant="outline"
+            size="icon_square"
+            className="border-primary relative z-50"
+          >
             {nav ? (
               <i className="fa-solid fa-xmark text-lg text-center text-gray-200"></i>
             ) : (
@@ -208,7 +196,7 @@ export const SideBarMenuDemo: React.FC<SideBarMenuDemoProps> = ({
             closeFn(false);
           }}
         >
-          Cars
+          {langContent[lang.lang].Header.title_one}
         </li>
         <li
           className="py-2 text-xl w-full text-center border-t-[1px] border-muted-foreground hover:bg-muted-foreground hover:text-primary-foreground transition-colors duration-500 ease-in-out cursor-pointer"
@@ -217,7 +205,7 @@ export const SideBarMenuDemo: React.FC<SideBarMenuDemoProps> = ({
             closeFn(false);
           }}
         >
-          Cash
+          {langContent[lang.lang].Header.title_two}
         </li>
         <li
           className="py-2 text-xl w-full text-center border-t-[1px] border-muted-foreground hover:bg-muted-foreground hover:text-primary-foreground transition-colors duration-500 ease-in-out cursor-pointer"
@@ -226,7 +214,7 @@ export const SideBarMenuDemo: React.FC<SideBarMenuDemoProps> = ({
             closeFn(false);
           }}
         >
-          Winners
+          {langContent[lang.lang].Header.title_three}
         </li>
         <li
           className="py-2 text-xl w-full text-center border-t-[1px] border-muted-foreground hover:bg-muted-foreground hover:text-primary-foreground transition-colors duration-500 ease-in-out cursor-pointer"
@@ -235,7 +223,7 @@ export const SideBarMenuDemo: React.FC<SideBarMenuDemoProps> = ({
             closeFn(false);
           }}
         >
-          About Us
+          {langContent[lang.lang].Header.title_four}
         </li>
         <li
           className="py-2 text-xl w-full text-center border-t-[1px] border-muted-foreground hover:bg-muted-foreground hover:text-primary-foreground transition-colors duration-500 ease-in-out cursor-pointer"
@@ -244,7 +232,7 @@ export const SideBarMenuDemo: React.FC<SideBarMenuDemoProps> = ({
             closeFn(false);
           }}
         >
-          Contact Us
+          {langContent[lang.lang].Header.title_five}
         </li>
         <li
           className="group py-2 text-xl w-full text-center border-t-[1px] border-muted-foreground hover:bg-muted-foreground hover:text-primary-foreground transition-colors duration-500 ease-in-out cursor-pointer"
@@ -254,7 +242,7 @@ export const SideBarMenuDemo: React.FC<SideBarMenuDemoProps> = ({
           }}
         >
           <div className="flex items-center justify-center">
-            <span className="w-fit">Cart</span>
+            <span className="w-fit">{langContent[lang.lang].Header.title_six}</span>
             {count ? (
               <span className="block mx-2 text-primary group-hover:text-primary-foreground transition-colors duration-500 w-fit">
                 ( {count > 999 ? '999+' : count} )
@@ -270,7 +258,7 @@ export const SideBarMenuDemo: React.FC<SideBarMenuDemoProps> = ({
             closeFn(false);
           }}
         >
-          <>{isLogin ? 'My Account' : 'Login'}</>
+          <>{isLogin ? langContent[lang.lang].Header.sub_title_seven : langContent[lang.lang].Header.title_seven}</>
         </li>
       </ul>
     </>
@@ -278,45 +266,14 @@ export const SideBarMenuDemo: React.FC<SideBarMenuDemoProps> = ({
 };
 
 export function ItemMenuDemo() {
-  const linkItems: Array<LinkItemProps> = [
-    {
-      name: 'Cars',
-      link: '/cars',
-      // link: `/`,
-      icon: 'fas fa-house',
-    },
-    {
-      name: 'Cash',
-      link: `/cash`,
-      // link: `/`,
-      icon: 'fa-solid fa-globe',
-    },
-    {
-      name: 'Winners',
-      link: `/winners`,
-      // link: `/`,
-      icon: 'fa-sharp fa-regular fa-images',
-    },
-    {
-      name: 'About Us',
-      link: `/about-us`,
-      // link: `/`,
-      icon: 'fa-solid fa-image',
-    },
-    {
-      name: 'FAQ',
-      link: `/faq`,
-      // link: `/`,
-      icon: 'fa-solid fa-users',
-    },
-  ];
+  const { lang } = useSelector((state: RootState) => state.layout);
   return (
     <div
       className="items-center justify-between hidden w-full md:flex md:w-auto "
       id="navbar-sticky"
     >
       <ul className="flex flex-col p-4 md:p-0  text-small font-normal  border  rounded-lg bg-transparent md:flex-row md:space-x-4 md:mt-0 md:border-0 md:bg-white dark:bg-transparent ">
-        {linkItems?.map((item) => {
+        {langContent[lang.lang].Header.array.map((item) => {
           return (
             <li
               key={item.name}
