@@ -45,10 +45,9 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
   return (
     <>
       <Dialog open={props?.isModal} onOpenChange={(e) => props.setIsModal(e)}>
-        <DialogContent className=" my-auto h-[calc(100%-100px)]  overflow-y-hidden mb-2 ">
+        <DialogContent className=" my-auto max-h-[800px] h-[calc(100%-100px)]  overflow-y-hidden  ">
           <DialogFooter className=" sm:justify-start items-start w-full   "></DialogFooter>
-          <DialogHeader className=""></DialogHeader>
-          <DialogDescription className="relative bg-card h-fit rounded-lg  overflow-y-scroll   scroll-hide">
+          <DialogDescription className="relative bg-card h-full rounded-lg  overflow-y-scroll   scroll-hide">
             {OrderApiData && (
               <div
                 className="bg-card h-full text-gray-400 rounded-lg  px-8 py-10 max-w-xl mx-auto  "
@@ -79,9 +78,7 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
                       ' ' +
                       OrderApiData?.data?.last_name}
                   </p>
-                  <p className=" mb-2">
-                    {OrderApiData?.data?.street_address}
-                  </p>
+                  <p className=" mb-2">{OrderApiData?.data?.street_address}</p>
                   <p className=" mb-2">
                     {OrderApiData?.data?.city}, {OrderApiData?.data?.country}{' '}
                     {OrderApiData?.data?.postal_code}
