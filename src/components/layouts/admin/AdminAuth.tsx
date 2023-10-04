@@ -31,7 +31,7 @@ export default function AdminAuth({ children }: { children: ReactNode }) {
 
       onSuccess(data) {
         dispatch(userAdminAuth(data as any));
-        dispatch(userAdminIsLogin(true));
+        dispatch(userAdminIsLogin(data ? true : false));
       },
     },
   );
@@ -64,13 +64,7 @@ export default function AdminAuth({ children }: { children: ReactNode }) {
     return () => {
       if (timeout) clearTimeout(timeout);
     };
-  }, [
-    isFetched,
-    isLoading,
-    userData,
-    typeof window !== 'undefined',
-    router.pathname,
-  ]);
+  }, [isFetched, isLoading, userData, typeof window !== 'undefined']);
 
   return (
     <>
