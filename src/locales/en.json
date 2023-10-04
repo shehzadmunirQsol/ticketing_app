@@ -425,6 +425,10 @@
           "BUTTON":" Enter"
       }
 
+  },
+  "About":{
+    "HEADING":"Meet Our Driving Force",
+    "SUB_HEADING":"The Passionate Team Behind Winnar"
   }
 
 }

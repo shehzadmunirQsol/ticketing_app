@@ -48,7 +48,7 @@ function LiveDraw(props: any) {
           </div>
         </div>
 
-        <div className="flex flex-col gap-8 lg:space-y-4 justify-center my-auto max-w-lg text-left ">
+        <div className="flex flex-col gap-8 lg:space-y-4 justify-center my-auto max-w-lg text-left mb-4">
           {langContent[lang.lang].ProductDetail.livedraw.array?.map((item, index) => {
             return (
               <div
@@ -60,7 +60,7 @@ function LiveDraw(props: any) {
                   src={Icon}
                   alt="Sunset in the mountains"
                 />
-                <p className="text-background text-xl font-medium  ltr:text-left rtl:text-right" >
+                <p className="text-background text-xl font-medium  ltr:text-left rtl:text-right " >
                   {item?.description}
                 </p>
               </div>

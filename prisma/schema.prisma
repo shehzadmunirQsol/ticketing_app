@@ -504,6 +504,7 @@ model CMS {
   type       CMSEnums @default(static)
   is_deleted Boolean  @default(false)
   is_enabled Boolean  @default(false)
+  is_default Boolean  @default(false)
   created_at DateTime @default(now()) @db.Timestamp(6)
   updated_at DateTime @default(now()) @db.Timestamp(6)
 

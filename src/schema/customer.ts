@@ -91,6 +91,8 @@ export const signupCustomerSchemaInput = z.object({
   dob: z.date(),
   country: z.string({
     required_error: "Please select your country"
+  }).min(1, {
+    message: "Please select your country"
   }),
   gender: z.enum(['male', 'female'], {
     required_error: 'Please enter your gender',
@@ -240,6 +242,11 @@ export const accountsDetailSchemaInput = z.object({
     }).trim(),
   email: z.string().trim().email(),
   dob: z.date().optional().nullable(),
+  country: z.string({
+    required_error: "Please select your country"
+  }).min(1, {
+    message: "Please select your country"
+  }),
 });
 
 export type accountsDetailSchemaInput = z.infer<

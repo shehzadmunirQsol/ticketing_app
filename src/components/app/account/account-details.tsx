@@ -9,6 +9,18 @@ import {
 } from '~/schema/customer';
 
 import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '~/components/ui/select';
+
+import countryJSON from "~/data/countries.json";
+const countries = countryJSON.map((item) => item.country);
+
+import {
   Form,
   FormControl,
   FormField,
@@ -157,30 +169,82 @@ const AccountDetails = () => {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="dob"
-              render={() => (
-                <FormItem className=" flex flex-col gap-2 mt-2 w-full">
-                  <FormLabel className="text-xs font-thin text-grayColor">
-                    Date of Birth *
-                  </FormLabel>
-                  <FormControl className="rounded-md bg-inputColor ">
-                    <Input
-                      type={'date'}
-                      placeholder={'Start Date'}
-                      max={minDateFormatted}
-                      {...form.register('dob', {
-                        valueAsDate: true,
-                      })}
-                    />
-                  </FormControl>
-                  <div className="relative pb-2">
-                    <FormMessage />
-                  </div>
-                </FormItem>
-              )}
-            />
+
+
+
+            <div className="flex flex-col sm:flex-row justify-center items-center gap-2">
+
+              <FormField
+                control={form.control}
+                name="dob"
+                render={() => (
+                  <FormItem className=" flex flex-col gap-2 mt-2 w-full">
+                    <FormLabel className="text-xs font-thin text-grayColor">
+                      Date of Birth *
+                    </FormLabel>
+                    <FormControl className="rounded-md bg-inputColor">
+                      <Input
+                        type={'date'}
+                        placeholder={'Start Date'}
+                        max={minDateFormatted}
+                        {...form.register('dob', {
+                          valueAsDate: true,
+                        })}
+                      />
+                    </FormControl>
+                    <div className="relative pb-2">
+                      <FormMessage />
+                    </div>
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="country"
+
+                render={({ field }) => (
+                  <FormItem className="flex flex-col gap-2 mt-2 w-full">
+                    <FormLabel className="text-xs  font-thin text-grayColor">
+                      Country/ Region{' '}
+                      <sup className="text-white">*</sup>
+                    </FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      value={field.value}
+
+
+                    >
+                      <FormControl className=''>
+                        <SelectTrigger className=" rounded-md h-10   bg-inputColor" >
+                          <SelectValue placeholder="Select your country" className='' />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent className='max-h-[300px] overflow-y-auto'>
+                        <SelectGroup>
+                          {countries && countries?.map((country, i) => {
+                            return (
+                              <SelectItem
+                                key={country}
+                                value={country}
+                              >
+                                {country?.toUpperCase()}
+                              </SelectItem>
+                            )
+                          })}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+
+                    <div className="relative pb-2">
+                      <FormMessage />
+                    </div>
+                  </FormItem>
+                )}
+              />
+
+            </div>
 
             <div className=" flex items-center ltr:justify-end rtl:justify-start">
               <Button

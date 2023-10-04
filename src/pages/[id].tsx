@@ -147,65 +147,58 @@ const AboutUsContent = ` <div className='bg-background'>
   </svg>
 </div>
   <div data="main-carousel">
-    [
-        {
-            "img":"https://media.winnar.com/upload/founder.png",
-            "heading":"Scott L. Hughes",
-            "text":"Co-Founder",
-            "hoverhead":"Scott L. Hughes",
-            "hoverpera":"Co-Founder",
-            "hoverdesc":"Aenean vulputate eleifend tellus Aenean leo ligula porttitor eu consequat vitae eleifend ac enim. Aliquam lorem ante dapibus in viverra quis feugiat a tellus Phasellus viverra nulla ut metus varius laoreet Quisque rutrum"
-            
-        },
-        {
-            "img":"https://media.winnar.com/upload/founder-1.png",
-            "heading":"Scott L. Hughes",
-            "text":"Founder",
-            "hoverhead":"Scott L. Hughes",
-            "hoverpera":"Founder",
-            "hoverdesc":"Aenean vulputate eleifend tellus Aenean leo ligula porttitor eu consequat vitae eleifend ac enim. Aliquam lorem ante dapibus in viverra quis feugiat a tellus Phasellus viverra nulla ut metus varius laoreet Quisque rutrum"
-
-            
-        },
-        {
-            "img":"https://media.winnar.com/upload/founder-2.png",
-            "heading":"Ameen",
-            "text":"Founder",
-            "hoverhead":"Scott L. Hughes",
-            "hoverpera":"Founder",
-            "hoverdesc":"Aenean vulputate eleifend tellus Aenean leo ligula porttitor eu consequat vitae eleifend ac enim. Aliquam lorem ante dapibus in viverra quis feugiat a tellus Phasellus viverra nulla ut metus varius laoreet Quisque rutrum"
-
-            
-        },
-        {
-            "img":"https://media.winnar.com/upload/founder-3.png",
-            "heading":"Muzi",
-            "text":"Founder",
-            "hoverhead":"Scott L. Hughes",
-            "hoverpera":"Founder",
-            "hoverdesc":"hello"
-            
-        },
-        {
-            "img":"https://media.winnar.com/upload/founder.png",
-            "heading":"Ahmed",
-            "text":"Founder",
-            "hoverhead":"Scott L. Hughes",
-            "hoverpera":"Founder",
-            "hoverdesc":"hello"
-            
-        },
-        {
-          "img":"https://media.winnar.com/upload/founder.png",
-          "heading":"Shehzad",
-          "text":"Founder",
-          "hoverhead":"Scott L. Hughes",
-          "hoverpera":"Founder",
-          "hoverdesc":"Aenean vulputate eleifend tellus Aenean leo ligula porttitor eu consequat vitae eleifend ac enim. Aliquam lorem ante dapibus in viverra quis feugiat a tellus Phasellus viverra nulla ut metus varius laoreet Quisque rutrum"
-
-
-      }
-    ]
+  [
+    {
+        "img":"https://media.winnar.com/upload/founder.png",
+        "heading":"Scott L. Hughes",
+        "text":"Co-Founder",
+        "hoverhead":"Scott L. Hughes",
+        "hoverpera":"Co-Founder",
+        "hoverdesc":"Aenean vulputate eleifend tellus Aenean leo ligula porttitor eu consequat vitae eleifend ac enim. Aliquam lorem ante dapibus in viverra quis feugiat a tellus Phasellus viverra nulla ut metus varius laoreet Quisque rutrum"
+    },
+    {
+        "img":"https://media.winnar.com/upload/founder-1.png",
+        "heading":"Scott L. Hughes",
+        "text":"Founder",
+        "hoverhead":"Scott L. Hughes",
+        "hoverpera":"Founder",
+        "hoverdesc":"Aenean vulputate eleifend tellus Aenean leo ligula porttitor eu consequat vitae eleifend ac enim. Aliquam lorem ante dapibus in viverra quis feugiat a tellus Phasellus viverra nulla ut metus varius laoreet Quisque rutrum"
+    },
+    {
+        "img":"https://media.winnar.com/upload/founder-2.png",
+        "heading":"Eric M. Carroll",
+        "text":"Founder",
+        "hoverhead":"Scott L. Hughes",
+        "hoverpera":"Founder",
+        "hoverdesc":"Aenean vulputate eleifend tellus Aenean leo ligula porttitor eu consequat vitae eleifend ac enim. Aliquam lorem ante dapibus in viverra quis feugiat a tellus Phasellus viverra nulla ut metus varius laoreet Quisque rutrum"
+    },
+    {
+        "img":"https://media.winnar.com/upload/founder-3.png",
+        "heading":"Ronnie D. Blake",
+        "text":"Founder",
+        "hoverhead":"Scott L. Hughes",
+        "hoverpera":"Founder",
+        "hoverdesc":"Aenean vulputate eleifend tellus Aenean leo ligula porttitor eu consequat vitae eleifend ac enim. Aliquam lorem ante dapibus in viverra quis feugiat a tellus Phasellus viverra nulla ut metus varius laoreet Quisque rutrum"
+        
+    },
+    {
+        "img":"https://media.winnar.com/upload/founder.png",
+        "heading":"Marvin L. Orr",
+        "text":"Founder",
+        "hoverhead":"Scott L. Hughes",
+        "hoverpera":"Founder",
+        "hoverdesc":"Aenean vulputate eleifend tellus Aenean leo ligula porttitor eu consequat vitae eleifend ac enim. Aliquam lorem ante dapibus in viverra quis feugiat a tellus Phasellus viverra nulla ut metus varius laoreet Quisque rutrum"
+        
+    },
+    {
+      "img":"https://media.winnar.com/upload/founder.png",
+      "heading":"Ronnie D. Blake",
+      "text":"Founder",
+      "hoverhead":"Scott L. Hughes",
+      "hoverpera":"Founder",
+      "hoverdesc":"Aenean vulputate eleifend tellus Aenean leo ligula porttitor eu consequat vitae eleifend ac enim. Aliquam lorem ante dapibus in viverra quis feugiat a tellus Phasellus viverra nulla ut metus varius laoreet Quisque rutrum"
+  }
+]
 </div>
 <div className="w-full py-32 lg:px-14 md:px-14 px-4 z-40 text-center bg-Image">
     <div className=" text-center flex flex-col lg:flex-row gap-x-20 justify-center items-start font-sans lg:mx-auto">
@@ -311,7 +304,6 @@ const AboutUsContentTwo = `
 
 `;
 
-
 const faqUpdateArea = `
 <div class="w-full relative h-[750px] md:h-[650px] lg:h-[550px] z-40 text-center "><img alt="/" class="object-cover  w-full h-full block bg-black/50" fill="" quality="{100}" src="https://media.winnar.com/upload/faq-banner.png" />
 <div class="absolute h-[35px] w-full text-center top-[50%] flex items-center">
@@ -360,8 +352,7 @@ const faqUpdateArea = `
 		</section>
 		<input type="radio" name="accordion" id="acc-close" />
     </div>
-	</nav>`
-
+	</nav>`;
 
 export default function CmsPage({ storeBlogsData }: any) {
   const { lang } = useSelector((state: RootState) => state.layout);
