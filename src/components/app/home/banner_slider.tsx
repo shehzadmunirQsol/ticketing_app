@@ -99,7 +99,7 @@ function BannerSlider() {
     >
       {isSuccess && carSlider?.length ? (
         <>
-          <div className="mt-24 md:mt-32 flex flex-col lg:flex-row px-2 md:px-12 h-full">
+          <div className="mt-[7.5rem] md:mt-36 flex flex-col lg:flex-row px-2 md:px-12 h-full">
             {/* text content */}
 
             <div
