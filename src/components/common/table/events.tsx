@@ -54,13 +54,14 @@ import {
   DoubleArrowRightIcon,
 } from '@radix-ui/react-icons';
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
-import { useRouter } from 'next/router';
+import { CSVLink } from 'react-csv';
 
 export type Category = {
   thumb: string;
   name: string;
   desc: string | null;
   id: number;
+  category_id: number;
   price: number;
   total_tickets: number;
   tickets_sold: number;
@@ -95,8 +96,19 @@ export default function EventsDataTable() {
     lang_id: 1,
   });
 
+  const categories: { [key: number]: string } = (categoryData ?? [])?.reduce(
+    (accumulator, current) => {
+      const categoryNames: { [key: number]: string } = {
+        ...accumulator,
+        [current.id]: current.name,
+      };
+      return categoryNames;
+    },
+    {},
+  );
+
   const eventData = React.useMemo(() => {
-    return Array.isArray(data?.data) ? data?.data : [];
+    return Array.isArray(data?.data) && data?.data?.length ? data?.data : [];
   }, [data]);
   const columns: ColumnDef<Category>[] = [
     {
@@ -126,6 +138,15 @@ export default function EventsDataTable() {
       cell: ({ row }) => (
         <div className="text-ellipsis whitespace-nowrap overflow-hidden w-64">
           {row?.original?.desc}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'Category',
+      header: 'Category',
+      cell: ({ row }) => (
+        <div className="text-ellipsis whitespace-nowrap overflow-hidden w-28">
+          {categories[row?.original?.category_id]}
         </div>
       ),
     },
@@ -316,50 +337,102 @@ export default function EventsDataTable() {
     },
   ];
 
+  const csvData = [
+    [
+      'Name',
+      'Description',
+      'Category',
+      'Token Price',
+      'Token Cap',
+      'Token Purchased',
+      'Per User Limit',
+      'Launched Date',
+      'End Date',
+      'Created At',
+    ],
+    ...eventData?.map(
+      ({
+        name,
+        desc,
+        category_id,
+        price,
+        total_tickets,
+        tickets_sold,
+        user_ticket_limit,
+        launch_date,
+        end_date,
+        created_at,
+      }) => [
+        name,
+        desc,
+        categories[category_id],
+        price,
+        total_tickets,
+        tickets_sold,
+        user_ticket_limit,
+        launch_date?.toLocaleDateString(),
+        end_date?.toLocaleDateString(),
+        created_at?.toLocaleDateString(),
+      ],
+    ),
+  ];
+
   return (
     <div className="w-full space-y-4">
-      <div className="flex items-center justify-end gap-2">
-        <LanguageSelect languageHandler={languageHandler} />
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline">
-              Columns <ChevronDown className="ml-2 h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
-        <TableFilters
-          inputList={roleOptions1}
-          item_name={'Products'}
-          value={filterID}
-          setValue={setFilterID}
-          setFilters={setFilters}
-          initial={filters}
-        />
+      <div className="flex items-center justify-between">
+        {eventData?.length ? (
+          <Button variant="outline">
+            <CSVLink filename="products.csv" data={csvData}>
+              Export to CSV
+            </CSVLink>
+          </Button>
+        ) : (
+          <div />
+        )}
+
+        <div className="flex items-center gap-2">
+          <LanguageSelect languageHandler={languageHandler} />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline">
+                Columns <ChevronDown className="ml-2 h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {table
+                .getAllColumns()
+                .filter((column) => column.getCanHide())
+                .map((column) => {
+                  return (
+                    <DropdownMenuCheckboxItem
+                      key={column.id}
+                      className="capitalize"
+                      checked={column.getIsVisible()}
+                      onCheckedChange={(value) =>
+                        column.toggleVisibility(!!value)
+                      }
+                    >
+                      {column.id}
+                    </DropdownMenuCheckboxItem>
+                  );
+                })}
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <TableFilters
+            inputList={roleOptions1}
+            item_name={'Products'}
+            value={filterID}
+            setValue={setFilterID}
+            setFilters={setFilters}
+            initial={filters}
+          />
+        </div>
       </div>
       <div className="rounded-md border border-border">
         <ScrollArea className="w-full ">
           <ScrollBar orientation="horizontal"></ScrollBar>
           <Table>
-            <TableHeader>
+            <TableHeader className="bg-secondary/80">
               {table?.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {

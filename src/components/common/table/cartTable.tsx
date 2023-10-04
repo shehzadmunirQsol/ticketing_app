@@ -47,6 +47,7 @@ import {
   DoubleArrowRightIcon,
 } from '@radix-ui/react-icons';
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
+import { CSVLink } from 'react-csv';
 export type CartType = {
   id: number;
   is_subscribe: boolean;
@@ -83,12 +84,13 @@ export default function OrdersDataTable() {
     },
   );
   const cartItemData = React.useMemo(() => {
-    return Array.isArray(data?.data) ? data?.data : [];
+    return Array.isArray(data?.data) && data?.data?.length ? data?.data : [];
   }, [data]);
+
   const columns: ColumnDef<CartType>[] = [
     {
-      accessorKey: 'Event',
-      header: 'Event',
+      accessorKey: 'Product',
+      header: 'Product',
       cell: ({ row }) => {
         return (
           <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
@@ -126,8 +128,8 @@ export default function OrdersDataTable() {
       ),
     },
     {
-      accessorKey: 'Created At',
-      header: 'Created At',
+      accessorKey: 'Created at',
+      header: 'Created at',
       cell: ({ row }) => (
         <div className="capitalize text-ellipsis whitespace-nowrap ">
           {displayDate(row?.original?.created_at)}
@@ -211,42 +213,75 @@ export default function OrdersDataTable() {
     },
   ];
 
+  const csvData = [
+    [
+      'Product',
+      'Customer Name',
+      'Customer Email',
+      'Created at',
+      'Quantity',
+      'Price',
+      'Total Amount',
+    ],
+    ...cartItemData?.map(({ Event, Cart, created_at, quantity }) => [
+      Event?.EventDescription[0]?.name,
+      Cart?.Customer?.first_name,
+      Cart?.Customer?.email,
+      created_at?.toLocaleDateString(),
+      quantity,
+      Event?.price,
+      quantity * Event?.price,
+    ]),
+  ];
+
   return (
     <div className="w-full space-y-4">
-      <div className="flex items-center justify-end gap-2">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline">
-              Columns <ChevronDown className="ml-2 h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
-        <TableFilters
-          inputList={roleOptions1}
-          item_name={'Cart'}
-          value={filterID}
-          setValue={setFilterID}
-          setFilters={setFilters}
-        />
+      <div className="flex items-center justify-between">
+        {cartItemData?.length ? (
+          <Button variant="outline">
+            <CSVLink filename="abandoned-cart.csv" data={csvData}>
+              Export to CSV
+            </CSVLink>
+          </Button>
+        ) : (
+          <div />
+        )}
+
+        <div className="flex items-center gap-2">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline">
+                Columns <ChevronDown className="ml-2 h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {table
+                .getAllColumns()
+                .filter((column) => column.getCanHide())
+                .map((column) => {
+                  return (
+                    <DropdownMenuCheckboxItem
+                      key={column.id}
+                      className="capitalize"
+                      checked={column.getIsVisible()}
+                      onCheckedChange={(value) =>
+                        column.toggleVisibility(!!value)
+                      }
+                    >
+                      {column.id}
+                    </DropdownMenuCheckboxItem>
+                  );
+                })}
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <TableFilters
+            inputList={roleOptions1}
+            item_name={'Cart'}
+            value={filterID}
+            setValue={setFilterID}
+            setFilters={setFilters}
+          />
+        </div>
       </div>
       <div className="rounded-md border border-border">
         <ScrollArea className="w-full ">

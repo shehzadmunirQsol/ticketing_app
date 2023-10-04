@@ -165,11 +165,15 @@ export default function CategoryDataTable() {
   return (
     <div className="w-full space-y-4 ">
       <div className="flex items-center justify-between">
-        <Button variant="outline">
-          <CSVLink filename="category.csv" data={csvData}>
-            Export to CSV
-          </CSVLink>
-        </Button>
+        {categoryData?.length ? (
+          <Button variant="outline">
+            <CSVLink filename="categories.csv" data={csvData}>
+              Export to CSV
+            </CSVLink>
+          </Button>
+        ) : (
+          <div />
+        )}
 
         <div className="flex items-center gap-2">
           <LanguageSelect languageHandler={languageHandler} />
