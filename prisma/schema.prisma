@@ -342,7 +342,7 @@ model DeleteRequest {
 }
 
 model CustomerAddress {
-  id               Int     @id @default(autoincrement())
+  id               Int         @id @default(autoincrement())
   customer_id      Int
   street_address_1 String?
   street_address_2 String?
@@ -350,8 +350,10 @@ model CustomerAddress {
   state            String?
   city             String?
   phone_number     String?
+  address_type     AddressType @default(home)
   postal_code      Int?
-  is_deleted       Boolean @default(false)
+  is_default       Boolean     @default(false)
+  is_deleted       Boolean     @default(false)
 
   created_at DateTime @default(now()) @db.Timestamp(6)
   updated_at DateTime @default(now()) @db.Timestamp(6)
@@ -672,6 +674,13 @@ enum CMSEnums {
   faqs
   static
   event_faqs
+}
+
+enum AddressType {
+  home
+  work
+  hotel
+  other
 }
 
 enum OrderEnums {
