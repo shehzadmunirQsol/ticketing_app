@@ -158,8 +158,11 @@ export function URIGenerator(title: string, id: number) {
 }
 
 export function URIDecoder(url: any) {
-  const decodedURI = decodeURI(url);
-  const id = decodedURI?.split('-').at(-1) ?? '';
+  console.log({ url });
+  const decodedURI = decodeURI(url ?? '');
+  console.log({ decodedURI });
+
+  const id = decodedURI?.split('-')?.at(-1) ?? '';
   const title = decodedURI?.substring(0, decodedURI?.length - (id?.length + 2));
   return { id, title };
 }
