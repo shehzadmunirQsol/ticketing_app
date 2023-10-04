@@ -17,27 +17,40 @@ export const createCheckoutSchema = z.object({
     .max(24, {
       message: 'Name must not exceed 24 characters',
     }),
-  street_address: z.string().min(1, {
+  street_address: z.string({ required_error: "Please enter street address" }).min(1, {
     message: 'Please enter street address',
   }),
   apartment: z.string().optional(),
-  country: z.string().min(1, {
+  country: z.string({ required_error: "Please select country" }).min(1, {
     message: 'Please select country',
   }),
-  state: z.string().min(1, {
+  state: z.string({ required_error: "Please enter state" }
+  ).min(1, {
     message: 'Please select state',
   }),
-  city: z.string().min(1, {
+  city: z.string(
+    { required_error: "Please enter city" }
+  ).min(1, {
     message: 'Please enter city',
   }),
-  postal_code: z.string().min(1, {
+  postal_code: z.string(
+    { required_error: "Please enter postal code" }
+  ).min(1, {
     message: 'Please enter postal code',
   }),
-  email: z.string().email(),
-  code: z.string(),
-  phone_number: z.string().min(1, {
-    message: 'Please enter phone number',
-  }),
+  email: z.string({
+    required_error: "Please enter your email"
+  }).email({ message: "Please enter a valid email" }),
+  code: z.string({ required_error: 'Enter code' })
+    .regex(new RegExp(/^(00|\+)[0-9]+$/), 'Invalid code')
+    .min(1, {
+      message: 'Enter code',
+    }),
+  phone_number: z.string({ required_error: 'Please enter your number' })
+    .regex(new RegExp(/^[0-9]+$/), 'Please enter a valid phone number')
+    .min(1, {
+      message: 'Please enter your number',
+    }),
   dob: z.date(),
   cart_id: z.number(),
   customer_id: z.number(),

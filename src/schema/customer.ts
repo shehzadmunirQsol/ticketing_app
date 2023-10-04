@@ -31,8 +31,12 @@ export const signupCustomerSchema = z.object({
     }),
   last_name: z.string().optional(),
   code: z.string(),
-  phone_number: z.string().min(1, {
-    message: 'Please enter phone number',
+  phone_number: z.string().regex(new RegExp(/^[0-9]+$/), 'Please enter a valid phone number')
+    .min(1, {
+      message: 'Please enter your number',
+    }),
+  country: z.string({
+    required_error: "Please select your country"
   }),
   dob: z.date(),
   gender: z.enum(['male', 'female'], {
@@ -85,6 +89,9 @@ export const signupCustomerSchemaInput = z.object({
       message: 'Please enter phone no',
     }),
   dob: z.date(),
+  country: z.string({
+    required_error: "Please select your country"
+  }),
   gender: z.enum(['male', 'female'], {
     required_error: 'Please enter your gender',
   }),

@@ -30,19 +30,19 @@ export const contactSchema = z.object({
       message: 'Name must not exceed 30 characters',
     }),
   email: z.string({ required_error: 'Please enter your email' }).email({
-    message:"Please enter a valid email"
+    message: "Please enter a valid email"
   }),
   code: z.string({
     required_error: 'Please select your code',
+  }).regex(new RegExp(/^[0-9]+$/), 'Please enter a valid phone code')
+  .min(1, {
+    message: 'Please enter your phone code',
   }),
   number: z
     .string({ required_error: 'Please enter your number' })
     .regex(new RegExp(/^[0-9]+$/), 'Please enter a valid phone number')
-    .min(9, {
-      message: 'Number must be at least 9 characters',
-    })
-    .max(9, {
-      message: 'Number must not exceed 9 characters',
+    .min(1, {
+      message: 'Please enter your number',
     }),
   message: z
     .string({ required_error: 'Please write your message' })

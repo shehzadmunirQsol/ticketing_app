@@ -41,6 +41,9 @@ import {
 import langContent from '~/locales';
 import { RootState } from '~/store/store';
 
+import countryJSON from "~/data/countries.json";
+const countries = countryJSON.map((item) => item.country);
+
 export default function LoginSignup() {
   const { lang } = useSelector((state: RootState) => state.layout);
 
@@ -323,70 +326,73 @@ export default function LoginSignup() {
                       )}
                     />
                   </div>
-                  <div className="w-full">
-                    <p className="text-xs text-grayColor  mb-3 ">
-                      Phone Number <sup className="">*</sup>
-                    </p>
-                    <div className="flex flex-row gap-2 ">
-                      <FormField
-                        control={formSignup.control}
-                        name="code"
-                        render={({ field }) => (
-                          <FormItem>
-                            <Select
-                              onValueChange={field.onChange}
-                              defaultValue={field.value}
-                              value={field.value}
-                            >
-                              <FormControl>
-                                <SelectTrigger className=" h-10  ">
-                                  <SelectValue placeholder="+971" />
-                                </SelectTrigger>
+
+
+                  <div className="flex flex-col sm:flex-row justify-center items-start gap-2">
+                    <div className="w-full">
+                      <p className="text-xs text-grayColor  mb-3 ">
+                        Phone Number <sup className="">*</sup>
+                      </p>
+                      <div className="flex flex-row gap-2 ">
+                        <FormField
+                          control={formSignup.control}
+                          name="code"
+                          render={({ field }) => (
+                            <FormItem>
+                              <Select
+                                onValueChange={field.onChange}
+                                defaultValue={field.value}
+                                value={field.value}
+                              >
+                                <FormControl>
+                                  <SelectTrigger className=" h-10  ">
+                                    <SelectValue placeholder="+971" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  <SelectGroup>
+                                    {countryCode?.map((item) => (
+                                      <SelectItem
+                                        key={item.code}
+                                        value={item.code}
+                                      >
+                                        {item?.code}
+                                      </SelectItem>
+                                    ))}
+                                  </SelectGroup>
+                                </SelectContent>
+                              </Select>
+
+                              <div className="relative pb-2">
+                                <FormMessage />
+                              </div>
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={formSignup.control}
+                          name="phone_number"
+                          render={({ field }) => (
+                            <FormItem className=" w-full">
+                              <FormControl className="rounded-md ">
+                                <Input
+                                  max={999999999}
+                                  type="number"
+                                  className="w-full"
+                                  placeholder="Enter your phone number"
+                                  {...field}
+                                />
                               </FormControl>
-                              <SelectContent>
-                                <SelectGroup>
-                                  {countryCode?.map((item) => (
-                                    <SelectItem
-                                      key={item.code}
-                                      value={item.code}
-                                    >
-                                      {item?.code}
-                                    </SelectItem>
-                                  ))}
-                                </SelectGroup>
-                              </SelectContent>
-                            </Select>
 
-                            <div className="relative pb-2">
-                              <FormMessage />
-                            </div>
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={formSignup.control}
-                        name="phone_number"
-                        render={({ field }) => (
-                          <FormItem className=" w-full">
-                            <FormControl className="rounded-md ">
-                              <Input
-                                max={999999999}
-                                type="number"
-                                className="w-full"
-                                placeholder="Enter your phone number"
-                                {...field}
-                              />
-                            </FormControl>
-
-                            <div className="relative pb-2">
-                              <FormMessage />
-                            </div>
-                          </FormItem>
-                        )}
-                      />
+                              <div className="relative pb-2">
+                                <FormMessage />
+                              </div>
+                            </FormItem>
+                          )}
+                        />
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex flex-col sm:flex-row justify-center items-center gap-2">
+
                     <FormField
                       control={formSignup.control}
                       name="gender"
@@ -420,6 +426,9 @@ export default function LoginSignup() {
                         </FormItem>
                       )}
                     />
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row justify-center items-center gap-2">
                     <FormField
                       control={formSignup.control}
                       name="dob"
@@ -433,10 +442,11 @@ export default function LoginSignup() {
                               type={'date'}
                               placeholder={'Enter DOB'}
                               max={minDateFormatted}
+                              className='rounded-md '
                               {...formSignup.register('dob', {
                                 valueAsDate: true,
                               })}
-                              className="rounded-md"
+
                             />
                           </FormControl>
                           <div className="relative pb-2">
@@ -445,6 +455,52 @@ export default function LoginSignup() {
                         </FormItem>
                       )}
                     />
+
+                    <FormField
+                      control={formSignup.control}
+                      name="country"
+
+                      render={({ field }) => (
+                        <FormItem className="mb-4 w-full ">
+                          <FormLabel className="text-xs text-white">
+                            Country/ Region{' '}
+                            <sup className="text-white">*</sup>
+                          </FormLabel>
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                            value={field.value}
+
+
+                          >
+                            <FormControl className=''>
+                              <SelectTrigger className=" rounded-md h-10  " >
+                                <SelectValue placeholder="Select your country" className='' />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent className='max-h-[300px] overflow-y-auto'>
+                              <SelectGroup>
+                                {countries && countries?.map((country, i) => {
+                                  return (
+                                    <SelectItem
+                                      key={country}
+                                      value={country}
+                                    >
+                                      {country?.toUpperCase()}
+                                    </SelectItem>
+                                  )
+                                })}
+                              </SelectGroup>
+                            </SelectContent>
+                          </Select>
+
+                          <div className="relative pb-2">
+                            <FormMessage />
+                          </div>
+                        </FormItem>
+                      )}
+                    />
+
                   </div>
                   <FormField
                     control={formSignup.control}
