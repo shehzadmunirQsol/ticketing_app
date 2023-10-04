@@ -52,7 +52,7 @@ const AccountDetails = () => {
       first_name: user?.first_name,
       last_name: user?.last_name,
       dob: user?.dob?.toISOString()?.split('T')[0],
-      country:user?.country
+      country:user?.country 
     },
   });
 
@@ -210,9 +210,10 @@ const AccountDetails = () => {
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                       value={field.value}
+                      
                     >
                       <FormControl className=''>
-                        <SelectTrigger className=" rounded-md h-10   bg-inputColor" >
+                        <SelectTrigger className=" rounded-md h-10   bg-inputColor" placeholder='Select your country' >
                           <SelectValue placeholder="Select your country" className='' />
                         </SelectTrigger>
                       </FormControl>

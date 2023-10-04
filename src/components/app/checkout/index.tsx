@@ -530,8 +530,7 @@ function Checkout() {
                           </FormLabel> */}
                                 <FormControl className="rounded-md bg-inputColor">
                                   <Input
-                                    max={999999999}
-                                    type="number"
+                                    type="text"
                                     className="w-full"
                                     placeholder="Enter your phone number"
                                     {...field}
