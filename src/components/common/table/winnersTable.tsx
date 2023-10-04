@@ -59,6 +59,7 @@ export type WinnerType = {
     email: string;
     id: number;
     first_name: string;
+    phone_number?: string;
   };
   is_cash_alt: boolean;
   draw_date: Date | null;
@@ -125,6 +126,15 @@ export default function WinnersDataTable() {
       cell: ({ row }) => (
         <div className="text-ellipsis whitespace-nowrap ">
           {row?.original?.Customer?.email}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'Phone No.',
+      header: 'Phone No.',
+      cell: ({ row }) => (
+        <div className="text-ellipsis whitespace-nowrap ">
+          {row?.original?.Customer?.phone_number ?? 'N/A'}
         </div>
       ),
     },
@@ -197,11 +207,19 @@ export default function WinnersDataTable() {
   ];
 
   const csvData = [
-    ['Product', 'Customer Name', 'Customer Email', 'Draw Date', 'Ticket No.'],
+    [
+      'Product',
+      'Customer Name',
+      'Customer Email',
+      'Phone No.',
+      'Draw Date',
+      'Ticket No.',
+    ],
     ...winnesData?.map(({ Event, Customer, draw_date, ticket_num }) => [
       Event?.EventDescription[0]?.name,
       Customer?.first_name,
       Customer?.email,
+      Customer?.phone_number ?? 'N/A',
       draw_date?.toLocaleDateString(),
       '#' + ticket_num,
     ]),
