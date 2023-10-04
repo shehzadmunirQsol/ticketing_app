@@ -15,6 +15,21 @@ import {
   SelectGroup,
   SelectValue,
 } from '@/ui/select';
+
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from "@/ui/command"
+
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/ui/popover"
+
 import { Input } from '@/ui/input';
 import { useForm } from 'react-hook-form';
 import Group17 from '~/public/assets/icons/Group17.png';
@@ -36,7 +51,16 @@ import Script from 'next/script';
 import jqeury from 'jquery';
 import { CardDailog } from '~/components/common/modal/cardModal';
 
+
+import countryJSON from "~/data/countries.json";
+import { Check } from 'lucide-react';
+import { cn } from '~/utils/cn';
+const countries = countryJSON.map((item) => item.country);
+console.log({ countries }, "countries")
+
+
 function Checkout() {
+
   const { cart, totalAmount } = useSelector((state: RootState) => state.cart);
   const { user } = useSelector((state: RootState) => state.auth);
   const router = useRouter();
@@ -46,6 +70,8 @@ function Checkout() {
   // Handle Coupon Dailog
   const [loading, setLoading] = useState<boolean>(false);
   const [totalID, setTotalID] = useState<any>(null);
+  const [countryCombobox, setCountryCombobox] = useState(false);
+  const [selectCountry, setSelectCountry] = useState("")
 
   const [isModal, setIsModal] = useState(false);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
@@ -358,7 +384,7 @@ function Checkout() {
                           control={form.control}
                           name="country"
                           render={({ field }) => (
-                            <FormItem>
+                            <FormItem className=''>
                               <FormLabel className="text-sm text-cardGray">
                                 Country/ Region{' '}
                                 <sup className="text-red-500">*</sup>
@@ -368,21 +394,24 @@ function Checkout() {
                                 defaultValue={field.value}
                                 value={field.value}
                               >
-                                <FormControl>
-                                  <SelectTrigger className=" rounded-none  ">
+                                <FormControl >
+                                  <SelectTrigger className="h-10 rounded-md  bg-inputColor" >
                                     <SelectValue placeholder="Select your country" />
                                   </SelectTrigger>
                                 </FormControl>
-                                <SelectContent>
+                                <SelectContent className='max-h-[300px] overflow-y-auto'>
                                   <SelectGroup>
-                                    {countries?.map((item) => (
-                                      <SelectItem
-                                        key={item.country}
-                                        value={item.country}
-                                      >
-                                        {item?.country?.toUpperCase()}
-                                      </SelectItem>
-                                    ))}
+                                    {countries && countries?.map((country, i) => {
+                                      console.log({ country, i })
+                                      return (
+                                        <SelectItem
+                                          key={i}
+                                          value={country}
+                                        >
+                                          {country?.toUpperCase()}
+                                        </SelectItem>
+                                      )
+                                    })}
                                   </SelectGroup>
                                 </SelectContent>
                               </Select>
@@ -393,6 +422,9 @@ function Checkout() {
                             </FormItem>
                           )}
                         />
+
+
+
                       </div>
                       <div className="w-full ">
                         <FormField
@@ -403,29 +435,13 @@ function Checkout() {
                               <FormLabel className="text-sm text-cardGray">
                                 State <sup className="text-red-500">*</sup>
                               </FormLabel>
-                              <Select
-                                onValueChange={field.onChange}
-                                defaultValue={field.value}
-                                value={field.value}
-                              >
-                                <FormControl>
-                                  <SelectTrigger className=" rounded-none  ">
-                                    <SelectValue placeholder="Select your state" />
-                                  </SelectTrigger>
-                                </FormControl>
-                                <SelectContent>
-                                  <SelectGroup>
-                                    {states?.map((item) => (
-                                      <SelectItem
-                                        key={item.state}
-                                        value={item.state}
-                                      >
-                                        {item?.state?.toUpperCase()}
-                                      </SelectItem>
-                                    ))}
-                                  </SelectGroup>
-                                </SelectContent>
-                              </Select>
+                              <FormControl className="rounded-md bg-inputColor">
+                                <Input
+                                  type="text"
+                                  placeholder="Enter the state"
+                                  {...field}
+                                />
+                              </FormControl>
 
                               <div className="relative pb-2">
                                 <FormMessage />
@@ -503,7 +519,7 @@ function Checkout() {
 
                     <div className="flex items-start flex-col lg:flex-row gap-2 w-full justify-between">
                       <div className="w-full">
-                        <p className="text-sm text-cardGray  mb-3 ">
+                        <p className="text-sm text-cardGray  mb-2 ">
                           Phone Number
                         </p>
                         <div className="flex flex-row gap-2 ">
@@ -512,30 +528,13 @@ function Checkout() {
                             name="code"
                             render={({ field }) => (
                               <FormItem>
-                                <Select
-                                  onValueChange={field.onChange}
-                                  defaultValue={field.value}
-                                  value={field.value}
-                                >
-                                  <FormControl>
-                                    <SelectTrigger className=" h-10  ">
-                                      <SelectValue placeholder="+971" />
-                                    </SelectTrigger>
-                                  </FormControl>
-                                  <SelectContent>
-                                    <SelectGroup>
-                                      {countryCode?.map((item) => (
-                                        <SelectItem
-                                          key={item.code}
-                                          value={item.code}
-                                        >
-                                          {item?.code}
-                                        </SelectItem>
-                                      ))}
-                                    </SelectGroup>
-                                  </SelectContent>
-                                </Select>
-
+                                <Input
+                                  type="text"
+                                  className='rounded-md w-20 bg-inputColor'
+                                  placeholder="+971"
+                                  maxLength={5}
+                                  {...field}
+                                />
                                 <div className="relative pb-2">
                                   <FormMessage />
                                 </div>
@@ -616,23 +615,23 @@ function Checkout() {
                     <div className=" max-h-60 overflow-x-auto space-y-8">
                       {cart?.cartItems?.length
                         ? cart?.cartItems?.map((item) => {
-                            return (
-                              <div
-                                className="flex flex-row justify-between "
-                                key={item.id}
-                              >
-                                <p className="lg:text-2xl md:lg:text-xl   w-[60%]">
-                                  {item?.Event?.EventDescription[0]?.name}
-                                </p>
-                                <p className="font-black text-lg lg:text-xl ">
-                                  AED{' '}
-                                  {(
-                                    item?.Event?.price * item?.quantity
-                                  )?.toFixed(2)}
-                                </p>
-                              </div>
-                            );
-                          })
+                          return (
+                            <div
+                              className="flex flex-row justify-between "
+                              key={item.id}
+                            >
+                              <p className="lg:text-2xl md:lg:text-xl   w-[60%]">
+                                {item?.Event?.EventDescription[0]?.name}
+                              </p>
+                              <p className="font-black text-lg lg:text-xl ">
+                                AED{' '}
+                                {(
+                                  item?.Event?.price * item?.quantity
+                                )?.toFixed(2)}
+                              </p>
+                            </div>
+                          );
+                        })
                         : null}
                     </div>
                     {cart?.isDiscount ? (
@@ -753,12 +752,6 @@ function Checkout() {
 }
 
 export default Checkout;
-
-const countries = [
-  {
-    country: 'United Arab Emirates',
-  },
-];
 
 const states = [
   {

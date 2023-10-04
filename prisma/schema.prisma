@@ -306,6 +306,7 @@ model Customer {
   profile_pic       String?
   last_name         String?
   phone_number      String?
+  country           String?
   gender            GenderEnums         @default(male)
   total_customer_id String?             @default("")
   dob               DateTime?
