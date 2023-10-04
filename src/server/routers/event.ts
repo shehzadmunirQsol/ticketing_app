@@ -205,7 +205,7 @@ export const eventRouter = router({
       try {
         // const where = `e.id = ${input.event_id} AND ed.lang_id=1`;
         const eventCustomers =
-          await prisma.$queryRaw`SELECT e.id AS event_id, e.thumb, e.price, oe.customer_id, c.email,ed.name AS event_name, c.first_name, c.last_name, 
+          await prisma.$queryRaw`SELECT e.id AS event_id, e.thumb,e.end_date, e.price, oe.customer_id, c.email,c.phone_number,ed.name AS event_name, c.first_name, c.last_name, 
           CAST( SUM( oe.quantity ) AS INT ) AS quantity,
           CAST( SUM( o.discount_amount ) AS INT ) AS discount_amount
             FROM event AS e
