@@ -73,7 +73,7 @@ function Checkout() {
       last_name: user?.last_name,
       code: '+971',
       country: 'United Arab Emirates',
-      state: 'Abu Dhabi',
+      state: '',
 
       dob: user?.dob,
       email: user?.email,
