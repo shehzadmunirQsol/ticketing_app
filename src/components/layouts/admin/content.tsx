@@ -159,7 +159,7 @@ const SIDEBAR_DATA = [
   {
     key: '/admin/events',
     icon: <i className="fa-solid fa-calendar-days p-4 rounded-full"></i>,
-    title: 'Events',
+    title: 'Products',
   },
   {
     key: '/admin/customers',
@@ -176,7 +176,7 @@ const SIDEBAR_DATA = [
   {
     key: '/admin/cart',
     icon: <i className="fa-solid fa-cart-shopping p-4 rounded-full"></i>,
-    title: 'Cart',
+    title: 'Abandoned Cart',
   },
   {
     key: '/admin/cms',

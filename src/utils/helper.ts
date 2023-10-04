@@ -106,11 +106,11 @@ export const displayDate = (payload = '' as any) => {
   if (!payload) return 'N/A';
   const date = new Date(payload);
   return date?.toDateString();
-  const ye = new Intl.DateTimeFormat('en', { year: 'numeric' })?.format(date);
-  const mo = new Intl.DateTimeFormat('en', { month: 'short' })?.format(date);
-  const da = new Intl.DateTimeFormat('en', { day: '2-digit' })?.format(date);
-  const formattedDate = `${da}-${mo}-${ye}`;
-  return formattedDate;
+  // const ye = new Intl.DateTimeFormat('en', { year: 'numeric' })?.format(date);
+  // const mo = new Intl.DateTimeFormat('en', { month: 'short' })?.format(date);
+  // const da = new Intl.DateTimeFormat('en', { day: '2-digit' })?.format(date);
+  // const formattedDate = `${da}-${mo}-${ye}`;
+  // return formattedDate;
 };
 export function isValidEmail(email: any) {
   const pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -158,8 +158,11 @@ export function URIGenerator(title: string, id: number) {
 }
 
 export function URIDecoder(url: any) {
-  const decodedURI = decodeURI(url);
-  const id = decodedURI?.split('-').at(-1) ?? '';
+  console.log({ url });
+  const decodedURI = decodeURI(url ?? '');
+  console.log({ decodedURI });
+
+  const id = decodedURI?.split('-')?.at(-1) ?? '';
   const title = decodedURI?.substring(0, decodedURI?.length - (id?.length + 2));
   return { id, title };
 }

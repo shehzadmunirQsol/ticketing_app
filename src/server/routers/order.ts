@@ -10,6 +10,7 @@ import {
   deleteCardSchema,
 } from '~/schema/order';
 import https from 'https';
+import countryJSON from '~/data/countries.json';
 
 import { prisma } from '~/server/prisma';
 import { EMAIL_TEMPLATE_IDS, sendEmail } from '~/utils/helper';
@@ -892,11 +893,19 @@ async function CreateCheckout(APidata: any) {
     const registrationID: any = APidata?.values?.total_id?.split(',');
     const regPayload: { [key: string]: string } = {};
 
-    if (registrationID && registrationID.length) {
+    if (
+      APidata?.values?.total_id !== '' &&
+      registrationID &&
+      registrationID.length
+    ) {
       registrationID.forEach((item: string, index: number) => {
         regPayload[`registrations[${index}].id`] = item;
       });
     }
+    const countries: any = countryJSON.find(
+      (item) => item.country == payload?.values?.country,
+    );
+    console.log(countries['alpha-2'], 'thisiscountryiso');
 
     if (payload?.card) delete payload?.card;
     if (payload?.values?.total_id) delete payload?.values?.total_id;
@@ -906,11 +915,18 @@ async function CreateCheckout(APidata: any) {
       amount: APidata?.total_amount.toFixed(2),
       currency: 'AED',
       paymentType: 'DB',
-      // wpwlOptions: JSON.stringify(APidata?.cart),
       ...regPayload,
+      'billing.country': countries['alpha-2'],
+      'billing.street1': payload?.values?.street_address,
+      'billing.state': payload?.values?.state,
+      'billing.postcode': payload?.values?.postal_code,
+      'billing.city': payload?.values?.city,
+      'customer.givenName': payload?.values?.first_name,
+      'customer.surname': payload?.values?.last_name,
+      'customer.email': payload?.values?.email,
+      'customer.phone': payload?.values?.phone_number,
       'standingInstruction.source': 'CIT',
-      'standingInstruction.mode': 'REPEATED',
-      'standingInstruction.type': 'UNSCHEDULED',
+      'standingInstruction.mode': 'INITIAL',
       'customParameters[payload]': JSON.stringify({
         ...payload,
       }),

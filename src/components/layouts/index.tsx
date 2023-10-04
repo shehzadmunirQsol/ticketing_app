@@ -9,6 +9,7 @@ import { useRouter } from 'next/router';
 
 import Icon from '~/public/assets/favicon.png';
 import { Toaster } from 'react-hot-toast';
+import AdminAuth from './admin/AdminAuth';
 type DefaultLayoutProps = { children: ReactNode };
 
 export default function DefaultLayout({ children }: DefaultLayoutProps) {
@@ -24,7 +25,13 @@ export default function DefaultLayout({ children }: DefaultLayoutProps) {
           <title>Winnar</title>
           <link rel="icon" href={Icon.src} />
         </Head>
-        <Layout>{children}</Layout>
+        {router.asPath.startsWith('/admin') ? (
+          <AdminAuth>
+            <AdminLayout>{children}</AdminLayout>
+          </AdminAuth>
+        ) : (
+          <AppLayout>{children}</AppLayout>
+        )}
       </ThemeProvider>
     </Provider>
   );

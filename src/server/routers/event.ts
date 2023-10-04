@@ -205,17 +205,21 @@ export const eventRouter = router({
       try {
         // const where = `e.id = ${input.event_id} AND ed.lang_id=1`;
         const eventCustomers =
-          await prisma.$queryRaw`SELECT e.id AS event_id, e.thumb, e.price, e.end_date, oe.customer_id, c.email,ed.name AS event_name, c.first_name, c.last_name, CAST( SUM( oe.quantity ) AS INT ) AS quantity
-          FROM event AS e
-          JOIN event_description AS ed
-          ON e.id = ed.event_id
-          JOIN order_event AS oe
-          ON e.id = oe.event_id
-          JOIN customer AS c
-          ON c.id = oe.customer_id
-          GROUP BY e.id, c.id,oe.customer_id,ed.id 
-          HAVING e.id = ${input.event_id} AND ed.lang_id=1
-          order BY quantity DESC
+          await prisma.$queryRaw`SELECT e.id AS event_id, e.thumb, e.price, oe.customer_id, c.email,ed.name AS event_name, c.first_name, c.last_name, 
+          CAST( SUM( oe.quantity ) AS INT ) AS quantity,
+          CAST( SUM( o.discount_amount ) AS INT ) AS discount_amount
+            FROM event AS e
+            JOIN event_description AS ed
+            ON e.id = ed.event_id
+            JOIN order_event AS oe
+            ON e.id = oe.event_id
+            JOIN public."order" AS o
+            ON o.id = oe.order_id
+            JOIN customer AS c
+            ON c.id = oe.customer_id
+            GROUP BY e.id, c.id,oe.customer_id,ed.id,o.id
+            HAVING e.id = ${input.event_id} AND ed.lang_id= 1
+            order BY quantity DESC  
           `;
 
         return {
