@@ -126,7 +126,7 @@ function ProductSection(props: producctInterface) {
       {
         breakpoint: 480,
         settings: {
-          slidesToShow: 1,
+          slidesToShow: 1.05,
           slidesToScroll: 1,
         },
       },
@@ -183,7 +183,7 @@ function ProductSection(props: producctInterface) {
                   isLast={index === products.length - 1}
                   nextPage={nextPage}
                   data={item}
-                  class={products.length != index + 1 ? 'xsm:mr-4' : ''}
+                  class={products.length != index + 1 ? 'mr-4' : ''}
                   dir={`${lang?.dir}`}
                 />
               </div>

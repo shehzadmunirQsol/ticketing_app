@@ -12,11 +12,19 @@ export const settingRouter = router({
   banner_create: publicProcedure
     .input(createBannerSchema)
     .mutation(async ({ input }) => {
-      // const payload = [...input];
+      const {
+        en,
+        ar,
+
+        ...settingPayload
+      }: any = input;
+      const payload = [{ ...en }, { ...ar }];
       console.log(input, 'inputinputinputinput');
-      const setting_banner = await prisma.setting.createMany({
-        data: input,
-        skipDuplicates: true,
+      const setting_banner = await prisma.setting.create({
+        data: {
+          ...settingPayload,
+          SettingDescription: { createMany: { data: payload } },
+        },
       });
       return setting_banner;
     }),
@@ -24,14 +32,28 @@ export const settingRouter = router({
     .input(updateBannerSchema)
     .mutation(async ({ input }) => {
       // const payload = [...input];
-      const payload = { ...input };
-      if (input?.id) delete payload?.id;
+      const {
+        en,
+        ar,
+
+        id = 0,
+        ...eventPayload
+      } = input;
       console.log(input, 'inputinputinputinput');
       const setting_banner = await prisma.setting.update({
         where: {
           id: input?.id,
         },
-        data: { ...payload },
+        data: { ...eventPayload },
+      });
+      const eventEnPromise = await prisma.settingDescription.updateMany({
+        where: { setting_id: input?.id, lang_id: 1 },
+        data: en,
+      });
+
+      const eventArPromise = await prisma.settingDescription.updateMany({
+        where: { setting_id: input?.id, lang_id: 2 },
+        data: ar,
       });
       return setting_banner;
     }),
@@ -141,29 +163,40 @@ export const settingRouter = router({
           }
         }
         if (input?.filters?.startDate && !input?.filters?.endDate) {
-          const startDate = (new Date(input?.filters?.startDate))?.toISOString().split("T")[0] as string;
+          const startDate = new Date(input?.filters?.startDate)
+            ?.toISOString()
+            .split('T')[0] as string;
           options.where.created_at = { gte: new Date(startDate) };
         }
         if (input?.filters?.endDate && !input?.filters?.startDate) {
-          const endDate = (new Date(input?.filters?.endDate))?.toISOString().split("T")[0] as string;
+          const endDate = new Date(input?.filters?.endDate)
+            ?.toISOString()
+            .split('T')[0] as string;
           options.where.created_at = { lte: new Date(endDate) };
         }
         if (input?.filters?.endDate && input?.filters?.startDate) {
-          const startDate = (new Date(input?.filters?.startDate))?.toISOString().split("T")[0] as string;
-          const endDate = (new Date(input?.filters?.endDate))?.toISOString().split("T")[0] as string;
-          options.where.created_at = { gte: new Date(startDate), lte: new Date(endDate) };
+          const startDate = new Date(input?.filters?.startDate)
+            ?.toISOString()
+            .split('T')[0] as string;
+          const endDate = new Date(input?.filters?.endDate)
+            ?.toISOString()
+            .split('T')[0] as string;
+          options.where.created_at = {
+            gte: new Date(startDate),
+            lte: new Date(endDate),
+          };
         }
-  
+
         if (input?.lang_id) options.where.lang_id = input?.lang_id;
 
         if (input?.is_enabled) options.where.is_enabled = true;
 
         if (input?.banner_id) options.where.id = input?.banner_id;
 
-        const totalBannerPromise = prisma.bannerView.count({
+        const totalBannerPromise = prisma.bannerView1.count({
           where: options?.where,
         });
-        const bannerPromise = prisma.bannerView.findMany({
+        const bannerPromise = prisma.bannerView1.findMany({
           ...options,
           ...select,
         });

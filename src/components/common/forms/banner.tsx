@@ -25,91 +25,92 @@ import { LoadingDialog } from '../modal/loadingModal';
 const BannerFormSchema = z.object({
   thumb: z.any(),
   link: z.string({
-    required_error: "Please enter a video link"
+    required_error: 'Please enter a video link',
   }),
 
   en: z.object({
-    model: z.string({
-      required_error: "Please enter a model name"
-    }).trim(),
-    title: z.string(
-      {
-        required_error: "Please enter a title"
-      }
-    ).trim(),
-    price: z.string({
-      required_error: "Please enter a price"
-    }).trim(),
-    description: z.string({
-      required_error: "Please enter a description"
-    }).trim(),
-    date: z.string(
-      {
-        required_error: "Please enter a date"
-      }
-    ).trim(),
+    model: z
+      .string({
+        required_error: 'Please enter a model name',
+      })
+      .min(1, {
+        message: 'Please enter a model name',
+      })
+      .trim(),
+    title: z
+      .string({
+        required_error: 'Please enter a title',
+      })
+      .min(1, {
+        message: 'Please enter a title',
+      })
+      .trim(),
+    price: z
+      .string({
+        required_error: 'Please enter a price',
+      })
+      .min(1, {
+        message: 'Please enter a price',
+      })
+      .trim(),
+    description: z
+      .string({
+        required_error: 'Please enter a description',
+      })
+      .min(1, {
+        message: 'Please enter a description',
+      })
+      .trim(),
+    date: z
+      .string({
+        required_error: 'Please enter a date',
+      })
+      .min(1, {
+        message: 'Please enter a date',
+      })
+      .trim(),
   }),
   ar: z.object({
-    model: z.string({
-      required_error: "Please enter a model name"
-    }).trim(),
-    title: z.string(
-      {
-        required_error: "Please enter a title"
-      }
-    ).trim(),
-    price: z.string({
-      required_error: "Please enter a price"
-    }).trim(),
-    description: z.string({
-      required_error: "Please enter a description"
-    }).trim(),
-    date: z.string(
-      {
-        required_error: "Please enter a date"
-      }
-    ).trim(),
-  }),
-});
-const enFormSchema = z.object({
-  thumb: z.any(),
-  link: z.string(),
-
-  en: z.object({
-    model: z.string().trim(),
-    title: z.string().trim(),
-    price: z.string().trim(),
-    description: z.string().trim(),
-    date: z.string().trim(),
-  }),
-  ar: z
-    .object({
-      model: z.string().trim(),
-      title: z.string().trim(),
-      price: z.string().trim(),
-      description: z.string().trim(),
-      date: z.string().trim(),
-    })
-    .optional(),
-});
-const arFormSchema = z.object({
-  thumb: z.any(),
-  link: z.string(),
-  en: z
-    .object({
-      model: z.string().trim(),
-      title: z.string().trim(),
-      price: z.string().trim(),
-      description: z.string().trim(),
-      date: z.string().trim(),
-    })
-    .optional(),
-  ar: z.object({
-    model: z.string().trim(),
-    title: z.string().trim(),
-    price: z.string().trim(),
-    description: z.string().trim(),
-    date: z.string().trim(),
+    model: z
+      .string({
+        required_error: 'Please enter a model name',
+      })
+      .min(1, {
+        message: 'Please enter a model name',
+      })
+      .trim(),
+    title: z
+      .string({
+        required_error: 'Please enter a title',
+      })
+      .min(1, {
+        message: 'Please enter a title',
+      })
+      .trim(),
+    price: z
+      .string({
+        required_error: 'Please enter a price',
+      })
+      .min(1, {
+        message: 'Please enter a price',
+      })
+      .trim(),
+    description: z
+      .string({
+        required_error: 'Please enter a description',
+      })
+      .min(1, {
+        message: 'Please enter a description',
+      })
+      .trim(),
+    date: z
+      .string({
+        required_error: 'Please enter a date',
+      })
+      .min(1, {
+        message: 'Please enter a date',
+      })
+      .trim(),
   }),
 });
 
@@ -127,7 +128,6 @@ export function BannerForm() {
     page: 0,
   };
   if (index) initialOrderFilters.banner_id = +index;
-  console.log(initialOrderFilters.banner_id, 'initialOrderFilters.banner_id');
   const {
     data: BannerApiData,
     isFetched,
@@ -135,53 +135,32 @@ export function BannerForm() {
     isFetching,
   } = trpc.settings.get_banner.useQuery(initialOrderFilters, {
     refetchOnWindowFocus: false,
+    onSuccess(bannerData) {
+      const enData: any = bannerData?.data.find((cat) => cat.lang_id === 1);
+      const arData: any = bannerData?.data.find((cat) => cat.lang_id !== 1);
+      form.setValue('link', enData?.link as string);
+      form.setValue('thumb', enData?.thumb);
+      // en
+      form.setValue('en.model', enData?.model);
+      form.setValue('en.title', enData?.title);
+      form.setValue('en.price', enData?.price);
+      form.setValue('en.description', enData?.description);
+      form.setValue('en.date', enData?.date);
+      // ar
+      form.setValue('ar.model', arData?.model);
+      form.setValue('ar.title', arData?.title);
+      form.setValue('ar.price', arData?.price);
+      form.setValue('ar.description', arData?.description);
+      form.setValue('ar.date', arData?.date);
+    },
 
     enabled: initialOrderFilters.banner_id !== undefined ? true : false,
   });
-  const formValidateData =
-    BannerApiData?.data !== undefined && index
-      ? BannerApiData?.data[0]?.lang_id
-        ? enFormSchema
-        : BannerApiData?.data[0]?.lang_id == 2
-          ? arFormSchema
-          : BannerFormSchema
-      : BannerFormSchema;
+  const formValidateData = BannerFormSchema;
 
   const form = useForm<z.infer<typeof formValidateData>>({
-    resolver: zodResolver(
-      BannerApiData !== undefined && index
-        ? BannerApiData?.data[0]?.lang_id == 1
-          ? enFormSchema
-          : BannerApiData?.data[0]?.lang_id == 2
-            ? arFormSchema
-            : BannerFormSchema
-        : BannerFormSchema,
-    ),
+    resolver: zodResolver(BannerFormSchema),
   });
-  useEffect(() => {
-    if (!isLoading && isFetched && BannerApiData !== undefined) {
-      const data: any = { ...BannerApiData?.data[0] };
-      seteditData(data);
-      if (data?.value) {
-        const json_data = JSON.parse(data?.value);
-        form.setValue('link', json_data?.link);
-        form.setValue('thumb', json_data?.thumb);
-        if (data?.lang_id == 1) {
-          form.setValue('en.model', json_data?.model);
-          form.setValue('en.title', json_data?.title);
-          form.setValue('en.price', json_data?.price);
-          form.setValue('en.description', json_data?.description);
-          form.setValue('en.date', json_data?.date);
-        } else {
-          form.setValue('ar.model', json_data?.model);
-          form.setValue('ar.title', json_data?.title);
-          form.setValue('ar.price', json_data?.price);
-          form.setValue('ar.description', json_data?.description);
-          form.setValue('ar.date', json_data?.date);
-        }
-      }
-    }
-  }, [isLoading, isFetched, BannerApiData, form]);
 
   const bannerUpload = trpc.settings.banner_create.useMutation({
     onSuccess: () => {
@@ -214,10 +193,16 @@ export function BannerForm() {
           ? { thumb: values?.thumb }
           : await uploadOnS3Handler();
       if (index) {
-        let dataPayload: any;
-        if (editData?.lang_id == 1) {
-          dataPayload = {
-            id: +index,
+        const dataPayload = {
+          id: +index,
+
+          key: 'banner_en',
+          value: JSON.stringify({
+            ...nftSource,
+            link: values?.link,
+            ...values?.en,
+          }),
+          en: {
             lang_id: 1,
             key: 'banner_en',
             value: JSON.stringify({
@@ -225,11 +210,8 @@ export function BannerForm() {
               link: values?.link,
               ...values?.en,
             }),
-          };
-        } else {
-          dataPayload = {
-            id: +index,
-
+          },
+          ar: {
             lang_id: 2,
             key: 'banner_ar',
             value: JSON.stringify({
@@ -237,8 +219,8 @@ export function BannerForm() {
               link: values?.link,
               ...values?.ar,
             }),
-          };
-        }
+          },
+        };
         const data = await bannerUpdate.mutateAsync({ ...dataPayload });
         if (data) {
           toast({
@@ -251,8 +233,14 @@ export function BannerForm() {
           throw new Error('Data update Error');
         }
       } else {
-        const dataPayload = [
-          {
+        const dataPayload = {
+          key: 'banner_en',
+          value: JSON.stringify({
+            ...nftSource,
+            link: values?.link,
+            ...values?.en,
+          }),
+          en: {
             lang_id: 1,
             key: 'banner_en',
             value: JSON.stringify({
@@ -261,7 +249,7 @@ export function BannerForm() {
               ...values?.en,
             }),
           },
-          {
+          ar: {
             lang_id: 2,
             key: 'banner_ar',
             value: JSON.stringify({
@@ -270,7 +258,8 @@ export function BannerForm() {
               ...values?.ar,
             }),
           },
-        ];
+        };
+
         const data = await bannerUpload.mutateAsync(dataPayload);
         if (data) {
           toast({
@@ -344,7 +333,7 @@ export function BannerForm() {
                 <FormItem>
                   <FormLabel>Link</FormLabel>
                   <FormControl>
-                    <Input type="text" placeholder="Enter Link"  {...field} />
+                    <Input type="text" placeholder="Enter Link" {...field} />
                   </FormControl>
                   <div className="relative pb-4">
                     <FormMessage />
@@ -375,30 +364,12 @@ export function BannerForm() {
               </div>
             )}
           </div>
-          <Tabs
-            defaultValue={
-              index &&
-                BannerApiData?.data !== undefined &&
-                BannerApiData?.data[0]?.lang_id == 1
-                ? 'en'
-                : index &&
-                  BannerApiData?.data !== undefined &&
-                  BannerApiData?.data[0]?.lang_id == 2
-                  ? 'ar'
-                  : 'en'
-            }
-            className="w-full"
-          >
-            {index ? (
-              <></>
-            ) : (
-              <>
-                <TabsList className='overflow-hidden'>
-                  <TabsTrigger value="en">English</TabsTrigger>
-                  <TabsTrigger value="ar">Arabic</TabsTrigger>
-                </TabsList>
-              </>
-            )}
+          <Tabs defaultValue={'en'} className="w-full">
+            <TabsList className="overflow-hidden">
+              <TabsTrigger value="en">English</TabsTrigger>
+              <TabsTrigger value="ar">Arabic</TabsTrigger>
+            </TabsList>
+
             <TabsContent value="en">
               <FormField
                 control={form.control}
@@ -407,7 +378,7 @@ export function BannerForm() {
                   <FormItem>
                     <FormLabel>Modal</FormLabel>
                     <FormControl>
-                      <Input type="text" placeholder="Enter Modal"  {...field} />
+                      <Input type="text" placeholder="Enter Modal" {...field} />
                     </FormControl>
                     <div className="relative pb-4">
                       <FormMessage />
@@ -592,8 +563,8 @@ export function BannerForm() {
         </div>
       </form>
       <LoadingDialog
-        open={isSubmitting || isFetching}
-        text={'Saving data...'}
+        open={isSubmitting || (index ? isLoading : false)}
+        text={`${isSubmitting ? 'Saving' : 'Loading'} data...`}
       />
     </Form>
   );

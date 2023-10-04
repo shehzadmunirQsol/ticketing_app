@@ -25,72 +25,42 @@ import { LoadingDialog } from '../modal/loadingModal';
 
 const SpotLightFormSchema = z.object({
   thumb: z.any(),
-  link: z.string({
-    required_error: "Please add link"
-  }).min(1, {message:"Please add link"}),
+  link: z
+    .string({
+      required_error: 'Please add link',
+    })
+    .min(1, { message: 'Please add link' }),
 
   en: z.object({
-    name: z.string(
-      {
-        required_error: "Please add name"
-      }
-    ).min(1, {message:"Please add name"}).trim(),
-    description: z.string(
-      {
-        required_error: "Please add description"
-      }
-    ).min(1, {message:"Please add description"}).trim(),
+    name: z
+      .string({
+        required_error: 'Please add name',
+      })
+      .min(1, { message: 'Please add name' })
+      .trim(),
+    description: z
+      .string({
+        required_error: 'Please add description',
+      })
+      .min(1, { message: 'Please add description' })
+      .trim(),
   }),
   ar: z.object({
-    name: z.string({
-      required_error: "Please add name"
-    }).min(1, {message:"Please add name"}).trim(),
-    description: z.string({
-      required_error: "Please add description"
-    }).min(1, {message:"Please add description"}).trim(),
+    name: z
+      .string({
+        required_error: 'Please add name',
+      })
+      .min(1, { message: 'Please add name' })
+      .trim(),
+    description: z
+      .string({
+        required_error: 'Please add description',
+      })
+      .min(1, { message: 'Please add description' })
+      .trim(),
   }),
 });
-const enFormSchema = z.object({
-  thumb: z.any(),
-  link: z.string({
-    required_error: "Please add link"
-  }).min(1,{message:"Please add link"}),
 
-  en: z.object({
-    name: z.string(
-      {
-        required_error: "Please add name"
-      }
-    ).min(1,{message:"Please add name"}).trim(),
-    description: z.string(
-      {
-        required_error: "Please add description"
-      }
-    ).min(1,{message:"Please add description"}).trim(),
-  }),
-  ar: z
-    .object({
-      name: z.string({
-        required_error: "Please add name"
-      }).min(1,{message:"Please add name"}).trim(),
-      description: z.string().min(1,{message:"Please add description"}).trim().optional(),
-    })
-    .optional(),
-});
-const arFormSchema = z.object({
-  thumb: z.any(),
-  link: z.string().min(1,{message:"Please add link"}),
-  en: z
-    .object({
-      name: z.string().min(1,{message:"Please add name"}).trim(),
-      description: z.string().min(1,{message:"Please add description"}).trim().optional(),
-    })
-    .optional(),
-  ar: z.object({
-    name: z.string().min(1,{message:"Please add name"}).trim(),
-    description: z.string().min(1,{message:"Please add description"}).trim(),
-  }),
-});
 export function SpotLightForm() {
   const { toast } = useToast();
 
@@ -104,6 +74,7 @@ export function SpotLightForm() {
     rows: 10,
     first: 0,
     page: 0,
+    group: 'WONDER',
   };
   if (index) initialOrderFilters.banner_id = +index;
   const [orderFilters, setOrderFilters] = useState({
@@ -116,47 +87,31 @@ export function SpotLightForm() {
     isFetching,
   } = trpc.settings.get_banner.useQuery(orderFilters, {
     refetchOnWindowFocus: false,
+    onSuccess(spotLightData) {
+      const enData: any = spotLightData?.data.find((cat) => cat.lang_id === 1);
+      const arData: any = spotLightData?.data.find((cat) => cat.lang_id !== 1);
+      console.log({ enData });
+      form.setValue('link', enData?.link as string);
+      form.setValue('thumb', enData?.thumb);
+      // en
+      form.setValue('en.name', enData?.name);
 
+      form.setValue('en.description', enData?.description);
+      // ar
+      form.setValue('ar.name', arData?.name);
+
+      form.setValue('ar.description', arData?.description);
+    },
     enabled: index ? true : false,
   });
-  useEffect(() => {
-    if (!isLoading && isFetched && BannerApiData?.data !== undefined) {
-      const data: any = { ...BannerApiData?.data[0] };
-      seteditData(data);
-      const json_data = JSON.parse(data?.value);
-      form.setValue('link', json_data?.link);
-      form.setValue('thumb', json_data?.thumb);
-      if (data?.lang_id == 1) {
-        form.setValue('en.name', json_data?.name);
-        form.setValue('en.description', json_data?.description);
-      } else {
-        form.setValue('ar.name', json_data?.name);
-        form.setValue('ar.description', json_data?.description);
-      }
-    }
-  }, [isLoading, isFetched, BannerApiData?.data]);
-  const formValidateData =
-    BannerApiData !== undefined && index
-      ? BannerApiData?.data[0]?.lang_id == 1
-        ? enFormSchema
-        : BannerApiData?.data[0]?.lang_id == 2
-          ? arFormSchema
-          : SpotLightFormSchema
-      : SpotLightFormSchema;
+
+  const formValidateData = SpotLightFormSchema;
 
   const form = useForm<z.infer<typeof formValidateData>>({
-    resolver: zodResolver(
-      BannerApiData !== undefined && index
-        ? BannerApiData?.data[0]?.lang_id == 1
-          ? enFormSchema
-          : BannerApiData?.data[0]?.lang_id == 2
-            ? arFormSchema
-            : SpotLightFormSchema
-        : SpotLightFormSchema,
-    ),
+    resolver: zodResolver(SpotLightFormSchema),
   });
 
-  const bannerUpload = trpc.settings.banner_create.useMutation({
+  const spotLightUpload = trpc.settings.banner_create.useMutation({
     onSuccess: () => {
       console.log('upload successfully');
 
@@ -166,7 +121,7 @@ export function SpotLightForm() {
       console.log({ error });
     },
   });
-  const bannerUpdate = trpc.settings.banner_update.useMutation({
+  const spotLightUpdate = trpc.settings.banner_update.useMutation({
     onSuccess: () => {
       console.log('upload successfully');
 
@@ -189,11 +144,19 @@ export function SpotLightForm() {
           : await uploadOnS3Handler();
       const payload: any = { ...values };
       if (index) {
-        let dataPayload: any;
-        if (editData?.lang_id == 1) {
-          dataPayload = {
-            id: +index,
+        const dataPayload = {
+          id: +index,
 
+          lang_id: 1,
+
+          group: 'WONDER',
+          key: 'spotlight',
+          value: JSON.stringify({
+            ...nftSource,
+            link: values?.link,
+            ...values?.en,
+          }),
+          en: {
             lang_id: 1,
 
             group: 'WONDER',
@@ -203,11 +166,8 @@ export function SpotLightForm() {
               link: values?.link,
               ...values?.en,
             }),
-          };
-        } else {
-          dataPayload = {
-            id: +index,
-
+          },
+          ar: {
             lang_id: 2,
 
             group: 'WONDER',
@@ -217,24 +177,31 @@ export function SpotLightForm() {
               link: values?.link,
               ...values?.ar,
             }),
-          };
-        }
-
-        const data = await bannerUpdate.mutateAsync({ ...dataPayload });
+          },
+        };
+        const data = await spotLightUpdate.mutateAsync({ ...dataPayload });
         if (data) {
           setIsSubmitting(false);
 
           toast({
             variant: 'success',
-            title: 'Banner Updated Successfully',
+            title: 'SpotLight Updated Successfully',
           });
           router.back();
         } else {
           throw new Error('Data update Error');
         }
       } else {
-        const dataPayload = [
-          {
+        const dataPayload = {
+          key: 'spotlight',
+          group: 'WONDER',
+
+          value: JSON.stringify({
+            ...nftSource,
+            link: values?.link,
+            ...values?.en,
+          }),
+          en: {
             lang_id: 1,
             group: 'WONDER',
             key: 'spotlight',
@@ -244,7 +211,7 @@ export function SpotLightForm() {
               ...values?.en,
             }),
           },
-          {
+          ar: {
             lang_id: 2,
             group: 'WONDER',
             key: 'spotlight',
@@ -254,14 +221,15 @@ export function SpotLightForm() {
               ...values?.ar,
             }),
           },
-        ];
-        const data = await bannerUpload.mutateAsync(dataPayload);
+        };
+
+        const data = await spotLightUpload.mutateAsync(dataPayload);
         if (data) {
           setIsSubmitting(false);
 
           toast({
             variant: 'success',
-            title: 'Banner Uploaded Successfully',
+            title: 'SpotLight Uploaded Successfully',
           });
           router.back();
         } else {
@@ -360,30 +328,12 @@ export function SpotLightForm() {
               </div>
             )}
           </div>
-          <Tabs
-            defaultValue={
-              index &&
-                BannerApiData?.data !== undefined &&
-                BannerApiData?.data[0]?.lang_id == 1
-                ? 'en'
-                : index &&
-                  BannerApiData?.data !== undefined &&
-                  BannerApiData?.data[0]?.lang_id == 2
-                  ? 'ar'
-                  : 'en'
-            }
-            className="w-full"
-          >
-            {index ? (
-              <></>
-            ) : (
-              <>
-                <TabsList className="overflow-hidden">
-                  <TabsTrigger value="en">English</TabsTrigger>
-                  <TabsTrigger value="ar">Arabic</TabsTrigger>
-                </TabsList>
-              </>
-            )}
+          <Tabs defaultValue={'en'} className="w-full">
+            <TabsList className="overflow-hidden">
+              <TabsTrigger value="en">English</TabsTrigger>
+              <TabsTrigger value="ar">Arabic</TabsTrigger>
+            </TabsList>
+
             <TabsContent value="en">
               <FormField
                 control={form.control}
@@ -401,22 +351,27 @@ export function SpotLightForm() {
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="en.description"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Description</FormLabel>
-                    <FormControl>
-                      <Textarea placeholder="Enter Description..." {...field} />
-                    </FormControl>
+              <div>
+                <FormField
+                  control={form.control}
+                  name="en.description"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Description</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          placeholder="Enter Description..."
+                          {...field}
+                        />
+                      </FormControl>
 
-                    <div className="relative pb-4">
-                      <FormMessage />
-                    </div>
-                  </FormItem>
-                )}
-              />
+                      <div className="relative pb-4">
+                        <FormMessage />
+                      </div>
+                    </FormItem>
+                  )}
+                />
+              </div>
             </TabsContent>
             <TabsContent value="ar">
               <div dir="rtl">
@@ -447,10 +402,7 @@ export function SpotLightForm() {
                     <FormItem>
                       <FormLabel>عنوا</FormLabel>
                       <FormControl>
-                        <Textarea
-                          placeholder="Enter Description..."
-                          {...field}
-                        />
+                        <Textarea placeholder="أدخل العنوان" {...field} />
                       </FormControl>
 
                       <div className="relative pb-4">
@@ -471,8 +423,8 @@ export function SpotLightForm() {
         </div>
       </form>
       <LoadingDialog
-        open={isSubmitting || isFetching}
-        text={'Saving data...'}
+        open={isSubmitting || (index ? isLoading : false)}
+        text={`${isSubmitting ? 'Saving' : 'Loading'} data...`}
       />
     </Form>
   );

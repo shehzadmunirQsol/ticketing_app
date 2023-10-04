@@ -11,8 +11,7 @@ interface token {
 }
 const TokenRange = ({ range, setRange, min, max }: token) => {
   const percentage: any = ((range && range.length ? range[0] : 1) / max) * 100;
-  console.log({ percentage });
-  console.log(range[0], 'range[0]');
+
   // cons
   return (
     <div>
@@ -21,7 +20,7 @@ const TokenRange = ({ range, setRange, min, max }: token) => {
           defaultValue={range}
           value={range}
           max={max}
-          min={min}
+          min={1}
           step={1}
           onValueChange={(e: any) => {
             setRange(e);

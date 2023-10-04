@@ -190,7 +190,7 @@ const SIDEBAR_DATA = [
   },
   {
     key: '/admin/winners',
-    icon: <i className="fa-solid fa-chart-line p-4 rounded-full"></i>,
+    icon: <i className="fa-solid fa-trophy p-4 rounded-full"></i>,
     title: 'Winners',
   },
 
