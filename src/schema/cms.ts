@@ -80,4 +80,6 @@ export const updateCmsContentById = z.object({
 
 export const cmsStatusUpdateById = z.object({
   id: z.number(),
+  is_enabled: z.boolean().optional(),
+  is_deleted: z.boolean().optional(),
 });

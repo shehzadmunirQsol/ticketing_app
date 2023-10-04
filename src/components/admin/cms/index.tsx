@@ -30,6 +30,7 @@ function Cms() {
       refetchOnWindowFocus: false,
     },
   );
+  console.log(cms,"cmscmscms")
 
   // Initialize arrays to store data by type
   const staticData: any = [];
@@ -44,8 +45,8 @@ function Cms() {
     }
   });
 
-  const handleCmsStatus = async (id: any, type: any) => {
-    setSelectedItem(id);
+  const handleCmsStatus = async (data: any, type: any) => {
+    setSelectedItem(data);
     setTitle('CMS');
     setType(type);
     setIsModal(true);
@@ -95,7 +96,7 @@ function Cms() {
                             <DropdownMenuItem
                               onClick={() =>
                                 handleCmsStatus(
-                                  item?.id,
+                                  item,
                                   item?.is_enabled === false
                                     ? 'enable'
                                     : 'disable',
@@ -106,6 +107,25 @@ function Cms() {
                                 ? 'Enabled'
                                 : 'Disabled'}
                             </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+
+
+                            {
+                              !item.is_default ? <DropdownMenuItem
+                              onClick={() =>
+                                handleCmsStatus(
+                                  item,
+                                    'delete'
+                                )
+                              }
+                            >
+                              {/* {item.is_enabled === true
+                                ? 'Enabled'
+                                : 'Disabled'} */}
+                                Delete
+                            </DropdownMenuItem> : null
+                            }
+                            
                           </DropdownMenuContent>
                         </DropdownMenu>
                       </div>

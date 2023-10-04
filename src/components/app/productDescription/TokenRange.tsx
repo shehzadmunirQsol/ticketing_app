@@ -15,7 +15,7 @@ const TokenRange = ({ range, setRange, min, max }: token) => {
   // cons
   return (
     <div>
-      <div className="range-slider-container mt-14 cursor-pointer">
+      <div className="range-slider-container mt-14 cursor-pointer" >
         <Slider
           defaultValue={range}
           value={range}
@@ -34,7 +34,7 @@ const TokenRange = ({ range, setRange, min, max }: token) => {
           {range}
         </div>
       </div>
-      <div className="flex justify-between">
+      <div className="flex justify-between" dir='ltr'>
         <p className="text-card-gray font-black">{min?.toLocaleString()}</p>
         <p className="text-card-gray font-black">{max?.toLocaleString()}</p>
       </div>

@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
 import { trpc } from '~/utils/trpc';
 import Image from 'next/image';
+import langContent from '~/locales';
 
 function AboutCarousel(props: any) {
   console.log({ props });
@@ -86,10 +87,10 @@ function AboutCarousel(props: any) {
       <div className=" relative flex gap-3 flex-col md:flex-row h-28 md:h-auto py-6  items-center w-full md:justify-between mb-12  lg:mb-6 ">
         <div>
           <p className="font-black text-white text-xl lg:text-4xl uppercase">
-            Meet Our Driving Force
+          {langContent[lang.lang].About.HEADING}
           </p>
           <p className=" text-white text-lg lg:text-2xl">
-            The Passionate Team Behind Winnar
+          {langContent[lang.lang].About.SUB_HEADING}
           </p>
         </div>
 
@@ -103,7 +104,6 @@ function AboutCarousel(props: any) {
             className="button prev-btn h-10 w-10 md:h-14 md:w-14"
             onClick={() => previous()}
           >
-            {/* <i className="fa-solid fa-left-arrow" /> */}
             <i className="fa-solid fa-chevron-left"></i>
           </Button>
           <Button
@@ -142,7 +142,7 @@ function AboutCarousel(props: any) {
                         height={100}
                       />
                     </div>
-                    <div className="founder-hover text-left pl-4">
+                    <div className="founder-hover  pl-4">
                       <p className="text-3xl pb-3 font-bold ">{item.heading}</p>
                       <p className="text-2xl pb-3 ">{item.text}</p>
                     </div>
