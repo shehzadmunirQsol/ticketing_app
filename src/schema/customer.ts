@@ -221,6 +221,7 @@ export const accountsDetailSchema = z.object({
   last_name: z.string(),
   email: z.string().email(),
   dob: z.date().optional().nullable(),
+  country:z.string().optional(),
 });
 
 export const accountsDetailSchemaInput = z.object({
