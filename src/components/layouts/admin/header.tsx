@@ -31,6 +31,10 @@ import { formatTrpcError } from '~/utils/helper';
 import toast from 'react-hot-toast';
 import Content from './content';
 import { LoadingDialog } from '~/components/common/modal/loadingModal';
+import {
+  userAdminAuth,
+  userAdminIsLogin,
+} from '~/store/reducers/adminAuthSlice';
 function Header() {
   const dispatch = useDispatch();
 
@@ -67,6 +71,7 @@ export default Header;
 
 export function DropdownMenuDemo() {
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const logout = trpc.admin.logout.useMutation({
     onSuccess: (res: any) => {
@@ -82,6 +87,8 @@ export function DropdownMenuDemo() {
       await logout.mutateAsync({});
       toast.success('Logout successfully!');
       localStorage.removeItem('winnar-admin-token');
+      dispatch(userAdminAuth(null));
+      dispatch(userAdminIsLogin(false));
       router.replace('/admin/login');
     } catch (error: any) {
       const errorMessage = formatTrpcError(error?.shape?.message);
