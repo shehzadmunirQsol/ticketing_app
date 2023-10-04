@@ -1,18 +1,15 @@
-import Image from 'next/image';
-import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
-
 import OrdersDataByIdTable from '~/components/common/table/ordersByIdTable';
+import Image from 'next/image';
 import { Button } from '~/components/ui/button';
 import { Separator } from '~/components/ui/separator';
 import Current from '~/public/assets/not-current-entrie.png';
 import { RootState } from '~/store/store';
-import { trpc } from '~/utils/trpc';
 import langContent from '~/locales';
 
-const grid = ['', ''];
-// { control: Function }
+
 const AccountView = ({ control }: any) => {
   const { lang } = useSelector((state: RootState) => state.layout);
   const { user } = useSelector((state: RootState) => state.auth);

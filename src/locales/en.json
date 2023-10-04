@@ -301,6 +301,7 @@
   },
   "Checkout":{
     "HEADING":"CHECKOUT",
+    "SUB_HEADING":"Payment",
     "BILL_HEADING":"Billing Details",
     "SUMMARY_HEADING":"Order Summary",
     "HAVE_COUPON":"Have a coupon code?",
@@ -352,13 +353,18 @@
       "CURRENT":"Current",
       "PAST":"Past",
       "INFO_HEADING":"EXPLORE CURRENT COMPETITIONS",
-      "INFO":"No past competition entries to show. Only entries from the last 30 days will be shown."
+      "INFO":"No past competition entries to show. Only entries from the last 30 days will be shown.",
+      "TABLE_INFO":"No past competition entries to show. Only entries from the last 30 days will be shown.",
+      "TABLE_BUTTON":"EXPLORE CURRENT COMPETITIONS"
     },
     "AddressView":{
       "INFO_HEADING":"Billing Address",
         "INFO":"The following addresses will be used on the checkout page by default.",
         "SUB_INFO":"You have not set up this type of address yet.",
-        "BOX":"P.O Box"
+        "BOX":"P.O Box",
+        "ADD_BUTTON":"ADD",
+        "SAVE_BUTTON":"SAVE",
+        "EDIT_BUTTON":"EDIT"
     },
     "AccountDetail":{
       "HEADING":"Personal information",
@@ -391,8 +397,6 @@
         }
       ]
     }
-    
-    
   },
   "Auth":{
       "TAB_LOGIN":"Login",
@@ -407,6 +411,18 @@
       "FORGOTPASSWORD":{
           "HEADING":"Forgot Password",
           "BUTTON":" SUBMIT"
+      },
+      "RESETPASSWORD":{
+          "HEADING":"Reset Password",
+          "BUTTON":" Change Password"
+      },
+      "OTPSCREEN":{
+          "HEADING":"OTP`",
+          "SUB_HEADING":" VERIFICATION",
+          "TEXT":" We have sent OTP on your email",
+          "OTP":" Didn’t receive an OTP?",
+          "RESEND":" Resend OTP",
+          "BUTTON":" Enter"
       }
 
   }

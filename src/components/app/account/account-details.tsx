@@ -87,11 +87,11 @@ const AccountDetails = () => {
       <p className=" font-bold text-2xl mb-6 text-white">
       {langContent[lang.lang].MyAccount.AccountDetail.HEADING}
       </p>
-      <div className="space-y-32">
+      <div dir='ltr' className="space-y-32 ">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmitAccountDetail)}
-            className="justify-center items-center  space-y-4"
+            className="justify-center items-center  space-y-4 "
           >
             <FormField
               control={form.control}
@@ -101,7 +101,7 @@ const AccountDetails = () => {
                   <FormLabel className="text-xs font-thin text-grayColor">
                     Name*
                   </FormLabel>
-                  <FormControl className="rounded-md bg-inputColor">
+                  <FormControl className="rounded-md bg-inputColor ">
                     <Input
                       type="text"
                       placeholder="Enter your name"
@@ -122,7 +122,7 @@ const AccountDetails = () => {
                   <FormLabel className="text-xs font-thin text-grayColor">
                     Last Name *
                   </FormLabel>
-                  <FormControl className="rounded-md bg-inputColor">
+                  <FormControl className="rounded-md bg-inputColor ">
                     <Input
                       type="text"
                       placeholder="Enter your last name"
@@ -143,7 +143,7 @@ const AccountDetails = () => {
                   <FormLabel className="text-xs font-thin text-grayColor">
                     Email Address *
                   </FormLabel>
-                  <FormControl className="rounded-md bg-inputColor">
+                  <FormControl className="rounded-md bg-inputColor ">
                     <Input
                       type="text"
                       disabled
@@ -165,7 +165,7 @@ const AccountDetails = () => {
                   <FormLabel className="text-xs font-thin text-grayColor">
                     Date of Birth *
                   </FormLabel>
-                  <FormControl className="rounded-md bg-inputColor">
+                  <FormControl className="rounded-md bg-inputColor ">
                     <Input
                       type={'date'}
                       placeholder={'Start Date'}
@@ -182,7 +182,7 @@ const AccountDetails = () => {
               )}
             />
 
-            <div className=" flex items-center justify-end">
+            <div className=" flex items-center ltr:justify-end rtl:justify-start">
               <Button
                 className="align-center  rounded-full px-5 text-base   text-black font-sans font-[900]   tracking-[-1px]"
                 variant="clip"
@@ -208,7 +208,6 @@ const AccountDetails = () => {
     </div>
   );
 };
-
 export default AccountDetails;
 
 // Password Change
@@ -257,7 +256,7 @@ function PasswordChange({ email }: any) {
   return (
     <div className="py-4 text-[#eaeaea]">
       <p className=" font-bold text-2xl mb-6 text-white">{langContent[lang.lang].MyAccount.AccountDetail.SUB_HEADING}</p>
-      <div>
+      <div dir='ltr'>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmitAccountPassword)}
@@ -271,7 +270,7 @@ function PasswordChange({ email }: any) {
                   <FormLabel className="text-xs font-thin text-grayColor">
                     Current password (leave blank to leave unchanged) *
                   </FormLabel>
-                  <FormControl className="rounded-md bg-inputColor">
+                  <FormControl className="rounded-md bg-inputColor ">
                     <Input
                       type="password"
                       placeholder="Write your password"
@@ -292,7 +291,7 @@ function PasswordChange({ email }: any) {
                   <FormLabel className="text-xs font-thin text-grayColor">
                     New password (leave blank to leave unchanged) *
                   </FormLabel>
-                  <FormControl className="rounded-md bg-inputColor">
+                  <FormControl className="rounded-md bg-inputColor ">
                     <Input
                       type="password"
                       placeholder="Enter your new password"
@@ -313,7 +312,7 @@ function PasswordChange({ email }: any) {
                   <FormLabel className="text-xs font-thin text-grayColor">
                     Password Confirmation (leave blank to leave unchanged) *
                   </FormLabel>
-                  <FormControl className="rounded-md bg-inputColor">
+                  <FormControl className="rounded-md bg-inputColor ">
                     <Input
                       type="password"
                       placeholder="Reenter your new password"
@@ -326,7 +325,7 @@ function PasswordChange({ email }: any) {
                 </FormItem>
               )}
             />
-            <div className=" flex items-center justify-end">
+            <div className=" flex items-center ltr:justify-end rtl:justify-start">
               <Button
                 className="align-center  rounded-full px-5 text-base   text-black font-sans font-[900]   tracking-[-1px]"
                 variant="clip"
@@ -350,7 +349,6 @@ function PasswordChange({ email }: any) {
 }
 
 // Delete Account
-// Password Change
 function DeleteAccount({ email }: any) {
   const { toast } = useToast();
   const { user } = useSelector((state: RootState) => state.auth);
@@ -397,27 +395,6 @@ function DeleteAccount({ email }: any) {
       });
     }
   }
-
-  const accountArgumentsOptions = [
-    {
-      text: 'I’m not interested in competitions anymore',
-    },
-    {
-      text: 'Uninteresting prizes',
-    },
-    {
-      text: 'Problems with gambling',
-    },
-    {
-      text: 'I receive too many emails',
-    },
-    {
-      text: 'I receive too many text messages',
-    },
-    {
-      text: 'I receive too many push notifications',
-    },
-  ];
 
   const handleDivClick = (itemText: string) => {
     setReason((previous: any) => {
@@ -482,14 +459,15 @@ function DeleteAccount({ email }: any) {
             })}
 
             <FormField
+            
               control={form.control}
               name="message"
               render={({ field }) => (
-                <FormItem className="mb-6 lg:mb-10 md:mb-10">
+                <FormItem className="mb-6 lg:mb-10 md:mb-10 " dir='ltr'>
                   <FormLabel className="text-xs  font-thin text-grayColor">
                     Add your comment:
                   </FormLabel>
-                  <FormControl className="rounded-md bg-inputColor">
+                  <FormControl className="rounded-md bg-inputColor ">
                     <Textarea
                       placeholder="Type your message here..."
                       {...field}

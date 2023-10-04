@@ -13,8 +13,8 @@ function LiveDraw(props: any) {
   const { lang } = useSelector((state: RootState) => state.layout);
 
   return (
-    <div className="relative  mb-20 max-w-[1600px] ">
-      <div className="   bg-primary lg:py-10  grid grid-cols-1 lg:grid-cols-2 gap-4 items-center md:items-start  ">
+    <div className="relative  mb-20 max-w-[1600px]  ">
+      <div className="   bg-primary lg:py-10  grid grid-cols-1 lg:grid-cols-2 gap-4 items-center md:items-start  px-4 md:px-14">
         <div className="   flex flex-col justify-center items-center  w-full ">
           <p className="  py-4 md:py-0 ltr:text-left rtl:text-right    !w-full md:!max-w-[310px] sm:!max-w-[310px] xs:!max-w-[310px] md:mb-30 text-background font-[1000] tracking-[-3px] !text-6xl   md:!text-6xl lg:!text-8xl uppercase">
             {langContent[lang.lang].ProductDetail.livedraw.HEADING}

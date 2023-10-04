@@ -14,7 +14,7 @@ interface token {
 }
 const CounterStyle = ({ range, setRange, min, max }: token) => {
   const { lang } = useSelector((state: RootState) => state.layout);
-
+  console.log(lang.lang,"lang")
   const rangeType: any = range && range?.length ? range[0] : 1;
   const handlerCounter = (type: string) => {
     if (type == 'a' && rangeType < max) {
@@ -26,10 +26,10 @@ const CounterStyle = ({ range, setRange, min, max }: token) => {
 
   return (
     <div>
-      <div className="flex items-center my-10 text-center ">
+      <div className="flex items-center my-10 text-center" dir='ltr'>
         <button
           onClick={() => handlerCounter('b')}
-          className="bg-primary lg:w-14 md:w-14 w-10 md:h-12 h-8 rounded-l-sm "
+          className={`bg-primary lg:w-14 md:w-14 w-10 md:h-12 h-10  ${lang.lang === "en" ? "rounded-r-sm" : "rounded-l-sm"  }`} 
         >
           <Image
             src={decrement}
@@ -46,7 +46,8 @@ const CounterStyle = ({ range, setRange, min, max }: token) => {
         </div>
         <button
           onClick={() => handlerCounter('a')}
-          className="bg-primary lg:w-14 md:w-14 w-10 md:h-12 h-8 rounded-l-sm "
+          // className="bg-primary lg:w-14 md:w-14 w-10 md:h-12 h-8 rounded-l-sm "
+          className={`bg-primary lg:w-14 md:w-14 w-10 md:h-12 h-10  ${lang.lang === "en" ? "rounded-l-sm" : "rounded-r-sm"  }`} 
         >
           <Image
             src={increment}

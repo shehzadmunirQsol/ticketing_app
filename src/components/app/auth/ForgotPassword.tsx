@@ -76,14 +76,16 @@ export function ForgotPasswordDailog(props: ForgotPasswordDialogInterface) {
         open={props?.isModal}
         onOpenChange={(e: any): any => props.setIsModal(e)}
       >
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="sm:max-w-[425px] px-2 lg:px-8">
           <DialogHeader>
-            <DialogTitle className='text-left'>{langContent[lang.lang].Auth.FORGOTPASSWORD.HEADING} </DialogTitle>
+            <DialogTitle className=" text-center">
+              {langContent[lang.lang].Auth.FORGOTPASSWORD.HEADING}{' '}
+            </DialogTitle>
             <DialogDescription>
               <Form {...formForgotPassword}>
                 <form
                   onSubmit={formForgotPassword.handleSubmit(onSubmit)}
-                  className="px-2 lg:px-8 py-4 space-y-4"
+                  className=" py-4 space-y-4"
                 >
                   <FormField
                     control={formForgotPassword.control}
@@ -106,12 +108,18 @@ export function ForgotPasswordDailog(props: ForgotPasswordDialogInterface) {
                       </FormItem>
                     )}
                   />
-                  <Button
-                    className="w-full text-black font-sans font-[900] text-xl tracking-[-1px]"
-                    variant="clip"
-                  >
-                    {langContent[lang.lang].Auth.FORGOTPASSWORD.BUTTON}
-                  </Button>
+
+
+                  <div className="w-full mx-auto">
+                    <div className=" flex items-center justify-center">
+                      <Button
+                        className="align-center uppercase rounded-full px-10   text-black font-sans font-[900]   text-xl tracking-[-1px]"
+                        variant="clip"
+                      >
+                        {langContent[lang.lang].Auth.FORGOTPASSWORD.BUTTON}
+                      </Button>
+                    </div>
+                  </div>
                 </form>
               </Form>
             </DialogDescription>

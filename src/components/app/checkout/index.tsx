@@ -243,7 +243,7 @@ function Checkout() {
           ></Script>
           <div className=" relative  bg-background   ">
             <h2 className="lg:text-4xl md:text-4xl text-2xl font-black uppercase mb-6">
-              Payment
+            {langContent[lang.lang].Checkout.SUB_HEADING}
             </h2>
             <form
               action={`${process.env.NEXT_PUBLIC_BASE_URL}/checkout`}
