@@ -73,17 +73,17 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
                 </div>
                 <div className="border-b-2 border-gray-300 pb-8 mb-8">
                   <h2 className="text-2xl  font-bold mb-4">Bill To:</h2>
-                  <p className=" mb-2">
+                  <p className=" ">
                     {OrderApiData?.data?.first_name +
                       ' ' +
                       OrderApiData?.data?.last_name}
                   </p>
-                  <p className=" mb-2">{OrderApiData?.data?.street_address}</p>
-                  <p className=" mb-2">
+                  <p className=" ">{OrderApiData?.data?.street_address}</p>
+                  <p className=" ">
                     {OrderApiData?.data?.city}, {OrderApiData?.data?.country}{' '}
                     {OrderApiData?.data?.postal_code}
                   </p>
-                  <p className="">{OrderApiData?.data?.email}</p>
+                  <p className="mt-2">{OrderApiData?.data?.email}</p>
                 </div>
                 <ScrollArea className="w-full  ">
                   <ScrollBar orientation="horizontal"></ScrollBar>
