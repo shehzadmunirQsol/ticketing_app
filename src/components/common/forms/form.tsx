@@ -26,9 +26,12 @@ import toast from 'react-hot-toast';
 import { LoadingDialog } from '../modal/loadingModal';
 
 const exampleFormSchema = z.object({
-  username: z.string().min(2, {
-    message: 'Username must be at least 2 characters.',
-  }).trim(),
+  username: z
+    .string()
+    .min(2, {
+      message: 'Username must be at least 2 characters.',
+    })
+    .trim(),
 });
 
 export default function ExampleForm() {
@@ -63,7 +66,7 @@ export default function ExampleForm() {
                 This is your public display name.
               </FormDescription>
 
-              <div className='relative pb-4'>
+              <div className="relative pb-4">
                 <FormMessage />
               </div>
             </FormItem>
@@ -79,9 +82,12 @@ export default function ExampleForm() {
 
 const loginFormSchema = z.object({
   email: z.string().trim().email(),
-  password: z.string().min(6, {
-    message: 'Password must be at least 6 characters.',
-  }).trim(),
+  password: z
+    .string()
+    .min(6, {
+      message: 'Password must be at least 6 characters.',
+    })
+    .trim(),
 });
 
 export function LoginForm() {
@@ -101,6 +107,8 @@ export function LoginForm() {
 
       if (res.jwt) {
         setAdminToken(res.jwt);
+        dispatch(userAdminAuth(res?.user));
+        dispatch(userAdminIsLogin(true));
       }
     },
     onError(error) {
@@ -111,8 +119,7 @@ export function LoginForm() {
   async function onSubmit(values: z.infer<typeof loginFormSchema>) {
     try {
       const response: any = await loginUser.mutateAsync({ ...values });
-      dispatch(userAdminAuth(response?.user));
-      dispatch(userAdminIsLogin(true));
+
       toast.success('Login Successfully!');
 
       router.push('/admin/dashboard');
@@ -137,7 +144,7 @@ export function LoginForm() {
                   <Input type="email" placeholder="Enter Email" {...field} />
                 </FormControl>
 
-                <div className='relative pb-4'>
+                <div className="relative pb-4">
                   <FormMessage />
                 </div>
               </FormItem>
@@ -157,7 +164,7 @@ export function LoginForm() {
                   />
                 </FormControl>
 
-                <div className='relative pb-4'>
+                <div className="relative pb-4">
                   <FormMessage />
                 </div>
               </FormItem>

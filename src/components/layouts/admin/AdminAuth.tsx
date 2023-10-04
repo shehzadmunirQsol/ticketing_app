@@ -64,7 +64,13 @@ export default function AdminAuth({ children }: { children: ReactNode }) {
     return () => {
       if (timeout) clearTimeout(timeout);
     };
-  }, [isFetched, isLoading, userData, typeof window !== 'undefined']);
+  }, [
+    isFetched,
+    isLoading,
+    userData,
+    typeof window !== 'undefined',
+    router.pathname,
+  ]);
 
   return (
     <>
