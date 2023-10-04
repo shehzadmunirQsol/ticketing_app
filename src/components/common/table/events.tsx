@@ -54,13 +54,14 @@ import {
   DoubleArrowRightIcon,
 } from '@radix-ui/react-icons';
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
-import { useRouter } from 'next/router';
+import { CSVLink } from 'react-csv';
 
 export type Category = {
   thumb: string;
   name: string;
   desc: string | null;
   id: number;
+  category_id: number;
   price: number;
   total_tickets: number;
   tickets_sold: number;
@@ -74,15 +75,12 @@ export type Category = {
 export default function EventsDataTable() {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [filterID, setFilterID] = useState({});
-  const router = useRouter()
-  
 
   const [filters, setFilters] = useState<GetEventSchema>({
     first: 0,
     rows: 10,
     lang_id: 1,
   });
-  console.log({ filterID });
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
 
@@ -98,8 +96,19 @@ export default function EventsDataTable() {
     lang_id: 1,
   });
 
+  const categories: { [key: number]: string } = (categoryData ?? [])?.reduce(
+    (accumulator, current) => {
+      const categoryNames: { [key: number]: string } = {
+        ...accumulator,
+        [current.id]: current.name,
+      };
+      return categoryNames;
+    },
+    {},
+  );
+
   const eventData = React.useMemo(() => {
-    return Array.isArray(data?.data) ? data?.data : [];
+    return Array.isArray(data?.data) && data?.data?.length ? data?.data : [];
   }, [data]);
   const columns: ColumnDef<Category>[] = [
     {
@@ -129,6 +138,15 @@ export default function EventsDataTable() {
       cell: ({ row }) => (
         <div className="text-ellipsis whitespace-nowrap overflow-hidden w-64">
           {row?.original?.desc}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'Category',
+      header: 'Category',
+      cell: ({ row }) => (
+        <div className="text-ellipsis whitespace-nowrap overflow-hidden w-28">
+          {categories[row?.original?.category_id]}
         </div>
       ),
     },
@@ -219,7 +237,7 @@ export default function EventsDataTable() {
               <DropdownMenuSeparator />
 
               <Link href={`/admin/events/edit/${row?.original?.id}`}>
-                <DropdownMenuItem>Edit Event</DropdownMenuItem>
+                <DropdownMenuItem>Edit Product</DropdownMenuItem>
               </Link>
 
               {row?.original?.tickets_sold > 0 ? (
@@ -229,7 +247,7 @@ export default function EventsDataTable() {
                     onClick={() => dispatch(setSelectedEvent(row.original))}
                     href={`/admin/events/event-customers/${row.original.id}`}
                   >
-                    <DropdownMenuItem>Event Customers</DropdownMenuItem>
+                    <DropdownMenuItem>Product Customers</DropdownMenuItem>
                   </Link>
                 </>
               ) : null}
@@ -275,7 +293,7 @@ export default function EventsDataTable() {
     },
     {
       Icon: 'fal fa-chevron-down',
-      text: 'Event Status',
+      text: 'Product Status',
       filtername: 'status',
       type: 'select',
 
@@ -319,50 +337,102 @@ export default function EventsDataTable() {
     },
   ];
 
+  const csvData = [
+    [
+      'Name',
+      'Description',
+      'Category',
+      'Token Price',
+      'Token Cap',
+      'Token Purchased',
+      'Per User Limit',
+      'Launched Date',
+      'End Date',
+      'Created At',
+    ],
+    ...eventData?.map(
+      ({
+        name,
+        desc,
+        category_id,
+        price,
+        total_tickets,
+        tickets_sold,
+        user_ticket_limit,
+        launch_date,
+        end_date,
+        created_at,
+      }) => [
+        name,
+        desc,
+        categories[category_id],
+        price,
+        total_tickets,
+        tickets_sold,
+        user_ticket_limit,
+        launch_date?.toLocaleDateString(),
+        end_date?.toLocaleDateString(),
+        created_at?.toLocaleDateString(),
+      ],
+    ),
+  ];
+
   return (
     <div className="w-full space-y-4">
-      <div className="flex items-center justify-end gap-2">
-        <LanguageSelect languageHandler={languageHandler} />
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline">
-              Columns <ChevronDown className="ml-2 h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
-        <TableFilters
-          inputList={roleOptions1}
-          item_name={'Events'}
-          value={filterID}
-          setValue={setFilterID}
-          setFilters={setFilters}
-          initial={filters}
-        />
+      <div className="flex items-center justify-between">
+        {eventData?.length ? (
+          <Button variant="outline">
+            <CSVLink filename="products.csv" data={csvData}>
+              Export to CSV
+            </CSVLink>
+          </Button>
+        ) : (
+          <div />
+        )}
+
+        <div className="flex items-center gap-2">
+          <LanguageSelect languageHandler={languageHandler} />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline">
+                Columns <ChevronDown className="ml-2 h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {table
+                .getAllColumns()
+                .filter((column) => column.getCanHide())
+                .map((column) => {
+                  return (
+                    <DropdownMenuCheckboxItem
+                      key={column.id}
+                      className="capitalize"
+                      checked={column.getIsVisible()}
+                      onCheckedChange={(value) =>
+                        column.toggleVisibility(!!value)
+                      }
+                    >
+                      {column.id}
+                    </DropdownMenuCheckboxItem>
+                  );
+                })}
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <TableFilters
+            inputList={roleOptions1}
+            item_name={'Products'}
+            value={filterID}
+            setValue={setFilterID}
+            setFilters={setFilters}
+            initial={filters}
+          />
+        </div>
       </div>
       <div className="rounded-md border border-border">
         <ScrollArea className="w-full ">
           <ScrollBar orientation="horizontal"></ScrollBar>
           <Table>
-            <TableHeader>
+            <TableHeader className="bg-secondary/80">
               {table?.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
@@ -371,9 +441,9 @@ export default function EventsDataTable() {
                         {header.isPlaceholder
                           ? null
                           : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
+                              header.column.columnDef.header,
+                              header.getContext(),
+                            )}
                       </TableHead>
                     );
                   })}
@@ -471,7 +541,7 @@ export default function EventsDataTable() {
               disabled={
                 (filters.first + 1) * filters.rows > (data?.count ?? 0) ||
                 Math.ceil((data?.count ?? 0) / filters.rows) ==
-                filters.first + 1
+                  filters.first + 1
               }
             >
               <span className="sr-only">Go to next page</span>
@@ -489,7 +559,7 @@ export default function EventsDataTable() {
               disabled={
                 (filters.first + 1) * filters.rows > (data?.count ?? 0) ||
                 Math.ceil((data?.count ?? 0) / filters.rows) ==
-                filters.first + 1
+                  filters.first + 1
               }
             >
               <span className="sr-only">Go to last page</span>

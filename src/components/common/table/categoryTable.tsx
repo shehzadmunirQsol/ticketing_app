@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { CSVLink } from 'react-csv';
 import {
   ColumnDef,
   // ColumnFiltersState,
@@ -127,7 +128,7 @@ export default function CategoryDataTable() {
   });
 
   const categoryData = React.useMemo(() => {
-    return Array.isArray(data?.data) ? data?.data : [];
+    return Array.isArray(data?.data) && data?.data?.length ? data?.data : [];
   }, [data]);
 
   const table = useReactTable({
@@ -156,36 +157,53 @@ export default function CategoryDataTable() {
     setFilters((prevFilters) => ({ ...prevFilters, first: page }));
   }
 
+  const csvData = [
+    ['Name', 'Description'],
+    ...categoryData?.map(({ name, desc }) => [name, desc]),
+  ];
+
   return (
     <div className="w-full space-y-4 ">
-      <div className="flex items-center justify-end gap-2">
-        <LanguageSelect languageHandler={languageHandler} />
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline">
-              Columns <ChevronDown className="ml-2 h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
+      <div className="flex items-center justify-between">
+        {categoryData?.length ? (
+          <Button variant="outline">
+            <CSVLink filename="categories.csv" data={csvData}>
+              Export to CSV
+            </CSVLink>
+          </Button>
+        ) : (
+          <div />
+        )}
+
+        <div className="flex items-center gap-2">
+          <LanguageSelect languageHandler={languageHandler} />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline">
+                Columns <ChevronDown className="ml-2 h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {table
+                .getAllColumns()
+                .filter((column) => column.getCanHide())
+                .map((column) => {
+                  return (
+                    <DropdownMenuCheckboxItem
+                      key={column.id}
+                      className="capitalize"
+                      checked={column.getIsVisible()}
+                      onCheckedChange={(value) =>
+                        column.toggleVisibility(!!value)
+                      }
+                    >
+                      {column.id}
+                    </DropdownMenuCheckboxItem>
+                  );
+                })}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
       <div className="rounded-md border border-border ">
         <ScrollArea className="w-full ">

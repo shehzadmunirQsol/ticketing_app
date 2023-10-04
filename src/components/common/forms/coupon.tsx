@@ -160,7 +160,7 @@ export default function CouponForm() {
           <FormField
             control={form.control}
             name="coupon_code"
-            render={({ field }) => (
+            render={() => (
               <FormItem className=" flex flex-col gap-2 mt-2 w-full">
                 <FormLabel>
                   Coupon Code <sup className="text-md text-red-500">*</sup>
@@ -170,7 +170,17 @@ export default function CouponForm() {
                     className="uppercase"
                     placeholder="Enter Coupon Code"
                     maxLength={6}
-                    {...field}
+                    {...form.register('coupon_code', {
+                      onChange(event) {
+                        form.setValue(
+                          'coupon_code',
+                          event?.target?.value
+                            ?.replace(/\s+/g, '')
+                            ?.toUpperCase(),
+                        );
+                      },
+                      required: 'Code is required',
+                    })}
                   />
                 </FormControl>
 

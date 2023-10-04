@@ -19,8 +19,6 @@ import {
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/ui/dropdown-menu';
 import {
@@ -31,9 +29,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/ui/table';
-import LanguageSelect, { LanguageInterface } from '../language_select';
 import { trpc } from '~/utils/trpc';
-import Link from 'next/link';
 import { GetEventSchema } from '~/schema/event';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 import { LoadingDialog } from '../modal/loadingModal';
@@ -52,6 +48,7 @@ import {
   DoubleArrowRightIcon,
 } from '@radix-ui/react-icons';
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
+import { CSVLink } from 'react-csv';
 export type Category = {
   id: number;
   email: string;
@@ -62,7 +59,13 @@ export type Category = {
   discount_amount: number;
   sub_total_amount: number;
   total_payment_id: string;
-
+  street_address: string;
+  apartment?: string;
+  country: string;
+  state: string;
+  city: string;
+  postal_code: string;
+  dob: Date;
   created_at: Date;
   updated_at: Date;
 };
@@ -89,7 +92,7 @@ export default function OrdersDataTable() {
     },
   );
   const orderData = React.useMemo(() => {
-    return Array.isArray(data?.data) ? data?.data : [];
+    return Array.isArray(data?.data) && data?.data?.length ? data?.data : [];
   }, [data]);
   const handleView = (data: any, type: string) => {
     setSelectedItem(data);
@@ -97,18 +100,28 @@ export default function OrdersDataTable() {
     setType(type);
     setIsModal(true);
   };
+
   const columns: ColumnDef<Category>[] = [
     {
-      accessorKey: 'name',
-      header: 'Customer Name',
+      accessorKey: 'First Name',
+      header: 'First Name',
       cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap  overflow-hidden w-44">
-          {row?.original?.first_name + ' ' + row?.original?.last_name}
+        <div className="capitalize text-ellipsis whitespace-nowrap  overflow-hidden w-32">
+          {row?.original?.first_name}
         </div>
       ),
     },
     {
-      accessorKey: 'email',
+      accessorKey: 'Last Name',
+      header: 'Last Name',
+      cell: ({ row }) => (
+        <div className="capitalize text-ellipsis whitespace-nowrap  overflow-hidden w-32">
+          {row?.original?.last_name}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'Email',
       header: 'Email',
       cell: ({ row }) => (
         <div className=" text-ellipsis whitespace-nowrap ">
@@ -118,11 +131,20 @@ export default function OrdersDataTable() {
     },
 
     {
-      accessorKey: 'Phone',
+      accessorKey: 'Phone No.',
       header: 'Phone No.',
       cell: ({ row }) => (
         <div className="capitalize text-ellipsis whitespace-nowrap ">
           {row?.original?.phone_number}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'DOB',
+      header: 'DOB',
+      cell: ({ row }) => (
+        <div className="capitalize text-ellipsis whitespace-nowrap ">
+          {displayDate(row?.original?.dob)}
         </div>
       ),
     },
@@ -132,6 +154,51 @@ export default function OrdersDataTable() {
       cell: ({ row }) => (
         <div className=" text-ellipsis whitespace-nowrap ">
           {row?.original?.total_payment_id}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'Country',
+      header: 'Country',
+      cell: ({ row }) => (
+        <div className=" text-ellipsis whitespace-nowrap ">
+          {row?.original?.country}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'State',
+      header: 'State',
+      cell: ({ row }) => (
+        <div className=" text-ellipsis whitespace-nowrap ">
+          {row?.original?.state}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'City',
+      header: 'City',
+      cell: ({ row }) => (
+        <div className=" text-ellipsis whitespace-nowrap ">
+          {row?.original?.city}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'Street Address',
+      header: 'Street Address',
+      cell: ({ row }) => (
+        <div className=" text-ellipsis whitespace-nowrap ">
+          {row?.original?.street_address}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'Apartment',
+      header: 'Apartment',
+      cell: ({ row }) => (
+        <div className=" text-ellipsis whitespace-nowrap ">
+          {row?.original?.apartment ? row?.original?.apartment : 'N/A'}
         </div>
       ),
     },
@@ -169,8 +236,8 @@ export default function OrdersDataTable() {
       ),
     },
     {
-      accessorKey: 'Created At',
-      header: 'Created At',
+      accessorKey: 'Created at',
+      header: 'Created at',
       cell: ({ row }) => (
         <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
           {displayDate(row?.original?.created_at)}
@@ -223,10 +290,6 @@ export default function OrdersDataTable() {
     },
   });
 
-  function languageHandler(params: LanguageInterface) {
-    setFilters((prevFilters) => ({ ...prevFilters }));
-  }
-
   function handlePagination(page: number) {
     if (page < 0) return;
     setFilters((prevFilters) => ({ ...prevFilters, first: page }));
@@ -257,42 +320,111 @@ export default function OrdersDataTable() {
       filtername: 'Clear',
     },
   ];
+
+  const csvData = [
+    [
+      'First Name',
+      'Last Name',
+      'Email',
+      'Phone No.',
+      'DOB',
+      'Transaction ID',
+      'Country',
+      'State',
+      'City',
+      'Street Address',
+      'Apartment',
+      'Sub Total',
+      'Discount',
+      'Total Amount',
+      'Created at',
+    ],
+    ...orderData?.map(
+      ({
+        first_name,
+        last_name,
+        email,
+        phone_number,
+        dob,
+        total_payment_id,
+        country,
+        state,
+        city,
+        street_address,
+        apartment,
+        sub_total_amount,
+        discount_amount,
+        total_amount,
+        created_at,
+      }) => [
+        first_name,
+        last_name,
+        email,
+        phone_number,
+        dob?.toLocaleDateString(),
+        total_payment_id,
+        country,
+        state,
+        city,
+        street_address,
+        apartment ? apartment : 'N/A',
+
+        sub_total_amount,
+        discount_amount ? discount_amount : 'N/A',
+        total_amount,
+        created_at?.toLocaleDateString(),
+      ],
+    ),
+  ];
+
   return (
     <div className="w-full space-y-4">
-      <div className="flex items-center justify-end gap-2">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline">
-              Columns <ChevronDown className="ml-2 h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
-        <TableFilters
-          inputList={roleOptions1}
-          item_name={'Orders'}
-          value={filterID}
-          setValue={setFilterID}
-          setFilters={setFilters}
-        />
+      <div className="flex items-center justify-between">
+        {orderData?.length ? (
+          <Button variant="outline">
+            <CSVLink filename="orders.csv" data={csvData}>
+              Export to CSV
+            </CSVLink>
+          </Button>
+        ) : (
+          <div />
+        )}
+
+        <div className="flex items-center gap-2">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline">
+                Columns <ChevronDown className="ml-2 h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {table
+                .getAllColumns()
+                .filter((column) => column.getCanHide())
+                .map((column) => {
+                  return (
+                    <DropdownMenuCheckboxItem
+                      key={column.id}
+                      className="capitalize"
+                      checked={column.getIsVisible()}
+                      onCheckedChange={(value) =>
+                        column.toggleVisibility(!!value)
+                      }
+                    >
+                      {column.id}
+                    </DropdownMenuCheckboxItem>
+                  );
+                })}
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <TableFilters
+            inputList={roleOptions1}
+            item_name={'Orders'}
+            value={filterID}
+            setValue={setFilterID}
+            setFilters={setFilters}
+          />
+        </div>
       </div>
       <div className="rounded-md border border-border">
         <ScrollArea className="w-full ">
