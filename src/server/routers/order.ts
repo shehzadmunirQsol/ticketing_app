@@ -902,9 +902,10 @@ async function CreateCheckout(APidata: any) {
         regPayload[`registrations[${index}].id`] = item;
       });
     }
-    const countries = countryJSON.filter(
+    const countries: any = countryJSON.find(
       (item) => item.country == payload?.values?.country,
     );
+    console.log(countries['alpha-2'], 'thisiscountryiso');
 
     if (payload?.card) delete payload?.card;
     if (payload?.values?.total_id) delete payload?.values?.total_id;
@@ -915,19 +916,21 @@ async function CreateCheckout(APidata: any) {
       currency: 'AED',
       paymentType: 'DB',
       ...regPayload,
-      'billing.country': 'AE',
+      'billing.country': countries['alpha-2'],
       'billing.street1': payload?.values?.street_address,
       'billing.state': payload?.values?.state,
       'billing.postcode': payload?.values?.postal_code,
       'billing.city': payload?.values?.city,
+      'customer.givenName': payload?.values?.first_name,
+      'customer.surname': payload?.values?.last_name,
       'customer.email': payload?.values?.email,
+      'customer.phone': payload?.values?.phone_number,
       'standingInstruction.source': 'CIT',
       'standingInstruction.mode': 'INITIAL',
       'customParameters[payload]': JSON.stringify({
         ...payload,
       }),
     };
-    console.log({ apiDate }, 'apiDate1');
 
     const data = new URLSearchParams(apiDate).toString();
     const options = {

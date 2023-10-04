@@ -16,14 +16,6 @@ import {
   SelectValue,
 } from '@/ui/select';
 
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-} from '@/ui/command';
-
 import { Popover, PopoverContent, PopoverTrigger } from '@/ui/popover';
 
 import { Input } from '@/ui/input';
@@ -395,7 +387,6 @@ function Checkout() {
                                   <SelectGroup>
                                     {countries &&
                                       countries?.map((country, i) => {
-                                        console.log({ country, i });
                                         return (
                                           <SelectItem key={i} value={country}>
                                             {country?.toUpperCase()}
