@@ -794,10 +794,10 @@ export const orderRouter = router({
                 first_name: payload.values.first_name,
                 status: 'paid',
                 order_number:order?.id,
-                total_price:subTotalAmount - discountAmount,
+                total_price:"AED "+(subTotalAmount - discountAmount).toLocaleString(),
                 event_details:emailPayload,
-                discount:discountAmount,
-                sub_total:subTotalAmount
+                discount:"AED "+discountAmount.toLocaleString(),
+                sub_total:"AED "+subTotalAmount.toLocaleString()
 
               },
             };
