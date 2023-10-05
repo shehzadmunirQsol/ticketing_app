@@ -9,9 +9,6 @@ import { Button } from '~/components/ui/button';
 import { AddCustomerAddressDialog } from '~/components/common/modal/customerAddressModal';
 import { LoadingDialog } from '~/components/common/modal/loadingModal';
 
-import countryJSON from '~/data/countries.json';
-const countries = countryJSON.map((item) => item.country);
-
 export default function AddressesView() {
   const [isModal, setIsModal] = useState(false);
   const { lang } = useSelector((state: RootState) => state.layout);

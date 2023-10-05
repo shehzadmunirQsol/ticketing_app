@@ -36,8 +36,12 @@ export const dashboardRouter = router({
           end_date: { gte: todayDate },
         },
       });
+      const startDate = new Date()?.toISOString().split('T')[0] as string;
+
       const eventsPromise = await prisma.event.count({
         where: {
+          launch_date: { lte: new Date(startDate) },
+          end_date: { gte: new Date(startDate) },
           is_deleted: false,
         },
       });
@@ -86,7 +90,7 @@ export const dashboardRouter = router({
           link: '/admin/coupons?is_enabled=true',
         },
         {
-          title: 'Active Events',
+          title: 'Active Products',
           data: events,
           symbol: '',
           icon: 'fa-solid fa-calendar-days',
@@ -94,7 +98,7 @@ export const dashboardRouter = router({
           link: `/admin/events?status=active`,
         },
         {
-          title: 'Order Amount',
+          title: 'Sales Volume',
           data: ordersAmount._sum.total_amount,
           symbol: 'AED',
           icon: 'fa-solid fa-chart-line',

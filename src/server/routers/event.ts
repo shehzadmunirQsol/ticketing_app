@@ -37,12 +37,12 @@ export const eventRouter = router({
         });
       }
 
+      const startDate = new Date()?.toISOString().split('T')[0] as string;
       if (input?.filters?.status == 'active') {
-        const startDate = new Date()?.toISOString().split('T')[0] as string;
-        where.launch_date = { gte: new Date(startDate) };
+        where.launch_date = { lte: new Date(startDate) };
+        where.end_date = { gte: new Date(startDate) };
       }
       if (input?.filters?.status == 'in-active') {
-        const startDate = new Date()?.toISOString().split('T')[0] as string;
         where.end_date = { lte: new Date(startDate) };
       }
       if (input?.filters?.endDate) {

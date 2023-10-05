@@ -16,9 +16,6 @@ import {
   SelectValue,
 } from '@/ui/select';
 
-
-
-
 import { Input } from '@/ui/input';
 import { useForm } from 'react-hook-form';
 import Group17 from '~/public/assets/icons/Group17.png';
@@ -41,10 +38,7 @@ import jqeury from 'jquery';
 import { CardDailog } from '~/components/common/modal/cardModal';
 import langContent from '~/locales';
 
-
 import countryJSON from '~/data/countries.json';
-import { Check } from 'lucide-react';
-import { cn } from '~/utils/cn';
 const countries = countryJSON.map((item) => item.country);
 
 function Checkout() {
@@ -59,14 +53,13 @@ function Checkout() {
   // Handle Coupon Dailog
   const [loading, setLoading] = useState<boolean>(false);
   const [totalID, setTotalID] = useState<any>(null);
-  const [countryCombobox, setCountryCombobox] = useState(false);
-  const [selectCountry, setSelectCountry] = useState('');
-
   const [isModal, setIsModal] = useState(false);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
   const [index, setIndex] = useState(null);
   const [selectedItem, setSelectedItem] = useState({});
   const [type, setType] = useState('');
+  const [addressType, setAddressType] = useState('');
+
   // 1. Define your form.
   const form = useForm<CreateCheckoutSchema>({
     resolver: zodResolver(createCheckoutSchema),
@@ -84,6 +77,7 @@ function Checkout() {
       phone_number: user?.phone_number,
     },
   });
+
   const checkoutCreator = trpc.order.createCheckout.useMutation({
     onSuccess: () => {
       console.log('upload successfully');
@@ -92,6 +86,7 @@ function Checkout() {
       console.log({ error });
     },
   });
+
   useEffect(() => {
     if (user) {
       form.setValue('cart_id', cart?.id ?? 0);
@@ -104,23 +99,19 @@ function Checkout() {
       );
       form.setValue('email', user?.email ?? '');
       if (user?.CustomerAddress && user?.CustomerAddress?.length) {
-        form.setValue(
-          'apartment',
-          user?.CustomerAddress[0]?.street_address_2 ?? '',
+        const address = user?.CustomerAddress?.find(
+          (add: any) => add?.is_default === true,
         );
-        form.setValue(
-          'street_address',
-          user?.CustomerAddress[0]?.street_address_1 ?? '',
-        );
-        form.setValue('city', user?.CustomerAddress[0]?.city ?? '');
-        form.setValue(
-          'phone_number',
-          user?.CustomerAddress[0]?.phone_number ?? '',
-        );
-        form.setValue(
-          'postal_code',
-          user?.CustomerAddress[0]?.postal_code?.toString() ?? '',
-        );
+        setAddressType(address?.address_type);
+
+        form.setValue('apartment', address?.street_address_2 ?? '');
+        form.setValue('street_address', address?.street_address_1 ?? '');
+        form.setValue('country', address?.country ?? '');
+        form.setValue('state', address?.state ?? '');
+        form.setValue('city', address?.city ?? '');
+        form.setValue('phone_number', address?.phone_number ?? '');
+        form.setValue('postal_code', address?.postal_code?.toString() ?? '');
+        form.setValue('code', address?.phone_code?.toString() ?? '');
       }
     }
   }, [user, cart]);
@@ -199,6 +190,22 @@ function Checkout() {
     }
   };
 
+  function onAddressChangeHandler(address_type: string) {
+    const address = user?.CustomerAddress?.find(
+      (add: any) => add?.address_type === address_type,
+    );
+    setAddressType(address?.address_type);
+
+    form.setValue('apartment', address?.street_address_2 ?? '');
+    form.setValue('street_address', address?.street_address_1 ?? '');
+    form.setValue('country', address?.country ?? '');
+    form.setValue('state', address?.state ?? '');
+    form.setValue('city', address?.city ?? '');
+    form.setValue('phone_number', address?.phone_number ?? '');
+    form.setValue('postal_code', address?.postal_code?.toString() ?? '');
+    form.setValue('code', address?.phone_code?.toString() ?? '');
+  }
+
   const discountAmount = cart.isPercentage
     ? totalAmount * (cart.discount / 100)
     : cart.discount;
@@ -254,7 +261,7 @@ function Checkout() {
           ></Script>
           <div className=" relative  bg-background   ">
             <h2 className="lg:text-4xl md:text-4xl text-2xl font-black uppercase mb-6">
-            {langContent[lang.lang].Checkout.SUB_HEADING}
+              {langContent[lang.lang].Checkout.SUB_HEADING}
             </h2>
             <form
               action={`${process.env.NEXT_PUBLIC_BASE_URL}/checkout`}
@@ -271,12 +278,12 @@ function Checkout() {
               className="justify-center items-center  py-4"
             >
               <h2 className="lg:text-5xl md:text-4xl text-2xl font-black uppercase mb-6">
-              {langContent[lang.lang].Checkout.HEADING}
+                {langContent[lang.lang].Checkout.HEADING}
               </h2>
               <div className="flex flex-col gap-8 lg:flex-row md:flex-row justify-between w-full ">
                 <div className="flex-[0.55] space-y-6">
                   <h3 className="text-lg md:text-xl lg:text-2xl font-bold ">
-                  {langContent[lang.lang].Checkout.BILL_HEADING}
+                    {langContent[lang.lang].Checkout.BILL_HEADING}
                   </h3>
                   <div className="space-y-6">
                     <div className="flex flex-col lg:flex-row md:flex-row gap-2  w-full justify-between">
@@ -323,6 +330,39 @@ function Checkout() {
                         )}
                       />
                     </div>
+                    <FormItem className="">
+                      <FormLabel className="text-sm text-cardGray">
+                        Billing Addresses
+                      </FormLabel>
+                      <Select
+                        value={addressType}
+                        onValueChange={onAddressChangeHandler}
+                      >
+                        <FormControl>
+                          <SelectTrigger className="h-10 rounded-md  bg-inputColor">
+                            <SelectValue placeholder="Select Address" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent className="max-h-[300px] overflow-y-auto">
+                          <SelectGroup>
+                            {user?.CustomerAddress?.map((address: any) => {
+                              return (
+                                <SelectItem
+                                  key={address?.id}
+                                  value={address?.address_type}
+                                >
+                                  {address?.address_type}
+                                </SelectItem>
+                              );
+                            })}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+
+                      <div className="relative pb-2">
+                        <FormMessage />
+                      </div>
+                    </FormItem>
 
                     <div className="flex flex-col gap-y-3">
                       <FormField
@@ -390,14 +430,16 @@ function Checkout() {
                                 </FormControl>
                                 <SelectContent className="max-h-[300px] overflow-y-auto">
                                   <SelectGroup>
-                                    {countries &&
-                                      countries?.map((country, i) => {
-                                        return (
-                                          <SelectItem key={i} value={country}>
-                                            {country?.toUpperCase()}
-                                          </SelectItem>
-                                        );
-                                      })}
+                                    {countries?.map((country) => {
+                                      return (
+                                        <SelectItem
+                                          key={country}
+                                          value={country}
+                                        >
+                                          {country?.toUpperCase()}
+                                        </SelectItem>
+                                      );
+                                    })}
                                   </SelectGroup>
                                 </SelectContent>
                               </Select>
@@ -579,7 +621,7 @@ function Checkout() {
                 <div className="relative bg-background  flex-[0.45] space-y-12 z-10">
                   <div className="flex flex-row justify-between items-center">
                     <h3 className="text-lg md:text-xl lg:text-2xl font-bold">
-                    {langContent[lang.lang].Checkout.SUMMARY_HEADING}
+                      {langContent[lang.lang].Checkout.SUMMARY_HEADING}
                     </h3>
                     {!cart.isDiscount ? (
                       <p
@@ -618,13 +660,17 @@ function Checkout() {
                         <div className="h-[1px] bg-white/40" />
 
                         <div className="flex items-center justify-between z-10 ">
-                          <p className="text-white/40  text-lg">{langContent[lang.lang].Checkout.SUB_TOTAL}:</p>
+                          <p className="text-white/40  text-lg">
+                            {langContent[lang.lang].Checkout.SUB_TOTAL}:
+                          </p>
                           <p className="text-xl">
                             AED {totalAmount?.toFixed(2)}
                           </p>
                         </div>
                         <div className="flex items-center justify-between z-10 ">
-                          <p className="text-white/40  text-lg">{langContent[lang.lang].Checkout.DISCOUNT}:</p>
+                          <p className="text-white/40  text-lg">
+                            {langContent[lang.lang].Checkout.DISCOUNT}:
+                          </p>
                           <p className="text-xl">
                             {' '}
                             - AED {discountAmount?.toFixed(2)}
@@ -635,17 +681,20 @@ function Checkout() {
 
                     <div className="flex flex-row justify-between py-6 border-t border-b border-white/40">
                       <p className="lg:text-2xl md:lg:text-xl font-black">
-                      {langContent[lang.lang].Checkout.TOTAL}:
+                        {langContent[lang.lang].Checkout.TOTAL}:
                       </p>
                       <p className="font-black text-lg lg:text-xl text-primary">
                         AED {(totalAmount - discountAmount)?.toFixed(2)}
                       </p>
                     </div>
                     <p className="lg:text-base md:text-sm text-sm text-cardGray md:w-[65%] lg:w-[85%]">
-                    {langContent[lang.lang].Checkout.INFO}{' '}
+                      {langContent[lang.lang].Checkout.INFO}{' '}
                       <span className="text-white">
                         {' '}
-                        <Link href="/privacy-policy"> {langContent[lang.lang].Checkout.POLICY} </Link>
+                        <Link href="/privacy-policy">
+                          {' '}
+                          {langContent[lang.lang].Checkout.POLICY}{' '}
+                        </Link>
                       </span>
                       .
                     </p>
@@ -674,7 +723,9 @@ function Checkout() {
                   </div>
 
                   <div className="flex flex-row gap-4 justify-center ">
-                    <p className="text-sm text-cardGray">{langContent[lang.lang].Checkout.ACCEPT}</p>
+                    <p className="text-sm text-cardGray">
+                      {langContent[lang.lang].Checkout.ACCEPT}
+                    </p>
                     <Image
                       className="w-64 object-contain  "
                       src={Group17}
@@ -728,33 +779,3 @@ function Checkout() {
 }
 
 export default Checkout;
-
-const states = [
-  {
-    state: 'Abu Dhabi',
-  },
-  {
-    state: 'Dubai',
-  },
-  {
-    state: 'Sharjah',
-  },
-  {
-    state: 'Ajman',
-  },
-  {
-    state: 'Umm Al-Quwain',
-  },
-  {
-    state: 'Ras Al Khaimah',
-  },
-  {
-    state: 'Fujairah',
-  },
-];
-
-const countryCode = [
-  {
-    code: '+971',
-  },
-];

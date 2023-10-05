@@ -75,11 +75,13 @@ export type Category = {
 export default function EventsDataTable() {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [filterID, setFilterID] = useState({});
-
-  const [filters, setFilters] = useState<GetEventSchema>({
+  const initialFilter = {
     first: 0,
     rows: 10,
     lang_id: 1,
+  };
+  const [filters, setFilters] = useState<GetEventSchema>({
+    ...initialFilter,
   });
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
@@ -424,7 +426,7 @@ export default function EventsDataTable() {
             value={filterID}
             setValue={setFilterID}
             setFilters={setFilters}
-            initial={filters}
+            initial={initialFilter}
           />
         </div>
       </div>
