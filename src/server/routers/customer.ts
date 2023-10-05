@@ -632,27 +632,14 @@ export const customerRouter = router({
     }),
   getAddress: publicProcedure
     .input(getCustomerAddress)
-    .query(async ({ ctx, input }) => {
+    .query(async ({ input }) => {
       try {
-        const user: any = await prisma.customer.findFirst({
-          where: { id: input.customer_id },
+        // here u will do the mutation
+        const addresses = await prisma.customerAddress.findMany({
+          where: { customer_id: input.customer_id },
         });
-        console.log(user, 'user backend');
 
-        if (!user) {
-          throw new TRPCError({
-            code: 'NOT_FOUND',
-            message: 'User not found',
-          });
-        } else {
-          // here u will do the mutation
-          const customer: any = await prisma.customerAddress.findFirst({
-            where: { customer_id: input.customer_id },
-            include: { Customer: {} },
-          });
-
-          return customer;
-        }
+        return addresses;
       } catch (error: any) {
         console.log({ error });
         throw new TRPCError({

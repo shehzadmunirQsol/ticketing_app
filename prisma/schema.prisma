@@ -350,6 +350,7 @@ model CustomerAddress {
   state            String?
   city             String?
   phone_number     String?
+  phone_code       String?     @default("+971")
   address_type     AddressType @default(home)
   postal_code      Int?
   is_default       Boolean     @default(false)

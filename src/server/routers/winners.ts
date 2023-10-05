@@ -161,8 +161,16 @@ export const winnerRouter = router({
         const winnerPromise = prisma.winner.create({
           data: winnerPayload,
         });
+        const deleteCartEvent = prisma.cartItem.updateMany({
+          where: {
+            event_id: input.event_id,
+          },
+          data: {
+            is_deleted: true,
+          },
+        });
 
-        await Promise.all([eventPromise, winnerPromise]);
+        await Promise.all([eventPromise, winnerPromise, deleteCartEvent]);
 
         const mailOptions = {
           template_id: EMAIL_TEMPLATE_IDS.SELECT_WINNER,
