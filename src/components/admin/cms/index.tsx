@@ -30,7 +30,7 @@ function Cms() {
       refetchOnWindowFocus: false,
     },
   );
-  console.log(cms,"cmscmscms")
+  console.log(cms, 'cmscmscms');
 
   // Initialize arrays to store data by type
   const staticData: any = [];
@@ -109,23 +109,16 @@ function Cms() {
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
 
-
-                            {
-                              !item.is_default ? <DropdownMenuItem
-                              onClick={() =>
-                                handleCmsStatus(
-                                  item,
-                                    'delete'
-                                )
-                              }
-                            >
-                              {/* {item.is_enabled === true
+                            {!item.is_default ? (
+                              <DropdownMenuItem
+                                onClick={() => handleCmsStatus(item, 'delete')}
+                              >
+                                {/* {item.is_enabled === true
                                 ? 'Enabled'
                                 : 'Disabled'} */}
                                 Delete
-                            </DropdownMenuItem> : null
-                            }
-                            
+                              </DropdownMenuItem>
+                            ) : null}
                           </DropdownMenuContent>
                         </DropdownMenu>
                       </div>

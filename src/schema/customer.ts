@@ -205,6 +205,19 @@ export const addCustomerAddress = z.object({
       invalid_type_error: 'Please enter your street address',
     })
     .trim(),
+  street_address_2: z
+    .string({
+      required_error: 'Please enter your appartment',
+      invalid_type_error: 'Please enter your appartment',
+    })
+    .trim()
+    .optional(),
+  state: z
+    .string({
+      required_error: 'Please enter your state',
+      invalid_type_error: 'Please enter your state',
+    })
+    .trim(),
   city: z
     .string({
       required_error: 'Please enter your city',
@@ -229,7 +242,10 @@ export const addCustomerAddress = z.object({
     invalid_type_error: 'Please enter your postal code',
   }),
 });
-
+export const updateCustomerAddress = z.object({
+  id: z.number().optional(),
+  customer_id: z.number(),
+});
 export const getCustomerAddress = z.object({
   customer_id: z.number(),
 });

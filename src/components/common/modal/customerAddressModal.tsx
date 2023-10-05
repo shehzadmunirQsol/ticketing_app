@@ -103,6 +103,8 @@ export function AddCustomerAddressDialog(props: SelectCustomerInterface) {
       country: props.country ?? '',
       phone_number: props.phone_number ?? '',
       phone_code: props.phone_code ?? '',
+      street_address_2: props.street_address_2 ?? '',
+      state: props.state ?? '',
     },
   });
 
@@ -117,10 +119,10 @@ export function AddCustomerAddressDialog(props: SelectCustomerInterface) {
 
       toast({
         variant: 'success',
-        title: 'Winner Selected successfully!',
+        title: `Address ${props?.id ? 'Update' : 'Add'} successfully!`,
       });
-      props?.openChangeHandler();
       props?.refetch();
+      props?.openChangeHandler();
     } catch (error: any) {
       props?.openChangeHandler();
       toast({
@@ -304,6 +306,27 @@ export function AddCustomerAddressDialog(props: SelectCustomerInterface) {
                 />
                 <FormField
                   control={form.control}
+                  name="state"
+                  render={({ field }) => (
+                    <FormItem className=" w-full ">
+                      <FormLabel className="text-sm text-cardGray">
+                        State <sup className="text-red-500">*</sup>
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          type="text"
+                          placeholder="Enter You Stae"
+                          {...field}
+                        />
+                      </FormControl>
+                      <div className="relative pb-2">
+                        <FormMessage />
+                      </div>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
                   name="city"
                   render={({ field }) => (
                     <FormItem className=" w-full ">
@@ -344,16 +367,40 @@ export function AddCustomerAddressDialog(props: SelectCustomerInterface) {
                     </FormItem>
                   )}
                 />
+                <FormField
+                  control={form.control}
+                  name="street_address_2"
+                  render={({ field }) => (
+                    <FormItem className=" w-full ">
+                      <FormLabel className="text-sm text-cardGray">
+                        Appartment
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          type="text"
+                          placeholder="Enter Appartment"
+                          {...field}
+                        />
+                      </FormControl>
+                      <div className="relative pb-2">
+                        <FormMessage />
+                      </div>
+                    </FormItem>
+                  )}
+                />
                 <div className="flex items-center justify-end gap-4">
                   <Button
                     variant="secondary"
                     type="button"
-                    disabled={addAddress.isLoading}
+                    disabled={addAddress.isLoading || updateAddress.isLoading}
                     onClick={props.openChangeHandler}
                   >
                     Cancel
                   </Button>
-                  <Button type="submit" disabled={addAddress.isLoading}>
+                  <Button
+                    type="submit"
+                    disabled={addAddress.isLoading || updateAddress.isLoading}
+                  >
                     {props?.id ? 'Update' : 'Add'}
                   </Button>
                 </div>
@@ -362,7 +409,10 @@ export function AddCustomerAddressDialog(props: SelectCustomerInterface) {
           </DialogDescription>
         </DialogHeader>
       </DialogContent>
-      <LoadingDialog open={addAddress.isLoading} text="Adding address..." />
+      <LoadingDialog
+        open={addAddress.isLoading || updateAddress.isLoading}
+        text={`${props?.id ? 'Updating' : 'Adding'} address...`}
+      />
     </Dialog>
   );
 }

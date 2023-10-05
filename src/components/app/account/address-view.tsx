@@ -10,6 +10,16 @@ import { AddCustomerAddressDialog } from '~/components/common/modal/customerAddr
 import { LoadingDialog } from '~/components/common/modal/loadingModal';
 
 import countryJSON from '~/data/countries.json';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '~/components/ui/dropdown-menu';
+import { MoreHorizontal } from 'lucide-react';
+import { MoreVertical } from 'lucide-react';
+import { AddressDialog } from '~/components/common/modal/addressModal';
 const countries = countryJSON.map((item) => item.country);
 
 export default function AddressesView() {
@@ -50,7 +60,7 @@ export default function AddressesView() {
         ))}
 
         {addresses && addresses?.length < 4 ? (
-          <div className="h-48 max-w-[256px] rounded-lg grid items-center justify-center border border-primary">
+          <div className="h-60 max-w-[256px] rounded-lg grid items-center justify-center border border-primary">
             <Button onClick={openChangeHandler} variant={'rounded'}>
               Add Another
             </Button>
@@ -86,12 +96,15 @@ type CustomerAddressType = {
   phone_number: string | null;
   phone_code: string | null;
   postal_code: number | null;
+  is_default: boolean;
 };
 
 function CustomerAddress(props: CustomerAddressType) {
   const { toast } = useToast();
   const { lang } = useSelector((state: RootState) => state.layout);
-
+  const [title, setTitle] = useState('');
+  const [type, setType] = useState('');
+  const [isModal, setIsModal] = useState(false);
   const [formValues, setFormValues] = useState({
     city: props.city ?? '',
     country: props.country ?? '',
@@ -102,10 +115,16 @@ function CustomerAddress(props: CustomerAddressType) {
     phone_code: props.phone_code ?? '',
     postal_code: props.postal_code ?? 0,
     street_address_1: props.street_address_1 ?? '0',
+    street_address_2: props.street_address_2 ?? '0',
+    state: props.state ?? '0',
   });
 
   const [isEdit, setEdit] = useState(false);
-
+  const handleCmsStatus = () => {
+    setTitle('Default Address');
+    setType(props?.address_type);
+    setIsModal(!isModal);
+  };
   const handleChange = () => {
     setEdit(!isEdit);
   };
@@ -152,54 +171,103 @@ function CustomerAddress(props: CustomerAddressType) {
   );
 
   return (
-    <form className="flex mx-auto sm:mx-0">
+    <form className="h-60 flex mx-auto sm:mx-0">
       <div
         className={`w-64 rounded-md border border-border-[1px] p-4  border-primary
         flex flex-col`}
       >
         <div className="flex justify-between items-center">
-          <p className="text-md font-bold tracking-tight lead">
-            {currentAddress?.label}
-            {/* {langContent[lang.lang].MyAccount.AddressView.INFO_HEADING} */}
-          </p>
-          <button
-            type={'button'}
-            onClick={isEdit ? onSubmit : handleChange}
-            className="px-2 py-1.5 bg-primary text-sm text-[#101417] font-extrabold tracking-tight leading-tight w-fit rounded-full flex items-center justify-center gap-1 hover:cursor-pointer hover:opacity-90"
-          >
-            {!isEdit ? (
-              <span>
-                <i className={`fas fa-pencil`}></i>
-              </span>
-            ) : (
-              ''
-            )}
-            <p className="text-xs">
-              {isEdit
-                ? langContent[lang.lang].MyAccount.AddressView.SAVE_BUTTON
-                : langContent[lang.lang].MyAccount.AddressView.EDIT_BUTTON}
+          <div className="flex  items-start gap-2">
+            <p className="text-md  font-bold tracking-tight lead">
+              {currentAddress?.label}{' '}
             </p>
-          </button>
+            {props?.is_default ? (
+              <div className="bg-red-500 h-3 w-3 rounded-full" />
+            ) : null}
+          </div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0 bg-border">
+                <span className="sr-only">Open menu</span>
+                {/* <MoreVertical className="h-4 w-4 text-lg" /> */}
+                <MoreHorizontal className="h-4 w-4 text-lg" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem
+                onClick={isEdit ? onSubmit : handleChange}
+                className="flex items-center gap-2 cursor-pointer"
+                // onClick={() => handleView(row?.original, 'view')}
+              >
+                {!isEdit ? (
+                  <span>
+                    <i className={`fas fa-pencil`}></i>
+                  </span>
+                ) : (
+                  ''
+                )}
+                <p className="text-xs">
+                  {isEdit
+                    ? langContent[lang.lang].MyAccount.AddressView.SAVE_BUTTON
+                    : langContent[lang.lang].MyAccount.AddressView.EDIT_BUTTON}
+                </p>
+              </DropdownMenuItem>
+              {!props?.is_default && (
+                <>
+                  <DropdownMenuSeparator />
+
+                  <DropdownMenuItem
+                    onClick={handleCmsStatus}
+                    className="flex items-center gap-2 cursor-pointer"
+                    // onClick={() => handleView(row?.original, 'view')}
+                  >
+                    Set Default
+                  </DropdownMenuItem>
+                </>
+              )}
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
 
         <div className="w-full h-full font-light text-[#eaeaea] flex flex-col pt-3 text-sm">
           <div className="space-y-1" dir="ltr">
-            <p>
+            <p className="text-ellipsis whitespace-nowrap overflow-hidden">
               {' '}
-              {langContent[lang.lang].MyAccount.AddressView.BOX}{' '}
-              {formValues.postal_code}
+              {langContent[lang.lang].MyAccount.AddressView.BOX as string}{' '}
+              {props.postal_code}
             </p>
-            <p>
-              {formValues?.phone_code}
-              {formValues?.phone_number}
+            <p className="text-ellipsis whitespace-nowrap overflow-hidden">
+              {props?.phone_code}
+              {props?.phone_number}
             </p>
-            <p>{formValues?.country}</p>
-            <p>{formValues?.city}</p>
-            <p>{formValues?.street_address_1}</p>
+            <p className="text-ellipsis whitespace-nowrap overflow-hidden">
+              {props?.country}
+            </p>
+            <p className="text-ellipsis whitespace-nowrap overflow-hidden">
+              {props?.state}
+            </p>
+            <p className="text-ellipsis whitespace-nowrap overflow-hidden">
+              {props?.city}
+            </p>
+            <p className="text-ellipsis whitespace-nowrap overflow-hidden">
+              {' '}
+              {props?.street_address_1}
+            </p>
+            <p className="text-ellipsis whitespace-nowrap overflow-hidden">
+              {props?.street_address_2}
+            </p>
           </div>
         </div>
       </div>
       <LoadingDialog open={updateAddress.isLoading} text="Updating..." />
+      <AddressDialog
+        isModal={isModal}
+        setIsModal={setIsModal}
+        title={title}
+        type={type}
+        openChangeHandler={handleCmsStatus}
+        {...props}
+      />
       <AddCustomerAddressDialog
         isModal={isEdit}
         openChangeHandler={handleChange}
@@ -228,78 +296,3 @@ const addressType = [
     value: 'other',
   },
 ];
-
-// ) : (
-//   // <div className="h-fit " dir="ltr">
-//   //   <input
-//   //     className="bg-primary-foreground p-0.5 font-sans"
-//   //     placeholder="P.O Box"
-//   //     name="postal_code"
-//   //     value={formValues.postal_code}
-//   //     onChange={formChangeHandler}
-//   //     type="number"
-//   //     required={true}
-//   //   />
-//   //   <div className="flex items-center gap-2">
-//   //     <input
-//   //       className="w-10 bg-primary-foreground p-0.5 font-sans"
-//   //       name="phone_code"
-//   //       value={formValues.phone_code}
-//   //       onChange={formChangeHandler}
-//   //       placeholder="+971"
-//   //       type="text"
-//   //       maxLength={5}
-//   //       required={true}
-//   //     />
-//   //     <input
-//   //       className="w-[104px] bg-primary-foreground p-0.5 font-sans"
-//   //       name="phone_number"
-//   //       value={formValues.phone_number}
-//   //       onChange={formChangeHandler}
-//   //       placeholder="Mobile"
-//   //       type="text"
-//   //       maxLength={9}
-//   //       required={true}
-//   //     />
-//   //   </div>
-
-//   //   <select
-//   //     name="country"
-//   //     value={formValues.country}
-//   //     onChange={formChangeHandler}
-//   //     className="w-[153px] overflow-hidden"
-//   //   >
-//   //     <option className="w-[153px] overflow-hidden" value="">
-//   //       Select Country
-//   //     </option>
-//   //     {countries.map((country) => (
-//   //       <option
-//   //         className="w-[153px] overflow-hidden"
-//   //         key={country}
-//   //         value={country}
-//   //       >
-//   //         {country?.toUpperCase()?.substring(0, 16)}
-//   //       </option>
-//   //     ))}
-//   //   </select>
-
-//   //   <input
-//   //     className="bg-primary-foreground p-0.5 font-sans"
-//   //     placeholder="City"
-//   //     name="city"
-//   //     value={formValues.city}
-//   //     onChange={formChangeHandler}
-//   //     type="text"
-//   //     required={true}
-//   //   />
-//   //   <input
-//   //     className="bg-primary-foreground p-0.5 font-sans"
-//   //     placeholder="Street Address"
-//   //     name="street_address_1"
-//   //     value={formValues.street_address_1}
-//   //     onChange={formChangeHandler}
-//   //     type="text"
-//   //     required={true}
-//   //   />
-//   // </div>
-// )}
