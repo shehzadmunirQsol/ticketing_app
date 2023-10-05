@@ -693,12 +693,14 @@ export const orderRouter = router({
                 CartItems: {
                   include: {
                     Event: {
-                      select: {
-                        id: true,
-                        price: true,
-                        tickets_sold: true,
-                        end_date: true,
-                      },
+                     
+                      include:{
+                        EventDescription:{
+                          where:{
+                            lang_id:1
+                          }
+                        }
+                      }
                     },
                   },
                 },
@@ -774,6 +776,33 @@ export const orderRouter = router({
 
             await Promise.all(eventPromises);
 
+            const emailPayload = cart?.CartItems.map((item) => ({
+              name: item?.Event?.EventDescription[0]?.name as string,
+              price: item.Event.price,
+              qty: item.quantity,
+              total_price:item.Event.price * item.quantity,
+              
+            }));
+            console.log({emailPayload})
+
+            const mailOptions = {
+              template_id: EMAIL_TEMPLATE_IDS.ORDER_SUCCESS,
+              from: 'no-reply@winnar.com',
+              to: payload.values.email,
+              subject: 'Your order has been placed 🎉',
+              params: {
+                first_name: payload.values.first_name,
+                status: 'paid',
+                order_number:order?.id,
+                total_price:subTotalAmount - discountAmount,
+                event_details:emailPayload,
+                discount:discountAmount,
+                sub_total:subTotalAmount
+
+              },
+            };
+
+            await sendEmail(mailOptions);
             await prisma.cart.update({
               where: { id: cart.id },
               data: {
@@ -786,19 +815,6 @@ export const orderRouter = router({
                 },
               },
             });
-
-            const mailOptions = {
-              template_id: EMAIL_TEMPLATE_IDS.ORDER_SUCCESS,
-              from: 'no-reply@winnar.com',
-              to: payload.values.email,
-              subject: 'Your order has been placed 🎉',
-              params: {
-                first_name: payload.values.first_name,
-                status: 'paid',
-              },
-            };
-
-            await sendEmail(mailOptions);
             // const { password, otp, ...userApiData } = updateCustomer;
             const useAPIData = { ...updateCustomer };
             if (useAPIData?.password) delete useAPIData?.password;
