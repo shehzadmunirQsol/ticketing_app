@@ -46,15 +46,16 @@ export default function AdminAuth({ children }: { children: ReactNode }) {
           isFetchedAfterMount
         ) {
           console.log('i am login');
-          router.push('/admin/dashboard');
+          router.replace('/admin/dashboard');
           setLoading(false);
         } else if (
           !isProtectedRoute &&
+          !userData &&
           isFetchedAfterMount &&
-          (isError || !userData)
+          isError
         ) {
           console.log('i am logout');
-          router.push('/admin/login');
+          router.replace('/admin/login');
           setLoading(false);
         }
         setLoading(false);
@@ -64,7 +65,13 @@ export default function AdminAuth({ children }: { children: ReactNode }) {
     return () => {
       if (timeout) clearTimeout(timeout);
     };
-  }, [isFetched, isLoading, userData, typeof window !== 'undefined']);
+  }, [
+    isFetched,
+    isLoading,
+    userData,
+    typeof window !== 'undefined',
+    router.pathname,
+  ]);
 
   return (
     <>

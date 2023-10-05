@@ -77,7 +77,7 @@ function Checkout() {
       last_name: user?.last_name,
       code: '+971',
       country: 'United Arab Emirates',
-      state: 'Abu Dhabi',
+      state: '',
 
       dob: user?.dob,
       email: user?.email,
@@ -531,8 +531,7 @@ function Checkout() {
                               <FormItem className=" w-full">
                                 <FormControl className="rounded-md bg-inputColor">
                                   <Input
-                                    max={999999999}
-                                    type="number"
+                                    type="text"
                                     className="w-full"
                                     placeholder="Enter your phone number"
                                     {...field}

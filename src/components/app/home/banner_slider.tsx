@@ -99,7 +99,7 @@ function BannerSlider() {
     >
       {isSuccess && carSlider?.length ? (
         <>
-          <div className="mt-24 md:mt-32 flex flex-col lg:flex-row px-2 md:px-12 h-full">
+          <div className="mt-[7.5rem] md:mt-36 flex flex-col lg:flex-row px-2 md:px-12 h-full">
             {/* text content */}
 
             <div
@@ -107,25 +107,25 @@ function BannerSlider() {
                 showElement ? 'fading-animation' : ''
               } transition-all  duration-500 ease-in-out items-center text-white z-40`}
             >
-              <p className="px-4 text-2xl  sm:text-4xl md:text-5xl lg:text-[calc(3vw+10px)] xl:text-[55px] font-[900] tracking-[-1px] ">
+              <p className="px-4 text-2xl  sm:text-4xl md:text-5xl lg:text-[calc(3vw+10px)] xl:text-[55px] font-[900] leading-[-1px] tracking-[-1px] ">
                 {carSlider[currentIndex]?.title}
               </p>
               {carSlider[currentIndex]?.price ? (
-                <p className="px-4 text-2xl sm:text-4xl md:text-5xl lg:text-[calc(3vw+10px)] xl:text-[55px] tracking-[-1px] py-2 md:py-1 ">
+                <p className="px-4 text-2xl sm:text-4xl md:text-5xl lg:text-[calc(3vw+10px)] xl:text-[55px] tracking-[-1px] leading-[-2px] py-2 md:py-1 ">
                   + {carSlider[currentIndex]?.price}
                 </p>
               ) : (
                 ''
               )}
-              <p className="sm:block px-4 text-xl  font-normal ">
+              <p className="sm:block px-4 text-lg md:text-xl  font-normal leading-[-2px] ">
                 {carSlider[currentIndex]?.description}
               </p>
-              <p className="px-4 text-lg  sm:text-2xl tracking-[-1px] font-[700]  my-3">
+              <p className="px-4 text-lg  sm:text-2xl tracking-[-1px] leading-[-2px] font-[700]  my-3">
                 {carSlider[currentIndex]?.date}
               </p>
               <>
                 <Button
-                  className=" mb-2 lg:mb-0 mx-4 min-w-fit sm:w-44 text-black font-sans font-[900]  tracking-[-1px]"
+                  className=" mb-2 lg:mb-0 mx-4 min-w-fit sm:w-44 text-black font-sans font-[900]  tracking-[-1px] "
                   variant="clip"
                   onClick={() => {
                     router.push(carSlider[currentIndex]?.link);

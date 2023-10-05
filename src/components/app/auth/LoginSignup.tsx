@@ -376,7 +376,7 @@ export default function LoginSignup() {
                             <FormItem className=" w-full">
                               <FormControl className="rounded-md ">
                                 <Input
-                                  max={999999999}
+                                  min={0}
                                   type="number"
                                   className="w-full"
                                   placeholder="Enter your phone number"

@@ -102,7 +102,7 @@ function ProductCard(props: cardInterface) {
                 }
                 className="w-full"
               />
-              <span className='w-full text-center text-xs text-gray-300'>{(props?.data?.tickets_sold).toLocaleString()} /{(props?.data?.total_tickets).toLocaleString()}</span>
+              <span className='w-full text-center text-xs text-gray-300'>{(props?.data?.tickets_sold).toLocaleString()} /{" "}{(props?.data?.total_tickets).toLocaleString()}</span>
             </div>
             <div className="font-bold text-xl lg:text-2xl xl:text-3xl line-clamp-1">
             {langContent[lang.lang].Index.productcard.WIN_TITLE ?? ""}
