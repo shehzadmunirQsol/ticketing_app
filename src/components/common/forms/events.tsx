@@ -354,7 +354,7 @@ export default function EventForm() {
   };
 
   const header = renderHeader();
-
+console.log(form.getValues(),"form.getValues")
   return (
     <>
       <Form {...form}>
