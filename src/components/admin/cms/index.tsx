@@ -10,7 +10,6 @@ import {
   DropdownMenuTrigger,
 } from '@/ui/dropdown-menu';
 import { MoreHorizontal } from 'lucide-react';
-import { useToast } from '~/components/ui/use-toast';
 import { LoadingDialog } from '~/components/common/modal/loadingModal';
 import { CmsDailog } from '~/components/common/modal/cms';
 
@@ -30,7 +29,6 @@ function Cms() {
       refetchOnWindowFocus: false,
     },
   );
-  console.log(cms, 'cmscmscms');
 
   // Initialize arrays to store data by type
   const staticData: any = [];
