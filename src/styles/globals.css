@@ -898,4 +898,13 @@ input[type='radio']:not(:checked) + section.box .icon-class {
 }
 .cmsStyle h6{
   font-size: 11.2px;
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
 }

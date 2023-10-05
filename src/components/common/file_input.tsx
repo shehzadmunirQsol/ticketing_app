@@ -137,7 +137,7 @@ export function ImageInput(props: any) {
 
               <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
                 <span className="font-semibold">
-                  {props?.placeholder ? props?.placeholder : 'Upload file '}
+                  {props?.placeholder ? props?.placeholder : 'Upload image'}
                 </span>
               </p>
               <p className="text-xs text-gray-500 dark:text-gray-400">

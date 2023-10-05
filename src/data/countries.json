@@ -1,766 +1,3226 @@
 [
-    {
-      "country": "Afghanistan",
-      "states": ["Badakhshan", "Badghis", "Baghlan", "Balkh", "Bamian", "Daykondi", "Farah", "Faryab", "Ghazni", "Ghowr", "Helmand", "Herat", "Jowzjan", "Kabul", "Kandahar", "Kapisa", "Khost", "Konar", "Kondoz", "Laghman", "Lowgar", "Nangarhar", "Nimruz", "Nurestan", "Oruzgan", "Paktia", "Paktika", "Panjshir", "Parvan", "Samangan", "Sar-e Pol", "Takhar", "Vardak", "Zabol"]
-    },
-    {
-      "country": "Albania",
-      "states": ["Berat", "Dibres", "Durres", "Elbasan", "Fier", "Gjirokastre", "Korce", "Kukes", "Lezhe", "Shkoder", "Tirane", "Vlore"]
-    },
-    {
-      "country": "Algeria",
-      "states": ["Adrar", "Ain Defla", "Ain Temouchent", "Alger", "Annaba", "Batna", "Bechar", "Bejaia", "Biskra", "Blida", "Bordj Bou Arreridj", "Bouira", "Boumerdes", "Chlef", "Constantine", "Djelfa", "El Bayadh", "El Oued", "El Tarf", "Ghardaia", "Guelma", "Illizi", "Jijel", "Khenchela", "Laghouat", "Muaskar", "Medea", "Mila", "Mostaganem", "M'Sila", "Naama", "Oran", "Ouargla", "Oum el Bouaghi", "Relizane", "Saida", "Setif", "Sidi Bel Abbes", "Skikda", "Souk Ahras", "Tamanghasset", "Tebessa", "Tiaret", "Tindouf", "Tipaza", "Tissemsilt", "Tizi Ouzou", "Tlemcen"]
-    },
-    {
-      "country": "Andorra",
-      "states": ["Andorra la Vella", "Canillo", "Encamp", "Escaldes-Engordany", "La Massana", "Ordino", "Sant Julia de Loria"]
-    },
-    {
-      "country": "Angola",
-      "states": ["Bengo", "Benguela", "Bie", "Cabinda", "Cuando Cubango", "Cuanza Norte", "Cuanza Sul", "Cunene", "Huambo", "Huila", "Luanda", "Lunda Norte", "Lunda Sul", "Malanje", "Moxico", "Namibe", "Uige", "Zaire"]
-    },
-    {
-      "country": "Antarctica",
-      "states": []
-    },
-    {
-      "country": "Antigua and Barbuda",
-      "states": ["Barbuda", "Redonda", "Saint George", "Saint John", "Saint Mary", "Saint Paul", "Saint Peter", "Saint Philip"]
-    },
-    {
-      "country": "Argentina",
-      "states": ["Buenos Aires", "Buenos Aires Capital", "Catamarca", "Chaco", "Chubut", "Cordoba", "Corrientes", "Entre Rios", "Formosa", "Jujuy", "La Pampa", "La Rioja", "Mendoza", "Misiones", "Neuquen", "Rio Negro", "Salta", "San Juan", "San Luis", "Santa Cruz", "Santa Fe", "Santiago del Estero", "Tierra del Fuego", "Tucuman"]
-    },
-    {
-      "country": "Armenia",
-      "states": ["Aragatsotn", "Ararat", "Armavir", "Geghark'unik'", "Kotayk'", "Lorri", "Shirak", "Syunik'", "Tavush", "Vayots' Dzor", "Yerevan"]
-    },
-    {
-      "country": "Australia",
-      "states": []
-    },
-    {
-      "country": "Austria",
-      "states": ["Burgenland", "Kaernten", "Niederoesterreich", "Oberoesterreich", "Salzburg", "Steiermark", "Tirol", "Vorarlberg", "Wien"]
-    },
-    {
-      "country": "Azerbaijan",
-      "states": ["Abseron Rayonu", "Agcabadi Rayonu", "Agdam Rayonu", "Agdas Rayonu", "Agstafa Rayonu", "Agsu Rayonu", "Astara Rayonu", "Balakan Rayonu", "Barda Rayonu", "Beylaqan Rayonu", "Bilasuvar Rayonu", "Cabrayil Rayonu", "Calilabad Rayonu", "Daskasan Rayonu", "Davaci Rayonu", "Fuzuli Rayonu", "Gadabay Rayonu", "Goranboy Rayonu", "Goycay Rayonu", "Haciqabul Rayonu", "Imisli Rayonu", "Ismayilli Rayonu", "Kalbacar Rayonu", "Kurdamir Rayonu", "Lacin Rayonu", "Lankaran Rayonu", "Lerik Rayonu", "Masalli Rayonu", "Neftcala Rayonu", "Oguz Rayonu", "Qabala Rayonu", "Qax Rayonu", "Qazax Rayonu", "Qobustan Rayonu", "Quba Rayonu", "Qubadli Rayonu", "Qusar Rayonu", "Saatli Rayonu", "Sabirabad Rayonu", "Saki Rayonu", "Salyan Rayonu", "Samaxi Rayonu", "Samkir Rayonu", "Samux Rayonu", "Siyazan Rayonu", "Susa Rayonu", "Tartar Rayonu", "Tovuz Rayonu", "Ucar Rayonu", "Xacmaz Rayonu", "Xanlar Rayonu", "Xizi Rayonu", "Xocali Rayonu", "Xocavand Rayonu", "Yardimli Rayonu", "Yevlax Rayonu", "Zangilan Rayonu", "Zaqatala Rayonu", "Zardab Rayonu", "Ali Bayramli Sahari", "Baki Sahari", "Ganca Sahari", "Lankaran Sahari", "Mingacevir Sahari", "Naftalan Sahari", "Saki Sahari", "Sumqayit Sahari", "Susa Sahari", "Xankandi Sahari", "Yevlax Sahari", "Naxcivan Muxtar"]
-    },
-    {
-      "country": "Bahamas",
-      "states": ["Acklins and Crooked Islands", "Bimini", "Cat Island", "Exuma", "Freeport", "Fresh Creek", "Governor's Harbour", "Green Turtle Cay", "Harbour Island", "High Rock", "Inagua", "Kemps Bay", "Long Island", "Marsh Harbour", "Mayaguana", "New Providence", "Nichollstown and Berry Islands", "Ragged Island", "Rock Sound", "Sandy Point", "San Salvador and Rum Cay"]
-    },
-    {
-      "country": "Bahrain",
-      "states": ["Al Hadd", "Al Manamah", "Al Mintaqah al Gharbiyah", "Al Mintaqah al Wusta", "Al Mintaqah ash Shamaliyah", "Al Muharraq", "Ar Rifa' wa al Mintaqah al Janubiyah", "Jidd Hafs", "Madinat Hamad", "Madinat 'Isa", "Juzur Hawar", "Sitrah"]
-    },
-    {
-      "country": "Bangladesh",
-      "states": ["Barisal", "Chittagong", "Dhaka", "Khulna", "Rajshahi", "Sylhet"]
-    },
-    {
-      "country": "Barbados",
-      "states": ["Christ Church", "Saint Andrew", "Saint George", "Saint James", "Saint John", "Saint Joseph", "Saint Lucy", "Saint Michael", "Saint Peter", "Saint Philip", "Saint Thomas"]
-    },
-    {
-      "country": "Belarus",
-      "states": ["Brest", "Homyel", "Horad Minsk", "Hrodna", "Mahilyow", "Minsk", "Vitsyebsk"]
-    },
-    {
-      "country": "Belgium",
-      "states": ["Antwerpen", "Brabant Wallon", "Brussels", "Flanders", "Hainaut", "Liege", "Limburg", "Luxembourg", "Namur", "Oost-Vlaanderen", "Vlaams-Brabant", "Wallonia", "West-Vlaanderen"]
-    },
-    {
-      "country": "Belize",
-      "states": ["Belize", "Cayo", "Corozal", "Orange Walk", "Stann Creek", "Toledo"]
-    },
-    {
-      "country": "Benin",
-      "states": ["Alibori", "Atakora", "Atlantique", "Borgou", "Collines", "Donga", "Kouffo", "Littoral", "Mono", "Oueme", "Plateau", "Zou"]
-    },
-    {
-      "country": "Bermuda",
-      "states": ["Devonshire", "Hamilton", "Hamilton", "Paget", "Pembroke", "Saint George", "Saint George's", "Sandys", "Smith's", "Southampton", "Warwick"]
-    },
-    {
-      "country": "Bhutan",
-      "states": ["Bumthang", "Chukha", "Dagana", "Gasa", "Haa", "Lhuntse", "Mongar", "Paro", "Pemagatshel", "Punakha", "Samdrup Jongkhar", "Samtse", "Sarpang", "Thimphu", "Trashigang", "Trashiyangste", "Trongsa", "Tsirang", "Wangdue Phodrang", "Zhemgang"]
-    },
-    {
-      "country": "Bolivia",
-      "states": ["Chuquisaca", "Cochabamba", "Beni", "La Paz", "Oruro", "Pando", "Potosi", "Santa Cruz", "Tarija"]
-    },
-    {
-      "country": "Bosnia and Herzegovina",
-      "states": ["Una-Sana [Federation]", "Posavina [Federation]", "Tuzla [Federation]", "Zenica-Doboj [Federation]", "Bosnian Podrinje [Federation]", "Central Bosnia [Federation]", "Herzegovina-Neretva [Federation]", "West Herzegovina [Federation]", "Sarajevo [Federation]", " West Bosnia [Federation]", "Banja Luka [RS]", "Bijeljina [RS]", "Doboj [RS]", "Fo?a [RS]", "Sarajevo-Romanija [RS]", "Trebinje [RS]", "Vlasenica [RS]"]
-    },
-    {
-      "country": "Botswana",
-      "states": ["Central", "Ghanzi", "Kgalagadi", "Kgatleng", "Kweneng", "North East", "North West", "South East", "Southern"]
-    },
-    {
-      "country": "Brazil",
-      "states": ["Acre", "Alagoas", "Amapa", "Amazonas", "Bahia", "Ceara", "Distrito Federal", "Espirito Santo", "Goias", "Maranhao", "Mato Grosso", "Mato Grosso do Sul", "Minas Gerais", "Para", "Paraiba", "Parana", "Pernambuco", "Piaui", "Rio de Janeiro", "Rio Grande do Norte", "Rio Grande do Sul", "Rondonia", "Roraima", "Santa Catarina", "Sao Paulo", "Sergipe", "Tocantins"]
-    },
-    {
-      "country": "Brunei",
-      "states": ["Belait", "Brunei and Muara", "Temburong", "Tutong"]
-    },
-    {
-      "country": "Bulgaria",
-      "states": ["Blagoevgrad", "Burgas", "Dobrich", "Gabrovo", "Khaskovo", "Kurdzhali", "Kyustendil", "Lovech", "Montana", "Pazardzhik", "Pernik", "Pleven", "Plovdiv", "Razgrad", "Ruse", "Shumen", "Silistra", "Sliven", "Smolyan", "Sofiya", "Sofiya-Grad", "Stara Zagora", "Turgovishte", "Varna", "Veliko Turnovo", "Vidin", "Vratsa", "Yambol"]
-    },
-    {
-      "country": "Burkina Faso",
-      "states": ["Bale", "Bam", "Banwa", "Bazega", "Bougouriba", "Boulgou", "Boulkiemde", "Comoe", "Ganzourgou", "Gnagna", "Gourma", "Houet", "Ioba", "Kadiogo", "Kenedougou", "Komondjari", "Kompienga", "Kossi", "Koulpelogo", "Kouritenga", "Kourweogo", "Leraba", "Loroum", "Mouhoun", "Namentenga", "Nahouri", "Nayala", "Noumbiel", "Oubritenga", "Oudalan", "Passore", "Poni", "Sanguie", "Sanmatenga", "Seno", "Sissili", "Soum", "Sourou", "Tapoa", "Tuy", "Yagha", "Yatenga", "Ziro", "Zondoma", "Zoundweogo"]
-    },
-    {
-      "country": "Burma",
-      "states": ["Ayeyarwady", "Bago", "Magway", "Mandalay", "Sagaing", "Tanintharyi", "Yangon", "Chin State", "Kachin State", "Kayin State", "Kayah State", "Mon State", "Rakhine State", "Shan State"]
-    },
-    {
-      "country": "Burundi",
-      "states": ["Bubanza", "Bujumbura Mairie", "Bujumbura Rural", "Bururi", "Cankuzo", "Cibitoke", "Gitega", "Karuzi", "Kayanza", "Kirundo", "Makamba", "Muramvya", "Muyinga", "Mwaro", "Ngozi", "Rutana", "Ruyigi"]
-    },
-    {
-      "country": "Cambodia",
-      "states": ["Banteay Mean Chey", "Batdambang", "Kampong Cham", "Kampong Chhnang", "Kampong Spoe", "Kampong Thum", "Kampot", "Kandal", "Koh Kong", "Kracheh", "Mondol Kiri", "Otdar Mean Chey", "Pouthisat", "Preah Vihear", "Prey Veng", "Rotanakir", "Siem Reab", "Stoeng Treng", "Svay Rieng", "Takao", "Keb", "Pailin", "Phnom Penh", "Preah Seihanu"]
-    },
-    {
-      "country": "Cameroon",
-      "states": ["Adamaoua", "Centre", "Est", "Extreme-Nord", "Littoral", "Nord", "Nord-Ouest", "Ouest", "Sud", "Sud-Ouest"]
-    },
-    {
-      "country": "Canada",
-      "states": ["Alberta", "British Columbia", "Manitoba", "New Brunswick", "Newfoundland and Labrador", "Northwest Territories", "Nova Scotia", "Nunavut", "Ontario", "Prince Edward Island", "Quebec", "Saskatchewan", "Yukon Territory"]
-    },
-    {
-      "country": "Cape Verde",
-      "states": []
-    },
-    {
-      "country": "Central African Republic",
-      "states": ["Bamingui-Bangoran", "Bangui", "Basse-Kotto", "Haute-Kotto", "Haut-Mbomou", "Kemo", "Lobaye", "Mambere-Kadei", "Mbomou", "Nana-Grebizi", "Nana-Mambere", "Ombella-Mpoko", "Ouaka", "Ouham", "Ouham-Pende", "Sangha-Mbaere", "Vakaga"]
-    },
-    {
-      "country": "Chad",
-      "states": ["Batha", "Biltine", "Borkou-Ennedi-Tibesti", "Chari-Baguirmi", "Guéra", "Kanem", "Lac", "Logone Occidental", "Logone Oriental", "Mayo-Kebbi", "Moyen-Chari", "Ouaddaï", "Salamat", "Tandjile"]
-    },
-    {
-      "country": "Chile",
-      "states": ["Aysen", "Antofagasta", "Araucania", "Atacama", "Bio-Bio", "Coquimbo", "O'Higgins", "Los Lagos", "Magallanes y la Antartica Chilena", "Maule", "Santiago Region Metropolitana", "Tarapaca", "Valparaiso"]
-    },
-    {
-      "country": "China",
-      "states": ["Anhui", "Fujian", "Gansu", "Guangdong", "Guizhou", "Hainan", "Hebei", "Heilongjiang", "Henan", "Hubei", "Hunan", "Jiangsu", "Jiangxi", "Jilin", "Liaoning", "Qinghai", "Shaanxi", "Shandong", "Shanxi", "Sichuan", "Yunnan", "Zhejiang", "Guangxi", "Nei Mongol", "Ningxia", "Xinjiang", "Xizang (Tibet)", "Beijing", "Chongqing", "Shanghai", "Tianjin"]
-    },
-    {
-      "country": "Colombia",
-      "states": ["Amazonas", "Antioquia", "Arauca", "Atlantico", "Bogota District Capital", "Bolivar", "Boyaca", "Caldas", "Caqueta", "Casanare", "Cauca", "Cesar", "Choco", "Cordoba", "Cundinamarca", "Guainia", "Guaviare", "Huila", "La Guajira", "Magdalena", "Meta", "Narino", "Norte de Santander", "Putumayo", "Quindio", "Risaralda", "San Andres & Providencia", "Santander", "Sucre", "Tolima", "Valle del Cauca", "Vaupes", "Vichada"]
-    },
-    {
-      "country": "Comoros",
-      "states": ["Grande Comore (Njazidja)", "Anjouan (Nzwani)", "Moheli (Mwali)"]
-    },
-    {
-      "country": "Congo, Democratic Republic",
-      "states": ["Bandundu", "Bas-Congo", "Equateur", "Kasai-Occidental", "Kasai-Oriental", "Katanga", "Kinshasa", "Maniema", "Nord-Kivu", "Orientale", "Sud-Kivu"]
-    },
-    {
-      "country": "Congo, Republic of the",
-      "states": ["Bouenza", "Brazzaville", "Cuvette", "Cuvette-Ouest", "Kouilou", "Lekoumou", "Likouala", "Niari", "Plateaux", "Pool", "Sangha"]
-    },
-    {
-      "country": "Costa Rica",
-      "states": ["Alajuela", "Cartago", "Guanacaste", "Heredia", "Limon", "Puntarenas", "San Jose"]
-    },
-    {
-      "country": "Cote d'Ivoire",
-      "states": []
-    },
-    {
-      "country": "Croatia",
-      "states": ["Bjelovarsko-Bilogorska", "Brodsko-Posavska", "Dubrovacko-Neretvanska", "Istarska", "Karlovacka", "Koprivnicko-Krizevacka", "Krapinsko-Zagorska", "Licko-Senjska", "Medimurska", "Osjecko-Baranjska", "Pozesko-Slavonska", "Primorsko-Goranska", "Sibensko-Kninska", "Sisacko-Moslavacka", "Splitsko-Dalmatinska", "Varazdinska", "Viroviticko-Podravska", "Vukovarsko-Srijemska", "Zadarska", "Zagreb", "Zagrebacka"]
-    },
-    {
-      "country": "Cuba",
-      "states": ["Camaguey", "Ciego de Avila", "Cienfuegos", "Ciudad de La Habana", "Granma", "Guantanamo", "Holguin", "Isla de la Juventud", "La Habana", "Las Tunas", "Matanzas", "Pinar del Rio", "Sancti Spiritus", "Santiago de Cuba", "Villa Clara"]
-    },
-    {
-      "country": "Cyprus",
-      "states": ["Famagusta", "Kyrenia", "Larnaca", "Limassol", "Nicosia", "Paphos"]
-    },
-    {
-      "country": "Czech Republic",
-      "states": ["Jihocesky Kraj", "Jihomoravsky Kraj", "Karlovarsky Kraj", "Kralovehradecky Kraj", "Liberecky Kraj", "Moravskoslezsky Kraj", "Olomoucky Kraj", "Pardubicky Kraj", "Plzensky Kraj", "Praha", "Stredocesky Kraj", "Ustecky Kraj", "Vysocina", "Zlinsky Kraj"]
-    },
-    {
-      "country": "Denmark",
-      "states": ["Arhus", "Bornholm", "Frederiksberg", "Frederiksborg", "Fyn", "Kobenhavn", "Kobenhavns", "Nordjylland", "Ribe", "Ringkobing", "Roskilde", "Sonderjylland", "Storstrom", "Vejle", "Vestsjalland", "Viborg"]
-    },
-    {
-      "country": "Djibouti",
-      "states": ["Ali Sabih", "Dikhil", "Djibouti", "Obock", "Tadjoura"]
-    },
-    {
-      "country": "Dominica",
-      "states": ["Saint Andrew", "Saint David", "Saint George", "Saint John", "Saint Joseph", "Saint Luke", "Saint Mark", "Saint Patrick", "Saint Paul", "Saint Peter"]
-    },
-    {
-      "country": "Dominican Republic",
-      "states": ["Azua", "Baoruco", "Barahona", "Dajabon", "Distrito Nacional", "Duarte", "Elias Pina", "El Seibo", "Espaillat", "Hato Mayor", "Independencia", "La Altagracia", "La Romana", "La Vega", "Maria Trinidad Sanchez", "Monsenor Nouel", "Monte Cristi", "Monte Plata", "Pedernales", "Peravia", "Puerto Plata", "Salcedo", "Samana", "Sanchez Ramirez", "San Cristobal", "San Jose de Ocoa", "San Juan", "San Pedro de Macoris", "Santiago", "Santiago Rodriguez", "Santo Domingo", "Valverde"]
-    },
-    {
-      "country": "East Timor",
-      "states": ["Aileu", "Ainaro", "Baucau", "Bobonaro", "Cova-Lima", "Dili", "Ermera", "Lautem", "Liquica", "Manatuto", "Manufahi", "Oecussi", "Viqueque"]
-    },
-    {
-      "country": "Ecuador",
-      "states": ["Azuay", "Bolivar", "Canar", "Carchi", "Chimborazo", "Cotopaxi", "El Oro", "Esmeraldas", "Galapagos", "Guayas", "Imbabura", "Loja", "Los Rios", "Manabi", "Morona-Santiago", "Napo", "Orellana", "Pastaza", "Pichincha", "Sucumbios", "Tungurahua", "Zamora-Chinchipe"]
-    },
-    {
-      "country": "Egypt",
-      "states": ["Ad Daqahliyah", "Al Bahr al Ahmar", "Al Buhayrah", "Al Fayyum", "Al Gharbiyah", "Al Iskandariyah", "Al Isma'iliyah", "Al Jizah", "Al Minufiyah", "Al Minya", "Al Qahirah", "Al Qalyubiyah", "Al Wadi al Jadid", "Ash Sharqiyah", "As Suways", "Aswan", "Asyut", "Bani Suwayf", "Bur Sa'id", "Dumyat", "Janub Sina'", "Kafr ash Shaykh", "Matruh", "Qina", "Shamal Sina'", "Suhaj"]
-    },
-    {
-      "country": "El Salvador",
-      "states": ["Ahuachapan", "Cabanas", "Chalatenango", "Cuscatlan", "La Libertad", "La Paz", "La Union", "Morazan", "San Miguel", "San Salvador", "Santa Ana", "San Vicente", "Sonsonate", "Usulutan"]
-    },
-    {
-      "country": "Equatorial Guinea",
-      "states": ["Annobon", "Bioko Norte", "Bioko Sur", "Centro Sur", "Kie-Ntem", "Litoral", "Wele-Nzas"]
-    },
-    {
-      "country": "Eritrea",
-      "states": ["Anseba", "Debub", "Debubawi K'eyih Bahri", "Gash Barka", "Ma'akel", "Semenawi Keyih Bahri"]
-    },
-    {
-      "country": "Estonia",
-      "states": ["Harjumaa (Tallinn)", "Hiiumaa (Kardla)", "Ida-Virumaa (Johvi)", "Jarvamaa (Paide)", "Jogevamaa (Jogeva)", "Laanemaa (Haapsalu)", "Laane-Virumaa (Rakvere)", "Parnumaa (Parnu)", "Polvamaa (Polva)", "Raplamaa (Rapla)", "Saaremaa (Kuressaare)", "Tartumaa (Tartu)", "Valgamaa (Valga)", "Viljandimaa (Viljandi)", "Vorumaa (Voru)"]
-    },
-    {
-      "country": "Ethiopia",
-      "states": ["Addis Ababa", "Afar", "Amhara", "Binshangul Gumuz", "Dire Dawa", "Gambela Hizboch", "Harari", "Oromia", "Somali", "Tigray", "Southern Nations, Nationalities, and Peoples Region"]
-    },
-    {
-      "country": "Fiji",
-      "states": ["Central (Suva)", "Eastern (Levuka)", "Northern (Labasa)", "Rotuma", "Western (Lautoka)"]
-    },
-    {
-      "country": "Finland",
-      "states": ["Aland", "Etela-Suomen Laani", "Ita-Suomen Laani", "Lansi-Suomen Laani", "Lappi", "Oulun Laani"]
-    },
-    {
-      "country": "France",
-      "states": ["Alsace", "Aquitaine", "Auvergne", "Basse-Normandie", "Bourgogne", "Bretagne", "Centre", "Champagne-Ardenne", "Corse", "Franche-Comte", "Haute-Normandie", "Ile-de-France", "Languedoc-Roussillon", "Limousin", "Lorraine", "Midi-Pyrenees", "Nord-Pas-de-Calais", "Pays de la Loire", "Picardie", "Poitou-Charentes", "Provence-Alpes-Cote d'Azur", "Rhone-Alpes"]
-    },
-    {
-      "country": "Gabon",
-      "states": ["Estuaire", "Haut-Ogooue", "Moyen-Ogooue", "Ngounie", "Nyanga", "Ogooue-Ivindo", "Ogooue-Lolo", "Ogooue-Maritime", "Woleu-Ntem"]
-    },
-    {
-      "country": "Gambia",
-      "states": ["Banjul", "Central River", "Lower River", "North Bank", "Upper River", "Western"]
-    },
-    {
-      "country": "Georgia",
-      "states": []
-    },
-    {
-      "country": "Germany",
-      "states": ["Baden-Wuerttemberg", "Bayern", "Berlin", "Brandenburg", "Bremen", "Hamburg", "Hessen", "Mecklenburg-Vorpommern", "Niedersachsen", "Nordrhein-Westfalen", "Rheinland-Pfalz", "Saarland", "Sachsen", "Sachsen-Anhalt", "Schleswig-Holstein", "Thueringen"]
-    },
-    {
-      "country": "Ghana",
-      "states": ["Ashanti", "Brong-Ahafo", "Central", "Eastern", "Greater Accra", "Northern", "Upper East", "Upper West", "Volta", "Western"]
-    },
-    {
-      "country": "Greece",
-      "states": ["Agion Oros", "Achaia", "Aitolia kai Akarmania", "Argolis", "Arkadia", "Arta", "Attiki", "Chalkidiki", "Chanion", "Chios", "Dodekanisos", "Drama", "Evros", "Evrytania", "Evvoia", "Florina", "Fokidos", "Fthiotis", "Grevena", "Ileia", "Imathia", "Ioannina", "Irakleion", "Karditsa", "Kastoria", "Kavala", "Kefallinia", "Kerkyra", "Kilkis", "Korinthia", "Kozani", "Kyklades", "Lakonia", "Larisa", "Lasithi", "Lefkas", "Lesvos", "Magnisia", "Messinia", "Pella", "Pieria", "Preveza", "Rethynnis", "Rodopi", "Samos", "Serrai", "Thesprotia", "Thessaloniki", "Trikala", "Voiotia", "Xanthi", "Zakynthos"]
-    },
-    {
-      "country": "Greenland",
-      "states": ["Avannaa (Nordgronland)", "Tunu (Ostgronland)", "Kitaa (Vestgronland)"]
-    },
-    {
-      "country": "Grenada",
-      "states": ["Carriacou and Petit Martinique", "Saint Andrew", "Saint David", "Saint George", "Saint John", "Saint Mark", "Saint Patrick"]
-    },
-    {
-      "country": "Guatemala",
-      "states": ["Alta Verapaz", "Baja Verapaz", "Chimaltenango", "Chiquimula", "El Progreso", "Escuintla", "Guatemala", "Huehuetenango", "Izabal", "Jalapa", "Jutiapa", "Peten", "Quetzaltenango", "Quiche", "Retalhuleu", "Sacatepequez", "San Marcos", "Santa Rosa", "Solola", "Suchitepequez", "Totonicapan", "Zacapa"]
-    },
-    {
-      "country": "Guinea",
-      "states": ["Beyla", "Boffa", "Boke", "Conakry", "Coyah", "Dabola", "Dalaba", "Dinguiraye", "Dubreka", "Faranah", "Forecariah", "Fria", "Gaoual", "Gueckedou", "Kankan", "Kerouane", "Kindia", "Kissidougou", "Koubia", "Koundara", "Kouroussa", "Labe", "Lelouma", "Lola", "Macenta", "Mali", "Mamou", "Mandiana", "Nzerekore", "Pita", "Siguiri", "Telimele", "Tougue", "Yomou"]
-    },
-    {
-      "country": "Guinea-Bissau",
-      "states": ["Bafata", "Biombo", "Bissau", "Bolama", "Cacheu", "Gabu", "Oio", "Quinara", "Tombali"]
-    },
-    {
-      "country": "Guyana",
-      "states": ["Barima-Waini", "Cuyuni-Mazaruni", "Demerara-Mahaica", "East Berbice-Corentyne", "Essequibo Islands-West Demerara", "Mahaica-Berbice", "Pomeroon-Supenaam", "Potaro-Siparuni", "Upper Demerara-Berbice", "Upper Takutu-Upper Essequibo"]
-    },
-    {
-      "country": "Haiti",
-      "states": ["Artibonite", "Centre", "Grand 'Anse", "Nord", "Nord-Est", "Nord-Ouest", "Ouest", "Sud", "Sud-Est"]
-    },
-    {
-      "country": "Honduras",
-      "states": ["Atlantida", "Choluteca", "Colon", "Comayagua", "Copan", "Cortes", "El Paraiso", "Francisco Morazan", "Gracias a Dios", "Intibuca", "Islas de la Bahia", "La Paz", "Lempira", "Ocotepeque", "Olancho", "Santa Barbara", "Valle", "Yoro"]
-    },
-    {
-      "country": "Hong Kong",
-      "states": []
-    },
-    {
-      "country": "Hungary",
-      "states": ["Bacs-Kiskun", "Baranya", "Bekes", "Borsod-Abauj-Zemplen", "Csongrad", "Fejer", "Gyor-Moson-Sopron", "Hajdu-Bihar", "Heves", "Jasz-Nagykun-Szolnok", "Komarom-Esztergom", "Nograd", "Pest", "Somogy", "Szabolcs-Szatmar-Bereg", "Tolna", "Vas", "Veszprem", "Zala", "Bekescsaba", "Debrecen", "Dunaujvaros", "Eger", "Gyor", "Hodmezovasarhely", "Kaposvar", "Kecskemet", "Miskolc", "Nagykanizsa", "Nyiregyhaza", "Pecs", "Sopron", "Szeged", "Szekesfehervar", "Szolnok", "Szombathely", "Tatabanya", "Veszprem", "Zalaegerszeg"]
-    },
-    {
-      "country": "Iceland",
-      "states": ["Austurland", "Hofudhborgarsvaedhi", "Nordhurland Eystra", "Nordhurland Vestra", "Sudhurland", "Sudhurnes", "Vestfirdhir", "Vesturland"]
-    },
-    {
-      "country": "India",
-      "states": ["Andaman and Nicobar Islands", "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chandigarh", "Chhattisgarh", "Dadra and Nagar Haveli", "Daman and Diu", "Delhi", "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jammu and Kashmir", "Jharkhand", "Karnataka", "Kerala", "Lakshadweep", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Orissa", "Pondicherry", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Tripura", "Uttaranchal", "Uttar Pradesh", "West Bengal"]
-    },
-    {
-      "country": "Indonesia",
-      "states": ["Aceh", "Bali", "Banten", "Bengkulu", "Gorontalo", "Irian Jaya Barat", "Jakarta Raya", "Jambi", "Jawa Barat", "Jawa Tengah", "Jawa Timur", "Kalimantan Barat", "Kalimantan Selatan", "Kalimantan Tengah", "Kalimantan Timur", "Kepulauan Bangka Belitung", "Kepulauan Riau", "Lampung", "Maluku", "Maluku Utara", "Nusa Tenggara Barat", "Nusa Tenggara Timur", "Papua", "Riau", "Sulawesi Barat", "Sulawesi Selatan", "Sulawesi Tengah", "Sulawesi Tenggara", "Sulawesi Utara", "Sumatera Barat", "Sumatera Selatan", "Sumatera Utara", "Yogyakarta"]
-    },
-    {
-      "country": "Iran",
-      "states": ["Ardabil", "Azarbayjan-e Gharbi", "Azarbayjan-e Sharqi", "Bushehr", "Chahar Mahall va Bakhtiari", "Esfahan", "Fars", "Gilan", "Golestan", "Hamadan", "Hormozgan", "Ilam", "Kerman", "Kermanshah", "Khorasan-e Janubi", "Khorasan-e Razavi", "Khorasan-e Shemali", "Khuzestan", "Kohgiluyeh va Buyer Ahmad", "Kordestan", "Lorestan", "Markazi", "Mazandaran", "Qazvin", "Qom", "Semnan", "Sistan va Baluchestan", "Tehran", "Yazd", "Zanjan"]
-    },
-    {
-      "country": "Iraq",
-      "states": ["Al Anbar", "Al Basrah", "Al Muthanna", "Al Qadisiyah", "An Najaf", "Arbil", "As Sulaymaniyah", "At Ta'mim", "Babil", "Baghdad", "Dahuk", "Dhi Qar", "Diyala", "Karbala'", "Maysan", "Ninawa", "Salah ad Din", "Wasit"]
-    },
-    {
-      "country": "Ireland",
-      "states": ["Carlow", "Cavan", "Clare", "Cork", "Donegal", "Dublin", "Galway", "Kerry", "Kildare", "Kilkenny", "Laois", "Leitrim", "Limerick", "Longford", "Louth", "Mayo", "Meath", "Monaghan", "Offaly", "Roscommon", "Sligo", "Tipperary", "Waterford", "Westmeath", "Wexford", "Wicklow"]
-    },
-    {
-      "country": "Israel",
-      "states": ["Central", "Haifa", "Jerusalem", "Northern", "Southern", "Tel Aviv"]
-    },
-    {
-      "country": "Italy",
-      "states": ["Abruzzo", "Basilicata", "Calabria", "Campania", "Emilia-Romagna", "Friuli-Venezia Giulia", "Lazio", "Liguria", "Lombardia", "Marche", "Molise", "Piemonte", "Puglia", "Sardegna", "Sicilia", "Toscana", "Trentino-Alto Adige", "Umbria", "Valle d'Aosta", "Veneto"]
-    },
-    {
-      "country": "Jamaica",
-      "states": ["Clarendon", "Hanover", "Kingston", "Manchester", "Portland", "Saint Andrew", "Saint Ann", "Saint Catherine", "Saint Elizabeth", "Saint James", "Saint Mary", "Saint Thomas", "Trelawny", "Westmoreland"]
-    },
-    {
-      "country": "Japan",
-      "states": ["Aichi", "Akita", "Aomori", "Chiba", "Ehime", "Fukui", "Fukuoka", "Fukushima", "Gifu", "Gumma", "Hiroshima", "Hokkaido", "Hyogo", "Ibaraki", "Ishikawa", "Iwate", "Kagawa", "Kagoshima", "Kanagawa", "Kochi", "Kumamoto", "Kyoto", "Mie", "Miyagi", "Miyazaki", "Nagano", "Nagasaki", "Nara", "Niigata", "Oita", "Okayama", "Okinawa", "Osaka", "Saga", "Saitama", "Shiga", "Shimane", "Shizuoka", "Tochigi", "Tokushima", "Tokyo", "Tottori", "Toyama", "Wakayama", "Yamagata", "Yamaguchi", "Yamanashi"]
-    },
-    {
-      "country": "Jordan",
-      "states": ["Ajlun", "Al 'Aqabah", "Al Balqa'", "Al Karak", "Al Mafraq", "Amman", "At Tafilah", "Az Zarqa'", "Irbid", "Jarash", "Ma'an", "Madaba"]
-    },
-    {
-      "country": "Kazakhstan",
-      "states": ["Almaty Oblysy", "Almaty Qalasy", "Aqmola Oblysy", "Aqtobe Oblysy", "Astana Qalasy", "Atyrau Oblysy", "Batys Qazaqstan Oblysy", "Bayqongyr Qalasy", "Mangghystau Oblysy", "Ongtustik Qazaqstan Oblysy", "Pavlodar Oblysy", "Qaraghandy Oblysy", "Qostanay Oblysy", "Qyzylorda Oblysy", "Shyghys Qazaqstan Oblysy", "Soltustik Qazaqstan Oblysy", "Zhambyl Oblysy"]
-    },
-    {
-      "country": "Kenya",
-      "states": ["Central", "Coast", "Eastern", "Nairobi Area", "North Eastern", "Nyanza", "Rift Valley", "Western"]
-    },
-    {
-      "country": "Kiribati",
-      "states": []
-    },
-    {
-      "country": "Korea North",
-      "states": ["Chagang", "North Hamgyong", "South Hamgyong", "North Hwanghae", "South Hwanghae", "Kangwon", "North P'yongan", "South P'yongan", "Yanggang", "Kaesong", "Najin", "Namp'o", "Pyongyang"]
-    },
-    {
-      "country": "Korea South",
-      "states": ["Seoul", "Busan City", "Daegu City", "Incheon City", "Gwangju City", "Daejeon City", "Ulsan", "Gyeonggi Province", "Gangwon Province", "North Chungcheong Province", "South Chungcheong Province", "North Jeolla Province", "South Jeolla Province", "North Gyeongsang Province", "South Gyeongsang Province", "Jeju"]
-    },
-    {
-      "country": "Kuwait",
-      "states": ["Al Ahmadi", "Al Farwaniyah", "Al Asimah", "Al Jahra", "Hawalli", "Mubarak Al-Kabeer"]
-    },
-    {
-      "country": "Kyrgyzstan",
-      "states": ["Batken Oblasty", "Bishkek Shaary", "Chuy Oblasty", "Jalal-Abad Oblasty", "Naryn Oblasty", "Osh Oblasty", "Talas Oblasty", "Ysyk-Kol Oblasty"]
-    },
-    {
-      "country": "Laos",
-      "states": ["Attapu", "Bokeo", "Bolikhamxai", "Champasak", "Houaphan", "Khammouan", "Louangnamtha", "Louangphrabang", "Oudomxai", "Phongsali", "Salavan", "Savannakhet", "Viangchan", "Viangchan", "Xaignabouli", "Xaisomboun", "Xekong", "Xiangkhoang"]
-    },
-    {
-      "country": "Latvia",
-      "states": ["Aizkraukles Rajons", "Aluksnes Rajons", "Balvu Rajons", "Bauskas Rajons", "Cesu Rajons", "Daugavpils", "Daugavpils Rajons", "Dobeles Rajons", "Gulbenes Rajons", "Jekabpils Rajons", "Jelgava", "Jelgavas Rajons", "Jurmala", "Kraslavas Rajons", "Kuldigas Rajons", "Liepaja", "Liepajas Rajons", "Limbazu Rajons", "Ludzas Rajons", "Madonas Rajons", "Ogres Rajons", "Preilu Rajons", "Rezekne", "Rezeknes Rajons", "Riga", "Rigas Rajons", "Saldus Rajons", "Talsu Rajons", "Tukuma Rajons", "Valkas Rajons", "Valmieras Rajons", "Ventspils", "Ventspils Rajons"]
-    },
-    {
-      "country": "Lebanon",
-      "states": ["Beyrouth", "Beqaa", "Liban-Nord", "Liban-Sud", "Mont-Liban", "Nabatiye"]
-    },
-    {
-      "country": "Lesotho",
-      "states": ["Berea", "Butha-Buthe", "Leribe", "Mafeteng", "Maseru", "Mohale's Hoek", "Mokhotlong", "Qacha's Nek", "Quthing", "Thaba-Tseka"]
-    },
-    {
-      "country": "Liberia",
-      "states": ["Bomi", "Bong", "Gbarpolu", "Grand Bassa", "Grand Cape Mount", "Grand Gedeh", "Grand Kru", "Lofa", "Margibi", "Maryland", "Montserrado", "Nimba", "River Cess", "River Gee", "Sinoe"]
-    },
-    {
-      "country": "Libya",
-      "states": ["Ajdabiya", "Al 'Aziziyah", "Al Fatih", "Al Jabal al Akhdar", "Al Jufrah", "Al Khums", "Al Kufrah", "An Nuqat al Khams", "Ash Shati'", "Awbari", "Az Zawiyah", "Banghazi", "Darnah", "Ghadamis", "Gharyan", "Misratah", "Murzuq", "Sabha", "Sawfajjin", "Surt", "Tarabulus", "Tarhunah", "Tubruq", "Yafran", "Zlitan"]
-    },
-    {
-      "country": "Liechtenstein",
-      "states": ["Balzers", "Eschen", "Gamprin", "Mauren", "Planken", "Ruggell", "Schaan", "Schellenberg", "Triesen", "Triesenberg", "Vaduz"]
-    },
-    {
-      "country": "Lithuania",
-      "states": ["Alytaus", "Kauno", "Klaipedos", "Marijampoles", "Panevezio", "Siauliu", "Taurages", "Telsiu", "Utenos", "Vilniaus"]
-    },
-    {
-      "country": "Luxembourg",
-      "states": ["Diekirch", "Grevenmacher", "Luxembourg"]
-    },
-    {
-      "country": "Macedonia",
-      "states": ["Aerodrom", "Aracinovo", "Berovo", "Bitola", "Bogdanci", "Bogovinje", "Bosilovo", "Brvenica", "Butel", "Cair", "Caska", "Centar", "Centar Zupa", "Cesinovo", "Cucer-Sandevo", "Debar", "Debartsa", "Delcevo", "Demir Hisar", "Demir Kapija", "Dojran", "Dolneni", "Drugovo", "Gazi Baba", "Gevgelija", "Gjorce Petrov", "Gostivar", "Gradsko", "Ilinden", "Jegunovce", "Karbinci", "Karpos", "Kavadarci", "Kicevo", "Kisela Voda", "Kocani", "Konce", "Kratovo", "Kriva Palanka", "Krivogastani", "Krusevo", "Kumanovo", "Lipkovo", "Lozovo", "Makedonska Kamenica", "Makedonski Brod", "Mavrovo i Rastusa", "Mogila", "Negotino", "Novaci", "Novo Selo", "Ohrid", "Oslomej", "Pehcevo", "Petrovec", "Plasnica", "Prilep", "Probistip", "Radovis", "Rankovce", "Resen", "Rosoman", "Saraj", "Skopje", "Sopiste", "Staro Nagoricane", "Stip", "Struga", "Strumica", "Studenicani", "Suto Orizari", "Sveti Nikole", "Tearce", "Tetovo", "Valandovo", "Vasilevo", "Veles", "Vevcani", "Vinica", "Vranestica", "Vrapciste", "Zajas", "Zelenikovo", "Zelino", "Zrnovci"]
-    },
-    {
-      "country": "Madagascar",
-      "states": ["Antananarivo", "Antsiranana", "Fianarantsoa", "Mahajanga", "Toamasina", "Toliara"]
-    },
-    {
-      "country": "Malawi",
-      "states": ["Balaka", "Blantyre", "Chikwawa", "Chiradzulu", "Chitipa", "Dedza", "Dowa", "Karonga", "Kasungu", "Likoma", "Lilongwe", "Machinga", "Mangochi", "Mchinji", "Mulanje", "Mwanza", "Mzimba", "Ntcheu", "Nkhata Bay", "Nkhotakota", "Nsanje", "Ntchisi", "Phalombe", "Rumphi", "Salima", "Thyolo", "Zomba"]
-    },
-    {
-      "country": "Malaysia",
-      "states": ["Johor", "Kedah", "Kelantan", "Kuala Lumpur", "Labuan", "Malacca", "Negeri Sembilan", "Pahang", "Perak", "Perlis", "Penang", "Sabah", "Sarawak", "Selangor", "Terengganu"]
-    },
-    {
-      "country": "Maldives",
-      "states": ["Alifu", "Baa", "Dhaalu", "Faafu", "Gaafu Alifu", "Gaafu Dhaalu", "Gnaviyani", "Haa Alifu", "Haa Dhaalu", "Kaafu", "Laamu", "Lhaviyani", "Maale", "Meemu", "Noonu", "Raa", "Seenu", "Shaviyani", "Thaa", "Vaavu"]
-    },
-    {
-      "country": "Mali",
-      "states": ["Bamako (Capital)", "Gao", "Kayes", "Kidal", "Koulikoro", "Mopti", "Segou", "Sikasso", "Tombouctou"]
-    },
-    {
-      "country": "Malta",
-      "states": []
-    },
-    {
-      "country": "Marshall Islands",
-      "states": []
-    },
-    {
-      "country": "Mauritania",
-      "states": ["Adrar", "Assaba", "Brakna", "Dakhlet Nouadhibou", "Gorgol", "Guidimaka", "Hodh Ech Chargui", "Hodh El Gharbi", "Inchiri", "Nouakchott", "Tagant", "Tiris Zemmour", "Trarza"]
-    },
-    {
-      "country": "Mauritius",
-      "states": ["Agalega Islands", "Black River", "Cargados Carajos Shoals", "Flacq", "Grand Port", "Moka", "Pamplemousses", "Plaines Wilhems", "Port Louis", "Riviere du Rempart", "Rodrigues", "Savanne"]
-    },
-    {
-      "country": "Mexico",
-      "states": ["Aguascalientes", "Baja California", "Baja California Sur", "Campeche", "Chiapas", "Chihuahua", "Coahuila de Zaragoza", "Colima", "Distrito Federal", "Durango", "Guanajuato", "Guerrero", "Hidalgo", "Jalisco", "Mexico", "Michoacan de Ocampo", "Morelos", "Nayarit", "Nuevo Leon", "Oaxaca", "Puebla", "Queretaro de Arteaga", "Quintana Roo", "San Luis Potosi", "Sinaloa", "Sonora", "Tabasco", "Tamaulipas", "Tlaxcala", "Veracruz-Llave", "Yucatan", "Zacatecas"]
-    },
-    {
-      "country": "Micronesia",
-      "states": []
-    },
-    {
-      "country": "Moldova",
-      "states": ["Anenii Noi", "Basarabeasca", "Briceni", "Cahul", "Cantemir", "Calarasi", "Causeni", "Cimislia", "Criuleni", "Donduseni", "Drochia", "Dubasari", "Edinet", "Falesti", "Floresti", "Glodeni", "Hincesti", "Ialoveni", "Leova", "Nisporeni", "Ocnita", "Orhei", "Rezina", "Riscani", "Singerei", "Soldanesti", "Soroca", "Stefan-Voda", "Straseni", "Taraclia", "Telenesti", "Ungheni", "Balti", "Bender", "Chisinau", "Gagauzia", "Stinga Nistrului"]
-    },
-    {
-      "country": "Mongolia",
-      "states": ["Arhangay", "Bayanhongor", "Bayan-Olgiy", "Bulgan", "Darhan Uul", "Dornod", "Dornogovi", "Dundgovi", "Dzavhan", "Govi-Altay", "Govi-Sumber", "Hentiy", "Hovd", "Hovsgol", "Omnogovi", "Orhon", "Ovorhangay", "Selenge", "Suhbaatar", "Tov", "Ulaanbaatar", "Uvs"]
-    },
-    {
-      "country": "Morocco",
-      "states": ["Agadir", "Al Hoceima", "Azilal", "Beni Mellal", "Ben Slimane", "Boulemane", "Casablanca", "Chaouen", "El Jadida", "El Kelaa des Sraghna", "Er Rachidia", "Essaouira", "Fes", "Figuig", "Guelmim", "Ifrane", "Kenitra", "Khemisset", "Khenifra", "Khouribga", "Laayoune", "Larache", "Marrakech", "Meknes", "Nador", "Ouarzazate", "Oujda", "Rabat-Sale", "Safi", "Settat", "Sidi Kacem", "Tangier", "Tan-Tan", "Taounate", "Taroudannt", "Tata", "Taza", "Tetouan", "Tiznit"]
-    },
-    {
-      "country": "Monaco",
-      "states": []
-    },
-    {
-      "country": "Mozambique",
-      "states": ["Cabo Delgado", "Gaza", "Inhambane", "Manica", "Maputo", "Cidade de Maputo", "Nampula", "Niassa", "Sofala", "Tete", "Zambezia"]
-    },
-    {
-      "country": "Namibia",
-      "states": ["Caprivi", "Erongo", "Hardap", "Karas", "Khomas", "Kunene", "Ohangwena", "Okavango", "Omaheke", "Omusati", "Oshana", "Oshikoto", "Otjozondjupa"]
-    },
-    {
-      "country": "Nauru",
-      "states": []
-    },
-    {
-      "country": "Nepal",
-      "states": ["Bagmati", "Bheri", "Dhawalagiri", "Gandaki", "Janakpur", "Karnali", "Kosi", "Lumbini", "Mahakali", "Mechi", "Narayani", "Rapti", "Sagarmatha", "Seti"]
-    },
-    {
-      "country": "Netherlands",
-      "states": ["Drenthe", "Flevoland", "Friesland", "Gelderland", "Groningen", "Limburg", "Noord-Brabant", "Noord-Holland", "Overijssel", "Utrecht", "Zeeland", "Zuid-Holland"]
-    },
-    {
-      "country": "New Zealand",
-      "states": ["Auckland", "Bay of Plenty", "Canterbury", "Chatham Islands", "Gisborne", "Hawke's Bay", "Manawatu-Wanganui", "Marlborough", "Nelson", "Northland", "Otago", "Southland", "Taranaki", "Tasman", "Waikato", "Wellington", "West Coast"]
-    },
-    {
-      "country": "Nicaragua",
-      "states": ["Atlantico Norte", "Atlantico Sur", "Boaco", "Carazo", "Chinandega", "Chontales", "Esteli", "Granada", "Jinotega", "Leon", "Madriz", "Managua", "Masaya", "Matagalpa", "Nueva Segovia", "Rio San Juan", "Rivas"]
-    },
-    {
-      "country": "Niger",
-      "states": ["Agadez", "Diffa", "Dosso", "Maradi", "Niamey", "Tahoua", "Tillaberi", "Zinder"]
-    },
-    {
-      "country": "Nigeria",
-      "states": ["Abia", "Abuja Federal Capital", "Adamawa", "Akwa Ibom", "Anambra", "Bauchi", "Bayelsa", "Benue", "Borno", "Cross River", "Delta", "Ebonyi", "Edo", "Ekiti", "Enugu", "Gombe", "Imo", "Jigawa", "Kaduna", "Kano", "Katsina", "Kebbi", "Kogi", "Kwara", "Lagos", "Nassarawa", "Niger", "Ogun", "Ondo", "Osun", "Oyo", "Plateau", "Rivers", "Sokoto", "Taraba", "Yobe", "Zamfara"]
-    },
-    {
-      "country": "Norway",
-      "states": ["Akershus", "Aust-Agder", "Buskerud", "Finnmark", "Hedmark", "Hordaland", "More og Romsdal", "Nordland", "Nord-Trondelag", "Oppland", "Oslo", "Ostfold", "Rogaland", "Sogn og Fjordane", "Sor-Trondelag", "Telemark", "Troms", "Vest-Agder", "Vestfold"]
-    },
-    {
-      "country": "Oman",
-      "states": ["Ad Dakhiliyah", "Al Batinah", "Al Wusta", "Ash Sharqiyah", "Az Zahirah", "Masqat", "Musandam", "Dhofar"]
-    },
-    {
-      "country": "Pakistan",
-      "states": ["Balochistan", "North-West Frontier Province", "Punjab", "Sindh", "Islamabad Capital Territory", "Federally Administered Tribal Areas"]
-    },
-    {
-      "country": "Panama",
-      "states": ["Bocas del Toro", "Chiriqui", "Cocle", "Colon", "Darien", "Herrera", "Los Santos", "Panama", "San Blas", "Veraguas"]
-    },
-    {
-      "country": "Papua New Guinea",
-      "states": ["Bougainville", "Central", "Chimbu", "Eastern Highlands", "East New Britain", "East Sepik", "Enga", "Gulf", "Madang", "Manus", "Milne Bay", "Morobe", "National Capital", "New Ireland", "Northern", "Sandaun", "Southern Highlands", "Western", "Western Highlands", "West New Britain"]
-    },
-    {
-      "country": "Paraguay",
-      "states": ["Alto Paraguay", "Alto Parana", "Amambay", "Asuncion", "Boqueron", "Caaguazu", "Caazapa", "Canindeyu", "Central", "Concepcion", "Cordillera", "Guaira", "Itapua", "Misiones", "Neembucu", "Paraguari", "Presidente Hayes", "San Pedro"]
-    },
-    {
-      "country": "Peru",
-      "states": ["Amazonas", "Ancash", "Apurimac", "Arequipa", "Ayacucho", "Cajamarca", "Callao", "Cusco", "Huancavelica", "Huanuco", "Ica", "Junin", "La Libertad", "Lambayeque", "Lima", "Loreto", "Madre de Dios", "Moquegua", "Pasco", "Piura", "Puno", "San Martin", "Tacna", "Tumbes", "Ucayali"]
-    },
-    {
-      "country": "Philippines",
-      "states": ["Abra", "Agusan del Norte", "Agusan del Sur", "Aklan", "Albay", "Antique", "Apayao", "Aurora", "Basilan", "Bataan", "Batanes", "Batangas", "Biliran", "Benguet", "Bohol", "Bukidnon", "Bulacan", "Cagayan", "Camarines Norte", "Camarines Sur", "Camiguin", "Capiz", "Catanduanes", "Cavite", "Cebu", "Compostela", "Davao del Norte", "Davao del Sur", "Davao Oriental", "Eastern Samar", "Guimaras", "Ifugao", "Ilocos Norte", "Ilocos Sur", "Iloilo", "Isabela", "Kalinga", "Laguna", "Lanao del Norte", "Lanao del Sur", "La Union", "Leyte", "Maguindanao", "Marinduque", "Masbate", "Mindoro Occidental", "Mindoro Oriental", "Misamis Occidental", "Misamis Oriental", "Mountain Province", "Negros Occidental", "Negros Oriental", "North Cotabato", "Northern Samar", "Nueva Ecija", "Nueva Vizcaya", "Palawan", "Pampanga", "Pangasinan", "Quezon", "Quirino", "Rizal", "Romblon", "Samar", "Sarangani", "Siquijor", "Sorsogon", "South Cotabato", "Southern Leyte", "Sultan Kudarat", "Sulu", "Surigao del Norte", "Surigao del Sur", "Tarlac", "Tawi-Tawi", "Zambales", "Zamboanga del Norte", "Zamboanga del Sur", "Zamboanga Sibugay"]
-    },
-    {
-      "country": "Poland",
-      "states": ["Greater Poland (Wielkopolskie)", "Kuyavian-Pomeranian (Kujawsko-Pomorskie)", "Lesser Poland (Malopolskie)", "Lodz (Lodzkie)", "Lower Silesian (Dolnoslaskie)", "Lublin (Lubelskie)", "Lubusz (Lubuskie)", "Masovian (Mazowieckie)", "Opole (Opolskie)", "Podlasie (Podlaskie)", "Pomeranian (Pomorskie)", "Silesian (Slaskie)", "Subcarpathian (Podkarpackie)", "Swietokrzyskie (Swietokrzyskie)", "Warmian-Masurian (Warminsko-Mazurskie)", "West Pomeranian (Zachodniopomorskie)"]
-    },
-    {
-      "country": "Portugal",
-      "states": ["Aveiro", "Acores", "Beja", "Braga", "Braganca", "Castelo Branco", "Coimbra", "Evora", "Faro", "Guarda", "Leiria", "Lisboa", "Madeira", "Portalegre", "Porto", "Santarem", "Setubal", "Viana do Castelo", "Vila Real", "Viseu"]
-    },
-    {
-      "country": "Qatar",
-      "states": ["Ad Dawhah", "Al Ghuwayriyah", "Al Jumayliyah", "Al Khawr", "Al Wakrah", "Ar Rayyan", "Jarayan al Batinah", "Madinat ash Shamal", "Umm Sa'id", "Umm Salal"]
-    },
-    {
-      "country": "Romania",
-      "states": ["Alba", "Arad", "Arges", "Bacau", "Bihor", "Bistrita-Nasaud", "Botosani", "Braila", "Brasov", "Bucuresti", "Buzau", "Calarasi", "Caras-Severin", "Cluj", "Constanta", "Covasna", "Dimbovita", "Dolj", "Galati", "Gorj", "Giurgiu", "Harghita", "Hunedoara", "Ialomita", "Iasi", "Ilfov", "Maramures", "Mehedinti", "Mures", "Neamt", "Olt", "Prahova", "Salaj", "Satu Mare", "Sibiu", "Suceava", "Teleorman", "Timis", "Tulcea", "Vaslui", "Vilcea", "Vrancea"]
-    },
-    {
-      "country": "Russia",
-      "states": ["Amur", "Arkhangel'sk", "Astrakhan'", "Belgorod", "Bryansk", "Chelyabinsk", "Chita", "Irkutsk", "Ivanovo", "Kaliningrad", "Kaluga", "Kamchatka", "Kemerovo", "Kirov", "Kostroma", "Kurgan", "Kursk", "Leningrad", "Lipetsk", "Magadan", "Moscow", "Murmansk", "Nizhniy Novgorod", "Novgorod", "Novosibirsk", "Omsk", "Orenburg", "Orel", "Penza", "Perm'", "Pskov", "Rostov", "Ryazan'", "Sakhalin", "Samara", "Saratov", "Smolensk", "Sverdlovsk", "Tambov", "Tomsk", "Tula", "Tver'", "Tyumen'", "Ul'yanovsk", "Vladimir", "Volgograd", "Vologda", "Voronezh", "Yaroslavl'", "Adygeya", "Altay", "Bashkortostan", "Buryatiya", "Chechnya", "Chuvashiya", "Dagestan", "Ingushetiya", "Kabardino-Balkariya", "Kalmykiya", "Karachayevo-Cherkesiya", "Kareliya", "Khakasiya", "Komi", "Mariy-El", "Mordoviya", "Sakha", "North Ossetia", "Tatarstan", "Tyva", "Udmurtiya", "Aga Buryat", "Chukotka", "Evenk", "Khanty-Mansi", "Komi-Permyak", "Koryak", "Nenets", "Taymyr", "Ust'-Orda Buryat", "Yamalo-Nenets", "Altay", "Khabarovsk", "Krasnodar", "Krasnoyarsk", "Primorskiy", "Stavropol'", "Moscow", "St. Petersburg", "Yevrey"]
-    },
-    {
-      "country": "Rwanda",
-      "states": ["Butare", "Byumba", "Cyangugu", "Gikongoro", "Gisenyi", "Gitarama", "Kibungo", "Kibuye", "Kigali Rurale", "Kigali-ville", "Umutara", "Ruhengeri"]
-    },
-    {
-      "country": "Samoa",
-      "states": ["A'ana", "Aiga-i-le-Tai", "Atua", "Fa'asaleleaga", "Gaga'emauga", "Gagaifomauga", "Palauli", "Satupa'itea", "Tuamasaga", "Va'a-o-Fonoti", "Vaisigano"]
-    },
-    {
-      "country": "San Marino",
-      "states": ["Acquaviva", "Borgo Maggiore", "Chiesanuova", "Domagnano", "Faetano", "Fiorentino", "Montegiardino", "San Marino Citta", "Serravalle"]
-    },
-    {
-      "country": "Sao Tome",
-      "states": []
-    },
-    {
-      "country": "Saudi Arabia",
-      "states": ["Al Bahah", "Al Hudud ash Shamaliyah", "Al Jawf", "Al Madinah", "Al Qasim", "Ar Riyad", "Ash Sharqiyah", "Asir", "Ha'il", "Jizan", "Makkah", "Najran", "Tabuk"]
-    },
-    {
-      "country": "Senegal",
-      "states": ["Dakar", "Diourbel", "Fatick", "Kaolack", "Kolda", "Louga", "Matam", "Saint-Louis", "Tambacounda", "Thies", "Ziguinchor"]
-    },
-    {
-      "country": "Serbia and Montenegro",
-      "states": ["Kosovo", "Montenegro", "Serbia", "Vojvodina"]
-    },
-    {
-      "country": "Seychelles",
-      "states": ["Anse aux Pins", "Anse Boileau", "Anse Etoile", "Anse Louis", "Anse Royale", "Baie Lazare", "Baie Sainte Anne", "Beau Vallon", "Bel Air", "Bel Ombre", "Cascade", "Glacis", "Grand' Anse", "Grand' Anse", "La Digue", "La Riviere Anglaise", "Mont Buxton", "Mont Fleuri", "Plaisance", "Pointe La Rue", "Port Glaud", "Saint Louis", "Takamaka"]
-    },
-    {
-      "country": "Sierra Leone",
-      "states": []
-    },
-    {
-      "country": "Singapore",
-      "states": []
-    },
-    {
-      "country": "Slovakia",
-      "states": ["Banskobystricky", "Bratislavsky", "Kosicky", "Nitriansky", "Presovsky", "Trenciansky", "Trnavsky", "Zilinsky"]
-    },
-    {
-      "country": "Slovenia",
-      "states": ["Ajdovscina", "Beltinci", "Benedikt", "Bistrica ob Sotli", "Bled", "Bloke", "Bohinj", "Borovnica", "Bovec", "Braslovce", "Brda", "Brezice", "Brezovica", "Cankova", "Celje", "Cerklje na Gorenjskem", "Cerknica", "Cerkno", "Cerkvenjak", "Crensovci", "Crna na Koroskem", "Crnomelj", "Destrnik", "Divaca", "Dobje", "Dobrepolje", "Dobrna", "Dobrova-Horjul-Polhov Gradec", "Dobrovnik-Dobronak", "Dolenjske Toplice", "Dol pri Ljubljani", "Domzale", "Dornava", "Dravograd", "Duplek", "Gorenja Vas-Poljane", "Gorisnica", "Gornja Radgona", "Gornji Grad", "Gornji Petrovci", "Grad", "Grosuplje", "Hajdina", "Hoce-Slivnica", "Hodos-Hodos", "Horjul", "Hrastnik", "Hrpelje-Kozina", "Idrija", "Ig", "Ilirska Bistrica", "Ivancna Gorica", "Izola-Isola", "Jesenice", "Jezersko", "Jursinci", "Kamnik", "Kanal", "Kidricevo", "Kobarid", "Kobilje", "Kocevje", "Komen", "Komenda", "Koper-Capodistria", "Kostel", "Kozje", "Kranj", "Kranjska Gora", "Krizevci", "Krsko", "Kungota", "Kuzma", "Lasko", "Lenart", "Lendava-Lendva", "Litija", "Ljubljana", "Ljubno", "Ljutomer", "Logatec", "Loska Dolina", "Loski Potok", "Lovrenc na Pohorju", "Luce", "Lukovica", "Majsperk", "Maribor", "Markovci", "Medvode", "Menges", "Metlika", "Mezica", "Miklavz na Dravskem Polju", "Miren-Kostanjevica", "Mirna Pec", "Mislinja", "Moravce", "Moravske Toplice", "Mozirje", "Murska Sobota", "Muta", "Naklo", "Nazarje", "Nova Gorica", "Novo Mesto", "Odranci", "Oplotnica", "Ormoz", "Osilnica", "Pesnica", "Piran-Pirano", "Pivka", "Podcetrtek", "Podlehnik", "Podvelka", "Polzela", "Postojna", "Prebold", "Preddvor", "Prevalje", "Ptuj", "Puconci", "Race-Fram", "Radece", "Radenci", "Radlje ob Dravi", "Radovljica", "Ravne na Koroskem", "Razkrizje", "Ribnica", "Ribnica na Pohorju", "Rogasovci", "Rogaska Slatina", "Rogatec", "Ruse", "Salovci", "Selnica ob Dravi", "Semic", "Sempeter-Vrtojba", "Sencur", "Sentilj", "Sentjernej", "Sentjur pri Celju", "Sevnica", "Sezana", "Skocjan", "Skofja Loka", "Skofljica", "Slovenj Gradec", "Slovenska Bistrica", "Slovenske Konjice", "Smarje pri Jelsah", "Smartno ob Paki", "Smartno pri Litiji", "Sodrazica", "Solcava", "Sostanj", "Starse", "Store", "Sveta Ana", "Sveti Andraz v Slovenskih Goricah", "Sveti Jurij", "Tabor", "Tisina", "Tolmin", "Trbovlje", "Trebnje", "Trnovska Vas", "Trzic", "Trzin", "Turnisce", "Velenje", "Velika Polana", "Velike Lasce", "Verzej", "Videm", "Vipava", "Vitanje", "Vodice", "Vojnik", "Vransko", "Vrhnika", "Vuzenica", "Zagorje ob Savi", "Zalec", "Zavrc", "Zelezniki", "Zetale", "Ziri", "Zirovnica", "Zuzemberk", "Zrece"]
-    },
-    {
-      "country": "Solomon Islands",
-      "states": ["Central", "Choiseul", "Guadalcanal", "Honiara", "Isabel", "Makira", "Malaita", "Rennell and Bellona", "Temotu", "Western"]
-    },
-    {
-      "country": "Somalia",
-      "states": ["Awdal", "Bakool", "Banaadir", "Bari", "Bay", "Galguduud", "Gedo", "Hiiraan", "Jubbada Dhexe", "Jubbada Hoose", "Mudug", "Nugaal", "Sanaag", "Shabeellaha Dhexe", "Shabeellaha Hoose", "Sool", "Togdheer", "Woqooyi Galbeed"]
-    },
-    {
-      "country": "South Africa",
-      "states": ["Eastern Cape", "Free State", "Gauteng", "KwaZulu-Natal", "Limpopo", "Mpumalanga", "North-West", "Northern Cape", "Western Cape"]
-    },
-    {
-      "country": "Spain",
-      "states": ["Andalucia", "Aragon", "Asturias", "Baleares", "Ceuta", "Canarias", "Cantabria", "Castilla-La Mancha", "Castilla y Leon", "Cataluna", "Comunidad Valenciana", "Extremadura", "Galicia", "La Rioja", "Madrid", "Melilla", "Murcia", "Navarra", "Pais Vasco"]
-    },
-    {
-      "country": "Sri Lanka",
-      "states": ["Central", "North Central", "North Eastern", "North Western", "Sabaragamuwa", "Southern", "Uva", "Western"]
-    },
-    {
-      "country": "Sudan",
-      "states": ["A'ali an Nil", "Al Bahr al Ahmar", "Al Buhayrat", "Al Jazirah", "Al Khartum", "Al Qadarif", "Al Wahdah", "An Nil al Abyad", "An Nil al Azraq", "Ash Shamaliyah", "Bahr al Jabal", "Gharb al Istiwa'iyah", "Gharb Bahr al Ghazal", "Gharb Darfur", "Gharb Kurdufan", "Janub Darfur", "Janub Kurdufan", "Junqali", "Kassala", "Nahr an Nil", "Shamal Bahr al Ghazal", "Shamal Darfur", "Shamal Kurdufan", "Sharq al Istiwa'iyah", "Sinnar", "Warab"]
-    },
-    {
-      "country": "Suriname",
-      "states": ["Brokopondo", "Commewijne", "Coronie", "Marowijne", "Nickerie", "Para", "Paramaribo", "Saramacca", "Sipaliwini", "Wanica"]
-    },
-    {
-      "country": "Swaziland",
-      "states": ["Hhohho", "Lubombo", "Manzini", "Shiselweni"]
-    },
-    {
-      "country": "Sweden",
-      "states": ["Blekinge", "Dalarnas", "Gavleborgs", "Gotlands", "Hallands", "Jamtlands", "Jonkopings", "Kalmar", "Kronobergs", "Norrbottens", "Orebro", "Ostergotlands", "Skane", "Sodermanlands", "Stockholms", "Uppsala", "Varmlands", "Vasterbottens", "Vasternorrlands", "Vastmanlands", "Vastra Gotalands"]
-    },
-    {
-      "country": "Switzerland",
-      "states": ["Aargau", "Appenzell Ausser-Rhoden", "Appenzell Inner-Rhoden", "Basel-Landschaft", "Basel-Stadt", "Bern", "Fribourg", "Geneve", "Glarus", "Graubunden", "Jura", "Luzern", "Neuchatel", "Nidwalden", "Obwalden", "Sankt Gallen", "Schaffhausen", "Schwyz", "Solothurn", "Thurgau", "Ticino", "Uri", "Valais", "Vaud", "Zug", "Zurich"]
-    },
-    {
-      "country": "Syria",
-      "states": ["Al Hasakah", "Al Ladhiqiyah", "Al Qunaytirah", "Ar Raqqah", "As Suwayda'", "Dar'a", "Dayr az Zawr", "Dimashq", "Halab", "Hamah", "Hims", "Idlib", "Rif Dimashq", "Tartus"]
-    },
-    {
-      "country": "Taiwan",
-      "states": ["Chang-hua", "Chia-i", "Hsin-chu", "Hua-lien", "I-lan", "Kao-hsiung", "Kin-men", "Lien-chiang", "Miao-li", "Nan-t'ou", "P'eng-hu", "P'ing-tung", "T'ai-chung", "T'ai-nan", "T'ai-pei", "T'ai-tung", "T'ao-yuan", "Yun-lin", "Chia-i", "Chi-lung", "Hsin-chu", "T'ai-chung", "T'ai-nan", "Kao-hsiung city", "T'ai-pei city"]
-    },
-    {
-      "country": "Tajikistan",
-      "states": []
-    },
-    {
-      "country": "Tanzania",
-      "states": ["Arusha", "Dar es Salaam", "Dodoma", "Iringa", "Kagera", "Kigoma", "Kilimanjaro", "Lindi", "Manyara", "Mara", "Mbeya", "Morogoro", "Mtwara", "Mwanza", "Pemba North", "Pemba South", "Pwani", "Rukwa", "Ruvuma", "Shinyanga", "Singida", "Tabora", "Tanga", "Zanzibar Central/South", "Zanzibar North", "Zanzibar Urban/West"]
-    },
-    {
-      "country": "Thailand",
-      "states": ["Amnat Charoen", "Ang Thong", "Buriram", "Chachoengsao", "Chai Nat", "Chaiyaphum", "Chanthaburi", "Chiang Mai", "Chiang Rai", "Chon Buri", "Chumphon", "Kalasin", "Kamphaeng Phet", "Kanchanaburi", "Khon Kaen", "Krabi", "Krung Thep Mahanakhon", "Lampang", "Lamphun", "Loei", "Lop Buri", "Mae Hong Son", "Maha Sarakham", "Mukdahan", "Nakhon Nayok", "Nakhon Pathom", "Nakhon Phanom", "Nakhon Ratchasima", "Nakhon Sawan", "Nakhon Si Thammarat", "Nan", "Narathiwat", "Nong Bua Lamphu", "Nong Khai", "Nonthaburi", "Pathum Thani", "Pattani", "Phangnga", "Phatthalung", "Phayao", "Phetchabun", "Phetchaburi", "Phichit", "Phitsanulok", "Phra Nakhon Si Ayutthaya", "Phrae", "Phuket", "Prachin Buri", "Prachuap Khiri Khan", "Ranong", "Ratchaburi", "Rayong", "Roi Et", "Sa Kaeo", "Sakon Nakhon", "Samut Prakan", "Samut Sakhon", "Samut Songkhram", "Sara Buri", "Satun", "Sing Buri", "Sisaket", "Songkhla", "Sukhothai", "Suphan Buri", "Surat Thani", "Surin", "Tak", "Trang", "Trat", "Ubon Ratchathani", "Udon Thani", "Uthai Thani", "Uttaradit", "Yala", "Yasothon"]
-    },
-    {
-      "country": "Togo",
-      "states": ["Kara", "Plateaux", "Savanes", "Centrale", "Maritime"]
-    },
-    {
-      "country": "Tonga",
-      "states": []
-    },
-    {
-      "country": "Trinidad and Tobago",
-      "states": ["Couva", "Diego Martin", "Mayaro", "Penal", "Princes Town", "Sangre Grande", "San Juan", "Siparia", "Tunapuna", "Port-of-Spain", "San Fernando", "Arima", "Point Fortin", "Chaguanas", "Tobago"]
-    },
-    {
-      "country": "Tunisia",
-      "states": ["Ariana (Aryanah)", "Beja (Bajah)", "Ben Arous (Bin 'Arus)", "Bizerte (Banzart)", "Gabes (Qabis)", "Gafsa (Qafsah)", "Jendouba (Jundubah)", "Kairouan (Al Qayrawan)", "Kasserine (Al Qasrayn)", "Kebili (Qibili)", "Kef (Al Kaf)", "Mahdia (Al Mahdiyah)", "Manouba (Manubah)", "Medenine (Madanin)", "Monastir (Al Munastir)", "Nabeul (Nabul)", "Sfax (Safaqis)", "Sidi Bou Zid (Sidi Bu Zayd)", "Siliana (Silyanah)", "Sousse (Susah)", "Tataouine (Tatawin)", "Tozeur (Tawzar)", "Tunis", "Zaghouan (Zaghwan)"]
-    },
-    {
-      "country": "Turkey",
-      "states": ["Adana", "Adiyaman", "Afyonkarahisar", "Agri", "Aksaray", "Amasya", "Ankara", "Antalya", "Ardahan", "Artvin", "Aydin", "Balikesir", "Bartin", "Batman", "Bayburt", "Bilecik", "Bingol", "Bitlis", "Bolu", "Burdur", "Bursa", "Canakkale", "Cankiri", "Corum", "Denizli", "Diyarbakir", "Duzce", "Edirne", "Elazig", "Erzincan", "Erzurum", "Eskisehir", "Gaziantep", "Giresun", "Gumushane", "Hakkari", "Hatay", "Igdir", "Isparta", "Istanbul", "Izmir", "Kahramanmaras", "Karabuk", "Karaman", "Kars", "Kastamonu", "Kayseri", "Kilis", "Kirikkale", "Kirklareli", "Kirsehir", "Kocaeli", "Konya", "Kutahya", "Malatya", "Manisa", "Mardin", "Mersin", "Mugla", "Mus", "Nevsehir", "Nigde", "Ordu", "Osmaniye", "Rize", "Sakarya", "Samsun", "Sanliurfa", "Siirt", "Sinop", "Sirnak", "Sivas", "Tekirdag", "Tokat", "Trabzon", "Tunceli", "Usak", "Van", "Yalova", "Yozgat", "Zonguldak"]
-    },
-    {
-      "country": "Turkmenistan",
-      "states": ["Ahal Welayaty (Ashgabat)", "Balkan Welayaty (Balkanabat)", "Dashoguz Welayaty", "Lebap Welayaty (Turkmenabat)", "Mary Welayaty"]
-    },
-    {
-      "country": "Uganda",
-      "states": ["Adjumani", "Apac", "Arua", "Bugiri", "Bundibugyo", "Bushenyi", "Busia", "Gulu", "Hoima", "Iganga", "Jinja", "Kabale", "Kabarole", "Kaberamaido", "Kalangala", "Kampala", "Kamuli", "Kamwenge", "Kanungu", "Kapchorwa", "Kasese", "Katakwi", "Kayunga", "Kibale", "Kiboga", "Kisoro", "Kitgum", "Kotido", "Kumi", "Kyenjojo", "Lira", "Luwero", "Masaka", "Masindi", "Mayuge", "Mbale", "Mbarara", "Moroto", "Moyo", "Mpigi", "Mubende", "Mukono", "Nakapiripirit", "Nakasongola", "Nebbi", "Ntungamo", "Pader", "Pallisa", "Rakai", "Rukungiri", "Sembabule", "Sironko", "Soroti", "Tororo", "Wakiso", "Yumbe"]
-    },
-    {
-      "country": "Ukraine",
-      "states": ["Cherkasy", "Chernihiv", "Chernivtsi", "Crimea", "Dnipropetrovs'k", "Donets'k", "Ivano-Frankivs'k", "Kharkiv", "Kherson", "Khmel'nyts'kyy", "Kirovohrad", "Kiev", "Kyyiv", "Luhans'k", "L'viv", "Mykolayiv", "Odesa", "Poltava", "Rivne", "Sevastopol'", "Sumy", "Ternopil'", "Vinnytsya", "Volyn'", "Zakarpattya", "Zaporizhzhya", "Zhytomyr"]
-    },
-    {
-      "country": "United Arab Emirates",
-      "states": ["Abu Dhabi", "Ajman", "Al Fujayrah", "Sharjah", "Dubai", "Ra's al Khaymah", "Umm al Qaywayn"]
-    },
-    {
-      "country": "United Kingdom",
-      "states": []
-    },
-    {
-      "country": "United States",
-      "states": ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "District of Columbia", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"]
-    },
-    {
-      "country": "Uruguay",
-      "states": ["Artigas", "Canelones", "Cerro Largo", "Colonia", "Durazno", "Flores", "Florida", "Lavalleja", "Maldonado", "Montevideo", "Paysandu", "Rio Negro", "Rivera", "Rocha", "Salto", "San Jose", "Soriano", "Tacuarembo", "Treinta y Tres"]
-    },
-    {
-      "country": "Uzbekistan",
-      "states": ["Andijon Viloyati", "Buxoro Viloyati", "Farg'ona Viloyati", "Jizzax Viloyati", "Namangan Viloyati", "Navoiy Viloyati", "Qashqadaryo Viloyati", "Qaraqalpog'iston Respublikasi", "Samarqand Viloyati", "Sirdaryo Viloyati", "Surxondaryo Viloyati", "Toshkent Shahri", "Toshkent Viloyati", "Xorazm Viloyati"]
-    },
-    {
-      "country": "Vanuatu",
-      "states": ["Malampa", "Penama", "Sanma", "Shefa", "Tafea", "Torba"]
-    },
-    {
-      "country": "Venezuela",
-      "states": ["Amazonas", "Anzoategui", "Apure", "Aragua", "Barinas", "Bolivar", "Carabobo", "Cojedes", "Delta Amacuro", "Dependencias Federales", "Distrito Federal", "Falcon", "Guarico", "Lara", "Merida", "Miranda", "Monagas", "Nueva Esparta", "Portuguesa", "Sucre", "Tachira", "Trujillo", "Vargas", "Yaracuy", "Zulia"]
-    },
-    {
-      "country": "Vietnam",
-      "states": ["An Giang", "Bac Giang", "Bac Kan", "Bac Lieu", "Bac Ninh", "Ba Ria-Vung Tau", "Ben Tre", "Binh Dinh", "Binh Duong", "Binh Phuoc", "Binh Thuan", "Ca Mau", "Cao Bang", "Dac Lak", "Dac Nong", "Dien Bien", "Dong Nai", "Dong Thap", "Gia Lai", "Ha Giang", "Hai Duong", "Ha Nam", "Ha Tay", "Ha Tinh", "Hau Giang", "Hoa Binh", "Hung Yen", "Khanh Hoa", "Kien Giang", "Kon Tum", "Lai Chau", "Lam Dong", "Lang Son", "Lao Cai", "Long An", "Nam Dinh", "Nghe An", "Ninh Binh", "Ninh Thuan", "Phu Tho", "Phu Yen", "Quang Binh", "Quang Nam", "Quang Ngai", "Quang Ninh", "Quang Tri", "Soc Trang", "Son La", "Tay Ninh", "Thai Binh", "Thai Nguyen", "Thanh Hoa", "Thua Thien-Hue", "Tien Giang", "Tra Vinh", "Tuyen Quang", "Vinh Long", "Vinh Phuc", "Yen Bai", "Can Tho", "Da Nang", "Hai Phong", "Hanoi", "Ho Chi Minh"]
-    },
-    {
-      "country": "Yemen",
-      "states": ["Abyan", "Adan", "Ad Dali'", "Al Bayda'", "Al Hudaydah", "Al Jawf", "Al Mahrah", "Al Mahwit", "Amran", "Dhamar", "Hadramawt", "Hajjah", "Ibb", "Lahij", "Ma'rib", "Sa'dah", "San'a'", "Shabwah", "Ta'izz"]
-    },
-    {
-      "country": "Zambia",
-      "states": ["Central", "Copperbelt", "Eastern", "Luapula", "Lusaka", "Northern", "North-Western", "Southern", "Western"]
-    },
-    {
-      "country": "Zimbabwe",
-      "states": ["Bulawayo", "Harare", "Manicaland", "Mashonaland Central", "Mashonaland East", "Mashonaland West", "Masvingo", "Matabeleland North", "Matabeleland South", "Midlands"]
-    }
-  ]
+  {
+    "country": "Afghanistan",
+    "alpha-2": "AF",
+    "alpha-3": "AFG",
+    "country-code": "004",
+    "iso_3166-2": "ISO 3166-2:AF",
+    "region": "Asia",
+    "sub-region": "Southern Asia",
+    "intermediate-region": "",
+    "region-code": "142",
+    "sub-region-code": "034",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Åland Islands",
+    "alpha-2": "AX",
+    "alpha-3": "ALA",
+    "country-code": "248",
+    "iso_3166-2": "ISO 3166-2:AX",
+    "region": "Europe",
+    "sub-region": "Northern Europe",
+    "intermediate-region": "",
+    "region-code": "150",
+    "sub-region-code": "154",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Albania",
+    "alpha-2": "AL",
+    "alpha-3": "ALB",
+    "country-code": "008",
+    "iso_3166-2": "ISO 3166-2:AL",
+    "region": "Europe",
+    "sub-region": "Southern Europe",
+    "intermediate-region": "",
+    "region-code": "150",
+    "sub-region-code": "039",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Algeria",
+    "alpha-2": "DZ",
+    "alpha-3": "DZA",
+    "country-code": "012",
+    "iso_3166-2": "ISO 3166-2:DZ",
+    "region": "Africa",
+    "sub-region": "Northern Africa",
+    "intermediate-region": "",
+    "region-code": "002",
+    "sub-region-code": "015",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "American Samoa",
+    "alpha-2": "AS",
+    "alpha-3": "ASM",
+    "country-code": "016",
+    "iso_3166-2": "ISO 3166-2:AS",
+    "region": "Oceania",
+    "sub-region": "Polynesia",
+    "intermediate-region": "",
+    "region-code": "009",
+    "sub-region-code": "061",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Andorra",
+    "alpha-2": "AD",
+    "alpha-3": "AND",
+    "country-code": "020",
+    "iso_3166-2": "ISO 3166-2:AD",
+    "region": "Europe",
+    "sub-region": "Southern Europe",
+    "intermediate-region": "",
+    "region-code": "150",
+    "sub-region-code": "039",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Angola",
+    "alpha-2": "AO",
+    "alpha-3": "AGO",
+    "country-code": "024",
+    "iso_3166-2": "ISO 3166-2:AO",
+    "region": "Africa",
+    "sub-region": "Sub-Saharan Africa",
+    "intermediate-region": "Middle Africa",
+    "region-code": "002",
+    "sub-region-code": "202",
+    "intermediate-region-code": "017"
+  },
+  {
+    "country": "Anguilla",
+    "alpha-2": "AI",
+    "alpha-3": "AIA",
+    "country-code": "660",
+    "iso_3166-2": "ISO 3166-2:AI",
+    "region": "Americas",
+    "sub-region": "Latin America and the Caribbean",
+    "intermediate-region": "Caribbean",
+    "region-code": "019",
+    "sub-region-code": "419",
+    "intermediate-region-code": "029"
+  },
+  {
+    "country": "Antarctica",
+    "alpha-2": "AQ",
+    "alpha-3": "ATA",
+    "country-code": "010",
+    "iso_3166-2": "ISO 3166-2:AQ",
+    "region": "",
+    "sub-region": "",
+    "intermediate-region": "",
+    "region-code": "",
+    "sub-region-code": "",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Antigua and Barbuda",
+    "alpha-2": "AG",
+    "alpha-3": "ATG",
+    "country-code": "028",
+    "iso_3166-2": "ISO 3166-2:AG",
+    "region": "Americas",
+    "sub-region": "Latin America and the Caribbean",
+    "intermediate-region": "Caribbean",
+    "region-code": "019",
+    "sub-region-code": "419",
+    "intermediate-region-code": "029"
+  },
+  {
+    "country": "Argentina",
+    "alpha-2": "AR",
+    "alpha-3": "ARG",
+    "country-code": "032",
+    "iso_3166-2": "ISO 3166-2:AR",
+    "region": "Americas",
+    "sub-region": "Latin America and the Caribbean",
+    "intermediate-region": "South America",
+    "region-code": "019",
+    "sub-region-code": "419",
+    "intermediate-region-code": "005"
+  },
+  {
+    "country": "Armenia",
+    "alpha-2": "AM",
+    "alpha-3": "ARM",
+    "country-code": "051",
+    "iso_3166-2": "ISO 3166-2:AM",
+    "region": "Asia",
+    "sub-region": "Western Asia",
+    "intermediate-region": "",
+    "region-code": "142",
+    "sub-region-code": "145",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Aruba",
+    "alpha-2": "AW",
+    "alpha-3": "ABW",
+    "country-code": "533",
+    "iso_3166-2": "ISO 3166-2:AW",
+    "region": "Americas",
+    "sub-region": "Latin America and the Caribbean",
+    "intermediate-region": "Caribbean",
+    "region-code": "019",
+    "sub-region-code": "419",
+    "intermediate-region-code": "029"
+  },
+  {
+    "country": "Australia",
+    "alpha-2": "AU",
+    "alpha-3": "AUS",
+    "country-code": "036",
+    "iso_3166-2": "ISO 3166-2:AU",
+    "region": "Oceania",
+    "sub-region": "Australia and New Zealand",
+    "intermediate-region": "",
+    "region-code": "009",
+    "sub-region-code": "053",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Austria",
+    "alpha-2": "AT",
+    "alpha-3": "AUT",
+    "country-code": "040",
+    "iso_3166-2": "ISO 3166-2:AT",
+    "region": "Europe",
+    "sub-region": "Western Europe",
+    "intermediate-region": "",
+    "region-code": "150",
+    "sub-region-code": "155",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Azerbaijan",
+    "alpha-2": "AZ",
+    "alpha-3": "AZE",
+    "country-code": "031",
+    "iso_3166-2": "ISO 3166-2:AZ",
+    "region": "Asia",
+    "sub-region": "Western Asia",
+    "intermediate-region": "",
+    "region-code": "142",
+    "sub-region-code": "145",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Bahamas",
+    "alpha-2": "BS",
+    "alpha-3": "BHS",
+    "country-code": "044",
+    "iso_3166-2": "ISO 3166-2:BS",
+    "region": "Americas",
+    "sub-region": "Latin America and the Caribbean",
+    "intermediate-region": "Caribbean",
+    "region-code": "019",
+    "sub-region-code": "419",
+    "intermediate-region-code": "029"
+  },
+  {
+    "country": "Bahrain",
+    "alpha-2": "BH",
+    "alpha-3": "BHR",
+    "country-code": "048",
+    "iso_3166-2": "ISO 3166-2:BH",
+    "region": "Asia",
+    "sub-region": "Western Asia",
+    "intermediate-region": "",
+    "region-code": "142",
+    "sub-region-code": "145",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Bangladesh",
+    "alpha-2": "BD",
+    "alpha-3": "BGD",
+    "country-code": "050",
+    "iso_3166-2": "ISO 3166-2:BD",
+    "region": "Asia",
+    "sub-region": "Southern Asia",
+    "intermediate-region": "",
+    "region-code": "142",
+    "sub-region-code": "034",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Barbados",
+    "alpha-2": "BB",
+    "alpha-3": "BRB",
+    "country-code": "052",
+    "iso_3166-2": "ISO 3166-2:BB",
+    "region": "Americas",
+    "sub-region": "Latin America and the Caribbean",
+    "intermediate-region": "Caribbean",
+    "region-code": "019",
+    "sub-region-code": "419",
+    "intermediate-region-code": "029"
+  },
+  {
+    "country": "Belarus",
+    "alpha-2": "BY",
+    "alpha-3": "BLR",
+    "country-code": "112",
+    "iso_3166-2": "ISO 3166-2:BY",
+    "region": "Europe",
+    "sub-region": "Eastern Europe",
+    "intermediate-region": "",
+    "region-code": "150",
+    "sub-region-code": "151",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Belgium",
+    "alpha-2": "BE",
+    "alpha-3": "BEL",
+    "country-code": "056",
+    "iso_3166-2": "ISO 3166-2:BE",
+    "region": "Europe",
+    "sub-region": "Western Europe",
+    "intermediate-region": "",
+    "region-code": "150",
+    "sub-region-code": "155",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Belize",
+    "alpha-2": "BZ",
+    "alpha-3": "BLZ",
+    "country-code": "084",
+    "iso_3166-2": "ISO 3166-2:BZ",
+    "region": "Americas",
+    "sub-region": "Latin America and the Caribbean",
+    "intermediate-region": "Central America",
+    "region-code": "019",
+    "sub-region-code": "419",
+    "intermediate-region-code": "013"
+  },
+  {
+    "country": "Benin",
+    "alpha-2": "BJ",
+    "alpha-3": "BEN",
+    "country-code": "204",
+    "iso_3166-2": "ISO 3166-2:BJ",
+    "region": "Africa",
+    "sub-region": "Sub-Saharan Africa",
+    "intermediate-region": "Western Africa",
+    "region-code": "002",
+    "sub-region-code": "202",
+    "intermediate-region-code": "011"
+  },
+  {
+    "country": "Bermuda",
+    "alpha-2": "BM",
+    "alpha-3": "BMU",
+    "country-code": "060",
+    "iso_3166-2": "ISO 3166-2:BM",
+    "region": "Americas",
+    "sub-region": "Northern America",
+    "intermediate-region": "",
+    "region-code": "019",
+    "sub-region-code": "021",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Bhutan",
+    "alpha-2": "BT",
+    "alpha-3": "BTN",
+    "country-code": "064",
+    "iso_3166-2": "ISO 3166-2:BT",
+    "region": "Asia",
+    "sub-region": "Southern Asia",
+    "intermediate-region": "",
+    "region-code": "142",
+    "sub-region-code": "034",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Bolivia (Plurinational State of)",
+    "alpha-2": "BO",
+    "alpha-3": "BOL",
+    "country-code": "068",
+    "iso_3166-2": "ISO 3166-2:BO",
+    "region": "Americas",
+    "sub-region": "Latin America and the Caribbean",
+    "intermediate-region": "South America",
+    "region-code": "019",
+    "sub-region-code": "419",
+    "intermediate-region-code": "005"
+  },
+  {
+    "country": "Bonaire, Sint Eustatius and Saba",
+    "alpha-2": "BQ",
+    "alpha-3": "BES",
+    "country-code": "535",
+    "iso_3166-2": "ISO 3166-2:BQ",
+    "region": "Americas",
+    "sub-region": "Latin America and the Caribbean",
+    "intermediate-region": "Caribbean",
+    "region-code": "019",
+    "sub-region-code": "419",
+    "intermediate-region-code": "029"
+  },
+  {
+    "country": "Bosnia and Herzegovina",
+    "alpha-2": "BA",
+    "alpha-3": "BIH",
+    "country-code": "070",
+    "iso_3166-2": "ISO 3166-2:BA",
+    "region": "Europe",
+    "sub-region": "Southern Europe",
+    "intermediate-region": "",
+    "region-code": "150",
+    "sub-region-code": "039",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Botswana",
+    "alpha-2": "BW",
+    "alpha-3": "BWA",
+    "country-code": "072",
+    "iso_3166-2": "ISO 3166-2:BW",
+    "region": "Africa",
+    "sub-region": "Sub-Saharan Africa",
+    "intermediate-region": "Southern Africa",
+    "region-code": "002",
+    "sub-region-code": "202",
+    "intermediate-region-code": "018"
+  },
+  {
+    "country": "Bouvet Island",
+    "alpha-2": "BV",
+    "alpha-3": "BVT",
+    "country-code": "074",
+    "iso_3166-2": "ISO 3166-2:BV",
+    "region": "Americas",
+    "sub-region": "Latin America and the Caribbean",
+    "intermediate-region": "South America",
+    "region-code": "019",
+    "sub-region-code": "419",
+    "intermediate-region-code": "005"
+  },
+  {
+    "country": "Brazil",
+    "alpha-2": "BR",
+    "alpha-3": "BRA",
+    "country-code": "076",
+    "iso_3166-2": "ISO 3166-2:BR",
+    "region": "Americas",
+    "sub-region": "Latin America and the Caribbean",
+    "intermediate-region": "South America",
+    "region-code": "019",
+    "sub-region-code": "419",
+    "intermediate-region-code": "005"
+  },
+  {
+    "country": "British Indian Ocean Territory",
+    "alpha-2": "IO",
+    "alpha-3": "IOT",
+    "country-code": "086",
+    "iso_3166-2": "ISO 3166-2:IO",
+    "region": "Africa",
+    "sub-region": "Sub-Saharan Africa",
+    "intermediate-region": "Eastern Africa",
+    "region-code": "002",
+    "sub-region-code": "202",
+    "intermediate-region-code": "014"
+  },
+  {
+    "country": "Brunei Darussalam",
+    "alpha-2": "BN",
+    "alpha-3": "BRN",
+    "country-code": "096",
+    "iso_3166-2": "ISO 3166-2:BN",
+    "region": "Asia",
+    "sub-region": "South-eastern Asia",
+    "intermediate-region": "",
+    "region-code": "142",
+    "sub-region-code": "035",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Bulgaria",
+    "alpha-2": "BG",
+    "alpha-3": "BGR",
+    "country-code": "100",
+    "iso_3166-2": "ISO 3166-2:BG",
+    "region": "Europe",
+    "sub-region": "Eastern Europe",
+    "intermediate-region": "",
+    "region-code": "150",
+    "sub-region-code": "151",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Burkina Faso",
+    "alpha-2": "BF",
+    "alpha-3": "BFA",
+    "country-code": "854",
+    "iso_3166-2": "ISO 3166-2:BF",
+    "region": "Africa",
+    "sub-region": "Sub-Saharan Africa",
+    "intermediate-region": "Western Africa",
+    "region-code": "002",
+    "sub-region-code": "202",
+    "intermediate-region-code": "011"
+  },
+  {
+    "country": "Burundi",
+    "alpha-2": "BI",
+    "alpha-3": "BDI",
+    "country-code": "108",
+    "iso_3166-2": "ISO 3166-2:BI",
+    "region": "Africa",
+    "sub-region": "Sub-Saharan Africa",
+    "intermediate-region": "Eastern Africa",
+    "region-code": "002",
+    "sub-region-code": "202",
+    "intermediate-region-code": "014"
+  },
+  {
+    "country": "Cabo Verde",
+    "alpha-2": "CV",
+    "alpha-3": "CPV",
+    "country-code": "132",
+    "iso_3166-2": "ISO 3166-2:CV",
+    "region": "Africa",
+    "sub-region": "Sub-Saharan Africa",
+    "intermediate-region": "Western Africa",
+    "region-code": "002",
+    "sub-region-code": "202",
+    "intermediate-region-code": "011"
+  },
+  {
+    "country": "Cambodia",
+    "alpha-2": "KH",
+    "alpha-3": "KHM",
+    "country-code": "116",
+    "iso_3166-2": "ISO 3166-2:KH",
+    "region": "Asia",
+    "sub-region": "South-eastern Asia",
+    "intermediate-region": "",
+    "region-code": "142",
+    "sub-region-code": "035",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Cameroon",
+    "alpha-2": "CM",
+    "alpha-3": "CMR",
+    "country-code": "120",
+    "iso_3166-2": "ISO 3166-2:CM",
+    "region": "Africa",
+    "sub-region": "Sub-Saharan Africa",
+    "intermediate-region": "Middle Africa",
+    "region-code": "002",
+    "sub-region-code": "202",
+    "intermediate-region-code": "017"
+  },
+  {
+    "country": "Canada",
+    "alpha-2": "CA",
+    "alpha-3": "CAN",
+    "country-code": "124",
+    "iso_3166-2": "ISO 3166-2:CA",
+    "region": "Americas",
+    "sub-region": "Northern America",
+    "intermediate-region": "",
+    "region-code": "019",
+    "sub-region-code": "021",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Cayman Islands",
+    "alpha-2": "KY",
+    "alpha-3": "CYM",
+    "country-code": "136",
+    "iso_3166-2": "ISO 3166-2:KY",
+    "region": "Americas",
+    "sub-region": "Latin America and the Caribbean",
+    "intermediate-region": "Caribbean",
+    "region-code": "019",
+    "sub-region-code": "419",
+    "intermediate-region-code": "029"
+  },
+  {
+    "country": "Central African Republic",
+    "alpha-2": "CF",
+    "alpha-3": "CAF",
+    "country-code": "140",
+    "iso_3166-2": "ISO 3166-2:CF",
+    "region": "Africa",
+    "sub-region": "Sub-Saharan Africa",
+    "intermediate-region": "Middle Africa",
+    "region-code": "002",
+    "sub-region-code": "202",
+    "intermediate-region-code": "017"
+  },
+  {
+    "country": "Chad",
+    "alpha-2": "TD",
+    "alpha-3": "TCD",
+    "country-code": "148",
+    "iso_3166-2": "ISO 3166-2:TD",
+    "region": "Africa",
+    "sub-region": "Sub-Saharan Africa",
+    "intermediate-region": "Middle Africa",
+    "region-code": "002",
+    "sub-region-code": "202",
+    "intermediate-region-code": "017"
+  },
+  {
+    "country": "Chile",
+    "alpha-2": "CL",
+    "alpha-3": "CHL",
+    "country-code": "152",
+    "iso_3166-2": "ISO 3166-2:CL",
+    "region": "Americas",
+    "sub-region": "Latin America and the Caribbean",
+    "intermediate-region": "South America",
+    "region-code": "019",
+    "sub-region-code": "419",
+    "intermediate-region-code": "005"
+  },
+  {
+    "country": "China",
+    "alpha-2": "CN",
+    "alpha-3": "CHN",
+    "country-code": "156",
+    "iso_3166-2": "ISO 3166-2:CN",
+    "region": "Asia",
+    "sub-region": "Eastern Asia",
+    "intermediate-region": "",
+    "region-code": "142",
+    "sub-region-code": "030",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Christmas Island",
+    "alpha-2": "CX",
+    "alpha-3": "CXR",
+    "country-code": "162",
+    "iso_3166-2": "ISO 3166-2:CX",
+    "region": "Oceania",
+    "sub-region": "Australia and New Zealand",
+    "intermediate-region": "",
+    "region-code": "009",
+    "sub-region-code": "053",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Cocos (Keeling) Islands",
+    "alpha-2": "CC",
+    "alpha-3": "CCK",
+    "country-code": "166",
+    "iso_3166-2": "ISO 3166-2:CC",
+    "region": "Oceania",
+    "sub-region": "Australia and New Zealand",
+    "intermediate-region": "",
+    "region-code": "009",
+    "sub-region-code": "053",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Colombia",
+    "alpha-2": "CO",
+    "alpha-3": "COL",
+    "country-code": "170",
+    "iso_3166-2": "ISO 3166-2:CO",
+    "region": "Americas",
+    "sub-region": "Latin America and the Caribbean",
+    "intermediate-region": "South America",
+    "region-code": "019",
+    "sub-region-code": "419",
+    "intermediate-region-code": "005"
+  },
+  {
+    "country": "Comoros",
+    "alpha-2": "KM",
+    "alpha-3": "COM",
+    "country-code": "174",
+    "iso_3166-2": "ISO 3166-2:KM",
+    "region": "Africa",
+    "sub-region": "Sub-Saharan Africa",
+    "intermediate-region": "Eastern Africa",
+    "region-code": "002",
+    "sub-region-code": "202",
+    "intermediate-region-code": "014"
+  },
+  {
+    "country": "Congo",
+    "alpha-2": "CG",
+    "alpha-3": "COG",
+    "country-code": "178",
+    "iso_3166-2": "ISO 3166-2:CG",
+    "region": "Africa",
+    "sub-region": "Sub-Saharan Africa",
+    "intermediate-region": "Middle Africa",
+    "region-code": "002",
+    "sub-region-code": "202",
+    "intermediate-region-code": "017"
+  },
+  {
+    "country": "Congo, Democratic Republic of the",
+    "alpha-2": "CD",
+    "alpha-3": "COD",
+    "country-code": "180",
+    "iso_3166-2": "ISO 3166-2:CD",
+    "region": "Africa",
+    "sub-region": "Sub-Saharan Africa",
+    "intermediate-region": "Middle Africa",
+    "region-code": "002",
+    "sub-region-code": "202",
+    "intermediate-region-code": "017"
+  },
+  {
+    "country": "Cook Islands",
+    "alpha-2": "CK",
+    "alpha-3": "COK",
+    "country-code": "184",
+    "iso_3166-2": "ISO 3166-2:CK",
+    "region": "Oceania",
+    "sub-region": "Polynesia",
+    "intermediate-region": "",
+    "region-code": "009",
+    "sub-region-code": "061",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Costa Rica",
+    "alpha-2": "CR",
+    "alpha-3": "CRI",
+    "country-code": "188",
+    "iso_3166-2": "ISO 3166-2:CR",
+    "region": "Americas",
+    "sub-region": "Latin America and the Caribbean",
+    "intermediate-region": "Central America",
+    "region-code": "019",
+    "sub-region-code": "419",
+    "intermediate-region-code": "013"
+  },
+  {
+    "country": "Côte d'Ivoire",
+    "alpha-2": "CI",
+    "alpha-3": "CIV",
+    "country-code": "384",
+    "iso_3166-2": "ISO 3166-2:CI",
+    "region": "Africa",
+    "sub-region": "Sub-Saharan Africa",
+    "intermediate-region": "Western Africa",
+    "region-code": "002",
+    "sub-region-code": "202",
+    "intermediate-region-code": "011"
+  },
+  {
+    "country": "Croatia",
+    "alpha-2": "HR",
+    "alpha-3": "HRV",
+    "country-code": "191",
+    "iso_3166-2": "ISO 3166-2:HR",
+    "region": "Europe",
+    "sub-region": "Southern Europe",
+    "intermediate-region": "",
+    "region-code": "150",
+    "sub-region-code": "039",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Cuba",
+    "alpha-2": "CU",
+    "alpha-3": "CUB",
+    "country-code": "192",
+    "iso_3166-2": "ISO 3166-2:CU",
+    "region": "Americas",
+    "sub-region": "Latin America and the Caribbean",
+    "intermediate-region": "Caribbean",
+    "region-code": "019",
+    "sub-region-code": "419",
+    "intermediate-region-code": "029"
+  },
+  {
+    "country": "Curaçao",
+    "alpha-2": "CW",
+    "alpha-3": "CUW",
+    "country-code": "531",
+    "iso_3166-2": "ISO 3166-2:CW",
+    "region": "Americas",
+    "sub-region": "Latin America and the Caribbean",
+    "intermediate-region": "Caribbean",
+    "region-code": "019",
+    "sub-region-code": "419",
+    "intermediate-region-code": "029"
+  },
+  {
+    "country": "Cyprus",
+    "alpha-2": "CY",
+    "alpha-3": "CYP",
+    "country-code": "196",
+    "iso_3166-2": "ISO 3166-2:CY",
+    "region": "Asia",
+    "sub-region": "Western Asia",
+    "intermediate-region": "",
+    "region-code": "142",
+    "sub-region-code": "145",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Czechia",
+    "alpha-2": "CZ",
+    "alpha-3": "CZE",
+    "country-code": "203",
+    "iso_3166-2": "ISO 3166-2:CZ",
+    "region": "Europe",
+    "sub-region": "Eastern Europe",
+    "intermediate-region": "",
+    "region-code": "150",
+    "sub-region-code": "151",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Denmark",
+    "alpha-2": "DK",
+    "alpha-3": "DNK",
+    "country-code": "208",
+    "iso_3166-2": "ISO 3166-2:DK",
+    "region": "Europe",
+    "sub-region": "Northern Europe",
+    "intermediate-region": "",
+    "region-code": "150",
+    "sub-region-code": "154",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Djibouti",
+    "alpha-2": "DJ",
+    "alpha-3": "DJI",
+    "country-code": "262",
+    "iso_3166-2": "ISO 3166-2:DJ",
+    "region": "Africa",
+    "sub-region": "Sub-Saharan Africa",
+    "intermediate-region": "Eastern Africa",
+    "region-code": "002",
+    "sub-region-code": "202",
+    "intermediate-region-code": "014"
+  },
+  {
+    "country": "Dominica",
+    "alpha-2": "DM",
+    "alpha-3": "DMA",
+    "country-code": "212",
+    "iso_3166-2": "ISO 3166-2:DM",
+    "region": "Americas",
+    "sub-region": "Latin America and the Caribbean",
+    "intermediate-region": "Caribbean",
+    "region-code": "019",
+    "sub-region-code": "419",
+    "intermediate-region-code": "029"
+  },
+  {
+    "country": "Dominican Republic",
+    "alpha-2": "DO",
+    "alpha-3": "DOM",
+    "country-code": "214",
+    "iso_3166-2": "ISO 3166-2:DO",
+    "region": "Americas",
+    "sub-region": "Latin America and the Caribbean",
+    "intermediate-region": "Caribbean",
+    "region-code": "019",
+    "sub-region-code": "419",
+    "intermediate-region-code": "029"
+  },
+  {
+    "country": "Ecuador",
+    "alpha-2": "EC",
+    "alpha-3": "ECU",
+    "country-code": "218",
+    "iso_3166-2": "ISO 3166-2:EC",
+    "region": "Americas",
+    "sub-region": "Latin America and the Caribbean",
+    "intermediate-region": "South America",
+    "region-code": "019",
+    "sub-region-code": "419",
+    "intermediate-region-code": "005"
+  },
+  {
+    "country": "Egypt",
+    "alpha-2": "EG",
+    "alpha-3": "EGY",
+    "country-code": "818",
+    "iso_3166-2": "ISO 3166-2:EG",
+    "region": "Africa",
+    "sub-region": "Northern Africa",
+    "intermediate-region": "",
+    "region-code": "002",
+    "sub-region-code": "015",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "El Salvador",
+    "alpha-2": "SV",
+    "alpha-3": "SLV",
+    "country-code": "222",
+    "iso_3166-2": "ISO 3166-2:SV",
+    "region": "Americas",
+    "sub-region": "Latin America and the Caribbean",
+    "intermediate-region": "Central America",
+    "region-code": "019",
+    "sub-region-code": "419",
+    "intermediate-region-code": "013"
+  },
+  {
+    "country": "Equatorial Guinea",
+    "alpha-2": "GQ",
+    "alpha-3": "GNQ",
+    "country-code": "226",
+    "iso_3166-2": "ISO 3166-2:GQ",
+    "region": "Africa",
+    "sub-region": "Sub-Saharan Africa",
+    "intermediate-region": "Middle Africa",
+    "region-code": "002",
+    "sub-region-code": "202",
+    "intermediate-region-code": "017"
+  },
+  {
+    "country": "Eritrea",
+    "alpha-2": "ER",
+    "alpha-3": "ERI",
+    "country-code": "232",
+    "iso_3166-2": "ISO 3166-2:ER",
+    "region": "Africa",
+    "sub-region": "Sub-Saharan Africa",
+    "intermediate-region": "Eastern Africa",
+    "region-code": "002",
+    "sub-region-code": "202",
+    "intermediate-region-code": "014"
+  },
+  {
+    "country": "Estonia",
+    "alpha-2": "EE",
+    "alpha-3": "EST",
+    "country-code": "233",
+    "iso_3166-2": "ISO 3166-2:EE",
+    "region": "Europe",
+    "sub-region": "Northern Europe",
+    "intermediate-region": "",
+    "region-code": "150",
+    "sub-region-code": "154",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Eswatini",
+    "alpha-2": "SZ",
+    "alpha-3": "SWZ",
+    "country-code": "748",
+    "iso_3166-2": "ISO 3166-2:SZ",
+    "region": "Africa",
+    "sub-region": "Sub-Saharan Africa",
+    "intermediate-region": "Southern Africa",
+    "region-code": "002",
+    "sub-region-code": "202",
+    "intermediate-region-code": "018"
+  },
+  {
+    "country": "Ethiopia",
+    "alpha-2": "ET",
+    "alpha-3": "ETH",
+    "country-code": "231",
+    "iso_3166-2": "ISO 3166-2:ET",
+    "region": "Africa",
+    "sub-region": "Sub-Saharan Africa",
+    "intermediate-region": "Eastern Africa",
+    "region-code": "002",
+    "sub-region-code": "202",
+    "intermediate-region-code": "014"
+  },
+  {
+    "country": "Falkland Islands (Malvinas)",
+    "alpha-2": "FK",
+    "alpha-3": "FLK",
+    "country-code": "238",
+    "iso_3166-2": "ISO 3166-2:FK",
+    "region": "Americas",
+    "sub-region": "Latin America and the Caribbean",
+    "intermediate-region": "South America",
+    "region-code": "019",
+    "sub-region-code": "419",
+    "intermediate-region-code": "005"
+  },
+  {
+    "country": "Faroe Islands",
+    "alpha-2": "FO",
+    "alpha-3": "FRO",
+    "country-code": "234",
+    "iso_3166-2": "ISO 3166-2:FO",
+    "region": "Europe",
+    "sub-region": "Northern Europe",
+    "intermediate-region": "",
+    "region-code": "150",
+    "sub-region-code": "154",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Fiji",
+    "alpha-2": "FJ",
+    "alpha-3": "FJI",
+    "country-code": "242",
+    "iso_3166-2": "ISO 3166-2:FJ",
+    "region": "Oceania",
+    "sub-region": "Melanesia",
+    "intermediate-region": "",
+    "region-code": "009",
+    "sub-region-code": "054",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Finland",
+    "alpha-2": "FI",
+    "alpha-3": "FIN",
+    "country-code": "246",
+    "iso_3166-2": "ISO 3166-2:FI",
+    "region": "Europe",
+    "sub-region": "Northern Europe",
+    "intermediate-region": "",
+    "region-code": "150",
+    "sub-region-code": "154",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "France",
+    "alpha-2": "FR",
+    "alpha-3": "FRA",
+    "country-code": "250",
+    "iso_3166-2": "ISO 3166-2:FR",
+    "region": "Europe",
+    "sub-region": "Western Europe",
+    "intermediate-region": "",
+    "region-code": "150",
+    "sub-region-code": "155",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "French Guiana",
+    "alpha-2": "GF",
+    "alpha-3": "GUF",
+    "country-code": "254",
+    "iso_3166-2": "ISO 3166-2:GF",
+    "region": "Americas",
+    "sub-region": "Latin America and the Caribbean",
+    "intermediate-region": "South America",
+    "region-code": "019",
+    "sub-region-code": "419",
+    "intermediate-region-code": "005"
+  },
+  {
+    "country": "French Polynesia",
+    "alpha-2": "PF",
+    "alpha-3": "PYF",
+    "country-code": "258",
+    "iso_3166-2": "ISO 3166-2:PF",
+    "region": "Oceania",
+    "sub-region": "Polynesia",
+    "intermediate-region": "",
+    "region-code": "009",
+    "sub-region-code": "061",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "French Southern Territories",
+    "alpha-2": "TF",
+    "alpha-3": "ATF",
+    "country-code": "260",
+    "iso_3166-2": "ISO 3166-2:TF",
+    "region": "Africa",
+    "sub-region": "Sub-Saharan Africa",
+    "intermediate-region": "Eastern Africa",
+    "region-code": "002",
+    "sub-region-code": "202",
+    "intermediate-region-code": "014"
+  },
+  {
+    "country": "Gabon",
+    "alpha-2": "GA",
+    "alpha-3": "GAB",
+    "country-code": "266",
+    "iso_3166-2": "ISO 3166-2:GA",
+    "region": "Africa",
+    "sub-region": "Sub-Saharan Africa",
+    "intermediate-region": "Middle Africa",
+    "region-code": "002",
+    "sub-region-code": "202",
+    "intermediate-region-code": "017"
+  },
+  {
+    "country": "Gambia",
+    "alpha-2": "GM",
+    "alpha-3": "GMB",
+    "country-code": "270",
+    "iso_3166-2": "ISO 3166-2:GM",
+    "region": "Africa",
+    "sub-region": "Sub-Saharan Africa",
+    "intermediate-region": "Western Africa",
+    "region-code": "002",
+    "sub-region-code": "202",
+    "intermediate-region-code": "011"
+  },
+  {
+    "country": "Georgia",
+    "alpha-2": "GE",
+    "alpha-3": "GEO",
+    "country-code": "268",
+    "iso_3166-2": "ISO 3166-2:GE",
+    "region": "Asia",
+    "sub-region": "Western Asia",
+    "intermediate-region": "",
+    "region-code": "142",
+    "sub-region-code": "145",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Germany",
+    "alpha-2": "DE",
+    "alpha-3": "DEU",
+    "country-code": "276",
+    "iso_3166-2": "ISO 3166-2:DE",
+    "region": "Europe",
+    "sub-region": "Western Europe",
+    "intermediate-region": "",
+    "region-code": "150",
+    "sub-region-code": "155",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Ghana",
+    "alpha-2": "GH",
+    "alpha-3": "GHA",
+    "country-code": "288",
+    "iso_3166-2": "ISO 3166-2:GH",
+    "region": "Africa",
+    "sub-region": "Sub-Saharan Africa",
+    "intermediate-region": "Western Africa",
+    "region-code": "002",
+    "sub-region-code": "202",
+    "intermediate-region-code": "011"
+  },
+  {
+    "country": "Gibraltar",
+    "alpha-2": "GI",
+    "alpha-3": "GIB",
+    "country-code": "292",
+    "iso_3166-2": "ISO 3166-2:GI",
+    "region": "Europe",
+    "sub-region": "Southern Europe",
+    "intermediate-region": "",
+    "region-code": "150",
+    "sub-region-code": "039",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Greece",
+    "alpha-2": "GR",
+    "alpha-3": "GRC",
+    "country-code": "300",
+    "iso_3166-2": "ISO 3166-2:GR",
+    "region": "Europe",
+    "sub-region": "Southern Europe",
+    "intermediate-region": "",
+    "region-code": "150",
+    "sub-region-code": "039",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Greenland",
+    "alpha-2": "GL",
+    "alpha-3": "GRL",
+    "country-code": "304",
+    "iso_3166-2": "ISO 3166-2:GL",
+    "region": "Americas",
+    "sub-region": "Northern America",
+    "intermediate-region": "",
+    "region-code": "019",
+    "sub-region-code": "021",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Grenada",
+    "alpha-2": "GD",
+    "alpha-3": "GRD",
+    "country-code": "308",
+    "iso_3166-2": "ISO 3166-2:GD",
+    "region": "Americas",
+    "sub-region": "Latin America and the Caribbean",
+    "intermediate-region": "Caribbean",
+    "region-code": "019",
+    "sub-region-code": "419",
+    "intermediate-region-code": "029"
+  },
+  {
+    "country": "Guadeloupe",
+    "alpha-2": "GP",
+    "alpha-3": "GLP",
+    "country-code": "312",
+    "iso_3166-2": "ISO 3166-2:GP",
+    "region": "Americas",
+    "sub-region": "Latin America and the Caribbean",
+    "intermediate-region": "Caribbean",
+    "region-code": "019",
+    "sub-region-code": "419",
+    "intermediate-region-code": "029"
+  },
+  {
+    "country": "Guam",
+    "alpha-2": "GU",
+    "alpha-3": "GUM",
+    "country-code": "316",
+    "iso_3166-2": "ISO 3166-2:GU",
+    "region": "Oceania",
+    "sub-region": "Micronesia",
+    "intermediate-region": "",
+    "region-code": "009",
+    "sub-region-code": "057",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Guatemala",
+    "alpha-2": "GT",
+    "alpha-3": "GTM",
+    "country-code": "320",
+    "iso_3166-2": "ISO 3166-2:GT",
+    "region": "Americas",
+    "sub-region": "Latin America and the Caribbean",
+    "intermediate-region": "Central America",
+    "region-code": "019",
+    "sub-region-code": "419",
+    "intermediate-region-code": "013"
+  },
+  {
+    "country": "Guernsey",
+    "alpha-2": "GG",
+    "alpha-3": "GGY",
+    "country-code": "831",
+    "iso_3166-2": "ISO 3166-2:GG",
+    "region": "Europe",
+    "sub-region": "Northern Europe",
+    "intermediate-region": "Channel Islands",
+    "region-code": "150",
+    "sub-region-code": "154",
+    "intermediate-region-code": "830"
+  },
+  {
+    "country": "Guinea",
+    "alpha-2": "GN",
+    "alpha-3": "GIN",
+    "country-code": "324",
+    "iso_3166-2": "ISO 3166-2:GN",
+    "region": "Africa",
+    "sub-region": "Sub-Saharan Africa",
+    "intermediate-region": "Western Africa",
+    "region-code": "002",
+    "sub-region-code": "202",
+    "intermediate-region-code": "011"
+  },
+  {
+    "country": "Guinea-Bissau",
+    "alpha-2": "GW",
+    "alpha-3": "GNB",
+    "country-code": "624",
+    "iso_3166-2": "ISO 3166-2:GW",
+    "region": "Africa",
+    "sub-region": "Sub-Saharan Africa",
+    "intermediate-region": "Western Africa",
+    "region-code": "002",
+    "sub-region-code": "202",
+    "intermediate-region-code": "011"
+  },
+  {
+    "country": "Guyana",
+    "alpha-2": "GY",
+    "alpha-3": "GUY",
+    "country-code": "328",
+    "iso_3166-2": "ISO 3166-2:GY",
+    "region": "Americas",
+    "sub-region": "Latin America and the Caribbean",
+    "intermediate-region": "South America",
+    "region-code": "019",
+    "sub-region-code": "419",
+    "intermediate-region-code": "005"
+  },
+  {
+    "country": "Haiti",
+    "alpha-2": "HT",
+    "alpha-3": "HTI",
+    "country-code": "332",
+    "iso_3166-2": "ISO 3166-2:HT",
+    "region": "Americas",
+    "sub-region": "Latin America and the Caribbean",
+    "intermediate-region": "Caribbean",
+    "region-code": "019",
+    "sub-region-code": "419",
+    "intermediate-region-code": "029"
+  },
+  {
+    "country": "Heard Island and McDonald Islands",
+    "alpha-2": "HM",
+    "alpha-3": "HMD",
+    "country-code": "334",
+    "iso_3166-2": "ISO 3166-2:HM",
+    "region": "Oceania",
+    "sub-region": "Australia and New Zealand",
+    "intermediate-region": "",
+    "region-code": "009",
+    "sub-region-code": "053",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Holy See",
+    "alpha-2": "VA",
+    "alpha-3": "VAT",
+    "country-code": "336",
+    "iso_3166-2": "ISO 3166-2:VA",
+    "region": "Europe",
+    "sub-region": "Southern Europe",
+    "intermediate-region": "",
+    "region-code": "150",
+    "sub-region-code": "039",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Honduras",
+    "alpha-2": "HN",
+    "alpha-3": "HND",
+    "country-code": "340",
+    "iso_3166-2": "ISO 3166-2:HN",
+    "region": "Americas",
+    "sub-region": "Latin America and the Caribbean",
+    "intermediate-region": "Central America",
+    "region-code": "019",
+    "sub-region-code": "419",
+    "intermediate-region-code": "013"
+  },
+  {
+    "country": "Hong Kong",
+    "alpha-2": "HK",
+    "alpha-3": "HKG",
+    "country-code": "344",
+    "iso_3166-2": "ISO 3166-2:HK",
+    "region": "Asia",
+    "sub-region": "Eastern Asia",
+    "intermediate-region": "",
+    "region-code": "142",
+    "sub-region-code": "030",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Hungary",
+    "alpha-2": "HU",
+    "alpha-3": "HUN",
+    "country-code": "348",
+    "iso_3166-2": "ISO 3166-2:HU",
+    "region": "Europe",
+    "sub-region": "Eastern Europe",
+    "intermediate-region": "",
+    "region-code": "150",
+    "sub-region-code": "151",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Iceland",
+    "alpha-2": "IS",
+    "alpha-3": "ISL",
+    "country-code": "352",
+    "iso_3166-2": "ISO 3166-2:IS",
+    "region": "Europe",
+    "sub-region": "Northern Europe",
+    "intermediate-region": "",
+    "region-code": "150",
+    "sub-region-code": "154",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "India",
+    "alpha-2": "IN",
+    "alpha-3": "IND",
+    "country-code": "356",
+    "iso_3166-2": "ISO 3166-2:IN",
+    "region": "Asia",
+    "sub-region": "Southern Asia",
+    "intermediate-region": "",
+    "region-code": "142",
+    "sub-region-code": "034",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Indonesia",
+    "alpha-2": "ID",
+    "alpha-3": "IDN",
+    "country-code": "360",
+    "iso_3166-2": "ISO 3166-2:ID",
+    "region": "Asia",
+    "sub-region": "South-eastern Asia",
+    "intermediate-region": "",
+    "region-code": "142",
+    "sub-region-code": "035",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Iran",
+    "alpha-2": "IR",
+    "alpha-3": "IRN",
+    "country-code": "364",
+    "iso_3166-2": "ISO 3166-2:IR",
+    "region": "Asia",
+    "sub-region": "Southern Asia",
+    "intermediate-region": "",
+    "region-code": "142",
+    "sub-region-code": "034",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Iraq",
+    "alpha-2": "IQ",
+    "alpha-3": "IRQ",
+    "country-code": "368",
+    "iso_3166-2": "ISO 3166-2:IQ",
+    "region": "Asia",
+    "sub-region": "Western Asia",
+    "intermediate-region": "",
+    "region-code": "142",
+    "sub-region-code": "145",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Ireland",
+    "alpha-2": "IE",
+    "alpha-3": "IRL",
+    "country-code": "372",
+    "iso_3166-2": "ISO 3166-2:IE",
+    "region": "Europe",
+    "sub-region": "Northern Europe",
+    "intermediate-region": "",
+    "region-code": "150",
+    "sub-region-code": "154",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Isle of Man",
+    "alpha-2": "IM",
+    "alpha-3": "IMN",
+    "country-code": "833",
+    "iso_3166-2": "ISO 3166-2:IM",
+    "region": "Europe",
+    "sub-region": "Northern Europe",
+    "intermediate-region": "",
+    "region-code": "150",
+    "sub-region-code": "154",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Israel",
+    "alpha-2": "IL",
+    "alpha-3": "ISR",
+    "country-code": "376",
+    "iso_3166-2": "ISO 3166-2:IL",
+    "region": "Asia",
+    "sub-region": "Western Asia",
+    "intermediate-region": "",
+    "region-code": "142",
+    "sub-region-code": "145",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Italy",
+    "alpha-2": "IT",
+    "alpha-3": "ITA",
+    "country-code": "380",
+    "iso_3166-2": "ISO 3166-2:IT",
+    "region": "Europe",
+    "sub-region": "Southern Europe",
+    "intermediate-region": "",
+    "region-code": "150",
+    "sub-region-code": "039",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Jamaica",
+    "alpha-2": "JM",
+    "alpha-3": "JAM",
+    "country-code": "388",
+    "iso_3166-2": "ISO 3166-2:JM",
+    "region": "Americas",
+    "sub-region": "Latin America and the Caribbean",
+    "intermediate-region": "Caribbean",
+    "region-code": "019",
+    "sub-region-code": "419",
+    "intermediate-region-code": "029"
+  },
+  {
+    "country": "Japan",
+    "alpha-2": "JP",
+    "alpha-3": "JPN",
+    "country-code": "392",
+    "iso_3166-2": "ISO 3166-2:JP",
+    "region": "Asia",
+    "sub-region": "Eastern Asia",
+    "intermediate-region": "",
+    "region-code": "142",
+    "sub-region-code": "030",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Jersey",
+    "alpha-2": "JE",
+    "alpha-3": "JEY",
+    "country-code": "832",
+    "iso_3166-2": "ISO 3166-2:JE",
+    "region": "Europe",
+    "sub-region": "Northern Europe",
+    "intermediate-region": "Channel Islands",
+    "region-code": "150",
+    "sub-region-code": "154",
+    "intermediate-region-code": "830"
+  },
+  {
+    "country": "Jordan",
+    "alpha-2": "JO",
+    "alpha-3": "JOR",
+    "country-code": "400",
+    "iso_3166-2": "ISO 3166-2:JO",
+    "region": "Asia",
+    "sub-region": "Western Asia",
+    "intermediate-region": "",
+    "region-code": "142",
+    "sub-region-code": "145",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Kazakhstan",
+    "alpha-2": "KZ",
+    "alpha-3": "KAZ",
+    "country-code": "398",
+    "iso_3166-2": "ISO 3166-2:KZ",
+    "region": "Asia",
+    "sub-region": "Central Asia",
+    "intermediate-region": "",
+    "region-code": "142",
+    "sub-region-code": "143",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Kenya",
+    "alpha-2": "KE",
+    "alpha-3": "KEN",
+    "country-code": "404",
+    "iso_3166-2": "ISO 3166-2:KE",
+    "region": "Africa",
+    "sub-region": "Sub-Saharan Africa",
+    "intermediate-region": "Eastern Africa",
+    "region-code": "002",
+    "sub-region-code": "202",
+    "intermediate-region-code": "014"
+  },
+  {
+    "country": "Kiribati",
+    "alpha-2": "KI",
+    "alpha-3": "KIR",
+    "country-code": "296",
+    "iso_3166-2": "ISO 3166-2:KI",
+    "region": "Oceania",
+    "sub-region": "Micronesia",
+    "intermediate-region": "",
+    "region-code": "009",
+    "sub-region-code": "057",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Korea",
+    "alpha-2": "KP",
+    "alpha-3": "PRK",
+    "country-code": "408",
+    "iso_3166-2": "ISO 3166-2:KP",
+    "region": "Asia",
+    "sub-region": "Eastern Asia",
+    "intermediate-region": "",
+    "region-code": "142",
+    "sub-region-code": "030",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Korea, Republic of",
+    "alpha-2": "KR",
+    "alpha-3": "KOR",
+    "country-code": "410",
+    "iso_3166-2": "ISO 3166-2:KR",
+    "region": "Asia",
+    "sub-region": "Eastern Asia",
+    "intermediate-region": "",
+    "region-code": "142",
+    "sub-region-code": "030",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Kuwait",
+    "alpha-2": "KW",
+    "alpha-3": "KWT",
+    "country-code": "414",
+    "iso_3166-2": "ISO 3166-2:KW",
+    "region": "Asia",
+    "sub-region": "Western Asia",
+    "intermediate-region": "",
+    "region-code": "142",
+    "sub-region-code": "145",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Kyrgyzstan",
+    "alpha-2": "KG",
+    "alpha-3": "KGZ",
+    "country-code": "417",
+    "iso_3166-2": "ISO 3166-2:KG",
+    "region": "Asia",
+    "sub-region": "Central Asia",
+    "intermediate-region": "",
+    "region-code": "142",
+    "sub-region-code": "143",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Lao People's Democratic Republic",
+    "alpha-2": "LA",
+    "alpha-3": "LAO",
+    "country-code": "418",
+    "iso_3166-2": "ISO 3166-2:LA",
+    "region": "Asia",
+    "sub-region": "South-eastern Asia",
+    "intermediate-region": "",
+    "region-code": "142",
+    "sub-region-code": "035",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Latvia",
+    "alpha-2": "LV",
+    "alpha-3": "LVA",
+    "country-code": "428",
+    "iso_3166-2": "ISO 3166-2:LV",
+    "region": "Europe",
+    "sub-region": "Northern Europe",
+    "intermediate-region": "",
+    "region-code": "150",
+    "sub-region-code": "154",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Lebanon",
+    "alpha-2": "LB",
+    "alpha-3": "LBN",
+    "country-code": "422",
+    "iso_3166-2": "ISO 3166-2:LB",
+    "region": "Asia",
+    "sub-region": "Western Asia",
+    "intermediate-region": "",
+    "region-code": "142",
+    "sub-region-code": "145",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Lesotho",
+    "alpha-2": "LS",
+    "alpha-3": "LSO",
+    "country-code": "426",
+    "iso_3166-2": "ISO 3166-2:LS",
+    "region": "Africa",
+    "sub-region": "Sub-Saharan Africa",
+    "intermediate-region": "Southern Africa",
+    "region-code": "002",
+    "sub-region-code": "202",
+    "intermediate-region-code": "018"
+  },
+  {
+    "country": "Liberia",
+    "alpha-2": "LR",
+    "alpha-3": "LBR",
+    "country-code": "430",
+    "iso_3166-2": "ISO 3166-2:LR",
+    "region": "Africa",
+    "sub-region": "Sub-Saharan Africa",
+    "intermediate-region": "Western Africa",
+    "region-code": "002",
+    "sub-region-code": "202",
+    "intermediate-region-code": "011"
+  },
+  {
+    "country": "Libya",
+    "alpha-2": "LY",
+    "alpha-3": "LBY",
+    "country-code": "434",
+    "iso_3166-2": "ISO 3166-2:LY",
+    "region": "Africa",
+    "sub-region": "Northern Africa",
+    "intermediate-region": "",
+    "region-code": "002",
+    "sub-region-code": "015",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Liechtenstein",
+    "alpha-2": "LI",
+    "alpha-3": "LIE",
+    "country-code": "438",
+    "iso_3166-2": "ISO 3166-2:LI",
+    "region": "Europe",
+    "sub-region": "Western Europe",
+    "intermediate-region": "",
+    "region-code": "150",
+    "sub-region-code": "155",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Lithuania",
+    "alpha-2": "LT",
+    "alpha-3": "LTU",
+    "country-code": "440",
+    "iso_3166-2": "ISO 3166-2:LT",
+    "region": "Europe",
+    "sub-region": "Northern Europe",
+    "intermediate-region": "",
+    "region-code": "150",
+    "sub-region-code": "154",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Luxembourg",
+    "alpha-2": "LU",
+    "alpha-3": "LUX",
+    "country-code": "442",
+    "iso_3166-2": "ISO 3166-2:LU",
+    "region": "Europe",
+    "sub-region": "Western Europe",
+    "intermediate-region": "",
+    "region-code": "150",
+    "sub-region-code": "155",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Macao",
+    "alpha-2": "MO",
+    "alpha-3": "MAC",
+    "country-code": "446",
+    "iso_3166-2": "ISO 3166-2:MO",
+    "region": "Asia",
+    "sub-region": "Eastern Asia",
+    "intermediate-region": "",
+    "region-code": "142",
+    "sub-region-code": "030",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Madagascar",
+    "alpha-2": "MG",
+    "alpha-3": "MDG",
+    "country-code": "450",
+    "iso_3166-2": "ISO 3166-2:MG",
+    "region": "Africa",
+    "sub-region": "Sub-Saharan Africa",
+    "intermediate-region": "Eastern Africa",
+    "region-code": "002",
+    "sub-region-code": "202",
+    "intermediate-region-code": "014"
+  },
+  {
+    "country": "Malawi",
+    "alpha-2": "MW",
+    "alpha-3": "MWI",
+    "country-code": "454",
+    "iso_3166-2": "ISO 3166-2:MW",
+    "region": "Africa",
+    "sub-region": "Sub-Saharan Africa",
+    "intermediate-region": "Eastern Africa",
+    "region-code": "002",
+    "sub-region-code": "202",
+    "intermediate-region-code": "014"
+  },
+  {
+    "country": "Malaysia",
+    "alpha-2": "MY",
+    "alpha-3": "MYS",
+    "country-code": "458",
+    "iso_3166-2": "ISO 3166-2:MY",
+    "region": "Asia",
+    "sub-region": "South-eastern Asia",
+    "intermediate-region": "",
+    "region-code": "142",
+    "sub-region-code": "035",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Maldives",
+    "alpha-2": "MV",
+    "alpha-3": "MDV",
+    "country-code": "462",
+    "iso_3166-2": "ISO 3166-2:MV",
+    "region": "Asia",
+    "sub-region": "Southern Asia",
+    "intermediate-region": "",
+    "region-code": "142",
+    "sub-region-code": "034",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Mali",
+    "alpha-2": "ML",
+    "alpha-3": "MLI",
+    "country-code": "466",
+    "iso_3166-2": "ISO 3166-2:ML",
+    "region": "Africa",
+    "sub-region": "Sub-Saharan Africa",
+    "intermediate-region": "Western Africa",
+    "region-code": "002",
+    "sub-region-code": "202",
+    "intermediate-region-code": "011"
+  },
+  {
+    "country": "Malta",
+    "alpha-2": "MT",
+    "alpha-3": "MLT",
+    "country-code": "470",
+    "iso_3166-2": "ISO 3166-2:MT",
+    "region": "Europe",
+    "sub-region": "Southern Europe",
+    "intermediate-region": "",
+    "region-code": "150",
+    "sub-region-code": "039",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Marshall Islands",
+    "alpha-2": "MH",
+    "alpha-3": "MHL",
+    "country-code": "584",
+    "iso_3166-2": "ISO 3166-2:MH",
+    "region": "Oceania",
+    "sub-region": "Micronesia",
+    "intermediate-region": "",
+    "region-code": "009",
+    "sub-region-code": "057",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Martinique",
+    "alpha-2": "MQ",
+    "alpha-3": "MTQ",
+    "country-code": "474",
+    "iso_3166-2": "ISO 3166-2:MQ",
+    "region": "Americas",
+    "sub-region": "Latin America and the Caribbean",
+    "intermediate-region": "Caribbean",
+    "region-code": "019",
+    "sub-region-code": "419",
+    "intermediate-region-code": "029"
+  },
+  {
+    "country": "Mauritania",
+    "alpha-2": "MR",
+    "alpha-3": "MRT",
+    "country-code": "478",
+    "iso_3166-2": "ISO 3166-2:MR",
+    "region": "Africa",
+    "sub-region": "Sub-Saharan Africa",
+    "intermediate-region": "Western Africa",
+    "region-code": "002",
+    "sub-region-code": "202",
+    "intermediate-region-code": "011"
+  },
+  {
+    "country": "Mauritius",
+    "alpha-2": "MU",
+    "alpha-3": "MUS",
+    "country-code": "480",
+    "iso_3166-2": "ISO 3166-2:MU",
+    "region": "Africa",
+    "sub-region": "Sub-Saharan Africa",
+    "intermediate-region": "Eastern Africa",
+    "region-code": "002",
+    "sub-region-code": "202",
+    "intermediate-region-code": "014"
+  },
+  {
+    "country": "Mayotte",
+    "alpha-2": "YT",
+    "alpha-3": "MYT",
+    "country-code": "175",
+    "iso_3166-2": "ISO 3166-2:YT",
+    "region": "Africa",
+    "sub-region": "Sub-Saharan Africa",
+    "intermediate-region": "Eastern Africa",
+    "region-code": "002",
+    "sub-region-code": "202",
+    "intermediate-region-code": "014"
+  },
+  {
+    "country": "Mexico",
+    "alpha-2": "MX",
+    "alpha-3": "MEX",
+    "country-code": "484",
+    "iso_3166-2": "ISO 3166-2:MX",
+    "region": "Americas",
+    "sub-region": "Latin America and the Caribbean",
+    "intermediate-region": "Central America",
+    "region-code": "019",
+    "sub-region-code": "419",
+    "intermediate-region-code": "013"
+  },
+  {
+    "country": "Micronesia (Federated States of)",
+    "alpha-2": "FM",
+    "alpha-3": "FSM",
+    "country-code": "583",
+    "iso_3166-2": "ISO 3166-2:FM",
+    "region": "Oceania",
+    "sub-region": "Micronesia",
+    "intermediate-region": "",
+    "region-code": "009",
+    "sub-region-code": "057",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Moldova, Republic of",
+    "alpha-2": "MD",
+    "alpha-3": "MDA",
+    "country-code": "498",
+    "iso_3166-2": "ISO 3166-2:MD",
+    "region": "Europe",
+    "sub-region": "Eastern Europe",
+    "intermediate-region": "",
+    "region-code": "150",
+    "sub-region-code": "151",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Monaco",
+    "alpha-2": "MC",
+    "alpha-3": "MCO",
+    "country-code": "492",
+    "iso_3166-2": "ISO 3166-2:MC",
+    "region": "Europe",
+    "sub-region": "Western Europe",
+    "intermediate-region": "",
+    "region-code": "150",
+    "sub-region-code": "155",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Mongolia",
+    "alpha-2": "MN",
+    "alpha-3": "MNG",
+    "country-code": "496",
+    "iso_3166-2": "ISO 3166-2:MN",
+    "region": "Asia",
+    "sub-region": "Eastern Asia",
+    "intermediate-region": "",
+    "region-code": "142",
+    "sub-region-code": "030",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Montenegro",
+    "alpha-2": "ME",
+    "alpha-3": "MNE",
+    "country-code": "499",
+    "iso_3166-2": "ISO 3166-2:ME",
+    "region": "Europe",
+    "sub-region": "Southern Europe",
+    "intermediate-region": "",
+    "region-code": "150",
+    "sub-region-code": "039",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Montserrat",
+    "alpha-2": "MS",
+    "alpha-3": "MSR",
+    "country-code": "500",
+    "iso_3166-2": "ISO 3166-2:MS",
+    "region": "Americas",
+    "sub-region": "Latin America and the Caribbean",
+    "intermediate-region": "Caribbean",
+    "region-code": "019",
+    "sub-region-code": "419",
+    "intermediate-region-code": "029"
+  },
+  {
+    "country": "Morocco",
+    "alpha-2": "MA",
+    "alpha-3": "MAR",
+    "country-code": "504",
+    "iso_3166-2": "ISO 3166-2:MA",
+    "region": "Africa",
+    "sub-region": "Northern Africa",
+    "intermediate-region": "",
+    "region-code": "002",
+    "sub-region-code": "015",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Mozambique",
+    "alpha-2": "MZ",
+    "alpha-3": "MOZ",
+    "country-code": "508",
+    "iso_3166-2": "ISO 3166-2:MZ",
+    "region": "Africa",
+    "sub-region": "Sub-Saharan Africa",
+    "intermediate-region": "Eastern Africa",
+    "region-code": "002",
+    "sub-region-code": "202",
+    "intermediate-region-code": "014"
+  },
+  {
+    "country": "Myanmar",
+    "alpha-2": "MM",
+    "alpha-3": "MMR",
+    "country-code": "104",
+    "iso_3166-2": "ISO 3166-2:MM",
+    "region": "Asia",
+    "sub-region": "South-eastern Asia",
+    "intermediate-region": "",
+    "region-code": "142",
+    "sub-region-code": "035",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Namibia",
+    "alpha-2": "NA",
+    "alpha-3": "NAM",
+    "country-code": "516",
+    "iso_3166-2": "ISO 3166-2:NA",
+    "region": "Africa",
+    "sub-region": "Sub-Saharan Africa",
+    "intermediate-region": "Southern Africa",
+    "region-code": "002",
+    "sub-region-code": "202",
+    "intermediate-region-code": "018"
+  },
+  {
+    "country": "Nauru",
+    "alpha-2": "NR",
+    "alpha-3": "NRU",
+    "country-code": "520",
+    "iso_3166-2": "ISO 3166-2:NR",
+    "region": "Oceania",
+    "sub-region": "Micronesia",
+    "intermediate-region": "",
+    "region-code": "009",
+    "sub-region-code": "057",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Nepal",
+    "alpha-2": "NP",
+    "alpha-3": "NPL",
+    "country-code": "524",
+    "iso_3166-2": "ISO 3166-2:NP",
+    "region": "Asia",
+    "sub-region": "Southern Asia",
+    "intermediate-region": "",
+    "region-code": "142",
+    "sub-region-code": "034",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Netherlands",
+    "alpha-2": "NL",
+    "alpha-3": "NLD",
+    "country-code": "528",
+    "iso_3166-2": "ISO 3166-2:NL",
+    "region": "Europe",
+    "sub-region": "Western Europe",
+    "intermediate-region": "",
+    "region-code": "150",
+    "sub-region-code": "155",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "New Caledonia",
+    "alpha-2": "NC",
+    "alpha-3": "NCL",
+    "country-code": "540",
+    "iso_3166-2": "ISO 3166-2:NC",
+    "region": "Oceania",
+    "sub-region": "Melanesia",
+    "intermediate-region": "",
+    "region-code": "009",
+    "sub-region-code": "054",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "New Zealand",
+    "alpha-2": "NZ",
+    "alpha-3": "NZL",
+    "country-code": "554",
+    "iso_3166-2": "ISO 3166-2:NZ",
+    "region": "Oceania",
+    "sub-region": "Australia and New Zealand",
+    "intermediate-region": "",
+    "region-code": "009",
+    "sub-region-code": "053",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Nicaragua",
+    "alpha-2": "NI",
+    "alpha-3": "NIC",
+    "country-code": "558",
+    "iso_3166-2": "ISO 3166-2:NI",
+    "region": "Americas",
+    "sub-region": "Latin America and the Caribbean",
+    "intermediate-region": "Central America",
+    "region-code": "019",
+    "sub-region-code": "419",
+    "intermediate-region-code": "013"
+  },
+  {
+    "country": "Niger",
+    "alpha-2": "NE",
+    "alpha-3": "NER",
+    "country-code": "562",
+    "iso_3166-2": "ISO 3166-2:NE",
+    "region": "Africa",
+    "sub-region": "Sub-Saharan Africa",
+    "intermediate-region": "Western Africa",
+    "region-code": "002",
+    "sub-region-code": "202",
+    "intermediate-region-code": "011"
+  },
+  {
+    "country": "Nigeria",
+    "alpha-2": "NG",
+    "alpha-3": "NGA",
+    "country-code": "566",
+    "iso_3166-2": "ISO 3166-2:NG",
+    "region": "Africa",
+    "sub-region": "Sub-Saharan Africa",
+    "intermediate-region": "Western Africa",
+    "region-code": "002",
+    "sub-region-code": "202",
+    "intermediate-region-code": "011"
+  },
+  {
+    "country": "Niue",
+    "alpha-2": "NU",
+    "alpha-3": "NIU",
+    "country-code": "570",
+    "iso_3166-2": "ISO 3166-2:NU",
+    "region": "Oceania",
+    "sub-region": "Polynesia",
+    "intermediate-region": "",
+    "region-code": "009",
+    "sub-region-code": "061",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Norfolk Island",
+    "alpha-2": "NF",
+    "alpha-3": "NFK",
+    "country-code": "574",
+    "iso_3166-2": "ISO 3166-2:NF",
+    "region": "Oceania",
+    "sub-region": "Australia and New Zealand",
+    "intermediate-region": "",
+    "region-code": "009",
+    "sub-region-code": "053",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "North Macedonia",
+    "alpha-2": "MK",
+    "alpha-3": "MKD",
+    "country-code": "807",
+    "iso_3166-2": "ISO 3166-2:MK",
+    "region": "Europe",
+    "sub-region": "Southern Europe",
+    "intermediate-region": "",
+    "region-code": "150",
+    "sub-region-code": "039",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Northern Mariana Islands",
+    "alpha-2": "MP",
+    "alpha-3": "MNP",
+    "country-code": "580",
+    "iso_3166-2": "ISO 3166-2:MP",
+    "region": "Oceania",
+    "sub-region": "Micronesia",
+    "intermediate-region": "",
+    "region-code": "009",
+    "sub-region-code": "057",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Norway",
+    "alpha-2": "NO",
+    "alpha-3": "NOR",
+    "country-code": "578",
+    "iso_3166-2": "ISO 3166-2:NO",
+    "region": "Europe",
+    "sub-region": "Northern Europe",
+    "intermediate-region": "",
+    "region-code": "150",
+    "sub-region-code": "154",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Oman",
+    "alpha-2": "OM",
+    "alpha-3": "OMN",
+    "country-code": "512",
+    "iso_3166-2": "ISO 3166-2:OM",
+    "region": "Asia",
+    "sub-region": "Western Asia",
+    "intermediate-region": "",
+    "region-code": "142",
+    "sub-region-code": "145",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Pakistan",
+    "alpha-2": "PK",
+    "alpha-3": "PAK",
+    "country-code": "586",
+    "iso_3166-2": "ISO 3166-2:PK",
+    "region": "Asia",
+    "sub-region": "Southern Asia",
+    "intermediate-region": "",
+    "region-code": "142",
+    "sub-region-code": "034",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Palau",
+    "alpha-2": "PW",
+    "alpha-3": "PLW",
+    "country-code": "585",
+    "iso_3166-2": "ISO 3166-2:PW",
+    "region": "Oceania",
+    "sub-region": "Micronesia",
+    "intermediate-region": "",
+    "region-code": "009",
+    "sub-region-code": "057",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Palestine, State of",
+    "alpha-2": "PS",
+    "alpha-3": "PSE",
+    "country-code": "275",
+    "iso_3166-2": "ISO 3166-2:PS",
+    "region": "Asia",
+    "sub-region": "Western Asia",
+    "intermediate-region": "",
+    "region-code": "142",
+    "sub-region-code": "145",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Panama",
+    "alpha-2": "PA",
+    "alpha-3": "PAN",
+    "country-code": "591",
+    "iso_3166-2": "ISO 3166-2:PA",
+    "region": "Americas",
+    "sub-region": "Latin America and the Caribbean",
+    "intermediate-region": "Central America",
+    "region-code": "019",
+    "sub-region-code": "419",
+    "intermediate-region-code": "013"
+  },
+  {
+    "country": "Papua New Guinea",
+    "alpha-2": "PG",
+    "alpha-3": "PNG",
+    "country-code": "598",
+    "iso_3166-2": "ISO 3166-2:PG",
+    "region": "Oceania",
+    "sub-region": "Melanesia",
+    "intermediate-region": "",
+    "region-code": "009",
+    "sub-region-code": "054",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Paraguay",
+    "alpha-2": "PY",
+    "alpha-3": "PRY",
+    "country-code": "600",
+    "iso_3166-2": "ISO 3166-2:PY",
+    "region": "Americas",
+    "sub-region": "Latin America and the Caribbean",
+    "intermediate-region": "South America",
+    "region-code": "019",
+    "sub-region-code": "419",
+    "intermediate-region-code": "005"
+  },
+  {
+    "country": "Peru",
+    "alpha-2": "PE",
+    "alpha-3": "PER",
+    "country-code": "604",
+    "iso_3166-2": "ISO 3166-2:PE",
+    "region": "Americas",
+    "sub-region": "Latin America and the Caribbean",
+    "intermediate-region": "South America",
+    "region-code": "019",
+    "sub-region-code": "419",
+    "intermediate-region-code": "005"
+  },
+  {
+    "country": "Philippines",
+    "alpha-2": "PH",
+    "alpha-3": "PHL",
+    "country-code": "608",
+    "iso_3166-2": "ISO 3166-2:PH",
+    "region": "Asia",
+    "sub-region": "South-eastern Asia",
+    "intermediate-region": "",
+    "region-code": "142",
+    "sub-region-code": "035",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Pitcairn",
+    "alpha-2": "PN",
+    "alpha-3": "PCN",
+    "country-code": "612",
+    "iso_3166-2": "ISO 3166-2:PN",
+    "region": "Oceania",
+    "sub-region": "Polynesia",
+    "intermediate-region": "",
+    "region-code": "009",
+    "sub-region-code": "061",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Poland",
+    "alpha-2": "PL",
+    "alpha-3": "POL",
+    "country-code": "616",
+    "iso_3166-2": "ISO 3166-2:PL",
+    "region": "Europe",
+    "sub-region": "Eastern Europe",
+    "intermediate-region": "",
+    "region-code": "150",
+    "sub-region-code": "151",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Portugal",
+    "alpha-2": "PT",
+    "alpha-3": "PRT",
+    "country-code": "620",
+    "iso_3166-2": "ISO 3166-2:PT",
+    "region": "Europe",
+    "sub-region": "Southern Europe",
+    "intermediate-region": "",
+    "region-code": "150",
+    "sub-region-code": "039",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Puerto Rico",
+    "alpha-2": "PR",
+    "alpha-3": "PRI",
+    "country-code": "630",
+    "iso_3166-2": "ISO 3166-2:PR",
+    "region": "Americas",
+    "sub-region": "Latin America and the Caribbean",
+    "intermediate-region": "Caribbean",
+    "region-code": "019",
+    "sub-region-code": "419",
+    "intermediate-region-code": "029"
+  },
+  {
+    "country": "Qatar",
+    "alpha-2": "QA",
+    "alpha-3": "QAT",
+    "country-code": "634",
+    "iso_3166-2": "ISO 3166-2:QA",
+    "region": "Asia",
+    "sub-region": "Western Asia",
+    "intermediate-region": "",
+    "region-code": "142",
+    "sub-region-code": "145",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Réunion",
+    "alpha-2": "RE",
+    "alpha-3": "REU",
+    "country-code": "638",
+    "iso_3166-2": "ISO 3166-2:RE",
+    "region": "Africa",
+    "sub-region": "Sub-Saharan Africa",
+    "intermediate-region": "Eastern Africa",
+    "region-code": "002",
+    "sub-region-code": "202",
+    "intermediate-region-code": "014"
+  },
+  {
+    "country": "Romania",
+    "alpha-2": "RO",
+    "alpha-3": "ROU",
+    "country-code": "642",
+    "iso_3166-2": "ISO 3166-2:RO",
+    "region": "Europe",
+    "sub-region": "Eastern Europe",
+    "intermediate-region": "",
+    "region-code": "150",
+    "sub-region-code": "151",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Russian Federation",
+    "alpha-2": "RU",
+    "alpha-3": "RUS",
+    "country-code": "643",
+    "iso_3166-2": "ISO 3166-2:RU",
+    "region": "Europe",
+    "sub-region": "Eastern Europe",
+    "intermediate-region": "",
+    "region-code": "150",
+    "sub-region-code": "151",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Rwanda",
+    "alpha-2": "RW",
+    "alpha-3": "RWA",
+    "country-code": "646",
+    "iso_3166-2": "ISO 3166-2:RW",
+    "region": "Africa",
+    "sub-region": "Sub-Saharan Africa",
+    "intermediate-region": "Eastern Africa",
+    "region-code": "002",
+    "sub-region-code": "202",
+    "intermediate-region-code": "014"
+  },
+  {
+    "country": "Saint Barthélemy",
+    "alpha-2": "BL",
+    "alpha-3": "BLM",
+    "country-code": "652",
+    "iso_3166-2": "ISO 3166-2:BL",
+    "region": "Americas",
+    "sub-region": "Latin America and the Caribbean",
+    "intermediate-region": "Caribbean",
+    "region-code": "019",
+    "sub-region-code": "419",
+    "intermediate-region-code": "029"
+  },
+  {
+    "country": "Saint Helena",
+    "alpha-2": "SH",
+    "alpha-3": "SHN",
+    "country-code": "654",
+    "iso_3166-2": "ISO 3166-2:SH",
+    "region": "Africa",
+    "sub-region": "Sub-Saharan Africa",
+    "intermediate-region": "Western Africa",
+    "region-code": "002",
+    "sub-region-code": "202",
+    "intermediate-region-code": "011"
+  },
+  {
+    "country": "Saint Kitts and Nevis",
+    "alpha-2": "KN",
+    "alpha-3": "KNA",
+    "country-code": "659",
+    "iso_3166-2": "ISO 3166-2:KN",
+    "region": "Americas",
+    "sub-region": "Latin America and the Caribbean",
+    "intermediate-region": "Caribbean",
+    "region-code": "019",
+    "sub-region-code": "419",
+    "intermediate-region-code": "029"
+  },
+  {
+    "country": "Saint Lucia",
+    "alpha-2": "LC",
+    "alpha-3": "LCA",
+    "country-code": "662",
+    "iso_3166-2": "ISO 3166-2:LC",
+    "region": "Americas",
+    "sub-region": "Latin America and the Caribbean",
+    "intermediate-region": "Caribbean",
+    "region-code": "019",
+    "sub-region-code": "419",
+    "intermediate-region-code": "029"
+  },
+  {
+    "country": "Saint Martin",
+    "alpha-2": "MF",
+    "alpha-3": "MAF",
+    "country-code": "663",
+    "iso_3166-2": "ISO 3166-2:MF",
+    "region": "Americas",
+    "sub-region": "Latin America and the Caribbean",
+    "intermediate-region": "Caribbean",
+    "region-code": "019",
+    "sub-region-code": "419",
+    "intermediate-region-code": "029"
+  },
+  {
+    "country": "Saint Pierre and Miquelon",
+    "alpha-2": "PM",
+    "alpha-3": "SPM",
+    "country-code": "666",
+    "iso_3166-2": "ISO 3166-2:PM",
+    "region": "Americas",
+    "sub-region": "Northern America",
+    "intermediate-region": "",
+    "region-code": "019",
+    "sub-region-code": "021",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Saint Vincent and the Grenadines",
+    "alpha-2": "VC",
+    "alpha-3": "VCT",
+    "country-code": "670",
+    "iso_3166-2": "ISO 3166-2:VC",
+    "region": "Americas",
+    "sub-region": "Latin America and the Caribbean",
+    "intermediate-region": "Caribbean",
+    "region-code": "019",
+    "sub-region-code": "419",
+    "intermediate-region-code": "029"
+  },
+  {
+    "country": "Samoa",
+    "alpha-2": "WS",
+    "alpha-3": "WSM",
+    "country-code": "882",
+    "iso_3166-2": "ISO 3166-2:WS",
+    "region": "Oceania",
+    "sub-region": "Polynesia",
+    "intermediate-region": "",
+    "region-code": "009",
+    "sub-region-code": "061",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "San Marino",
+    "alpha-2": "SM",
+    "alpha-3": "SMR",
+    "country-code": "674",
+    "iso_3166-2": "ISO 3166-2:SM",
+    "region": "Europe",
+    "sub-region": "Southern Europe",
+    "intermediate-region": "",
+    "region-code": "150",
+    "sub-region-code": "039",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Sao Tome and Principe",
+    "alpha-2": "ST",
+    "alpha-3": "STP",
+    "country-code": "678",
+    "iso_3166-2": "ISO 3166-2:ST",
+    "region": "Africa",
+    "sub-region": "Sub-Saharan Africa",
+    "intermediate-region": "Middle Africa",
+    "region-code": "002",
+    "sub-region-code": "202",
+    "intermediate-region-code": "017"
+  },
+  {
+    "country": "Saudi Arabia",
+    "alpha-2": "SA",
+    "alpha-3": "SAU",
+    "country-code": "682",
+    "iso_3166-2": "ISO 3166-2:SA",
+    "region": "Asia",
+    "sub-region": "Western Asia",
+    "intermediate-region": "",
+    "region-code": "142",
+    "sub-region-code": "145",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Senegal",
+    "alpha-2": "SN",
+    "alpha-3": "SEN",
+    "country-code": "686",
+    "iso_3166-2": "ISO 3166-2:SN",
+    "region": "Africa",
+    "sub-region": "Sub-Saharan Africa",
+    "intermediate-region": "Western Africa",
+    "region-code": "002",
+    "sub-region-code": "202",
+    "intermediate-region-code": "011"
+  },
+  {
+    "country": "Serbia",
+    "alpha-2": "RS",
+    "alpha-3": "SRB",
+    "country-code": "688",
+    "iso_3166-2": "ISO 3166-2:RS",
+    "region": "Europe",
+    "sub-region": "Southern Europe",
+    "intermediate-region": "",
+    "region-code": "150",
+    "sub-region-code": "039",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Seychelles",
+    "alpha-2": "SC",
+    "alpha-3": "SYC",
+    "country-code": "690",
+    "iso_3166-2": "ISO 3166-2:SC",
+    "region": "Africa",
+    "sub-region": "Sub-Saharan Africa",
+    "intermediate-region": "Eastern Africa",
+    "region-code": "002",
+    "sub-region-code": "202",
+    "intermediate-region-code": "014"
+  },
+  {
+    "country": "Sierra Leone",
+    "alpha-2": "SL",
+    "alpha-3": "SLE",
+    "country-code": "694",
+    "iso_3166-2": "ISO 3166-2:SL",
+    "region": "Africa",
+    "sub-region": "Sub-Saharan Africa",
+    "intermediate-region": "Western Africa",
+    "region-code": "002",
+    "sub-region-code": "202",
+    "intermediate-region-code": "011"
+  },
+  {
+    "country": "Singapore",
+    "alpha-2": "SG",
+    "alpha-3": "SGP",
+    "country-code": "702",
+    "iso_3166-2": "ISO 3166-2:SG",
+    "region": "Asia",
+    "sub-region": "South-eastern Asia",
+    "intermediate-region": "",
+    "region-code": "142",
+    "sub-region-code": "035",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Sint Maarten (Dutch part)",
+    "alpha-2": "SX",
+    "alpha-3": "SXM",
+    "country-code": "534",
+    "iso_3166-2": "ISO 3166-2:SX",
+    "region": "Americas",
+    "sub-region": "Latin America and the Caribbean",
+    "intermediate-region": "Caribbean",
+    "region-code": "019",
+    "sub-region-code": "419",
+    "intermediate-region-code": "029"
+  },
+  {
+    "country": "Slovakia",
+    "alpha-2": "SK",
+    "alpha-3": "SVK",
+    "country-code": "703",
+    "iso_3166-2": "ISO 3166-2:SK",
+    "region": "Europe",
+    "sub-region": "Eastern Europe",
+    "intermediate-region": "",
+    "region-code": "150",
+    "sub-region-code": "151",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Slovenia",
+    "alpha-2": "SI",
+    "alpha-3": "SVN",
+    "country-code": "705",
+    "iso_3166-2": "ISO 3166-2:SI",
+    "region": "Europe",
+    "sub-region": "Southern Europe",
+    "intermediate-region": "",
+    "region-code": "150",
+    "sub-region-code": "039",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Solomon Islands",
+    "alpha-2": "SB",
+    "alpha-3": "SLB",
+    "country-code": "090",
+    "iso_3166-2": "ISO 3166-2:SB",
+    "region": "Oceania",
+    "sub-region": "Melanesia",
+    "intermediate-region": "",
+    "region-code": "009",
+    "sub-region-code": "054",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Somalia",
+    "alpha-2": "SO",
+    "alpha-3": "SOM",
+    "country-code": "706",
+    "iso_3166-2": "ISO 3166-2:SO",
+    "region": "Africa",
+    "sub-region": "Sub-Saharan Africa",
+    "intermediate-region": "Eastern Africa",
+    "region-code": "002",
+    "sub-region-code": "202",
+    "intermediate-region-code": "014"
+  },
+  {
+    "country": "South Africa",
+    "alpha-2": "ZA",
+    "alpha-3": "ZAF",
+    "country-code": "710",
+    "iso_3166-2": "ISO 3166-2:ZA",
+    "region": "Africa",
+    "sub-region": "Sub-Saharan Africa",
+    "intermediate-region": "Southern Africa",
+    "region-code": "002",
+    "sub-region-code": "202",
+    "intermediate-region-code": "018"
+  },
+  {
+    "country": "South Sandwich Islands",
+    "alpha-2": "GS",
+    "alpha-3": "SGS",
+    "country-code": "239",
+    "iso_3166-2": "ISO 3166-2:GS",
+    "region": "Americas",
+    "sub-region": "Latin America and the Caribbean",
+    "intermediate-region": "South America",
+    "region-code": "019",
+    "sub-region-code": "419",
+    "intermediate-region-code": "005"
+  },
+  {
+    "country": "South Sudan",
+    "alpha-2": "SS",
+    "alpha-3": "SSD",
+    "country-code": "728",
+    "iso_3166-2": "ISO 3166-2:SS",
+    "region": "Africa",
+    "sub-region": "Sub-Saharan Africa",
+    "intermediate-region": "Eastern Africa",
+    "region-code": "002",
+    "sub-region-code": "202",
+    "intermediate-region-code": "014"
+  },
+  {
+    "country": "Spain",
+    "alpha-2": "ES",
+    "alpha-3": "ESP",
+    "country-code": "724",
+    "iso_3166-2": "ISO 3166-2:ES",
+    "region": "Europe",
+    "sub-region": "Southern Europe",
+    "intermediate-region": "",
+    "region-code": "150",
+    "sub-region-code": "039",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Sri Lanka",
+    "alpha-2": "LK",
+    "alpha-3": "LKA",
+    "country-code": "144",
+    "iso_3166-2": "ISO 3166-2:LK",
+    "region": "Asia",
+    "sub-region": "Southern Asia",
+    "intermediate-region": "",
+    "region-code": "142",
+    "sub-region-code": "034",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Sudan",
+    "alpha-2": "SD",
+    "alpha-3": "SDN",
+    "country-code": "729",
+    "iso_3166-2": "ISO 3166-2:SD",
+    "region": "Africa",
+    "sub-region": "Northern Africa",
+    "intermediate-region": "",
+    "region-code": "002",
+    "sub-region-code": "015",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Suriname",
+    "alpha-2": "SR",
+    "alpha-3": "SUR",
+    "country-code": "740",
+    "iso_3166-2": "ISO 3166-2:SR",
+    "region": "Americas",
+    "sub-region": "Latin America and the Caribbean",
+    "intermediate-region": "South America",
+    "region-code": "019",
+    "sub-region-code": "419",
+    "intermediate-region-code": "005"
+  },
+  {
+    "country": "Svalbard and Jan Mayen",
+    "alpha-2": "SJ",
+    "alpha-3": "SJM",
+    "country-code": "744",
+    "iso_3166-2": "ISO 3166-2:SJ",
+    "region": "Europe",
+    "sub-region": "Northern Europe",
+    "intermediate-region": "",
+    "region-code": "150",
+    "sub-region-code": "154",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Sweden",
+    "alpha-2": "SE",
+    "alpha-3": "SWE",
+    "country-code": "752",
+    "iso_3166-2": "ISO 3166-2:SE",
+    "region": "Europe",
+    "sub-region": "Northern Europe",
+    "intermediate-region": "",
+    "region-code": "150",
+    "sub-region-code": "154",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Switzerland",
+    "alpha-2": "CH",
+    "alpha-3": "CHE",
+    "country-code": "756",
+    "iso_3166-2": "ISO 3166-2:CH",
+    "region": "Europe",
+    "sub-region": "Western Europe",
+    "intermediate-region": "",
+    "region-code": "150",
+    "sub-region-code": "155",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Syrian Arab Republic",
+    "alpha-2": "SY",
+    "alpha-3": "SYR",
+    "country-code": "760",
+    "iso_3166-2": "ISO 3166-2:SY",
+    "region": "Asia",
+    "sub-region": "Western Asia",
+    "intermediate-region": "",
+    "region-code": "142",
+    "sub-region-code": "145",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Taiwan, Province of China",
+    "alpha-2": "TW",
+    "alpha-3": "TWN",
+    "country-code": "158",
+    "iso_3166-2": "ISO 3166-2:TW",
+    "region": "Asia",
+    "sub-region": "Eastern Asia",
+    "intermediate-region": "",
+    "region-code": "142",
+    "sub-region-code": "030",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Tajikistan",
+    "alpha-2": "TJ",
+    "alpha-3": "TJK",
+    "country-code": "762",
+    "iso_3166-2": "ISO 3166-2:TJ",
+    "region": "Asia",
+    "sub-region": "Central Asia",
+    "intermediate-region": "",
+    "region-code": "142",
+    "sub-region-code": "143",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Tanzania, United Republic of",
+    "alpha-2": "TZ",
+    "alpha-3": "TZA",
+    "country-code": "834",
+    "iso_3166-2": "ISO 3166-2:TZ",
+    "region": "Africa",
+    "sub-region": "Sub-Saharan Africa",
+    "intermediate-region": "Eastern Africa",
+    "region-code": "002",
+    "sub-region-code": "202",
+    "intermediate-region-code": "014"
+  },
+  {
+    "country": "Thailand",
+    "alpha-2": "TH",
+    "alpha-3": "THA",
+    "country-code": "764",
+    "iso_3166-2": "ISO 3166-2:TH",
+    "region": "Asia",
+    "sub-region": "South-eastern Asia",
+    "intermediate-region": "",
+    "region-code": "142",
+    "sub-region-code": "035",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Timor-Leste",
+    "alpha-2": "TL",
+    "alpha-3": "TLS",
+    "country-code": "626",
+    "iso_3166-2": "ISO 3166-2:TL",
+    "region": "Asia",
+    "sub-region": "South-eastern Asia",
+    "intermediate-region": "",
+    "region-code": "142",
+    "sub-region-code": "035",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Togo",
+    "alpha-2": "TG",
+    "alpha-3": "TGO",
+    "country-code": "768",
+    "iso_3166-2": "ISO 3166-2:TG",
+    "region": "Africa",
+    "sub-region": "Sub-Saharan Africa",
+    "intermediate-region": "Western Africa",
+    "region-code": "002",
+    "sub-region-code": "202",
+    "intermediate-region-code": "011"
+  },
+  {
+    "country": "Tokelau",
+    "alpha-2": "TK",
+    "alpha-3": "TKL",
+    "country-code": "772",
+    "iso_3166-2": "ISO 3166-2:TK",
+    "region": "Oceania",
+    "sub-region": "Polynesia",
+    "intermediate-region": "",
+    "region-code": "009",
+    "sub-region-code": "061",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Tonga",
+    "alpha-2": "TO",
+    "alpha-3": "TON",
+    "country-code": "776",
+    "iso_3166-2": "ISO 3166-2:TO",
+    "region": "Oceania",
+    "sub-region": "Polynesia",
+    "intermediate-region": "",
+    "region-code": "009",
+    "sub-region-code": "061",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Trinidad and Tobago",
+    "alpha-2": "TT",
+    "alpha-3": "TTO",
+    "country-code": "780",
+    "iso_3166-2": "ISO 3166-2:TT",
+    "region": "Americas",
+    "sub-region": "Latin America and the Caribbean",
+    "intermediate-region": "Caribbean",
+    "region-code": "019",
+    "sub-region-code": "419",
+    "intermediate-region-code": "029"
+  },
+  {
+    "country": "Tunisia",
+    "alpha-2": "TN",
+    "alpha-3": "TUN",
+    "country-code": "788",
+    "iso_3166-2": "ISO 3166-2:TN",
+    "region": "Africa",
+    "sub-region": "Northern Africa",
+    "intermediate-region": "",
+    "region-code": "002",
+    "sub-region-code": "015",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Turkey",
+    "alpha-2": "TR",
+    "alpha-3": "TUR",
+    "country-code": "792",
+    "iso_3166-2": "ISO 3166-2:TR",
+    "region": "Asia",
+    "sub-region": "Western Asia",
+    "intermediate-region": "",
+    "region-code": "142",
+    "sub-region-code": "145",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Turkmenistan",
+    "alpha-2": "TM",
+    "alpha-3": "TKM",
+    "country-code": "795",
+    "iso_3166-2": "ISO 3166-2:TM",
+    "region": "Asia",
+    "sub-region": "Central Asia",
+    "intermediate-region": "",
+    "region-code": "142",
+    "sub-region-code": "143",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Turks and Caicos Islands",
+    "alpha-2": "TC",
+    "alpha-3": "TCA",
+    "country-code": "796",
+    "iso_3166-2": "ISO 3166-2:TC",
+    "region": "Americas",
+    "sub-region": "Latin America and the Caribbean",
+    "intermediate-region": "Caribbean",
+    "region-code": "019",
+    "sub-region-code": "419",
+    "intermediate-region-code": "029"
+  },
+  {
+    "country": "Tuvalu",
+    "alpha-2": "TV",
+    "alpha-3": "TUV",
+    "country-code": "798",
+    "iso_3166-2": "ISO 3166-2:TV",
+    "region": "Oceania",
+    "sub-region": "Polynesia",
+    "intermediate-region": "",
+    "region-code": "009",
+    "sub-region-code": "061",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Uganda",
+    "alpha-2": "UG",
+    "alpha-3": "UGA",
+    "country-code": "800",
+    "iso_3166-2": "ISO 3166-2:UG",
+    "region": "Africa",
+    "sub-region": "Sub-Saharan Africa",
+    "intermediate-region": "Eastern Africa",
+    "region-code": "002",
+    "sub-region-code": "202",
+    "intermediate-region-code": "014"
+  },
+  {
+    "country": "Ukraine",
+    "alpha-2": "UA",
+    "alpha-3": "UKR",
+    "country-code": "804",
+    "iso_3166-2": "ISO 3166-2:UA",
+    "region": "Europe",
+    "sub-region": "Eastern Europe",
+    "intermediate-region": "",
+    "region-code": "150",
+    "sub-region-code": "151",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "United Arab Emirates",
+    "alpha-2": "AE",
+    "alpha-3": "ARE",
+    "country-code": "784",
+    "iso_3166-2": "ISO 3166-2:AE",
+    "region": "Asia",
+    "sub-region": "Western Asia",
+    "intermediate-region": "",
+    "region-code": "142",
+    "sub-region-code": "145",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "United Kingdom",
+    "alpha-2": "GB",
+    "alpha-3": "GBR",
+    "country-code": "826",
+    "iso_3166-2": "ISO 3166-2:GB",
+    "region": "Europe",
+    "sub-region": "Northern Europe",
+    "intermediate-region": "",
+    "region-code": "150",
+    "sub-region-code": "154",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "United States of America",
+    "alpha-2": "US",
+    "alpha-3": "USA",
+    "country-code": "840",
+    "iso_3166-2": "ISO 3166-2:US",
+    "region": "Americas",
+    "sub-region": "Northern America",
+    "intermediate-region": "",
+    "region-code": "019",
+    "sub-region-code": "021",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Uruguay",
+    "alpha-2": "UY",
+    "alpha-3": "URY",
+    "country-code": "858",
+    "iso_3166-2": "ISO 3166-2:UY",
+    "region": "Americas",
+    "sub-region": "Latin America and the Caribbean",
+    "intermediate-region": "South America",
+    "region-code": "019",
+    "sub-region-code": "419",
+    "intermediate-region-code": "005"
+  },
+  {
+    "country": "Uzbekistan",
+    "alpha-2": "UZ",
+    "alpha-3": "UZB",
+    "country-code": "860",
+    "iso_3166-2": "ISO 3166-2:UZ",
+    "region": "Asia",
+    "sub-region": "Central Asia",
+    "intermediate-region": "",
+    "region-code": "142",
+    "sub-region-code": "143",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Vanuatu",
+    "alpha-2": "VU",
+    "alpha-3": "VUT",
+    "country-code": "548",
+    "iso_3166-2": "ISO 3166-2:VU",
+    "region": "Oceania",
+    "sub-region": "Melanesia",
+    "intermediate-region": "",
+    "region-code": "009",
+    "sub-region-code": "054",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Venezuela (Bolivarian Republic of)",
+    "alpha-2": "VE",
+    "alpha-3": "VEN",
+    "country-code": "862",
+    "iso_3166-2": "ISO 3166-2:VE",
+    "region": "Americas",
+    "sub-region": "Latin America and the Caribbean",
+    "intermediate-region": "South America",
+    "region-code": "019",
+    "sub-region-code": "419",
+    "intermediate-region-code": "005"
+  },
+  {
+    "country": "Viet Nam",
+    "alpha-2": "VN",
+    "alpha-3": "VNM",
+    "country-code": "704",
+    "iso_3166-2": "ISO 3166-2:VN",
+    "region": "Asia",
+    "sub-region": "South-eastern Asia",
+    "intermediate-region": "",
+    "region-code": "142",
+    "sub-region-code": "035",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Virgin Islands (British)",
+    "alpha-2": "VG",
+    "alpha-3": "VGB",
+    "country-code": "092",
+    "iso_3166-2": "ISO 3166-2:VG",
+    "region": "Americas",
+    "sub-region": "Latin America and the Caribbean",
+    "intermediate-region": "Caribbean",
+    "region-code": "019",
+    "sub-region-code": "419",
+    "intermediate-region-code": "029"
+  },
+  {
+    "country": "Virgin Islands (U.S.)",
+    "alpha-2": "VI",
+    "alpha-3": "VIR",
+    "country-code": "850",
+    "iso_3166-2": "ISO 3166-2:VI",
+    "region": "Americas",
+    "sub-region": "Latin America and the Caribbean",
+    "intermediate-region": "Caribbean",
+    "region-code": "019",
+    "sub-region-code": "419",
+    "intermediate-region-code": "029"
+  },
+  {
+    "country": "Wallis and Futuna",
+    "alpha-2": "WF",
+    "alpha-3": "WLF",
+    "country-code": "876",
+    "iso_3166-2": "ISO 3166-2:WF",
+    "region": "Oceania",
+    "sub-region": "Polynesia",
+    "intermediate-region": "",
+    "region-code": "009",
+    "sub-region-code": "061",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Western Sahara",
+    "alpha-2": "EH",
+    "alpha-3": "ESH",
+    "country-code": "732",
+    "iso_3166-2": "ISO 3166-2:EH",
+    "region": "Africa",
+    "sub-region": "Northern Africa",
+    "intermediate-region": "",
+    "region-code": "002",
+    "sub-region-code": "015",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Yemen",
+    "alpha-2": "YE",
+    "alpha-3": "YEM",
+    "country-code": "887",
+    "iso_3166-2": "ISO 3166-2:YE",
+    "region": "Asia",
+    "sub-region": "Western Asia",
+    "intermediate-region": "",
+    "region-code": "142",
+    "sub-region-code": "145",
+    "intermediate-region-code": ""
+  },
+  {
+    "country": "Zambia",
+    "alpha-2": "ZM",
+    "alpha-3": "ZMB",
+    "country-code": "894",
+    "iso_3166-2": "ISO 3166-2:ZM",
+    "region": "Africa",
+    "sub-region": "Sub-Saharan Africa",
+    "intermediate-region": "Eastern Africa",
+    "region-code": "002",
+    "sub-region-code": "202",
+    "intermediate-region-code": "014"
+  },
+  {
+    "country": "Zimbabwe",
+    "alpha-2": "ZW",
+    "alpha-3": "ZWE",
+    "country-code": "716",
+    "iso_3166-2": "ISO 3166-2:ZW",
+    "region": "Africa",
+    "sub-region": "Sub-Saharan Africa",
+    "intermediate-region": "Eastern Africa",
+    "region-code": "002",
+    "sub-region-code": "202",
+    "intermediate-region-code": "014"
+  }
+]

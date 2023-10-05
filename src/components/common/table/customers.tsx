@@ -61,11 +61,12 @@ import {
   DoubleArrowRightIcon,
 } from '@radix-ui/react-icons';
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { CSVLink } from 'react-csv';
 
 export type CustomerType = {
   email: string;
+  phone_number: string;
   username: string | null;
   first_name: string;
   last_name: string;
@@ -109,8 +110,8 @@ export default function CustomersDataTable() {
     },
   );
 
-  const categoryData = useMemo(() => {
-    return Array.isArray(data?.data) ? data?.data : [];
+  const customerData = useMemo(() => {
+    return Array.isArray(data?.data) && data?.data?.length ? data?.data : [];
   }, [data]);
 
   const deleteCustomer: any = trpc.customer.update.useMutation({
@@ -141,7 +142,7 @@ export default function CustomersDataTable() {
       return (
         <div className="flex gap-2 items-center">
           <p className="text-ellipsis text-left whitespace-nowrap overflow-hidden w-fit  text-white">
-            {data.first_name + ' ' + data.last_name}
+            {data.first_name}
           </p>
 
           <TooltipProvider>
@@ -158,8 +159,8 @@ export default function CustomersDataTable() {
       );
     } else {
       return (
-        <p className="text-ellipsis text-left whitespace-nowrap overflow-hidden w-48  text-white">
-          {data.first_name + ' ' + data.last_name}
+        <p className="text-ellipsis text-left whitespace-nowrap overflow-hidden w-32  text-white">
+          {data.first_name}
         </p>
       );
     }
@@ -183,11 +184,11 @@ export default function CustomersDataTable() {
     }
   };
   // columns
+
   const columns: ColumnDef<CustomerType>[] = [
     {
-      accessorKey: 'Name',
-
-      header: 'Name',
+      accessorKey: 'First Name',
+      header: 'First Name',
       cell: ({ row }) => (
         <div className="capitalize ">
           <TooltipProvider>
@@ -195,9 +196,25 @@ export default function CustomersDataTable() {
               <TooltipTrigger>{displayName(row?.original)}</TooltipTrigger>
               <TooltipContent>
                 <p className="text-base font-normal">
-                  {(row?.original?.first_name ?? '') +
-                    ' ' +
-                    (row?.original?.last_name ?? '')}
+                  {row?.original?.first_name}
+                </p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'Last Name',
+      header: 'Last Name',
+      cell: ({ row }) => (
+        <div className="capitalize w-28">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>{row?.original?.last_name}</TooltipTrigger>
+              <TooltipContent>
+                <p className="text-base font-normal">
+                  {row?.original?.last_name ?? ''}
                 </p>
               </TooltipContent>
             </Tooltip>
@@ -227,14 +244,46 @@ export default function CustomersDataTable() {
         );
       },
     },
+    {
+      accessorKey: 'Phone No.',
+      header: 'Phone No.',
+      cell: ({ row }) => {
+        return (
+          <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>{row?.original?.phone_number}</TooltipTrigger>
+                <TooltipContent>
+                  <p className="text-base font-normal">
+                    {row?.original?.phone_number}
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
+        );
+      },
+    },
 
+    {
+      id: 'DOB',
+      header: 'DOB',
+
+      cell: ({ row }) => {
+        return (
+          <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
+            {displayDate(row?.original?.dob)}
+          </div>
+        );
+      },
+    },
     {
       id: 'Verified Status',
       header: 'Verified Status',
 
       cell: ({ row }) => {
         return (
-          <div>
+          <div className="w-24 text-center">
             <Switch checked={row?.original?.is_verified} disabled={true} />
           </div>
         );
@@ -242,8 +291,8 @@ export default function CustomersDataTable() {
     },
 
     {
-      accessorKey: 'Created At',
-      header: 'Created At',
+      accessorKey: 'Created at',
+      header: 'Created at',
       cell: ({ row }) => (
         <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
           {displayDate(row?.original?.created_at)}
@@ -293,7 +342,7 @@ export default function CustomersDataTable() {
   ];
 
   const table = useReactTable({
-    data: categoryData as CustomerType[],
+    data: customerData as CustomerType[],
     columns,
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
@@ -368,42 +417,85 @@ export default function CustomersDataTable() {
     },
   ];
 
+  const csvData = [
+    [
+      'First Name',
+      'Last Name',
+      'Email',
+      'Phone No.',
+      'DOB',
+      'Verified Status',
+      'Created at',
+    ],
+    ...customerData?.map(
+      ({
+        first_name,
+        last_name,
+        email,
+        phone_number,
+        dob,
+        is_verified,
+        created_at,
+      }) => [
+        first_name,
+        last_name,
+        email,
+        phone_number,
+        dob?.toLocaleDateString(),
+        is_verified ? 'Yes' : 'No',
+        created_at?.toLocaleDateString(),
+      ],
+    ),
+  ];
+
   return (
     <div className="w-full space-y-4">
-      <div className="flex items-center justify-end gap-2">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline">
-              Columns <ChevronDown className="ml-2 h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
-        <TableFilters
-          inputList={roleOptions1}
-          item_name={'Customers'}
-          value={filterID}
-          setValue={setFilterID}
-          setFilters={setFilters}
-        />
+      <div className="flex items-center justify-between">
+        {customerData?.length ? (
+          <Button variant="outline">
+            <CSVLink filename="customers.csv" data={csvData}>
+              Export to CSV
+            </CSVLink>
+          </Button>
+        ) : (
+          <div />
+        )}
+
+        <div className="flex items-center gap-2">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline">
+                Columns <ChevronDown className="ml-2 h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {table
+                .getAllColumns()
+                .filter((column) => column.getCanHide())
+                .map((column) => {
+                  return (
+                    <DropdownMenuCheckboxItem
+                      key={column.id}
+                      className="capitalize"
+                      checked={column.getIsVisible()}
+                      onCheckedChange={(value) =>
+                        column.toggleVisibility(!!value)
+                      }
+                    >
+                      {column.id}
+                    </DropdownMenuCheckboxItem>
+                  );
+                })}
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <TableFilters
+            inputList={roleOptions1}
+            item_name={'Customers'}
+            value={filterID}
+            setValue={setFilterID}
+            setFilters={setFilters}
+          />
+        </div>
       </div>
 
       <div className="rounded-md border border-border">

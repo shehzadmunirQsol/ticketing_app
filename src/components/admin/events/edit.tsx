@@ -5,8 +5,8 @@ export default function EditEvent() {
   return (
     <div className="p-8 space-y-8">
       <div className="flex items-center justify-between">
-        <h2 className="text-4xl font-medium">Edit Event</h2>
-        <GlobalBack/>
+        <h2 className="text-4xl font-medium">Edit Product</h2>
+        <GlobalBack />
       </div>
       <EventForm />
     </div>

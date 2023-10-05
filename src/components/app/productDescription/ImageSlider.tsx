@@ -69,7 +69,7 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
                   % {langContent[lang.lang].ProductDetail.description.SOLD}
                 </span>
                 <Progress value={percentageSold} className="w-full" />
-                <span className='w-full text-center text-xs text-gray-300'>{(data?.tickets_sold)?.toLocaleString()} /{(data?.total_tickets)?.toLocaleString()}</span>
+                <span className='w-full text-center text-xs text-gray-300'>{(data?.tickets_sold)?.toLocaleString()} /{" "}{(data?.total_tickets)?.toLocaleString()}</span>
 
               </div>
             </div>

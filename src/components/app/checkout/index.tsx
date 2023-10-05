@@ -18,11 +18,6 @@ import {
 
 
 
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/ui/popover"
 
 import { Input } from '@/ui/input';
 import { useForm } from 'react-hook-form';
@@ -47,16 +42,12 @@ import { CardDailog } from '~/components/common/modal/cardModal';
 import langContent from '~/locales';
 
 
-
-import countryJSON from "~/data/countries.json";
+import countryJSON from '~/data/countries.json';
 import { Check } from 'lucide-react';
 import { cn } from '~/utils/cn';
 const countries = countryJSON.map((item) => item.country);
-console.log({ countries }, "countries")
-
 
 function Checkout() {
-
   const { cart, totalAmount } = useSelector((state: RootState) => state.cart);
   const { user } = useSelector((state: RootState) => state.auth);
   const { lang } = useSelector((state: RootState) => state.layout);
@@ -69,7 +60,7 @@ function Checkout() {
   const [loading, setLoading] = useState<boolean>(false);
   const [totalID, setTotalID] = useState<any>(null);
   const [countryCombobox, setCountryCombobox] = useState(false);
-  const [selectCountry, setSelectCountry] = useState("")
+  const [selectCountry, setSelectCountry] = useState('');
 
   const [isModal, setIsModal] = useState(false);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
@@ -84,9 +75,9 @@ function Checkout() {
       customer_id: cart.customer_id ?? 0,
       first_name: user?.first_name,
       last_name: user?.last_name,
-      code: '+971',
-      country: 'United Arab Emirates',
-      state: 'Abu Dhabi',
+      code: user?.code,
+      country: user?.country,
+      state: '',
 
       dob: user?.dob,
       email: user?.email,
@@ -125,6 +116,10 @@ function Checkout() {
         form.setValue(
           'phone_number',
           user?.CustomerAddress[0]?.phone_number ?? '',
+        );
+        form.setValue(
+          'code',
+          user?.code ?? '',
         );
         form.setValue(
           'postal_code',
@@ -382,7 +377,7 @@ function Checkout() {
                           control={form.control}
                           name="country"
                           render={({ field }) => (
-                            <FormItem className=''>
+                            <FormItem className="">
                               <FormLabel className="text-sm text-cardGray">
                                 Country/ Region{' '}
                                 <sup className="text-red-500">*</sup>
@@ -392,24 +387,21 @@ function Checkout() {
                                 defaultValue={field.value}
                                 value={field.value}
                               >
-                                <FormControl >
-                                  <SelectTrigger className="h-10 rounded-md  bg-inputColor" >
+                                <FormControl>
+                                  <SelectTrigger className="h-10 rounded-md  bg-inputColor">
                                     <SelectValue placeholder="Select your country" />
                                   </SelectTrigger>
                                 </FormControl>
-                                <SelectContent className='max-h-[300px] overflow-y-auto'>
+                                <SelectContent className="max-h-[300px] overflow-y-auto">
                                   <SelectGroup>
-                                    {countries && countries?.map((country, i) => {
-                                      console.log({ country, i })
-                                      return (
-                                        <SelectItem
-                                          key={i}
-                                          value={country}
-                                        >
-                                          {country?.toUpperCase()}
-                                        </SelectItem>
-                                      )
-                                    })}
+                                    {countries &&
+                                      countries?.map((country, i) => {
+                                        return (
+                                          <SelectItem key={i} value={country}>
+                                            {country?.toUpperCase()}
+                                          </SelectItem>
+                                        );
+                                      })}
                                   </SelectGroup>
                                 </SelectContent>
                               </Select>
@@ -420,9 +412,6 @@ function Checkout() {
                             </FormItem>
                           )}
                         />
-
-
-
                       </div>
                       <div className="w-full ">
                         <FormField
@@ -528,7 +517,7 @@ function Checkout() {
                               <FormItem>
                                 <Input
                                   type="text"
-                                  className='rounded-md w-20 bg-inputColor'
+                                  className="rounded-md w-20 bg-inputColor"
                                   placeholder="+971"
                                   maxLength={5}
                                   {...field}
@@ -546,8 +535,7 @@ function Checkout() {
                               <FormItem className=" w-full">
                                 <FormControl className="rounded-md bg-inputColor">
                                   <Input
-                                    max={999999999}
-                                    type="number"
+                                    type="text"
                                     className="w-full"
                                     placeholder="Enter your phone number"
                                     {...field}
@@ -609,24 +597,24 @@ function Checkout() {
                   <div className="relative space-y-8">
                     <div className=" max-h-60 overflow-x-auto space-y-8">
                       {cart?.cartItems?.length
-                        ? cart?.cartItems?.map((item) => {
-                          return (
-                            <div
-                              className="flex flex-row justify-between "
-                              key={item.id}
-                            >
-                              <p className="lg:text-2xl md:lg:text-xl   w-[60%]">
-                                {item?.Event?.EventDescription[0]?.name}
-                              </p>
-                              <p className="font-black text-lg lg:text-xl ">
-                                AED{' '}
-                                {(
-                                  item?.Event?.price * item?.quantity
-                                )?.toFixed(2)}
-                              </p>
-                            </div>
-                          );
-                        })
+                        ? cart?.cartItems?.map((item: any) => {
+                            return (
+                              <div
+                                className="flex flex-row justify-between "
+                                key={item.id}
+                              >
+                                <p className="lg:text-2xl md:lg:text-xl   w-[60%]">
+                                  {item?.Event?.EventDescription[0]?.name}
+                                </p>
+                                <p className="font-black text-lg lg:text-xl ">
+                                  AED{' '}
+                                  {(
+                                    item?.Event?.price * item?.quantity
+                                  )?.toFixed(2)}
+                                </p>
+                              </div>
+                            );
+                          })
                         : null}
                     </div>
                     {cart?.isDiscount ? (
