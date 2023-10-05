@@ -30,7 +30,7 @@ function Cms() {
       refetchOnWindowFocus: false,
     },
   );
-  console.log(cms,"cmscmscms")
+  console.log(cms, 'cmscmscms');
 
   // Initialize arrays to store data by type
   const staticData: any = [];
@@ -81,6 +81,43 @@ function Cms() {
                     </p>
                     <div>
                       <div>
+                        <Link
+                          href={`/admin/cms/edit/${item?.id}`}
+                          className=" rounded-full border-border"
+                        >
+                          <i className="fa-solid fa-pen-to-square hover:text-primary"></i>
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })
+            ) : (
+              <div className="flex items-center justify-center w-full text-3xl">
+                No Data Found
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="w-full">
+          <p className=" text-3xl text-gray-400 font-semibold mb-4">
+            Products CMS
+          </p>
+
+          <div className="w-full grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4  mb-10 ">
+            {eventfaqsData?.length ? (
+              eventfaqsData?.map((item: any, i: any) => {
+                return (
+                  <div
+                    key={i}
+                    className="bg-background py-4 px-4 rounded-md  w-full   shadow-lg flex flex-row items-center justify-between  "
+                  >
+                    <p className="text-lg capitalize text-primary font-semibold ">
+                      {item?.CMSDescription[0]?.title}
+                    </p>
+                    <div>
+                      <div>
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
                             <Button variant="ghost" className="h-8 w-8 p-0">
@@ -108,60 +145,17 @@ function Cms() {
                                 : 'Disabled'}
                             </DropdownMenuItem>
 
-                            {!item.is_default ? <DropdownMenuSeparator /> : null}
+                            <DropdownMenuSeparator />
 
                             {
-                              !item.is_default ? <DropdownMenuItem
-                              onClick={() =>
-                                handleCmsStatus(
-                                  item,
-                                    'delete'
-                                )
-                              }
-                            >
+                              <DropdownMenuItem
+                                onClick={() => handleCmsStatus(item, 'delete')}
+                              >
                                 Delete
-                            </DropdownMenuItem> : null
+                              </DropdownMenuItem>
                             }
-                            
                           </DropdownMenuContent>
                         </DropdownMenu>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })
-            ) : (
-              <div className="flex items-center justify-center w-full text-3xl">
-                No Data Found
-              </div>
-            )}
-          </div>
-        </div>
-
-        <div className="w-full">
-          <p className=" text-3xl text-gray-400 font-semibold mb-4">
-            Events CMS
-          </p>
-
-          <div className="w-full grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4  mb-10 ">
-            {eventfaqsData?.length ? (
-              eventfaqsData?.map((item: any, i: any) => {
-                return (
-                  <div
-                    key={i}
-                    className="bg-background py-4 px-4 rounded-md  w-full   shadow-lg flex flex-row items-center justify-between  "
-                  >
-                    <p className="text-lg capitalize text-primary font-semibold ">
-                      {item?.CMSDescription[0]?.title}
-                    </p>
-                    <div>
-                      <div>
-                        <Link
-                          href={`/admin/cms/edit/${item?.id}`}
-                          className=" rounded-full border-border"
-                        >
-                          <i className="fa-solid fa-pen-to-square hover:text-primary"></i>
-                        </Link>
                       </div>
                     </div>
                   </div>
