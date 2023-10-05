@@ -6,7 +6,6 @@ import { Input } from '~/components/ui/input';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -15,19 +14,26 @@ import {
 import { useForm } from 'react-hook-form';
 import { trpc } from '~/utils/trpc';
 import { LoadingDialog } from '~/components/common/modal/loadingModal';
+import langContent from '~/locales';
+import { useSelector } from 'react-redux';
+import { RootState } from '~/store/store';
+
+
 
 export default function ResetPassword() {
+
+  const { lang } = useSelector((state: RootState) => state.layout);
+
+
   const { toast } = useToast();
   const router = useRouter();
   const [userDetail, setUserDetail] = useState<any>(null);
-  const query = router.query;
 
   // Handle Reset Password
   const formResetPassword = useForm<any>();
   useEffect(() => {
     if (router.query) {
       setUserDetail({ ...router.query });
-      // router.replace('/reset-password');
     }
   }, []);
   console.log({userDetail})
@@ -65,16 +71,17 @@ export default function ResetPassword() {
         password: values.password,
         confirmPassword: values.confirmPassword,
       };
-      const resp: any = await customerResetPassword.mutateAsync(payload);
+      await customerResetPassword.mutateAsync(payload);
     }
   };
 
   return (
     <div className="w-full  lg:w-2/3 md:w-2/3  mt-36 mb-20 mx-auto bg-card py-10 px-5 lg:px-10 md:px-10 max-w-[1300px]">
-      <p className="text-3xl text-primary font-black px-2 lg:px-8 uppercase">Reset Password</p>
-      <Form {...formResetPassword}>
+      <p className="text-3xl text-primary font-black px-2 lg:px-8 uppercase">{langContent[lang.lang].Auth.RESETPASSWORD.HEADING}</p>
+      <Form {...formResetPassword} >
         <form
           onSubmit={formResetPassword.handleSubmit(onSubmit)}
+          dir='ltr'
           className="justify-center items-center px-2 lg:px-8 py-4 space-y-4"
         >
           <FormField
@@ -123,7 +130,7 @@ export default function ResetPassword() {
             className="w-full text-black font-sans font-[900]   text-xl tracking-[-1px] uppercase"
             variant="clip"
           >
-            Change Password
+            {langContent[lang.lang].Auth.RESETPASSWORD.BUTTON}
           </Button>
         </form>
       </Form>

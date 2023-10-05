@@ -13,11 +13,11 @@ function WhyChoose() {
 
   return (
     <div className="relative w-full mx-auto mb-2 px-4 md:px-14 sm:py-8">
-      <div className="text-gray-200 text-center text-3xl sm:text-left sm:text-5xl font-black uppercase ">
+      <div className="text-gray-200 text-center text-3xl  ltr:sm:text-left rtl:sm:text-right  sm:text-5xl font-black uppercase ">
         {langContent[lang.lang].Index.choose.HEADING}
       </div>
 
-      <div className="grid grid-cols-1  gap-8 py-8 md:grid-cols-3">
+      <div className="grid grid-cols-1 gap-8 py-8 md:grid-cols-3">
         {langContent[lang.lang].Index.choose.array?.map((item, index) => {
           return (
             <div
@@ -33,7 +33,7 @@ function WhyChoose() {
                 />
               </div>
               <div>
-                <div>
+                <div className='ltr:text-left rtl:text-right'>
                   <div className="text-2xl sm:text-4xl  leading-tight">
                     {item?.title}
                   </div>

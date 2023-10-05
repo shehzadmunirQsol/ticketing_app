@@ -6,45 +6,41 @@ import { RootState } from '~/store/store';
 import { trpc } from '~/utils/trpc';
 import { addAddressInput } from '~/schema/customer';
 import { formatTrpcError } from '~/utils/helper';
+import langContent from '~/locales';
 
 const AddressesView = () => {
   const { toast } = useToast();
   const { user } = useSelector((state: RootState) => state.auth);
+  const { lang } = useSelector((state: RootState) => state.layout);
+
   const { handleSubmit, register, setValue, getValues } =
     useForm<addAddressInput>();
   console.log({ user }, 'user');
   const [isEdit, setEdit] = useState(false);
-
-  const [action, setAction] = useState({
-    adding: {
-      text: 'ADD',
-      icon: 'fa-plus',
-    },
-    save: {
-      text: 'SAVE',
-      icon: 'fa-plus',
-    },
-  });
+  // console.log(langContent[lang.lang].MyAccount.AddressView.ADD_BUTTON,"langContent[lang.lang].MyAccount.AddressView.ADD_BUTTON")
+  // const [action, setAction] = useState({
+  //   adding: {
+  //     text: langContent[lang.lang].MyAccount.AddressView.ADD_BUTTON,
+  //     icon: 'fa-plus',
+  //   },
+  //   save: {
+  //     text: langContent[lang.lang].MyAccount.AddressView.SAVE_BUTTON,
+  //     icon: 'fa-plus',
+  //   },
+  // });
 
   const handleChange = (e: any) => {
     e.preventDefault();
-    console.log({ isEdit, action }, 'check states before', action.adding.text);
+    // console.log({ isEdit, action }, 'check states before', action.adding.text);
     setEdit(!isEdit);
   };
-  const { data, isFetching, isRefetching, isFetched, isLoading, refetch } =
+  const { data, isRefetching, isLoading, refetch } =
     trpc.customer.getAddress.useQuery(
       { customer_id: user?.id },
       {
         refetchOnWindowFocus: false,
         onSuccess: (data) => {
           if (data) {
-            setAction({
-              ...action,
-              adding: {
-                text: 'EDIT',
-                icon: 'fa-pencil',
-              },
-            });
             console.log({ data });
             setValue('city', data.city);
             setValue('phone_number', data.phone_number);
@@ -118,11 +114,17 @@ const AddressesView = () => {
       }
     } catch (error: any) {}
   }
+
+  console.log(data,"condition data")
+  const condition  = data?.postal_code || data?.street_address_1 || data?.phone_number || data?.city || data?.country
+  console.log(condition,"condition")
+
+
   console.log({ data }, 'values');
   return (
     <div className="py-4 px-6 text-[#eaeaea]">
       <p className="text-[#808080] text-sm">
-        The following addresses will be used on the checkout page by default.
+        {langContent[lang.lang].MyAccount.AddressView.INFO}
       </p>
 
       <form className="mt-4 flex ">
@@ -133,7 +135,7 @@ const AddressesView = () => {
         >
           <div className="flex justify-between items-center">
             <p className="text-md font-bold tracking-tight lead">
-              Billing Address
+              {langContent[lang.lang].MyAccount.AddressView.INFO_HEADING}
             </p>
             <button
               type={isEdit ? 'submit' : 'button'}
@@ -144,12 +146,12 @@ const AddressesView = () => {
               <span>
                 <i
                   className={`fas ${
-                    isEdit ? '' + action.save.icon : '' + action.adding.icon
+                   !condition   ? isEdit ? '' + 'fa-plus' : '' + 'fa-plus' : "fa-pencil"
                   }`}
                 ></i>
               </span>
               <p className="text-xs">
-                {isEdit ? action.save.text : action.adding.text}
+                {!condition ?  isEdit ? langContent[lang.lang].MyAccount.AddressView.SAVE_BUTTON : langContent[lang.lang].MyAccount.AddressView.ADD_BUTTON : langContent[lang.lang].MyAccount.AddressView.EDIT_BUTTON}
               </p>
             </button>
           </div>
@@ -165,17 +167,21 @@ const AddressesView = () => {
 
             {!isRefetching && !isEdit && data === null && (
               <p className=" h-24">
-                You have not set up this type of address yet.
+                {langContent[lang.lang].MyAccount.AddressView.SUB_INFO}
               </p>
             )}
 
             {!isRefetching &&
               (data && !isRefetching && !isEdit ? (
-                <div className="h-fit ">
+                <div className="h-fit" dir='ltr'>
                   <p>
                     {data?.Customer.first_name} {data?.Customer.last_name}
                   </p>
-                  <p>P.O Box {data.postal_code}</p>
+                  <p>
+                    {' '}
+                    {langContent[lang.lang].MyAccount.AddressView.BOX}{' '}
+                    {data.postal_code}
+                  </p>
                   <p>{data?.street_address_1}</p>
                   <p>{data?.phone_number}</p>
                   <p>
@@ -183,11 +189,11 @@ const AddressesView = () => {
                   </p>
                 </div>
               ) : data || isEdit ? (
-                <div className="h-fit ">
+                <div className="h-fit "  dir='ltr'>
                   <input
                     className="bg-primary-foreground p-0.5 font-sans  "
                     value={
-                      user.first_name && user.first_name + ' ' + user.last_name
+                      user?.first_name && user?.first_name + ' ' + user?.last_name
                     }
                     placeholder="Name"
                     type="text"

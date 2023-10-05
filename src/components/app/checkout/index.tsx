@@ -39,6 +39,8 @@ import Link from 'next/link';
 import Script from 'next/script';
 import jqeury from 'jquery';
 import { CardDailog } from '~/components/common/modal/cardModal';
+import langContent from '~/locales';
+
 
 import countryJSON from '~/data/countries.json';
 import { Check } from 'lucide-react';
@@ -48,6 +50,8 @@ const countries = countryJSON.map((item) => item.country);
 function Checkout() {
   const { cart, totalAmount } = useSelector((state: RootState) => state.cart);
   const { user } = useSelector((state: RootState) => state.auth);
+  const { lang } = useSelector((state: RootState) => state.layout);
+
   const router = useRouter();
   const { toast } = useToast();
   const dispatch = useDispatch();
@@ -254,7 +258,7 @@ function Checkout() {
           ></Script>
           <div className=" relative  bg-background   ">
             <h2 className="lg:text-4xl md:text-4xl text-2xl font-black uppercase mb-6">
-              Payment
+            {langContent[lang.lang].Checkout.SUB_HEADING}
             </h2>
             <form
               action={`${process.env.NEXT_PUBLIC_BASE_URL}/checkout`}
@@ -271,12 +275,12 @@ function Checkout() {
               className="justify-center items-center  py-4"
             >
               <h2 className="lg:text-5xl md:text-4xl text-2xl font-black uppercase mb-6">
-                Checkout
+              {langContent[lang.lang].Checkout.HEADING}
               </h2>
               <div className="flex flex-col gap-8 lg:flex-row md:flex-row justify-between w-full ">
                 <div className="flex-[0.55] space-y-6">
                   <h3 className="text-lg md:text-xl lg:text-2xl font-bold ">
-                    Billing Details
+                  {langContent[lang.lang].Checkout.BILL_HEADING}
                   </h3>
                   <div className="space-y-6">
                     <div className="flex flex-col lg:flex-row md:flex-row gap-2  w-full justify-between">
@@ -529,9 +533,6 @@ function Checkout() {
                             name="phone_number"
                             render={({ field }) => (
                               <FormItem className=" w-full">
-                                {/* <FormLabel className="text-sm text-cardGray">
-                            Email  <sup className="text-red-500">*</sup>
-                          </FormLabel> */}
                                 <FormControl className="rounded-md bg-inputColor">
                                   <Input
                                     type="text"
@@ -582,14 +583,14 @@ function Checkout() {
                 <div className="relative bg-background  flex-[0.45] space-y-12 z-10">
                   <div className="flex flex-row justify-between items-center">
                     <h3 className="text-lg md:text-xl lg:text-2xl font-bold">
-                      Order Summary
+                    {langContent[lang.lang].Checkout.SUMMARY_HEADING}
                     </h3>
                     {!cart.isDiscount ? (
                       <p
                         className="text-white/40 text-sm lg:text-base cursor-pointer"
                         onClick={() => setIsModal(true)}
                       >
-                        Have a coupon code?
+                        {langContent[lang.lang].Checkout.HAVE_COUPON}
                       </p>
                     ) : null}
                   </div>
@@ -621,13 +622,13 @@ function Checkout() {
                         <div className="h-[1px] bg-white/40" />
 
                         <div className="flex items-center justify-between z-10 ">
-                          <p className="text-white/40  text-lg">Sub Total:</p>
+                          <p className="text-white/40  text-lg">{langContent[lang.lang].Checkout.SUB_TOTAL}:</p>
                           <p className="text-xl">
                             AED {totalAmount?.toFixed(2)}
                           </p>
                         </div>
                         <div className="flex items-center justify-between z-10 ">
-                          <p className="text-white/40  text-lg">Discount:</p>
+                          <p className="text-white/40  text-lg">{langContent[lang.lang].Checkout.DISCOUNT}:</p>
                           <p className="text-xl">
                             {' '}
                             - AED {discountAmount?.toFixed(2)}
@@ -638,19 +639,17 @@ function Checkout() {
 
                     <div className="flex flex-row justify-between py-6 border-t border-b border-white/40">
                       <p className="lg:text-2xl md:lg:text-xl font-black">
-                        Total:
+                      {langContent[lang.lang].Checkout.TOTAL}:
                       </p>
                       <p className="font-black text-lg lg:text-xl text-primary">
                         AED {(totalAmount - discountAmount)?.toFixed(2)}
                       </p>
                     </div>
                     <p className="lg:text-base md:text-sm text-sm text-cardGray md:w-[65%] lg:w-[85%]">
-                      Your personal data will be used to process your order,
-                      support your experience throughout this website, and for
-                      other purposes described in our{' '}
+                    {langContent[lang.lang].Checkout.INFO}{' '}
                       <span className="text-white">
                         {' '}
-                        <Link href="/privacy-policy"> privacy policy </Link>
+                        <Link href="/privacy-policy"> {langContent[lang.lang].Checkout.POLICY} </Link>
                       </span>
                       .
                     </p>
@@ -666,12 +665,11 @@ function Checkout() {
                         htmlFor="terms-and-conditions"
                         className="text-sm text-cardGray cursor-pointer"
                       >
-                        I’m 18 years old or over and i have read and agree to
-                        the website
+                        {langContent[lang.lang].Checkout.SUB_INFO}
                         <span className="text-white">
                           <Link href="/cms/terms-condition">
                             {' '}
-                            Terms & Conditions{' '}
+                            {langContent[lang.lang].Checkout.TERMS_CONDITION}
                           </Link>
                         </span>
                         .
@@ -680,7 +678,7 @@ function Checkout() {
                   </div>
 
                   <div className="flex flex-row gap-4 justify-center ">
-                    <p className="text-sm text-cardGray">We accept</p>
+                    <p className="text-sm text-cardGray">{langContent[lang.lang].Checkout.ACCEPT}</p>
                     <Image
                       className="w-64 object-contain  "
                       src={Group17}
@@ -694,7 +692,7 @@ function Checkout() {
                     className="min-w-max w-full  px-16 mt-10  text-black font-sans font-[900]   text-xl tracking-[-1px]"
                     variant="clip"
                   >
-                    PAY WITH CARD
+                    {langContent[lang.lang].Checkout.PAY_BTN}
                   </Button>
 
                   <Glow className=" absolute bottom-4   -right-16  w-2/6 h-72 -z-2  " />

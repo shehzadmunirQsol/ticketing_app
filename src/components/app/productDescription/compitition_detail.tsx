@@ -13,10 +13,10 @@ const CompititionDetail = ({ data }: any) => {
   });
 
   return (
-    <section id="CompititionDetail" className="space-x-4">
+    <section id="CompititionDetail" >
       <div>
-        <div className="w-30 my-10  space-x-4 ">
-          <p className="lg:text-5xl md:text-4xl text-2xl   font-black uppercase  indent-4">
+        <div className="w-30 my-10 ">
+          <p className="lg:text-5xl md:text-4xl text-2xl   font-black uppercase">
           {langContent[lang.lang].ProductDetail.description.HEADING}
           </p>
           <div className="border-b-4 w-16 border-primary mt-4 mb-14"></div>

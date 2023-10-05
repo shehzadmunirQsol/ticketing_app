@@ -172,7 +172,7 @@ function Review(item: ReviewType) {
           {Array.from(Array(+item?.stars), (_, index) => (
             <i key={index} className="fa-solid fa-star  text-yellow-400"></i>
           ))}
-          <span className=" text-white opacity-70">Last year</span>
+          <span className=" text-white opacity-70">{item.publish}</span>
         </div>
         <div className="text-xs">{item?.desc}</div>
       </div>

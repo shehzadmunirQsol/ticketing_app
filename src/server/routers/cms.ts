@@ -8,9 +8,6 @@ import {
   cmsStatusUpdateById,
 } from '~/schema/cms';
 import { prisma } from '~/server/prisma';
-import { hashPass, isSamePass } from '~/utils/hash';
-import { serialize } from 'cookie';
-import { signJWT, verifyJWT } from '~/utils/jwt';
 
 export const cmsRouter = router({
   addCmsContent: publicProcedure
@@ -27,7 +24,7 @@ export const cmsRouter = router({
           ...eventPayload,
         };
 
-        const cms = await prisma?.cMS?.create({
+        await prisma?.cMS?.create({
           data: {
             ...payload,
             CMSDescription: { createMany: { data: eventDescPayload } },
@@ -46,6 +43,9 @@ export const cmsRouter = router({
   getCmsContent: publicProcedure.input(getCmsSchema).query(async (input) => {
     try {
       const cms = await prisma?.cMS?.findMany({
+        where:{
+          is_deleted:false
+        },
         orderBy: { created_at: 'desc' },
         include: {
           CMSDescription: true,
@@ -109,7 +109,7 @@ export const cmsRouter = router({
           ...eventPayload,
         };
 
-        const cmsUpdate: any = await prisma.cMS.update({
+        await prisma.cMS.update({
           where: {
             id: input.id,
           },
@@ -142,7 +142,7 @@ export const cmsRouter = router({
         const cms: any = await prisma?.cMS?.findUnique({
           where: { id: input.id },
         });
-        console.log(cms, 'cmscmscmscmscmscmscms');
+
         if (!cms) {
           throw new TRPCError({
             code: 'NOT_FOUND',
@@ -150,14 +150,10 @@ export const cmsRouter = router({
           });
         }
 
-        const cmsPayload = {
-          is_enabled: cms.is_enabled ? false : true,
-        };
-        const cmsUpdate: any = await prisma.cMS.update({
-          where: {
-            id: input.id,
-          },
-          data: cmsPayload,
+        const { id, ...payload } = input;
+         await prisma.cMS.update({
+          where: {id: id,},
+          data: payload,
         });
 
         return { message: 'CMS Status Updated Successfully' };

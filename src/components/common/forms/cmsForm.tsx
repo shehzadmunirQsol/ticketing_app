@@ -109,7 +109,6 @@ export default function CmsForm(props: CategoryFormInterface) {
 
     form.setValue('en.content', newContent);
   };
-  // console.log({ content });
   // updating data
   const updateCmsId = trpc.cms.updateById.useMutation({
     onSuccess: (res: any) => {
@@ -118,7 +117,6 @@ export default function CmsForm(props: CategoryFormInterface) {
         variant: 'success',
         title: 'cms Updated Successfully',
       });
-      // setEdit(false);
     },
     onError(error: any) {
       console.log(error);
@@ -236,6 +234,8 @@ export default function CmsForm(props: CategoryFormInterface) {
     },
   ];
 
+  const enabled = id ? true : false
+  console.log(enabled,"enabled")
   return (
     <Form {...form}>
       <form
@@ -262,6 +262,7 @@ export default function CmsForm(props: CategoryFormInterface) {
                     <Input
                       placeholder="Enter Page Slug"
                       defaultValue={field.value}
+                      disabled={enabled}
                       {...field}
                     />
                   </FormControl>

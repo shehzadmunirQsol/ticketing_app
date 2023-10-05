@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
   ColumnDef,
-  // ColumnFiltersState,
   SortingState,
   VisibilityState,
   flexRender,
@@ -37,7 +36,6 @@ import {
   DropdownMenuTrigger,
 } from '~/components/ui/dropdown-menu';
 import { MoreHorizontal } from 'lucide-react';
-import Link from 'next/link';
 import { OrderViewDialog } from '../modal/orderView';
 import { RootState } from '~/store/store';
 import { useSelector } from 'react-redux';
@@ -52,6 +50,8 @@ import {
   DoubleArrowLeftIcon,
   DoubleArrowRightIcon,
 } from '@radix-ui/react-icons';
+import langContent from '~/locales';
+
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 
 export type Category = {
@@ -59,7 +59,6 @@ export type Category = {
   total_amount: number;
   discount_amount: number;
   sub_total_amount: number;
-
   created_at: Date;
 };
 
@@ -69,31 +68,25 @@ interface OrderTableProps {
 }
 
 export default function OrdersDataByIdTable(props: OrderTableProps) {
-  const [sorting, setSorting] = useState<SortingState>([]);
+  const { lang } = useSelector((state: RootState) => state.layout);
   const { user } = useSelector((state: RootState) => state.auth);
-
   const router = useRouter();
 
-  //   const { customer_id, status, ...filterData } = { ...props.filters };
-  //   const [filters, setFilters] = useState<getOrder>({
-  //     ...filterData,
-  //   });
+  const [sorting, setSorting] = useState<SortingState>([]);
   const [selectedItem, setSelectedItem] = useState({});
   const [title, setTitle] = useState('');
   const [type, setType] = useState('');
   const [isModal, setIsModal] = useState(false);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
-  const [filterID, setFilterID] = useState({});
 
-  const { data, isLoading, isFetching, refetch } =
-    trpc.order.getOrders.useQuery(
-      { ...props.filters },
-      {
-        refetchOnWindowFocus: false,
-        enabled: props?.filters.customer_id ? true : false,
-      },
-    );
+  const { data, isFetching, refetch } = trpc.order.getOrders.useQuery(
+    { ...props.filters },
+    {
+      refetchOnWindowFocus: false,
+      enabled: props?.filters.customer_id ? true : false,
+    },
+  );
 
   const orderData = React.useMemo(() => {
     return Array.isArray(data?.data) ? data?.data : [];
@@ -176,9 +169,6 @@ export default function OrdersDataByIdTable(props: OrderTableProps) {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              {/* <Link href={`/admin/orders/view/${row?.original?.id}`}>
-                <DropdownMenuItem>View Order</DropdownMenuItem>
-              </Link> */}
               <DropdownMenuItem
                 onClick={() => handleView(row?.original, 'view')}
               >
@@ -207,44 +197,11 @@ export default function OrdersDataByIdTable(props: OrderTableProps) {
     },
   });
 
-  function languageHandler(params: LanguageInterface) {
-    props?.setFilters((prevFilters: any) => ({ ...prevFilters }));
-  }
-
   function handlePagination(page: number) {
     if (page < 0) return;
     props?.setFilters((prevFilters: any) => ({ ...prevFilters, first: page }));
   }
-  const roleOptions1 = [
-    {
-      Icon: 'fal fa-chevron-down',
-      text: 'Search',
-      filtername: 'searchQuery',
-      type: 'text',
-    },
 
-    {
-      Icon: 'fal fa-chevron-down',
-      text: 'From Date',
-      filtername: 'startDate',
-      type: 'date',
-    },
-    {
-      Icon: 'fal fa-chevron-down',
-      text: 'To Date',
-      filtername: 'endDate',
-      type: 'date',
-    },
-    {
-      Icon: 'fal fa-chevron-down',
-      text: 'Clear Filter',
-      filtername: 'Clear',
-    },
-  ];
-  console.log(
-    (props.filters.first + 1) * props.filters.rows > (data?.count || 0),
-    'next page',
-  );
   return (
     <div className="w-full p-2">
       {table?.getRowModel()?.rows?.length ? (
@@ -297,15 +254,20 @@ export default function OrdersDataByIdTable(props: OrderTableProps) {
                         <div className="flex flex-col my-auto h-full items-center justify-center">
                           <Image src={Current} alt="/" />
                           <p className="text-center text-gray-300 text-md my-2 px-6">
-                            No past competition entries to show. Only entries
-                            from the last 30 days will be shown.
+                            {
+                              langContent[lang.lang].MyAccount.AccountView
+                                .TABLE_INFO
+                            }
                           </p>
                           <Button
                             variant={'rounded'}
                             className="text-center font-black tracking-tighter my-4 w-36 text-xs md:w-fit md:text-md "
                             onClick={() => router.push('/cars')}
                           >
-                            EXPLORE CURRENT COMPETITIONS
+                            {
+                              langContent[lang.lang].MyAccount.AccountView
+                                .TABLE_BUTTON
+                            }
                           </Button>
                         </div>
                       </TableCell>
@@ -409,15 +371,14 @@ export default function OrdersDataByIdTable(props: OrderTableProps) {
           <div className="flex flex-col my-auto h-full items-center justify-center">
             <Image src={Current} alt="/" />
             <p className="text-center text-gray-300 text-md my-2 px-6">
-              No past competition entries to show. Only entries from the last 30
-              days will be shown.
+              {langContent[lang.lang].MyAccount.AccountView.TABLE_INFO}
             </p>
             <Button
               variant={'rounded'}
               className="text-center font-black tracking-tighter my-4 w-full h-fit text-xs sm:w-fit md:text-md "
               onClick={() => router.push('/cars')}
             >
-              EXPLORE CURRENT COMPETITIONS
+              {langContent[lang.lang].MyAccount.AccountView.TABLE_BUTTON}
             </Button>
           </div>
         </>
