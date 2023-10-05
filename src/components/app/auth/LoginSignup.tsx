@@ -57,7 +57,7 @@ export default function LoginSignup() {
   const formSignup = useForm<signupCustomerInput>({
     resolver: zodResolver(signupCustomerSchemaInput),
     defaultValues: {
-      code: '+971',
+      code: '',
     },
   });
   const formLogin = useForm<loginCustomerInput>({
@@ -330,7 +330,7 @@ export default function LoginSignup() {
 
                   <div className="flex flex-col sm:flex-row justify-center items-start gap-2">
                     <div className="w-full">
-                      <p className="text-xs font-thin text-grayColor  mb-3 ">
+                      <p className="text-xs font-thin text-grayColor  mb-3 mt-1 ">
                         Phone Number <sup className="">*</sup>
                       </p>
                       <div className="flex flex-row gap-2 ">
