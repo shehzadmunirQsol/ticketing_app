@@ -17,7 +17,7 @@ import {
   SelectValue,
 } from '~/components/ui/select';
 
-import countryJSON from "~/data/countries.json";
+import countryJSON from '~/data/countries.json';
 const countries = countryJSON.map((item) => item.country);
 
 import {
@@ -40,7 +40,6 @@ import { userAuth } from '~/store/reducers/auth';
 import { LoadingDialog } from '~/components/common/modal/loadingModal';
 import langContent from '~/locales';
 
-
 const AccountDetails = () => {
   const { toast } = useToast();
   const { user } = useSelector((state: RootState) => state.auth);
@@ -56,7 +55,7 @@ const AccountDetails = () => {
       first_name: user?.first_name,
       last_name: user?.last_name,
       dob: user?.dob?.toISOString()?.split('T')[0],
-      country:user?.country 
+      country: user?.country,
     },
   });
 
@@ -98,9 +97,9 @@ const AccountDetails = () => {
   return (
     <div className="py-4 px-6 text-[#eaeaea] ">
       <p className=" font-bold text-2xl mb-6 text-white">
-      {langContent[lang.lang].MyAccount.AccountDetail.HEADING}
+        {langContent[lang.lang].MyAccount.AccountDetail.HEADING}
       </p>
-      <div dir='ltr' className="space-y-32 ">
+      <div dir="ltr" className="space-y-32 ">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmitAccountDetail)}
@@ -171,10 +170,7 @@ const AccountDetails = () => {
               )}
             />
 
-
-
             <div className="flex flex-col sm:flex-row justify-center items-center gap-2">
-
               <FormField
                 control={form.control}
                 name="dob"
@@ -203,36 +199,37 @@ const AccountDetails = () => {
               <FormField
                 control={form.control}
                 name="country"
-
                 render={({ field }) => (
                   <FormItem className="flex flex-col gap-2 mt-2 w-full">
                     <FormLabel className="text-xs  font-thin text-grayColor">
-                      Country/ Region{' '}
-                      <sup className="text-white">*</sup>
+                      Country/ Region <sup className="text-white">*</sup>
                     </FormLabel>
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                       value={field.value}
-                      
                     >
-                      <FormControl className=''>
-                        <SelectTrigger className=" rounded-md h-10   bg-inputColor" placeholder='Select your country' >
-                          <SelectValue placeholder="Select your country" className='' />
+                      <FormControl className="">
+                        <SelectTrigger
+                          className=" rounded-md h-10   bg-inputColor"
+                          placeholder="Select your country"
+                        >
+                          <SelectValue
+                            placeholder="Select your country"
+                            className=""
+                          />
                         </SelectTrigger>
                       </FormControl>
-                      <SelectContent className='max-h-[300px] overflow-y-auto'>
+                      <SelectContent className="max-h-[300px] overflow-y-auto">
                         <SelectGroup>
-                          {countries && countries?.map((country, i) => {
-                            return (
-                              <SelectItem
-                                key={country}
-                                value={country}
-                              >
-                                {country?.toUpperCase()}
-                              </SelectItem>
-                            )
-                          })}
+                          {countries &&
+                            countries?.map((country, i) => {
+                              return (
+                                <SelectItem key={country} value={country}>
+                                  {country?.toUpperCase()}
+                                </SelectItem>
+                              );
+                            })}
                         </SelectGroup>
                       </SelectContent>
                     </Select>
@@ -243,7 +240,6 @@ const AccountDetails = () => {
                   </FormItem>
                 )}
               />
-
             </div>
 
             <div className=" flex items-center ltr:justify-end rtl:justify-start">
@@ -319,8 +315,10 @@ function PasswordChange({ email }: any) {
 
   return (
     <div className="py-4 text-[#eaeaea]">
-      <p className=" font-bold text-2xl mb-6 text-white">{langContent[lang.lang].MyAccount.AccountDetail.SUB_HEADING}</p>
-      <div dir='ltr'>
+      <p className=" font-bold text-2xl mb-6 text-white">
+        {langContent[lang.lang].MyAccount.AccountDetail.SUB_HEADING}
+      </p>
+      <div dir="ltr">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmitAccountPassword)}
@@ -418,7 +416,6 @@ function DeleteAccount({ email }: any) {
   const { user } = useSelector((state: RootState) => state.auth);
   const { lang } = useSelector((state: RootState) => state.layout);
 
-
   // 1. Define your form.
   const form = useForm<deleteMyAccountCustomerSchemaInput>({
     resolver: zodResolver(deleteMyAccountCustomerSchema),
@@ -473,10 +470,10 @@ function DeleteAccount({ email }: any) {
   return (
     <div className="py-4 px-6 text-[#eaeaea]">
       <p className=" font-bold text-2xl text-white">
-      {langContent[lang.lang].MyAccount.AccountDetail.DELETE_HEADING}
+        {langContent[lang.lang].MyAccount.AccountDetail.DELETE_HEADING}
       </p>
       <p className="text-grayColor text-sm">
-      {langContent[lang.lang].MyAccount.AccountDetail.DELETE_INFO}
+        {langContent[lang.lang].MyAccount.AccountDetail.DELETE_INFO}
       </p>
       <div>
         <Form {...form}>
@@ -494,40 +491,43 @@ function DeleteAccount({ email }: any) {
                 />
               </div>
               <p className="text-sm">
-              {langContent[lang.lang].MyAccount.AccountDetail.UNDERSTAND}
+                {langContent[lang.lang].MyAccount.AccountDetail.UNDERSTAND}
               </p>
             </div>
 
             <p className="  text-xl text-white mb-5 mt-10 ">
-            {langContent[lang.lang].MyAccount.AccountDetail.OPTIONAL}
+              {langContent[lang.lang].MyAccount.AccountDetail.OPTIONAL}
             </p>
 
-            {langContent[lang.lang].MyAccount.AccountDetail.accountArgumentsOptions?.map((item, i) => {
-              return (
-                <div
-                  className="flex flex-row gap-2 justify-start w-full  items-center cursor-pointer"
-                  key={i}
-                  onClick={() => handleDivClick(item.text)}
-                >
-                  <div>
-                    <Input
-                      type="checkbox"
-                      className="accent-white text-2xl "
-                      checked={reason.includes(item?.text)}
-                      disabled={user?.is_disabled}
-                    />
+            {langContent[
+              lang.lang
+            ].MyAccount.AccountDetail.accountArgumentsOptions?.map(
+              (item, i) => {
+                return (
+                  <div
+                    className="flex flex-row gap-2 justify-start w-full  items-center cursor-pointer"
+                    key={i}
+                    onClick={() => handleDivClick(item.text)}
+                  >
+                    <div>
+                      <Input
+                        type="checkbox"
+                        className="accent-white text-2xl "
+                        checked={reason.includes(item?.text)}
+                        disabled={user?.is_disabled}
+                      />
+                    </div>
+                    <p className="text-lightTextColor text-sm">{item.text}</p>
                   </div>
-                  <p className="text-lightTextColor text-sm">{item.text}</p>
-                </div>
-              );
-            })}
+                );
+              },
+            )}
 
             <FormField
-            
               control={form.control}
               name="message"
               render={({ field }) => (
-                <FormItem className="mb-6 lg:mb-10 md:mb-10 " dir='ltr'>
+                <FormItem className="mb-6 lg:mb-10 md:mb-10 " dir="ltr">
                   <FormLabel className="text-xs  font-thin text-grayColor">
                     Add your comment:
                   </FormLabel>
@@ -551,7 +551,7 @@ function DeleteAccount({ email }: any) {
                 variant="clip"
                 disabled={user?.is_disabled}
               >
-                      {langContent[lang.lang].MyAccount.AccountDetail.BUTTON_CONTENT}
+                {langContent[lang.lang].MyAccount.AccountDetail.BUTTON_CONTENT}
               </Button>
             </div>
           </form>

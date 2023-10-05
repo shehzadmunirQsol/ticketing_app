@@ -7,7 +7,7 @@ function SpotLight() {
   return (
     <div className="justify-center items-center px-8 py-4">
       <div className="flex items-center justify-between mb-4">
-        <div className=" text-4xl font-semibold">Spot Light</div>
+        <div className=" text-4xl font-semibold">Winnar Wonders</div>
         <Link href="/admin/settings/spotlight/add">
           <Button type="submit" variant={'clip'} className="w-28">
             Add

@@ -209,7 +209,7 @@ const SIDEBAR_DATA = [
         key: '/admin/settings/spotlight',
 
         icon: <i className="fa-solid fa-image p-4 rounded-full" />,
-        title: 'Spot Light',
+        title: 'Winnar Wonders',
       },
     ],
   },

@@ -74,33 +74,8 @@
   background: url(../public/assets/newbg.png) center no-repeat;
   background-size: 100% 100%;
   height: auto;
-  /* max-width: 1366px;
-  max-height: 768px; */
 }
-/* .banner_img:after {
-  background: url(../public/assets/slants.png);
-  content: ' ';
-  position: absolute;
-  height: 850px;
-  width: 1000px;
-  bottom: 0;
-  background-size: contain;
-  background-repeat: no-repeat;
-  transform: scaleY(1) scale(-1);
-  left: -416px;
-}
-.banner_img:before {
-  background: url(../public/assets/slants.png);
-  content: ' ';
-  position: absolute;
-  height: 750px;
-  width: 1000px;
-  top: 0;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: bottom;
-  right: -22vw;
-} */
+
 .banner-slide {
   margin-top: 20vh;
   display: flex;
@@ -113,8 +88,6 @@
 .banner_img_flip {
   background: url(../public/assets/flip-background.png) center no-repeat;
   background-size: 100vw 100vh;
-  /* max-width: 1366px;
-  max-height: 768px; */
 }
 
 .scroll-hide {
@@ -134,16 +107,8 @@
 }
 
 @media screen and (max-width: 1024px) {
-  /* .banner_img_flip {
-    background: none;
-  }
-
-  .banner_img {
-    background: none;
-  } */
   .banner-slide {
     flex-direction: column-reverse;
-    /* display: block !important; */
   }
   .banner_img::after {
     content: '';
@@ -402,7 +367,6 @@ html {
 
 .content-details {
   position: absolute;
-  /* text-align: center; */
   padding-left: 1em;
   padding-right: 1em;
   width: 100%;
@@ -430,8 +394,6 @@ html {
 .content-details h2 {
   color: #060a0d;
   font-weight: 900;
-  /* letter-spacing: 0.15em;
-    margin-bottom: 0.2em; */
   text-transform: uppercase;
 }
 
@@ -500,7 +462,6 @@ html {
 }
 .display-area {
   width: 880px;
-  /*   border: 1px solid black; */
   overflow-x: hidden;
   margin: auto;
 }
@@ -513,8 +474,6 @@ html {
 
 .dot {
   border: none;
-  /* background: rgba(0, 0, 0, 0.2); */
-  /* background: WHITE; */
   width: 20px;
   height: 20px;
   margin: 5px;
@@ -910,14 +869,40 @@ input[type='radio']:not(:checked) + section.box .icon-class {
   align-items: center;
 }
 
+.alpha li {
+  list-style-type: lower-alpha !important;
+  /* list-style-position: inside; */
+}
+.decimal li {
+  list-style-type: decimal;
+  /* list-style-position: inside; */
+}
 
-input::-webkit-outer-spin-button,
+.cmsStyle h1 {
+  font-size: 32px;
+}
+.cmsStyle h2 {
+  font-size: 24px;
+}
+.cmsStyle h3 {
+  font-size: 20px;
+}
+.cmsStyle h4 {
+  font-size: 16px;
+}
+.cmsStyle h5 {
+  font-size: 12.8px;
+}
+.cmsStyle h6 {
+  font-size: 11.2px;
+}
+
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
 /* Firefox */
-input[type=number] {
+input[type='number'] {
   -moz-appearance: textfield;
 }

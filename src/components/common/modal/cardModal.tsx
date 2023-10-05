@@ -13,10 +13,10 @@ import { trpc } from '~/utils/trpc';
 import { LoadingDialog } from './loadingModal';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
+
 interface CardDialogInterface {
   selectedItem: any;
   isModal: boolean;
-
   setSelectedItem: any;
   setIsModal: any;
   type: string;
