@@ -25,6 +25,7 @@ export const eventRouter = router({
       const where: any = {
         is_deleted: false,
         lang_id: input.lang_id,
+        draw_date: null,
         ...filterPayload,
       };
       if (input?.filters?.searchQuery) {

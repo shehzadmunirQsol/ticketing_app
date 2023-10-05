@@ -57,7 +57,7 @@ export default function LoginSignup() {
   const formSignup = useForm<signupCustomerInput>({
     resolver: zodResolver(signupCustomerSchemaInput),
     defaultValues: {
-      code: '+971',
+      code: '',
     },
   });
   const formLogin = useForm<loginCustomerInput>({
@@ -106,7 +106,7 @@ export default function LoginSignup() {
   const onSubmitSignup = async (values: any) => {
     try {
       formLogin.reset();
-       await registerCustomer.mutateAsync(values);
+      await registerCustomer.mutateAsync(values);
       setOtpIsModal(true);
     } catch (e: any) {
       setOtpIsModal(false);
@@ -330,7 +330,7 @@ export default function LoginSignup() {
 
                   <div className="flex flex-col sm:flex-row justify-center items-start gap-2">
                     <div className="w-full">
-                      <p className="text-xs text-grayColor  mb-3 ">
+                      <p className="text-xs font-thin text-grayColor  mb-3 mt-1 ">
                         Phone Number <sup className="">*</sup>
                       </p>
                       <div className="flex flex-row gap-2 ">
@@ -339,30 +339,13 @@ export default function LoginSignup() {
                           name="code"
                           render={({ field }) => (
                             <FormItem>
-                              <Select
-                                onValueChange={field.onChange}
-                                defaultValue={field.value}
-                                value={field.value}
-                              >
-                                <FormControl>
-                                  <SelectTrigger className=" h-10  ">
-                                    <SelectValue placeholder="+971" />
-                                  </SelectTrigger>
-                                </FormControl>
-                                <SelectContent>
-                                  <SelectGroup>
-                                    {countryCode?.map((item) => (
-                                      <SelectItem
-                                        key={item.code}
-                                        value={item.code}
-                                      >
-                                        {item?.code}
-                                      </SelectItem>
-                                    ))}
-                                  </SelectGroup>
-                                </SelectContent>
-                              </Select>
-
+                              <Input
+                                type="text"
+                                className="rounded-md w-20 "
+                                placeholder="+971"
+                                maxLength={5}
+                                {...field}
+                              />
                               <div className="relative pb-2">
                                 <FormMessage />
                               </div>

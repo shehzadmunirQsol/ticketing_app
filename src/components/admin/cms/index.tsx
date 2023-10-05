@@ -107,8 +107,8 @@ function Cms() {
                                 ? 'Enabled'
                                 : 'Disabled'}
                             </DropdownMenuItem>
-                            <DropdownMenuSeparator />
 
+                            {!item.is_default ? <DropdownMenuSeparator /> : null}
 
                             {
                               !item.is_default ? <DropdownMenuItem
@@ -119,9 +119,6 @@ function Cms() {
                                 )
                               }
                             >
-                              {/* {item.is_enabled === true
-                                ? 'Enabled'
-                                : 'Disabled'} */}
                                 Delete
                             </DropdownMenuItem> : null
                             }

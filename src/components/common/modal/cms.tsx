@@ -26,7 +26,7 @@ export function CmsDailog(props: SettingDialogInterface) {
   const { toast } = useToast();
   const [loading, setLoading] = useState<boolean>(false);
 
-  console.log(props, 'propspropspropsprops');
+  console.log(props    , 'propspropspropsprops');
 
   // Update CMS Status
   const updateCmsStatusData = trpc.cms.cmsStatusUpdateById.useMutation({
@@ -61,13 +61,6 @@ export function CmsDailog(props: SettingDialogInterface) {
       if (result) {
         setLoading(false);
         props.setIsModal(false);
-        // toast({
-        //   variant: `${props?.type === 'enable' ? 'success' : 'disable'}`,
-        //   title: `${props?.title} ${
-        //     props?.type === 'enable' ? 'Enabled' : 'Disabled'
-        //   } Successfully`,
-        // });
-
         toast({
           variant: `${
             props?.type === 'enable'
@@ -109,11 +102,12 @@ export function CmsDailog(props: SettingDialogInterface) {
               <div className="flex flex-col gap-4 mt-4">
                 <div className="  flex gap-2 items-center p-2  ">
                   <p>
-                    Are You Sure You Want to{' '}
+                    Are You Sure You Want to {props?.type}{' '}
                     <span className="text-primary capitalize">
-                      {props?.type}
+                      {props?.selectedItem?.CMSDescription?.length ? props?.selectedItem?.CMSDescription[0]?.title : "" }
+                      {/* {props?.type} */}
                     </span>{' '}
-                    This Page?
+                     Page?
                   </p>
                 </div>
               </div>

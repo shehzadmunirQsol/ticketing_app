@@ -81,7 +81,11 @@ export const signupCustomerSchemaInput = z.object({
     .max(30, {
       message: 'lastname must not exceed 30 characters',
     }),
-  code: z.string(),
+  code: z.string({ required_error: 'Enter code' })
+    .regex(new RegExp(/^(00|\+)[0-9]+$/), 'Invalid code')
+    .min(1, {
+      message: 'Enter code',
+    }).trim(),
   phone_number: z
     .string({
       required_error: 'Please enter your phone no',
