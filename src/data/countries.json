@@ -1365,7 +1365,7 @@
     "intermediate-region-code": ""
   },
   {
-    "country": "Iran (Islamic Republic of)",
+    "country": "Iran",
     "alpha-2": "IR",
     "alpha-3": "IRN",
     "country-code": "364",
@@ -1534,7 +1534,7 @@
     "intermediate-region-code": ""
   },
   {
-    "country": "Korea (Democratic People's Republic of)",
+    "country": "Korea",
     "alpha-2": "KP",
     "alpha-3": "PRK",
     "country-code": "408",
@@ -2418,7 +2418,7 @@
     "intermediate-region-code": "029"
   },
   {
-    "country": "Saint Helena, Ascension and Tristan da Cunha",
+    "country": "Saint Helena",
     "alpha-2": "SH",
     "alpha-3": "SHN",
     "country-code": "654",
@@ -2457,7 +2457,7 @@
     "intermediate-region-code": "029"
   },
   {
-    "country": "Saint Martin (French part)",
+    "country": "Saint Martin",
     "alpha-2": "MF",
     "alpha-3": "MAF",
     "country-code": "663",
@@ -2691,7 +2691,7 @@
     "intermediate-region-code": "018"
   },
   {
-    "country": "South Georgia and the South Sandwich Islands",
+    "country": "South Sandwich Islands",
     "alpha-2": "GS",
     "alpha-3": "SGS",
     "country-code": "239",
@@ -3042,7 +3042,7 @@
     "intermediate-region-code": ""
   },
   {
-    "country": "United Kingdom of Great Britain and Northern Ireland",
+    "country": "United Kingdom",
     "alpha-2": "GB",
     "alpha-3": "GBR",
     "country-code": "826",
@@ -3065,19 +3065,6 @@
     "intermediate-region": "",
     "region-code": "019",
     "sub-region-code": "021",
-    "intermediate-region-code": ""
-  },
-  {
-    "country": "United States Minor Outlying Islands",
-    "alpha-2": "UM",
-    "alpha-3": "UMI",
-    "country-code": "581",
-    "iso_3166-2": "ISO 3166-2:UM",
-    "region": "Oceania",
-    "sub-region": "Micronesia",
-    "intermediate-region": "",
-    "region-code": "009",
-    "sub-region-code": "057",
     "intermediate-region-code": ""
   },
   {

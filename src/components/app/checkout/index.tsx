@@ -71,8 +71,8 @@ function Checkout() {
       customer_id: cart.customer_id ?? 0,
       first_name: user?.first_name,
       last_name: user?.last_name,
-      code: '+971',
-      country: 'United Arab Emirates',
+      code: user?.code,
+      country: user?.country,
       state: '',
 
       dob: user?.dob,
@@ -112,6 +112,10 @@ function Checkout() {
         form.setValue(
           'phone_number',
           user?.CustomerAddress[0]?.phone_number ?? '',
+        );
+        form.setValue(
+          'code',
+          user?.code ?? '',
         );
         form.setValue(
           'postal_code',

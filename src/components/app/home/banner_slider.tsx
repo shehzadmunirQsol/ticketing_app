@@ -93,9 +93,8 @@ function BannerSlider() {
 
   return (
     <div
-      className={`mdx:py-10 lg:py-20 transition-all ease-in-out ${
-        lang.dir === 'ltr' ? 'banner_img' : 'banner_img_flip'
-      }`}
+      className={`mdx:py-10 lg:py-20 transition-all ease-in-out ${lang.dir === 'ltr' ? 'banner_img' : 'banner_img_flip'
+        }`}
     >
       {isSuccess && carSlider?.length ? (
         <>
@@ -103,29 +102,30 @@ function BannerSlider() {
             {/* text content */}
 
             <div
-              className={` md:self-start md:flex-1  ${
-                showElement ? 'fading-animation' : ''
-              } transition-all  duration-500 ease-in-out items-center text-white z-40`}
+              className={` md:self-start md:flex-1  ${showElement ? 'fading-animation' : ''
+                } transition-all  duration-500 ease-in-out items-center text-white z-40`}
             >
-              <p className="px-4 text-2xl  sm:text-4xl md:text-5xl lg:text-[calc(3vw+10px)] xl:text-[55px] font-[900] leading-[-1px] tracking-[-1px] ">
-                {carSlider[currentIndex]?.title}
-              </p>
-              {carSlider[currentIndex]?.price ? (
-                <p className="px-4 text-2xl sm:text-4xl md:text-5xl lg:text-[calc(3vw+10px)] xl:text-[55px] tracking-[-1px] leading-[-2px] py-2 md:py-1 ">
-                  + {carSlider[currentIndex]?.price}
+              <div className='px-4  space-y-1 sm:space-y-1.5 md:space-y-2 lg:space-y-3'>
+                <p className=" text-2xl  sm:text-4xl md:text-5xl lg:text-[calc(3vw+10px)] xl:text-[55px] font-[900]  tracking-[-1px] ">
+                  {carSlider[currentIndex]?.title}
                 </p>
-              ) : (
-                ''
-              )}
-              <p className="sm:block px-4 text-lg md:text-xl  font-normal leading-[-2px] ">
-                {carSlider[currentIndex]?.description}
-              </p>
-              <p className="px-4 text-lg  sm:text-2xl tracking-[-1px] leading-[-2px] font-[700]  my-3">
-                {carSlider[currentIndex]?.date}
-              </p>
+                {carSlider[currentIndex]?.price ? (
+                  <p className="text-2xl sm:text-4xl md:text-5xl lg:text-[calc(3vw+10px)] xl:text-[55px] tracking-[-1px]  ">
+                    + {carSlider[currentIndex]?.price}
+                  </p>
+                ) : (
+                  ''
+                )}
+                <p className="sm:block  text-lg md:text-xl  font-normal  ">
+                  {carSlider[currentIndex]?.description}
+                </p>
+                <p className=" text-lg  sm:text-2xl tracking-[-1px]  font-[700]  ">
+                  {carSlider[currentIndex]?.date}
+                </p>
+              </div>
               <>
                 <Button
-                  className=" mb-2 lg:mb-0 mx-4 min-w-fit sm:w-44 text-black font-sans font-[900]  tracking-[-1px] "
+                  className=" mb-2 lg:mb-0 mx-4 min-w-fit sm:w-44 text-black font-sans font-[900] mt-3  tracking-[-1px] "
                   variant="clip"
                   onClick={() => {
                     router.push(carSlider[currentIndex]?.link);
@@ -139,8 +139,7 @@ function BannerSlider() {
             {/* text select cards */}
             <Image
               className={`py-4 lg:p-0 w-10/12 lg:w-1/2 self-center object-contain object-bottom transform rtl:-scale-x-100 ltr:scale-100 ltr:right-6 rtl:left-4 md:ltr:-right-40 md:rtl:-left-16                
-                ${
-                  showElement ? 'fading-animation' : ''
+                ${showElement ? 'fading-animation' : ''
                 } transition-all duration-500 ease-in-out items-end
                 
                 `}
@@ -160,11 +159,10 @@ function BannerSlider() {
                   onClick={() => goToSlide(i)}
                 >
                   <div
-                    className={`border-2 p-3 ${
-                      currentIndex === i
-                        ? 'border-primary'
-                        : 'border-transparent'
-                    } group-hover:border-primary`}
+                    className={`border-2 p-3 ${currentIndex === i
+                      ? 'border-primary'
+                      : 'border-transparent'
+                      } group-hover:border-primary`}
                   >
                     <Image
                       src={renderNFTImage(item)}
