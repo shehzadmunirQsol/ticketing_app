@@ -118,12 +118,12 @@ export function isValidEmail(email: any) {
 }
 
 export async function createSlug(input: any) {
-  console.log(input, 'frontinput');
   const lowercaseInput = input?.toLowerCase();
   const cleanedInput = lowercaseInput.replace(/[^\w\s-]/g, '');
   const slug = cleanedInput.replace(/\s+/g, '-');
   return slug.replace(/^-+|-+$/g, '');
 }
+
 type AvailableTicketsType = {
   event: {
     total_tickets: number;
