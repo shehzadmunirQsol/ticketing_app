@@ -176,3 +176,7 @@ export const EMAIL_TEMPLATE_IDS = {
   ORDER_FAILED: 9,
   NEW_REGISTERED_USER: 10,
 };
+
+export const priceTranslator=(price:number, lang="en")=>{
+  return price.toLocaleString(`${lang}-EG`)
+}
