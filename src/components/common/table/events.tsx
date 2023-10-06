@@ -66,6 +66,8 @@ export type Category = {
   total_tickets: number;
   tickets_sold: number;
   user_ticket_limit: number;
+  is_cash_alt: boolean;
+  cash_alt: number;
   launch_date: Date;
   end_date: Date;
   created_at: Date;
@@ -191,6 +193,24 @@ export default function EventsDataTable() {
           {row?.original?.user_ticket_limit}
           &nbsp;
           <sub>qty</sub>
+        </p>
+      ),
+    },
+    {
+      accessorKey: 'Alternative Selling Option',
+      header: 'Alternative Selling Option',
+      cell: ({ row }) => (
+        <p className="w-48 text-center text-ellipsis whitespace-nowrap overflow-hidden">
+          {row?.original?.is_cash_alt ? 'Yes' : 'No'}
+        </p>
+      ),
+    },
+    {
+      accessorKey: 'Cash Amount',
+      header: 'Cash Amount',
+      cell: ({ row }) => (
+        <p className="w-32 text-center text-ellipsis whitespace-nowrap overflow-hidden">
+          {row?.original?.is_cash_alt ? row?.original?.cash_alt : 'N/A'}
         </p>
       ),
     },
@@ -348,6 +368,8 @@ export default function EventsDataTable() {
       'Token Cap',
       'Token Purchased',
       'Per User Limit',
+      'Alternative Selling Option',
+      'Cash Amount',
       'Launched Date',
       'End Date',
       'Created At',
@@ -361,6 +383,8 @@ export default function EventsDataTable() {
         total_tickets,
         tickets_sold,
         user_ticket_limit,
+        is_cash_alt,
+        cash_alt,
         launch_date,
         end_date,
         created_at,
@@ -372,6 +396,8 @@ export default function EventsDataTable() {
         total_tickets,
         tickets_sold,
         user_ticket_limit,
+        is_cash_alt ? 'Yes' : 'No',
+        is_cash_alt ? cash_alt : 'N/A',
         launch_date?.toLocaleDateString(),
         end_date?.toLocaleDateString(),
         created_at?.toLocaleDateString(),

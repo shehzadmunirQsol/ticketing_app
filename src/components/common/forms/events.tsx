@@ -85,6 +85,7 @@ export default function EventForm() {
       type: 'number',
       name: 'price',
       label: 'Token Price',
+      min: 2,
 
       placeholder: 'Please Enter Token Price',
     },
@@ -115,12 +116,15 @@ export default function EventForm() {
       type: 'number',
       name: 'total_tickets',
       label: 'Total Cap',
+      min: 50,
+
       placeholder: 'Please Enter Total Cap',
     },
     {
       type: 'number',
       name: 'user_ticket_limit',
       label: 'Per User Cap',
+      min: 10,
       placeholder: 'Please Enter Per User Cap',
     },
 
@@ -148,8 +152,7 @@ export default function EventForm() {
     {
       type: 'switch_text',
       name: 'cash_alt',
-      label: 'Alternative Selling Option',
-
+      label: 'Cash Amount',
       placeholder: 'Please Enter Price',
     },
   ];
@@ -351,7 +354,7 @@ export default function EventForm() {
   };
 
   const header = renderHeader();
-console.log(form.getValues(),"form.getValues")
+  console.log(form.getValues(), 'form.getValues');
   return (
     <>
       <Form {...form}>
@@ -599,8 +602,8 @@ console.log(form.getValues(),"form.getValues")
                             <FormControl>
                               <Input
                                 type={'number'}
-                                defaultValue={1}
-                                min={1}
+                                defaultValue={item?.min}
+                                min={item?.min}
                                 max={max}
                                 placeholder={item?.placeholder}
                                 {...form.register(item?.name, {
@@ -705,7 +708,7 @@ console.log(form.getValues(),"form.getValues")
                                 value={field.value + ''}
                               >
                                 <FormControl>
-                                  <SelectTrigger className=" rounded-none bg-background ">
+                                  <SelectTrigger className=" rounded-none bg-inputColor ">
                                     <SelectValue
                                       placeholder={'Select Category'}
                                     />
