@@ -327,10 +327,10 @@ export default function LoginSignup() {
 
                   <div className="flex flex-col sm:flex-row justify-center items-start gap-2">
                     <div className="w-full">
-                      <p className="text-xs font-thin text-grayColor  mb-3 mt-1 ">
+                      <FormLabel className="text-xs font-thin text-grayColor">
                         Phone Number <sup className="">*</sup>
-                      </p>
-                      <div className="flex flex-row gap-2 ">
+                      </FormLabel>
+                      <div className="flex flex-row gap-2 mt-2 ">
                         <FormField
                           control={formSignup.control}
                           name="code"
