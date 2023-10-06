@@ -418,7 +418,7 @@ export function SpotLightForm() {
         <div className="flex items-center justify-between">
           <div></div>
           <Button type="submit" variant={'clip'} className="w-1/2">
-            {index ? 'Edit Spot Light' : 'Add Spot Light'}
+            {index ? 'Edit Winnar Wonders' : 'Add Winnar Wonders'}
           </Button>
         </div>
       </form>

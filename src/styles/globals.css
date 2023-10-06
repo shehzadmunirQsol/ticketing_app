@@ -869,7 +869,6 @@ input[type='radio']:not(:checked) + section.box .icon-class {
   align-items: center;
 }
 
-
 .alpha li {
   list-style-type: lower-alpha !important;
   /* list-style-position: inside; */
@@ -879,33 +878,30 @@ input[type='radio']:not(:checked) + section.box .icon-class {
   /* list-style-position: inside; */
 }
 
-
-
-.cmsStyle h1{
+.cmsStyle h1 {
   font-size: 32px;
 }
-.cmsStyle h2{
+.cmsStyle h2 {
   font-size: 24px;
 }
-.cmsStyle h3{
+.cmsStyle h3 {
   font-size: 20px;
 }
-.cmsStyle h4{
+.cmsStyle h4 {
   font-size: 16px;
 }
-.cmsStyle h5{
+.cmsStyle h5 {
   font-size: 12.8px;
 }
-.cmsStyle h6{
+.cmsStyle h6 {
   font-size: 11.2px;
 }
-input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
 /* Firefox */
-input[type=number] {
+input[type='number'] {
   -moz-appearance: textfield;
 }

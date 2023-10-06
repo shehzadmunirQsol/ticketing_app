@@ -118,12 +118,12 @@ export function isValidEmail(email: any) {
 }
 
 export async function createSlug(input: any) {
-  console.log(input, 'frontinput');
   const lowercaseInput = input?.toLowerCase();
   const cleanedInput = lowercaseInput.replace(/[^\w\s-]/g, '');
   const slug = cleanedInput.replace(/\s+/g, '-');
   return slug.replace(/^-+|-+$/g, '');
 }
+
 type AvailableTicketsType = {
   event: {
     total_tickets: number;
@@ -172,7 +172,11 @@ export const EMAIL_TEMPLATE_IDS = {
   CONTACT_MAIN: 4,
   FORGET_PASSWORD: 5,
   SELECT_WINNER: 7,
-  ORDER_SUCCESS: 8,
+  ORDER_SUCCESS: 30,
   ORDER_FAILED: 9,
   NEW_REGISTERED_USER: 10,
 };
+
+export const priceTranslator=(price:number, lang="en")=>{
+  return price.toLocaleString(`${lang}-EG`)
+}
