@@ -283,7 +283,7 @@ function Checkout() {
                   {langContent[lang.lang].Checkout.BILL_HEADING}
                   </h3>
                   <div className="space-y-6">
-                    <div className="flex flex-col lg:flex-row md:flex-row gap-2  w-full justify-between">
+                    <div className="flex flex-col lg:flex-row md:flex-row gap-2  w-full justify-between" dir='ltr'>
                       <FormField
                         control={form.control}
                         name="first_name"
@@ -328,7 +328,7 @@ function Checkout() {
                       />
                     </div>
 
-                    <div className="flex flex-col gap-y-3">
+                    <div className="flex flex-col gap-y-3" dir='ltr'>
                       <FormField
                         control={form.control}
                         name="street_address"
@@ -371,7 +371,7 @@ function Checkout() {
                       />
                     </div>
 
-                    <div className="flex flex-col lg:flex-row md:flex-row gap-2  w-full justify-between">
+                    <div className="flex flex-col lg:flex-row md:flex-row gap-2  w-full justify-between" dir='ltr'>
                       <div className="w-full ">
                         <FormField
                           control={form.control}
@@ -438,7 +438,7 @@ function Checkout() {
                         />
                       </div>
                     </div>
-                    <div className="flex flex-col lg:flex-row md:flex-row gap-2  w-full justify-between">
+                    <div className="flex flex-col lg:flex-row md:flex-row gap-2  w-full justify-between" dir='ltr'>
                       <FormField
                         control={form.control}
                         name="city"
@@ -486,7 +486,7 @@ function Checkout() {
                       control={form.control}
                       name="email"
                       render={({ field }) => (
-                        <FormItem className=" w-full">
+                        <FormItem className=" w-full" dir='ltr'>
                           <FormLabel className="text-sm text-cardGray">
                             Email <sup className="text-red-500">*</sup>
                           </FormLabel>
@@ -504,7 +504,7 @@ function Checkout() {
                       )}
                     />
 
-                    <div className="flex items-start flex-col lg:flex-row gap-2 w-full justify-between">
+                    <div className="flex items-start flex-col lg:flex-row gap-2 w-full justify-between" dir='ltr'>
                       <div className="w-full">
                         <p className="text-sm text-cardGray  mb-2 ">
                           Phone Number
