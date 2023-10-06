@@ -150,8 +150,11 @@ function CustomerAddress(props: CustomerAddressType) {
                 className="flex items-center gap-2 cursor-pointer"
                 // onClick={() => handleView(row?.original, 'view')}
               >
+                <span>
+                  <i className={`fas fa-pencil`}></i>
+                </span>
                 <p className="text-xs">
-                  {langContent[lang.lang].MyAccount.AddressView.SAVE_BUTTON}
+                  {langContent[lang.lang].MyAccount.AddressView.EDIT_BUTTON}
                 </p>
               </DropdownMenuItem>
               {!props?.is_default && (
