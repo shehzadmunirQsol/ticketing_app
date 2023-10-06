@@ -685,6 +685,7 @@ export const customerRouter = router({
         // here u will do the mutation
         const addresses = await prisma.customerAddress.findMany({
           where: { customer_id: input.customer_id },
+          orderBy: { created_at: 'asc' },
         });
 
         return addresses;
