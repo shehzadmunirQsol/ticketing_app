@@ -94,11 +94,11 @@ export const updateCategorySchema = z.object({
       }).trim(),
     desc: z
       .string()
-      .min(6, {
-        message: 'Description must be at least 2 characters',
+      .min(1, {
+        message: 'Please add a description',
       })
-      .max(5000, {
-        message: 'Description must not exceed 5000 characters',
+      .max(500, {
+        message: 'Description is too big',
       }).trim(),
     lang_id: z.number(),
   }),
