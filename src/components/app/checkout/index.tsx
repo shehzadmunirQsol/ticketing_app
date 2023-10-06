@@ -280,13 +280,13 @@ function Checkout() {
               <h2 className="lg:text-5xl md:text-4xl text-2xl font-black uppercase mb-6">
                 {langContent[lang.lang].Checkout.HEADING}
               </h2>
-              <div className="flex flex-col gap-8 lg:flex-row md:flex-row justify-between w-full ">
+              <div className="flex flex-col gap-8 lg:flex-row md:flex-row justify-between w-full " >
                 <div className="flex-[0.55] space-y-6">
                   <h3 className="text-lg md:text-xl lg:text-2xl font-bold ">
                     {langContent[lang.lang].Checkout.BILL_HEADING}
                   </h3>
                   <div className="space-y-6">
-                    <div className="flex flex-col lg:flex-row md:flex-row gap-2  w-full justify-between">
+                    <div className="flex flex-col lg:flex-row md:flex-row gap-2  w-full justify-between" dir='ltr'>
                       <FormField
                         control={form.control}
                         name="first_name"
@@ -330,8 +330,8 @@ function Checkout() {
                         )}
                       />
                     </div>
-                    <FormItem className="">
-                      <FormLabel className="text-sm text-cardGray">
+                    <FormItem className="" dir='ltr'>
+                      <FormLabel className="text-sm text-cardGray" dir='ltr'>
                         Billing Addresses
                       </FormLabel>
                       <Select
@@ -364,7 +364,7 @@ function Checkout() {
                       </div>
                     </FormItem>
 
-                    <div className="flex flex-col gap-y-3">
+                    <div className="flex flex-col gap-y-3" dir='ltr'>
                       <FormField
                         control={form.control}
                         name="street_address"
@@ -407,7 +407,7 @@ function Checkout() {
                       />
                     </div>
 
-                    <div className="flex flex-col lg:flex-row md:flex-row gap-2  w-full justify-between">
+                    <div className="flex flex-col lg:flex-row md:flex-row gap-2  w-full justify-between" dir='ltr'>
                       <div className="w-full ">
                         <FormField
                           control={form.control}
@@ -476,7 +476,7 @@ function Checkout() {
                         />
                       </div>
                     </div>
-                    <div className="flex flex-col lg:flex-row md:flex-row gap-2  w-full justify-between">
+                    <div className="flex flex-col lg:flex-row md:flex-row gap-2  w-full justify-between" dir='ltr'>
                       <FormField
                         control={form.control}
                         name="city"
@@ -524,7 +524,7 @@ function Checkout() {
                       control={form.control}
                       name="email"
                       render={({ field }) => (
-                        <FormItem className=" w-full">
+                        <FormItem className=" w-full" dir='ltr'>
                           <FormLabel className="text-sm text-cardGray">
                             Email <sup className="text-red-500">*</sup>
                           </FormLabel>
@@ -542,7 +542,7 @@ function Checkout() {
                       )}
                     />
 
-                    <div className="flex items-start flex-col lg:flex-row gap-2 w-full justify-between">
+                    <div className="flex items-start flex-col lg:flex-row gap-2 w-full justify-between" dir='ltr'>
                       <div className="w-full">
                         <p className="text-sm text-cardGray  mb-2 ">
                           Phone Number

@@ -106,8 +106,9 @@ export default function CartPage() {
               })}
             </div>
             <div className="bg-transparent space-y-4 sm:w-1/2 mdx:w-1/3 z-10 ml-auto">
-              <div className="flex bg-card border border-border rounded-md">
+              <div className="flex bg-card border border-border rounded-md" dir='ltr'>
                 <Input
+                
                   placeholder="Coupon code"
                   type="text"
                   onChange={(e: any) => setCode(e.target.value)}
