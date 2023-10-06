@@ -433,7 +433,7 @@ export default function CmsForm(props: CategoryFormInterface) {
                 render={({ field }) => (
                   <FormItem className="w-full">
                     <FormLabel>
-                      Description <sup className="text-md text-red-500">*</sup>
+                      Meta Description <sup className="text-md text-red-500">*</sup>
                     </FormLabel>
                     <FormControl>
                       <Textarea placeholder="Enter Description..." {...field} />
