@@ -206,7 +206,7 @@ export default function CouponForm() {
                     value={field.value}
                   >
                     <FormControl>
-                      <SelectTrigger className=" rounded-none  ">
+                      <SelectTrigger className=" rounded-none h-10  bg-inputColor">
                         <SelectValue placeholder={`Select Limit`} />
                       </SelectTrigger>
                     </FormControl>
@@ -325,13 +325,13 @@ export default function CouponForm() {
                   value={field.value}
                 >
                   <FormControl>
-                    <SelectTrigger className=" rounded-none">
+                    <SelectTrigger className=" rounded-none h-10 bg-inputColor">
                       <SelectValue placeholder={`Select Limit`} />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
                     <SelectGroup>
-                      {/* <SelectItem value={'1'}>{'limited'}</SelectItem> */}
+                      <SelectItem value={'1'}>{'limited'}</SelectItem>
                       <SelectItem value={'0'}>{'unlimited'}</SelectItem>
                     </SelectGroup>
                   </SelectContent>
