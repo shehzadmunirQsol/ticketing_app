@@ -63,7 +63,7 @@ export function AddressDialog(props: addressDialogInterface) {
 
       toast({
         variant: 'success',
-        title: 'Winner Selected successfully!',
+        title: 'Address Updated Successfully!',
       });
       props?.openChangeHandler();
       props?.refetch();

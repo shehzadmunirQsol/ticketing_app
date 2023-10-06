@@ -41,7 +41,7 @@ import {
 import langContent from '~/locales';
 import { RootState } from '~/store/store';
 
-import countryJSON from "~/data/countries.json";
+import countryJSON from '~/data/countries.json';
 const countries = countryJSON.map((item) => item.country);
 
 export default function LoginSignup() {
@@ -63,7 +63,6 @@ export default function LoginSignup() {
   const formLogin = useForm<loginCustomerInput>({
     resolver: zodResolver(loginCustomerSchema),
   });
-
 
   // Handle Forget Password Modal
   const [isModal, setIsModal] = React.useState(false);
@@ -151,7 +150,6 @@ export default function LoginSignup() {
       });
 
       router.back();
-
     } catch (e: any) {
       if (e.shape.message == 'Your Account is Not Verified') {
         setOtpIsModal(true);
@@ -327,7 +325,6 @@ export default function LoginSignup() {
                     />
                   </div>
 
-
                   <div className="flex flex-col sm:flex-row justify-center items-start gap-2">
                     <div className="w-full">
                       <p className="text-xs font-thin text-grayColor  mb-3 mt-1 ">
@@ -390,7 +387,7 @@ export default function LoginSignup() {
                             value={field.value}
                           >
                             <FormControl>
-                              <SelectTrigger className=" h-10  ">
+                              <SelectTrigger className=" h-10  bg-inputColor">
                                 <SelectValue placeholder={`Select Gender`} />
                               </SelectTrigger>
                             </FormControl>
@@ -425,11 +422,10 @@ export default function LoginSignup() {
                               type={'date'}
                               placeholder={'Enter DOB'}
                               max={minDateFormatted}
-                              className='rounded-md '
+                              className="rounded-md "
                               {...formSignup.register('dob', {
                                 valueAsDate: true,
                               })}
-
                             />
                           </FormControl>
                           <div className="relative pb-2">
@@ -442,37 +438,34 @@ export default function LoginSignup() {
                     <FormField
                       control={formSignup.control}
                       name="country"
-
                       render={({ field }) => (
                         <FormItem className="mb-4 w-full ">
                           <FormLabel className="text-xs text-white">
-                            Country/ Region{' '}
-                            <sup className="text-white">*</sup>
+                            Country/ Region <sup className="text-white">*</sup>
                           </FormLabel>
                           <Select
                             onValueChange={field.onChange}
                             defaultValue={field.value}
                             value={field.value}
-
-
                           >
-                            <FormControl className=''>
-                              <SelectTrigger className=" rounded-md h-10  " >
-                                <SelectValue placeholder="Select your country" className='' />
+                            <FormControl className="">
+                              <SelectTrigger className=" rounded-md h-10 bg-inputColor ">
+                                <SelectValue
+                                  placeholder="Select your country"
+                                  className=""
+                                />
                               </SelectTrigger>
                             </FormControl>
-                            <SelectContent className='max-h-[300px] overflow-y-auto'>
+                            <SelectContent className="max-h-[300px] overflow-y-auto">
                               <SelectGroup>
-                                {countries && countries?.map((country, i) => {
-                                  return (
-                                    <SelectItem
-                                      key={country}
-                                      value={country}
-                                    >
-                                      {country?.toUpperCase()}
-                                    </SelectItem>
-                                  )
-                                })}
+                                {countries &&
+                                  countries?.map((country, i) => {
+                                    return (
+                                      <SelectItem key={country} value={country}>
+                                        {country?.toUpperCase()}
+                                      </SelectItem>
+                                    );
+                                  })}
                               </SelectGroup>
                             </SelectContent>
                           </Select>
@@ -483,7 +476,6 @@ export default function LoginSignup() {
                         </FormItem>
                       )}
                     />
-
                   </div>
                   <FormField
                     control={formSignup.control}

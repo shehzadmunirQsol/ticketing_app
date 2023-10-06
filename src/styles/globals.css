@@ -896,7 +896,6 @@ input[type='radio']:not(:checked) + section.box .icon-class {
 .cmsStyle h6 {
   font-size: 11.2px;
 }
-
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;

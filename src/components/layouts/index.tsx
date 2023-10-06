@@ -26,10 +26,10 @@ export default function DefaultLayout({ children }: DefaultLayoutProps) {
           <link rel="icon" href={Icon.src} />
         </Head>
         {router.asPath.startsWith('/admin') ? (
-          <AdminAuth>
-            <AdminLayout>{children}</AdminLayout>
-          </AdminAuth>
+          // <AdminAuth>
+          <AdminLayout>{children}</AdminLayout>
         ) : (
+          // {/* </AdminAuth> */}
           <AppLayout>{children}</AppLayout>
         )}
       </ThemeProvider>

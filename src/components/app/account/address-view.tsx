@@ -54,13 +54,13 @@ export default function AddressesView() {
       <p className="text-[#808080] text-sm">
         {langContent[lang.lang].MyAccount.AddressView.INFO}
       </p>
-      <div className="grid gap-4 items-start grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 items-center md:items-start grid-cols-1 sm:grid-cols-2 xl:grid-cols-3">
         {addresses?.map((address) => (
           <CustomerAddress key={address.id} {...address} refetch={refetch} />
         ))}
 
         {addresses && addresses?.length < 4 ? (
-          <div className="h-60 max-w-[256px] rounded-lg grid items-center justify-center border border-primary">
+          <div className="h-60 max-w-[256px] w-64  rounded-lg grid items-center justify-center border border-primary mx-auto sm:mx-0 ">
             <Button onClick={openChangeHandler} variant={'rounded'}>
               Add Another
             </Button>
@@ -150,8 +150,11 @@ function CustomerAddress(props: CustomerAddressType) {
                 className="flex items-center gap-2 cursor-pointer"
                 // onClick={() => handleView(row?.original, 'view')}
               >
+                <span>
+                  <i className={`fas fa-pencil`}></i>
+                </span>
                 <p className="text-xs">
-                  {langContent[lang.lang].MyAccount.AddressView.SAVE_BUTTON}
+                  {langContent[lang.lang].MyAccount.AddressView.EDIT_BUTTON}
                 </p>
               </DropdownMenuItem>
               {!props?.is_default && (

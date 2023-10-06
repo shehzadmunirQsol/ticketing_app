@@ -10,7 +10,6 @@ import langContent from '~/locales';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
 
-
 interface LinkItemProps {
   name: string;
   link: string;
@@ -41,11 +40,11 @@ function Footer() {
                 <div>
                   <Button
                     variant="rounded-outline"
-                    className="z-30 font-bold bg-transparent"
+                    className="z-30 font-bold bg-transparent min-w-max "
                   >
                     <div>
-                    {langContent[lang.lang].Footer.SUBSCRIBE_BTN}
-                     &nbsp;
+                      {langContent[lang.lang].Footer.SUBSCRIBE_BTN}
+                      &nbsp;
                       <i className="fa-solid fa-arrow-right -rotate-45 "></i>
                     </div>
                   </Button>
@@ -56,7 +55,9 @@ function Footer() {
                   <p>{langContent[lang.lang].Footer.ADDRESS_SUB_TITLE_ONE}</p>
                   <p>{langContent[lang.lang].Footer.ADDRESS_SUB_TITLE_TWO}</p>
                   <p>{langContent[lang.lang].Footer.ADDRESS_SUB_TITLE_THREE}</p>
-                  <p className='text-xs my-2'>{langContent[lang.lang].Footer.ADDRESS_SUB_TITLE_FOUR}</p>
+                  <p className="text-xs my-2">
+                    {langContent[lang.lang].Footer.ADDRESS_SUB_TITLE_FOUR}
+                  </p>
                 </div>
                 <div className=" flex items-center justify-center md:justify-start  w-64  text-sm text-white">
                   <Image
@@ -81,22 +82,24 @@ function Footer() {
                     })}
                   </ul>
                   <ul className="flex-1 text-grayColor opacity-75 space-y-2 sm:space-y-2">
-                    {langContent[lang.lang].Footer.arrayTwo.map((item, index) => {
-                      return (
-                        <li key={index} className="text-sm">
-                          <Link href={item.link} className="hover:underline">
-                            {item.name}
-                          </Link>
-                        </li>
-                      );
-                    })}
+                    {langContent[lang.lang].Footer.arrayTwo.map(
+                      (item, index) => {
+                        return (
+                          <li key={index} className="text-sm">
+                            <Link href={item.link} className="hover:underline">
+                              {item.name}
+                            </Link>
+                          </li>
+                        );
+                      },
+                    )}
                   </ul>
                 </div>
 
                 <div className=" col-span-2 w-full ">
                   <div className="flex-1 flex items-center gap-2 mdx:justify-between">
                     <div className=" text-sm font-bold w-full min-w-max">
-                    {langContent[lang.lang].Footer.CONNECT_TITLE}
+                      {langContent[lang.lang].Footer.CONNECT_TITLE}
                     </div>
                     <div className="w-full flex gap-2 items-center">
                       {' '}
