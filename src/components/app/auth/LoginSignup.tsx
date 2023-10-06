@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
 import { Button } from '@/ui/button';
 import {
@@ -19,7 +19,6 @@ import {
   signupCustomerInput,
   loginCustomerInput,
   loginCustomerSchema,
-  signupCustomerSchema,
   signupCustomerSchemaInput,
 } from '~/schema/customer';
 import { useToast } from '~/components/ui/use-toast';
@@ -27,7 +26,7 @@ import Link from 'next/link';
 import { ForgotPasswordDailog } from './ForgotPassword';
 import CarImage from '../../../public/assets/CarLogin.svg';
 import { userAuth } from '~/store/reducers/auth';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { OtpVerificationDailog } from './otp-verification';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { LoadingDialog } from '~/components/common/modal/loadingModal';
@@ -39,8 +38,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from '~/components/ui/select';
+import langContent from '~/locales';
+import { RootState } from '~/store/store';
+
+import countryJSON from '~/data/countries.json';
+const countries = countryJSON.map((item) => item.country);
 
 export default function LoginSignup() {
+  const { lang } = useSelector((state: RootState) => state.layout);
+
   const { toast } = useToast();
   const router = useRouter();
   const dispatch = useDispatch();
@@ -51,19 +57,18 @@ export default function LoginSignup() {
   const formSignup = useForm<signupCustomerInput>({
     resolver: zodResolver(signupCustomerSchemaInput),
     defaultValues: {
-      code: '+971',
+      code: '',
     },
   });
   const formLogin = useForm<loginCustomerInput>({
     resolver: zodResolver(loginCustomerSchema),
   });
 
-  // const form</loginCustomerInput>Login = useForm<loginCustomerInput>();
-
   // Handle Forget Password Modal
   const [isModal, setIsModal] = React.useState(false);
   const [otpIsModal, setOtpIsModal] = React.useState(false);
   const [defaultValue, setDefaultValue] = React.useState('login');
+
   // register customer
   const registerCustomer = trpc.customer.register.useMutation({
     onSuccess: (res: any) => {
@@ -81,7 +86,6 @@ export default function LoginSignup() {
         variant: 'success',
         title: 'Registeration Successful, Please Check your Email',
       });
-      // router.push('/login')
       setDefaultValue('login');
       formSignup.reset();
     },
@@ -101,7 +105,7 @@ export default function LoginSignup() {
   const onSubmitSignup = async (values: any) => {
     try {
       formLogin.reset();
-      const signupResult = await registerCustomer.mutateAsync(values);
+      await registerCustomer.mutateAsync(values);
       setOtpIsModal(true);
     } catch (e: any) {
       setOtpIsModal(false);
@@ -146,8 +150,6 @@ export default function LoginSignup() {
       });
 
       router.back();
-
-      // to check for account verified or not
     } catch (e: any) {
       if (e.shape.message == 'Your Account is Not Verified') {
         setOtpIsModal(true);
@@ -178,8 +180,8 @@ export default function LoginSignup() {
         <div className="hidden w-full h-full md:w-2/3 lg:mb-0 rounded-lg lg:block">
           <SideImage
             image={CarImage}
-            text={'Unlock Your Journey Login or Register for'}
-            text2={'Exclusive Access'}
+            text={langContent[lang.lang].Auth.SIDE_CONTENT}
+            text2={langContent[lang.lang].Auth.SIDE_SUB_CONTENT}
           />
         </div>
         <Tabs
@@ -191,13 +193,13 @@ export default function LoginSignup() {
               value="login"
               className="w-full font-black text-md -mt-1 font-sans rounded-none border-none m-0  "
             >
-              Login
+              {langContent[lang.lang].Auth.TAB_LOGIN}
             </TabsTrigger>
             <TabsTrigger
               value="signup"
               className="w-full font-sans text-md font-black"
             >
-              Register
+              {langContent[lang.lang].Auth.TAB_REGISTER}
             </TabsTrigger>
           </TabsList>
           <TabsContent value="login">
@@ -252,18 +254,18 @@ export default function LoginSignup() {
                     )}
                   />
                 </div>
-                <div className="flex  flex-col lg:flex-row md:flex-row  lg:flex justify-end items-center gap-6 ">
+                <div className="flex flex-col lg:flex-row md:flex-row  lg:flex justify-end items-center gap-6 ">
                   <p
-                    className="underline text-xs lg:text-base md:text-base cursor-pointer"
+                    className="underline text-xs lg:text-base md:text-base ltr:self-start rtl:self-end  cursor-pointer"
                     onClick={() => setIsModal(true)}
                   >
-                    Forgot Password?
+                    {langContent[lang.lang].Auth.FORGOT}
                   </p>
                   <Button
-                    className=" px-16 lg:w-40 md:w-40 w-full  text-black font-sans font-[900]   text-xl tracking-[-1px]"
+                    className=" px-16 lg:w-40 ltr:lg:w-40  rtl:lg:w-56   md:w-40 w-full  text-black font-sans font-[900]   text-xl tracking-[-1px]"
                     variant="clip"
                   >
-                    LOGIN
+                    {langContent[lang.lang].Auth.LOGIN_BUTTON}
                   </Button>
                 </div>
               </form>
@@ -322,73 +324,55 @@ export default function LoginSignup() {
                       )}
                     />
                   </div>
-                  <div className="w-full">
-                    <p className="text-xs text-grayColor  mb-3 ">
-                      Phone Number <sup className="">*</sup>
-                    </p>
-                    <div className="flex flex-row gap-2 ">
-                      <FormField
-                        control={formSignup.control}
-                        name="code"
-                        render={({ field }) => (
-                          <FormItem>
-                            <Select
-                              onValueChange={field.onChange}
-                              defaultValue={field.value}
-                              value={field.value}
-                            >
-                              <FormControl>
-                                <SelectTrigger className=" h-10  ">
-                                  <SelectValue placeholder="+971" />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                <SelectGroup>
-                                  {countryCode?.map((item) => (
-                                    <SelectItem
-                                      key={item.code}
-                                      value={item.code}
-                                    >
-                                      {item?.code}
-                                    </SelectItem>
-                                  ))}
-                                </SelectGroup>
-                              </SelectContent>
-                            </Select>
 
-                            <div className="relative pb-2">
-                              <FormMessage />
-                            </div>
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={formSignup.control}
-                        name="phone_number"
-                        render={({ field }) => (
-                          <FormItem className=" w-full">
-                            {/* <FormLabel className="text-sm text-cardGray">
-                            Email  <sup className="">*</sup>
-                          </FormLabel> */}
-                            <FormControl className="rounded-md ">
+                  <div className="flex flex-col sm:flex-row justify-center items-start gap-2">
+                    <div className="w-full">
+                      <p className="text-xs font-thin text-grayColor  mb-3 mt-1 ">
+                        Phone Number <sup className="">*</sup>
+                      </p>
+                      <div className="flex flex-row gap-2 ">
+                        <FormField
+                          control={formSignup.control}
+                          name="code"
+                          render={({ field }) => (
+                            <FormItem>
                               <Input
-                                max={999999999}
-                                type="number"
-                                className="w-full"
-                                placeholder="Enter your phone number"
+                                type="text"
+                                className="rounded-md w-20 "
+                                placeholder="+971"
+                                maxLength={5}
                                 {...field}
                               />
-                            </FormControl>
+                              <div className="relative pb-2">
+                                <FormMessage />
+                              </div>
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={formSignup.control}
+                          name="phone_number"
+                          render={({ field }) => (
+                            <FormItem className=" w-full">
+                              <FormControl className="rounded-md ">
+                                <Input
+                                  min={0}
+                                  type="number"
+                                  className="w-full"
+                                  placeholder="Enter your phone number"
+                                  {...field}
+                                />
+                              </FormControl>
 
-                            <div className="relative pb-2">
-                              <FormMessage />
-                            </div>
-                          </FormItem>
-                        )}
-                      />
+                              <div className="relative pb-2">
+                                <FormMessage />
+                              </div>
+                            </FormItem>
+                          )}
+                        />
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex flex-col sm:flex-row justify-center items-center gap-2">
+
                     <FormField
                       control={formSignup.control}
                       name="gender"
@@ -403,7 +387,7 @@ export default function LoginSignup() {
                             value={field.value}
                           >
                             <FormControl>
-                              <SelectTrigger className=" h-10  ">
+                              <SelectTrigger className=" h-10  bg-inputColor">
                                 <SelectValue placeholder={`Select Gender`} />
                               </SelectTrigger>
                             </FormControl>
@@ -422,6 +406,9 @@ export default function LoginSignup() {
                         </FormItem>
                       )}
                     />
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row justify-center items-center gap-2">
                     <FormField
                       control={formSignup.control}
                       name="dob"
@@ -431,22 +418,58 @@ export default function LoginSignup() {
                             Date of Birth <sup className="">*</sup>
                           </FormLabel>
                           <FormControl>
-                            {/* <Input
-                              type="date"
-                              placeholder="Enter your dob"
-                              {...field}
-                              className="rounded-md"
-                            /> */}
                             <Input
                               type={'date'}
                               placeholder={'Enter DOB'}
                               max={minDateFormatted}
+                              className="rounded-md "
                               {...formSignup.register('dob', {
                                 valueAsDate: true,
                               })}
-                              className="rounded-md"
                             />
                           </FormControl>
+                          <div className="relative pb-2">
+                            <FormMessage />
+                          </div>
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={formSignup.control}
+                      name="country"
+                      render={({ field }) => (
+                        <FormItem className="mb-4 w-full ">
+                          <FormLabel className="text-xs text-white">
+                            Country/ Region <sup className="text-white">*</sup>
+                          </FormLabel>
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                            value={field.value}
+                          >
+                            <FormControl className="">
+                              <SelectTrigger className=" rounded-md h-10 bg-inputColor ">
+                                <SelectValue
+                                  placeholder="Select your country"
+                                  className=""
+                                />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent className="max-h-[300px] overflow-y-auto">
+                              <SelectGroup>
+                                {countries &&
+                                  countries?.map((country, i) => {
+                                    return (
+                                      <SelectItem key={country} value={country}>
+                                        {country?.toUpperCase()}
+                                      </SelectItem>
+                                    );
+                                  })}
+                              </SelectGroup>
+                            </SelectContent>
+                          </Select>
+
                           <div className="relative pb-2">
                             <FormMessage />
                           </div>
@@ -500,20 +523,21 @@ export default function LoginSignup() {
                   />
                 </div>
                 <div className="mt-16 flex flex-col lg:flex-row md:flex-row justify-between items-center gap-6 ">
-                  <p className="text-lightColor text-gray-400 font-extralight text-xs w-full lg:w-96  md:w-96">
-                    Your personal data will be used to process your order,
-                    support your experience throughout this website, and for
-                    other purposes described in our{' '}
-                    <span className="text-white underline">
+                  <p className="text-lightColor text-gray-400 font-extralight text-xs w-full lg:w-96  md:w-96  ltr:text-left rtl:text-right">
+                    {langContent[lang.lang].Auth.REGISTER_INFO}{' '}
+                    <span className="text-white underline ">
                       {' '}
-                      <Link href="/privacy-policy "> privacy policy. </Link>
+                      <Link href="/privacy-policy ">
+                        {' '}
+                        {langContent[lang.lang].Auth.REGISTER_SUB_INFO}{' '}
+                      </Link>
                     </span>
                   </p>
                   <Button
                     className="  lg:w-52 md:w-52 w-full     text-black font-sans font-[900]   text-xl tracking-[-1px]"
                     variant="clip"
                   >
-                    REGISTER
+                    {langContent[lang.lang].Auth.REGISTER_BUTTON}
                   </Button>
                 </div>
               </form>

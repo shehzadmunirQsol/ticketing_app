@@ -31,8 +31,14 @@ export const signupCustomerSchema = z.object({
     }),
   last_name: z.string().optional(),
   code: z.string(),
-  phone_number: z.string().min(1, {
-    message: 'Please enter phone number',
+  phone_number: z
+    .string()
+    .regex(new RegExp(/^[0-9]+$/), 'Please enter a valid phone number')
+    .min(1, {
+      message: 'Please enter your number',
+    }),
+  country: z.string({
+    required_error: 'Please select your country',
   }),
   dob: z.date(),
   gender: z.enum(['male', 'female'], {
@@ -75,7 +81,11 @@ export const signupCustomerSchemaInput = z.object({
     .max(30, {
       message: 'lastname must not exceed 30 characters',
     }),
-  code: z.string(),
+  code: z.string({ required_error: 'Enter code' })
+    .regex(new RegExp(/^(00|\+)[0-9]+$/), 'Invalid code')
+    .min(1, {
+      message: 'Enter code',
+    }).trim(),
   phone_number: z
     .string({
       required_error: 'Please enter your phone no',
@@ -85,6 +95,13 @@ export const signupCustomerSchemaInput = z.object({
       message: 'Please enter phone no',
     }),
   dob: z.date(),
+  country: z
+    .string({
+      required_error: 'Please select your country',
+    })
+    .min(1, {
+      message: 'Please select your country',
+    }),
   gender: z.enum(['male', 'female'], {
     required_error: 'Please enter your gender',
   }),
@@ -181,28 +198,58 @@ export const resendOtpCustomerSchema = z.object({
 export const addCustomerAddress = z.object({
   id: z.number().optional(),
   customer_id: z.number(),
-  street_address_1: z.string({
-    required_error: 'Please enter your street address',
-    invalid_type_error: 'Please enter your street address',
-  }).trim(),
-  city: z.string({
-    required_error: 'Please enter your city',
-    invalid_type_error: 'Please enter your city',
-  }).trim(),
-  country: z.string({
-    required_error: 'Please enter your country',
-    invalid_type_error: 'Please enter your country',
-  }).trim(),
-  phone_number: z.string({
-    required_error: 'Please enter your phone no',
-    invalid_type_error: 'Please enter your phone no',
-  }).trim(),
+  address_type: z
+    .enum(['home', 'work', 'hotel', 'other'], {
+      required_error: 'Please select billing address',
+    })
+    .default('home'),
+  street_address_1: z
+    .string({
+      required_error: 'Please enter your street address',
+      invalid_type_error: 'Please enter your street address',
+    })
+    .trim(),
+  street_address_2: z
+    .string({
+      required_error: 'Please enter your appartment',
+      invalid_type_error: 'Please enter your appartment',
+    })
+    .trim()
+    .optional(),
+  state: z
+    .string({
+      required_error: 'Please enter your state',
+      invalid_type_error: 'Please enter your state',
+    })
+    .trim(),
+  city: z
+    .string({
+      required_error: 'Please enter your city',
+      invalid_type_error: 'Please enter your city',
+    })
+    .trim(),
+  country: z
+    .string({
+      required_error: 'Please enter your country',
+      invalid_type_error: 'Please enter your country',
+    })
+    .trim(),
+  phone_number: z
+    .string({
+      required_error: 'Please enter your phone no',
+      invalid_type_error: 'Please enter your phone no',
+    })
+    .trim(),
+  phone_code: z.string().trim(),
   postal_code: z.number({
     required_error: 'Please enter your postal code',
     invalid_type_error: 'Please enter your postal code',
   }),
 });
-
+export const updateCustomerAddress = z.object({
+  id: z.number().optional(),
+  customer_id: z.number(),
+});
 export const getCustomerAddress = z.object({
   customer_id: z.number(),
 });
@@ -212,6 +259,7 @@ export const accountsDetailSchema = z.object({
   last_name: z.string(),
   email: z.string().email(),
   dob: z.date().optional().nullable(),
+  country: z.string().optional(),
 });
 
 export const accountsDetailSchemaInput = z.object({
@@ -222,7 +270,8 @@ export const accountsDetailSchemaInput = z.object({
     })
     .max(24, {
       message: 'Name must not exceed 24 characters',
-    }).trim(),
+    })
+    .trim(),
   last_name: z
     .string()
     .min(1, {
@@ -230,9 +279,17 @@ export const accountsDetailSchemaInput = z.object({
     })
     .max(24, {
       message: 'Name must not exceed 24 characters',
-    }).trim(),
+    })
+    .trim(),
   email: z.string().trim().email(),
   dob: z.date().optional().nullable(),
+  country: z
+    .string({
+      required_error: 'Please select your country',
+    })
+    .min(1, {
+      message: 'Please select your country',
+    }),
 });
 
 export type accountsDetailSchemaInput = z.infer<
@@ -256,7 +313,8 @@ export const passwordChangeSchemaInput = z.object({
     })
     .max(30, {
       message: 'Password must not exceed 30 characters',
-    }).trim(),
+    })
+    .trim(),
   confirmPassword: z
     .string()
     .min(6, {
@@ -264,7 +322,8 @@ export const passwordChangeSchemaInput = z.object({
     })
     .max(30, {
       message: 'Confirm Password must not exceed 30 characters',
-    }).trim(),
+    })
+    .trim(),
 });
 
 export type passwordChangeSchemaInput = z.infer<

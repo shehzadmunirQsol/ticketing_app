@@ -5,7 +5,7 @@ function CartTable() {
   return (
     <div className=" px-8 py-4">
       <div className="flex items-center justify-between mb-4">
-        <div className=" text-4xl font-semibold">Cart</div>
+        <div className=" text-4xl font-semibold">Abandoned Cart</div>
       </div>
       <CartDataTable />
     </div>

@@ -1,245 +1,242 @@
 import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import { useToast } from '~/components/ui/use-toast';
 import { RootState } from '~/store/store';
 import { trpc } from '~/utils/trpc';
-import { addAddressInput } from '~/schema/customer';
 import { formatTrpcError } from '~/utils/helper';
+import langContent from '~/locales';
+import { Button } from '~/components/ui/button';
+import { AddCustomerAddressDialog } from '~/components/common/modal/customerAddressModal';
+import { LoadingDialog } from '~/components/common/modal/loadingModal';
 
-const AddressesView = () => {
-  const { toast } = useToast();
+import countryJSON from '~/data/countries.json';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '~/components/ui/dropdown-menu';
+import { MoreHorizontal } from 'lucide-react';
+import { MoreVertical } from 'lucide-react';
+import { AddressDialog } from '~/components/common/modal/addressModal';
+const countries = countryJSON.map((item) => item.country);
+
+export default function AddressesView() {
+  const [isModal, setIsModal] = useState(false);
+  const { lang } = useSelector((state: RootState) => state.layout);
   const { user } = useSelector((state: RootState) => state.auth);
-  const { handleSubmit, register, setValue, getValues } =
-    useForm<addAddressInput>();
-  console.log({ user }, 'user');
-  const [isEdit, setEdit] = useState(false);
 
-  const [action, setAction] = useState({
-    adding: {
-      text: 'ADD',
-      icon: 'fa-plus',
+  const {
+    data: addresses,
+    refetch,
+    isLoading,
+  } = trpc.customer.getAddress.useQuery(
+    {
+      customer_id: user?.id,
     },
-    save: {
-      text: 'SAVE',
-      icon: 'fa-plus',
+    {
+      refetchOnWindowFocus: false,
     },
-  });
+  );
 
-  const handleChange = (e: any) => {
-    e.preventDefault();
-    console.log({ isEdit, action }, 'check states before', action.adding.text);
-    setEdit(!isEdit);
-  };
-  const { data, isFetching, isRefetching, isFetched, isLoading, refetch } =
-    trpc.customer.getAddress.useQuery(
-      { customer_id: user?.id },
-      {
-        refetchOnWindowFocus: false,
-        onSuccess: (data) => {
-          if (data) {
-            setAction({
-              ...action,
-              adding: {
-                text: 'EDIT',
-                icon: 'fa-pencil',
-              },
-            });
-            console.log({ data });
-            setValue('city', data.city);
-            setValue('phone_number', data.phone_number);
-            setValue('country', data.country);
-            setValue('postal_code', data.postal_code);
-            setValue('street_address_1', data.street_address_1);
-          }
-        },
-      },
-    );
-
-  const createAddress = trpc.customer.addAddress.useMutation({
-    onSuccess: (res) => {
-      console.log(res);
-      toast({
-        variant: 'success',
-        title: 'Address Added Successfully',
-      });
-      setEdit(false);
-    },
-    onError(error) {
-      const errorMessage = formatTrpcError(error?.shape?.message);
-
-      toast({
-        variant: 'destructive',
-        title: errorMessage,
-      });
-    },
-  });
-  const updateAddress = trpc.customer.updateAddress.useMutation({
-    onSuccess: (res) => {
-      console.log(res);
-      toast({
-        variant: 'success',
-        title: 'Address Updated Successfully',
-      });
-      setEdit(false);
-    },
-    onError(error) {
-      const errorMessage = formatTrpcError(error?.shape?.message);
-
-      toast({
-        variant: 'destructive',
-        title: errorMessage,
-      });
-    },
-  });
-
-  async function onSubmit(values: any) {
-    try {
-      console.log({ values });
-      const payload = {
-        customer_id: user.id,
-        postal_code: Number(+values.postal_code),
-        ...values,
-      };
-      console.log(payload.postal_code, typeof payload.postal_code);
-      console.log({ payload }, 'create payload');
-      const response: any =
-        data === null
-          ? await createAddress.mutateAsync(payload)
-          : await updateAddress.mutateAsync({
-              id: data.id,
-              customer_id: data.customer_id,
-              ...payload,
-            });
-
-      if (response) {
-        console.log({ response }, 'creatded');
-        refetch();
-      }
-    } catch (error: any) {}
+  function openChangeHandler() {
+    setIsModal((prevState) => !prevState);
   }
-  console.log({ data }, 'values');
+
+  const usedAddress = addresses?.map((address) => address?.address_type);
+  const availableAddressTypes = addressType.filter(
+    (address) => !usedAddress?.includes(address?.value as any),
+  );
+
   return (
-    <div className="py-4 px-6 text-[#eaeaea]">
+    <div className="py-4 sm:px-6 space-y-4">
       <p className="text-[#808080] text-sm">
-        The following addresses will be used on the checkout page by default.
+        {langContent[lang.lang].MyAccount.AddressView.INFO}
       </p>
+      <div className="grid gap-4 items-center md:items-start grid-cols-1 sm:grid-cols-2 xl:grid-cols-3">
+        {addresses?.map((address) => (
+          <CustomerAddress key={address.id} {...address} refetch={refetch} />
+        ))}
 
-      <form className="mt-4 flex ">
-        <div
-          className={`w-64   rounded-md border border-border-[1px] p-4 ${
-            data ? 'border-primary' : 'border-[#808080]'
-          }  flex flex-col`}
-        >
-          <div className="flex justify-between items-center">
-            <p className="text-md font-bold tracking-tight lead">
-              Billing Address
-            </p>
-            <button
-              type={isEdit ? 'submit' : 'button'}
-              disabled={isRefetching || isLoading}
-              onClick={isEdit ? handleSubmit(onSubmit) : handleChange}
-              className="px-2 py-1.5 bg-primary text-sm text-[#101417] font-extrabold tracking-tight leading-tight w-fit rounded-full flex items-center justify-center gap-1 hover:cursor-pointer hover:opacity-90"
-            >
-              <span>
-                <i
-                  className={`fas ${
-                    isEdit ? '' + action.save.icon : '' + action.adding.icon
-                  }`}
-                ></i>
-              </span>
-              <p className="text-xs">
-                {isEdit ? action.save.text : action.adding.text}
-              </p>
-            </button>
+        {addresses && addresses?.length < 4 ? (
+          <div className="h-60 max-w-[256px] w-64  rounded-lg grid items-center justify-center border border-primary mx-auto sm:mx-0 ">
+            <Button onClick={openChangeHandler} variant={'rounded'}>
+              Add Another
+            </Button>
           </div>
+        ) : (
+          ''
+        )}
+      </div>
 
-          <div className="w-full h-full font-light text-[#eaeaea] flex flex-col pt-3 text-sm">
-            {(isRefetching || isLoading) && (
-              <>
-                <div className="h-24 flex justify-center items-center">
-                  <i className="fa-solid fa-circle-notch transition-all animate-spin text-lg  "></i>
-                </div>
-              </>
-            )}
+      <AddCustomerAddressDialog
+        isModal={isModal}
+        openChangeHandler={openChangeHandler}
+        customer_id={user?.id ?? 0}
+        refetch={refetch}
+        availableAddressTypes={availableAddressTypes}
+      />
 
-            {!isRefetching && !isEdit && data === null && (
-              <p className=" h-24">
-                You have not set up this type of address yet.
-              </p>
-            )}
-
-            {!isRefetching &&
-              (data && !isRefetching && !isEdit ? (
-                <div className="h-fit ">
-                  <p>
-                    {data?.Customer.first_name} {data?.Customer.last_name}
-                  </p>
-                  <p>P.O Box {data.postal_code}</p>
-                  <p>{data?.street_address_1}</p>
-                  <p>{data?.phone_number}</p>
-                  <p>
-                    {data?.city} {data?.country}
-                  </p>
-                </div>
-              ) : data || isEdit ? (
-                <div className="h-fit ">
-                  <input
-                    className="bg-primary-foreground p-0.5 font-sans  "
-                    value={
-                      user.first_name && user.first_name + ' ' + user.last_name
-                    }
-                    placeholder="Name"
-                    type="text"
-                    required={true}
-                  />
-                  <input
-                    className="bg-primary-foreground p-0.5 font-sans"
-                    placeholder="P.O Box"
-                    {...register('postal_code', {
-                      valueAsNumber: true,
-                    })}
-                    type="number"
-                    required={true}
-                  />
-                  <input
-                    className="bg-primary-foreground p-0.5 font-sans"
-                    placeholder="Street Address"
-                    {...register('street_address_1')}
-                    type="text"
-                    required={true}
-                  />
-                  <input
-                    className="bg-primary-foreground p-0.5 font-sans"
-                    {...register('phone_number')}
-                    placeholder="Mobile"
-                    type="text"
-                    maxLength={9}
-                    required={true}
-                  />
-                  <input
-                    className="bg-primary-foreground p-0.5 font-sans"
-                    placeholder="City"
-                    {...register('city')}
-                    type="text"
-                    required={true}
-                  />
-                  <input
-                    className="bg-primary-foreground p-0.5 font-sans"
-                    placeholder="Country"
-                    {...register('country')}
-                    type="text"
-                    required={true}
-                  />
-                </div>
-              ) : (
-                ''
-              ))}
-          </div>
-        </div>
-      </form>
+      <LoadingDialog open={isLoading} text="Loading..." />
     </div>
   );
+}
+
+type CustomerAddressType = {
+  address_type: 'home' | 'work' | 'hotel' | 'other';
+  id: number;
+  refetch: () => void;
+  customer_id: number;
+  street_address_1: string | null;
+  street_address_2: string | null;
+  country: string | null;
+  state: string | null;
+  city: string | null;
+  phone_number: string | null;
+  phone_code: string | null;
+  postal_code: number | null;
+  is_default: boolean;
 };
 
-export default AddressesView;
+function CustomerAddress(props: CustomerAddressType) {
+  const { toast } = useToast();
+  const { lang } = useSelector((state: RootState) => state.layout);
+  const [title, setTitle] = useState('');
+  const [type, setType] = useState('');
+  const [isModal, setIsModal] = useState(false);
+  const [isEdit, setEdit] = useState(false);
+
+  const handleCmsStatus = () => {
+    setTitle('Default Address');
+    setType(props?.address_type);
+    setIsModal(!isModal);
+  };
+
+  const handleChange = () => {
+    setEdit(!isEdit);
+  };
+
+  const currentAddress = addressType.find(
+    (address) => address.value === props.address_type,
+  );
+
+  return (
+    <form className="h-60 flex mx-auto sm:mx-0">
+      <div
+        className={`w-64 rounded-md border border-border-[1px] p-4  border-primary
+        flex flex-col`}
+      >
+        <div className="flex justify-between items-center">
+          <div className="flex  items-start gap-2">
+            <p className="text-md  font-bold tracking-tight lead">
+              {currentAddress?.label}{' '}
+            </p>
+            {props?.is_default ? (
+              <div className="bg-red-500 h-3 w-3 rounded-full" />
+            ) : null}
+          </div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0 bg-border">
+                <span className="sr-only">Open menu</span>
+                {/* <MoreVertical className="h-4 w-4 text-lg" /> */}
+                <MoreHorizontal className="h-4 w-4 text-lg" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem
+                onClick={handleChange}
+                className="flex items-center gap-2 cursor-pointer"
+                // onClick={() => handleView(row?.original, 'view')}
+              >
+                <span>
+                  <i className={`fas fa-pencil`}></i>
+                </span>
+                <p className="text-xs">
+                  {langContent[lang.lang].MyAccount.AddressView.EDIT_BUTTON}
+                </p>
+              </DropdownMenuItem>
+              {!props?.is_default && (
+                <>
+                  <DropdownMenuSeparator />
+
+                  <DropdownMenuItem
+                    onClick={handleCmsStatus}
+                    className="flex items-center gap-2 cursor-pointer"
+                    // onClick={() => handleView(row?.original, 'view')}
+                  >
+                    Set Default
+                  </DropdownMenuItem>
+                </>
+              )}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+
+        <div className="w-full h-full font-light text-[#eaeaea] flex flex-col pt-3 text-sm">
+          <div className="space-y-1" dir="ltr">
+            <p className="text-ellipsis whitespace-nowrap overflow-hidden">
+              {' '}
+              {langContent[lang.lang].MyAccount.AddressView.BOX as string}{' '}
+              {props.postal_code}
+            </p>
+            <p className="text-ellipsis whitespace-nowrap overflow-hidden">
+              {props?.phone_code}
+              {props?.phone_number}
+            </p>
+            <p className="text-ellipsis whitespace-nowrap overflow-hidden">
+              {props?.country}
+            </p>
+            <p className="text-ellipsis whitespace-nowrap overflow-hidden">
+              {props?.state}
+            </p>
+            <p className="text-ellipsis whitespace-nowrap overflow-hidden">
+              {props?.city}
+            </p>
+            <p className="text-ellipsis whitespace-nowrap overflow-hidden">
+              {' '}
+              {props?.street_address_1}
+            </p>
+            <p className="text-ellipsis whitespace-nowrap overflow-hidden">
+              {props?.street_address_2}
+            </p>
+          </div>
+        </div>
+      </div>
+      <AddressDialog
+        isModal={isModal}
+        setIsModal={setIsModal}
+        title={title}
+        type={type}
+        openChangeHandler={handleCmsStatus}
+        {...props}
+      />
+      <AddCustomerAddressDialog
+        isModal={isEdit}
+        openChangeHandler={handleChange}
+        availableAddressTypes={addressType}
+        {...props}
+      />
+    </form>
+  );
+}
+
+const addressType = [
+  {
+    label: 'Home',
+    value: 'home',
+  },
+  {
+    label: 'Work',
+    value: 'work',
+  },
+  {
+    label: 'Hotel',
+    value: 'hotel',
+  },
+  {
+    label: 'Other',
+    value: 'other',
+  },
+];

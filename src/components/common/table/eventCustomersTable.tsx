@@ -38,16 +38,18 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { MoreHorizontal } from 'lucide-react';
 import { SelectWinnerDialog } from '../modal/eventModal';
-import { TableFilters } from './table_filters';
+import { CSVLink } from 'react-csv';
 
 export type EventCustomerType = {
   event_id: number;
   price: number;
+  discount_amount: number;
   thumb: string;
   event_name: string;
   end_date: Date;
   customer_id: number;
   email: string;
+  phone_number: string;
   first_name: string;
   last_name: string;
   quantity: number;
@@ -63,7 +65,6 @@ const initialModalProps = {
 };
 
 export default function OrdersDataTable() {
-  const [filterID, setFilterID] = useState({});
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
@@ -84,14 +85,14 @@ export default function OrdersDataTable() {
     },
   );
 
-  const cartItemData = React.useMemo(() => {
-    return Array.isArray(data?.data) ? data?.data : [];
+  const eventCustomerData = React.useMemo(() => {
+    return Array.isArray(data?.data) && data?.data?.length ? data?.data : [];
   }, [data]);
 
   const columns: ColumnDef<EventCustomerType>[] = [
     {
-      accessorKey: 'Event',
-      header: 'Event',
+      accessorKey: 'Product',
+      header: 'Product',
       cell: ({ row }) => {
         return (
           <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
@@ -114,7 +115,7 @@ export default function OrdersDataTable() {
       accessorKey: 'Customer Name',
       header: 'Customer Name',
       cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap ">
+        <div className="w-40 capitalize text-ellipsis whitespace-nowrap ">
           {row?.original?.first_name}
         </div>
       ),
@@ -125,6 +126,15 @@ export default function OrdersDataTable() {
       cell: ({ row }) => (
         <div className="text-ellipsis whitespace-nowrap ">
           {row?.original?.email}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'Phone No.',
+      header: 'Phone No.',
+      cell: ({ row }) => (
+        <div className="w-32 text-ellipsis whitespace-nowrap ">
+          {row?.original?.phone_number ?? 'N/A'}
         </div>
       ),
     },
@@ -148,11 +158,35 @@ export default function OrdersDataTable() {
       ),
     },
     {
+      accessorKey: 'Sub Total',
+      header: 'Sub Total',
+      cell: ({ row }) => (
+        <p className="w-24 text-center text-ellipsis whitespace-nowrap ">
+          {(row?.original?.quantity * row?.original?.price)?.toFixed(2)}
+        </p>
+      ),
+    },
+
+    {
+      accessorKey: 'Discount',
+      header: 'Discount',
+      cell: ({ row }) => (
+        <p className="w-24 text-center text-ellipsis whitespace-nowrap ">
+          {row?.original?.discount_amount
+            ? row?.original?.discount_amount?.toFixed(2)
+            : 'N/A'}
+        </p>
+      ),
+    },
+    {
       accessorKey: 'Total Amount',
       header: 'Total Amount',
       cell: ({ row }) => (
         <p className="w-24 text-center text-ellipsis whitespace-nowrap ">
-          {(row?.original?.quantity * row?.original?.price)?.toFixed(2)}
+          {(
+            row?.original?.quantity * row?.original?.price -
+            row?.original?.discount_amount
+          )?.toFixed(2)}
         </p>
       ),
     },
@@ -183,7 +217,7 @@ export default function OrdersDataTable() {
     },
   ];
   const table = useReactTable({
-    data: cartItemData as EventCustomerType[],
+    data: eventCustomerData as EventCustomerType[],
     columns,
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
@@ -209,12 +243,14 @@ export default function OrdersDataTable() {
       isModal: true,
     });
   }
+
   function openChangeHandler() {
     setModalProps((prevState) => ({
       ...initialModalProps,
       isModal: !prevState.isModal,
     }));
   }
+
   // FILTER OPTIONS
   const roleOptions1 = [
     {
@@ -242,48 +278,96 @@ export default function OrdersDataTable() {
       filtername: 'Clear',
     },
   ];
+
+  const csvData = [
+    [
+      'Product',
+      'Customer Name',
+      'Customer Email',
+      'Phone No.',
+      'Price',
+      'Quantity',
+      'Sub Total',
+      'Discount',
+      'Total Amount',
+    ],
+    ...eventCustomerData?.map(
+      ({
+        event_name,
+        first_name,
+        email,
+        phone_number,
+        price,
+        quantity,
+        discount_amount,
+      }) => [
+        event_name,
+        first_name,
+        email,
+        phone_number ?? 'N/A',
+        price,
+        quantity,
+        quantity * price,
+        discount_amount,
+        quantity * price - discount_amount,
+      ],
+    ),
+  ];
+
   return (
     <div className="w-full space-y-4">
-      <div className="flex items-center justify-end gap-2">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline">
-              Columns <ChevronDown className="ml-2 h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
-        {/* <TableFilters
+      <div className="flex items-center justify-between">
+        {eventCustomerData?.length ? (
+          <Button variant="outline">
+            <CSVLink filename="product-customers.csv" data={csvData}>
+              Export to CSV
+            </CSVLink>
+          </Button>
+        ) : (
+          <div />
+        )}
+
+        <div className="flex items-center gap-2">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline">
+                Columns <ChevronDown className="ml-2 h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {table
+                .getAllColumns()
+                .filter((column) => column.getCanHide())
+                .map((column) => {
+                  return (
+                    <DropdownMenuCheckboxItem
+                      key={column.id}
+                      className="capitalize"
+                      checked={column.getIsVisible()}
+                      onCheckedChange={(value) =>
+                        column.toggleVisibility(!!value)
+                      }
+                    >
+                      {column.id}
+                    </DropdownMenuCheckboxItem>
+                  );
+                })}
+            </DropdownMenuContent>
+          </DropdownMenu>
+          {/* <TableFilters
           inputList={roleOptions1}
           item_name={'Event Customer'}
           value={filterID}
           setValue={setFilterID}
           // setFilters={setFilters}
         /> */}
+        </div>
       </div>
       <div className="rounded-md border border-border">
         <ScrollArea className="w-full ">
           <ScrollBar orientation="horizontal"></ScrollBar>
           <Table>
-            <TableHeader>
+            <TableHeader className="bg-secondary/80">
               {table?.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {

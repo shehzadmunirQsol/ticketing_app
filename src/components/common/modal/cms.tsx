@@ -26,6 +26,8 @@ export function CmsDailog(props: SettingDialogInterface) {
   const { toast } = useToast();
   const [loading, setLoading] = useState<boolean>(false);
 
+  console.log(props    , 'propspropspropsprops');
+
   // Update CMS Status
   const updateCmsStatusData = trpc.cms.cmsStatusUpdateById.useMutation({
     onSuccess: (res: any) => {
@@ -43,28 +45,46 @@ export function CmsDailog(props: SettingDialogInterface) {
   const handleClick = async () => {
     try {
       setLoading(true);
+      console.log(props?.selectedItem.id,"props?.selectedItem.id")
       const payload: any = {
-        id: props?.selectedItem,
+        id: props?.selectedItem.id,
       };
-      const result = await updateCmsStatusData.mutateAsync(payload);
+      if (props?.type == 'enable' || props?.type == 'disable')
+        payload.is_enabled = !props?.selectedItem?.is_enabled;
+
+      if (props?.type == 'delete')
+        payload.is_deleted = !props?.selectedItem?.is_deleted;
+
+      const result = await updateCmsStatusData.mutateAsync({ ...payload });
       console.log(result);
 
       if (result) {
         setLoading(false);
         props.setIsModal(false);
         toast({
-          variant: `${props?.type === 'enable' ? 'success' : 'disable'}`,
+          variant: `${
+            props?.type === 'enable'
+              ? props?.selectedItem?.is_enabled
+                ? 'disable'
+                : 'success'
+              : 'success'
+          }`,
           title: `${props?.title} ${
-            props?.type === 'enable' ? 'Enabled' : 'Disabled'
+            props?.type === 'enable'
+              ? props?.selectedItem?.is_enabled
+                ? 'Disabled'
+                : 'Enabled'
+              : 'deleted'
           } Successfully`,
         });
+
+
         props?.refetch();
       } else {
         throw new Error('Data update Error');
       }
     } catch (e: any) {
       setLoading(false);
-
       props.setIsModal(false);
       toast({
         variant: 'destructive',
@@ -77,16 +97,17 @@ export function CmsDailog(props: SettingDialogInterface) {
       <Dialog open={props?.isModal} onOpenChange={(e) => props.setIsModal(e)}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>{props?.title}</DialogTitle>
+            <DialogTitle className="text-left">{props?.title}</DialogTitle>
             <DialogDescription>
               <div className="flex flex-col gap-4 mt-4">
                 <div className="  flex gap-2 items-center p-2  ">
                   <p>
-                    Are You Sure You Want to{' '}
+                    Are You Sure You Want to {props?.type}{' '}
                     <span className="text-primary capitalize">
-                      {props?.type}
+                      {props?.selectedItem?.CMSDescription?.length ? props?.selectedItem?.CMSDescription[0]?.title : "" }
+                      {/* {props?.type} */}
                     </span>{' '}
-                    This Page?
+                     Page?
                   </p>
                 </div>
               </div>

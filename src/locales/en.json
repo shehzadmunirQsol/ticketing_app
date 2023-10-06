@@ -155,7 +155,9 @@
       ]
     },
     "description":{
-      "HEADING":"DESCRIPTION"
+
+      "HEADING":"DESCRIPTION",
+      "SOLD":"Sold"
     },
     "faqs":{
       "HEADING":"FAQs"
@@ -274,6 +276,7 @@
     ]
   },
   "Cars":{
+    "MAIN_HEADING":"CARS",
     "HEADING":"CARS COMPETITION"
   },
   "Cash":{
@@ -285,6 +288,147 @@
     "WINNER_TICKET":"Winning ticket",
     "WINNER_DATE":"Draw date",
     "WINNER_SUB_HEADING":"Won a"
+  },
+  "Cart":{
+    "HEADING":"BASKET",
+    "APPLY_COUPON":"Apply Coupon",
+    "COUPON_APPLIED":"Coupon Applied",
+    "SUB_TOTAL":"Sub Total",
+    "DISCOUNT":"Discount",
+    "TOTAL":"Total",
+    "CHECHKOUT_BTN":"Proceed to Checkout",
+    "LAST_OFFER":"Last chance offer"
+  },
+  "Checkout":{
+    "HEADING":"CHECKOUT",
+    "SUB_HEADING":"Payment",
+    "BILL_HEADING":"Billing Details",
+    "SUMMARY_HEADING":"Order Summary",
+    "HAVE_COUPON":"Have a coupon code?",
+    "SUB_TOTAL":"Sub Total",
+    "DISCOUNT":"Discount",
+    "TOTAL":"Total",
+    "INFO":"Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our",
+    "SUB_INFO":"I’m 18 years old or over and i have read and agree to the website",
+    "POLICY":"privacy policy",
+    "TERMS_CONDITION":"Terms & Conditions",
+    "ACCEPT":"We accept",
+    "PAY_BTN":"PAY WITH CARD"
+  },
+  "MyAccount":{
+    "HEADING":"MY ACCOUNT",
+    "COMPETITION_ENTRIES":"Your Competition Entries",
+    "array":[
+      {
+        "tab_count":1,
+        "tab": "Dashboard",
+        "title": "MY ACCOUNT"
+      },
+      {
+        "tab_count":2,
+        "tab": "Addresses",
+        "title": "ADDRESSES"
+      },
+      {
+        "tab_count":3,
+        "tab": "Account Details",
+        "title": "ACCOUNT DETAILS"
+      },
+      {
+        "tab_count":4,
+        "tab": "Logout",
+        "fn": ""
+      }
+    ],
+    "AccountView":{
+      "HELLO":"Hello ",
+      "ACCOUNT":"From your account dashboard you can view your recent orders, manage your",
+      "ADDRESS":"shipping and billing addresses",
+      "AND":"and",
+      "EDIT":"edit your password and account details.",
+      "ENTRIES":"Your Competition Entries",
+      "DAYS":"Showing entries for last 30 days",
+      "COMPETITION":"Once you enter a competition your entry will appear here.",
+      "LUCK":"Good luck!",
+      "CURRENT":"Current",
+      "PAST":"Past",
+      "INFO_HEADING":"EXPLORE CURRENT COMPETITIONS",
+      "INFO":"No past competition entries to show. Only entries from the last 30 days will be shown.",
+      "TABLE_INFO":"No past competition entries to show. Only entries from the last 30 days will be shown.",
+      "TABLE_BUTTON":"EXPLORE CURRENT COMPETITIONS"
+    },
+    "AddressView":{
+      "INFO_HEADING":"Billing Address",
+        "INFO":"The following addresses will be used on the checkout page by default.",
+        "SUB_INFO":"You have not set up this type of address yet.",
+        "BOX":"P.O Box",
+        "ADD_BUTTON":"ADD",
+        "SAVE_BUTTON":"SAVE",
+        "EDIT_BUTTON":"EDIT"
+    },
+    "AccountDetail":{
+      "HEADING":"Personal information",
+      "SUB_HEADING":"Password change",
+      "DELETE_HEADING":"Delete account & personal details",
+      "DELETE_INFO":"If you want to delete your account and all personal details, we will start a process to delete your account. You won’t be able to use your account. This process takes 14 days and after that time, we won’t be able to recover your data.",
+      "UNDERSTAND":"I understand that I will lose all data (including entries) related to my account",
+      "OPTIONAL":"Why are you deleting your account? (optional)",
+      "BUTTON":"SAVE CHANGES",
+      "BUTTON_CONTENT":"DELETE MY ACCOUNT",
+
+      "accountArgumentsOptions":[
+        {
+          "text": "I’m not interested in competitions anymore"
+        },
+        {
+          "text": "Uninteresting prizes"
+        },
+        {
+          "text": "Problems with gambling"
+        },
+        {
+          "text": "I receive too many emails"
+        },
+        {
+          "text": "I receive too many text messages"
+        },
+        {
+          "text": "I receive too many push notifications"
+        }
+      ]
+    }
+  },
+  "Auth":{
+      "TAB_LOGIN":"Login",
+      "TAB_REGISTER":"Register",
+      "FORGOT":" Forgot Password?",
+      "LOGIN_BUTTON":"LOGIN",
+      "REGISTER_INFO":"Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our",
+      "REGISTER_SUB_INFO":"privacy policy.",
+      "REGISTER_BUTTON":"REGISTER",
+      "SIDE_CONTENT":"Unlock Your Journey Login or Register for",
+      "SIDE_SUB_CONTENT":"Exclusive Access",
+      "FORGOTPASSWORD":{
+          "HEADING":"Forgot Password",
+          "BUTTON":" SUBMIT"
+      },
+      "RESETPASSWORD":{
+          "HEADING":"Reset Password",
+          "BUTTON":" Change Password"
+      },
+      "OTPSCREEN":{
+          "HEADING":"OTP`",
+          "SUB_HEADING":" VERIFICATION",
+          "TEXT":" We have sent OTP on your email",
+          "OTP":" Didn’t receive an OTP?",
+          "RESEND":" Resend OTP",
+          "BUTTON":" Enter"
+      }
+
+  },
+  "About":{
+    "HEADING":"Meet Our Driving Force",
+    "SUB_HEADING":"The Passionate Team Behind Winnar"
   }
 
 }

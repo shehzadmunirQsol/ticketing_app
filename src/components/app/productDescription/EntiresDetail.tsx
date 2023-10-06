@@ -36,7 +36,7 @@ const EntiresDetail = (props: any) => {
                   <div className={`flex  justify-center items-center `}>
                     <Image
                       src={images[item.data]}
-                      className="mr-4"
+                      className="ltr:mr-4 rtl:ml-4"
                       alt={'image'}
                     />
                     <p className="leading-relaxed  text-lg md:text-xl text-primary font-semibold">

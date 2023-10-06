@@ -10,7 +10,6 @@ import {
   DropdownMenuTrigger,
 } from '@/ui/dropdown-menu';
 import { MoreHorizontal } from 'lucide-react';
-import { useToast } from '~/components/ui/use-toast';
 import { LoadingDialog } from '~/components/common/modal/loadingModal';
 import { CmsDailog } from '~/components/common/modal/cms';
 
@@ -44,8 +43,8 @@ function Cms() {
     }
   });
 
-  const handleCmsStatus = async (id: any, type: any) => {
-    setSelectedItem(id);
+  const handleCmsStatus = async (data: any, type: any) => {
+    setSelectedItem(data);
     setTitle('CMS');
     setType(type);
     setIsModal(true);
@@ -80,34 +79,12 @@ function Cms() {
                     </p>
                     <div>
                       <div>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="h-8 w-8 p-0">
-                              <span className="sr-only">Open menu</span>
-                              <MoreHorizontal className="h-4 w-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <Link href={`/admin/cms/edit/${item?.id}`}>
-                              <DropdownMenuItem>Edit CMS</DropdownMenuItem>
-                            </Link>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem
-                              onClick={() =>
-                                handleCmsStatus(
-                                  item?.id,
-                                  item?.is_enabled === false
-                                    ? 'enable'
-                                    : 'disable',
-                                )
-                              }
-                            >
-                              {item.is_enabled === true
-                                ? 'Enabled'
-                                : 'Disabled'}
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
+                        <Link
+                          href={`/admin/cms/edit/${item?.id}`}
+                          className=" rounded-full border-border"
+                        >
+                          <i className="fa-solid fa-pen-to-square hover:text-primary"></i>
+                        </Link>
                       </div>
                     </div>
                   </div>
@@ -123,7 +100,7 @@ function Cms() {
 
         <div className="w-full">
           <p className=" text-3xl text-gray-400 font-semibold mb-4">
-            Events CMS
+            Products CMS
           </p>
 
           <div className="w-full grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4  mb-10 ">
@@ -139,12 +116,44 @@ function Cms() {
                     </p>
                     <div>
                       <div>
-                        <Link
-                          href={`/admin/cms/edit/${item?.id}`}
-                          className=" rounded-full border-border"
-                        >
-                          <i className="fa-solid fa-pen-to-square hover:text-primary"></i>
-                        </Link>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" className="h-8 w-8 p-0">
+                              <span className="sr-only">Open menu</span>
+                              <MoreHorizontal className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <Link href={`/admin/cms/edit/${item?.id}`}>
+                              <DropdownMenuItem>Edit CMS</DropdownMenuItem>
+                            </Link>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem
+                              onClick={() =>
+                                handleCmsStatus(
+                                  item,
+                                  item?.is_enabled === false
+                                    ? 'enable'
+                                    : 'disable',
+                                )
+                              }
+                            >
+                              {item.is_enabled === true
+                                ? 'Enabled'
+                                : 'Disabled'}
+                            </DropdownMenuItem>
+
+                            <DropdownMenuSeparator />
+
+                            {
+                              <DropdownMenuItem
+                                onClick={() => handleCmsStatus(item, 'delete')}
+                              >
+                                Delete
+                              </DropdownMenuItem>
+                            }
+                          </DropdownMenuContent>
+                        </DropdownMenu>
                       </div>
                     </div>
                   </div>

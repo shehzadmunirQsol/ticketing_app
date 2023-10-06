@@ -5,35 +5,31 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '~/components/ui/dialog';
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/ui/form';
-import { useForm } from 'react-hook-form';
 import { useToast } from '~/components/ui/use-toast';
 import { trpc } from '~/utils/trpc';
 import OtpImage from '~/public/assets/otp-screen.svg';
 import Image from 'next/image';
 import { useRef, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { userAuth } from '~/store/reducers/auth';
 import { LoadingDialog } from '~/components/common/modal/loadingModal';
+import langContent from '~/locales';
+import { RootState } from '~/store/store';
+
 interface OtpVerificationDailogInterface {
   otpIsModal: boolean;
   setOtpIsModal: (e: any) => void;
   emailOrUser: string;
 }
 export function OtpVerificationDailog(props: OtpVerificationDailogInterface) {
+
+  const { lang } = useSelector((state: RootState) => state.layout);
+
+
+
   const { toast } = useToast();
   const router = useRouter();
   const dispatch = useDispatch();
@@ -85,8 +81,6 @@ export function OtpVerificationDailog(props: OtpVerificationDailogInterface) {
         variant: 'success',
         title: 'Please check your email',
       });
-      // props.setOtpIsModal(false)
-      // router.push('/login');
     },
     onError: (err) => {
       console.log(err.message, 'err');
@@ -102,7 +96,6 @@ export function OtpVerificationDailog(props: OtpVerificationDailogInterface) {
     const pattern = /^-?\d+(\.\d+)?$/;
     return pattern.test(value);
   };
-  // console.log(user, 'State');
 
   // Handle Forgot Password
   function inputChangeHandler(event: React.ChangeEvent<HTMLInputElement>) {
@@ -167,7 +160,7 @@ export function OtpVerificationDailog(props: OtpVerificationDailogInterface) {
         otp_4: +inputFour.current.value,
       };
 
-      const otpResult = await otpVerification.mutateAsync(result);
+       await otpVerification.mutateAsync(result);
     } catch (error: any) {
       toast({
         variant: 'destructive',
@@ -177,7 +170,7 @@ export function OtpVerificationDailog(props: OtpVerificationDailogInterface) {
   }
 
   async function handleResendOtp() {
-    const otpResult = await resendOtpCustomer.mutateAsync({
+    await resendOtpCustomer.mutateAsync({
       emailOrUser: props?.emailOrUser,
     });
   }
@@ -191,8 +184,8 @@ export function OtpVerificationDailog(props: OtpVerificationDailogInterface) {
         <DialogContent className="  bg-gradient-to-b from-[#444E5566] via-gray-[#3841471A] to-transparent text-center py-8 ">
           <DialogHeader>
             <DialogTitle className="text-center ">
-              <p className="font-light text-2xl">OTP</p>
-              <p className="font-bold text-2xl">VERIFICATION</p>
+              <p className="font-light text-2xl">{langContent[lang.lang].Auth.OTPSCREEN.HEADING}</p>
+              <p className="font-bold text-2xl">{langContent[lang.lang].Auth.OTPSCREEN.SUB_HEADING}</p>
               <div className="flex items-center justify-center my-6">
                 <Image src={OtpImage} alt="otpImage" className="max-w-full" />
               </div>
@@ -203,7 +196,7 @@ export function OtpVerificationDailog(props: OtpVerificationDailogInterface) {
                 className="justify-center items-center px-2 lg:px-8 py-4 space-y-4"
               >
                 <p className="text-center text-grayColor">
-                  We have sent OTP on your email
+                {langContent[lang.lang].Auth.OTPSCREEN.TEXT}
                 </p>
                 <div className="flex gap-4 mb-2">
                   <Input
@@ -241,7 +234,7 @@ export function OtpVerificationDailog(props: OtpVerificationDailogInterface) {
                 </div>
                 <div className="flex flex-row justify-center items-center  ">
                   <p className="text-center text-grayColor text-xs pr-4  cursor-pointer">
-                    Didn’t receive an OTP?{' '}
+                  {langContent[lang.lang].Auth.OTPSCREEN.OTP}{' '}
                   </p>
                   <button
                     disabled={showTimer}
@@ -249,7 +242,7 @@ export function OtpVerificationDailog(props: OtpVerificationDailogInterface) {
                     type="button"
                     className="text-white text-xs underline cursor-pointer"
                   >
-                    Resend OTP {seconds ? seconds + 's' : ''}
+                    {langContent[lang.lang].Auth.OTPSCREEN.RESEND} {seconds ? seconds + 's' : ''}
                   </button>
                 </div>
                 <div className="w-full mx-auto">
@@ -258,7 +251,7 @@ export function OtpVerificationDailog(props: OtpVerificationDailogInterface) {
                       className="align-center uppercase rounded-full px-10   text-black font-sans font-[900]   text-xl tracking-[-1px]"
                       variant="clip"
                     >
-                      Enter
+                      {langContent[lang.lang].Auth.OTPSCREEN.BUTTON}
                     </Button>
                   </div>
                 </div>

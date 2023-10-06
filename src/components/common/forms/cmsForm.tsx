@@ -29,15 +29,16 @@ import {
   SelectGroup,
   SelectValue,
 } from '@/ui/select';
+import { Editor } from 'primereact/editor';
 
-//theme
-import 'primereact/resources/themes/lara-light-indigo/theme.css';
-//core
-import 'primereact/resources/primereact.min.css';
 import { useToast } from '~/components/ui/use-toast';
 import Link from 'next/link';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
 import { Textarea } from '~/components/ui/textarea';
+//theme
+import 'primereact/resources/themes/lara-light-indigo/theme.css';
+//core
+import 'primereact/resources/primereact.min.css';
 
 interface CategoryFormInterface {
   language: LanguageInterface;
@@ -109,7 +110,6 @@ export default function CmsForm(props: CategoryFormInterface) {
 
     form.setValue('en.content', newContent);
   };
-  // console.log({ content });
   // updating data
   const updateCmsId = trpc.cms.updateById.useMutation({
     onSuccess: (res: any) => {
@@ -118,7 +118,6 @@ export default function CmsForm(props: CategoryFormInterface) {
         variant: 'success',
         title: 'cms Updated Successfully',
       });
-      // setEdit(false);
     },
     onError(error: any) {
       console.log(error);
@@ -227,7 +226,7 @@ export default function CmsForm(props: CategoryFormInterface) {
     extraAllowedContent: 'b i div class style;script[src]',
   };
 
-  const FaqsType = [
+  const editFaqsType = [
     {
       faqType: 'event_faqs',
     },
@@ -235,7 +234,55 @@ export default function CmsForm(props: CategoryFormInterface) {
       faqType: 'static',
     },
   ];
+  const addFaqsType = [
+    {
+      faqType: 'event_faqs',
+    },
+  ];
 
+  const enabled = id ? true : false;
+
+  console.log(data?.data?.slug, 'datadatadata');
+
+  // rich text editor content
+  const renderHeader = () => {
+    return (
+      <>
+        <span className="ql-formats">
+          <select className="ql-header">
+            <option selected></option>
+            <option value="1"></option>
+            <option value="2"></option>
+            <option value="3"></option>
+          </select>
+        </span>
+        <span className="ql-formats">
+          <button className="ql-bold" aria-label="Bold"></button>
+          <button className="ql-italic" aria-label="Italic"></button>
+          <button className="ql-underline" aria-label="Underline"></button>
+        </span>
+
+        <span className="ql-formats">
+          <button className="ql-strike" aria-label="Font"></button>
+          <button className="ql-list" value="ordered"></button>
+          <button className="ql-list" value="bullet"></button>
+          <button aria-label="Link" className="ql-link"></button>
+          {/* <button aria-label="Image" className="ql-image"></button> */}
+        </span>
+        <span className="ql-formats">
+          <select className="ql-align">
+            <option selected></option>
+            <option className="ql-center" value="center"></option>
+            <option value="right">right</option>
+            <option value="justify"> justify</option>
+          </select>
+        </span>
+      </>
+    );
+  };
+
+  const header = renderHeader();
+  console.log(form.getValues(), 'form.getValues()');
   return (
     <Form {...form}>
       <form
@@ -262,6 +309,7 @@ export default function CmsForm(props: CategoryFormInterface) {
                     <Input
                       placeholder="Enter Page Slug"
                       defaultValue={field.value}
+                      disabled={enabled}
                       {...field}
                     />
                   </FormControl>
@@ -284,6 +332,7 @@ export default function CmsForm(props: CategoryFormInterface) {
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                     value={field.value}
+                    disabled={enabled}
                   >
                     <FormControl className="rounded-md bg-[#060B0E]">
                       <SelectTrigger className="h-10 rounded-none  ">
@@ -292,15 +341,25 @@ export default function CmsForm(props: CategoryFormInterface) {
                     </FormControl>
                     <SelectContent>
                       <SelectGroup>
-                        {FaqsType?.map((item, i) => (
-                          <SelectItem
-                            className=" capitalize"
-                            key={i}
-                            value={item?.faqType}
-                          >
-                            {item?.faqType.replace('_', ' ')}
-                          </SelectItem>
-                        ))}
+                        {!id
+                          ? addFaqsType?.map((item, i) => (
+                              <SelectItem
+                                className=" capitalize"
+                                key={i}
+                                value={item?.faqType}
+                              >
+                                {item?.faqType.replace('_', ' ')}
+                              </SelectItem>
+                            ))
+                          : editFaqsType?.map((item, i) => (
+                              <SelectItem
+                                className=" capitalize"
+                                key={i}
+                                value={item?.faqType}
+                              >
+                                {item?.faqType.replace('_', ' ')}
+                              </SelectItem>
+                            ))}
                       </SelectGroup>
                     </SelectContent>
                   </Select>
@@ -386,32 +445,70 @@ export default function CmsForm(props: CategoryFormInterface) {
                   </FormItem>
                 )}
               />
+              {data?.data?.slug === 'about-us' || data?.data?.slug === 'faq' ? (
+                <FormField
+                  control={form.control}
+                  name="en.content"
+                  render={({ field }) => (
+                    <FormItem className=" text-black">
+                      <FormLabel className=" text-white">
+                        Content <sup className="text-md text-red-500">*</sup>
+                      </FormLabel>
 
-              <FormField
-                control={form.control}
-                name="en.content"
-                render={({ field }) => (
-                  <FormItem className=" text-black">
-                    <FormLabel className=" text-white">
-                      Content <sup className="text-md text-red-500">*</sup>
-                    </FormLabel>
-                    <FormControl>
-                      <CKEditor
-                        activeClass="p10"
-                        content={contentEn} // Set the initial content
-                        events={{
-                          change: handleEnChange,
-                        }}
-                        config={editorConfig}
-                      />
-                    </FormControl>
+                      <FormControl>
+                        <CKEditor
+                          activeClass="p10"
+                          content={contentEn} // Set the initial content
+                          events={{
+                            change: handleEnChange,
+                          }}
+                          config={editorConfig}
+                        />
+                      </FormControl>
 
-                    <div className="relative pb-2 mb-2">
-                      <FormMessage />
-                    </div>
-                  </FormItem>
-                )}
-              />
+                      <div className="relative pb-2 mb-2">
+                        <FormMessage />
+                      </div>
+                    </FormItem>
+                  )}
+                />
+              ) : (
+                <>
+                  <FormField
+                    control={form.control}
+                    name="en.content"
+                    render={({ field }) => (
+                      <FormItem className=" text-black">
+                        <FormLabel className=" text-white">
+                          Content <sup className="text-md text-red-500">*</sup>
+                        </FormLabel>
+
+                        <FormControl>
+                          <Editor
+                            id={field.name}
+                            value={field.value}
+                            className=" bg-black"
+                            headerTemplate={header}
+                            onTextChange={(e: any) => {
+                              console.log(e.htmlValue, 'e.htmlValue');
+                              field.onChange(e.htmlValue);
+                              // form.setValue('en.content', e.htmlValue)
+                            }}
+                            style={{
+                              height: '320px',
+                              backgroundColor: 'black',
+                            }}
+                          />
+                        </FormControl>
+
+                        <div className="relative pb-2 mb-2">
+                          <FormMessage />
+                        </div>
+                      </FormItem>
+                    )}
+                  />
+                </>
+              )}
             </TabsContent>
             <TabsContent value="ar">
               <div className="space-y-4" dir="rtl">
@@ -476,7 +573,74 @@ export default function CmsForm(props: CategoryFormInterface) {
                   )}
                 />
 
-                <FormField
+                {data?.data?.slug === 'about-us' ||
+                data?.data?.slug === 'faq' ? (
+                  <FormField
+                    control={form.control}
+                    name="ar.content"
+                    render={({ field }) => (
+                      <FormItem className=" text-black">
+                        <FormLabel className=" text-white">
+                          Content <sup className="text-md text-red-500">*</sup>
+                        </FormLabel>
+
+                        <FormControl>
+                          <CKEditor
+                            activeClass="p10"
+                            content={contentEn} // Set the initial content
+                            events={{
+                              change: handleEnChange,
+                            }}
+                            config={editorConfig}
+                          />
+                        </FormControl>
+
+                        <div className="relative pb-2 mb-2">
+                          <FormMessage />
+                        </div>
+                      </FormItem>
+                    )}
+                  />
+                ) : (
+                  <>
+                    <FormField
+                      control={form.control}
+                      name="ar.content"
+                      render={({ field }) => (
+                        <FormItem className=" text-black">
+                          <FormLabel className=" text-white">
+                            Content{' '}
+                            <sup className="text-md text-red-500">*</sup>
+                          </FormLabel>
+
+                          <FormControl>
+                            <Editor
+                              id={field.name}
+                              value={field.value}
+                              className=" bg-black"
+                              headerTemplate={header}
+                              onTextChange={(e: any) => {
+                                console.log(e.htmlValue, 'e.htmlValue');
+                                field.onChange(e.htmlValue);
+                                // form.setValue('en.content', e.htmlValue)
+                              }}
+                              style={{
+                                height: '320px',
+                                backgroundColor: 'black',
+                              }}
+                            />
+                          </FormControl>
+
+                          <div className="relative pb-2 mb-2">
+                            <FormMessage />
+                          </div>
+                        </FormItem>
+                      )}
+                    />
+                  </>
+                )}
+
+                {/* <FormField
                   control={form.control}
                   name="ar.content"
                   render={({ field }) => (
@@ -500,7 +664,7 @@ export default function CmsForm(props: CategoryFormInterface) {
                       </div>
                     </FormItem>
                   )}
-                />
+                /> */}
               </div>
             </TabsContent>
           </Tabs>

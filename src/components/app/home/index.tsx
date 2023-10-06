@@ -31,7 +31,6 @@ export default function Home() {
         />
         {/* product section 2 */}
         {/* 11 cards */}
-        {/* <div className="py-4"></div> */}
         <ProductSection
           class="mx-auto w-3/5 md:w-full"
           slidesToShow={2.5}

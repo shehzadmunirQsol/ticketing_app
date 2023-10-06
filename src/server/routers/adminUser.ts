@@ -22,7 +22,10 @@ export const adminUserRouter = router({
     if (token) {
       userData = await verifyJWT(token);
     } else {
-      return null;
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: 'Token not found!',
+      });
     }
 
     const user = await prisma.adminUser.findUnique({

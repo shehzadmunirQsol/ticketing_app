@@ -27,6 +27,7 @@ const ProductDetail = () => {
 
   const comp_detail: any = data?.data?.EventDescription[0]?.comp_details;
   const Faqs: any = data?.data?.CMS;
+  console.log(Faqs,"FaqsFaqs")
 
   return (
     <div className="bg-background">
@@ -47,7 +48,7 @@ const ProductDetail = () => {
       <div className="relative px-4 md:px-14  pb-10">
         <div className="relative  z-10 ">
           {comp_detail ? <CompititionDetail data={data?.data} /> : <></>}
-          {Faqs ? <AccordianFaqs data={data?.data} /> : <></>}
+          {Faqs && Faqs?.is_enabled ? <AccordianFaqs data={data?.data} /> : <></>}
         </div>
         <Glow className="absolute bottom-0 -right-16   p-2   w-1/5 h-[80px]   " />
       </div>

@@ -15,7 +15,7 @@ function HowtoSection() {
     <div className="w-full  mb-16 bg-primary relative">
       <div className="relative top-0   mx-auto    grid grid-cols-1 lg:grid-cols-2 gap-4  p-4 md:p-14 ">
         <div className=" my-auto   w-full ">
-          <p className={`w-full md:!max-w-[460px] mr-auto  py-4 md:py-0 ${lang.lang === "en" ? 'text-left' : 'text-right'} text-black font-[1000] tracking-[-1px] text-3xl   xsm:text-6xl lg:text-8xl`}>
+          <p className={`w-full md:!max-w-[460px] mr-auto  py-4 md:py-0  ltr:text-left rtl:text-right    text-black font-[1000] tracking-[-1px] text-3xl   xsm:text-6xl lg:text-8xl`}>
           {langContent[lang.lang].Index.howtoplay.HEADING}
           </p>
         </div>

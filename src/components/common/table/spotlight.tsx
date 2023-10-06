@@ -93,7 +93,7 @@ export default function DataTableSpotLight() {
   const handleEnbled = (data: any, type: string) => {
     // console.log({ e, data });
     setSelectedItem(data);
-    setTitle('Spot Light');
+    setTitle('Winnar Wonders');
     setType(type);
     setIsModal(true);
   };
@@ -196,7 +196,7 @@ export default function DataTableSpotLight() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <Link href={`/admin/settings/spotlight/edit/${payment?.id}`}>
-                <DropdownMenuItem>Edit Spot Light</DropdownMenuItem>
+                <DropdownMenuItem>Edit Winnar Wonders</DropdownMenuItem>
               </Link>
               <DropdownMenuItem
                 onClick={() => handleEnbled(row?.original, 'delete')}
@@ -321,7 +321,7 @@ export default function DataTableSpotLight() {
           </DropdownMenu>
           <TableFilters
             inputList={roleOptions1}
-            item_name={'Spot Light'}
+            item_name={'Winnar Wonders'}
             value={filterID}
             setValue={setFilterID}
             setFilters={setFilters}

@@ -10,11 +10,15 @@ import { useToast } from '~/components/ui/use-toast';
 import Link from 'next/link';
 import CartItem from './cartItem';
 import { addDiscount } from '~/store/reducers/cart';
+import langContent from '~/locales';
+
 
 export default function CartPage() {
   const { cart, totalAmount, count } = useSelector(
     (state: RootState) => state.cart,
   );
+  const { lang } = useSelector((state: RootState) => state.layout);
+
 
   const eventIds = cart.cartItems.map((item) => item.event_id);
   const [code, setCode] = useState('');
@@ -78,7 +82,7 @@ export default function CartPage() {
         <>
           <div className="relative py-6 px-4 space-y-10 md:py-16 md:px-14 md:space-y-14 -z-30 ">
             <h2 className="text-2xl md:text-4xl lg:text-5xl z-10 font-black uppercase">
-              Basket
+            {langContent[lang.lang].Cart.HEADING}
             </h2>
             <div
               data-name="cards"
@@ -102,8 +106,9 @@ export default function CartPage() {
               })}
             </div>
             <div className="bg-transparent space-y-4 sm:w-1/2 mdx:w-1/3 z-10 ml-auto">
-              <div className="flex bg-card border border-border rounded-md">
+              <div className="flex bg-card border border-border rounded-md" dir='ltr'>
                 <Input
+                
                   placeholder="Coupon code"
                   type="text"
                   onChange={(e: any) => setCode(e.target.value)}
@@ -116,17 +121,17 @@ export default function CartPage() {
                   disabled={!code || cart.isDiscount}
                   className="text-primary border-l border-border z-10 "
                 >
-                  {cart.isDiscount ? 'Coupon Applied' : 'Apply Coupon'}
+                  {cart.isDiscount ? langContent[lang.lang].Cart.COUPON_APPLIED : langContent[lang.lang].Cart.APPLY_COUPON}
                 </Button>
               </div>
               {cart.isDiscount ? (
                 <>
                   <div className="flex items-center justify-between z-10 ">
-                    <p className="text-white/40  text-lg">Sub Total:</p>
+                    <p className="text-white/40  text-lg">{langContent[lang.lang].Cart.SUB_TOTAL}:</p>
                     <p className="text-xl">AED {totalAmount?.toFixed(2)}</p>
                   </div>
                   <div className="flex items-center justify-between z-10 ">
-                    <p className="text-white/40  text-lg">Discount:</p>
+                    <p className="text-white/40  text-lg">{langContent[lang.lang].Cart.DISCOUNT}:</p>
                     <p className="text-xl">
                       {' '}
                       - AED {discountAmount.toFixed(2)}
@@ -137,7 +142,7 @@ export default function CartPage() {
               ) : null}
 
               <div className="flex items-center justify-between z-10 ">
-                <p className="text-lg">Total:</p>
+                <p className="text-lg">{langContent[lang.lang].Cart.TOTAL}:</p>
                 <p className="text-xl text-primary font-black">
                   AED {(totalAmount - discountAmount)?.toFixed(2)}
                 </p>
@@ -148,7 +153,7 @@ export default function CartPage() {
                   size={'full'}
                   className="uppercase text-lg font-black z-10 "
                 >
-                  Proceed to Checkout
+                  {langContent[lang.lang].Cart.CHECHKOUT_BTN}
                 </Button>
               </a>
             </div>
@@ -162,7 +167,7 @@ export default function CartPage() {
               center={false}
               breakpoint={[3, 2, 1.5]}
               breakpointScreens={[1350, 1050, 800]}
-              title={'Last chance offer'}
+              title={langContent[lang.lang].Cart.LAST_OFFER}
               type="no-glow"
             />
             <Glow className="absolute right-0 bottom-0 w-1/6 h-20 overflow-hidden -z-20" />

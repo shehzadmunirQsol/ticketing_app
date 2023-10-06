@@ -56,7 +56,7 @@ const CarsPage = () => {
       <div className="relative pt-24"></div>
       <FeaturedCars />
       <div className="pb-20 block slg:hidden">
-        <BannerTitle image={CarsBg} text={'Cars'} />
+        <BannerTitle image={CarsBg} text={langContent[lang.lang].Cars.MAIN_HEADING} />
       </div>
       <div className="relative h-full px-4 md:px-14 pb-20">
         <p className="hidden slg:block text-2xl md:text-5xl pt-24 pb-10 tracking-tighter font-extrabold text-white ">

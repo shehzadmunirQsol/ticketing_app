@@ -5,6 +5,8 @@ import ImageSliderStyle from './ImageSliderStyle';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
 import { useRouter } from 'next/router';
+import langContent from '~/locales';
+
 import {
   URIDecoder,
   customTruncate,
@@ -64,10 +66,10 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
                     (Number(data?.tickets_sold) / Number(data?.total_tickets)) *
                       100,
                   )}
-                  % Sold
+                  % {langContent[lang.lang].ProductDetail.description.SOLD}
                 </span>
                 <Progress value={percentageSold} className="w-full" />
-                <span className='w-full text-center text-xs text-gray-300'>{(data?.tickets_sold)?.toLocaleString()} /{(data?.total_tickets)?.toLocaleString()}</span>
+                <span className='w-full text-center text-xs text-gray-300'>{(data?.tickets_sold)?.toLocaleString()} /{" "}{(data?.total_tickets)?.toLocaleString()}</span>
 
               </div>
             </div>

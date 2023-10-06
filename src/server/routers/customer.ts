@@ -16,6 +16,7 @@ import {
   passwordChangeSchema,
   deleteMyAccountCustomerSchema,
   logoutSchema,
+  updateCustomerAddress,
 } from '~/schema/customer';
 import { hashPass, isSamePass } from '~/utils/hash';
 import { signJWT, verifyJWT } from '~/utils/jwt';
@@ -224,7 +225,21 @@ export const customerRouter = router({
           if (input?.code) delete payload?.code;
 
           const customer = await prisma.customer?.create({
-            data: payload,
+            data: {
+              ...payload,
+              CustomerAddress: {
+                createMany: {
+                  data: [
+                    {
+                      country: input?.country,
+                      phone_code: input?.code,
+                      phone_number: input?.phone_number,
+                      is_default: true,
+                    },
+                  ],
+                },
+              },
+            },
           });
 
           const mailOptions: any = {
@@ -582,8 +597,6 @@ export const customerRouter = router({
           // here u will do the mutation
 
           const payload = {
-            state: '',
-            street_address_2: '',
             ...input,
           };
           console.log({ payload }, 'payload bk');
@@ -609,8 +622,6 @@ export const customerRouter = router({
 
         const payload = {
           // postal_code: Number(input?.postal_code),
-          state: '',
-          street_address_2: '',
           ...input,
         };
         console.log({ payload }, 'payload update bk');
@@ -630,29 +641,54 @@ export const customerRouter = router({
         });
       }
     }),
+  updateDefaultAddress: publicProcedure
+    .input(updateCustomerAddress)
+    .mutation(async ({ ctx, input }) => {
+      try {
+        // here u will do the mutation
+
+        const payload = {
+          // postal_code: Number(input?.postal_code),
+
+          ...input,
+        };
+        await prisma.customerAddress.updateMany({
+          where: {
+            customer_id: input.customer_id,
+          },
+          data: {
+            is_default: false,
+          },
+        });
+        const customer: any = await prisma.customerAddress.update({
+          where: {
+            id: input.id,
+          },
+          data: {
+            is_default: true,
+          },
+        });
+
+        return { customer: customer, status: true };
+      } catch (error: any) {
+        console.log({ error });
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: error.message,
+        });
+      }
+    }),
   getAddress: publicProcedure
     .input(getCustomerAddress)
-    .query(async ({ ctx, input }) => {
+    .query(async ({ input }) => {
       try {
-        const user: any = await prisma.customer.findFirst({
-          where: { id: input.customer_id },
+        // here u will do the mutation
+        const addresses = await prisma.customerAddress.findMany({
+          where: { customer_id: input.customer_id },
+          orderBy: { created_at: 'asc' },
         });
-        console.log(user, 'user backend');
 
-        if (!user) {
-          throw new TRPCError({
-            code: 'NOT_FOUND',
-            message: 'User not found',
-          });
-        } else {
-          // here u will do the mutation
-          const customer: any = await prisma.customerAddress.findFirst({
-            where: { customer_id: input.customer_id },
-            include: { Customer: {} },
-          });
-
-          return customer;
-        }
+        return addresses;
       } catch (error: any) {
         console.log({ error });
         throw new TRPCError({
