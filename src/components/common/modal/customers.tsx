@@ -55,6 +55,8 @@ export function CustomerDialog(props: SettingDialogInterface) {
         payload.is_deleted = !props?.selectedItem?.is_deleted;
       if (props?.type == 'enable')
         payload.is_disabled = false;
+      if (props?.type == 'disable')
+        payload.is_disabled = true;
 
       // let data: any;
       await customerUpdate.mutateAsync(payload);

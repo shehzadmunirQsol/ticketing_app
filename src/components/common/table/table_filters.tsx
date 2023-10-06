@@ -48,7 +48,8 @@ export function TableFilters(props: SettingDialogInterface) {
   const [filterInput, setFilterInput] = useState<any>({});
   const form = useForm<any>({});
   const router = useRouter();
-  const { is_enabled, is_verified, status } = router.query;
+  const { is_enabled, is_verified, status, is_disabled } = router.query;
+  console.log(router.query)
 
   useEffect(() => {
     if (router.isReady) {
@@ -59,17 +60,16 @@ export function TableFilters(props: SettingDialogInterface) {
           is_enabled: is_enabled == 'true' ? true : false,
         });
       }
-      if (is_verified) {
-        props?.setValue({ is_verified: is_verified == 'true' ? true : false });
+      if (is_verified && is_disabled) {
+        props?.setValue({ is_verified: is_verified == 'true' ? true : false, is_disabled: false, });
         setFilterVal({
           ...filterVal,
           is_verified: is_verified == 'true' ? true : false,
+          is_disabled: false,
         });
-        console.log(
-          { is_verified: is_verified == 'true' ? true : false },
-          'is_verified',
-        );
+
       }
+
       if (status) {
         props?.setValue({ status });
         setFilterVal({
@@ -94,10 +94,10 @@ export function TableFilters(props: SettingDialogInterface) {
       filter == 'category_id' && e.target.value !== 'delete'
         ? +e.target.value
         : filterData.includes(filter) && e.target.value !== 'delete'
-        ? e.target.value == 'true'
-          ? true
-          : false
-        : e.target.value;
+          ? e.target.value == 'true'
+            ? true
+            : false
+          : e.target.value;
     if (data !== 'delete') {
       setFilterVal({
         ...filterVal,
@@ -132,17 +132,17 @@ export function TableFilters(props: SettingDialogInterface) {
       setFilterDate({}),
       setFilterInput({}),
       props?.setFilters &&
-        props?.setFilters(
-          props?.initial
-            ? {
-                ...props?.initial,
-              }
-            : {
-                first: 0,
-                rows: 10,
-                lang_id: 1,
-              },
-        )
+      props?.setFilters(
+        props?.initial
+          ? {
+            ...props?.initial,
+          }
+          : {
+            first: 0,
+            rows: 10,
+            lang_id: 1,
+          },
+      )
     );
   };
   const SubmitFilter = () => {
@@ -150,17 +150,17 @@ export function TableFilters(props: SettingDialogInterface) {
       props?.setValue({ ...filterVal, ...filterDate, ...filterInput }),
       setFilter(!filter),
       props?.setFilters &&
-        props?.setFilters(
-          props?.initial
-            ? {
-                ...props?.initial,
-              }
-            : {
-                first: 0,
-                rows: 10,
-                lang_id: 1,
-              },
-        )
+      props?.setFilters(
+        props?.initial
+          ? {
+            ...props?.initial,
+          }
+          : {
+            first: 0,
+            rows: 10,
+            lang_id: 1,
+          },
+      )
     );
   };
 
@@ -180,9 +180,8 @@ export function TableFilters(props: SettingDialogInterface) {
     <div>
       <Button
         variant="outline"
-        className={`${
-          Object.keys(props?.value)?.length ? ' text-primary' : ' text-white '
-        } `}
+        className={`${Object.keys(props?.value)?.length ? ' text-primary' : ' text-white '
+          } `}
         onClick={() => setFilter(!filter)}
       >
         Filters <i className={`fa-solid fa fa-filter   ml-2 h-4 w-4`}></i>
@@ -218,7 +217,7 @@ export function TableFilters(props: SettingDialogInterface) {
                                         e.target.value,
                                       );
                                     }}
-                                    // {...form.register(item.name)}
+                                  // {...form.register(item.name)}
                                   />
                                 </FormControl>
 
@@ -392,7 +391,7 @@ export function TableFilters(props: SettingDialogInterface) {
                                 >
                                   <option
                                     value={'delete'}
-                                    //   selectOptions={'delete'}
+                                  //   selectOptions={'delete'}
                                   >
                                     Select {item.text}
                                   </option>
@@ -402,7 +401,7 @@ export function TableFilters(props: SettingDialogInterface) {
                                         <option
                                           key={index}
                                           value={list?.id || list?.value}
-                                          //   selectOptions={list?.id || list?.value}
+                                        //   selectOptions={list?.id || list?.value}
                                         >
                                           {list?.name}
                                         </option>

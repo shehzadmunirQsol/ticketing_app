@@ -139,9 +139,8 @@ function ProductSection(props: producctInterface) {
           {props?.title}
         </p>
         <div
-          className={`${
-            lang?.dir == 'rtl' ? ' flex-row-reverse' : 'md:ml-0'
-          }  flex gap-2 z-10 items-center justify-center `}
+          className={`${lang?.dir == 'rtl' ? ' flex-row-reverse' : 'md:ml-0'
+            }  flex gap-2 z-10 items-center justify-center `}
         >
           <Button
             variant="rounded"
@@ -168,9 +167,8 @@ function ProductSection(props: producctInterface) {
             ''
           ) : (
             <div
-              className={`absolute bottom-10 ${
-                props.type == 'closing' ? 'right-0' : 'left-0'
-              }  z-2  w-1/5 h-3/5  bg-teal-400 bg-opacity-50 rounded-full blur-3xl`}
+              className={`absolute bottom-10 ${props.type == 'closing' ? 'right-0' : 'left-0'
+                }  z-2  w-1/5 h-3/5  bg-teal-400 bg-opacity-50 rounded-full blur-3xl`}
             ></div>
           )}
         </div>
@@ -183,6 +181,7 @@ function ProductSection(props: producctInterface) {
                   isLast={index === products.length - 1}
                   nextPage={nextPage}
                   data={item}
+                  type={props.type}
                   class={products.length != index + 1 ? 'rtl:mr-0 rtl:ml-4 ltr:mr-4 ltr:ml-0' : ''}
                   dir={`${lang?.dir}`}
                 />

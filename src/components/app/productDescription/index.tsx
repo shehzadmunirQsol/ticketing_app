@@ -25,9 +25,13 @@ const ProductDetail = () => {
     },
   );
 
+  const today = (new Date()).toISOString().split("T")[0]
+  let time = data?.data?.end_date
+  const endDay = data && (new Date(time)).toISOString().split("T")[0];
+  console.log({ data, today, endDay }, today == endDay, "product")
   const comp_detail: any = data?.data?.EventDescription[0]?.comp_details;
   const Faqs: any = data?.data?.CMS;
-  console.log(Faqs,"FaqsFaqs")
+  console.log(Faqs, "FaqsFaqs")
 
   return (
     <div className="bg-background">
@@ -41,7 +45,7 @@ const ProductDetail = () => {
           <EntiresDetail data={data?.data} />
           <VideoSection data={data?.data} />
         </div>
-        
+
       </div>
       <LiveDraw data={data?.data} />
 
