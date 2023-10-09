@@ -6,6 +6,7 @@ import {
     DialogHeader,
     DialogTitle,
 } from '~/components/ui/dialog';
+import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 
 interface newsLetterDialogInterface {
     isModal: boolean;
@@ -14,17 +15,20 @@ interface newsLetterDialogInterface {
 }
 export function NewsLetterDialog(props: newsLetterDialogInterface) {
     return (
-        <Dialog open={props?.isModal}  onOpenChange={(e) => props.setIsModal(e)}>
-            <DialogContent className="">
-                <DialogDescription className='   '>
-                    <iframe
-                        width="580"
-                        height="560"
-                        className='xsm:h-[490px] rounded-lg  '
-                        src="https://bdc4c4ca.sibforms.com/serve/MUIFAHS-vQxnOu9PaJF9s8xWBo4HeG9R_NidaLDkobSj6j8tQSZ9kghGAog8_UFBI_wzwiaMhAEbvimr8FXT2Ibl8Th_s6g2-8kqg9_iAmMd6CZox3d7mK5E2V-rV-ZuaFKJrFker58RP1CMmmfik-PvLu6XXXWRMAnAHqXkblcfw8Ogd1e5GG8yFfPEAkxgsc1WAlVBZhExO52e"
-                        allowFullScreen
+        <Dialog open={props?.isModal} onOpenChange={(e) => props.setIsModal(e)}>
+            <DialogContent className="p-0">
+                <DialogDescription className='p-0   '>
+                    <ScrollArea className="w-full h-[calc(100vh-135px)] ">
+                        <ScrollBar orientation="vertical"></ScrollBar>
 
-                    ></iframe>
+                        <iframe
+                            width="100%"
+                            height="580"
+                            className=' p-0 w-full  rounded-lg !no-scrollbar '
+                            scrolling="no"
+                            src="https://bdc4c4ca.sibforms.com/serve/MUIFAMe5MNuD9wnTvTP0mJAr1lDtYWvnJ6Ah4JdDXQ1Vn-SFOimLyyPSrZL20moh8eqtTjLmCZXFWzHzHGdGMURNtzas4cQ5cmwx05yKqZVw8pdJMmZVHqJI1WZWocgzL8S1YrrSfKF2lQPNUna-K42L_N7cRy7bMw1LgOsTjGJkSVwAuFFX7QI-usxCc1Tfgq25JMbIjdRc-E1u"
+                        ></iframe>
+                    </ScrollArea>
                 </DialogDescription>
 
             </DialogContent>
