@@ -349,9 +349,7 @@ export default function CouponForm() {
               name="coupon_limit"
               render={({ field }) => (
                 <FormItem className=" flex flex-col gap-2 mt-2 w-full">
-                  <FormLabel>
-                    Coupon Limit <sup className="text-md text-red-500"></sup>
-                  </FormLabel>
+                  <FormLabel>Customer Coupon Limit</FormLabel>
                   <FormControl>
                     <Input
                       type="number"

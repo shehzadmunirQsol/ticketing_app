@@ -6,7 +6,6 @@ import { RootState } from '~/store/store';
 import { trpc } from '~/utils/trpc';
 import { renderNFTImage } from '~/utils/helper';
 import Link from 'next/link';
-import { router } from '~/server/trpc';
 import { useRouter } from 'next/router';
 import langContent from '~/locales';
 
@@ -93,8 +92,9 @@ function BannerSlider() {
 
   return (
     <div
-      className={`mdx:py-10 lg:py-20 transition-all ease-in-out ${lang.dir === 'ltr' ? 'banner_img' : 'banner_img_flip'
-        }`}
+      className={`mdx:py-10 lg:py-20 transition-all ease-in-out ${
+        lang.dir === 'ltr' ? 'banner_img' : 'banner_img_flip'
+      }`}
     >
       {isSuccess && carSlider?.length ? (
         <>
@@ -102,10 +102,11 @@ function BannerSlider() {
             {/* text content */}
 
             <div
-              className={` md:self-start md:flex-1  ${showElement ? 'fading-animation' : ''
-                } transition-all  duration-500 ease-in-out items-center text-white z-40`}
+              className={` md:self-start md:flex-1  ${
+                showElement ? 'fading-animation' : ''
+              } transition-all  duration-500 ease-in-out items-center text-white z-40`}
             >
-              <div className='px-4  space-y-1 sm:space-y-1.5 md:space-y-2 lg:space-y-3'>
+              <div className="px-4  space-y-1 sm:space-y-1.5 md:space-y-2 lg:space-y-3">
                 <p className=" text-2xl  sm:text-4xl md:text-5xl lg:text-[calc(3vw+10px)] xl:text-[55px] font-[900]  tracking-[-1px] ">
                   {carSlider[currentIndex]?.title}
                 </p>
@@ -137,18 +138,23 @@ function BannerSlider() {
             </div>
 
             {/* text select cards */}
-            <Image
+            <Link
+              href={carSlider[currentIndex]?.link}
               className={`py-4 lg:p-0 w-10/12 lg:w-1/2 self-center object-contain object-bottom transform rtl:-scale-x-100 ltr:scale-100 ltr:right-6 rtl:left-4 md:ltr:-right-40 md:rtl:-left-16                
-                ${showElement ? 'fading-animation' : ''
+                ${
+                  showElement ? 'fading-animation' : ''
                 } transition-all duration-500 ease-in-out items-end
                 
                 `}
-              src={renderNFTImage(carSlider[currentIndex])}
-              alt="banner image"
-              quality={100}
-              width={750}
-              height={800}
-            />
+            >
+              <Image
+                src={renderNFTImage(carSlider[currentIndex])}
+                alt="banner image"
+                quality={100}
+                width={750}
+                height={800}
+              />
+            </Link>
           </div>
           <div className="banner-bottom">
             <div className="hidden z-30  items-end lg:flex justify-between gap-3 mx-auto sm:mx-0">
@@ -159,10 +165,11 @@ function BannerSlider() {
                   onClick={() => goToSlide(i)}
                 >
                   <div
-                    className={`border-2 p-3 ${currentIndex === i
-                      ? 'border-primary'
-                      : 'border-transparent'
-                      } group-hover:border-primary`}
+                    className={`border-2 p-3 ${
+                      currentIndex === i
+                        ? 'border-primary'
+                        : 'border-transparent'
+                    } group-hover:border-primary`}
                   >
                     <Image
                       src={renderNFTImage(item)}
