@@ -80,9 +80,9 @@ export type Category = {
 export default function CouponsDataTable() {
   // use toast
   const { toast } = useToast();
-  const router = useRouter()
-  const { is_enabled } = router.query
-  console.log({is_enabled})
+  const router = useRouter();
+  const { is_enabled } = router.query;
+  console.log({ is_enabled });
   // use states
   const [sorting, setSorting] = useState<SortingState>([]);
   const [filterID, setFilterID] = useState({});
@@ -176,10 +176,10 @@ export default function CouponsDataTable() {
       ),
     },
     {
-      accessorKey: 'Limit',
-      header: 'Limit',
+      accessorKey: 'Customer Limit',
+      header: 'Customer Limit',
       cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap ">
+        <div className="capitalize text-ellipsis whitespace-nowrap w-32">
           {row?.original?.is_limited
             ? row?.original?.coupon_limit
             : 'unlimited'}
@@ -350,6 +350,7 @@ export default function CouponsDataTable() {
       filtername: 'Clear',
     },
   ];
+
   return (
     <div className="w-full space-y-4">
       <div className="flex items-center justify-end gap-2">
