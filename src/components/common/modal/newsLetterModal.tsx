@@ -15,7 +15,7 @@ interface newsLetterDialogInterface {
 export function NewsLetterDialog(props: newsLetterDialogInterface) {
     return (
         <Dialog open={props?.isModal} onOpenChange={(e) => props.setIsModal(e)}>
-            <DialogContent className="p-0 ">
+            <DialogContent className="p-0 rounded-md ">
                 
                 <DialogDescription>
                     <iframe
