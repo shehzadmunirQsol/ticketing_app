@@ -44,8 +44,8 @@ function ProductCard(props: cardInterface) {
 
   const spaceElement = props?.isCash ? null : <div className="h-6 xl:h-9" />;
   const today = (new Date()).toISOString().split("T")[0]
-  let time = props?.data?.end_date;
-  const endDay = props?.data && (new Date(time)).toISOString().split("T")[0];
+  const time = props?.data?.end_date;
+  const endDay = props?.data && time && time?.toISOString().split("T")[0];
   console.log({ today, endDay }, today == endDay, "product")
   return (
     props?.data && (
