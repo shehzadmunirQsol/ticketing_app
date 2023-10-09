@@ -171,7 +171,7 @@ export default function CategoryForm() {
                       <Input placeholder="Enter Category Name" {...field} />
                     </FormControl>
 
-                    <div className="relative pb-2">
+                    <div className="relative pb-4">
                       <FormMessage />
                     </div>
                   </FormItem>
