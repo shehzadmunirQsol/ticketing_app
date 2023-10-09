@@ -305,14 +305,16 @@ export const passwordChangeSchema = z.object({
 
 export const passwordChangeSchemaInput = z.object({
   email: z.string().trim().email().optional(),
-  currentPassword: z.string().trim(),
+  currentPassword: z.string().trim().min(6, {
+    message: 'Current Password must be at least 6 characters',
+  }),
   newPassword: z
     .string()
     .min(6, {
-      message: 'Password must be at least 6 characters',
+      message: 'New Password must be at least 6 characters',
     })
     .max(30, {
-      message: 'Password must not exceed 30 characters',
+      message: 'New Password must not exceed 30 characters',
     })
     .trim(),
   confirmPassword: z

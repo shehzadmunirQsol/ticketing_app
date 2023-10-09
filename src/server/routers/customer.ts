@@ -17,6 +17,7 @@ import {
   deleteMyAccountCustomerSchema,
   logoutSchema,
   updateCustomerAddress,
+  passwordChangeSchemaInput
 } from '~/schema/customer';
 import { hashPass, isSamePass } from '~/utils/hash';
 import { signJWT, verifyJWT } from '~/utils/jwt';
@@ -730,7 +731,7 @@ export const customerRouter = router({
     }),
 
   updateCustomerPassword: publicProcedure
-    .input(passwordChangeSchema)
+    .input(passwordChangeSchemaInput)
     .mutation(async ({ ctx, input }) => {
       try {
         console.log(input, 'input');

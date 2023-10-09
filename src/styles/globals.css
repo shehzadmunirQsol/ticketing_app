@@ -861,6 +861,7 @@ input[type='radio']:not(:checked) + section.box .icon-class {
   justify-content: center;
   align-items: center;
   gap: 2px;
+  padding: 25px;
 }
 .wpwl-registration {
   display: flex;

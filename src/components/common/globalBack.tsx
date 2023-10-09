@@ -10,6 +10,4 @@ const GlobalBack = () => {
         </Button>
     )
 }
-
-
 export default GlobalBack
