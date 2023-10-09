@@ -14,24 +14,16 @@ interface newsLetterDialogInterface {
 }
 export function NewsLetterDialog(props: newsLetterDialogInterface) {
     return (
-        <Dialog open={props?.isModal} onOpenChange={(e) => props.setIsModal(e)}>
-            <DialogContent className="p-0 rounded-md ">
+        <Dialog open={props?.isModal}  onOpenChange={(e) => props.setIsModal(e)}>
+            <DialogContent className="p-0  ">
                 
-                <DialogDescription>
+                <DialogDescription className='  '>
                     <iframe
+                        
                         width="680"
-                        height="580"
-                        src="https://bdc4c4ca.sibforms.com/serve/MUIFAP1b8OZMsKXfMNgzIinuyzvR4Hnxemz9U5LaApkI_TOp979ZGTlAyNQhDVyWDM_9IdobfL00fOvOVf3FUS4cKnYMLexustvnUP5qD4ojlTxeykRz0SZtb9ovTfBLhO6ifn-y0GrqyzXDb8E1yhuUOEISq5pIoJQjsrnaYNRCzfWScZhVj8RUQT6dhZPem1FN5mcx5msLEE2b"
-                        frameBorder="0"
-                        scrolling="auto"
+                        className='block mx-auto max-w-full h-[610px] xsm:h-[530px]    rounded-lg overflow-hidden  no-scrollbar'
+                        src="https://bdc4c4ca.sibforms.com/serve/MUIFAHS-vQxnOu9PaJF9s8xWBo4HeG9R_NidaLDkobSj6j8tQSZ9kghGAog8_UFBI_wzwiaMhAEbvimr8FXT2Ibl8Th_s6g2-8kqg9_iAmMd6CZox3d7mK5E2V-rV-ZuaFKJrFker58RP1CMmmfik-PvLu6XXXWRMAnAHqXkblcfw8Ogd1e5GG8yFfPEAkxgsc1WAlVBZhExO52e"
                         allowFullScreen
-                        style={{
-                            display: 'block',
-                            marginLeft: 'auto',
-                            marginRight: 'auto',
-                            maxWidth: '100%',
-
-                        }}
                     ></iframe>
                 </DialogDescription>
 
