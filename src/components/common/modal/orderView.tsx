@@ -14,6 +14,7 @@ import { displayDate } from '~/utils/helper';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 import LogoImage from '~/public/assets/logo.png';
 import { RootState } from '~/store/store';
+import { Button } from '~/components/ui/button';
 
 interface OrderViewDialogInterface {
   selectedItem: any;
@@ -42,11 +43,25 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
     },
   );
 
+  function Print() {
+    if (window) {
+      const printContents =
+        window?.document?.getElementById('divToPrint')?.innerHTML;
+      const originalContents = window?.document?.body?.innerHTML;
+      document.body.innerHTML = printContents as string;
+      window.print();
+      // document.body.innerHTML = originalContents;
+      return true;
+    }
+  }
+
   return (
     <>
       <Dialog open={props?.isModal} onOpenChange={(e) => props.setIsModal(e)}>
         <DialogContent className=" my-auto max-h-[800px] h-[calc(100%-100px)]  overflow-y-hidden  ">
-          <DialogFooter className=" sm:justify-start items-start w-full   "></DialogFooter>
+          <DialogFooter className=" sm:justify-start items-start w-full   ">
+            <Button onClick={Print}>Print</Button>
+          </DialogFooter>
           <DialogDescription className="relative bg-card h-full rounded-lg  overflow-y-scroll   scroll-hide">
             {OrderApiData && (
               <div
@@ -91,9 +106,7 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
                   <table className="w-full text-left mb-8  ">
                     <thead className="gap-2 space-x-2">
                       <tr>
-                        <th className=" font-bold uppercase py-2">
-                          Description
-                        </th>
+                        <th className=" font-bold uppercase py-2">Name</th>
                         <th className=" font-bold uppercase py-2">Quantity</th>
                         <th className=" font-bold uppercase py-2">Price</th>
                         <th className=" font-bold uppercase py-2">Total</th>

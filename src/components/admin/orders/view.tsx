@@ -72,7 +72,7 @@ export default function OrderView() {
               <thead>
                 <tr>
                   <th className="text-gray-700 font-bold uppercase py-2">
-                    Description
+                    Name
                   </th>
                   <th className="text-gray-700 font-bold uppercase py-2">
                     Quantity

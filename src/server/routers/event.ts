@@ -71,6 +71,7 @@ export const eventRouter = router({
         orderBy: { created_at: 'desc' },
         skip: input.first * input.rows,
         take: input.rows,
+
         where: where,
       });
 
