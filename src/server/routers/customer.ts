@@ -317,10 +317,17 @@ export const customerRouter = router({
             message: 'Your Account is Disabled Kindly Contact From Admin',
           });
         }
+        
+        if (user?.is_blocked) {
+          throw new TRPCError({
+            code: 'UNAUTHORIZED',
+            message: 'Your Account is Blocked',
+          });
+        }
         const checkPass = await isSamePass(input.password, user?.password);
         if (!checkPass) {
           throw new TRPCError({
-            code: 'BAD_REQUEST',
+            code: 'INTERNAL_SERVER_ERROR',
             message: 'Invalid credentials!',
           });
         }

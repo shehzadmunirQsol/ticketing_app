@@ -72,6 +72,7 @@ export type CustomerType = {
   last_name: string;
   is_approved: boolean;
   is_disabled: boolean;
+  is_blocked: boolean;
   is_verified: boolean;
   id: number;
   dob: Date;
@@ -133,7 +134,9 @@ export default function CustomersDataTable() {
           ? setPara('Are you sure you want to Enable this customer?')
           : type == 'disable'
             ? setPara('Are you sure you want to Disable this customer?')
-            : setPara('');
+            : type == 'blocked'
+              ? setPara('Are you sure you want to Disable this customer?')
+              : setPara('');
     }
     setType(type);
     setIsModal(true);
@@ -344,9 +347,9 @@ export default function CustomersDataTable() {
               ) : (
                 <>
                   <DropdownMenuItem
-                    onClick={() => deleteUser(row?.original, 'disable')}
+                    onClick={() => deleteUser(row?.original, 'blocked')}
                   >
-                    Disable Customer
+                    {row?.original?.is_blocked ? "Unblock Customer" : "Block Customer"}
                   </DropdownMenuItem>
                 </>
               )}
@@ -409,6 +412,14 @@ export default function CustomersDataTable() {
       Icon: 'fal fa-chevron-down',
       text: 'Delete Request',
       filtername: 'is_disabled',
+      type: 'select',
+
+      filter: StatusOptions,
+    },
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'Blocked Users',
+      filtername: 'is_blocked',
       type: 'select',
 
       filter: StatusOptions,

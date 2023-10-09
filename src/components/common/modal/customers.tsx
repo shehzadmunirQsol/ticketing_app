@@ -44,6 +44,7 @@ export function CustomerDialog(props: SettingDialogInterface) {
         id: number;
         is_deleted?: boolean;
         is_disabled?: boolean;
+        is_blocked?: boolean;
         type?: string;
       }
 
@@ -57,6 +58,8 @@ export function CustomerDialog(props: SettingDialogInterface) {
         payload.is_disabled = false;
       if (props?.type == 'disable')
         payload.is_disabled = true;
+      if (props?.type == 'blocked')
+        payload.is_blocked = props?.selectedItem?.is_blocked;
 
       // let data: any;
       await customerUpdate.mutateAsync(payload);
