@@ -236,9 +236,10 @@ function PasswordChange({ email }: any) {
 
   // 1. Define your form.
   const form = useForm<passwordChangeSchemaInput>({
-    resolver: zodResolver(passwordChangeSchema),
+    resolver: zodResolver(passwordChangeSchemaInput),
   });
 
+  console.log(form?.getValues(),"helloworld")
   // handle password update
   const updateCustomerPassword =
     trpc.customer.updateCustomerPassword.useMutation({
@@ -248,6 +249,9 @@ function PasswordChange({ email }: any) {
           variant: 'success',
           title: 'Your Account Password Updated Successfully ',
         });
+        form.setValue("currentPassword","")
+        form.setValue("newPassword","")
+        form.setValue("confirmPassword","")
       },
       onError: (err) => {
         console.log(err.message, 'err');
@@ -256,6 +260,7 @@ function PasswordChange({ email }: any) {
 
   // handle account detail
   async function onSubmitAccountPassword(values: any) {
+
     try {
       const payload: any = {
         email: email,

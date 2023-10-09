@@ -364,7 +364,9 @@
         "BOX":"P.O Box",
         "ADD_BUTTON":"ADD",
         "SAVE_BUTTON":"SAVE",
-        "EDIT_BUTTON":"EDIT"
+        "EDIT_BUTTON":"EDIT",
+        "ANOTHER_BTN":"Add Another",
+        "DEFAULT":"Set Default"
     },
     "AccountDetail":{
       "HEADING":"Personal information",

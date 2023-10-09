@@ -328,25 +328,31 @@ const faqUpdateArea = `
 
 		<input type="radio" name="accordion" id="cb1" />
 		<section class="box border-b border-t py-4 border-lightColorBorder hover:border-b-primary shadow-lg hover:shadow-2xl  pr-4 overflow-hidden">
-			<label class="box-title  lg:text-3xl text-xl font-bold text-white w-full flex items-center justify-between " for="cb1"><p>Competition Rules</p>  <i class="fas fa-chevron-down icon-class"></i></label>
+			<label class="box-title  lg:text-3xl text-xl font-bold text-white w-full flex items-center justify-between " for="cb1"><p>How is the winner chosenSHSKS?</p>  <i class="fas fa-chevron-down icon-class"></i></label>
 			<label class="box-close" for="acc-close"></label>
 			<div class="box-content text-base mt-4 text-grayColor">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold">&lsquo;My Account&rsquo;</span> and in your email confirmation.</div>
 		</section>
 		<input type="radio" name="accordion" id="cb2" />
 		<section class="box border-b py-4 border-lightColorBorder hover:border-b-primary shadow-lg hover:shadow-2xl pr-4 overflow-hidden">
-      <label class="box-title  lg:text-3xl text-xl font-bold text-white w-full flex items-center justify-between " for="cb2"><p>When is the draw?</p>  <i class="fas fa-chevron-down icon-class"></i></label>
+      <label class="box-title  lg:text-3xl text-xl font-bold text-white w-full flex items-center justify-between " for="cb2"><p>What if a competition does not sell out?</p>  <i class="fas fa-chevron-down icon-class"></i></label>
 			<label class="box-close" for="acc-close"></label>
 			<div class="box-content text-base mt-4 text-grayColor">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold">&lsquo;My Account&rsquo;</span> and in your email confirmation.</div>
 		</section>
 		<input type="radio" name="accordion" id="cb3" />
 		<section class="box border-b py-4 border-lightColorBorder hover:border-b-primary shadow-lg hover:shadow-2xl  pr-4 overflow-hidden">
-      <label class="box-title  lg:text-3xl text-xl font-bold text-white w-full flex items-center justify-between " for="cb3"><p>How do you do the draw?</p>  <i class="fas fa-chevron-down icon-class"></i></label>
+      <label class="box-title  lg:text-3xl text-xl font-bold text-white w-full flex items-center justify-between " for="cb3"><p>Is ‘Winnar’ a scam?</p>  <i class="fas fa-chevron-down icon-class"></i></label>
 			<label class="box-close" for="acc-close"></label>
 			<div class="box-content text-base mt-4 text-grayColor">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold">&lsquo;My Account&rsquo;</span> and in your email confirmation.</div>
 		</section>
 		<input type="radio" name="accordion" id="cb4" />
 		<section class="box border-b py-4 border-lightColorBorder hover:border-b-primary shadow-lg hover:shadow-2xl  pr-4 overflow-hidden">
-      <label class="box-title  lg:text-3xl text-xl font-bold text-white w-full flex items-center justify-between " for="cb4"><p>What is the draw?</p>  <i class="fas fa-chevron-down icon-class"></i></label>
+      <label class="box-title  lg:text-3xl text-xl font-bold text-white w-full flex items-center justify-between " for="cb4"><p>Why am I receiving communications from Winnar?</p>  <i class="fas fa-chevron-down icon-class"></i></label>
+			<label class="box-close" for="acc-close"></label>
+			<div class="box-content text-base mt-4 text-grayColor">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold">&lsquo;My Account&rsquo;</span> and in your email confirmation.</div>
+		</section>
+		<input type="radio" name="accordion" id="cb5" />
+		<section class="box border-b py-4 border-lightColorBorder hover:border-b-primary shadow-lg hover:shadow-2xl  pr-4 overflow-hidden">
+      <label class="box-title  lg:text-3xl text-xl font-bold text-white w-full flex items-center justify-between " for="cb5"><p>How do the instant win competitions work?</p>  <i class="fas fa-chevron-down icon-class"></i></label>
 			<label class="box-close" for="acc-close"></label>
 			<div class="box-content text-base mt-4 text-grayColor">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold">&lsquo;My Account&rsquo;</span> and in your email confirmation.</div>
 		</section>
@@ -988,10 +994,10 @@ const termsCondition = `
 export default function CmsPage({ storeBlogsData }: any) {
   const { lang } = useSelector((state: RootState) => state.layout);
 
-  const reactElements = parse(
-    storeBlogsData?.CMSDescription[lang.lang_id == 1 ? 0 : 1]?.content || '',
-    {
-      // const reactElements = parse(termsCondition || '', {
+  // const reactElements = parse(
+    // storeBlogsData?.CMSDescription[lang.lang_id == 1 ? 0 : 1]?.content || '',
+    // {
+      const reactElements = parse(faqUpdateArea || '', {
       replace: findElementsWithAttribute,
     },
   );

@@ -49,8 +49,8 @@ const ProductDetail = () => {
       </div>
       <LiveDraw data={data?.data} />
 
-      <div className="relative px-4 md:px-14  pb-10">
-        <div className="relative  z-10 ">
+      <div className="relative px-4 md:px-14  ">
+        <div className="relative z-10 ">
           {comp_detail ? <CompititionDetail data={data?.data} /> : <></>}
           {Faqs && Faqs?.is_enabled ? <AccordianFaqs data={data?.data} /> : <></>}
         </div>

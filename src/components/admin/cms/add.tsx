@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import CmsForm from '~/components/common/forms/cmsForm';
+import GlobalBack from '~/components/common/globalBack';
 import LanguageSelect, {
   LanguageInterface,
 } from '~/components/common/language_select';
@@ -19,8 +20,8 @@ export default function AddCms() {
   return (
     <div className="p-8 space-y-8">
       <div className="flex items-center justify-between">
-        <h2 className="text-4xl font-medium">Add Cms</h2>
-        {/* <LanguageSelect languageHandler={languageHandler} /> */}
+        <h2 className="text-4xl font-medium">Add CMS</h2>
+        <GlobalBack />
       </div>
       <CmsForm language={language} />
     </div>

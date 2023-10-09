@@ -137,7 +137,7 @@ const Counter: React.FC<CounterProps> = ({
           />
           <div className="mt-6">
             <Button
-              className="w-full text-black font-sans font-[900]  text-xl tracking-[-1px] h-12"
+              className="w-full text-black font-sans font-[900]  tracking-[-1px] h-12 text-sm xs:text-xl"
               variant="clip"
               onClick={addToBasketHandler}
               disabled={ticketInBasket.current === range[0]}

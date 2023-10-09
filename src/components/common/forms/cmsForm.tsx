@@ -176,7 +176,7 @@ export default function CmsForm(props: CategoryFormInterface) {
         // content: content,
         ...values,
       };
-      const result = await updateCmsId.mutateAsync(payload);
+      await updateCmsId.mutateAsync(payload);
       toast({
         variant: 'success',
         title: 'Cms Content Update Successfully',
@@ -218,6 +218,7 @@ export default function CmsForm(props: CategoryFormInterface) {
     }
   };
 
+  console.log(form.getValues().type,"getvalues")
   // Editor Config
   const editorConfig = {
     stylesSet: 'default',
@@ -242,7 +243,7 @@ export default function CmsForm(props: CategoryFormInterface) {
 
   const enabled = id ? true : false;
 
-  console.log(data?.data?.slug, 'datadatadata');
+  console.log(data?.data, 'datadatadata');
 
   // rich text editor content
   const renderHeader = () => {
@@ -445,7 +446,7 @@ export default function CmsForm(props: CategoryFormInterface) {
                   </FormItem>
                 )}
               />
-              {data?.data?.slug === 'about-us' || data?.data?.slug === 'faq' ? (
+              {data?.data?.slug === 'about-us' || data?.data?.slug === 'faq' || form?.getValues()?.type === 'event_faqs'  ? (
                 <FormField
                   control={form.control}
                   name="en.content"
@@ -574,46 +575,43 @@ export default function CmsForm(props: CategoryFormInterface) {
                 />
 
                 {data?.data?.slug === 'about-us' ||
-                data?.data?.slug === 'faq' ? (
+                data?.data?.slug === 'faq' || form?.getValues()?.type === 'event_faqs' ? (
                   <FormField
-                    control={form.control}
-                    name="ar.content"
-                    render={({ field }) => (
-                      <FormItem className=" text-black">
-                        <FormLabel className=" text-white">
-                          Content <sup className="text-md text-red-500">*</sup>
-                        </FormLabel>
+                  control={form.control}
+                  name="ar.content"
+                  render={({ field }) => (
+                    <FormItem className=" text-black">
+                      <FormLabel className=" text-white">
+                        محتوى <sup className="text-md text-red-500">*</sup>
+                      </FormLabel>
+                      <FormControl>
+                        <CKEditor
+                          activeClass="p10"
+                          content={contentAr} // Set the initial content
+                          events={{
+                            change: handleArChange,
+                          }}
+                          config={editorConfig}
+                        />
+                      </FormControl>
 
-                        <FormControl>
-                          <CKEditor
-                            activeClass="p10"
-                            content={contentEn} // Set the initial content
-                            events={{
-                              change: handleEnChange,
-                            }}
-                            config={editorConfig}
-                          />
-                        </FormControl>
-
-                        <div className="relative pb-2 mb-2">
-                          <FormMessage />
-                        </div>
-                      </FormItem>
-                    )}
-                  />
+                      <div className="relative pb-2 mb-2">
+                        <FormMessage />
+                      </div>
+                    </FormItem>
+                  )}
+                />
                 ) : (
                   <>
                     <FormField
-                      control={form.control}
-                      name="ar.content"
-                      render={({ field }) => (
+                        control={form.control}
+                        name="ar.content"
+                        render={({ field }) => (
                         <FormItem className=" text-black">
-                          <FormLabel className=" text-white">
-                            Content{' '}
-                            <sup className="text-md text-red-500">*</sup>
-                          </FormLabel>
-
-                          <FormControl>
+                      <FormLabel className=" text-white">
+                        محتوى <sup className="text-md text-red-500">*</sup>
+                      </FormLabel>
+                      <FormControl>
                             <Editor
                               id={field.name}
                               value={field.value}
