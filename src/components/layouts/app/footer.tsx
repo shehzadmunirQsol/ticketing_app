@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/ui/button';
 import Image from 'next/image';
 import Lines from '~/public/assets/icons/Lines_Big.png';
@@ -9,6 +9,8 @@ import Link from 'next/link';
 import langContent from '~/locales';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
+import { useRouter } from 'next/router';
+import { NewsLetterDialog } from '~/components/common/modal/newsLetterModal';
 
 interface LinkItemProps {
   name: string;
@@ -18,6 +20,8 @@ interface LinkItemProps {
 }
 function Footer() {
   const { lang } = useSelector((state: RootState) => state.layout);
+  const router = useRouter()
+  const [isModal, setIsModal] = useState(false)
 
   return (
     <footer className="h-full  bg-background-footer !z-50">
@@ -38,9 +42,21 @@ function Footer() {
             <div className="sm:flex sm:justify-between ">
               <div className=" mb-6 md:mb-0 flex flex-col gap-8 w-10/12 sm:w-[300px] lg:w-[360px]">
                 <div>
+                  {/* <Button
+                    variant="rounded-outline"
+                    className="z-30 font-bold bg-transparent min-w-max "
+                    onClick={() => { router.push("https://bdc4c4ca.sibforms.com/serve/MUIFAM1e-fZfnXl_ZoAGyLbE2vO-dB_qtovXSlb52nP7BXPR5bjPlLtbMAYS3gwKqMo1BAbEAHnopSyyntSfymgYib7FkxJ85zHDX6h_8TKpFb1UjrMFK_Hjm2HFqozFIIf-m_2RfEEKiurCXjBtZkpbK6wL-n48VpeJBjDwQggOQ-UYU7GHx0Nzzu1BAmj0Rg3cswAawX5IfFDn") }}
+                  >
+                    <div>
+                      {langContent[lang.lang].Footer.SUBSCRIBE_BTN}
+                      &nbsp;
+                      <i className="fa-solid fa-arrow-right -rotate-45 "></i>
+                    </div>
+                  </Button> */}
                   <Button
                     variant="rounded-outline"
                     className="z-30 font-bold bg-transparent min-w-max "
+                    onClick={()=>setIsModal(true)}
                   >
                     <div>
                       {langContent[lang.lang].Footer.SUBSCRIBE_BTN}
@@ -168,6 +184,7 @@ function Footer() {
           </div>
         </div>
       </div>
+      <NewsLetterDialog isModal={isModal} setIsModal={setIsModal} title={"Newsletter"}/>
     </footer>
   );
 }
