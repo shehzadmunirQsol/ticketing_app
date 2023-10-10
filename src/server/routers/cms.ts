@@ -45,10 +45,30 @@ export const cmsRouter = router({
       const cms = await prisma?.cMS?.findMany({
         where:{
           is_deleted:false
+          
         },
         orderBy: { created_at: 'desc' },
         include: {
-          CMSDescription: true,
+
+          CMSDescription: {
+            orderBy:{
+              lang_id:'asc'
+            },
+            select:{
+              CMS:true,
+              cms_id:true,
+              content:true,
+              created_at:true,
+              desc:true,
+              id:true,
+              is_deleted:true,
+              lang_id:true,
+              Language:true,
+              meta_keywords:true,
+              title:true,
+              updated_at:true,
+            }
+          },
         },
       });
       return cms;
@@ -67,7 +87,25 @@ export const cmsRouter = router({
         const cms = await prisma?.cMS?.findUnique({
           where: { id: input.id },
           include: {
-            CMSDescription: true,
+            CMSDescription: {
+              orderBy:{
+                lang_id:'asc'
+              },
+              select:{
+                CMS:true,
+                cms_id:true,
+                content:true,
+                created_at:true,
+                desc:true,
+                id:true,
+                is_deleted:true,
+                lang_id:true,
+                Language:true,
+                meta_keywords:true,
+                title:true,
+                updated_at:true,
+              }
+            },
           },
         });
         if (!cms) {

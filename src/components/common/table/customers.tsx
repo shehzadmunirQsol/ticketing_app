@@ -72,6 +72,7 @@ export type CustomerType = {
   last_name: string;
   is_approved: boolean;
   is_disabled: boolean;
+  is_blocked: boolean;
   is_verified: boolean;
   id: number;
   dob: Date;
@@ -130,14 +131,18 @@ export default function CustomersDataTable() {
       type == 'delete'
         ? setPara('Are you sure you want to Delete this customer?')
         : type == 'enable'
-        ? setPara('Are you sure you want to Enable this customer?')
-        : setPara('');
+          ? setPara('Are you sure you want to Enable this customer?')
+          : type == 'disable'
+            ? setPara('Are you sure you want to Disable this customer?')
+            : type == 'block'
+              ? setPara(`Are you sure you want to ${data.is_blocked ? "Unblock" : "Block"} this customer?`)
+              : setPara('');
     }
     setType(type);
     setIsModal(true);
   };
 
-  const displayName = (data: any) => {
+  const displayFirstName = (data: any) => {
     if (data.is_disabled) {
       return (
         <div className="flex gap-2 items-center">
@@ -157,6 +162,8 @@ export default function CustomersDataTable() {
           </TooltipProvider>
         </div>
       );
+
+
     } else {
       return (
         <p className="text-ellipsis text-left whitespace-nowrap overflow-hidden w-32  text-white">
@@ -164,6 +171,14 @@ export default function CustomersDataTable() {
         </p>
       );
     }
+  };
+
+  const displayLastName = (data: any) => {
+    return (
+      <p className="text-ellipsis text-left whitespace-nowrap overflow-hidden w-32  text-white">
+        {data.last_name}
+      </p>
+    )
   };
 
   // handle modal
@@ -193,7 +208,7 @@ export default function CustomersDataTable() {
         <div className="capitalize ">
           <TooltipProvider>
             <Tooltip>
-              <TooltipTrigger>{displayName(row?.original)}</TooltipTrigger>
+              <TooltipTrigger>{displayFirstName(row?.original)}</TooltipTrigger>
               <TooltipContent>
                 <p className="text-base font-normal">
                   {row?.original?.first_name}
@@ -208,10 +223,10 @@ export default function CustomersDataTable() {
       accessorKey: 'Last Name',
       header: 'Last Name',
       cell: ({ row }) => (
-        <div className="capitalize w-28">
+        <div className="capitalize w-28 text-ellipsis whitespace-nowrap overflow-hidden">
           <TooltipProvider>
             <Tooltip>
-              <TooltipTrigger>{row?.original?.last_name}</TooltipTrigger>
+              <TooltipTrigger>{displayLastName(row?.original)}</TooltipTrigger>
               <TooltipContent>
                 <p className="text-base font-normal">
                   {row?.original?.last_name ?? ''}
@@ -245,17 +260,17 @@ export default function CustomersDataTable() {
       },
     },
     {
-      accessorKey: 'Phone No.',
+      accessorKey: 'Phone No',
       header: 'Phone No.',
       cell: ({ row }) => {
         return (
           <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
             <TooltipProvider>
               <Tooltip>
-                <TooltipTrigger>{row?.original?.phone_number}</TooltipTrigger>
+                <TooltipTrigger>{row?.original?.phone_number != null ? row?.original?.phone_number : "N/A"}</TooltipTrigger>
                 <TooltipContent>
                   <p className="text-base font-normal">
-                    {row?.original?.phone_number}
+                    {row?.original?.phone_number != null ? row?.original?.phone_number : "N/A"}
                   </p>
                 </TooltipContent>
               </Tooltip>
@@ -277,6 +292,7 @@ export default function CustomersDataTable() {
         );
       },
     },
+
     {
       id: 'Verified Status',
       header: 'Verified Status',
@@ -285,6 +301,18 @@ export default function CustomersDataTable() {
         return (
           <div className="w-24 text-center">
             <Switch checked={row?.original?.is_verified} disabled={true} />
+          </div>
+        );
+      },
+    },
+    {
+      id: 'Blocked Status',
+      header: 'Blocked Status',
+
+      cell: ({ row }) => {
+        return (
+          <div className="w-24 text-center">
+            <Switch checked={row?.original?.is_blocked} disabled={true} />
           </div>
         );
       },
@@ -331,7 +359,11 @@ export default function CustomersDataTable() {
                 </>
               ) : (
                 <>
-                  <DropdownMenuItem>No Actions Yet</DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => deleteUser(row?.original, 'block')}
+                  >
+                    {row?.original?.is_blocked ? "Unblock Customer" : "Block Customer"}
+                  </DropdownMenuItem>
                 </>
               )}
             </DropdownMenuContent>
@@ -399,6 +431,14 @@ export default function CustomersDataTable() {
     },
     {
       Icon: 'fal fa-chevron-down',
+      text: 'Blocked Users',
+      filtername: 'is_blocked',
+      type: 'select',
+
+      filter: StatusOptions,
+    },
+    {
+      Icon: 'fal fa-chevron-down',
       text: 'From Date',
       filtername: 'startDate',
       type: 'date',
@@ -437,14 +477,14 @@ export default function CustomersDataTable() {
         is_verified,
         created_at,
       }) => [
-        first_name,
-        last_name,
-        email,
-        phone_number,
-        dob?.toLocaleDateString(),
-        is_verified ? 'Yes' : 'No',
-        created_at?.toLocaleDateString(),
-      ],
+          first_name,
+          last_name,
+          email,
+          phone_number,
+          dob?.toLocaleDateString(),
+          is_verified ? 'Yes' : 'No',
+          created_at?.toLocaleDateString(),
+        ],
     ),
   ];
 
@@ -511,9 +551,9 @@ export default function CustomersDataTable() {
                         {header.isPlaceholder
                           ? null
                           : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext(),
-                            )}
+                            header.column.columnDef.header,
+                            header.getContext(),
+                          )}
                       </TableHead>
                     );
                   })}
@@ -611,7 +651,7 @@ export default function CustomersDataTable() {
               disabled={
                 (filters.first + 1) * filters.rows > (data?.count ?? 0) ||
                 Math.ceil((data?.count ?? 0) / filters.rows) ==
-                  filters.first + 1
+                filters.first + 1
               }
             >
               <span className="sr-only">Go to next page</span>
@@ -629,7 +669,7 @@ export default function CustomersDataTable() {
               disabled={
                 (filters.first + 1) * filters.rows > (data?.count ?? 0) ||
                 Math.ceil((data?.count ?? 0) / filters.rows) ==
-                  filters.first + 1
+                filters.first + 1
               }
             >
               <span className="sr-only">Go to last page</span>

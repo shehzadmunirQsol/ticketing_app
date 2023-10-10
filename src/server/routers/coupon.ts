@@ -28,48 +28,63 @@ export const couponRouter = router({
             message: 'Invalid Coupon',
           });
         }
-        const todayDate = new Date();
-        const couponExpiry = await prisma.coupon.findFirst({
-          where: {
-            coupon_code: input?.coupon_code,
-            is_enabled: true,
-            is_deleted: false,
-            start_date: { lte: todayDate },
-            end_date: { gte: todayDate },
-          },
-        });
-        console.log({ couponExpiry });
-        if (!couponExpiry) {
+        const todayDate = new Date()?.toISOString()?.split('T')[0] ?? '';
+        const startDate =
+          coupon?.start_date?.toISOString()?.split('T')[0] ?? '';
+        const endDate = coupon?.end_date?.toISOString()?.split('T')[0] ?? '';
+        const isExpired = todayDate < startDate || todayDate > endDate;
+
+        if (isExpired) {
           throw new TRPCError({
             code: 'NOT_FOUND',
             message: 'Coupon Expired',
           });
         }
-        if (couponExpiry && coupon) {
-          const check = await prisma.couponApply.findFirst({
+
+        const couponApply = await prisma.couponApply.findFirst({
+          where: {
+            customer_id: input?.customer_id,
+            coupon_id: coupon?.id,
+            is_deleted: false,
+            is_used: false,
+          },
+        });
+        if (couponApply) {
+          throw new TRPCError({
+            code: 'FORBIDDEN',
+            message: 'Coupon Already Applied',
+          });
+        }
+
+        if (coupon.is_limited) {
+          const couponUsed = await prisma.couponApply.count({
             where: {
               customer_id: input?.customer_id,
               coupon_id: coupon?.id,
+              is_deleted: false,
+              is_used: true,
             },
           });
-          if (check) {
+
+          if (coupon?.coupon_limit && couponUsed >= coupon?.coupon_limit) {
             throw new TRPCError({
               code: 'NOT_FOUND',
               message: 'Coupon Already Used',
             });
           }
-          const createCouponApplied = await prisma.couponApply.create({
-            data: {
-              coupon_id: coupon?.id,
-              customer_id: input?.customer_id,
-              cart_id: input?.cart_id,
-              discount: coupon?.discount,
-              is_percentage: coupon?.is_percentage,
-            },
-          });
-
-          return { message: 'Coupon Applied', data: createCouponApplied };
         }
+
+        const createCouponApplied = await prisma.couponApply.create({
+          data: {
+            coupon_id: coupon?.id,
+            customer_id: input?.customer_id,
+            cart_id: input?.cart_id,
+            discount: coupon?.discount,
+            is_percentage: coupon?.is_percentage,
+          },
+        });
+
+        return { message: 'Coupon Applied', data: createCouponApplied };
       } catch (error: any) {
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
@@ -158,16 +173,24 @@ export const couponRouter = router({
       }
 
       if (input?.filters?.startDate && !input?.filters?.endDate) {
-        const startDate = (new Date(input?.filters?.startDate))?.toISOString().split("T")[0] as string;
+        const startDate = new Date(input?.filters?.startDate)
+          ?.toISOString()
+          .split('T')[0] as string;
         where.created_at = { gte: new Date(startDate) };
       }
       if (input?.filters?.endDate && !input?.filters?.startDate) {
-        const endDate = (new Date(input?.filters?.endDate))?.toISOString().split("T")[0] as string;
+        const endDate = new Date(input?.filters?.endDate)
+          ?.toISOString()
+          .split('T')[0] as string;
         where.created_at = { lte: new Date(endDate) };
       }
       if (input?.filters?.endDate && input?.filters?.startDate) {
-        const startDate = (new Date(input?.filters?.startDate))?.toISOString().split("T")[0] as string;
-        const endDate = (new Date(input?.filters?.endDate))?.toISOString().split("T")[0] as string;
+        const startDate = new Date(input?.filters?.startDate)
+          ?.toISOString()
+          .split('T')[0] as string;
+        const endDate = new Date(input?.filters?.endDate)
+          ?.toISOString()
+          .split('T')[0] as string;
         where.created_at = { gte: new Date(startDate), lte: new Date(endDate) };
       }
 

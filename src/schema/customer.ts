@@ -122,6 +122,7 @@ export const updateCustomerSchema = z.object({
   is_approved: z.boolean().optional(),
   is_disabled: z.boolean().optional(),
   is_deleted: z.boolean().optional(),
+  is_blocked: z.boolean().optional(),
   type: z.string().optional(),
 });
 export type getCustomerSchema = z.TypeOf<typeof getCustomerSchema>;
@@ -255,11 +256,10 @@ export const getCustomerAddress = z.object({
 });
 
 export const accountsDetailSchema = z.object({
+  id: z.number().optional(),
   first_name: z.string(),
   last_name: z.string(),
-  email: z.string().email(),
   dob: z.date().optional().nullable(),
-  country: z.string().optional(),
 });
 
 export const accountsDetailSchemaInput = z.object({
@@ -281,15 +281,7 @@ export const accountsDetailSchemaInput = z.object({
       message: 'Name must not exceed 24 characters',
     })
     .trim(),
-  email: z.string().trim().email(),
   dob: z.date().optional().nullable(),
-  country: z
-    .string({
-      required_error: 'Please select your country',
-    })
-    .min(1, {
-      message: 'Please select your country',
-    }),
 });
 
 export type accountsDetailSchemaInput = z.infer<
@@ -305,14 +297,16 @@ export const passwordChangeSchema = z.object({
 
 export const passwordChangeSchemaInput = z.object({
   email: z.string().trim().email().optional(),
-  currentPassword: z.string().trim(),
+  currentPassword: z.string().trim().min(6, {
+    message: 'Current Password must be at least 6 characters',
+  }),
   newPassword: z
     .string()
     .min(6, {
-      message: 'Password must be at least 6 characters',
+      message: 'New Password must be at least 6 characters',
     })
     .max(30, {
-      message: 'Password must not exceed 30 characters',
+      message: 'New Password must not exceed 30 characters',
     })
     .trim(),
   confirmPassword: z

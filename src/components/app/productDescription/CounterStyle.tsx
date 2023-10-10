@@ -18,19 +18,21 @@ const CounterStyle = ({ range, setRange, min, max }: token) => {
   const rangeType: any = range && range?.length ? range[0] : 0;
 
   const handlerCounter = (type: string) => {
-    if (type == 'a' && rangeType <= (max - 10)) {
-      setRange([rangeType + 10]);
-    } else if (type == 'b' && rangeType >= (min + 10)) {
-      setRange([rangeType - 10]);
+    if (type == 'a' && rangeType <= max - 1) {
+      setRange([rangeType + 1]);
+    } else if (type == 'b' && rangeType >= min + 1) {
+      setRange([rangeType - 1]);
     }
   };
 
   return (
     <div>
-      <div className="flex items-center my-10 text-center" dir='ltr'>
+      <div className="flex items-center my-10 text-center" dir="ltr">
         <button
           onClick={() => handlerCounter('b')}
-          className={`bg-primary lg:w-14 md:w-14 w-10 md:h-12 h-10  ${lang.lang === "en" ? "rounded-r-sm" : "rounded-l-sm"  }`} 
+          className={`bg-primary lg:w-14 md:w-14 w-10 md:h-12 h-10  ${
+            lang.lang === 'en' ? 'rounded-r-sm' : 'rounded-l-sm'
+          }`}
         >
           <Image
             src={decrement}
@@ -40,15 +42,18 @@ const CounterStyle = ({ range, setRange, min, max }: token) => {
         </button>
 
         <div className="flex justify-center border-2 border-backgroundEntires w-full items-center align-middle text-xl text-white  text-center bg-background md:h-12 h-10 ">
-          <p className="text-xs md:text-sm lg:text-xl">
+          <p className="inline-flex items-end gap-2 text-xs md:text-sm lg:text-xl">
             {' '}
-            {langContent[lang.lang].ProductDetail.counter.NUMBERS_OF_TICKET}: <span className="font-black ">{range}</span>
+            {
+              langContent[lang.lang].ProductDetail.counter.NUMBERS_OF_TICKET
+            }: <span className="font-black "> {range}</span>
           </p>
         </div>
         <button
           onClick={() => handlerCounter('a')}
-          // className="bg-primary lg:w-14 md:w-14 w-10 md:h-12 h-8 rounded-l-sm "
-          className={`bg-primary lg:w-14 md:w-14 w-10 md:h-12 h-10  ${lang.lang === "en" ? "rounded-l-sm" : "rounded-r-sm"  }`} 
+          className={`bg-primary lg:w-14 md:w-14 w-10 md:h-12 h-10  ${
+            lang.lang === 'en' ? 'rounded-l-sm' : 'rounded-r-sm'
+          }`}
         >
           <Image
             src={increment}

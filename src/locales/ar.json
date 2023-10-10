@@ -360,7 +360,10 @@
         "BOX":"صندوق بريد",
         "ADD_BUTTON":"يضيف",
         "SAVE_BUTTON":"يحفظ",
-        "EDIT_BUTTON":"يحرر"
+        "EDIT_BUTTON":"يحرر",
+        "ANOTHER_BTN":"أضف آخر",
+        "DEFAULT":"الوضع الإفتراضي"
+        
     },
     "AccountDetail":{
       "HEADING":"معلومات شخصية",

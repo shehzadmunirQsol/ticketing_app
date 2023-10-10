@@ -18,13 +18,13 @@ const AccordianFaqs = ({ data }: any) => {
   const reactElementsForFAQs = parse(dataCode || '', {
     replace: (node: any) => node,
   });
-
+console.log({dataCode})
   return (
     <section id="AccordianFaqs" className="relative">
       {dataCode ? (
         <>
           <div className="mt-10 ">
-            <p className="text-5xl font-black">          {langContent[lang.lang].ProductDetail.faqs.HEADING}
+            <p className="text-5xl font-black">  {langContent[lang.lang].ProductDetail.faqs.HEADING}
 </p>
             <div className="border-b-4 w-16 border-primary mt-4"></div>
           </div>
@@ -40,7 +40,7 @@ const AccordianFaqs = ({ data }: any) => {
             <Accordion type="single" collapsible className="w-full z-50">
               <AccordionItem value="item-1">
                 <AccordionTrigger className="hover:no-underline focus-visible:text-green py-6">
-                  <p className="lg:text-3xl  text-xl ">Competition Rules</p>
+                  <p className="lg:text-3xl  text-xl ">Competition Rulesasdsadsad</p>
                 </AccordionTrigger>
                 <AccordionContent>
                   Yes. It adheres to the WAI-ARIA design pattern.

@@ -684,8 +684,9 @@ export const orderRouter = router({
               where: { id: payload?.values?.cart_id },
               include: {
                 CouponApply: {
-                  where: { is_deleted: false },
+                  where: { is_deleted: false, is_used: false },
                   select: {
+                    id: true,
                     discount: true,
                     is_percentage: true,
                   },
@@ -693,14 +694,13 @@ export const orderRouter = router({
                 CartItems: {
                   include: {
                     Event: {
-                     
-                      include:{
-                        EventDescription:{
-                          where:{
-                            lang_id:1
-                          }
-                        }
-                      }
+                      include: {
+                        EventDescription: {
+                          where: {
+                            lang_id: 1,
+                          },
+                        },
+                      },
                     },
                   },
                 },
@@ -780,10 +780,8 @@ export const orderRouter = router({
               name: item?.Event?.EventDescription[0]?.name as string,
               price: item.Event.price,
               qty: item.quantity,
-              total_price:item.Event.price * item.quantity,
-              
+              total_price: item.Event.price * item.quantity,
             }));
-            console.log({emailPayload})
 
             const mailOptions = {
               template_id: EMAIL_TEMPLATE_IDS.ORDER_SUCCESS,
@@ -793,24 +791,35 @@ export const orderRouter = router({
               params: {
                 first_name: payload.values.first_name,
                 status: 'paid',
-                order_number:order?.id,
-                total_price:"AED "+(subTotalAmount - discountAmount).toLocaleString(),
-                event_details:emailPayload,
-                discount:"AED "+discountAmount.toLocaleString(),
-                sub_total:"AED "+subTotalAmount.toLocaleString()
-
+                order_number: order?.id,
+                total_price:
+                  'AED ' + (subTotalAmount - discountAmount).toLocaleString(),
+                event_details: emailPayload,
+                discount: 'AED ' + discountAmount.toLocaleString(),
+                sub_total: 'AED ' + subTotalAmount.toLocaleString(),
               },
             };
 
             await sendEmail(mailOptions);
             await prisma.cart.update({
               where: { id: cart.id },
+
               data: {
                 is_deleted: true,
                 CartItems: {
                   updateMany: {
                     where: { cart_id: cart.id },
                     data: { is_deleted: true },
+                  },
+                },
+                CouponApply: {
+                  update: {
+                    where: {
+                      id: cart?.CouponApply[0]?.id,
+                    },
+                    data: {
+                      is_used: true,
+                    },
                   },
                 },
               },

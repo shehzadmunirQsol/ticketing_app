@@ -254,9 +254,9 @@ export default function LoginSignup() {
                     )}
                   />
                 </div>
-                <div className="flex flex-col lg:flex-row md:flex-row  lg:flex justify-end items-center gap-6 ">
+                <div className="flex flex-col md:flex-row   justify-end items-center gap-6 ">
                   <p
-                    className="underline text-xs lg:text-base md:text-base ltr:self-start rtl:self-end  cursor-pointer"
+                    className="underline text-xs lg:text-base md:text-base my-auto ltr:self-start rtl:self-end  cursor-pointer"
                     onClick={() => setIsModal(true)}
                   >
                     {langContent[lang.lang].Auth.FORGOT}
@@ -327,10 +327,10 @@ export default function LoginSignup() {
 
                   <div className="flex flex-col sm:flex-row justify-center items-start gap-2">
                     <div className="w-full">
-                      <p className="text-xs font-thin text-grayColor  mb-3 mt-1 ">
+                      <FormLabel className="text-xs font-thin text-grayColor">
                         Phone Number <sup className="">*</sup>
-                      </p>
-                      <div className="flex flex-row gap-2 ">
+                      </FormLabel>
+                      <div className="flex flex-row gap-2 mt-2 ">
                         <FormField
                           control={formSignup.control}
                           name="code"

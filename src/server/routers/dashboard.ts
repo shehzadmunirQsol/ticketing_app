@@ -71,7 +71,7 @@ export const dashboardRouter = router({
           symbol: '',
           icon: 'fas fa-users',
           cols: true,
-          link: '/admin/customers?is_verified=true',
+          link: '/admin/customers?is_verified=true&is_disabled=false',
         },
         {
           title: 'Pending Customers',
@@ -79,7 +79,7 @@ export const dashboardRouter = router({
           symbol: '',
           icon: 'fa-solid fa-user-clock',
           cols: true,
-          link: '/admin/customers?is_verified=false',
+          link: '/admin/customers?is_verified=false&is_disabled=false',
         },
         {
           title: 'Active Coupon',

@@ -60,9 +60,9 @@ export default function AddressesView() {
         ))}
 
         {addresses && addresses?.length < 4 ? (
-          <div className="h-60 max-w-[256px] w-64  rounded-lg grid items-center justify-center border border-primary mx-auto sm:mx-0 ">
+          <div className="h-60 max-w-md rounded-lg grid items-center justify-center border border-primary ">
             <Button onClick={openChangeHandler} variant={'rounded'}>
-              Add Another
+              {langContent[lang.lang].MyAccount.AddressView.ANOTHER_BTN}
             </Button>
           </div>
         ) : (
@@ -122,9 +122,9 @@ function CustomerAddress(props: CustomerAddressType) {
   );
 
   return (
-    <form className="h-60 flex mx-auto sm:mx-0">
+    <>
       <div
-        className={`w-64 rounded-md border border-border-[1px] p-4  border-primary
+        className={`h-60 max-w-md rounded-md border border-border-[1px] p-4 w-full border-primary
         flex flex-col`}
       >
         <div className="flex justify-between items-center">
@@ -148,7 +148,6 @@ function CustomerAddress(props: CustomerAddressType) {
               <DropdownMenuItem
                 onClick={handleChange}
                 className="flex items-center gap-2 cursor-pointer"
-                // onClick={() => handleView(row?.original, 'view')}
               >
                 <span>
                   <i className={`fas fa-pencil`}></i>
@@ -164,9 +163,8 @@ function CustomerAddress(props: CustomerAddressType) {
                   <DropdownMenuItem
                     onClick={handleCmsStatus}
                     className="flex items-center gap-2 cursor-pointer"
-                    // onClick={() => handleView(row?.original, 'view')}
                   >
-                    Set Default
+                    {langContent[lang.lang].MyAccount.AddressView.DEFAULT}
                   </DropdownMenuItem>
                 </>
               )}
@@ -218,7 +216,7 @@ function CustomerAddress(props: CustomerAddressType) {
         availableAddressTypes={addressType}
         {...props}
       />
-    </form>
+    </>
   );
 }
 
@@ -239,4 +237,4 @@ const addressType = [
     label: 'Other',
     value: 'other',
   },
-];
+];   

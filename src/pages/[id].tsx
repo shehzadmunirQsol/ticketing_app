@@ -36,6 +36,9 @@ export async function getStaticProps({ params }: any) {
       slug: true,
       type: true,
       CMSDescription: {
+        orderBy: {
+          lang_id: "asc",
+        },
         select: {
           content: true,
         },
@@ -315,7 +318,7 @@ const faqUpdateArea = `
 
 <div classname="absolute top-[40px] right-64 px-8 xl:block hidden"><svg fill="none" height="895" viewbox="0 0 674 1095" width="474" xmlns="http://www.w3.org/2000/svg"> <path d="M1.11379 547.5L486.887 1093.73H819.886L334.113 547.5H1.11379Z" stroke="url(#paint0_linear_190_685)"></path> <path d="M1.11379 546.728L486.887 0.5H819.886L334.113 546.728H1.11379Z" stroke="url(#paint1_linear_190_685)"></path> <defs> <lineargradient gradientunits="userSpaceOnUse" id="paint0_linear_190_685" x1="706" x2="220" y1="1094.23" y2="531.228"> {/* <stop stop-opacity="0"></stop> */} {/* <stop offset="1" stop-color="#454545"></stop> */} </lineargradient> <lineargradient gradientunits="userSpaceOnUse" id="paint1_linear_190_685" x1="706" x2="220" y1="-1.26162e-05" y2="563"> {/* <stop stop-opacity="0"></stop> */} {/* <stop offset="1" stop-color="#454545"></stop> */} </lineargradient> </defs> </svg></div>
 
-<div class="relative  min-h-screen w-full flex flex-col gap-8  lg:px-14 md:px-14 px-4 mt-16">
+<div class="relative w-full flex flex-col gap-8  lg:px-14 md:px-14 px-4 mt-16 mb-24">
 <div>
 <p class="lg:text-5xl md:text-4xl text-3xl text-start  font-black uppercase ">Frequently asked questions</p>
 
@@ -327,28 +330,28 @@ const faqUpdateArea = `
 <div class="mt-4">
 
 		<input type="radio" name="accordion" id="cb1" />
-		<section class="box border-b border-t py-4 border-lightColorBorder hover:border-b-primary shadow-lg hover:shadow-2xl  pr-4 overflow-hidden">
-			<label class="box-title  lg:text-3xl text-xl font-bold text-white w-full flex items-center justify-between " for="cb1"><p>Competition Rules</p>  <i class="fas fa-chevron-down icon-class"></i></label>
+		<section class="box border-b border-t   border-lightColorBorder hover:border-b-primary shadow-lg hover:shadow-2xl  pr-4 overflow-hidden">
+			<label class="box-title  lg:text-3xl py-4 text-xl  font-bold text-white w-full flex items-center justify-between h-full" for="cb1"><p>Competition Rules</p>  <i class="fas fa-chevron-down icon-class"></i></label>
 			<label class="box-close" for="acc-close"></label>
-			<div class="box-content text-base mt-4 text-grayColor">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold">&lsquo;My Account&rsquo;</span> and in your email confirmation.</div>
+			<div class="box-content text-base mt-4 text-grayColor pb-4">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold">&lsquo;My Account&rsquo;</span> and in your email confirmation.</div>
 		</section>
 		<input type="radio" name="accordion" id="cb2" />
-		<section class="box border-b py-4 border-lightColorBorder hover:border-b-primary shadow-lg hover:shadow-2xl pr-4 overflow-hidden">
-      <label class="box-title  lg:text-3xl text-xl font-bold text-white w-full flex items-center justify-between " for="cb2"><p>When is the draw?</p>  <i class="fas fa-chevron-down icon-class"></i></label>
+		<section class="box border-b border-lightColorBorder hover:border-b-primary shadow-lg hover:shadow-2xl pr-4 overflow-hidden">
+      <label class="box-title  py-4 lg:text-3xl text-xl font-bold text-white w-full flex items-center justify-between " for="cb2"><p>When is the draw?</p>  <i class="fas fa-chevron-down icon-class"></i></label>
 			<label class="box-close" for="acc-close"></label>
-			<div class="box-content text-base mt-4 text-grayColor">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold">&lsquo;My Account&rsquo;</span> and in your email confirmation.</div>
+			<div class="box-content text-base mt-4 text-grayColor pb-4">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold">&lsquo;My Account&rsquo;</span> and in your email confirmation.</div>
 		</section>
 		<input type="radio" name="accordion" id="cb3" />
-		<section class="box border-b py-4 border-lightColorBorder hover:border-b-primary shadow-lg hover:shadow-2xl  pr-4 overflow-hidden">
-      <label class="box-title  lg:text-3xl text-xl font-bold text-white w-full flex items-center justify-between " for="cb3"><p>How do you do the draw?</p>  <i class="fas fa-chevron-down icon-class"></i></label>
+		<section class="box border-b border-lightColorBorder hover:border-b-primary shadow-lg hover:shadow-2xl  pr-4 overflow-hidden">
+      <label class="box-title  py-4 lg:text-3xl text-xl font-bold text-white w-full flex items-center justify-between " for="cb3"><p>How do you do the draw?</p>  <i class="fas fa-chevron-down icon-class"></i></label>
 			<label class="box-close" for="acc-close"></label>
-			<div class="box-content text-base mt-4 text-grayColor">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold">&lsquo;My Account&rsquo;</span> and in your email confirmation.</div>
+			<div class="box-content text-base mt-4 text-grayColor pb-4">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold">&lsquo;My Account&rsquo;</span> and in your email confirmation.</div>
 		</section>
 		<input type="radio" name="accordion" id="cb4" />
-		<section class="box border-b py-4 border-lightColorBorder hover:border-b-primary shadow-lg hover:shadow-2xl  pr-4 overflow-hidden">
-      <label class="box-title  lg:text-3xl text-xl font-bold text-white w-full flex items-center justify-between " for="cb4"><p>What is the draw?</p>  <i class="fas fa-chevron-down icon-class"></i></label>
+		<section class="box border-b  border-lightColorBorder hover:border-b-primary shadow-lg hover:shadow-2xl  pr-4 overflow-hidden">
+      <label class="box-title  py-4 lg:text-3xl text-xl font-bold text-white w-full flex items-center justify-between " for="cb4"><p>What is the draw?</p>  <i class="fas fa-chevron-down icon-class"></i></label>
 			<label class="box-close" for="acc-close"></label>
-			<div class="box-content text-base mt-4 text-grayColor">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold">&lsquo;My Account&rsquo;</span> and in your email confirmation.</div>
+			<div class="box-content text-base mt-4 text-grayColor pb-4">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold">&lsquo;My Account&rsquo;</span> and in your email confirmation.</div>
 		</section>
 		<input type="radio" name="accordion" id="acc-close" />
     </div>
@@ -991,7 +994,7 @@ export default function CmsPage({ storeBlogsData }: any) {
   const reactElements = parse(
     storeBlogsData?.CMSDescription[lang.lang_id == 1 ? 0 : 1]?.content || '',
     {
-      // const reactElements = parse(termsCondition || '', {
+      // const reactElements = parse(faqUpdateArea || '', {
       replace: findElementsWithAttribute,
     },
   );
@@ -1028,7 +1031,7 @@ export default function CmsPage({ storeBlogsData }: any) {
           <div
             dir={'rtl'}
             className="min-h-screen mt-28 cmsStyle px-4 md:px-14"
-            dangerouslySetInnerHTML={{ __html: storeBlogsData?.CMSDescription[1]?.content?.toString() ?? "HTML CONTENT NOT FOUND"  } as any}
+            dangerouslySetInnerHTML={{ __html: storeBlogsData?.CMSDescription[1]?.content?.toString() ?? "HTML CONTENT NOT FOUND" } as any}
           />
         </>
       )}
