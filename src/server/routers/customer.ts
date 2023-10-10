@@ -60,6 +60,7 @@ export const customerRouter = router({
     .mutation(async ({ input }) => {
       const { id, type, ...payload } = input;
 
+      console.log({payload},"payload payload")
       const customer = await prisma.customer.update({
         where: { id },
         data: payload,

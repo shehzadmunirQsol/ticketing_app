@@ -55,23 +55,23 @@ export function CustomerDialog(props: SettingDialogInterface) {
         payload.is_deleted = !props?.selectedItem?.is_deleted;
       if (props?.type == 'enable') payload.is_disabled = false;
       if (props?.type == 'disable') payload.is_disabled = true;
-      if (props?.type == 'blocked')
+      if (props?.type == 'block')
         payload.is_blocked = !props?.selectedItem?.is_blocked;
 
+      console.log({ payload }, "payload")
       // let data: any;
       await customerUpdate.mutateAsync(payload);
 
       toast({
         variant: `${props?.type === 'enable' ? 'success' : 'disable'}`,
-        title: `${props?.title} ${
-          props?.type === 'enable'
+        title: `${props?.title} ${props?.type === 'enable'
             ? 'Enabled'
             : props?.type === 'block' && props.selectedItem.is_blocked
-            ? 'Unlocked'
-            : props?.type === 'block' && !props.selectedItem.is_blocked
-            ? 'Blocked'
-            : 'Deleted'
-        } Successfully`,
+              ? 'Unlocked'
+              : props?.type === 'block' && !props.selectedItem.is_blocked
+                ? 'Blocked'
+                : 'Deleted'
+          } Successfully`,
       });
 
       props.setIsModal(false);
@@ -89,7 +89,7 @@ export function CustomerDialog(props: SettingDialogInterface) {
       <Dialog open={props?.isModal} onOpenChange={(e) => props.setIsModal(e)}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle className="capitalize">{`${props.selectedItem.is_blocked? "Unblock":props?.type} ${props?.title}`}</DialogTitle>
+            <DialogTitle className="capitalize">{`${props.selectedItem.is_blocked ? "Unblock" : props?.type} ${props?.title}`}</DialogTitle>
             <DialogDescription>
               <div className="flex flex-col gap-4  ">
                 <div className="  flex  items-center py-2  ">

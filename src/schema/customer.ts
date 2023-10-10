@@ -122,6 +122,7 @@ export const updateCustomerSchema = z.object({
   is_approved: z.boolean().optional(),
   is_disabled: z.boolean().optional(),
   is_deleted: z.boolean().optional(),
+  is_blocked: z.boolean().optional(),
   type: z.string().optional(),
 });
 export type getCustomerSchema = z.TypeOf<typeof getCustomerSchema>;

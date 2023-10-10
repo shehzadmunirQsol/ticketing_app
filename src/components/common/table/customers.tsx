@@ -260,7 +260,7 @@ export default function CustomersDataTable() {
       },
     },
     {
-      accessorKey: 'Phone No.',
+      accessorKey: 'Phone No',
       header: 'Phone No.',
       cell: ({ row }) => {
         return (
