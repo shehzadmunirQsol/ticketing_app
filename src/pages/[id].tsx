@@ -36,6 +36,9 @@ export async function getStaticProps({ params }: any) {
       slug: true,
       type: true,
       CMSDescription: {
+        orderBy: {
+          lang_id: "asc",
+        },
         select: {
           content: true,
         },
@@ -1028,7 +1031,7 @@ export default function CmsPage({ storeBlogsData }: any) {
           <div
             dir={'rtl'}
             className="min-h-screen mt-28 cmsStyle px-4 md:px-14"
-            dangerouslySetInnerHTML={{ __html: storeBlogsData?.CMSDescription[1]?.content?.toString() ?? "HTML CONTENT NOT FOUND"  } as any}
+            dangerouslySetInnerHTML={{ __html: storeBlogsData?.CMSDescription[1]?.content?.toString() ?? "HTML CONTENT NOT FOUND" } as any}
           />
         </>
       )}

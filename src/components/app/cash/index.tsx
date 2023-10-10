@@ -64,7 +64,6 @@ const CashPage = () => {
                   isLast={i === products.length - 1}
                   nextPage={nextPage}
                   dir={lang.dir}
-                  cash={Cash}
                   data={itemList}
                 />
               </div>
