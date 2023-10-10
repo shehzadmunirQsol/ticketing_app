@@ -49,7 +49,7 @@ const Invoice = (props:any) => {
       window.print();
       document.body.innerHTML = originalContents;
     }
-  }, [OrderApiData,isFetched]);
+  }, []);
 
   return (
     <>
@@ -93,7 +93,7 @@ const Invoice = (props:any) => {
           <ScrollArea className="w-full  ">
             <ScrollBar orientation="horizontal"></ScrollBar>
 
-            <table className="w-full text-left mb-8  ">
+            {/* <table className="w-full text-left mb-8  ">
               <thead className="gap-2 space-x-2">
                 <tr>
                   <th className=" font-bold uppercase py-2">Name</th>
@@ -124,7 +124,35 @@ const Invoice = (props:any) => {
                     },
                   )}
               </tbody>
-            </table>
+            </table> */}
+
+<div className="w-full mb-8">
+  <div className="flex justify-between font-bold uppercase py-2">
+    <div className="flex-1 text-start">Name</div>
+    <div className="flex-1 text-center">Quantity</div>
+    <div className="flex-1 text-center">Price</div>
+    <div className="flex-1 text-right">Total</div>
+  </div>
+  <div className="mt-2">
+    {OrderApiData?.data?.OrderEvent &&
+      OrderApiData?.data?.OrderEvent?.map((item: any, index: number) => (
+        <div key={index} className="flex gap-2 py-4">
+          <div className="flex-1 text-start">
+            {item?.Event?.EventDescription[0]?.name}
+          </div>
+          <div className="flex-1 text-center">{item?.quantity}</div>
+          <div className="flex-1 text-center">
+            AED {item?.ticket_price.toFixed(2)}
+          </div>
+          <div className="flex-1 text-right">
+            AED {(item?.ticket_price * item?.quantity).toFixed(2)}
+          </div>
+        </div>
+      ))}
+  </div>
+</div>
+
+
           </ScrollArea>
 
           <div className=" flex justify-between items-center">

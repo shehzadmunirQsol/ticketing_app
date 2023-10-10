@@ -19,12 +19,11 @@ function Index({ children }: DefaultLayoutProps) {
   const router = useRouter();
   const dispatch = useDispatch();
 
+  const routesWithoutNavbarAndFooter = '/order-view';
 
-
-    const routesWithoutNavbarAndFooter = '/order-view';
-
-    const shouldShowNavbarAndFooter = !router.pathname.startsWith(routesWithoutNavbarAndFooter);
-
+  const shouldShowNavbarAndFooter = !router.pathname.startsWith(
+    routesWithoutNavbarAndFooter,
+  );
 
   trpc.customer.get.useQuery(undefined, {
     refetchOnWindowFocus: false,
@@ -120,15 +119,17 @@ function Index({ children }: DefaultLayoutProps) {
       lang={lang.lang}
       className="relative mx-auto max-w-[1600px] w-full overflow-x-hidden"
     >
-          
-          <Toaster />
-          {shouldShowNavbarAndFooter ?<>
-            <Header />
+      <Toaster />
+      {shouldShowNavbarAndFooter ? (
+        <>
+          <Header />
           {children}
           <LoadingDialog open={createCart.isLoading} text={'Loading...'} />
           <Footer />
-          </>:<>{children}</>}
-      
+        </>
+      ) : (
+        <>{children}</>
+      )}
     </div>
   );
 }
