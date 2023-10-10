@@ -18,7 +18,7 @@ export function NewsLetterDialog(props: newsLetterDialogInterface) {
         <Dialog open={props?.isModal} onOpenChange={(e) => props.setIsModal(e)}>
             <DialogContent className="p-0">
                 <DialogDescription className='p-0   '>
-                    <ScrollArea className="w-full h-[calc(100vh-135px)] ">
+                    <ScrollArea className="w-full h-[calc(100vh-200px)] max-h-[580px]">
                         <ScrollBar orientation="vertical"></ScrollBar>
 
                         <iframe

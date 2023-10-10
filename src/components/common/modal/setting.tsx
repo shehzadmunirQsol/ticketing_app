@@ -107,7 +107,7 @@ export function SettingDialog(props: SettingDialogInterface) {
         </DialogHeader>
         <DialogFooter>
           <Button type="submit" onClick={() => handleClick()}>
-            Save changes
+            Yes
           </Button>
         </DialogFooter>
         <LoadingDialog open={loading} text={'Saving data...'} />

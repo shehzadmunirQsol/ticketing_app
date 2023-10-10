@@ -134,8 +134,8 @@ export default function CustomersDataTable() {
           ? setPara('Are you sure you want to Enable this customer?')
           : type == 'disable'
             ? setPara('Are you sure you want to Disable this customer?')
-            : type == 'blocked'
-              ? setPara('Are you sure you want to Disable this customer?')
+            : type == 'block'
+              ? setPara(`Are you sure you want to ${data.is_blocked ? "Unblock" : "Block"} this customer?`)
               : setPara('');
     }
     setType(type);
@@ -267,10 +267,10 @@ export default function CustomersDataTable() {
           <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
             <TooltipProvider>
               <Tooltip>
-                <TooltipTrigger>{row?.original?.phone_number}</TooltipTrigger>
+                <TooltipTrigger>{row?.original?.phone_number != null ? row?.original?.phone_number : "N/A"}</TooltipTrigger>
                 <TooltipContent>
                   <p className="text-base font-normal">
-                    {row?.original?.phone_number}
+                    {row?.original?.phone_number != null ? row?.original?.phone_number : "N/A"}
                   </p>
                 </TooltipContent>
               </Tooltip>
@@ -292,6 +292,7 @@ export default function CustomersDataTable() {
         );
       },
     },
+
     {
       id: 'Verified Status',
       header: 'Verified Status',
@@ -300,6 +301,18 @@ export default function CustomersDataTable() {
         return (
           <div className="w-24 text-center">
             <Switch checked={row?.original?.is_verified} disabled={true} />
+          </div>
+        );
+      },
+    },
+    {
+      id: 'Blocked Status',
+      header: 'Blocked Status',
+
+      cell: ({ row }) => {
+        return (
+          <div className="w-24 text-center">
+            <Switch checked={row?.original?.is_blocked} disabled={true} />
           </div>
         );
       },
@@ -347,7 +360,7 @@ export default function CustomersDataTable() {
               ) : (
                 <>
                   <DropdownMenuItem
-                    onClick={() => deleteUser(row?.original, 'blocked')}
+                    onClick={() => deleteUser(row?.original, 'block')}
                   >
                     {row?.original?.is_blocked ? "Unblock Customer" : "Block Customer"}
                   </DropdownMenuItem>

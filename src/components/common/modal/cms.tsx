@@ -116,7 +116,7 @@ export function CmsDailog(props: SettingDialogInterface) {
           <div className=" py-2"></div>
           <DialogFooter>
             <Button type="submit" onClick={() => handleClick()}>
-              Save changes
+              Yes
             </Button>
           </DialogFooter>
         </DialogContent>
