@@ -15,6 +15,8 @@ import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 import LogoImage from '~/public/assets/logo.png';
 import { RootState } from '~/store/store';
 import { Button } from '~/components/ui/button';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 interface OrderViewDialogInterface {
   selectedItem: any;
@@ -28,39 +30,33 @@ interface OrderViewDialogInterface {
 }
 
 export function OrderViewDialog(props: OrderViewDialogInterface) {
+  const router = useRouter();
   const { lang } = useSelector((state: RootState) => state.layout);
 
-  const {
-    data: OrderApiData,
-
-    isFetching,
-  } = trpc.order.getByID.useQuery(
+  const { data: OrderApiData, isFetching } = trpc.order.getByID.useQuery(
     { order_id: props?.selectedItem?.id, lang_id: lang.lang_id },
     {
       refetchOnWindowFocus: false,
-
       enabled: props?.selectedItem?.id ? true : false,
     },
   );
 
-  function Print() {
-    if (window) {
-      const printContents =
-        window?.document?.getElementById('divToPrint')?.innerHTML;
-      const originalContents = window?.document?.body?.innerHTML;
-      document.body.innerHTML = printContents as string;
-      window.print();
-      // document.body.innerHTML = originalContents;
-      return true;
-    }
-  }
+  console.log(router.asPath, 'router.asPath');
 
   return (
     <>
       <Dialog open={props?.isModal} onOpenChange={(e) => props.setIsModal(e)}>
         <DialogContent className=" my-auto max-h-[800px] h-[calc(100%-100px)]  overflow-y-hidden  ">
           <DialogFooter className=" sm:justify-start items-start w-full   ">
-            <Button onClick={Print}>Print</Button>
+            <Link
+              href={`${
+                router.asPath === '/admin/orders'
+                  ? `/admin/order-view/${props?.selectedItem?.id}`
+                  : `/order-view/${props?.selectedItem?.id}`
+              }`}
+            >
+              <Button>Print</Button>
+            </Link>
           </DialogFooter>
           <DialogDescription className="relative bg-card h-full rounded-lg  overflow-y-scroll   scroll-hide">
             {OrderApiData && (
@@ -103,7 +99,7 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
                 <ScrollArea className="w-full  ">
                   <ScrollBar orientation="horizontal"></ScrollBar>
 
-                  <table className="w-full text-left mb-8  ">
+                  {/* <table className="w-full text-left mb-8  ">
                     <thead className="gap-2 space-x-2">
                       <tr>
                         <th className=" font-bold uppercase py-2">Name</th>
@@ -136,7 +132,34 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
                           },
                         )}
                     </tbody>
-                  </table>
+                  </table> */}
+
+<div className="w-full mb-8">
+  <div className="flex justify-between font-bold uppercase py-2">
+    <div className="flex-1">Name</div>
+    <div className="flex-1">Quantity</div>
+    <div className="flex-1">Price</div>
+    <div className="flex-1">Total</div>
+  </div>
+  <div className="mt-2">
+    {OrderApiData?.data?.OrderEvent &&
+      OrderApiData?.data?.OrderEvent?.map((item: any, index: number) => (
+        <div key={index} className="flex gap-2 py-4">
+          <div className="flex-1">
+            {item?.Event?.EventDescription[0]?.name}
+          </div>
+          <div className="flex-1">{item?.quantity}</div>
+          <div className="flex-1">
+            AED {item?.ticket_price.toFixed(2)}
+          </div>
+          <div className="flex-1">
+            AED {(item?.ticket_price * item?.quantity).toFixed(2)}
+          </div>
+        </div>
+      ))}
+  </div>
+</div>
+
                 </ScrollArea>
 
                 <div className=" flex justify-between items-center">
