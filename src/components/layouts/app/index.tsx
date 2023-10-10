@@ -8,6 +8,7 @@ import { CartItemInterface, addCart } from '~/store/reducers/cart';
 import { Toaster } from '~/components/ui/toaster';
 import { userAuth } from '~/store/reducers/auth';
 import { LoadingDialog } from '~/components/common/modal/loadingModal';
+import { useRouter } from 'next/router';
 
 type DefaultLayoutProps = { children: ReactNode };
 
@@ -15,7 +16,15 @@ function Index({ children }: DefaultLayoutProps) {
   const { lang } = useSelector((state: RootState) => state.layout);
   const { user, isLogin } = useSelector((state: RootState) => state.auth);
 
+  const router = useRouter();
   const dispatch = useDispatch();
+
+
+
+    const routesWithoutNavbarAndFooter = '/order-view';
+
+    const shouldShowNavbarAndFooter = !router.pathname.startsWith(routesWithoutNavbarAndFooter);
+
 
   trpc.customer.get.useQuery(undefined, {
     refetchOnWindowFocus: false,
@@ -111,11 +120,15 @@ function Index({ children }: DefaultLayoutProps) {
       lang={lang.lang}
       className="relative mx-auto max-w-[1600px] w-full overflow-x-hidden"
     >
-      <Toaster />
-      <Header />
-      {children}
-      <LoadingDialog open={createCart.isLoading} text={'Loading...'} />
-      <Footer />
+          
+          <Toaster />
+          {shouldShowNavbarAndFooter ?<>
+            <Header />
+          {children}
+          <LoadingDialog open={createCart.isLoading} text={'Loading...'} />
+          <Footer />
+          </>:<>{children}</>}
+      
     </div>
   );
 }

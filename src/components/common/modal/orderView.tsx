@@ -15,6 +15,8 @@ import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 import LogoImage from '~/public/assets/logo.png';
 import { RootState } from '~/store/store';
 import { Button } from '~/components/ui/button';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 interface OrderViewDialogInterface {
   selectedItem: any;
@@ -28,39 +30,28 @@ interface OrderViewDialogInterface {
 }
 
 export function OrderViewDialog(props: OrderViewDialogInterface) {
+  const router = useRouter();
   const { lang } = useSelector((state: RootState) => state.layout);
 
-  const {
-    data: OrderApiData,
-
-    isFetching,
-  } = trpc.order.getByID.useQuery(
+  const { data: OrderApiData, isFetching } = trpc.order.getByID.useQuery(
     { order_id: props?.selectedItem?.id, lang_id: lang.lang_id },
     {
       refetchOnWindowFocus: false,
-
       enabled: props?.selectedItem?.id ? true : false,
     },
   );
 
-  function Print() {
-    if (window) {
-      const printContents =
-        window?.document?.getElementById('divToPrint')?.innerHTML;
-      const originalContents = window?.document?.body?.innerHTML;
-      document.body.innerHTML = printContents as string;
-      window.print();
-      // document.body.innerHTML = originalContents;
-      return true;
-    }
-  }
+
+  console.log(router.asPath,"router.asPath")
 
   return (
     <>
       <Dialog open={props?.isModal} onOpenChange={(e) => props.setIsModal(e)}>
         <DialogContent className=" my-auto max-h-[800px] h-[calc(100%-100px)]  overflow-y-hidden  ">
           <DialogFooter className=" sm:justify-start items-start w-full   ">
-            <Button onClick={Print}>Print</Button>
+            <Link href={`${router.asPath === '/admin/orders' ? `/admin/order-view/${props?.selectedItem?.id}` : `/order-view/${props?.selectedItem?.id}`}`}>
+            <Button>Print</Button>
+          </Link>
           </DialogFooter>
           <DialogDescription className="relative bg-card h-full rounded-lg  overflow-y-scroll   scroll-hide">
             {OrderApiData && (

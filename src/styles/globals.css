@@ -916,3 +916,10 @@ input[type='number'] {
     display: block;
   }
 } */
+
+
+@media print {
+  body {
+    color: black; /* Change to the desired text color */
+  }
+}
