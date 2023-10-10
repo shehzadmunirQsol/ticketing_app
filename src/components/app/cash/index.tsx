@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import BannerTitle from '~/components/common/banner_title';
-import CashBg from '~/public/assets/cash_bg.png';
+import CashBg from '~/public/assets/Cash Prize Page Web.png';
 import Cash from '~/public/assets/cash-1.png';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
@@ -52,7 +52,7 @@ const CashPage = () => {
   return (
     <>
       <div className="relative pt-24"></div>
-      <BannerTitle image={CashBg} text={langContent[lang.lang].Cash.HEADING} />
+      <BannerTitle image={CashBg} text={""} />
       <div className="relative h-full px-4 md:px-14 py-20">
         <Glow className=" absolute  top-1/4 -right-16  p-2   w-1/6 h-[150px]  " />
         <Glow className=" absolute  bottom-14 -right-16  w-1/6 h-[150px] " />
