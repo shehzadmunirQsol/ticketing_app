@@ -7,18 +7,16 @@ import { trpc } from '~/utils/trpc';
 import { RootState } from '~/store/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { useToast } from '~/components/ui/use-toast';
-import Link from 'next/link';
 import CartItem from './cartItem';
 import { addDiscount } from '~/store/reducers/cart';
 import langContent from '~/locales';
-
 
 export default function CartPage() {
   const { cart, totalAmount, count } = useSelector(
     (state: RootState) => state.cart,
   );
   const { lang } = useSelector((state: RootState) => state.layout);
-
+  const { isLogin } = useSelector((state: RootState) => state.auth);
 
   const eventIds = cart.cartItems.map((item) => item.event_id);
   const [code, setCode] = useState('');
@@ -38,6 +36,13 @@ export default function CartPage() {
   const couponApply = trpc.coupon.applyCoupon.useMutation();
 
   async function handleApply() {
+    if (!isLogin) {
+      toast({
+        variant: 'disable',
+        title: 'Please login to apply this coupon!',
+      });
+      return;
+    }
     try {
       if (!code) return;
       const payload = {
@@ -82,7 +87,7 @@ export default function CartPage() {
         <>
           <div className="relative py-6 px-4 space-y-10 md:py-16 md:px-14 md:space-y-14 -z-30 ">
             <h2 className="text-2xl md:text-4xl lg:text-5xl z-10 font-black uppercase">
-            {langContent[lang.lang].Cart.HEADING}
+              {langContent[lang.lang].Cart.HEADING}
             </h2>
             <div
               data-name="cards"
@@ -106,9 +111,11 @@ export default function CartPage() {
               })}
             </div>
             <div className="bg-transparent space-y-4 sm:w-1/2 mdx:w-1/3 z-10 ml-auto">
-              <div className="flex bg-card border border-border rounded-md" dir='ltr'>
+              <div
+                className="flex bg-card border border-border rounded-md"
+                dir="ltr"
+              >
                 <Input
-                
                   placeholder="Coupon code"
                   type="text"
                   onChange={(e: any) => setCode(e.target.value)}
@@ -121,17 +128,23 @@ export default function CartPage() {
                   disabled={!code || cart.isDiscount}
                   className="text-primary border-l border-border z-10 "
                 >
-                  {cart.isDiscount ? langContent[lang.lang].Cart.COUPON_APPLIED : langContent[lang.lang].Cart.APPLY_COUPON}
+                  {cart.isDiscount
+                    ? langContent[lang.lang].Cart.COUPON_APPLIED
+                    : langContent[lang.lang].Cart.APPLY_COUPON}
                 </Button>
               </div>
               {cart.isDiscount ? (
                 <>
                   <div className="flex items-center justify-between z-10 ">
-                    <p className="text-white/40  text-lg">{langContent[lang.lang].Cart.SUB_TOTAL}:</p>
+                    <p className="text-white/40  text-lg">
+                      {langContent[lang.lang].Cart.SUB_TOTAL}:
+                    </p>
                     <p className="text-xl">AED {totalAmount?.toFixed(2)}</p>
                   </div>
                   <div className="flex items-center justify-between z-10 ">
-                    <p className="text-white/40  text-lg">{langContent[lang.lang].Cart.DISCOUNT}:</p>
+                    <p className="text-white/40  text-lg">
+                      {langContent[lang.lang].Cart.DISCOUNT}:
+                    </p>
                     <p className="text-xl">
                       {' '}
                       - AED {discountAmount.toFixed(2)}

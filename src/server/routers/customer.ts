@@ -91,7 +91,7 @@ export const customerRouter = router({
         if (filterPayload?.searchQuery) delete filterPayload.searchQuery;
         if (filterPayload?.endDate) delete filterPayload.endDate;
         if (filterPayload?.startDate) delete filterPayload.startDate;
-        const where: any = { is_deleted: false, ...filterPayload };
+        const where: any = { is_deleted: false, ...filterPayload, };
         console.log({ filters }, 'filters_input');
         if (input?.filters?.searchQuery) {
           where.OR = [];

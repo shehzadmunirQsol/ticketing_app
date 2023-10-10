@@ -140,13 +140,13 @@ model Coupon {
   name          String
   coupon_code   String        @unique @db.VarChar(6)
   discount      Int
-  coupon_limit  Int?
+  coupon_limit  Int? // this coupon limit is for customers not for the total limit
   is_percentage Boolean       @default(false)
   is_limited    Boolean       @default(false)
   is_enabled    Boolean       @default(false)
   is_deleted    Boolean       @default(false)
-  start_date    DateTime?
-  end_date      DateTime?
+  start_date    DateTime
+  end_date      DateTime
   created_at    DateTime      @default(now()) @db.Timestamp(6)
   updated_at    DateTime      @default(now()) @db.Timestamp(6)
   User          AdminUser     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
@@ -162,6 +162,7 @@ model CouponApply {
   cart_id       Int
   coupon_id     Int
   discount      Int
+  is_used       Boolean  @default(false)
   is_percentage Boolean  @default(false)
   is_deleted    Boolean  @default(false)
   created_at    DateTime @default(now()) @db.Timestamp(6)
@@ -311,6 +312,7 @@ model Customer {
   total_customer_id String?             @default("")
   dob               DateTime?
   is_deleted        Boolean             @default(false)
+  is_blocked        Boolean             @default(false)
   is_verified       Boolean             @default(false)
   is_disabled       Boolean             @default(false)
   created_at        DateTime            @default(now()) @db.Timestamp(6)

@@ -130,14 +130,16 @@ export default function CustomersDataTable() {
       type == 'delete'
         ? setPara('Are you sure you want to Delete this customer?')
         : type == 'enable'
-        ? setPara('Are you sure you want to Enable this customer?')
-        : setPara('');
+          ? setPara('Are you sure you want to Enable this customer?')
+          : type == 'disable'
+            ? setPara('Are you sure you want to Disable this customer?')
+            : setPara('');
     }
     setType(type);
     setIsModal(true);
   };
 
-  const displayName = (data: any) => {
+  const displayFirstName = (data: any) => {
     if (data.is_disabled) {
       return (
         <div className="flex gap-2 items-center">
@@ -157,6 +159,8 @@ export default function CustomersDataTable() {
           </TooltipProvider>
         </div>
       );
+
+
     } else {
       return (
         <p className="text-ellipsis text-left whitespace-nowrap overflow-hidden w-32  text-white">
@@ -164,6 +168,14 @@ export default function CustomersDataTable() {
         </p>
       );
     }
+  };
+
+  const displayLastName = (data: any) => {
+    return (
+      <p className="text-ellipsis text-left whitespace-nowrap overflow-hidden w-32  text-white">
+        {data.last_name}
+      </p>
+    )
   };
 
   // handle modal
@@ -193,7 +205,7 @@ export default function CustomersDataTable() {
         <div className="capitalize ">
           <TooltipProvider>
             <Tooltip>
-              <TooltipTrigger>{displayName(row?.original)}</TooltipTrigger>
+              <TooltipTrigger>{displayFirstName(row?.original)}</TooltipTrigger>
               <TooltipContent>
                 <p className="text-base font-normal">
                   {row?.original?.first_name}
@@ -208,10 +220,10 @@ export default function CustomersDataTable() {
       accessorKey: 'Last Name',
       header: 'Last Name',
       cell: ({ row }) => (
-        <div className="capitalize w-28">
+        <div className="capitalize w-28 text-ellipsis whitespace-nowrap overflow-hidden">
           <TooltipProvider>
             <Tooltip>
-              <TooltipTrigger>{row?.original?.last_name}</TooltipTrigger>
+              <TooltipTrigger>{displayLastName(row?.original)}</TooltipTrigger>
               <TooltipContent>
                 <p className="text-base font-normal">
                   {row?.original?.last_name ?? ''}
@@ -331,7 +343,11 @@ export default function CustomersDataTable() {
                 </>
               ) : (
                 <>
-                  <DropdownMenuItem>No Actions Yet</DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => deleteUser(row?.original, 'disable')}
+                  >
+                    Disable Customer
+                  </DropdownMenuItem>
                 </>
               )}
             </DropdownMenuContent>
@@ -437,14 +453,14 @@ export default function CustomersDataTable() {
         is_verified,
         created_at,
       }) => [
-        first_name,
-        last_name,
-        email,
-        phone_number,
-        dob?.toLocaleDateString(),
-        is_verified ? 'Yes' : 'No',
-        created_at?.toLocaleDateString(),
-      ],
+          first_name,
+          last_name,
+          email,
+          phone_number,
+          dob?.toLocaleDateString(),
+          is_verified ? 'Yes' : 'No',
+          created_at?.toLocaleDateString(),
+        ],
     ),
   ];
 
@@ -511,9 +527,9 @@ export default function CustomersDataTable() {
                         {header.isPlaceholder
                           ? null
                           : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext(),
-                            )}
+                            header.column.columnDef.header,
+                            header.getContext(),
+                          )}
                       </TableHead>
                     );
                   })}
@@ -611,7 +627,7 @@ export default function CustomersDataTable() {
               disabled={
                 (filters.first + 1) * filters.rows > (data?.count ?? 0) ||
                 Math.ceil((data?.count ?? 0) / filters.rows) ==
-                  filters.first + 1
+                filters.first + 1
               }
             >
               <span className="sr-only">Go to next page</span>
@@ -629,7 +645,7 @@ export default function CustomersDataTable() {
               disabled={
                 (filters.first + 1) * filters.rows > (data?.count ?? 0) ||
                 Math.ceil((data?.count ?? 0) / filters.rows) ==
-                  filters.first + 1
+                filters.first + 1
               }
             >
               <span className="sr-only">Go to last page</span>

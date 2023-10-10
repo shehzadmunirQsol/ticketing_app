@@ -994,10 +994,10 @@ const termsCondition = `
 export default function CmsPage({ storeBlogsData }: any) {
   const { lang } = useSelector((state: RootState) => state.layout);
 
-  // const reactElements = parse(
-    // storeBlogsData?.CMSDescription[lang.lang_id == 1 ? 0 : 1]?.content || '',
-    // {
-      const reactElements = parse(faqUpdateArea || '', {
+  const reactElements = parse(
+    storeBlogsData?.CMSDescription[lang.lang_id == 1 ? 0 : 1]?.content || '',
+    {
+      // const reactElements = parse(faqUpdateArea || '', {
       replace: findElementsWithAttribute,
     },
   );
