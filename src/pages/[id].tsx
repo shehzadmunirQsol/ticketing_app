@@ -1013,10 +1013,8 @@ let carouselHeading: any = {};
 const findElementsWithAttribute = (node: any, lang:Lang) => {
   if (node.type === 'tag') {
     const shortcode = node?.attribs;
-    console.log(shortcode,"shortcode")
     if (shortcode?.data === 'main-carousel-heading') {
       carouselHeading = JSON.parse(node?.children[0]?.data) as any;
-      console.log(carouselHeading,"carouselHeading")
       return <></>
     }
 
