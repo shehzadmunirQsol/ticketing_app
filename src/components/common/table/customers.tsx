@@ -72,6 +72,7 @@ export type CustomerType = {
   last_name: string;
   is_approved: boolean;
   is_disabled: boolean;
+  is_blocked: boolean;
   is_verified: boolean;
   id: number;
   dob: Date;
@@ -133,7 +134,9 @@ export default function CustomersDataTable() {
           ? setPara('Are you sure you want to Enable this customer?')
           : type == 'disable'
             ? setPara('Are you sure you want to Disable this customer?')
-            : setPara('');
+            : type == 'block'
+              ? setPara(`Are you sure you want to ${data.is_blocked ? "Unblock" : "Block"} this customer?`)
+              : setPara('');
     }
     setType(type);
     setIsModal(true);
@@ -257,17 +260,17 @@ export default function CustomersDataTable() {
       },
     },
     {
-      accessorKey: 'Phone No.',
+      accessorKey: 'Phone No',
       header: 'Phone No.',
       cell: ({ row }) => {
         return (
           <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
             <TooltipProvider>
               <Tooltip>
-                <TooltipTrigger>{row?.original?.phone_number}</TooltipTrigger>
+                <TooltipTrigger>{row?.original?.phone_number != null ? row?.original?.phone_number : "N/A"}</TooltipTrigger>
                 <TooltipContent>
                   <p className="text-base font-normal">
-                    {row?.original?.phone_number}
+                    {row?.original?.phone_number != null ? row?.original?.phone_number : "N/A"}
                   </p>
                 </TooltipContent>
               </Tooltip>
@@ -289,6 +292,7 @@ export default function CustomersDataTable() {
         );
       },
     },
+
     {
       id: 'Verified Status',
       header: 'Verified Status',
@@ -297,6 +301,18 @@ export default function CustomersDataTable() {
         return (
           <div className="w-24 text-center">
             <Switch checked={row?.original?.is_verified} disabled={true} />
+          </div>
+        );
+      },
+    },
+    {
+      id: 'Blocked Status',
+      header: 'Blocked Status',
+
+      cell: ({ row }) => {
+        return (
+          <div className="w-24 text-center">
+            <Switch checked={row?.original?.is_blocked} disabled={true} />
           </div>
         );
       },
@@ -344,9 +360,9 @@ export default function CustomersDataTable() {
               ) : (
                 <>
                   <DropdownMenuItem
-                    onClick={() => deleteUser(row?.original, 'disable')}
+                    onClick={() => deleteUser(row?.original, 'block')}
                   >
-                    Disable Customer
+                    {row?.original?.is_blocked ? "Unblock Customer" : "Block Customer"}
                   </DropdownMenuItem>
                 </>
               )}
@@ -409,6 +425,14 @@ export default function CustomersDataTable() {
       Icon: 'fal fa-chevron-down',
       text: 'Delete Request',
       filtername: 'is_disabled',
+      type: 'select',
+
+      filter: StatusOptions,
+    },
+    {
+      Icon: 'fal fa-chevron-down',
+      text: 'Blocked Users',
+      filtername: 'is_blocked',
       type: 'select',
 
       filter: StatusOptions,

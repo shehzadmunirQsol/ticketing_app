@@ -89,6 +89,7 @@ export function TableFilters(props: SettingDialogInterface) {
       'is_limit',
       'is_disabled',
       'is_limited',
+      'is_blocked',
     ];
     const data =
       filter == 'category_id' && e.target.value !== 'delete'

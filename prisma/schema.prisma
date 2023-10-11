@@ -217,6 +217,7 @@ model Event {
   cash_alt          Int?
   total_tickets     Int
   tickets_sold      Int?      @default(0)
+  meta              String?
   user_ticket_limit Int
   is_cash_alt       Boolean   @default(false)
   is_enabled        Boolean   @default(false)
@@ -505,7 +506,7 @@ model Winner {
 model CMS {
   id         Int      @id @default(autoincrement())
   user_id    Int
-  slug       String   @unique
+  slug       String   @default("")
   type       CMSEnums @default(static)
   is_deleted Boolean  @default(false)
   is_enabled Boolean  @default(false)

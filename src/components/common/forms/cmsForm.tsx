@@ -66,7 +66,7 @@ export default function CmsForm(props: CategoryFormInterface) {
       refetchOnWindowFocus: false,
       enabled: id ? true : false,
       onSuccess(res: any) {
-        form.setValue('slug', res?.data?.slug as string);
+        // form.setValue('slug', res?.data?.slug as string);
         form.setValue('type', res?.data?.type as any);
         form.setValue(
           'en.title',
@@ -211,7 +211,7 @@ export default function CmsForm(props: CategoryFormInterface) {
       );
       window.localStorage.setItem(
         'cmsslug',
-        JSON.stringify(form.getValues()?.slug),
+        JSON.stringify(form.getValues()?.slug ?? ""),
       );
       window.open('/admin/cms/preview', '_blank');
     } else {
@@ -302,7 +302,7 @@ export default function CmsForm(props: CategoryFormInterface) {
           }
         >
           <div className="flex flex-col lg:flex-row md:flex-row justify-between  gap-2 ">
-            <FormField
+            {/* <FormField
               control={form.control}
               name="slug"
               render={({ field }) => (
@@ -324,7 +324,7 @@ export default function CmsForm(props: CategoryFormInterface) {
                   </div>
                 </FormItem>
               )}
-            />
+            /> */}
             <FormField
               control={form.control}
               name="type"

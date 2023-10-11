@@ -207,6 +207,10 @@ export const SideBarMenuDemo: React.FC<SideBarMenuDemoProps> = ({
       link: "/about-us",
     },
     {
+      text: "FAQ",
+      link: "/faq",
+    },
+    {
       text: langContent[lang.lang].Header.title_five,
       link: "/contact-us",
     },

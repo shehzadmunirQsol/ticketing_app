@@ -60,6 +60,7 @@ export const customerRouter = router({
     .mutation(async ({ input }) => {
       const { id, type, ...payload } = input;
 
+      console.log({payload},"payload payload")
       const customer = await prisma.customer.update({
         where: { id },
         data: payload,
@@ -317,10 +318,17 @@ export const customerRouter = router({
             message: 'Your Account is Disabled Kindly Contact From Admin',
           });
         }
+
+        if (user?.is_blocked) {
+          throw new TRPCError({
+            code: 'UNAUTHORIZED',
+            message: 'Your Account is Blocked',
+          });
+        }
         const checkPass = await isSamePass(input.password, user?.password);
         if (!checkPass) {
           throw new TRPCError({
-            code: 'BAD_REQUEST',
+            code: 'INTERNAL_SERVER_ERROR',
             message: 'Invalid credentials!',
           });
         }
@@ -377,11 +385,10 @@ export const customerRouter = router({
           subject: 'Forgot Password request to Winnar',
 
           params: {
-            link: `${
-              process.env.NEXT_PUBLIC_BASE_URL
-            }/reset-password?verification_code=${encodeURIComponent(
-              respCode,
-            )}&email=${encodeURIComponent(user.email)}`,
+            link: `${process.env.NEXT_PUBLIC_BASE_URL
+              }/reset-password?verification_code=${encodeURIComponent(
+                respCode,
+              )}&email=${encodeURIComponent(user.email)}`,
           },
         };
         const mailResponse = await sendEmail(mailOptions);
@@ -703,16 +710,14 @@ export const customerRouter = router({
     .input(accountsDetailSchema)
     .mutation(async ({ ctx, input }) => {
       try {
-        console.log(input, 'input');
-        const user: any = await prisma.customer.findFirst({
-          where: { email: input.email },
-        });
-        const payload = { ...input };
-        if (!payload?.dob) delete payload?.dob;
+        const { id, ...payload } = input;
+        
+        // if (!payload?.dob) delete payload?.dob;
+        console.log({input},"acc- detail")
 
         const updateResponse = await prisma.customer?.update({
           where: {
-            id: user.id,
+            id: id,
           },
           data: {
             ...payload,

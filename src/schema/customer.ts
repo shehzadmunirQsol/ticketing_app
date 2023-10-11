@@ -122,6 +122,7 @@ export const updateCustomerSchema = z.object({
   is_approved: z.boolean().optional(),
   is_disabled: z.boolean().optional(),
   is_deleted: z.boolean().optional(),
+  is_blocked: z.boolean().optional(),
   type: z.string().optional(),
 });
 export type getCustomerSchema = z.TypeOf<typeof getCustomerSchema>;
@@ -255,11 +256,10 @@ export const getCustomerAddress = z.object({
 });
 
 export const accountsDetailSchema = z.object({
+  id: z.number().optional(),
   first_name: z.string(),
   last_name: z.string(),
-  email: z.string().email(),
   dob: z.date().optional().nullable(),
-  country: z.string().optional(),
 });
 
 export const accountsDetailSchemaInput = z.object({
@@ -281,15 +281,7 @@ export const accountsDetailSchemaInput = z.object({
       message: 'Name must not exceed 24 characters',
     })
     .trim(),
-  email: z.string().trim().email(),
   dob: z.date().optional().nullable(),
-  country: z
-    .string({
-      required_error: 'Please select your country',
-    })
-    .min(1, {
-      message: 'Please select your country',
-    }),
 });
 
 export type accountsDetailSchemaInput = z.infer<

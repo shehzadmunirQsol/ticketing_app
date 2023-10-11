@@ -51,11 +51,9 @@ const AccountDetails = () => {
   const form = useForm<accountsDetailSchemaInput>({
     resolver: zodResolver(accountsDetailSchemaInput),
     defaultValues: {
-      email: user?.email,
       first_name: user?.first_name,
       last_name: user?.last_name,
       dob: user?.dob?.toISOString()?.split('T')[0],
-      country: user?.country,
     },
   });
 
@@ -77,7 +75,7 @@ const AccountDetails = () => {
   // handle account detail
   async function onSubmitAccountDetail(values: accountsDetailSchemaInput) {
     try {
-      const resp = await updateCustomerAccountDetail.mutateAsync(values);
+      const resp = await updateCustomerAccountDetail.mutateAsync({ id: user.id, ...values });
       dispatch(userAuth(resp?.user));
     } catch (error: any) {
       console.log({ error });
@@ -149,28 +147,24 @@ const AccountDetails = () => {
             />
 
             <div className="flex flex-col sm:flex-row justify-center items-center gap-2">
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem className=" w-full ">
-                    <FormLabel className="text-xs font-thin text-grayColor">
-                      Email Address *
-                    </FormLabel>
-                    <FormControl className="rounded-md bg-inputColor ">
-                      <Input
-                        type="text"
-                        disabled
-                        placeholder="Enter your email address"
-                        {...field}
-                      />
-                    </FormControl>
-                    <div className="relative pb-2">
-                      <FormMessage />
-                    </div>
-                  </FormItem>
-                )}
-              />
+
+              <FormItem className=" w-full ">
+                <FormLabel className="text-xs font-thin text-grayColor">
+                  Email Address *
+                </FormLabel>
+                <FormControl className="rounded-md bg-inputColor ">
+                  <Input
+                    type="text"
+                    disabled
+                    defaultValue={user?.email ?? ""}
+                    placeholder="Enter your email address"
+                  />
+                </FormControl>
+                <div className="relative pb-2">
+                  <FormMessage />
+                </div>
+              </FormItem>
+
 
               <FormField
                 control={form.control}
@@ -239,7 +233,7 @@ function PasswordChange({ email }: any) {
     resolver: zodResolver(passwordChangeSchemaInput),
   });
 
-  console.log(form?.getValues(),"helloworld")
+  console.log(form?.getValues(), "helloworld")
   // handle password update
   const updateCustomerPassword =
     trpc.customer.updateCustomerPassword.useMutation({
@@ -249,9 +243,9 @@ function PasswordChange({ email }: any) {
           variant: 'success',
           title: 'Your Account Password Updated Successfully ',
         });
-        form.setValue("currentPassword","")
-        form.setValue("newPassword","")
-        form.setValue("confirmPassword","")
+        form.setValue("currentPassword", "")
+        form.setValue("newPassword", "")
+        form.setValue("confirmPassword", "")
       },
       onError: (err) => {
         console.log(err.message, 'err');

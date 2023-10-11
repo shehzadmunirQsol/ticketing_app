@@ -936,7 +936,10 @@ input[type='number'] {
 
 @media print {
   body {
-    color: black; /* Change to the desired text color */
+    color: black; 
+  }
+  #divToPrint{
+  color: black; 
   }
 }
 
@@ -946,4 +949,7 @@ input[type='number'] {
 /* external class */
 .absolute {
   position: absolute;
+}
+.mt-faq{
+  margin-top: 5.5rem;
 }
