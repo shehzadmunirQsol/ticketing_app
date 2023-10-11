@@ -25,7 +25,6 @@ function ProductCard(props: cardInterface) {
   const cardRef = useRef<HTMLDivElement>(null);
   const { lang } = useSelector((state: RootState) => state.layout);
 
-
   /**
    * Implement Intersection Observer to check if the last Card in the array is visible on the screen, then set a new limit
    */
@@ -43,10 +42,10 @@ function ProductCard(props: cardInterface) {
   }, [props?.isLast]);
 
   const spaceElement = props?.isCash ? null : <div className="h-6 xl:h-9" />;
-  const today = (new Date()).toISOString().split("T")[0]
+  const today = new Date().toISOString().split('T')[0];
   const time = props?.data?.end_date;
-  const endDay = props?.data && time && time?.toISOString().split("T")[0];
-  console.log({ today, endDay }, today == endDay, "product")
+  const endDay = props?.data && time && time?.toISOString().split('T')[0];
+  console.log({ today, endDay }, today == endDay, 'product');
   return (
     props?.data && (
       <Link
@@ -61,15 +60,15 @@ function ProductCard(props: cardInterface) {
           ref={cardRef}
         >
           <div className="relative ">
-            {endDay == today
-              ? (
-                <div className=" absolute top-0 w-fit p-2 z-2 bg-primary text-black text-sm">
-                  <span className=" font-bold">CLOSES TODAY</span>{' '}
-                  {endDay?.getHours()}:{endDay?.getMinutes()}
-                </div>
-              ) : (
-                ''
-              )}
+            {endDay == today ? (
+              <div className=" absolute top-0 w-fit p-2 z-2 bg-primary text-black text-sm">
+                <span className=" font-bold">CLOSES TODAY</span>{' '}
+                {endDay && new Date(endDay)?.getHours()}:
+                {endDay && new Date(endDay)?.getMinutes()}
+              </div>
+            ) : (
+              ''
+            )}
             <Image
               width={550}
               height={450}
@@ -93,7 +92,7 @@ function ProductCard(props: cardInterface) {
                 {Math.round(
                   (Number(props?.data?.tickets_sold) /
                     Number(props?.data?.total_tickets)) *
-                  100,
+                    100,
                 )}
                 % {langContent[lang.lang].Index.productcard.SOLD_TITLE}
               </span>
@@ -105,10 +104,13 @@ function ProductCard(props: cardInterface) {
                 }
                 className="w-full"
               />
-              <span className='w-full text-center text-xs text-gray-300'>{(props?.data?.tickets_sold).toLocaleString()} /{" "}{(props?.data?.total_tickets).toLocaleString()}</span>
+              <span className="w-full text-center text-xs text-gray-300">
+                {(props?.data?.tickets_sold).toLocaleString()} /{' '}
+                {(props?.data?.total_tickets).toLocaleString()}
+              </span>
             </div>
             <div className="font-bold text-xl lg:text-2xl xl:text-3xl line-clamp-1">
-              {langContent[lang.lang].Index.productcard.WIN_TITLE ?? ""}
+              {langContent[lang.lang].Index.productcard.WIN_TITLE ?? ''}
 
               <span className="text-gray-200  font-semibold leading-loose mx-2 ">
                 {props?.data?.EventDescription[0]?.name}
@@ -142,7 +144,7 @@ function ProductCard(props: cardInterface) {
               <Button
                 variant="rounded"
                 className="font-[800] tracking-tight text-md xl:text-lg "
-                disabled={props.type == "upcomming" ? true : false}
+                disabled={props.type == 'upcomming' ? true : false}
               >
                 {langContent[lang.lang].Index.productcard.ENTER_BTN}
               </Button>

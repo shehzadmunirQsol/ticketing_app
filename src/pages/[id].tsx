@@ -36,6 +36,9 @@ export async function getStaticProps({ params }: any) {
       slug: true,
       type: true,
       CMSDescription: {
+        orderBy: {
+          lang_id: 'asc',
+        },
         select: {
           content: true,
         },

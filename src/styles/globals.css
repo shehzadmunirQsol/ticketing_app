@@ -939,3 +939,7 @@ input[type='number'] {
     color: black; /* Change to the desired text color */
   }
 }
+
+.mt-faq{
+  margin-top: 5.5rem;
+}

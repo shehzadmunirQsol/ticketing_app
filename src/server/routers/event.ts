@@ -100,12 +100,21 @@ export const eventRouter = router({
   }),
   create: publicProcedure.input(EventFormSchema).mutation(async ({ input }) => {
     try {
-      const { en, ar, multi_image, ...eventPayload } = input;
+      const { en, ar, multi_image, meta, ...eventPayload } = input;
+
       const createPayload = {
         ...eventPayload,
         charity_id: 1,
         user_id: 1,
+        meta: undefined as string | undefined,
       };
+
+      if (meta) {
+        createPayload.meta = JSON.stringify(meta);
+      } else {
+        delete createPayload.meta;
+      }
+
       const eventDescPayload = [
         { ...en, lang_id: 1 },
         { ...ar, lang_id: 2 },
@@ -145,14 +154,23 @@ export const eventRouter = router({
         ar,
         multi_image,
         removed_images,
+        meta,
         event_id = 0,
         ...eventPayload
       } = input;
+
       const payload = {
         ...eventPayload,
         charity_id: 1,
         user_id: 1,
+        meta: undefined as string | undefined,
       };
+
+      if (meta) {
+        payload.meta = JSON.stringify(meta);
+      } else {
+        delete payload.meta;
+      }
 
       const event = await prisma.event.update({
         where: { id: event_id },

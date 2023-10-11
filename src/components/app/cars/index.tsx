@@ -5,7 +5,7 @@ import Glow from '~/components/common/glow';
 import { RootState } from '~/store/store';
 import { trpc } from '~/utils/trpc';
 
-import CarsBg from '~/public/assets/cars-bg-2.png';
+import CarsBg from '~/public/assets/Cars Page Banner.png';
 import BannerTitle from '~/components/common/banner_title';
 import FeaturedCars from './featured_cars';
 import Testimonials from '../home/testimonials';

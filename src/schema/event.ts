@@ -89,31 +89,76 @@ export const EventFormSchema = z.object({
     required_error: 'Please enter total tickets limit',
     invalid_type_error: 'Please enter a valid limit',
   }),
-
+  meta: z
+    .object({
+      engine: z
+        .string({
+          required_error: 'Please enter Engine Details',
+          invalid_type_error: 'Please enter a valid limit',
+        })
+        .min(1, {
+          message: 'Please enter Engine',
+        }),
+      power: z
+        .string({
+          required_error: 'Please enter Power Details',
+          invalid_type_error: 'Please enter a valid limit',
+        })
+        .min(1, {
+          message: 'Please enter Power',
+        }),
+      kms: z
+        .string({
+          required_error: 'Please enter KMS',
+          invalid_type_error: 'Please enter a valid limit',
+        })
+        .min(1, {
+          message: 'Please enter KMS',
+        }),
+      year: z
+        .string({
+          required_error: 'Please enter Year',
+          invalid_type_error: 'Please enter a valid limit',
+        })
+        .min(1, {
+          message: 'Please enter Year',
+        }),
+    })
+    .optional(),
   en: z.object({
-    name: z.string({
-      required_error: 'Please enter a event name',
-    }).trim(),
-    desc: z.string({
-      required_error: 'Please enter a description',
-    }).trim(),
-    comp_details: z.string({
-      required_error: 'Please enter the competition details',
-    }).trim(),
-  }),
-  ar: z.object({
-    name: z.string({
-      required_error: 'Please enter a event name',
-    }).trim(),
+    name: z
+      .string({
+        required_error: 'Please enter a event name',
+      })
+      .trim(),
     desc: z
       .string({
         required_error: 'Please enter a description',
-      }).trim()
+      })
+      .trim(),
+    comp_details: z
+      .string({
+        required_error: 'Please enter the competition details',
+      })
+      .trim(),
+  }),
+  ar: z.object({
+    name: z
+      .string({
+        required_error: 'Please enter a event name',
+      })
+      .trim(),
+    desc: z
+      .string({
+        required_error: 'Please enter a description',
+      })
+      .trim()
       .optional(),
     comp_details: z
       .string({
         required_error: 'Please enter the competition details',
-      }).trim()
+      })
+      .trim()
       .optional(),
   }),
 });
