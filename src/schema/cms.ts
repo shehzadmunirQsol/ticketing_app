@@ -1,9 +1,7 @@
 import { z } from 'zod';
 
 export const cmsSchema = z.object({
-  slug: z.string({ required_error: 'Please enter your slug' }).min(1, {
-    message: 'Please enter your slug',
-  }).trim(),
+  slug: z.string().trim().optional(),
   type: z.enum(['event_faqs', 'faqs', 'static'], {
     required_error: 'Please enter your CMS type',
   }),
@@ -61,7 +59,7 @@ export const getCmsContentByIdSchema = z.object({
 
 export const updateCmsContentById = z.object({
   id: z.number(),
-  slug: z.string().trim(),
+  slug: z.string().trim().optional(),
   type: z.enum(['event_faqs', 'faqs', 'static']),
 
   en: z.object({

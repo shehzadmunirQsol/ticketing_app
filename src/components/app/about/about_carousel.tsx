@@ -12,21 +12,10 @@ import Image from 'next/image';
 import langContent from '~/locales';
 
 function AboutCarousel(props: any) {
-  console.log({ props });
-  const { lang } = useSelector((state: RootState) => state.layout);
-  const [products, setProducts] = useState<Array<any>>([]);
+  console.log(props,"props")
+  const { lang } = props;
 
-  function nextPage() {
-    console.log('Next page emitted');
-    // if (products.length % filters.rows === 0) {
-    //   setFilters({ ...filters, first: 1 + filters.first });
-    // }
-  }
   const slide = useRef<any>(null);
-
-  useEffect(() => {
-    setProducts([]);
-  }, [lang.lang_id]);
 
   const next = () => {
     slide?.current?.slickNext();
@@ -34,6 +23,7 @@ function AboutCarousel(props: any) {
   const previous = () => {
     slide?.current?.slickPrev();
   };
+
   const settings = {
     className: 'center slider variable-width ',
     dots: false,
@@ -82,21 +72,24 @@ function AboutCarousel(props: any) {
       },
     ],
   };
+
   return (
     <div className="   w-full lg:px-14 md:px-14 px-4 ">
-      <div className=" relative flex gap-3 flex-col md:flex-row h-28 md:h-auto py-6  items-center w-full md:justify-between mb-12  lg:mb-6 ">
+      <div
+        className={` relative flex gap-3 flex-col md:flex-row h-28 md:h-auto py-6  items-center w-full md:justify-between mb-12  lg:mb-6 `}
+      >
         <div>
           <p className="font-black text-white text-xl lg:text-4xl uppercase">
-          {langContent[lang.lang].About.HEADING}
+            {props?.heading?.headOne}
           </p>
           <p className=" text-white text-lg lg:text-2xl">
-          {langContent[lang.lang].About.SUB_HEADING}
+            {props?.heading?.pera}
           </p>
         </div>
 
         <div
           className={`${
-            lang?.dir == 'rtl' ? ' flex-row-reverse' : 'md:absolute right-0'
+            lang?.dir == 'rtl' ? ' flex-row-reverse' : ''
           }  flex gap-2 z-10 items-center justify-center `}
         >
           <Button

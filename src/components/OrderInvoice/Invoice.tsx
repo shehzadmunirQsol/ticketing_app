@@ -42,9 +42,9 @@ const Invoice = (props:any) => {
 
       // print close action
       const handleAfterPrint = () => {
-        console.log("i am working",shouldShowNavbarAndFooter)
-        location.replace(props?.admin ?'/admin/orders':'/account')
+        window.close()
       };
+
       window.addEventListener('afterprint', handleAfterPrint);
       window.print();
       document.body.innerHTML = originalContents;
