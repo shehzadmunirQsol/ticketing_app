@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { prisma } from '~/server/prisma';
 import parse from 'html-react-parser';
 import AboutCarousel from '~/components/app/about/about_carousel';
@@ -1018,17 +1018,28 @@ export default function CmsPage({ storeBlogsData }: any) {
       ) : lang.lang_id == 1 ? (
         <>
           <div
-            className="min-h-screen mt-28 cmsStyle px-4 md:px-14 "
-            dangerouslySetInnerHTML={{ __html: storeBlogsData?.CMSDescription[0]?.content?.toString() ?? "HTML CONTENT NOT FOUND" } as any}
+            className="min-h-screen mt-28 cmsStyle px-4 md:px-14"
+            dangerouslySetInnerHTML={
+              {
+                __html:
+                  storeBlogsData?.CMSDescription[0]?.content?.toString() ??
+                  'HTML CONTENT NOT FOUND',
+              } as any
+            }
           />
         </>
       ) : (
         <>
-
           <div
             dir={'rtl'}
             className="min-h-screen mt-28 cmsStyle px-4 md:px-14"
-            dangerouslySetInnerHTML={{ __html: storeBlogsData?.CMSDescription[1]?.content?.toString() ?? "HTML CONTENT NOT FOUND"  } as any}
+            dangerouslySetInnerHTML={
+              {
+                __html:
+                  storeBlogsData?.CMSDescription[1]?.content?.toString() ??
+                  'HTML CONTENT NOT FOUND',
+              } as any
+            }
           />
         </>
       )}
