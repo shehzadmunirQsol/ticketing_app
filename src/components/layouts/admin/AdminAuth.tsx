@@ -33,6 +33,7 @@ export default function AdminAuth({ children }: { children: ReactNode }) {
         dispatch(userAdminAuth(data as any));
         dispatch(userAdminIsLogin(data ? true : false));
       },
+      retry: 0,
     },
   );
   useEffect(() => {
