@@ -104,7 +104,7 @@ export default function OrdersDataTable() {
   const columns: ColumnDef<Order>[] = [
     {
       id: 'ID',
-      header: 'ID',
+      header: 'Order ID',
       enableHiding: false,
       cell: ({ row }) => {
         return (
@@ -134,7 +134,7 @@ export default function OrdersDataTable() {
       accessorKey: 'First Name',
       header: 'First Name',
       cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap  overflow-hidden w-32">
+        <div className="capitalize text-ellipsis whitespace-nowrap  overflow-hidden w-24">
           {row?.original?.first_name}
         </div>
       ),
@@ -143,7 +143,7 @@ export default function OrdersDataTable() {
       accessorKey: 'Last Name',
       header: 'Last Name',
       cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap  overflow-hidden w-32">
+        <div className="capitalize text-ellipsis whitespace-nowrap  overflow-hidden w-24">
           {row?.original?.last_name}
         </div>
       ),
