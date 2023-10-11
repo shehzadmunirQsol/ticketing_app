@@ -112,7 +112,7 @@ export default function OrdersDataTable() {
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="max-w-fit px-2">
                 <span className="sr-only">Open menu</span>
-                <div className="hover:text-primary">
+                <div className=" hover:text-primary w-24 text-left ">
                   # {row.original.id}
                 </div>
                 {/* <MoreHorizontal className="h-4 w-4" /> */}
