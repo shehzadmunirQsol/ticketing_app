@@ -6,6 +6,7 @@ import AboutCarousel from '~/components/app/about/about_carousel';
 import jqeury from 'jquery';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
+import { Lang } from '~/store/reducers/layout';
 
 export async function getStaticPaths() {
   const response: any = await prisma.cMS.findMany({
@@ -17,8 +18,10 @@ export async function getStaticPaths() {
       is_enabled: true,
     },
   });
-
-  const paths = response?.map((post: any) => ({
+  const filterData = response?.filter(
+    (item: any) => item?.slug && item?.slug !== '',
+  );
+  const paths = filterData?.map((post: any) => ({
     params: { id: post?.slug },
   }));
 
@@ -52,22 +55,6 @@ export async function getStaticProps({ params }: any) {
 const CmsFunc = dynamic(() => import('~/components/app/cms/index'), {
   ssr: true,
 });
-
-const findElementsWithAttribute = (node: any) => {
-  if (node.type === 'tag') {
-    const shortcode = node?.attribs;
-
-    if (shortcode?.data === 'main-carousel') {
-      const imageCrousel = JSON.parse(node?.children[0]?.data) as [];
-
-      if (imageCrousel.length) {
-        return <AboutCarousel imageCrousel={imageCrousel} />;
-      }
-    } else {
-      return node;
-    }
-  }
-};
 
 const AboutUsContent = ` <div className='bg-background'>
 
@@ -280,7 +267,9 @@ const AboutUsContentTwo = `
 
 <div classname="absolute top-[610px] right-64 px-8 xl:block hidden"><svg fill="none" height="895" viewbox="0 0 674 1095" width="474" xmlns="http://www.w3.org/2000/svg"> <path d="M1.11379 547.5L486.887 1093.73H819.886L334.113 547.5H1.11379Z" stroke="url(#paint0_linear_190_685)"></path> <path d="M1.11379 546.728L486.887 0.5H819.886L334.113 546.728H1.11379Z" stroke="url(#paint1_linear_190_685)"></path> <defs> <lineargradient gradientunits="userSpaceOnUse" id="paint0_linear_190_685" x1="706" x2="220" y1="1094.23" y2="531.228"> {/* <stop stop-opacity="0"></stop> */} {/* <stop offset="1" stop-color="#454545"></stop> */} </lineargradient> <lineargradient gradientunits="userSpaceOnUse" id="paint1_linear_190_685" x1="706" x2="220" y1="-1.26162e-05" y2="563"> {/* <stop stop-opacity="0"></stop> */} {/* <stop offset="1" stop-color="#454545"></stop> */} </lineargradient> </defs> </svg></div>
 
+<div data="main-carousel-heading">{&quot;headOne&quot;:&quot;MEET OUR DRIVING FORCE&quot;,&quot;pera&quot;:&quot;The Passionate Team Behind Winnar&quot;}</div>
 <div data="main-carousel">[ { &quot;img&quot;:&quot;https://media.winnar.com/upload/founder.png&quot;, &quot;heading&quot;:&quot;Scott L. Hughes&quot;, &quot;text&quot;:&quot;Co-Founder&quot;, &quot;hoverhead&quot;:&quot;Scott L. Hughes&quot;, &quot;hoverpera&quot;:&quot;Co-Founder&quot;, &quot;hoverdesc&quot;:&quot;Aenean vulputate eleifend tellus Aenean leo ligula porttitor eu consequat vitae eleifend ac enim. Aliquam lorem ante dapibus in viverra quis feugiat a tellus Phasellus viverra nulla ut metus varius laoreet Quisque rutrum&quot; }, { &quot;img&quot;:&quot;https://media.winnar.com/upload/founder-1.png&quot;, &quot;heading&quot;:&quot;Scott L. Hughes&quot;, &quot;text&quot;:&quot;Founder&quot;, &quot;hoverhead&quot;:&quot;Scott L. Hughes&quot;, &quot;hoverpera&quot;:&quot;Founder&quot;, &quot;hoverdesc&quot;:&quot;Aenean vulputate eleifend tellus Aenean leo ligula porttitor eu consequat vitae eleifend ac enim. Aliquam lorem ante dapibus in viverra quis feugiat a tellus Phasellus viverra nulla ut metus varius laoreet Quisque rutrum&quot; }, { &quot;img&quot;:&quot;https://media.winnar.com/upload/founder-2.png&quot;, &quot;heading&quot;:&quot;Ameen&quot;, &quot;text&quot;:&quot;Founder&quot;, &quot;hoverhead&quot;:&quot;Scott L. Hughes&quot;, &quot;hoverpera&quot;:&quot;Founder&quot;, &quot;hoverdesc&quot;:&quot;Aenean vulputate eleifend tellus Aenean leo ligula porttitor eu consequat vitae eleifend ac enim. Aliquam lorem ante dapibus in viverra quis feugiat a tellus Phasellus viverra nulla ut metus varius laoreet Quisque rutrum&quot; }, { &quot;img&quot;:&quot;https://media.winnar.com/upload/founder-3.png&quot;, &quot;heading&quot;:&quot;Muzi&quot;, &quot;text&quot;:&quot;Founder&quot;, &quot;hoverhead&quot;:&quot;Scott L. Hughes&quot;, &quot;hoverpera&quot;:&quot;Founder&quot;, &quot;hoverdesc&quot;:&quot;hello&quot; }, { &quot;img&quot;:&quot;https://media.winnar.com/upload/founder.png&quot;, &quot;heading&quot;:&quot;Ahmed&quot;, &quot;text&quot;:&quot;Founder&quot;, &quot;hoverhead&quot;:&quot;Scott L. Hughes&quot;, &quot;hoverpera&quot;:&quot;Founder&quot;, &quot;hoverdesc&quot;:&quot;hello&quot; }, { &quot;img&quot;:&quot;https://media.winnar.com/upload/founder.png&quot;, &quot;heading&quot;:&quot;Shehzad&quot;, &quot;text&quot;:&quot;Founder&quot;, &quot;hoverhead&quot;:&quot;Scott L. Hughes&quot;, &quot;hoverpera&quot;:&quot;Founder&quot;, &quot;hoverdesc&quot;:&quot;Aenean vulputate eleifend tellus Aenean leo ligula porttitor eu consequat vitae eleifend ac enim. Aliquam lorem ante dapibus in viverra quis feugiat a tellus Phasellus viverra nulla ut metus varius laoreet Quisque rutrum&quot; } ]</div>
+
 
 <div classname="w-full py-32 lg:px-14 md:px-14 px-4 z-40 text-center bg-Image">
 <div classname=" text-center flex flex-col lg:flex-row gap-x-4 justify-center items-start font-sans lg:mx-auto">
@@ -988,14 +977,73 @@ const termsCondition = `
 </div>
 `;
 
+const eventFaqs = `
+<nav class="accordion w-full   arrows">
+<div class="mt-4">
+
+		<input type="radio" name="accordion" id="cb1" />
+		<section class="box border-b border-t   border-lightColorBorder hover:border-b-primary shadow-lg hover:shadow-2xl  pr-4 overflow-hidden">
+			<label class="box-title  lg:text-3xl py-4 text-xl  font-bold text-white w-full flex items-center justify-between h-full" for="cb1"><p>How is the winner chosen?</p>  <i class="fas fa-chevron-down icon-class"></i></label>
+			<label class="box-close" for="acc-close"></label>
+			<div class="box-content text-base mt-4 text-grayColor pb-4">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold">&lsquo;My Account&rsquo;</span> and in your email confirmation.</div>
+		</section>
+		<input type="radio" name="accordion" id="cb2" />
+		<section class="box border-b border-lightColorBorder hover:border-b-primary shadow-lg hover:shadow-2xl pr-4 overflow-hidden">
+      <label class="box-title  py-4 lg:text-3xl text-xl font-bold text-white w-full flex items-center justify-between " for="cb2"><p>What if a competition does not sell out?</p>  <i class="fas fa-chevron-down icon-class"></i></label>
+			<label class="box-close" for="acc-close"></label>
+			<div class="box-content text-base mt-4 text-grayColor pb-4">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold">&lsquo;My Account&rsquo;</span> and in your email confirmation.</div>
+		</section>
+		<input type="radio" name="accordion" id="cb3" />
+		<section class="box border-b border-lightColorBorder hover:border-b-primary shadow-lg hover:shadow-2xl  pr-4 overflow-hidden">
+      <label class="box-title  py-4 lg:text-3xl text-xl font-bold text-white w-full flex items-center justify-between " for="cb3"><p>Is ‘Winnar’ a scam?</p>  <i class="fas fa-chevron-down icon-class"></i></label>
+			<label class="box-close" for="acc-close"></label>
+			<div class="box-content text-base mt-4 text-grayColor pb-4">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold">&lsquo;My Account&rsquo;</span> and in your email confirmation.</div>
+		</section>
+		<input type="radio" name="accordion" id="cb4" />
+		<section class="box border-b  border-lightColorBorder hover:border-b-primary shadow-lg hover:shadow-2xl  pr-4 overflow-hidden">
+      <label class="box-title  py-4 lg:text-3xl text-xl font-bold text-white w-full flex items-center justify-between " for="cb4"><p>Why am I receiving communications from Winnar?</p>  <i class="fas fa-chevron-down icon-class"></i></label>
+			<label class="box-close" for="acc-close"></label>
+			<div class="box-content text-base mt-4 text-grayColor pb-4">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold">&lsquo;My Account&rsquo;</span> and in your email confirmation.</div>
+		</section>
+		<input type="radio" name="accordion" id="acc-close" />
+    </div>
+	</nav>
+`;
+
+let carouselHeading: any = {};
+const findElementsWithAttribute = (node: any, lang: Lang) => {
+  if (node.type === 'tag') {
+    const shortcode = node?.attribs;
+    if (shortcode?.data === 'main-carousel-heading') {
+      carouselHeading = JSON.parse(node?.children[0]?.data) as any;
+      return <></>;
+    }
+
+    if (shortcode?.data === 'main-carousel') {
+      const imageCrousel = JSON.parse(node?.children[0]?.data) as [];
+      if (imageCrousel.length) {
+        return (
+          <AboutCarousel
+            imageCrousel={imageCrousel}
+            heading={carouselHeading}
+            lang={lang}
+          />
+        );
+      }
+    } else {
+      return node;
+    }
+  }
+};
+
 export default function CmsPage({ storeBlogsData }: any) {
   const { lang } = useSelector((state: RootState) => state.layout);
 
   const reactElements = parse(
     storeBlogsData?.CMSDescription[lang.lang_id == 1 ? 0 : 1]?.content || '',
     {
-      // const reactElements = parse(faqUpdateArea || '', {
-      replace: findElementsWithAttribute,
+      // const reactElements = parse(eventFaqs || '', {
+      replace: (node: any) => findElementsWithAttribute(node, lang),
     },
   );
 
@@ -1021,7 +1069,7 @@ export default function CmsPage({ storeBlogsData }: any) {
       ) : lang.lang_id == 1 ? (
         <>
           <div
-            className="min-h-screen mt-28 cmsStyle px-4 md:px-14"
+            className="min-h-screen mt-28 cmsStyle px-4 md:px-14 "
             dangerouslySetInnerHTML={
               {
                 __html:

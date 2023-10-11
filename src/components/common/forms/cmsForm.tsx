@@ -58,7 +58,7 @@ export default function CmsForm(props: CategoryFormInterface) {
   const [contentEn, setContentEn] = useState<any>('');
   const [contentAr, setContentAr] = useState<any>('');
   console.log(form.formState.errors, 'form.formState.errors');
-  console.log(form.getValues(), 'form.formState.errors');
+  console.log(form.getValues()?.slug, 'form.formState.value');
   // Getting Data
   const { data, isFetching } = trpc.cms.getById.useQuery(
     { id: +id },
@@ -66,7 +66,7 @@ export default function CmsForm(props: CategoryFormInterface) {
       refetchOnWindowFocus: false,
       enabled: id ? true : false,
       onSuccess(res: any) {
-        form.setValue('slug', res?.data?.slug as string);
+        // form.setValue('slug', res?.data?.slug as string);
         form.setValue('type', res?.data?.type as any);
         form.setValue(
           'en.title',
@@ -209,6 +209,10 @@ export default function CmsForm(props: CategoryFormInterface) {
         'cmscontent',
         JSON.stringify({ en: contentEn, ar: contentAr }),
       );
+      window.localStorage.setItem(
+        'cmsslug',
+        JSON.stringify(form.getValues()?.slug ?? ""),
+      );
       window.open('/admin/cms/preview', '_blank');
     } else {
       toast({
@@ -298,7 +302,7 @@ export default function CmsForm(props: CategoryFormInterface) {
           }
         >
           <div className="flex flex-col lg:flex-row md:flex-row justify-between  gap-2 ">
-            <FormField
+            {/* <FormField
               control={form.control}
               name="slug"
               render={({ field }) => (
@@ -320,7 +324,7 @@ export default function CmsForm(props: CategoryFormInterface) {
                   </div>
                 </FormItem>
               )}
-            />
+            /> */}
             <FormField
               control={form.control}
               name="type"
