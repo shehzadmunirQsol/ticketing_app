@@ -18,8 +18,8 @@ export async function getStaticPaths() {
       is_enabled: true,
     },
   });
-
-  const paths = response?.map((post: any) => ({
+const filterData = response?.filter((item:any)=> item?.slug && item?.slug !=="")
+  const paths = filterData?.map((post: any) => ({
     params: { id: post?.slug },
   }));
 
