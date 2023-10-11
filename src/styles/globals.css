@@ -939,3 +939,11 @@ input[type='number'] {
     color: black; /* Change to the desired text color */
   }
 }
+
+
+
+
+/* external class */
+.absolute {
+  position: absolute;
+}
