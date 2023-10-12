@@ -813,9 +813,11 @@ export const orderRouter = router({
                   },
                 },
                 CouponApply: {
-                  update: {
+                  updateMany: {
                     where: {
-                      id: cart?.CouponApply[0]?.id,
+                      cart_id: cart.id,
+                      is_deleted: false,
+                      is_used: false,
                     },
                     data: {
                       is_used: true,

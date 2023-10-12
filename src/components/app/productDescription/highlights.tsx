@@ -23,7 +23,7 @@ function Highlights(props: any) {
         {highlights.map((highlight) => (
           <div
             key={highlight.key}
-            className="flex flex-col gap-3 md:gap-6 md:items-center p-4  min-w-[150px] w-full border-2 border-primary rounded-xl"
+            className="flex flex-col rtl:ml-4 gap-3 md:gap-6 md:items-center p-4  min-w-[150px] w-full border-2 border-primary rounded-xl"
           >
             <Image
               src={highlight.icon}
