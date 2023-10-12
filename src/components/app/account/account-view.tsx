@@ -9,20 +9,20 @@ import Current from '~/public/assets/not-current-entrie.png';
 import { RootState } from '~/store/store';
 import langContent from '~/locales';
 
-
 const AccountView = ({ control }: any) => {
   const { lang } = useSelector((state: RootState) => state.layout);
   const { user } = useSelector((state: RootState) => state.auth);
   return (
     <div className="py-4 px-6 text-[#eaeaea]">
       <p className="mb-3">
-        {langContent[lang.lang].MyAccount.AccountView.HELLO}{}
+        {langContent[lang.lang].MyAccount.AccountView.HELLO}
+        {}
         <span className="font-bold">
           {user && `${user?.first_name ?? ''} ${user?.last_name ?? ''}`}
         </span>
       </p>
       <p>
-      {langContent[lang.lang].MyAccount.AccountView.ACCOUNT}
+        {langContent[lang.lang].MyAccount.AccountView.ACCOUNT}{' '}
         <span
           className="underline cursor-pointer"
           onClick={() => {
@@ -30,7 +30,7 @@ const AccountView = ({ control }: any) => {
           }}
         >
           {langContent[lang.lang].MyAccount.AccountView.ADDRESS}
-        </span>{' '}
+        </span>
         , {langContent[lang.lang].MyAccount.AccountView.AND}{' '}
         <span
           className="underline cursor-pointer"
@@ -45,12 +45,16 @@ const AccountView = ({ control }: any) => {
       <Separator className="my-6" />
 
       <p className="text-xl font-bold leading-tight  ">
-      {langContent[lang.lang].MyAccount.AccountView.ENTRIES}
+        {langContent[lang.lang].MyAccount.AccountView.ENTRIES}
       </p>
-      <p className="text-xs my-2">{langContent[lang.lang].MyAccount.AccountView.DAYS}</p>
+      <p className="text-xs my-2">
+        {langContent[lang.lang].MyAccount.AccountView.DAYS}
+      </p>
       <p className="text-base my-2">
-      {langContent[lang.lang].MyAccount.AccountView.COMPETITION}{' '}
-        <span className="font-bold">{langContent[lang.lang].MyAccount.AccountView.LUCK}</span>
+        {langContent[lang.lang].MyAccount.AccountView.COMPETITION}{' '}
+        <span className="font-bold">
+          {langContent[lang.lang].MyAccount.AccountView.LUCK}
+        </span>
       </p>
       <CurrentandPast customer_id={user?.id} />
     </div>
@@ -73,7 +77,6 @@ function CurrentandPast({ customer_id }: currentandpastprops) {
     rows: 5,
     lang_id: 1,
   });
-
 
   const router = useRouter();
   useEffect(() => {
@@ -118,7 +121,7 @@ function CurrentandPast({ customer_id }: currentandpastprops) {
                 : 'border-transparent border-b-[#808080] text-[#808080]'
             } `}
           >
-                        {langContent[lang.lang].MyAccount.AccountView.PAST}
+            {langContent[lang.lang].MyAccount.AccountView.PAST}
           </div>
         </div>
 
@@ -139,16 +142,14 @@ function CurrentandPast({ customer_id }: currentandpastprops) {
             <div className="flex flex-col my-auto h-full items-center justify-center">
               <Image src={Current} alt="/" />
               <p className="text-center text-gray-300 text-md my-2 px-6">
-              {langContent[lang.lang].MyAccount.AccountView.INFO}
-
+                {langContent[lang.lang].MyAccount.AccountView.INFO}
               </p>
               <Button
                 variant={'rounded'}
                 className="text-center font-black tracking-tighter my-4 w-full h-fit text-xs sm:w-fit md:text-md "
                 onClick={() => router.push('/cars')}
               >
-                              {langContent[lang.lang].MyAccount.AccountView.INFO_HEADING}
-
+                {langContent[lang.lang].MyAccount.AccountView.INFO_HEADING}
               </Button>
             </div>
           </>
