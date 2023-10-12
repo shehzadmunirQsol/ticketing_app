@@ -723,7 +723,7 @@ function Checkout() {
                       >
                         {langContent[lang.lang].Checkout.SUB_INFO}
                         <span className="text-white">
-                          <Link href="/cms/terms-condition">
+                          <Link href="/terms-condition">
                             {' '}
                             {langContent[lang.lang].Checkout.TERMS_CONDITION}
                           </Link>
