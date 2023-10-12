@@ -9,12 +9,13 @@ import {
   DialogTitle,
 } from '~/components/ui/dialog';
 import { useToast } from '~/components/ui/use-toast';
-import { removeFromCart } from '~/store/reducers/cart';
+import { addCart, removeFromCart } from '~/store/reducers/cart';
 import { trpc } from '~/utils/trpc';
 
 interface SettingDialogInterface {
   isModal: boolean;
   isLogin: boolean;
+  isLast: boolean;
   openChangeHandler: () => void;
   cart_item_id: number;
   event_id: number;
@@ -30,11 +31,24 @@ export function RemoveItemDialog(props: SettingDialogInterface) {
   async function removeItemHandler() {
     try {
       if (props?.isLogin) {
-        const payload = { cart_item_id: props?.cart_item_id };
+        const payload = { cart_item_id: props?.cart_item_id, isLast:props?.isLast };
 
         await removeCartItem.mutateAsync(payload);
       }
-      dispatch(removeFromCart({ event_id: props?.event_id }));
+      if(props?.isLast){
+        dispatch(
+          addCart({
+            id: null,
+            customer_id: null,
+            isDiscount: false,
+            discount: 0,
+            isPercentage: false,
+            cartItems: [],
+          }),
+        );  
+      }else{
+        dispatch(removeFromCart({ event_id: props?.event_id }));
+      }
       props?.openChangeHandler();
       toast({
         variant: 'success',
