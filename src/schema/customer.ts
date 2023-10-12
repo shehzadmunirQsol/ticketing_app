@@ -254,19 +254,26 @@ export const addCustomerAddress = z.object({
       required_error: 'Please enter your phone no',
       invalid_type_error: 'Please enter your phone no',
     })
-    .min(7, {
-      message: 'Please enter a valid no',
+    .regex(new RegExp(/^[0-9]+$/), 'Please enter a valid phone no.')
+    .min(1, {
+      message: 'Please enter a valid phone no.',
+    })
+    .max(7, {
+      message: 'Please enter a valid phone no.',
     })
     .trim(),
   phone_code: z
     .string({
       required_error: 'Enter code',
     })
-    .regex(new RegExp(/^(\+)?[0-9]+$/), 'Invalid code').min(1, {
+    .regex(new RegExp(/^(\+)?[0-9]+$/), 'Invalid code')
+    .min(1, {
       message: 'Enter code',
-    }).max(4, {
+    })
+    .max(4, {
       message: 'Invalid code',
-    }).trim(),
+    })
+    .trim(),
   postal_code: z
     .string({
       required_error: 'Please enter your postal code',
