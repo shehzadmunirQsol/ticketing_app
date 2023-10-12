@@ -10,7 +10,6 @@ import { addToCart } from '~/store/reducers/cart';
 import { URIDecoder } from '~/utils/helper';
 import langContent from '~/locales';
 
-
 interface CounterProps {
   range: number[];
   setRange: React.Dispatch<React.SetStateAction<number[]>>;
@@ -111,7 +110,7 @@ const Counter: React.FC<CounterProps> = ({
         <>
           <div className="flex items-center justify-between">
             <p className="text-lg text-white">
-            {langContent[lang.lang].ProductDetail.counter.TICKETS}
+              {langContent[lang.lang].ProductDetail.counter.TICKETS}
             </p>
             {ticketPurchased ? (
               <p className="text-sm text-white/40 ">

@@ -9,7 +9,6 @@ import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
 
 function LiveDraw(props: any) {
-
   const { lang } = useSelector((state: RootState) => state.layout);
 
   return (
@@ -20,7 +19,11 @@ function LiveDraw(props: any) {
             {langContent[lang.lang].ProductDetail.livedraw.HEADING}
           </p>
           <div className=" flex justify-start items-start border-2 border-gray-900 border-l-0 border-r-0   py-4 m-auto mx-10 md:py-0 text-left !w-full md:!max-w-[310px] sm:!max-w-[310px] xs:!max-w-[310px] lg:mt-10  ">
-            <div className={`flex justify-start items-center my-2 border-2 border-t-0 ${lang.lang === "en" ? "border-l-0 pr-4 " : "border-r-0 pl-4" }  border-b-0 border-gray-900 w-30 `}>
+            <div
+              className={`flex justify-start items-center my-2 border-2 border-t-0 ${
+                lang.lang === 'en' ? 'border-l-0 pr-4 ' : 'border-r-0 pl-4'
+              }  border-b-0 border-gray-900 w-30 `}
+            >
               <Image
                 width={3}
                 height={3}
@@ -49,23 +52,25 @@ function LiveDraw(props: any) {
         </div>
 
         <div className="flex flex-col gap-8 lg:space-y-4 justify-center my-auto max-w-lg text-left mb-4">
-          {langContent[lang.lang].ProductDetail.livedraw.array?.map((item, index) => {
-            return (
-              <div
-                key={index}
-                className="flex gap-4  items-center md:pl-4 sm:pl-4  xs:pl-4  "
-              >
-                <Image
-                  className="w-6 h-6 object-cover"
-                  src={Icon}
-                  alt="Sunset in the mountains"
-                />
-                <p className="text-background text-xl font-medium  ltr:text-left rtl:text-right " >
-                  {item?.description}
-                </p>
-              </div>
-            );
-          })}
+          {langContent[lang.lang].ProductDetail.livedraw.array?.map(
+            (item, index) => {
+              return (
+                <div
+                  key={index}
+                  className="flex gap-4  items-center md:pl-4 sm:pl-4  xs:pl-4  "
+                >
+                  <Image
+                    className="w-6 h-6 object-cover"
+                    src={Icon}
+                    alt="Sunset in the mountains"
+                  />
+                  <p className="text-background text-xl font-medium  ltr:text-left rtl:text-right ">
+                    {item?.description}
+                  </p>
+                </div>
+              );
+            },
+          )}
         </div>
       </div>
     </div>

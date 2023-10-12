@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Button } from '@/ui/button';
@@ -59,7 +59,6 @@ export default function EventForm() {
   );
 
   const filteredCms = cms?.filter((item) => item?.type === 'event_faqs') || [];
-  console.log(filteredCms, 'filteredCms');
 
   const modifiedArray = filteredCms.map((item) => ({
     id: item.id,
@@ -143,11 +142,45 @@ export default function EventForm() {
       placeholder: 'Please Enter Date',
     },
     {
+      type: 'text_meta',
+      name: 'meta.engine',
+      label: 'Engine',
+
+      placeholder: 'Please Enter Engine',
+    },
+    {
+      type: 'text_meta',
+      name: 'meta.power',
+      label: 'Power',
+
+      placeholder: 'Please Enter Power',
+    },
+    {
+      type: 'text_meta',
+      name: 'meta.kms',
+      label: 'KMS',
+
+      placeholder: 'Please Enter KMS',
+    },
+    {
+      type: 'text_meta',
+      name: 'meta.year',
+      label: 'Year',
+
+      placeholder: 'Please Enter Year, 2018 etc',
+    },
+    {
       type: 'switch',
       name: 'is_cash_alt',
       label: 'Alternative Selling Option',
 
       placeholder: 'Please Enter Price',
+      child: {
+        type: 'switch_text',
+        name: 'cash_alt',
+        label: 'Cash Amount',
+        placeholder: 'Please Enter Price',
+      },
     },
     {
       type: 'switch_text',
@@ -161,7 +194,6 @@ export default function EventForm() {
   const [optimizeFile, setOptimizeFile] = useState<File | null>(null);
   const [optimizeMultiFile, setOptimizeMultiFile] = useState<File[]>([]);
   const [removedImages, setRemovedImages] = useState<EventImageType[]>([]);
-
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const eventId = router.query.index ? +router.query.index : 0;
@@ -173,7 +205,6 @@ export default function EventForm() {
       multi_image: [],
     },
   });
-  console.log(form.formState.errors, 'form.formState.errors');
 
   const { data: eventData, isLoading: isEventLoading } =
     trpc.event.getEventsById.useQuery(
@@ -189,6 +220,12 @@ export default function EventForm() {
 
   const createEvent = trpc.event.create.useMutation();
   const updateEvent = trpc.event.update.useMutation();
+
+  useEffect(() => {
+    if (form.watch('category_id') === 2) {
+      form.resetField('meta');
+    }
+  }, [form.watch('category_id')]);
 
   // 1. Define your form.
 
@@ -210,14 +247,15 @@ export default function EventForm() {
 
       if (eventId > 0) {
         const removed_images = removedImages.map((image) => image.id);
-
+        const payloadValue = { ...values };
         await updateEvent.mutateAsync({
-          ...values,
+          ...payloadValue,
           event_id: eventId,
           removed_images,
         });
       } else {
-        await createEvent.mutateAsync(values);
+        const payloadValue = { ...values };
+        await createEvent.mutateAsync(payloadValue);
       }
 
       toast({
@@ -315,6 +353,17 @@ export default function EventForm() {
       form.setValue('total_tickets', payload.data?.total_tickets);
       form.setValue('user_ticket_limit', payload.data?.user_ticket_limit);
       form.setValue('video_src', payload.data?.video_src);
+      const metaDate =
+        payload.data?.meta &&
+        payload.data?.meta?.includes('{') &&
+        JSON.parse(payload.data?.meta);
+      console.log({ metaDate });
+      if (metaDate) {
+        form.setValue('meta.engine', metaDate?.engine);
+        form.setValue('meta.kms', metaDate?.kms);
+        form.setValue('meta.year', metaDate?.year);
+        form.setValue('meta.power', metaDate?.power);
+      }
     }
   }
   const renderHeader = () => {
@@ -667,14 +716,79 @@ export default function EventForm() {
                       />
                     );
                   }
+                  if (item?.type == 'year') {
+                    return (
+                      <FormField
+                        key={i}
+                        control={form.control}
+                        name={item?.name}
+                        render={({ field }) => (
+                          <FormItem className=" flex flex-col gap-2 mt-2 w-full">
+                            <FormLabel>{item?.label}</FormLabel>
+                            <FormControl>
+                              <Input
+                                type={'number'}
+                                placeholder={item?.placeholder}
+                                {...form.register(item?.name, {
+                                  valueAsDate: true,
+                                })}
+                                min="1900"
+                                max="2099"
+                                step="1"
+                              />
+                            </FormControl>
+
+                            <div className="relative pb-4">
+                              <FormMessage />
+                            </div>
+                          </FormItem>
+                        )}
+                      />
+                    );
+                  }
+                  if (item?.type == 'text_meta') {
+                    return (
+                      <div key={i}>
+                        {form.watch('category_id') == 1 && (
+                          <FormField
+                            control={form.control}
+                            name={item?.name}
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>{item?.label}</FormLabel>
+                                <FormControl>
+                                  <Input
+                                    type={
+                                      item?.name == 'meta.year'
+                                        ? 'number'
+                                        : 'text'
+                                    }
+                                    placeholder={item?.placeholder}
+                                    {...form.register(item.name)}
+                                    min="1900"
+                                    max="2099"
+                                    step="1"
+                                  />
+                                </FormControl>
+
+                                <div className="relative pb-4">
+                                  <FormMessage />
+                                </div>
+                              </FormItem>
+                            )}
+                          />
+                        )}
+                      </div>
+                    );
+                  }
                   if (item?.type == 'switch') {
                     return (
-                      <div key={i} className=" h-full">
+                      <div key={i} className=" ">
                         <FormField
                           control={form.control}
                           name={item?.name}
                           render={({ field }) => (
-                            <FormItem className="flex items-center justify-between h-full  gap-2">
+                            <FormItem className="flex items-center h-full  gap-2">
                               <FormLabel>Alternative Selling Option</FormLabel>
                               <FormControl>
                                 <Switch
@@ -689,6 +803,32 @@ export default function EventForm() {
                             </FormItem>
                           )}
                         />
+                        {form.watch('is_cash_alt') && (
+                          <FormField
+                            control={form.control}
+                            name={item?.child?.name}
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>{item?.child?.label}</FormLabel>
+                                <FormControl>
+                                  <Input
+                                    type={'number'}
+                                    defaultValue={1}
+                                    min={1}
+                                    placeholder={item?.child?.placeholder}
+                                    {...form.register(item?.child?.name, {
+                                      valueAsNumber: true,
+                                    })}
+                                  />
+                                </FormControl>
+
+                                <div className="relative pb-4">
+                                  <FormMessage />
+                                </div>
+                              </FormItem>
+                            )}
+                          />
+                        )}
                       </div>
                     );
                   }
@@ -741,38 +881,6 @@ export default function EventForm() {
                             </FormItem>
                           )}
                         />
-                      </div>
-                    );
-                  }
-                  if (item?.type == 'switch_text') {
-                    return (
-                      <div key={i}>
-                        {form.watch('is_cash_alt') && (
-                          <FormField
-                            control={form.control}
-                            name={item?.name}
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>{item?.label}</FormLabel>
-                                <FormControl>
-                                  <Input
-                                    type={'number'}
-                                    defaultValue={1}
-                                    min={1}
-                                    placeholder={item?.placeholder}
-                                    {...form.register(item?.name, {
-                                      valueAsNumber: true,
-                                    })}
-                                  />
-                                </FormControl>
-
-                                <div className="relative pb-4">
-                                  <FormMessage />
-                                </div>
-                              </FormItem>
-                            )}
-                          />
-                        )}
                       </div>
                     );
                   } else {

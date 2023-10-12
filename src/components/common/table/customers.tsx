@@ -279,6 +279,15 @@ export default function CustomersDataTable() {
         );
       },
     },
+    {
+      accessorKey: 'Created at',
+      header: 'Created at',
+      cell: ({ row }) => (
+        <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
+          {displayDate(row?.original?.created_at)}
+        </div>
+      ),
+    },
 
     {
       id: 'DOB',
@@ -318,15 +327,7 @@ export default function CustomersDataTable() {
       },
     },
 
-    {
-      accessorKey: 'Created at',
-      header: 'Created at',
-      cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
-          {displayDate(row?.original?.created_at)}
-        </div>
-      ),
-    },
+    
     {
       id: 'actions',
       enableHiding: false,
@@ -363,6 +364,11 @@ export default function CustomersDataTable() {
                     onClick={() => deleteUser(row?.original, 'block')}
                   >
                     {row?.original?.is_blocked ? "Unblock Customer" : "Block Customer"}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => deleteUser(row?.original, 'delete')}
+                  >
+                    Delete Customer
                   </DropdownMenuItem>
                 </>
               )}
