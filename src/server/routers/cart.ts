@@ -386,7 +386,8 @@ export const cartRouter = router({
         const item = await prisma.cartItem.delete({ where: { id: input.cart_item_id } });
 
         if(input.isLast){
-          const coupon = await prisma.couponApply.deleteMany({ where: { cart_id: item.cart_id, is_used: false } })
+           await prisma.couponApply.deleteMany({ where: { cart_id: item.cart_id, is_used: false } })
+           await prisma.cart.delete({ where: { id: item.cart_id } })
         }
 
         return { message: 'Item removed' };
