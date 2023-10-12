@@ -12,7 +12,6 @@ import Image from 'next/image';
 import langContent from '~/locales';
 
 function AboutCarousel(props: any) {
-  console.log(props,"props")
   const { lang } = props;
 
   const slide = useRef<any>(null);
