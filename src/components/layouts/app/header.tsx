@@ -241,7 +241,7 @@ export const SideBarMenuDemo: React.FC<SideBarMenuDemoProps> = ({
               }}
             >
 
-              {i == 5 ? (
+              {i == 6 ? (
                 <p className='flex justify-center'>
                   {item.text}
                   {count ? (
