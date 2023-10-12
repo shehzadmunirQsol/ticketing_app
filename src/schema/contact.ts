@@ -34,7 +34,7 @@ export const contactSchema = z.object({
   }),
   code: z.string({
     required_error: 'Please select your code',
-  }).regex(new RegExp(/^[0-9]+$/), 'Please enter a valid phone code')
+  }).regex(new RegExp(/^[0-9]+$/), 'invalid code')
   .min(1, {
     message: 'Please enter your phone code',
   }),
