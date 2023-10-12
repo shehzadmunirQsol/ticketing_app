@@ -27,6 +27,8 @@ import {
 } from '~/components/ui/select';
 import { useToast } from '~/components/ui/use-toast';
 import { addAddressInput, addCustomerAddress } from '~/schema/customer';
+
+import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 import { trpc } from '~/utils/trpc';
 import countryJSON from '~/data/countries.json';
 import { LoadingDialog } from './loadingModal';
@@ -49,7 +51,7 @@ interface SelectCustomerInterface {
   city?: string | null;
   phone_number?: string | null;
   phone_code?: string | null;
-  postal_code?: number | null;
+  postal_code?: string | null;
 }
 
 export function AddCustomerAddressDialog(props: SelectCustomerInterface) {
@@ -58,11 +60,13 @@ export function AddCustomerAddressDialog(props: SelectCustomerInterface) {
   useEffect(() => {
     form.setValue('address_type', props.address_type as any);
     form.setValue('street_address_1', props.street_address_1 ?? '');
-    form.setValue('country', props.country ?? '');
+    if (props.country) {
+      form.setValue('country', props.country);
+    }
     form.setValue('city', props.city ?? '');
     form.setValue('phone_number', props.phone_number ?? '');
     form.setValue('phone_code', props.phone_code ?? '');
-    form.setValue('postal_code', props.postal_code ?? 0);
+    form.setValue('postal_code', props.postal_code ?? '');
   }, [props.isModal]);
 
   const addAddress = trpc.customer.addAddress.useMutation({
@@ -136,278 +140,287 @@ export function AddCustomerAddressDialog(props: SelectCustomerInterface) {
 
   return (
     <Dialog open={props?.isModal} onOpenChange={props.openChangeHandler}>
-      <DialogContent className="max-h-[650px] h-[calc(100%-100px)]  overflow-y-scroll ">
-        <DialogHeader>
-          <DialogTitle>{props?.id ? 'Update' : 'Add'} Address</DialogTitle>
-          <DialogDescription>
-            <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="justify-center items-center  py-4"
-              >
-                <FormField
-                  control={form.control}
-                  name="address_type"
-                  render={({ field }) => (
-                    <FormItem className="w-full ">
-                      <FormLabel className="text-sm text-cardGray">
-                        Address Type <sup className="text-red-500">*</sup>
-                      </FormLabel>
-                      <Select
-                        disabled={props?.id ? true : false}
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                        value={field.value}
-                      >
-                        <FormControl className="bg-inputColor">
-                          <SelectTrigger className=" rounded-md h-10  ">
-                            <SelectValue
-                              placeholder="Select Billing Address"
-                              className=""
-                            />
-                          </SelectTrigger>
+      <DialogContent className="p-0">
+        <ScrollArea className="w-full max-w-[700px] h-[calc(100vh-50px)] max-h-[650px] scroll-hide">
+          <ScrollBar orientation="vertical"></ScrollBar>
+          <DialogHeader className="p-6">
+            <DialogTitle>{props?.id ? 'Update' : 'Add'} Address</DialogTitle>
+            <DialogDescription>
+              <Form {...form}>
+                <form
+                  onSubmit={form.handleSubmit(onSubmit)}
+                  className="justify-center items-center  py-4"
+                >
+                  <FormField
+                    control={form.control}
+                    name="address_type"
+                    render={({ field }) => (
+                      <FormItem className="w-full ">
+                        <FormLabel className="text-sm text-cardGray">
+                          Address Type <sup className="text-red-500">*</sup>
+                        </FormLabel>
+                        <Select
+                          disabled={props?.id ? true : false}
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                          value={field.value}
+                        >
+                          <FormControl className="bg-inputColor">
+                            <SelectTrigger className=" rounded-md h-10  ">
+                              <SelectValue
+                                placeholder="Select Billing Address"
+                                className=""
+                              />
+                            </SelectTrigger>
+                          </FormControl>
+
+                          <SelectContent className="max-h-[300px] overflow-y-auto">
+                            <SelectGroup>
+                              {props.availableAddressTypes?.map((address) => {
+                                return (
+                                  <SelectItem
+                                    key={address.value}
+                                    value={address.value}
+                                  >
+                                    {address.label}
+                                  </SelectItem>
+                                );
+                              })}
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+
+                        <div className="relative pb-4">
+                          <FormMessage />
+                        </div>
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="postal_code"
+                    render={() => (
+                      <FormItem className=" w-full mb-2">
+                        <FormLabel className="text-sm text-cardGray ">
+                          Postal Code <sup className="text-red-500">*</sup>
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            type="text"
+                            className='rounded-md'
+                            placeholder="Enter postal code"
+                            {...form.register('postal_code')}
+                          />
                         </FormControl>
-                        <SelectContent className="max-h-[300px] overflow-y-auto">
-                          <SelectGroup>
-                            {props.availableAddressTypes?.map((address) => {
-                              return (
-                                <SelectItem
-                                  key={address.value}
-                                  value={address.value}
-                                >
-                                  {address.label}
-                                </SelectItem>
-                              );
-                            })}
-                          </SelectGroup>
-                        </SelectContent>
-                      </Select>
+                        <div className="relative pb-6">
+                          <FormMessage />
+                        </div>
+                      </FormItem>
+                    )}
+                  />
+                  <div className="w-full">
+                    <FormLabel className="text-sm text-cardGray ">
+                      Phone Number <sup className="text-red-500">*</sup>
+                    </FormLabel>
 
-                      <div className="relative pb-2">
-                        <FormMessage />
-                      </div>
-                    </FormItem>
-                  )}
-                />
+                    <div className="flex gap-2">
+                      <FormField
+                        control={form.control}
+                        name="phone_code"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormControl className="rounded-md ">
+                              <Input
+                                minLength={1}
+                                type="text"
+                                maxLength={4}
+                                className="w-20"
+                                placeholder="+971"
+                                {...field}
+                              />
+                            </FormControl>
 
-                <FormField
-                  control={form.control}
-                  name="postal_code"
-                  render={() => (
-                    <FormItem className=" w-full ">
-                      <FormLabel className="text-sm text-cardGray ">
-                        Postal Code <sup className="text-red-500">*</sup>
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          type="number"
-                          placeholder="Enter postal code"
-                          {...form.register('postal_code', {
-                            valueAsNumber: true,
-                          })}
-                        />
-                      </FormControl>
-                      <div className="relative pb-2">
-                        <FormMessage />
-                      </div>
-                    </FormItem>
-                  )}
-                />
-                <div className="w-full">
-                  <FormLabel className="text-sm text-cardGray ">
-                    Phone Number <sup className="text-red-500">*</sup>
-                  </FormLabel>
+                            <div className="relative pb-5">
+                              <FormMessage />
+                            </div>
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="phone_number"
+                        render={({ field }) => (
+                          <FormItem className=" w-full">
+                            <FormControl className="rounded-md ">
+                              <Input
+                                minLength={7}
+                                maxLength={9}
+                                type="string"
+                                className="w-full"
+                                placeholder="Enter your phone number"
+                                {...field}
+                              />
+                            </FormControl>
 
-                  <div className="flex gap-2">
-                    <FormField
-                      control={form.control}
-                      name="phone_code"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormControl className="rounded-md ">
-                            <Input
-                              min={0}
-                              type="number"
-                              className="w-14"
-                              placeholder="+971"
-                              {...field}
-                            />
-                          </FormControl>
-
-                          <div className="relative pb-2">
-                            <FormMessage />
-                          </div>
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="phone_number"
-                      render={({ field }) => (
-                        <FormItem className=" w-full">
-                          <FormControl className="rounded-md ">
-                            <Input
-                              min={0}
-                              type="number"
-                              className="w-full"
-                              placeholder="Enter your phone number"
-                              {...field}
-                            />
-                          </FormControl>
-
-                          <div className="relative pb-2">
-                            <FormMessage />
-                          </div>
-                        </FormItem>
-                      )}
-                    />
+                            <div className="relative pb-5">
+                              <FormMessage />
+                            </div>
+                          </FormItem>
+                        )}
+                      />
+                    </div>
                   </div>
-                </div>
 
-                <FormField
-                  control={form.control}
-                  name="country"
-                  render={({ field }) => (
-                    <FormItem className="w-full ">
-                      <FormLabel className="text-sm text-cardGray">
-                        Country/ Region <sup className="text-red-500">*</sup>
-                      </FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                        value={field.value}
-                      >
-                        <FormControl className="bg-inputColor">
-                          <SelectTrigger className=" rounded-md h-10  ">
-                            <SelectValue
-                              placeholder="Select your country"
-                              className=""
-                            />
-                          </SelectTrigger>
+                  <FormField
+                    control={form.control}
+                    name="country"
+                    render={({ field }) => (
+                      <FormItem className="w-full ">
+                        <FormLabel className="text-sm text-cardGray">
+                          Country/ Region <sup className="text-red-500">*</sup>
+                        </FormLabel>
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value}
+                        >
+                          <FormControl className="bg-inputColor">
+                            <SelectTrigger className=" rounded-md h-10  ">
+                              <SelectValue
+                                placeholder="Select your country"
+                                className=""
+                              />
+                            </SelectTrigger>
+                          </FormControl>
+
+                          <SelectContent className="max-h-[300px] overflow-y-auto">
+                            <SelectGroup>
+                              {countries?.map((country) => {
+                                return (
+                                  <SelectItem key={country} value={country}>
+                                    {country?.toUpperCase()}
+                                  </SelectItem>
+                                );
+                              })}
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+
+                        <div className="relative pb-5">
+                          <FormMessage />
+                        </div>
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="state"
+                    render={({ field }) => (
+                      <FormItem className=" w-full ">
+                        <FormLabel className="text-sm text-cardGray">
+                          State <sup className="text-red-500">*</sup>
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            type="text"
+                            placeholder="Enter You State"
+                            className='rounded-md'
+                            {...field}
+                          />
                         </FormControl>
-                        <SelectContent className="max-h-[300px] overflow-y-auto">
-                          <SelectGroup>
-                            {countries?.map((country) => {
-                              return (
-                                <SelectItem key={country} value={country}>
-                                  {country?.toUpperCase()}
-                                </SelectItem>
-                              );
-                            })}
-                          </SelectGroup>
-                        </SelectContent>
-                      </Select>
-
-                      <div className="relative pb-2">
-                        <FormMessage />
-                      </div>
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="state"
-                  render={({ field }) => (
-                    <FormItem className=" w-full ">
-                      <FormLabel className="text-sm text-cardGray">
-                        State <sup className="text-red-500">*</sup>
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          type="text"
-                          placeholder="Enter You Stae"
-                          {...field}
-                        />
-                      </FormControl>
-                      <div className="relative pb-2">
-                        <FormMessage />
-                      </div>
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="city"
-                  render={({ field }) => (
-                    <FormItem className=" w-full ">
-                      <FormLabel className="text-sm text-cardGray">
-                        City <sup className="text-red-500">*</sup>
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          type="text"
-                          placeholder="Enter You City"
-                          {...field}
-                        />
-                      </FormControl>
-                      <div className="relative pb-2">
-                        <FormMessage />
-                      </div>
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="street_address_1"
-                  render={({ field }) => (
-                    <FormItem className=" w-full ">
-                      <FormLabel className="text-sm text-cardGray">
-                        Street Address <sup className="text-red-500">*</sup>
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          type="text"
-                          placeholder="Enter Street Address"
-                          {...field}
-                        />
-                      </FormControl>
-                      <div className="relative pb-2">
-                        <FormMessage />
-                      </div>
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="street_address_2"
-                  render={({ field }) => (
-                    <FormItem className=" w-full ">
-                      <FormLabel className="text-sm text-cardGray">
-                        Appartment
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          type="text"
-                          placeholder="Enter Appartment"
-                          {...field}
-                        />
-                      </FormControl>
-                      <div className="relative pb-2">
-                        <FormMessage />
-                      </div>
-                    </FormItem>
-                  )}
-                />
-                <div className="flex items-center justify-end gap-4">
-                  <Button
-                    variant="secondary"
-                    type="button"
-                    disabled={addAddress.isLoading || updateAddress.isLoading}
-                    onClick={props.openChangeHandler}
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    type="submit"
-                    disabled={addAddress.isLoading || updateAddress.isLoading}
-                  >
-                    {props?.id ? 'Update' : 'Add'}
-                  </Button>
-                </div>
-              </form>
-            </Form>
-          </DialogDescription>
-        </DialogHeader>
+                        <div className="relative pb-5">
+                          <FormMessage />
+                        </div>
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="city"
+                    render={({ field }) => (
+                      <FormItem className=" w-full ">
+                        <FormLabel className="text-sm text-cardGray">
+                          City <sup className="text-red-500">*</sup>
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            type="text"
+                            placeholder="Enter You City"
+                            className='rounded-md'
+                            {...field}
+                          />
+                        </FormControl>
+                        <div className="relative pb-5">
+                          <FormMessage />
+                        </div>
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="street_address_1"
+                    render={({ field }) => (
+                      <FormItem className=" w-full ">
+                        <FormLabel className="text-sm text-cardGray">
+                          Street Address <sup className="text-red-500">*</sup>
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            type="text"
+                            placeholder="Enter Street Address"
+                            className='rounded-md'
+                            {...field}
+                          />
+                        </FormControl>
+                        <div className="relative pb-5">
+                          <FormMessage />
+                        </div>
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="street_address_2"
+                    render={({ field }) => (
+                      <FormItem className=" w-full ">
+                        <FormLabel className="text-sm text-cardGray">
+                          Appartment
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            type="text"
+                            placeholder="Enter Appartment"
+                            className='rounded-md'
+                            {...field}
+                          />
+                        </FormControl>
+                        <div className="relative pb-2">
+                          <FormMessage />
+                        </div>
+                      </FormItem>
+                    )}
+                  />
+                  <div className="flex items-center justify-end gap-4">
+                    <Button
+                      variant="secondary"
+                      type="button"
+                      disabled={addAddress.isLoading || updateAddress.isLoading}
+                      onClick={props.openChangeHandler}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      type="submit"
+                      disabled={addAddress.isLoading || updateAddress.isLoading}
+                    >
+                      {props?.id ? 'Update' : 'Add'}
+                    </Button>
+                  </div>
+                </form>
+              </Form>
+            </DialogDescription>
+          </DialogHeader>
+        </ScrollArea>
       </DialogContent>
       <LoadingDialog
         open={addAddress.isLoading || updateAddress.isLoading}
