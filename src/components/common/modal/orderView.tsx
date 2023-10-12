@@ -40,36 +40,26 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
       enabled: props?.selectedItem?.id ? true : false,
     },
   );
-  console.log(router.asPath, 'router.asPath');
-
-
+  console.log(props, 'Mein hun props ');
 
   const orderRoute = () => {
-    if(router.asPath === '/admin/orders'){
-       return `/admin/order-view/${props?.selectedItem?.id}`
-    }else{
-      return `/order-view/${props?.selectedItem?.id}`
-    }    
-  }
-  
-
+    if (router.asPath === '/admin/orders') {
+      return `/admin/order-view/${props?.selectedItem?.id}`;
+    } else {
+      return `/order-view/${props?.selectedItem?.id}`;
+    }
+  };
 
   return (
     <>
       <Dialog open={props?.isModal} onOpenChange={(e) => props.setIsModal(e)}>
         <DialogContent className=" my-auto max-h-[800px] h-[calc(100%-100px)]  overflow-y-hidden  ">
           <DialogFooter className=" sm:justify-start items-start w-full   ">
-            {/* <Link
-              href={`${
-                router.asPath === '/admin/orders'
-                  ? `/admin/order-view/${props?.selectedItem?.id}`
-                  : `/order-view/${props?.selectedItem?.id}`
-              }`}
-            > */}
-            <Link href={orderRoute()} target='_blank'>
-              <Button >Print Invoice</Button>
+            <Link href={orderRoute()} target="_blank">
+              <Button onClick={() => props.setIsModal(false)}>
+                Print Invoice
+              </Button>
             </Link>
-            {/* </Link> */}
           </DialogFooter>
           <DialogDescription className="relative bg-card h-full rounded-lg  overflow-y-scroll   scroll-hide">
             {OrderApiData && (
@@ -112,67 +102,37 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
                 <ScrollArea className="w-full  ">
                   <ScrollBar orientation="horizontal"></ScrollBar>
 
-                  {/* <table className="w-full text-left mb-8  ">
-                    <thead className="gap-2 space-x-2">
-                      <tr>
-                        <th className=" font-bold uppercase py-2">Name</th>
-                        <th className=" font-bold uppercase py-2">Quantity</th>
-                        <th className=" font-bold uppercase py-2">Price</th>
-                        <th className=" font-bold uppercase py-2">Total</th>
-                      </tr>
-                    </thead>
-                    <tbody>
+
+                  <div className="w-full mb-8">
+                    <div className="flex justify-between font-bold uppercase py-2">
+                      <div className="flex-1">Name</div>
+                      <div className="flex-1">Quantity</div>
+                      <div className="flex-1">Price</div>
+                      <div className="flex-1">Total</div>
+                    </div>
+                    <div className="mt-2">
                       {OrderApiData?.data?.OrderEvent &&
                         OrderApiData?.data?.OrderEvent?.map(
-                          (item: any, index: number) => {
-                            return (
-                              <tr key={index} className="gap-2 space-x-2">
-                                <td className="py-4 ">
-                                  {item?.Event?.EventDescription[0]?.name}
-                                </td>
-                                <td className="py-4 ">{item?.quantity}</td>
-                                <td className="py-4 ">
-                                  AED {item?.ticket_price.toFixed(2)}
-                                </td>
-                                <td className="py-4 ">
-                                  AED{' '}
-                                  {(
-                                    item?.ticket_price * item?.quantity
-                                  ).toFixed(2)}
-                                </td>
-                              </tr>
-                            );
-                          },
+                          (item: any, index: number) => (
+                            <div key={index} className="flex gap-2 py-4">
+                              <div className="flex-1">
+                                {item?.Event?.EventDescription[0]?.name}
+                              </div>
+                              <div className="flex-1">{item?.quantity}</div>
+                              <div className="flex-1">
+                                AED {item?.ticket_price.toFixed(2)}
+                              </div>
+                              <div className="flex-1">
+                                AED{' '}
+                                {(item?.ticket_price * item?.quantity).toFixed(
+                                  2,
+                                )}
+                              </div>
+                            </div>
+                          ),
                         )}
-                    </tbody>
-                  </table> */}
-
-<div className="w-full mb-8">
-  <div className="flex justify-between font-bold uppercase py-2">
-    <div className="flex-1">Name</div>
-    <div className="flex-1">Quantity</div>
-    <div className="flex-1">Price</div>
-    <div className="flex-1">Total</div>
-  </div>
-  <div className="mt-2">
-    {OrderApiData?.data?.OrderEvent &&
-      OrderApiData?.data?.OrderEvent?.map((item: any, index: number) => (
-        <div key={index} className="flex gap-2 py-4">
-          <div className="flex-1">
-            {item?.Event?.EventDescription[0]?.name}
-          </div>
-          <div className="flex-1">{item?.quantity}</div>
-          <div className="flex-1">
-            AED {item?.ticket_price.toFixed(2)}
-          </div>
-          <div className="flex-1">
-            AED {(item?.ticket_price * item?.quantity).toFixed(2)}
-          </div>
-        </div>
-      ))}
-  </div>
-</div>
-
+                    </div>
+                  </div>
                 </ScrollArea>
 
                 <div className=" flex justify-between items-center">

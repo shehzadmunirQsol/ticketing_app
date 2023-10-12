@@ -14,7 +14,6 @@ const Invoice = (props:any) => {
   const router = useRouter();
   const { id } = router.query;
 
-  console.log(router.asPath,"invoice router")
   const {
     data: OrderApiData,
     isFetching,
@@ -28,10 +27,6 @@ const Invoice = (props:any) => {
     },
   );
 
-
-  const routesWithoutNavbarAndFooter = '/admin/orders';
-
-  const shouldShowNavbarAndFooter = !router.pathname.startsWith(routesWithoutNavbarAndFooter);
 
   useEffect(() => {
     if (isFetched) {
@@ -92,39 +87,6 @@ const Invoice = (props:any) => {
           </div>
           <ScrollArea className="w-full  ">
             <ScrollBar orientation="horizontal"></ScrollBar>
-
-            {/* <table className="w-full text-left mb-8  ">
-              <thead className="gap-2 space-x-2">
-                <tr>
-                  <th className=" font-bold uppercase py-2">Name</th>
-                  <th className=" font-bold uppercase py-2">Quantity</th>
-                  <th className=" font-bold uppercase py-2">Price</th>
-                  <th className=" font-bold uppercase py-2">Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                {OrderApiData?.data?.OrderEvent &&
-                  OrderApiData?.data?.OrderEvent?.map(
-                    (item: any, index: number) => {
-                      return (
-                        <tr key={index} className="gap-2 space-x-2">
-                          <td className="py-4 ">
-                            {item?.Event?.EventDescription[0]?.name}
-                          </td>
-                          <td className="py-4 ">{item?.quantity}</td>
-                          <td className="py-4 ">
-                            AED {item?.ticket_price.toFixed(2)}
-                          </td>
-                          <td className="py-4 ">
-                            AED{' '}
-                            {(item?.ticket_price * item?.quantity).toFixed(2)}
-                          </td>
-                        </tr>
-                      );
-                    },
-                  )}
-              </tbody>
-            </table> */}
 
 <div className="w-full mb-8">
   <div className="flex justify-between font-bold uppercase py-2">
