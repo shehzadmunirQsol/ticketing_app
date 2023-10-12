@@ -31,8 +31,17 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
 
   useEffect(() => {
     if (cartItem) {
-      ticketInBasket.current = cartItem.quantity ?? 0;
-      setRange([cartItem.quantity ?? 0]);
+
+      const { userTicketLimit } = getAvailableTickets({
+        event: ticketEventPayload,
+        ticketPurchased: ticketPurchased,
+        quantity: range[0] ?? 0,
+      });
+
+      const currentRange = userTicketLimit > cartItem.quantity ? cartItem.quantity: userTicketLimit ?? 0
+
+      ticketInBasket.current = currentRange;
+      setRange([currentRange]);
     }
   }, [cartItem]);
 
@@ -111,6 +120,7 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
                   ticketInBasket={ticketInBasket}
                   setRange={setRange}
                   user_ticket_limit={userTicketLimit}
+                  perCustomerLimit={data?.user_ticket_limit}
                   ticketPurchased={ticketPurchased}
                   event={data}
                 />
