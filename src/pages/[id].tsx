@@ -392,6 +392,34 @@ const eventFaqs = `
 <p><label class="box-title  lg:text-3xl py-4 text-xl w-full flex items-center justify-between  font-bold text-white h-full" for="cb1">Competition Rules<i class="fas fa-chevron-down icon-class">&nbsp;</i></label></p>
 <label class="box-close opacity-0" for="acc-close">i</label>
 
+<<<<<<< HEAD
+<div class="box-content text-base mt-4 text-grayColor pb-4">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold">&lsquo;My Account&rsquo;</span> and in your email confirmation.</div>
+</section>
+<input id="cb2" name="accordion" type="radio" />
+<section class="box border-b border-lightColorBorder hover:border-b-primary shadow-lg hover:shadow-2xl pr-4 overflow-hidden">
+<p><label class="box-title  lg:text-3xl py-4 text-xl w-full flex items-center justify-between  font-bold text-white h-full" for="cb2">When is the draw?<i class="fas fa-chevron-down icon-class">&nbsp;</i></label></p>
+<label class="box-close opacity-0" for="acc-close">i</label>
+
+<div class="box-content text-base mt-4 text-grayColor pb-4">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold">&lsquo;My Account&rsquo;</span> and in your email confirmation.</div>
+</section>
+<input id="cb3" name="accordion" type="radio" />
+<section class="box border-b border-lightColorBorder hover:border-b-primary shadow-lg hover:shadow-2xl  pr-4 overflow-hidden">
+<p><label class="box-title  lg:text-3xl py-4 text-xl w-full flex items-center justify-between  font-bold text-white h-full" for="cb3">How do you do the draw?<i class="fas fa-chevron-down icon-class">&nbsp;</i></label></p>
+<label class="box-close opacity-0" for="acc-close">i</label>
+
+<div class="box-content text-base mt-4 text-grayColor pb-4">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold">&lsquo;My Account&rsquo;</span> and in your email confirmation.</div>
+</section>
+<input id="cb4" name="accordion" type="radio" />
+<section class="box border-b  border-lightColorBorder hover:border-b-primary shadow-lg hover:shadow-2xl  pr-4 overflow-hidden">
+<p><label class="box-title  lg:text-3xl py-4 text-xl w-full flex items-center justify-between  font-bold text-white h-full" for="cb4">What is the draw?<i class="fas fa-chevron-down icon-class">&nbsp;</i></label></p>
+<label class="box-close opacity-0" for="acc-close">i</label>
+
+<div class="box-content text-base mt-4 text-grayColor pb-4">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold">&lsquo;My Account&rsquo;</span> and in your email confirmation.</div>
+</section>
+<input id="acc-close" name="accordion" type="radio" /></div>
+</nav>
+
+=======
 		<input type="radio" name="accordion" id="cb1" />
 		<section class="box border-b border-t   border-lightColorBorder hover:border-b-primary shadow-lg hover:shadow-2xl  pr-4 overflow-hidden">
 			<label class="box-title  lg:text-3xl py-4 text-xl  font-bold text-white w-full flex items-center justify-between h-full" for="cb1"><p>How is the winner chosen?</p>  <i class="fas fa-chevron-down icon-class"></i></label>
@@ -419,6 +447,7 @@ const eventFaqs = `
 		<input type="radio" name="accordion" id="acc-close" />
     </div>
 	</nav>
+>>>>>>> c7e0264382667e6e7aca157c6c147203459c1513
 `;
 
 let carouselHeading: any = {};
