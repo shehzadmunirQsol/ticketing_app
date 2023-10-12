@@ -189,10 +189,29 @@ export const cmsRouter = router({
         }
 
         const { id, ...payload } = input;
-         await prisma.cMS.update({
-          where: {id: id,},
-          data: payload,
-        });
+        if(input?.is_deleted)
+        {
+
+          await prisma.cMS.update({
+           where: {id: id,},
+           data: {...payload,
+          CMSDescription:{
+            updateMany:{
+              where:{
+                cms_id:id
+              },
+              data:{
+                is_deleted:true
+              }
+            }
+          }},
+         });
+        }else{
+          await prisma.cMS.update({
+            where: {id: id,},
+            data: payload,
+          });
+        }
 
         return { message: 'CMS Status Updated Successfully' };
       } catch (error: any) {

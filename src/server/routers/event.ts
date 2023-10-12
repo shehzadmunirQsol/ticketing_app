@@ -514,7 +514,7 @@ export const eventRouter = router({
             CMS: {
               include: {
                 CMSDescription: {
-                  where: { lang_id: input.lang_id },
+                  where: { lang_id: input.lang_id, is_deleted:false },
                   select: {
                     content: true,
                     lang_id: true,

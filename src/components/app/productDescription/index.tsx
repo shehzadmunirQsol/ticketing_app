@@ -28,6 +28,7 @@ const ProductDetail = () => {
 
   const comp_detail: any = data?.data?.EventDescription[0]?.comp_details;
   const Faqs: any = data?.data?.CMS;
+  console.log(Faqs,"Faqs")
 
   const isMeta = data?.data?.category_id === 1;
   const meta =
@@ -54,7 +55,7 @@ const ProductDetail = () => {
       <div className="relative px-4 md:px-14  ">
         <div className="relative z-10 ">
           {comp_detail ? <CompititionDetail data={data?.data} /> : <></>}
-          {Faqs && Faqs?.is_enabled ? (
+          { Faqs?.is_enabled && Faqs?.CMSDescription?.length > 0 ?  (
             <AccordianFaqs data={data?.data} />
           ) : (
             <></>
