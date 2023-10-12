@@ -126,7 +126,7 @@ export default function Contact() {
             text2={'Support, Questions'}
           />
         </div>
-        <div className="pb-6 flex flex-col h-full lg:max-h-[700px] w-full    lg:w-3/5  mx-auto lg:mx-0  lg:text-left  rounded-none border-none  bg-card ">
+        <div className="pb-6 flex flex-col h-full lg:max-h-[730px] w-full    lg:w-3/5  mx-auto lg:mx-0  lg:text-left  rounded-none border-none  bg-card ">
           <div className="font-black  py-4 ">
             <p className="text-xl pl-6 px-4 lg:px-8">Contact Us</p>
             <hr className=" opacity-20 mt-4" />
@@ -217,7 +217,7 @@ export default function Contact() {
                             </SelectContent>
                           </Select>
 
-                          <div className="relative pb-2">
+                          <div className="relative pb-6">
                             <FormMessage />
                           </div>
                         </FormItem>
@@ -238,7 +238,7 @@ export default function Contact() {
                             />
                           </FormControl>
 
-                          <div className="relative pb-2">
+                          <div className="relative pb-6">
                             <FormMessage />
                           </div>
                         </FormItem>
@@ -262,7 +262,7 @@ export default function Contact() {
                         />
                       </FormControl>
 
-                      <div className="relative pb-2">
+                      <div className="relative pb-6">
                         <FormMessage />
                       </div>
                     </FormItem>
