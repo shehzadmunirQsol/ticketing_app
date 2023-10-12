@@ -12,11 +12,9 @@ const EntiresDetail = (props: any) => {
   const { lang } = useSelector((state: RootState) => state.layout);
 
   const dynamicData: any = {
-    1: `AED ${props?.data?.price ?? 0 ?.toFixed(0) ?.toLocaleString()}`,
-    2:  props?.data?.total_tickets?.toLocaleString() ?? 0,
+    1: `AED ${props?.data?.price ?? 0?.toFixed(0)?.toLocaleString()}`,
+    2: props?.data?.total_tickets?.toLocaleString() ?? 0,
   };
-
-
 
   return (
     <div className="my-12 bg-backgroundDark  rounded-md border  border-border ">
@@ -26,7 +24,7 @@ const EntiresDetail = (props: any) => {
             (item, index) => {
               return (
                 <div
-                key={index}
+                  key={index}
                   className={`flex ${
                     item.LINK
                       ? 'flex-col justify-start '
@@ -76,12 +74,6 @@ const EntiresDetail = (props: any) => {
 export default EntiresDetail;
 
 const images: any = {
-  1: image1,
-  2: image2,
-  3: image3,
-  4: image4,
-};
-const dynamicData: any = {
   1: image1,
   2: image2,
   3: image3,

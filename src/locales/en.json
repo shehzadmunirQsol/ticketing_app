@@ -154,14 +154,23 @@
         }
       ]
     },
+    "highlights":{
+      "title":"Highlights",
+      "engine":"Engine",
+      "power":"Power",
+      "kms":"Kms",
+      "year":"Year"
+    },
     "description":{
 
       "HEADING":"DESCRIPTION",
       "SOLD":"Sold"
     },
+
     "faqs":{
       "HEADING":"FAQs"
     },
+
     "livedraw":{
       "HEADING":"LIVE DRAW",
       "array":[

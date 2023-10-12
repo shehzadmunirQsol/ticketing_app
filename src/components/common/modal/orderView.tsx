@@ -40,23 +40,36 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
       enabled: props?.selectedItem?.id ? true : false,
     },
   );
-
   console.log(router.asPath, 'router.asPath');
+
+
+
+  const orderRoute = () => {
+    if(router.asPath === '/admin/orders'){
+       return `/admin/order-view/${props?.selectedItem?.id}`
+    }else{
+      return `/order-view/${props?.selectedItem?.id}`
+    }    
+  }
+  
+
 
   return (
     <>
       <Dialog open={props?.isModal} onOpenChange={(e) => props.setIsModal(e)}>
         <DialogContent className=" my-auto max-h-[800px] h-[calc(100%-100px)]  overflow-y-hidden  ">
           <DialogFooter className=" sm:justify-start items-start w-full   ">
-            <Link
+            {/* <Link
               href={`${
                 router.asPath === '/admin/orders'
                   ? `/admin/order-view/${props?.selectedItem?.id}`
                   : `/order-view/${props?.selectedItem?.id}`
               }`}
-            >
-              <Button>Print</Button>
+            > */}
+            <Link href={orderRoute()} target='_blank'>
+              <Button >Print Invoice</Button>
             </Link>
+            {/* </Link> */}
           </DialogFooter>
           <DialogDescription className="relative bg-card h-full rounded-lg  overflow-y-scroll   scroll-hide">
             {OrderApiData && (

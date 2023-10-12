@@ -13,6 +13,7 @@ import { RootState } from '~/store/store';
 import { LoadingDialog } from '~/components/common/modal/loadingModal';
 import Glow from '~/components/common/glow';
 import { URIDecoder } from '~/utils/helper';
+import Highlights from './highlights';
 
 const ProductDetail = () => {
   const router = useRouter();
@@ -25,11 +26,14 @@ const ProductDetail = () => {
     },
   );
 
-  const today = (new Date())?.toISOString()?.split("T")[0]
-  const time = data?.data?.end_date
-  const endDay = data && time && time?.toISOString()?.split("T")[0];
   const comp_detail: any = data?.data?.EventDescription[0]?.comp_details;
   const Faqs: any = data?.data?.CMS;
+
+  const isMeta = data?.data?.category_id === 1;
+  const meta =
+    isMeta && data?.data?.meta && data?.data?.meta?.includes('engine')
+      ? JSON.parse(data?.data?.meta as string)
+      : '';
 
   return (
     <div className="bg-background">
@@ -41,16 +45,20 @@ const ProductDetail = () => {
         />
         <div>
           <EntiresDetail data={data?.data} />
+          {isMeta ? <Highlights meta={meta} /> : null}
           <VideoSection data={data?.data} />
         </div>
-
       </div>
       <LiveDraw data={data?.data} />
 
       <div className="relative px-4 md:px-14  ">
         <div className="relative z-10 ">
           {comp_detail ? <CompititionDetail data={data?.data} /> : <></>}
-          {Faqs && Faqs?.is_enabled ? <AccordianFaqs data={data?.data} /> : <></>}
+          {Faqs && Faqs?.is_enabled ? (
+            <AccordianFaqs data={data?.data} />
+          ) : (
+            <></>
+          )}
         </div>
         <Glow className="absolute bottom-0 -right-16   p-2   w-1/5 h-[80px]   " />
       </div>

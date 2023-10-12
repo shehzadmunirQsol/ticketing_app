@@ -155,6 +155,14 @@
         }
       ]
     },
+    "highlights":{
+      "title":"يسلط الضوء",
+      "engine":"محرك",
+      "power":"قوة",
+      "kms":"كم",
+      "year":"سنة"
+    },
+
     "description":{
       "HEADING":"وصف",
       "SOLD":"مُباع"

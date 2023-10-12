@@ -60,17 +60,30 @@ export const customerRouter = router({
     .mutation(async ({ input }) => {
       const { id, type, ...payload } = input;
 
-      console.log({payload},"payload payload")
+      console.log({ payload }, "payload payload")
       const customer = await prisma.customer.update({
         where: { id },
         data: payload,
       });
 
-      if (type === 'delete') {
+      if (type === 'block' && customer.is_blocked) {
         const mailOptions = {
           template_id: 11,
           from: 'no-reply@winnar.com',
-          subject: 'Your Account is Deleted',
+          subject: 'Your Account is now Blocked',
+          to: customer.email,
+          params: {
+            first_name: customer?.first_name,
+          },
+        };
+        await sendEmail(mailOptions);
+      }
+
+      if (type === 'block' && !customer.is_blocked) {
+        const mailOptions = {
+          template_id: 44,
+          from: 'no-reply@winnar.com',
+          subject: 'Your Account is now Unlocked',
           to: customer.email,
           params: {
             first_name: customer?.first_name,
@@ -711,9 +724,9 @@ export const customerRouter = router({
     .mutation(async ({ ctx, input }) => {
       try {
         const { id, ...payload } = input;
-        
+
         // if (!payload?.dob) delete payload?.dob;
-        console.log({input},"acc- detail")
+        console.log({ input }, "acc- detail")
 
         const updateResponse = await prisma.customer?.update({
           where: {

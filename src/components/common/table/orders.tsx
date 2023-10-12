@@ -49,7 +49,7 @@ import {
 } from '@radix-ui/react-icons';
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 import { CSVLink } from 'react-csv';
-export type Category = {
+export type Order = {
   id: number;
   email: string;
   first_name: string;
@@ -101,12 +101,40 @@ export default function OrdersDataTable() {
     setIsModal(true);
   };
 
-  const columns: ColumnDef<Category>[] = [
+  const columns: ColumnDef<Order>[] = [
+    {
+      id: 'ID',
+      header: 'Order ID',
+      enableHiding: false,
+      cell: ({ row }) => {
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="max-w-fit px-2">
+                <span className="sr-only">Open menu</span>
+                <div className=" hover:text-primary w-24 text-left ">
+                  # {row.original.id}
+                </div>
+                {/* <MoreHorizontal className="h-4 w-4" /> */}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem
+                onClick={() => handleView(row?.original, 'view')}
+              >
+                View Order
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        );
+      },
+    },
+
     {
       accessorKey: 'First Name',
       header: 'First Name',
       cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap  overflow-hidden w-32">
+        <div className="capitalize text-ellipsis whitespace-nowrap  overflow-hidden w-24">
           {row?.original?.first_name}
         </div>
       ),
@@ -115,11 +143,21 @@ export default function OrdersDataTable() {
       accessorKey: 'Last Name',
       header: 'Last Name',
       cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap  overflow-hidden w-32">
+        <div className="capitalize text-ellipsis whitespace-nowrap  overflow-hidden w-24">
           {row?.original?.last_name}
         </div>
       ),
     },
+    {
+      accessorKey: 'Created at',
+      header: 'Created at',
+      cell: ({ row }) => (
+        <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
+          {displayDate(row?.original?.created_at)}
+        </div>
+      ),
+    },
+
     {
       accessorKey: 'Email',
       header: 'Email',
@@ -131,7 +169,7 @@ export default function OrdersDataTable() {
     },
 
     {
-      accessorKey: 'Phone No.',
+      accessorKey: 'Phone No',
       header: 'Phone No.',
       cell: ({ row }) => (
         <div className="capitalize text-ellipsis whitespace-nowrap ">
@@ -139,69 +177,69 @@ export default function OrdersDataTable() {
         </div>
       ),
     },
-    {
-      accessorKey: 'DOB',
-      header: 'DOB',
-      cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap ">
-          {displayDate(row?.original?.dob)}
-        </div>
-      ),
-    },
-    {
-      accessorKey: 'Transaction ID',
-      header: 'Transaction ID',
-      cell: ({ row }) => (
-        <div className=" text-ellipsis whitespace-nowrap ">
-          {row?.original?.total_payment_id}
-        </div>
-      ),
-    },
-    {
-      accessorKey: 'Country',
-      header: 'Country',
-      cell: ({ row }) => (
-        <div className=" text-ellipsis whitespace-nowrap ">
-          {row?.original?.country}
-        </div>
-      ),
-    },
-    {
-      accessorKey: 'State',
-      header: 'State',
-      cell: ({ row }) => (
-        <div className=" text-ellipsis whitespace-nowrap ">
-          {row?.original?.state}
-        </div>
-      ),
-    },
-    {
-      accessorKey: 'City',
-      header: 'City',
-      cell: ({ row }) => (
-        <div className=" text-ellipsis whitespace-nowrap ">
-          {row?.original?.city}
-        </div>
-      ),
-    },
-    {
-      accessorKey: 'Street Address',
-      header: 'Street Address',
-      cell: ({ row }) => (
-        <div className=" text-ellipsis whitespace-nowrap ">
-          {row?.original?.street_address}
-        </div>
-      ),
-    },
-    {
-      accessorKey: 'Apartment',
-      header: 'Apartment',
-      cell: ({ row }) => (
-        <div className=" text-ellipsis whitespace-nowrap ">
-          {row?.original?.apartment ? row?.original?.apartment : 'N/A'}
-        </div>
-      ),
-    },
+    // {
+    //   accessorKey: 'Transaction ID',
+    //   header: 'Transaction ID',
+    //   cell: ({ row }) => (
+    //     <div className=" text-ellipsis whitespace-nowrap ">
+    //       {row?.original?.total_payment_id}
+    //     </div>
+    //   ),
+    // },
+    // {
+    //   accessorKey: 'DOB',
+    //   header: 'DOB',
+    //   cell: ({ row }) => (
+    //     <div className="capitalize text-ellipsis whitespace-nowrap ">
+    //       {displayDate(row?.original?.dob)}
+    //     </div>
+    //   ),
+    // },
+    // {
+    //   accessorKey: 'Country',
+    //   header: 'Country',
+    //   cell: ({ row }) => (
+    //     <div className=" text-ellipsis whitespace-nowrap ">
+    //       {row?.original?.country}
+    //     </div>
+    //   ),
+    // },
+    // {
+    //   accessorKey: 'State',
+    //   header: 'State',
+    //   cell: ({ row }) => (
+    //     <div className=" text-ellipsis whitespace-nowrap ">
+    //       {row?.original?.state}
+    //     </div>
+    //   ),
+    // },
+    // {
+    //   accessorKey: 'City',
+    //   header: 'City',
+    //   cell: ({ row }) => (
+    //     <div className=" text-ellipsis whitespace-nowrap ">
+    //       {row?.original?.city}
+    //     </div>
+    //   ),
+    // },
+    // {
+    //   accessorKey: 'Street Address',
+    //   header: 'Street Address',
+    //   cell: ({ row }) => (
+    //     <div className=" text-ellipsis whitespace-nowrap ">
+    //       {row?.original?.street_address}
+    //     </div>
+    //   ),
+    // },
+    // {
+    //   accessorKey: 'Apartment',
+    //   header: 'Apartment',
+    //   cell: ({ row }) => (
+    //     <div className=" text-ellipsis whitespace-nowrap ">
+    //       {row?.original?.apartment ? row?.original?.apartment : 'N/A'}
+    //     </div>
+    //   ),
+    // },
     {
       accessorKey: 'Sub Total',
       header: 'Sub Total',
@@ -235,46 +273,9 @@ export default function OrdersDataTable() {
         </div>
       ),
     },
-    {
-      accessorKey: 'Created at',
-      header: 'Created at',
-      cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
-          {displayDate(row?.original?.created_at)}
-        </div>
-      ),
-    },
-
-    {
-      id: 'actions',
-      header: 'Actions',
-      enableHiding: false,
-      cell: ({ row }) => {
-        return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              {/* <Link href={`/admin/orders/view/${row?.original?.id}`}>
-                <DropdownMenuItem>View Order</DropdownMenuItem>
-              </Link> */}
-              <DropdownMenuItem
-                onClick={() => handleView(row?.original, 'view')}
-              >
-                View Order
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        );
-      },
-    },
   ];
   const table = useReactTable({
-    data: orderData as Category[],
+    data: orderData as Order[],
     columns,
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),

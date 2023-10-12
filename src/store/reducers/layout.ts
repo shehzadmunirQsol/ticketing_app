@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '~/store/store';
 
-interface Lang {
+export interface Lang {
   dir: 'rtl' | 'ltr';
   lang: 'en' | 'ar';
   lang_id: 1 | 2;
