@@ -152,14 +152,14 @@ export function getAvailableTickets({
   return { userTicketLimit, availableTickets, isTicketLimit };
 }
 
-export function URIGenerator(title: string, id: number) {
+export function URIGenerator(title = '' as string, id = 0 as number) {
   const url = `${title?.replaceAll(' ', '-')}-${id}`;
   return encodeURI(url);
 }
 
-export function URIDecoder(url: any) {
+export function URIDecoder(url = '' as any) {
   console.log({ url });
-  const decodedURI = decodeURI(url ?? '');
+  const decodedURI = decodeURI(url ?? '') ?? '';
   console.log({ decodedURI });
 
   const id = decodedURI?.split('-')?.at(-1) ?? '';
@@ -177,6 +177,6 @@ export const EMAIL_TEMPLATE_IDS = {
   NEW_REGISTERED_USER: 10,
 };
 
-export const priceTranslator=(price:number, lang="en")=>{
-  return price.toLocaleString(`${lang}-EG`)
-}
+export const priceTranslator = (price: number, lang = 'en') => {
+  return price.toLocaleString(`${lang}-EG`);
+};

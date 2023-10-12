@@ -29,25 +29,6 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
     (item) => item.event_id === +(eventId ?? 0),
   );
 
-  useEffect(() => {
-    if (cartItem) {
-
-      const { userTicketLimit } = getAvailableTickets({
-        event: ticketEventPayload,
-        ticketPurchased: ticketPurchased,
-        quantity: range[0] ?? 0,
-      });
-
-      const currentRange = userTicketLimit > cartItem.quantity ? cartItem.quantity: userTicketLimit ?? 0
-
-      ticketInBasket.current = currentRange;
-      setRange([currentRange]);
-    }
-  }, [cartItem]);
-
-  const price = +(range[0] as number) * data?.price;
-  const percentageSold = (data?.tickets_sold / data?.total_tickets) * 100;
-
   const ticketEventPayload = {
     total_tickets: data?.total_tickets,
     tickets_sold: data?.tickets_sold ?? 0,
@@ -59,6 +40,18 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
     ticketPurchased: ticketPurchased,
     quantity: range[0] ?? 0,
   });
+
+  useEffect(() => {
+    if (cartItem) {
+      ticketInBasket.current = cartItem.quantity ?? 0;
+      setRange([cartItem.quantity ?? 0]);
+    } else {
+      setRange([userTicketLimit > 10 ? 10 : userTicketLimit]);
+    }
+  }, [cartItem, userTicketLimit]);
+
+  const price = +(range[0] as number) * data?.price;
+  const percentageSold = (data?.tickets_sold / data?.total_tickets) * 100;
 
   return (
     <section className="text-gray-600 body-font">
@@ -78,8 +71,10 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
                   % {langContent[lang.lang].ProductDetail.description.SOLD}
                 </span>
                 <Progress value={percentageSold} className="w-full" />
-                <span className='w-full text-center text-xs text-gray-300'>{(data?.tickets_sold)?.toLocaleString()} /{" "}{(data?.total_tickets)?.toLocaleString()}</span>
-
+                <span className="w-full text-center text-xs text-gray-300">
+                  {data?.tickets_sold?.toLocaleString()} /{' '}
+                  {data?.total_tickets?.toLocaleString()}
+                </span>
               </div>
             </div>
             <div>
