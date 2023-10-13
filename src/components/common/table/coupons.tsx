@@ -44,6 +44,7 @@ import { Switch } from '~/components/ui/switch';
 import { useToast } from '~/components/ui/use-toast';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 import { CouponDialog } from '../modal/coupon';
+import { CouponDeleteDialog } from '../modal/deleteCoupon';
 import { LoadingDialog } from '../modal/loadingModal';
 import { MoreHorizontal } from 'lucide-react';
 import Link from 'next/link';
@@ -97,6 +98,7 @@ export default function CouponsDataTable() {
   const [title, setTitle] = React.useState('');
   const [type, setType] = React.useState('');
   const [isModal, setIsModal] = React.useState(false);
+  
 
   // APi
   const { data, refetch, isLoading } = trpc.coupon.get.useQuery(
@@ -109,6 +111,16 @@ export default function CouponsDataTable() {
   const categoryData = React.useMemo(() => {
     return Array.isArray(data?.data) ? data?.data : [];
   }, [data]);
+
+    // delete product
+    const deleteCoupon = (data: any, type: string) => {
+      setSelectedItem(data);
+      setTitle('Coupon');
+      setType(type);
+      setIsModal(true);
+    };
+  
+
 
   // handle modal
   const handleEnbled = (data: any, type: string) => {
@@ -243,6 +255,15 @@ export default function CouponsDataTable() {
               <Link href={`/admin/coupons/edit/${row?.original?.id}`}>
                 <DropdownMenuItem>Edit</DropdownMenuItem>
               </Link>
+              <DropdownMenuItem
+                  onClick={() => deleteCoupon(row?.original, 'delete')}
+                >
+                  Delete
+                </DropdownMenuItem>
+
+
+
+
             </DropdownMenuContent>
           </DropdownMenu>
         );
@@ -530,6 +551,17 @@ export default function CouponsDataTable() {
         </div>
       </div>
       <CouponDialog
+        selectedItem={selectedItem}
+        setSelectedItem={setSelectedItem}
+        title={title}
+        setTitle={setTitle}
+        isModal={isModal}
+        setIsModal={setIsModal}
+        refetch={refetch}
+        type={type}
+        setType={setType}
+      />
+      <CouponDeleteDialog
         selectedItem={selectedItem}
         setSelectedItem={setSelectedItem}
         title={title}

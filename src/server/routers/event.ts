@@ -257,6 +257,7 @@ export const eventRouter = router({
     .input(deleteEventSchema)
     .mutation(async ({ input }) => {
       try {
+        console.log(input,"INPUT::")
         const event = await prisma.event.update({
           where: { id: input.id },
           data: { is_deleted: true },
