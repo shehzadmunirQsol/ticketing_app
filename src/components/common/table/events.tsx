@@ -88,6 +88,11 @@ export default function EventsDataTable() {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
 
+  const [selectedItem, setSelectedItem] = useState({});
+  const [title, setTitle] = useState('');
+  const [type, setType] = useState('');
+  const [isModal, setIsModal] = useState(false);
+
   const dispatch = useDispatch();
 
   const { data, isLoading } = trpc.event.get.useQuery(
@@ -110,6 +115,15 @@ export default function EventsDataTable() {
     },
     {},
   );
+
+  // delete product 
+  const deleteUser = (data: any, type: string) => {
+    setSelectedItem(data);
+    setTitle('PRODUCTS');
+    setType(type);
+    setIsModal(true);
+
+  };
 
   const eventData = React.useMemo(() => {
     return Array.isArray(data?.data) && data?.data?.length ? data?.data : [];
@@ -261,6 +275,12 @@ export default function EventsDataTable() {
               <Link href={`/admin/events/edit/${row?.original?.id}`}>
                 <DropdownMenuItem>Edit</DropdownMenuItem>
               </Link>
+              {/* <DropdownMenuItem
+                    onClick={() => deleteUser(row?.original, 'delete')}
+                  >
+                    Delete
+                  </DropdownMenuItem> */}
+              
 
               {row?.original?.tickets_sold > 0 ? (
                 <>
@@ -598,7 +618,17 @@ export default function EventsDataTable() {
           </div>
         </div>
       </div>
-
+      {/* <CmsDailog
+        selectedItem={selectedItem}
+        setSelectedItem={setSelectedItem}
+        title={title}
+        setTitle={setTitle}
+        isModal={isModal}
+        setIsModal={setIsModal}
+        refetch={refetch}
+        type={type}
+        setType={setType}
+      /> */}
       <LoadingDialog open={isLoading} text={'Loading data...'} />
     </div>
   );
