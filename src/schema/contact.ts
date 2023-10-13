@@ -16,7 +16,7 @@ export const contactUsSchema = z.object({
     .string({
       required_error: 'Please enter your number',
     })
-    .length(9),
+    .length(15),
   message: z.string({
     required_error: 'Please write your message',
   }),
