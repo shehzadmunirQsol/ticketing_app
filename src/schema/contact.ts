@@ -32,17 +32,21 @@ export const contactSchema = z.object({
   email: z.string({ required_error: 'Please enter your email' }).email({
     message: "Please enter a valid email"
   }),
-  code: z.string({
-    required_error: 'Please select your code',
-  }).regex(new RegExp(/^[0-9]+$/), 'invalid code')
-  .min(1, {
-    message: 'Please enter your phone code',
-  }),
+  code: z.string({ required_error: 'Enter code' })
+    .regex(new RegExp(/^(\+)?[0-9]+$/), 'Invalid code')
+    .min(1, {
+      message: 'Enter code',
+    }).max(4, {
+      message: 'Enter code',
+    }),
   number: z
     .string({ required_error: 'Please enter your number' })
     .regex(new RegExp(/^[0-9]+$/), 'Please enter a valid phone number')
-    .min(1, {
-      message: 'Please enter your number',
+    .min(9, {
+      message: 'Please enter valid number',
+    })
+    .max(9, {
+      message: 'Please enter a valid number',
     }),
   message: z
     .string({ required_error: 'Please write your message' })
