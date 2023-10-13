@@ -230,12 +230,12 @@ export default function DataTableBanner() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <Link href={`/admin/settings/banners/edit/${payment?.id}`}>
-                <DropdownMenuItem>Edit Banner</DropdownMenuItem>
+                <DropdownMenuItem>Edit</DropdownMenuItem>
               </Link>
               <DropdownMenuItem
                 onClick={() => handleEnbled(row?.original, 'delete')}
               >
-                Delete Banner
+                Delete
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

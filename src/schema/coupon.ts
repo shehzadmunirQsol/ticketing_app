@@ -29,7 +29,9 @@ export const getCouponSchema = z.object({
 export const createCouponSchema = z.object({
   user_id: z.number(),
   coupon_id: z.number().optional(),
-  name: z.string({ required_error: ' Please enter a name' }).trim(),
+  name: z.string({ required_error: ' Please enter a name' }).min(2, {
+    message: 'Coupon Name must be at least 2 characters',
+  }).trim(),
   coupon_code: z
     .string({ required_error: ' Please enter a coupon code' })
     .min(6, {

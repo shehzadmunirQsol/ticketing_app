@@ -115,15 +115,16 @@ export const winnerRouter = router({
       });
 
       const totalWinnersPromise = prisma.winner.count({
-        where: {
-          is_deleted: false,
-        },
+       where: where,
       });
 
       const [totalWinners, winners] = await Promise.all([
         totalWinnersPromise,
         winnersPromise,
       ]);
+
+      console.log("count:", totalWinners,
+        "data:", winners,)
 
       return {
         message: 'Events found',

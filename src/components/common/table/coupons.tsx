@@ -241,7 +241,7 @@ export default function CouponsDataTable() {
               {/* <DropdownMenuLabel>Actions</DropdownMenuLabel> */}
               {/* <DropdownMenuSeparator /> */}
               <Link href={`/admin/coupons/edit/${row?.original?.id}`}>
-                <DropdownMenuItem>Edit Coupon</DropdownMenuItem>
+                <DropdownMenuItem>Edit</DropdownMenuItem>
               </Link>
             </DropdownMenuContent>
           </DropdownMenu>

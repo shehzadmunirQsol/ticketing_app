@@ -259,7 +259,7 @@ export default function EventsDataTable() {
               <DropdownMenuSeparator />
 
               <Link href={`/admin/events/edit/${row?.original?.id}`}>
-                <DropdownMenuItem>Edit Product</DropdownMenuItem>
+                <DropdownMenuItem>Edit</DropdownMenuItem>
               </Link>
 
               {row?.original?.tickets_sold > 0 ? (

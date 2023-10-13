@@ -196,12 +196,12 @@ export default function DataTableSpotLight() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <Link href={`/admin/settings/spotlight/edit/${payment?.id}`}>
-                <DropdownMenuItem>Edit Winnar Wonders</DropdownMenuItem>
+                <DropdownMenuItem>Edit</DropdownMenuItem>
               </Link>
               <DropdownMenuItem
                 onClick={() => handleEnbled(row?.original, 'delete')}
               >
-                Delete Spotlight
+                Delete
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

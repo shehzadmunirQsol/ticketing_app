@@ -104,7 +104,7 @@ export const columns: ColumnDef<Category>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <Link href={`/admin/category/edit/${row?.original?.id}`}>
-              <DropdownMenuItem>Edit Category</DropdownMenuItem>
+              <DropdownMenuItem>Edit </DropdownMenuItem>
             </Link>
           </DropdownMenuContent>
         </DropdownMenu>
