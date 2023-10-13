@@ -16,7 +16,7 @@ export const contactUsSchema = z.object({
     .string({
       required_error: 'Please enter your number',
     })
-    .length(9),
+    .length(15),
   message: z.string({
     required_error: 'Please write your message',
   }),
@@ -41,12 +41,12 @@ export const contactSchema = z.object({
     }),
   number: z
     .string({ required_error: 'Please enter your number' })
-    .regex(new RegExp(/^[0-9]+$/), 'Please enter a valid phone number')
+    .regex(new RegExp(/^[0-9]+$/), 'Please enter a valid  number')
     .min(9, {
-      message: 'Please enter valid number',
+      message: 'Number should be at more than 7 characters',
     })
-    .max(9, {
-      message: 'Please enter a valid number',
+    .max(15, {
+      message: 'Number should be at less than 15 characters',
     }),
   message: z
     .string({ required_error: 'Please write your message' })

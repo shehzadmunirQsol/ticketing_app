@@ -203,7 +203,7 @@ export default function Contact() {
                           <FormControl className="rounded-md bg-inputColor">
                             <Input
                               type="text"
-                              maxLength={9}
+                              maxLength={15}
                               placeholder="Enter your phone number"
                               {...field}
                             />
