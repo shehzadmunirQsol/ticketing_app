@@ -317,7 +317,9 @@ export const accountsDetailSchemaInput = z.object({
       message: 'Name must not exceed 24 characters',
     })
     .trim(),
-  dob: z.date().optional().nullable(),
+  dob: z.date().refine((d) => d >= new Date("1900-01-01") && d <= new Date("2100-01-01"), {
+    message:"Enter a valid date"
+  }).optional().nullable(),
 });
 
 export type accountsDetailSchemaInput = z.infer<
