@@ -130,7 +130,7 @@ export default function WinnersDataTable() {
       ),
     },
     {
-      accessorKey: 'Phone No.',
+      accessorKey: 'Phone No',
       header: 'Phone No.',
       cell: ({ row }) => (
         <div className="text-ellipsis whitespace-nowrap ">
@@ -148,7 +148,7 @@ export default function WinnersDataTable() {
       ),
     },
     {
-      accessorKey: 'Ticket No.',
+      accessorKey: 'Ticket No',
       header: 'Ticket No.',
       cell: ({ row }) => (
         <div className="text-ellipsis whitespace-nowrap text-primary">

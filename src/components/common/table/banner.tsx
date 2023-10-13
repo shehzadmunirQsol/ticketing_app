@@ -158,7 +158,7 @@ export default function DataTableBanner() {
       cell: ({ row }) => {
         return (
           <p className="w-40 text-ellipsis whitespace-nowrap overflow-hidden">
-            {row?.original?.link}
+            {row?.original?.link !== '' ? row?.original?.link : 'N/A'}
           </p>
         );
       },
@@ -170,7 +170,7 @@ export default function DataTableBanner() {
       cell: ({ row }) => {
         return (
           <p className="w-40 text-ellipsis whitespace-nowrap overflow-hidden">
-            {row?.original?.price}
+            {row?.original?.price !== '' ? row?.original?.price : 'N/A'}
           </p>
         );
       },
@@ -182,7 +182,7 @@ export default function DataTableBanner() {
       cell: ({ row }) => {
         return (
           <p className="w-40 text-ellipsis whitespace-nowrap overflow-hidden">
-            {row?.original?.date}
+            {row?.original?.date !== '' ? row?.original?.date : 'N/A'}
           </p>
         );
       },
