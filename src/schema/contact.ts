@@ -41,12 +41,12 @@ export const contactSchema = z.object({
     }),
   number: z
     .string({ required_error: 'Please enter your number' })
-    .regex(new RegExp(/^[0-9]+$/), 'Please enter a valid phone number')
-    .min(9, {
-      message: 'Please enter valid number',
+    .regex(new RegExp(/^[0-9]+$/), 'Please enter a valid  number')
+    .min(6, {
+      message: 'Number cannot be less than 6 character',
     })
-    .max(9, {
-      message: 'Please enter a valid number',
+    .max(12, {
+      message: 'Number cannot be more than 12 character',
     }),
   message: z
     .string({ required_error: 'Please write your message' })
