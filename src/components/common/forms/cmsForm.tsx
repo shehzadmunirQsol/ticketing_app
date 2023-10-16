@@ -35,6 +35,7 @@ import { useToast } from '~/components/ui/use-toast';
 import Link from 'next/link';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
 import { Textarea } from '~/components/ui/textarea';
+import { eventFaqs, eventFaqsAn } from '~/data/cmsContent';
 //theme
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
 //core
@@ -51,12 +52,25 @@ export default function CmsForm(props: CategoryFormInterface) {
 
   const form = useForm<cmsSchemaForm>({
     resolver: zodResolver(cmsSchema),
+    defaultValues: {
+      type: addFaqsType[0]?.faqType as
+        | 'event_faqs'
+        | 'faqs'
+        | 'static'
+        | undefined,
+      en: {
+        content: eventFaqs,
+      },
+      ar: {
+        content: eventFaqsAn,
+      },
+    },
   });
 
   const [image, setImage] = useState<File>();
   const [loading, setLoading] = useState<boolean>(false);
-  const [contentEn, setContentEn] = useState<any>('');
-  const [contentAr, setContentAr] = useState<any>('');
+  const [contentEn, setContentEn] = useState<any>(eventFaqs);
+  const [contentAr, setContentAr] = useState<any>(eventFaqsAn);
   console.log(form.formState.errors, 'form.formState.errors');
   console.log(form.getValues()?.slug, 'form.formState.value');
   // Getting Data
@@ -211,7 +225,7 @@ export default function CmsForm(props: CategoryFormInterface) {
       );
       window.localStorage.setItem(
         'cmsslug',
-        JSON.stringify(form.getValues()?.slug ?? ""),
+        JSON.stringify(form.getValues()?.slug ?? ''),
       );
       window.open('/admin/cms/preview', '_blank');
     } else {
@@ -222,7 +236,7 @@ export default function CmsForm(props: CategoryFormInterface) {
     }
   };
 
-  console.log(form.getValues().type,"getvalues")
+  console.log(form.getValues().type, 'getvalues');
   // Editor Config
   const editorConfig = {
     stylesSet: 'default',
@@ -230,20 +244,6 @@ export default function CmsForm(props: CategoryFormInterface) {
     autoParagraph: false,
     extraAllowedContent: 'b i div class style;script[src]',
   };
-
-  const editFaqsType = [
-    {
-      faqType: 'event_faqs',
-    },
-    {
-      faqType: 'static',
-    },
-  ];
-  const addFaqsType = [
-    {
-      faqType: 'event_faqs',
-    },
-  ];
 
   const enabled = id ? true : false;
 
@@ -438,7 +438,8 @@ export default function CmsForm(props: CategoryFormInterface) {
                 render={({ field }) => (
                   <FormItem className="w-full">
                     <FormLabel>
-                      Meta Description <sup className="text-md text-red-500">*</sup>
+                      Meta Description{' '}
+                      <sup className="text-md text-red-500">*</sup>
                     </FormLabel>
                     <FormControl>
                       <Textarea placeholder="Enter Description..." {...field} />
@@ -450,7 +451,75 @@ export default function CmsForm(props: CategoryFormInterface) {
                   </FormItem>
                 )}
               />
-              {data?.data?.slug === 'about-us' || data?.data?.slug === 'faq' || form?.getValues()?.type === 'event_faqs'  ? (
+              {id ? (
+                data?.data?.slug === 'about-us' ||
+                data?.data?.slug === 'faq' ||
+                form?.getValues()?.type === 'event_faqs' ? (
+                  <FormField
+                    control={form.control}
+                    name="en.content"
+                    render={({ field }) => (
+                      <FormItem className=" text-black">
+                        <FormLabel className=" text-white">
+                          Content <sup className="text-md text-red-500">*</sup>
+                        </FormLabel>
+
+                        <FormControl>
+                          <CKEditor
+                            activeClass="p10"
+                            content={contentEn} // Set the initial content
+                            events={{
+                              change: handleEnChange,
+                            }}
+                            config={editorConfig}
+                          />
+                        </FormControl>
+
+                        <div className="relative pb-2 mb-2">
+                          <FormMessage />
+                        </div>
+                      </FormItem>
+                    )}
+                  />
+                ) : (
+                  <>
+                    <FormField
+                      control={form.control}
+                      name="en.content"
+                      render={({ field }) => (
+                        <FormItem className=" text-black">
+                          <FormLabel className=" text-white">
+                            Content{' '}
+                            <sup className="text-md text-red-500">*</sup>
+                          </FormLabel>
+
+                          <FormControl>
+                            <Editor
+                              id={field.name}
+                              value={field.value}
+                              className=" bg-black"
+                              headerTemplate={header}
+                              onTextChange={(e: any) => {
+                                console.log(e.htmlValue, 'e.htmlValue');
+                                field.onChange(e.htmlValue);
+                                // form.setValue('en.content', e.htmlValue)
+                              }}
+                              style={{
+                                height: '320px',
+                                backgroundColor: 'black',
+                              }}
+                            />
+                          </FormControl>
+
+                          <div className="relative pb-2 mb-2">
+                            <FormMessage />
+                          </div>
+                        </FormItem>
+                      )}
+                    />
+                  </>
+                )
+              ) : (
                 <FormField
                   control={form.control}
                   name="en.content"
@@ -477,42 +546,6 @@ export default function CmsForm(props: CategoryFormInterface) {
                     </FormItem>
                   )}
                 />
-              ) : (
-                <>
-                  <FormField
-                    control={form.control}
-                    name="en.content"
-                    render={({ field }) => (
-                      <FormItem className=" text-black">
-                        <FormLabel className=" text-white">
-                          Content <sup className="text-md text-red-500">*</sup>
-                        </FormLabel>
-
-                        <FormControl>
-                          <Editor
-                            id={field.name}
-                            value={field.value}
-                            className=" bg-black"
-                            headerTemplate={header}
-                            onTextChange={(e: any) => {
-                              console.log(e.htmlValue, 'e.htmlValue');
-                              field.onChange(e.htmlValue);
-                              // form.setValue('en.content', e.htmlValue)
-                            }}
-                            style={{
-                              height: '320px',
-                              backgroundColor: 'black',
-                            }}
-                          />
-                        </FormControl>
-
-                        <div className="relative pb-2 mb-2">
-                          <FormMessage />
-                        </div>
-                      </FormItem>
-                    )}
-                  />
-                </>
               )}
             </TabsContent>
             <TabsContent value="ar">
@@ -578,58 +611,26 @@ export default function CmsForm(props: CategoryFormInterface) {
                   )}
                 />
 
-                {data?.data?.slug === 'about-us' ||
-                data?.data?.slug === 'faq' || form?.getValues()?.type === 'event_faqs' ? (
-                  <FormField
-                  control={form.control}
-                  name="ar.content"
-                  render={({ field }) => (
-                    <FormItem className=" text-black">
-                      <FormLabel className=" text-white">
-                        محتوى <sup className="text-md text-red-500">*</sup>
-                      </FormLabel>
-                      <FormControl>
-                        <CKEditor
-                          activeClass="p10"
-                          content={contentAr} // Set the initial content
-                          events={{
-                            change: handleArChange,
-                          }}
-                          config={editorConfig}
-                        />
-                      </FormControl>
-
-                      <div className="relative pb-2 mb-2">
-                        <FormMessage />
-                      </div>
-                    </FormItem>
-                  )}
-                />
-                ) : (
-                  <>
+                {id ? (
+                  data?.data?.slug === 'about-us' ||
+                  data?.data?.slug === 'faq' ||
+                  form?.getValues()?.type === 'event_faqs' ? (
                     <FormField
-                        control={form.control}
-                        name="ar.content"
-                        render={({ field }) => (
+                      control={form.control}
+                      name="ar.content"
+                      render={({ field }) => (
                         <FormItem className=" text-black">
-                      <FormLabel className=" text-white">
-                        محتوى <sup className="text-md text-red-500">*</sup>
-                      </FormLabel>
-                      <FormControl>
-                            <Editor
-                              id={field.name}
-                              value={field.value}
-                              className=" bg-black"
-                              headerTemplate={header}
-                              onTextChange={(e: any) => {
-                                console.log(e.htmlValue, 'e.htmlValue');
-                                field.onChange(e.htmlValue);
-                                // form.setValue('en.content', e.htmlValue)
+                          <FormLabel className=" text-white">
+                            محتوى <sup className="text-md text-red-500">*</sup>
+                          </FormLabel>
+                          <FormControl>
+                            <CKEditor
+                              activeClass="p10"
+                              content={contentAr} // Set the initial content
+                              events={{
+                                change: handleArChange,
                               }}
-                              style={{
-                                height: '320px',
-                                backgroundColor: 'black',
-                              }}
+                              config={editorConfig}
                             />
                           </FormControl>
 
@@ -639,34 +640,70 @@ export default function CmsForm(props: CategoryFormInterface) {
                         </FormItem>
                       )}
                     />
-                  </>
+                  ) : (
+                    <>
+                      <FormField
+                        control={form.control}
+                        name="ar.content"
+                        render={({ field }) => (
+                          <FormItem className=" text-black">
+                            <FormLabel className=" text-white">
+                              محتوى{' '}
+                              <sup className="text-md text-red-500">*</sup>
+                            </FormLabel>
+                            <FormControl>
+                              <Editor
+                                id={field.name}
+                                value={field.value}
+                                className=" bg-black"
+                                headerTemplate={header}
+                                onTextChange={(e: any) => {
+                                  console.log(e.htmlValue, 'e.htmlValue');
+                                  field.onChange(e.htmlValue);
+                                  // form.setValue('en.content', e.htmlValue)
+                                }}
+                                style={{
+                                  height: '320px',
+                                  backgroundColor: 'black',
+                                }}
+                              />
+                            </FormControl>
+
+                            <div className="relative pb-2 mb-2">
+                              <FormMessage />
+                            </div>
+                          </FormItem>
+                        )}
+                      />
+                    </>
+                  )
+                ) : (
+                  <FormField
+                    control={form.control}
+                    name="ar.content"
+                    render={({ field }) => (
+                      <FormItem className=" text-black">
+                        <FormLabel className=" text-white">
+                          محتوى <sup className="text-md text-red-500">*</sup>
+                        </FormLabel>
+                        <FormControl>
+                          <CKEditor
+                            activeClass="p10"
+                            content={contentAr} // Set the initial content
+                            events={{
+                              change: handleArChange,
+                            }}
+                            config={editorConfig}
+                          />
+                        </FormControl>
+
+                        <div className="relative pb-2 mb-2">
+                          <FormMessage />
+                        </div>
+                      </FormItem>
+                    )}
+                  />
                 )}
-
-                {/* <FormField
-                  control={form.control}
-                  name="ar.content"
-                  render={({ field }) => (
-                    <FormItem className=" text-black">
-                      <FormLabel className=" text-white">
-                        محتوى <sup className="text-md text-red-500">*</sup>
-                      </FormLabel>
-                      <FormControl>
-                        <CKEditor
-                          activeClass="p10"
-                          content={contentAr} // Set the initial content
-                          events={{
-                            change: handleArChange,
-                          }}
-                          config={editorConfig}
-                        />
-                      </FormControl>
-
-                      <div className="relative pb-2 mb-2">
-                        <FormMessage />
-                      </div>
-                    </FormItem>
-                  )}
-                /> */}
               </div>
             </TabsContent>
           </Tabs>
@@ -695,3 +732,17 @@ export default function CmsForm(props: CategoryFormInterface) {
     </Form>
   );
 }
+
+const editFaqsType = [
+  {
+    faqType: 'event_faqs',
+  },
+  {
+    faqType: 'static',
+  },
+];
+const addFaqsType = [
+  {
+    faqType: 'event_faqs',
+  },
+];

@@ -26,7 +26,6 @@ export function CmsDailog(props: SettingDialogInterface) {
   const { toast } = useToast();
   const [loading, setLoading] = useState<boolean>(false);
 
-  console.log(props    , 'propspropspropsprops');
 
   // Update CMS Status
   const updateCmsStatusData = trpc.cms.cmsStatusUpdateById.useMutation({
