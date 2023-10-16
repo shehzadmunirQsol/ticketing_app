@@ -33,6 +33,9 @@ function ProductCard(props: cardInterface) {
 
     const observer = new IntersectionObserver(([entry]: any) => {
       if (props?.isLast && entry.isIntersecting) {
+        // console.log({ today, endDay }, today == endDay, 'product');
+        // console.log('isLast', props.isLast, props.type);
+
         if (props?.nextPage) props?.nextPage();
         observer.unobserve(entry.target);
       }
@@ -45,7 +48,7 @@ function ProductCard(props: cardInterface) {
   const today = new Date().toISOString().split('T')[0];
   const time = props?.data?.end_date;
   const endDay = props?.data && time && time?.toISOString().split('T')[0];
-  console.log({ today, endDay }, today == endDay, 'product');
+
   return (
     props?.data && (
       <Link
@@ -144,7 +147,7 @@ function ProductCard(props: cardInterface) {
               <Button
                 variant="rounded"
                 className="font-[800] tracking-tight text-md xl:text-lg "
-                disabled={props.type == 'upcomming' ? true : false}
+                disabled={props.type == 'upcoming' ? true : false}
               >
                 {langContent[lang.lang].Index.productcard.ENTER_BTN}
               </Button>

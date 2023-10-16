@@ -1,4 +1,4 @@
-import React, { Dispatch, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from '@/ui/button';
 import LogoImage from '~/public/assets/logo.png';
 import Image from 'next/image';
@@ -17,7 +17,7 @@ import { RootState } from '~/store/store';
 import Link from 'next/link';
 import langContent from '~/locales';
 
-function Header() {
+export default function Header() {
   const router = useRouter();
   const { isLogin } = useSelector((state: RootState) => state.auth);
   const { count } = useSelector((state: RootState) => state.cart);
@@ -48,12 +48,13 @@ function Header() {
 
   return (
     <div
-      className={`fixed max-w-[1600px] w-full z-50 top-0 h-24  flex  items-center   ${router.route == '/'
-        ? color
-          ? '!bg-background-footer  duration-500 shadow-xl'
-          : '!bg-transparent  duration-500'
-        : '!bg-background-footer'
-        }   transform ease-in-out justify-between py-8 px-4 md:px-14 `}
+      className={`fixed max-w-[1600px] w-full z-50 top-0 h-24  flex  items-center   ${
+        router.route == '/'
+          ? color
+            ? '!bg-background-footer  duration-500 shadow-xl'
+            : '!bg-transparent  duration-500'
+          : '!bg-background-footer'
+      }   transform ease-in-out justify-between py-8 px-4 md:px-14 `}
     >
       <Link href="/" className="z-50">
         <Image
@@ -65,7 +66,7 @@ function Header() {
         />
       </Link>
       <div className="hidden  mdx:flex gap-8 items-center justify-center">
-        <ItemMenuDemo />
+        <ItemMenu />
         <div className="flex items-center justify-center gap-2">
           <Link href={'/cart'}>
             <Button
@@ -133,22 +134,17 @@ function Header() {
           </Button>
         </div>
       </div>
-      <SideBarMenuDemo nav={nav} closeFn={setNav} />
+      <SideBarMenu nav={nav} closeFn={setNav} />
     </div>
   );
 }
 
-export default Header;
-
-interface SideBarMenuDemoProps {
+interface SideBarMenuProps {
   nav: boolean;
   closeFn: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const SideBarMenuDemo: React.FC<SideBarMenuDemoProps> = ({
-  nav,
-  closeFn,
-}) => {
+export const SideBarMenu: React.FC<SideBarMenuProps> = ({ nav, closeFn }) => {
   const { count } = useSelector((state: RootState) => state.cart);
   const { lang } = useSelector((state: RootState) => state.layout);
   const { isLogin } = useSelector((state: RootState) => state.auth);
@@ -167,11 +163,11 @@ export const SideBarMenuDemo: React.FC<SideBarMenuDemoProps> = ({
   useEffect(() => {
     if (window?.innerWidth !== undefined) {
       const changeColor = () =>
-        window?.innerWidth >= 1000 ?
-          () => {
-            setHide(true)
-            closeFn(false)
-          }
+        window?.innerWidth >= 1000
+          ? () => {
+              setHide(true);
+              closeFn(false);
+            }
           : setHide(false);
 
       window.addEventListener('resize', changeColor);
@@ -192,57 +188,63 @@ export const SideBarMenuDemo: React.FC<SideBarMenuDemoProps> = ({
   const menuList = [
     {
       text: langContent[lang.lang].Header.title_one,
-      link: "/cars",
+      link: '/cars',
     },
     {
       text: langContent[lang.lang].Header.title_two,
-      link: "/cash",
+      link: '/cash',
     },
     {
       text: langContent[lang.lang].Header.title_three,
-      link: "/winners",
+      link: '/winners',
     },
     {
       text: langContent[lang.lang].Header.title_four,
-      link: "/about-us",
+      link: '/about-us',
     },
     {
-      text: "FAQ",
-      link: "/faq",
+      text: 'FAQ',
+      link: '/faq',
     },
     {
       text: langContent[lang.lang].Header.title_five,
-      link: "/contact-us",
+      link: '/contact-us',
     },
     {
       text: langContent[lang.lang].Header.title_six,
-      link: "/cart",
+      link: '/cart',
     },
     {
-      text: isLogin ? langContent[lang.lang].Header.sub_title_seven : langContent[lang.lang].Header.title_seven,
+      text: isLogin
+        ? langContent[lang.lang].Header.sub_title_seven
+        : langContent[lang.lang].Header.title_seven,
       link: isLogin ? '/account' : '/login',
     },
-  ]
+  ];
 
   return (
     <>
       <ul
-        className={`block mdx:hidden  transition-all ease-linear font-sans scroll-hide ${nav
+        className={`block mdx:hidden  transition-all ease-linear font-sans scroll-hide ${
+          nav
             ? 'absolute top-0 left-0 duration-100 w-full h-screen bg-background-footer flex flex-col justify-start items-center   pt-24'
             : 'absolute top-24 left-[-100%]  duration-100  '
-          }`}
+        }`}
       >
         {menuList.map((item, i) => {
           return (
-            <li key={i} className={`group py-3 text-lg w-full text-center ${i == 6 ? "border-y-[1px]" : "border-t-[1px]"} border-gray-700 hover:bg-primary hover:text-primary-foreground hover:border-transparent transition-colors duration-300 ease-in-out cursor-pointer`}
+            <li
+              key={i}
+              className={`group py-3 text-lg w-full text-center ${
+                i == 6 ? 'border-y-[1px]' : 'border-t-[1px]'
+              } border-gray-700 hover:bg-primary hover:text-primary-foreground hover:border-transparent transition-colors duration-300 ease-in-out cursor-pointer`}
               onClick={() => {
                 router.push(item.link);
                 closeFn(false);
               }}
             >
-
               {i == 6 ? (
-                <p className='flex justify-center'>
+                <p className="flex justify-center">
                   {item.text}
                   {count ? (
                     <span className="block mx-2 text-primary group-hover:text-primary-foreground transition-colors duration-500 w-fit">
@@ -250,17 +252,18 @@ export const SideBarMenuDemo: React.FC<SideBarMenuDemoProps> = ({
                     </span>
                   ) : null}
                 </p>
-              ) : item.text}
+              ) : (
+                item.text
+              )}
             </li>
-          )
+          );
         })}
-
       </ul>
     </>
   );
 };
 
-export function ItemMenuDemo() {
+export function ItemMenu() {
   const { lang } = useSelector((state: RootState) => state.layout);
   return (
     <div
@@ -288,25 +291,3 @@ export function ItemMenuDemo() {
     </div>
   );
 }
-
-
-{/* <li
-          className="py-3 text-lg w-full text-center border-t-[1px] border-gray-700 hover:bg-primary hover:text-primary-foreground hover:border-transparent transition-colors duration-300 ease-in-out cursor-pointer"<li
-          className="group py-3 text-lg w-full text-center border-t-[1px] border-gray-700 hover:bg-muted-foreground hover:text-primary-foreground hover:border-transparent transition-colors duration-300 ease-in-out cursor-pointer"
-          onClick={() => {
-            router.push('/cart');
-            closeFn(false);
-          }}
-        >
-          <div className="flex items-center justify-center">
-            <span className="w-fit">{langContent[lang.lang].Header.title_six}</span>
-            
-          </div>
-        </li>
-          onClick={() => {
-            router.push('/cars');
-            closeFn(false);
-          }}
-        >
-          {langContent[lang.lang].Header.title_one}
-        </li> */}
