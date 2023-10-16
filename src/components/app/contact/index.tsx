@@ -32,7 +32,7 @@ import Link from 'next/link';
 import ContactImage from '../../../public/assets/contact-us.svg';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import ReCAPTCHA from "react-google-recaptcha"
+import ReCAPTCHA from 'react-google-recaptcha';
 
 export default function Contact() {
   const { toast } = useToast();
@@ -45,17 +45,15 @@ export default function Contact() {
     resolver: zodResolver(contactSchema),
   });
 
-
   const showResponse = (response: any) => {
     console.log({ response });
     if (response) {
       setRecapthaToken(() => recaptchaRef.current.getValue());
     }
 
-
     //call to a backend to verify against recaptcha with private key
   };
-  console.log({ recaptchaToken })
+  console.log({ recaptchaToken });
   // Handle Contact us
   const contactUs = trpc.contact.contact.useMutation({
     onSuccess: async (res: any) => {
@@ -66,31 +64,22 @@ export default function Contact() {
 
       form.setValue('name', '');
       form.setValue('email', '');
-      form.setValue('code', '+971');
+      form.setValue('code', '');
       form.setValue('number', '');
       form.setValue('message', '');
       recaptchaRef.current.reset();
-      setRecapthaToken("");
-
-
+      setRecapthaToken('');
     },
     onError: (err) => {
       console.log(err.message, 'err');
     },
   });
 
-  const countryCode = [
-    {
-      code: '+971',
-    },
-  ];
-
+  
 
   const validate = (value: string) => {
-    const matches = value.match(
-      /^[0-9]/
-    );
-    return matches && matches?.length > 0 || "Please enter a valid number";
+    const matches = value.match(/^[0-9]/);
+    return (matches && matches?.length > 0) || 'Please enter a valid number';
   };
 
   // Contact
@@ -112,7 +101,7 @@ export default function Contact() {
         });
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
 
@@ -186,38 +175,20 @@ export default function Contact() {
                   <p className="text-xs font-thin text-grayColor  mb-2 ">
                     Phone Number*
                   </p>
-                  <div className="flex items-center flex-row gap-2 ">
+                  <div className="flex items-start  gap-2 ">
                     <FormField
                       control={form.control}
                       name="code"
-                      defaultValue="+971"
                       render={({ field }) => (
                         <FormItem>
-                          <Select
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                            value={field.value}
-                          >
-                            <FormControl className="rounded-md bg-inputColor">
-                              <SelectTrigger
-                                defaultValue={'+971'}
-                                className=" rounded-md  "
-                              >
-                                <SelectValue placeholder="+971" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              <SelectGroup>
-                                {countryCode?.map((item, i) => (
-                                  <SelectItem key={i} value={item.code}>
-                                    {item?.code}
-                                  </SelectItem>
-                                ))}
-                              </SelectGroup>
-                            </SelectContent>
-                          </Select>
-
-                          <div className="relative pb-6">
+                          <Input
+                            type="text"
+                            className="rounded-md w-20 bg-inputColor"
+                            placeholder="+971"
+                            maxLength={4}
+                            {...field}
+                          />
+                          <div className="relative">
                             <FormMessage />
                           </div>
                         </FormItem>
@@ -232,7 +203,7 @@ export default function Contact() {
                           <FormControl className="rounded-md bg-inputColor">
                             <Input
                               type="text"
-                              maxLength={9}
+                              maxLength={15}
                               placeholder="Enter your phone number"
                               {...field}
                             />
@@ -270,12 +241,12 @@ export default function Contact() {
                 />
               </div>
               <div className="flex flex-col sm:flex-row justify-between items-center gap-6 h-18">
-                <div className='h-fit object-contain w-fit ' >
+                <div className="h-fit object-contain w-fit ">
                   <ReCAPTCHA
                     ref={recaptchaRef}
                     size="normal"
                     badge="inline"
-                    theme='dark'
+                    theme="dark"
                     sitekey={process.env.NEXT_PUBLIC_SITE_KEY as string}
                     onChange={showResponse}
                   />

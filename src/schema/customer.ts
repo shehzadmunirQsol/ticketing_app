@@ -255,11 +255,11 @@ export const addCustomerAddress = z.object({
       invalid_type_error: 'Please enter your phone no',
     })
     .regex(new RegExp(/^[0-9]+$/), 'Please enter a valid phone no.')
-    .min(1, {
-      message: 'Please enter a valid phone no.',
+    .min(9, {
+      message: 'Number should be at more than 7 characters',
     })
-    .max(7, {
-      message: 'Please enter a valid phone no.',
+    .max(15, {
+      message: 'Number should be at less than 15 characters',
     })
     .trim(),
   phone_code: z
@@ -317,7 +317,9 @@ export const accountsDetailSchemaInput = z.object({
       message: 'Name must not exceed 24 characters',
     })
     .trim(),
-  dob: z.date().optional().nullable(),
+  dob: z.date().refine((d) => d >= new Date("1900-01-01") && d <= new Date("2100-01-01"), {
+    message:"Enter a valid date"
+  }).optional().nullable(),
 });
 
 export type accountsDetailSchemaInput = z.infer<

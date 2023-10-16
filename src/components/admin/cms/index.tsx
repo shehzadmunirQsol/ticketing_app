@@ -130,7 +130,7 @@ function Cms() {
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
                             <Link href={`/admin/cms/edit/${item?.id}`}>
-                              <DropdownMenuItem>Edit CMS</DropdownMenuItem>
+                              <DropdownMenuItem>Edit</DropdownMenuItem>
                             </Link>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem

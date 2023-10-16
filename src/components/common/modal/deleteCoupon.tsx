@@ -22,68 +22,46 @@ interface SettingDialogInterface {
   type: string;
   setType: any;
 }
-export function CmsDailog(props: SettingDialogInterface) {
+export function CouponDeleteDialog(props: SettingDialogInterface) {
   const { toast } = useToast();
   const [loading, setLoading] = useState<boolean>(false);
 
-
-  // Update CMS Status
-  const updateCmsStatusData = trpc.cms.cmsStatusUpdateById.useMutation({
-    onSuccess: (res: any) => {
-      console.log(res);
-      toast({
-        variant: 'success',
-        title: 'Status Updated Successfully',
-      });
+  const deleteCoupon: any = trpc.coupon.delete.useMutation({
+    onSuccess: () => {
+      console.log('upload successfully');
     },
     onError(error: any) {
-      console.log(error);
+      console.log({ error });
     },
   });
 
   const handleClick = async () => {
     try {
       setLoading(true);
-      console.log(props?.selectedItem.id,"props?.selectedItem.id")
       const payload: any = {
-        id: props?.selectedItem.id,
+        id: props?.selectedItem?.id,
       };
-      if (props?.type == 'enable' || props?.type == 'disable')
-        payload.is_enabled = !props?.selectedItem?.is_enabled;
-
       if (props?.type == 'delete')
         payload.is_deleted = !props?.selectedItem?.is_deleted;
+      const data = await deleteCoupon.mutateAsync({ ...payload });
 
-      const result = await updateCmsStatusData.mutateAsync({ ...payload });
-      console.log(result);
-
-      if (result) {
+      if (data) {
         setLoading(false);
+
         props.setIsModal(false);
+
         toast({
-          variant: `${
-            props?.type === 'enable' || props?.type === 'disable'
-              ? props?.selectedItem?.is_enabled
-                ? 'disable'
-                : 'success'
-              : 'success'
-          }`,
-          title: `${props?.title} ${
-            props?.type === 'enable' || props?.type === 'disable'
-              ? props?.selectedItem?.is_enabled
-                ? 'Disabled'
-                : 'Enabled'
-              : 'deleted'
-          } Successfully`,
+          variant: `${props?.type === 'enabled' ? "disable" : "success"}`,
+          title: `${props?.title} ${props?.type === 'enabled' ? 'Disabled' : 'Delete'
+            } Successfully`,
         });
-
-
         props?.refetch();
       } else {
         throw new Error('Data update Error');
       }
     } catch (e: any) {
       setLoading(false);
+
       props.setIsModal(false);
       toast({
         variant: 'destructive',
@@ -96,23 +74,21 @@ export function CmsDailog(props: SettingDialogInterface) {
       <Dialog open={props?.isModal} onOpenChange={(e) => props.setIsModal(e)}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle className="text-left">{props?.title}</DialogTitle>
+            <DialogTitle>{props?.title}</DialogTitle>
             <DialogDescription>
-              <div className="flex flex-col gap-4 mt-4">
+              <div className="flex flex-col gap-4 ">
                 <div className="  flex gap-2 items-center p-2  ">
-                  <p>
-                    Are You Sure You Want to {props?.type}{' '}
+                <p>
+                    Are You Sure You Want to {props?.type}{' '} this{' '}
                     <span className="text-primary capitalize">
-                      {props?.selectedItem?.CMSDescription?.length ? props?.selectedItem?.CMSDescription[0]?.title : "" }
-                      {/* {props?.type} */}
+                      {props?.selectedItem?.name}
                     </span>{' '}
-                     Page?
+                     Coupon
                   </p>
                 </div>
               </div>
             </DialogDescription>
           </DialogHeader>
-          <div className=" py-2"></div>
           <DialogFooter>
             <Button type="submit" onClick={() => handleClick()}>
               Yes
@@ -120,7 +96,7 @@ export function CmsDailog(props: SettingDialogInterface) {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      <LoadingDialog open={loading} text={'Saving data...'} />
+      <LoadingDialog open={loading} text={'Deleting coupon...'} />
     </>
   );
 }

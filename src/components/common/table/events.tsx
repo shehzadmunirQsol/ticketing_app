@@ -42,6 +42,7 @@ import { LoadingDialog } from '../modal/loadingModal';
 import { setSelectedEvent } from '~/store/reducers/admin_layout';
 import { useDispatch } from 'react-redux';
 import { TableFilters } from './table_filters';
+import {EventDeleteDialog} from '~/components/common/modal/eventDeleteModal';
 import {
   Select,
   SelectContent,
@@ -88,9 +89,14 @@ export default function EventsDataTable() {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
 
+  const [selectedItem, setSelectedItem] = useState({});
+  const [title, setTitle] = useState('');
+  const [type, setType] = useState('');
+  const [isModal, setIsModal] = useState(false);
+
   const dispatch = useDispatch();
 
-  const { data, isLoading } = trpc.event.get.useQuery(
+  const { data, isLoading,refetch } = trpc.event.get.useQuery(
     { ...filters, filters: { ...filterID } },
     {
       refetchOnWindowFocus: false,
@@ -110,6 +116,14 @@ export default function EventsDataTable() {
     },
     {},
   );
+
+  // delete product
+  const deleteUser = (data: any, type: string) => {
+    setSelectedItem(data);
+    setTitle('Product');
+    setType(type);
+    setIsModal(true);
+  };
 
   const eventData = React.useMemo(() => {
     return Array.isArray(data?.data) && data?.data?.length ? data?.data : [];
@@ -246,6 +260,7 @@ export default function EventsDataTable() {
       enableHiding: false,
       header: 'Actions',
       cell: ({ row }) => {
+        console.log(row?.original,"row?.original")
         return (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -259,8 +274,17 @@ export default function EventsDataTable() {
               <DropdownMenuSeparator />
 
               <Link href={`/admin/events/edit/${row?.original?.id}`}>
-                <DropdownMenuItem>Edit Product</DropdownMenuItem>
+                <DropdownMenuItem>Edit</DropdownMenuItem>
               </Link>
+
+              {row?.original.tickets_sold != null && row?.original.tickets_sold === 0
+               ? (
+                <DropdownMenuItem
+                  onClick={() => deleteUser(row?.original, 'delete')}
+                >
+                  Delete
+                </DropdownMenuItem>
+              ) : null}
 
               {row?.original?.tickets_sold > 0 ? (
                 <>
@@ -405,8 +429,6 @@ export default function EventsDataTable() {
     ),
   ];
 
-
-  
   return (
     <div className="w-full space-y-4">
       <div className="flex items-center justify-between">
@@ -598,7 +620,17 @@ export default function EventsDataTable() {
           </div>
         </div>
       </div>
-
+      <EventDeleteDialog
+        selectedItem={selectedItem}
+        setSelectedItem={setSelectedItem}
+        title={title}
+        setTitle={setTitle}
+        isModal={isModal}
+        setIsModal={setIsModal}
+        refetch={refetch}
+        type={type}
+        setType={setType}
+      />
       <LoadingDialog open={isLoading} text={'Loading data...'} />
     </div>
   );

@@ -254,8 +254,8 @@ export function AddCustomerAddressDialog(props: SelectCustomerInterface) {
                           <FormItem className=" w-full">
                             <FormControl className="rounded-md ">
                               <Input
-                                minLength={7}
-                                maxLength={9}
+ 
+                                maxLength={15}
                                 type="string"
                                 className="w-full"
                                 placeholder="Enter your phone number"
