@@ -488,6 +488,7 @@ model Winner {
   customer_id Int
   event_id    Int
   ticket_num  Int
+  thumb       String? @default("")
   is_cash_alt Boolean @default(false)
   is_enabled  Boolean @default(false)
   is_deleted  Boolean @default(false)
@@ -507,6 +508,7 @@ model CMS {
   id         Int      @id @default(autoincrement())
   user_id    Int
   slug       String   @default("")
+  thumb      String   @default("upload/f4743e48-0361-4c65-8581-d1765c7f04c8-lamborghini-invencible_100874111_h.jpg")
   type       CMSEnums @default(static)
   is_deleted Boolean  @default(false)
   is_enabled Boolean  @default(false)

@@ -218,9 +218,9 @@ export default function EventForm() {
         },
       },
     );
-  const ticket_sold_Data:any = eventData?.data?.tickets_sold;
-console.log({ticket_sold_Data})
-  const handleDisabled = ticket_sold_Data != null && ticket_sold_Data > 0   ? true : false;
+  const ticket_sold_Data: any = eventData?.data?.tickets_sold;
+  const handleDisabled =
+    ticket_sold_Data != null && ticket_sold_Data > 0 ? true : false;
   const createEvent = trpc.event.create.useMutation();
   const updateEvent = trpc.event.update.useMutation();
 
@@ -704,7 +704,11 @@ console.log({ticket_sold_Data})
                             <FormControl>
                               <Input
                                 // disabled={handleDisabled}
-                                disabled={item?.name === "launch_date" ?handleDisabled:false}
+                                disabled={
+                                  item?.name === 'launch_date'
+                                    ? handleDisabled
+                                    : false
+                                }
                                 type={'date'}
                                 placeholder={item?.placeholder}
                                 min={minDate}

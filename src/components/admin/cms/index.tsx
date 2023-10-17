@@ -71,25 +71,21 @@ function Cms() {
               staticData?.map((item: any, i: any) => {
                 return (
                   <Link
-                  key={i}
-                  href={`/admin/cms/edit/${item?.id}`}
-                  className=" rounded-full border-border"
-                >
-                  <div
-                    
-                    className="bg-background py-4 px-4 rounded-md  w-full   shadow-lg flex flex-row items-center justify-between  "
+                    key={i}
+                    href={`/admin/cms/edit/${item?.id}`}
+                    className=" rounded-full border-border"
                   >
-                    <p className="text-lg capitalize text-primary font-semibold">
-                      {item?.CMSDescription[0]?.title}
-                    </p>
-                    <div>
+                    <div className="bg-background py-4 px-4 rounded-md  w-full   shadow-lg flex flex-row items-center justify-between  ">
+                      <p className="text-lg capitalize text-primary font-semibold">
+                        {item?.CMSDescription[0]?.title}
+                      </p>
                       <div>
-                       
+                        <div>
                           <i className="fa-solid fa-pen-to-square hover:text-primary"></i>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                        </Link>
+                  </Link>
                 );
               })
             ) : (
@@ -98,9 +94,6 @@ function Cms() {
               </div>
             )}
           </div>
-
-
-
         </div>
 
         <div className="w-full">

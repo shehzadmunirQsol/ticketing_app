@@ -147,7 +147,6 @@ function ProductCard(props: cardInterface) {
               <Button
                 variant="rounded"
                 className="font-[800] tracking-tight text-md xl:text-lg "
-                disabled={props.type == 'upcoming' ? true : false}
               >
                 {langContent[lang.lang].Index.productcard.ENTER_BTN}
               </Button>
