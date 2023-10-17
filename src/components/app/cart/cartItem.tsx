@@ -27,6 +27,7 @@ type CartItemProp = {
   cart_id: number;
   customer_id: number;
   ticketPurchased: number;
+  cartItemsLength: number;
 };
 
 type SubscriptionType = 'weekly' | 'monthly' | 'quarterly' | null;
@@ -259,6 +260,7 @@ export default function CartItem(props: CartItemProp) {
         cart_item_id={cartItem.id}
         event_id={cartItem.event_id}
         item_name={cartItem?.Event?.EventDescription[0]?.name ?? ''}
+        isLast={props?.cartItemsLength === 1}
       />
     </div>
   );

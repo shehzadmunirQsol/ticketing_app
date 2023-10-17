@@ -453,10 +453,12 @@ export const orderRouter = router({
       });
     }
   }),
+
   get: publicProcedure.input(getOrderSchema).query(async ({ input }) => {
     try {
       const { filters, ...inputData } = input;
       const filterPayload: any = { ...filters };
+      console.log(filterPayload, 'filterPayload');
 
       if (filterPayload?.searchQuery) delete filterPayload.searchQuery;
       if (filterPayload?.endDate) delete filterPayload.endDate;
@@ -470,19 +472,17 @@ export const orderRouter = router({
         where.created_at = { gte: new Date(startDate) };
       }
       if (input?.filters?.endDate && !input?.filters?.startDate) {
-        const endDate = new Date(input?.filters?.endDate)
-          ?.toISOString()
-          .split('T')[0] as string;
-        where.created_at = { lte: new Date(endDate) };
+        const inputEndDate = new Date(input?.filters?.endDate);
+        const endDate = new Date(inputEndDate.setHours(23, 59));
+        where.created_at = { lte: endDate };
       }
       if (input?.filters?.endDate && input?.filters?.startDate) {
         const startDate = new Date(input?.filters?.startDate)
           ?.toISOString()
           .split('T')[0] as string;
-        const endDate = new Date(input?.filters?.endDate)
-          ?.toISOString()
-          .split('T')[0] as string;
-        where.created_at = { gte: new Date(startDate), lte: new Date(endDate) };
+        const inputEndDate = new Date(input?.filters?.endDate);
+        const endDate = new Date(inputEndDate.setHours(23, 59));
+        where.created_at = { gte: new Date(startDate), lte: endDate };
       }
 
       if (input?.filters?.searchQuery) {

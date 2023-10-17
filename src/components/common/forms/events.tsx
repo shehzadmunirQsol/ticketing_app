@@ -58,9 +58,10 @@ export default function EventForm() {
     },
   );
 
-  const filteredCms = cms?.filter((item) => item?.type === 'event_faqs') || [];
+  const filteredCms =
+    cms?.filter((item: any) => item?.type === 'event_faqs') || [];
 
-  const modifiedArray = filteredCms.map((item) => ({
+  const modifiedArray = filteredCms.map((item: any) => ({
     id: item.id,
     name: item.CMSDescription[0]?.title || '', // Access the first "title" in CMSDescription
   }));
@@ -138,7 +139,6 @@ export default function EventForm() {
       type: 'date',
       name: 'end_date',
       label: 'End Date',
-
       placeholder: 'Please Enter Date',
     },
     {
@@ -197,6 +197,7 @@ export default function EventForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const eventId = router.query.index ? +router.query.index : 0;
+  console.log(eventId, 'eventId');
 
   const form = useForm<z.infer<typeof EventFormSchema>>({
     resolver: zodResolver(EventFormSchema),
@@ -217,7 +218,9 @@ export default function EventForm() {
         },
       },
     );
-
+  const ticket_sold_Data:any = eventData?.data?.tickets_sold;
+console.log({ticket_sold_Data})
+  const handleDisabled = ticket_sold_Data != null && ticket_sold_Data > 0   ? true : false;
   const createEvent = trpc.event.create.useMutation();
   const updateEvent = trpc.event.update.useMutation();
 
@@ -404,6 +407,7 @@ export default function EventForm() {
 
   const header = renderHeader();
   console.log(form.getValues(), 'form.getValues');
+
   return (
     <>
       <Form {...form}>
@@ -699,6 +703,8 @@ export default function EventForm() {
                             <FormLabel>{item?.label}</FormLabel>
                             <FormControl>
                               <Input
+                                // disabled={handleDisabled}
+                                disabled={item?.name === "launch_date" ?handleDisabled:false}
                                 type={'date'}
                                 placeholder={item?.placeholder}
                                 min={minDate}

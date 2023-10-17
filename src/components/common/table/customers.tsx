@@ -363,12 +363,12 @@ export default function CustomersDataTable() {
                   <DropdownMenuItem
                     onClick={() => deleteUser(row?.original, 'block')}
                   >
-                    {row?.original?.is_blocked ? "Unblock Customer" : "Block Customer"}
+                    {row?.original?.is_blocked ? "Unblock" : "Block"}
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={() => deleteUser(row?.original, 'delete')}
                   >
-                    Delete Customer
+                    Delete
                   </DropdownMenuItem>
                 </>
               )}

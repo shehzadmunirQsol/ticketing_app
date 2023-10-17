@@ -239,7 +239,7 @@ function Checkout() {
                 // Create the HTML elements
 
                 const createRegistrationHtml =
-                  '<div class="customLabel">Store payment details?</div><div class="customInput"><input type="checkbox" name="createRegistration" value="true" /></div>';
+                  '<div class="flex gap-2 items-center"> <div class="customInput"><input id="store-payment" type="checkbox" name="createRegistration" value="true" /></div> <label htmlfor="store-payment" class="customLabel">Store payment details?</label> </div>';
                 jqeury('form.wpwl-form-card')
                   .find('.wpwl-button')
                   .before(createRegistrationHtml);

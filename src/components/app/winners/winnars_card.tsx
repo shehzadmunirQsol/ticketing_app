@@ -43,7 +43,7 @@ function WinnarsCard(props: cardInterface) {
   return (
     <div
       dir={props?.dir}
-      className={`rounded-sm shadow-lg bg-card h-1/5 ${props?.class}`}
+      className={`rounded-sm shadow-lg bg-card ${props?.class}`}
       ref={cardRef}
     >
       <div>

@@ -8,7 +8,7 @@ import { Button } from '../../ui/button';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
 import { trpc } from '~/utils/trpc';
-interface producctInterface {
+interface productInterface {
   class?: string;
   title: string;
   center: boolean;
@@ -19,11 +19,11 @@ interface producctInterface {
   breakpoint?: Array<number>;
   // slide: React.Ref<null>;
 }
-function ProductSection(props: producctInterface) {
+function ProductSection(props: productInterface) {
   const { lang } = useSelector((state: RootState) => state.layout);
   const [products, setProducts] = useState<Array<any>>([]);
 
-  const orderfilters = {
+  const orderFilters = {
     lang_id: lang.lang_id,
   };
 
@@ -31,11 +31,10 @@ function ProductSection(props: producctInterface) {
     first: 0,
     rows: 9,
     type: props?.type,
-    category_id: 1,
   });
 
-  const { data: prductsList } = trpc.event.getUpcomimg.useQuery(
-    { ...orderfilters, ...filters },
+  const { data: productsList } = trpc.event.getUpcoming.useQuery(
+    { ...orderFilters, ...filters },
     {
       refetchOnWindowFocus: false,
     },
@@ -49,15 +48,20 @@ function ProductSection(props: producctInterface) {
   const slide = useRef<any>(null);
 
   useEffect(() => {
-    if (filters.first > 0 && prductsList?.data?.length) {
-      setProducts([...products, ...prductsList.data]);
-    } else if (prductsList?.data?.length) {
-      setProducts(prductsList?.data);
+    if (filters.first > 0 && productsList?.data?.length) {
+      setProducts([...products, ...productsList.data]);
+    } else if (productsList?.data?.length) {
+      setProducts(productsList?.data);
     }
-  }, [prductsList]);
+  }, [productsList]);
 
   useEffect(() => {
     setProducts([]);
+    setFilters({
+      first: 0,
+      rows: 9,
+      type: props?.type,
+    });
   }, [lang.lang_id]);
 
   const next = () => {
@@ -139,8 +143,9 @@ function ProductSection(props: producctInterface) {
           {props?.title}
         </p>
         <div
-          className={`${lang?.dir == 'rtl' ? ' flex-row-reverse' : 'md:ml-0'
-            }  flex gap-2 z-10 items-center justify-center `}
+          className={`${
+            lang?.dir == 'rtl' ? ' flex-row-reverse' : 'md:ml-0'
+          }  flex gap-2 z-10 items-center justify-center `}
         >
           <Button
             variant="rounded"
@@ -167,8 +172,9 @@ function ProductSection(props: producctInterface) {
             ''
           ) : (
             <div
-              className={`absolute bottom-10 ${props.type == 'closing' ? 'right-0' : 'left-0'
-                }  z-2  w-1/5 h-3/5  bg-teal-400 bg-opacity-50 rounded-full blur-3xl`}
+              className={`absolute bottom-10 ${
+                props.type == 'closing' ? 'right-0' : 'left-0'
+              }  z-2  w-1/5 h-3/5  bg-teal-400 bg-opacity-50 rounded-full blur-3xl`}
             ></div>
           )}
         </div>
@@ -182,7 +188,11 @@ function ProductSection(props: producctInterface) {
                   nextPage={nextPage}
                   data={item}
                   type={props.type}
-                  class={products.length != index + 1 ? 'rtl:mr-0 rtl:ml-4 ltr:mr-4 ltr:ml-0' : ''}
+                  class={
+                    products.length != index + 1
+                      ? 'rtl:mr-0 rtl:ml-4 ltr:mr-4 ltr:ml-0'
+                      : ''
+                  }
                   dir={`${lang?.dir}`}
                 />
               </div>
