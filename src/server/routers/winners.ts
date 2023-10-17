@@ -1,7 +1,11 @@
 import { router, publicProcedure } from '../trpc';
 import { TRPCError } from '@trpc/server';
 import { prisma } from '~/server/prisma';
-import { getWinnersSchema, selectWinnerSchema } from '~/schema/winners';
+import {
+  getWinnersSchema,
+  selectWinnerSchema,
+  updateWinnerSchema,
+} from '~/schema/winners';
 import { EMAIL_TEMPLATE_IDS, sendEmail } from '~/utils/helper';
 
 export const winnerRouter = router({
@@ -14,7 +18,7 @@ export const winnerRouter = router({
       if (filterPayload?.endDate) delete filterPayload.endDate;
       if (filterPayload?.startDate) delete filterPayload.startDate;
       const where: any = { is_deleted: false, ...filterPayload };
-      console.log({ filters }, 'filters_input');
+
       if (input?.filters?.searchQuery) {
         where.OR = [];
         where.OR.push({
@@ -85,6 +89,9 @@ export const winnerRouter = router({
         orderBy: { created_at: 'desc' },
         where: where,
         select: {
+          id: true,
+          thumb: true,
+          is_enabled: true,
           draw_date: true,
           is_cash_alt: true,
           ticket_num: true,
@@ -112,16 +119,13 @@ export const winnerRouter = router({
       });
 
       const totalWinnersPromise = prisma.winner.count({
-       where: where,
+        where: where,
       });
 
       const [totalWinners, winners] = await Promise.all([
         totalWinnersPromise,
         winnersPromise,
       ]);
-
-      console.log("count:", totalWinners,
-        "data:", winners,)
 
       return {
         message: 'Events found',
@@ -137,6 +141,17 @@ export const winnerRouter = router({
     }
   }),
 
+  update: publicProcedure
+    .input(updateWinnerSchema)
+    .mutation(async ({ input }) => {
+      const { winner_id, ...payload } = input;
+      const winner = await prisma.winner.update({
+        where: { id: winner_id },
+        data: payload,
+      });
+
+      return { data: winner, message: 'Winner Updated successfully!' };
+    }),
   selectWinner: publicProcedure
     .input(selectWinnerSchema)
     .mutation(async ({ input }) => {

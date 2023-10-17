@@ -12,6 +12,7 @@ import {
 import { MoreHorizontal } from 'lucide-react';
 import { LoadingDialog } from '~/components/common/modal/loadingModal';
 import { CmsDailog } from '~/components/common/modal/cms';
+import Image from 'next/image';
 
 function Cms() {
   const [selectedItem, setSelectedItem] = React.useState({});
@@ -68,22 +69,25 @@ function Cms() {
 
           <div className="w-full grid grid-cols-1 gap-4  md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4     mb-10 ">
             {staticData?.length ? (
-              staticData?.map((item: any, i: any) => {
+              staticData?.map((item: any) => {
                 return (
                   <Link
-                    key={i}
+                    key={item?.id}
                     href={`/admin/cms/edit/${item?.id}`}
-                    className=" rounded-full border-border"
+                    className="rounded-md overflow-hidden border-border hover:opacity-80"
                   >
+                    <Image
+                      className={`h-60 w-full object-cover`}
+                      src={process.env.NEXT_PUBLIC_MEDIA_BASE_URL + item?.thumb}
+                      alt={item?.CMSDescription[0]?.title}
+                      width={360}
+                      height={240}
+                    />
                     <div className="bg-background py-4 px-4 rounded-md  w-full   shadow-lg flex flex-row items-center justify-between  ">
                       <p className="text-lg capitalize text-primary font-semibold">
                         {item?.CMSDescription[0]?.title}
                       </p>
-                      <div>
-                        <div>
-                          <i className="fa-solid fa-pen-to-square hover:text-primary"></i>
-                        </div>
-                      </div>
+                      <i className="fa-solid fa-pen-to-square hover:text-primary"></i>
                     </div>
                   </Link>
                 );
@@ -101,58 +105,62 @@ function Cms() {
             Products CMS
           </p>
 
-          <div className="w-full grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4  mb-10 ">
+          <div className="w-full grid grid-cols-1 gap-4  md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mb-10">
             {eventfaqsData?.length ? (
-              eventfaqsData?.map((item: any, i: any) => {
+              eventfaqsData?.map((item: any) => {
                 return (
                   <div
-                    key={i}
-                    className="bg-background py-4 px-4 rounded-md  w-full   shadow-lg flex flex-row items-center justify-between  "
+                    key={item?.id}
+                    className="rounded-md overflow-hidden border-border hover:opacity-80"
                   >
-                    <p className="text-lg capitalize text-primary font-semibold ">
-                      {item?.CMSDescription[0]?.title}
-                    </p>
-                    <div>
-                      <div>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="h-8 w-8 p-0">
-                              <span className="sr-only">Open menu</span>
-                              <MoreHorizontal className="h-4 w-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <Link href={`/admin/cms/edit/${item?.id}`}>
-                              <DropdownMenuItem>Edit</DropdownMenuItem>
-                            </Link>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem
-                              onClick={() =>
-                                handleCmsStatus(
-                                  item,
-                                  item?.is_enabled === false
-                                    ? 'enable'
-                                    : 'disable',
-                                )
-                              }
-                            >
-                              {item.is_enabled === true
-                                ? 'Enabled'
-                                : 'Disabled'}
-                            </DropdownMenuItem>
+                    <Image
+                      className={`h-60 w-full object-cover`}
+                      src={process.env.NEXT_PUBLIC_MEDIA_BASE_URL + item?.thumb}
+                      alt={item?.CMSDescription[0]?.title}
+                      width={360}
+                      height={240}
+                    />
 
-                            <DropdownMenuSeparator />
-
-                            {
-                              <DropdownMenuItem
-                                onClick={() => handleCmsStatus(item, 'delete')}
-                              >
-                                Delete
-                              </DropdownMenuItem>
+                    <div className="bg-background py-4 px-4 rounded-md  w-full   shadow-lg flex flex-row items-center justify-between  ">
+                      <p className="text-lg capitalize text-primary font-semibold ">
+                        {item?.CMSDescription[0]?.title}
+                      </p>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" className="h-8 w-8 p-0">
+                            <span className="sr-only">Open menu</span>
+                            <MoreHorizontal className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <Link href={`/admin/cms/edit/${item?.id}`}>
+                            <DropdownMenuItem>Edit</DropdownMenuItem>
+                          </Link>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem
+                            onClick={() =>
+                              handleCmsStatus(
+                                item,
+                                item?.is_enabled === false
+                                  ? 'enable'
+                                  : 'disable',
+                              )
                             }
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </div>
+                          >
+                            {item.is_enabled === true ? 'Enabled' : 'Disabled'}
+                          </DropdownMenuItem>
+
+                          <DropdownMenuSeparator />
+
+                          {
+                            <DropdownMenuItem
+                              onClick={() => handleCmsStatus(item, 'delete')}
+                            >
+                              Delete
+                            </DropdownMenuItem>
+                          }
+                        </DropdownMenuContent>
+                      </DropdownMenu>
                     </div>
                   </div>
                 );

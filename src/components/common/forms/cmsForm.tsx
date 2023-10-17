@@ -320,6 +320,8 @@ export default function CmsForm(props: CategoryFormInterface) {
     );
   };
 
+  console.log('edit form');
+
   const header = renderHeader();
   return (
     <Form {...form}>
@@ -334,15 +336,12 @@ export default function CmsForm(props: CategoryFormInterface) {
               : 'hidden lg:space-y-4 space-y-4'
           }
         >
-          {enabled ? (
-            <Input
-              placeholder="Image URL"
-              value={
-                process.env.NEXT_PUBLIC_MEDIA_BASE_URL + form.watch('thumb')
-              }
-              disabled={true}
-            />
-          ) : null}
+          <Input
+            className="disabled:cursor-copy"
+            placeholder="Image URL"
+            value={process.env.NEXT_PUBLIC_MEDIA_BASE_URL + form.watch('thumb')}
+            disabled={true}
+          />
 
           <ImageInput
             register={form.register('thumb')}

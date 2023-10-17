@@ -43,7 +43,6 @@ export function CmsDailog(props: SettingDialogInterface) {
   const handleClick = async () => {
     try {
       setLoading(true);
-      console.log(props?.selectedItem.id, 'props?.selectedItem.id');
       const payload: any = {
         id: props?.selectedItem.id,
       };
@@ -54,7 +53,6 @@ export function CmsDailog(props: SettingDialogInterface) {
         payload.is_deleted = !props?.selectedItem?.is_deleted;
 
       const result = await updateCmsStatusData.mutateAsync({ ...payload });
-      console.log(result);
 
       if (result) {
         setLoading(false);

@@ -14,3 +14,11 @@ export const selectWinnerSchema = z.object({
   customer_name: z.string(),
   event_name: z.string(),
 });
+
+export const updateWinnerSchema = z.object({
+  winner_id: z.number(),
+  is_enabled: z.boolean().optional(),
+  thumb: z.string().optional(),
+});
+
+export type UpdateWinnerSchema = z.infer<typeof updateWinnerSchema>;
