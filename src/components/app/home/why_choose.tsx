@@ -34,10 +34,10 @@ function WhyChoose() {
               </div>
               <div>
                 <div className='ltr:text-left rtl:text-right'>
-                  <div className="text-2xl sm:text-4xl  leading-tight">
+                  <div className="text-2xl sm:text-4xl  leading-tight text-center sm:text-start">
                     {item?.title}
                   </div>
-                  <div className=" text-base font-normal text-gray-500 text-border leading-tight">
+                  <div className=" text-base font-normal text-gray-500 text-border leading-tight text-center sm:text-start">
                     {item?.desc}
                   </div>
                 </div>

@@ -39,7 +39,7 @@ function HowtoSection() {
                     <div className="text-background text-xs sm:text-sm font-normal ">
                       {item?.step} 
                     </div>
-                    <div className="text-background text-xs sm:text-md md:text-lg font-bold sm:font-extrabold  ">
+                    <div className="text-background text-sm sm:text-md md:text-lg font-bold sm:font-extrabold  ">
                       {item?.title}
                     </div>
                   </div>

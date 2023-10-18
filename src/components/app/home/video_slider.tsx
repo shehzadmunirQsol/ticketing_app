@@ -123,19 +123,19 @@ function VideoSlider(props: producctInterface) {
   };
   return (
     <div className=" relative  mx-auto  w-full ">
-      <div className="mt-4 md:mt-6 relative flex flex-col md:flex-row h-28 md:h-auto py-6 justify-center w-full md:justify-between mb-6 gap-4 items-center ">
+      <div className="mt-4 md:mt-6 relative flex flex-col md:flex-row h-28 md:h-auto py-6 justify-center w-full md:justify-between mb-6 gap-4 sm:items-center items-start">
         <div>
-          <p className="text-gray-200 text-center text-3xl ltr:sm:text-left rtl:sm:text-right  sm:text-5xl font-black uppercase  ">
+          <p className="text-gray-200 text-left sm:text-center text-3xl ltr:sm:text-left rtl:sm:text-right  sm:text-5xl font-black uppercase  ">
             {props?.title}
           </p>
-          <p className="text-gray-200 !text-xl sm:!text-3xl text-center ltr:sm:text-left rtl:sm:text-right lg:!text-5xl font-light uppercase  ">
+          <p className="text-gray-200 !text-xl sm:!text-3xl text-left sm:text-center ltr:sm:text-left rtl:sm:text-right lg:!text-5xl font-light uppercase  ">
             {props?.subTitle}
           </p>
         </div>
         <div
           className={`${
             lang?.dir == 'rtl' ? ' flex-row-reverse' : 'md:ml-0'
-          }  flex gap-2 items-center justify-center `}
+          }  flex gap-2 items-center justify-center sm:flex hidden`}
         >
           <Button
             variant="rounded"
