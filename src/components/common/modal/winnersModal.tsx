@@ -102,8 +102,8 @@ export function WinnersEnableDialog(props: WinnersDialogInterface) {
                     {props?.selectedItem?.isEnable ? 'disable' : 'enable'}{' '}
                     <span className="text-primary">
                       {props?.selectedItem?.name}
-                    </span>{' '}
-                    as a Winner?
+                    </span>
+                    ?
                   </p>
                 </div>
               </div>
@@ -148,7 +148,6 @@ export function ImageUploadDialog(props: WinnersImageDialogInterface) {
 
   useEffect(() => {
     if (props?.selectedItem?.winnerId) {
-      console.log(props?.selectedItem?.winnerId);
       form.setValue('winner_id', props?.selectedItem?.winnerId);
       form.setValue('thumb', props?.selectedItem?.thumb);
     }
@@ -239,10 +238,6 @@ export function ImageUploadDialog(props: WinnersImageDialogInterface) {
     props?.setSelectedItem({});
   }
 
-  console.log(form.formState.errors);
-  console.log(props);
-  console.log(form.getValues());
-
   return (
     <Dialog open={props?.isImageModal} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-[750px]">
@@ -275,7 +270,7 @@ export function ImageUploadDialog(props: WinnersImageDialogInterface) {
           </Form>
         </DialogDescription>
 
-        <LoadingDialog open={loading} text={'Saving image...'} />
+        <LoadingDialog open={loading} text={'Adding image...'} />
       </DialogContent>
     </Dialog>
   );

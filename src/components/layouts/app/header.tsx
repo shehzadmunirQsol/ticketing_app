@@ -24,6 +24,7 @@ import { trpc } from '~/utils/trpc';
 export default function Header() {
   const router = useRouter();
   const { isLogin } = useSelector((state: RootState) => state.auth);
+  const { lang } = useSelector((state: RootState) => state.layout);
   const { count } = useSelector((state: RootState) => state.cart);
 
   const [color, setColor] = useState(false);
@@ -63,9 +64,9 @@ export default function Header() {
        transform ease-in-out`}
     >
       <div
-        className={`py-8 px-4 md:px-14 w-full shadow-xl flex items-center justify-between `}
+        className={`py-8 px-4 md:px-14 w-full flex items-center justify-between `}
       >
-        <Link href="/" className="z-50">
+        <Link onClick={() => setNav(false)} href="/" className="z-50">
           <Image
             src={LogoImage}
             alt="Logo Image"
@@ -117,17 +118,34 @@ export default function Header() {
         </div>
 
         <div className="mdx:hidden flex justify-between gap-2 items-center">
-          <Select onValueChange={toggleLanguageHandler}>
-            <SelectTrigger className="h-9 w-9 rounded-none border-primary text-center  justify-center text-gray-200">
-              <SelectValue placeholder="EN" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem value="en">EN</SelectItem>
-                <SelectItem value="ar">AR</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+          {nav ? (
+            <Select value={lang.lang} onValueChange={toggleLanguageHandler}>
+              <SelectTrigger className="z-50 h-9 w-9 rounded-none border-primary text-center  justify-center text-gray-200">
+                <SelectValue placeholder="EN" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value="en">EN</SelectItem>
+                  <SelectItem value="ar">AR</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          ) : (
+            <Link className="z-[999]" href={'/cart'}>
+              <Button
+                variant="outline"
+                size="icon_square"
+                className="border-primary relative"
+              >
+                <i className="fa-solid fa-cart-shopping" />
+                {count ? (
+                  <span className="absolute -top-3 -right-3 inline-flex items-center my-auto justify-center bg-red-600 text-white rounded-full w-7 h-7 text-xs">
+                    {count > 99 ? '99+' : count}
+                  </span>
+                ) : null}
+              </Button>
+            </Link>
+          )}
 
           <div onClick={() => setNav((prev) => !prev)}>
             <Button
@@ -253,10 +271,6 @@ export const SideBarMenu: React.FC<SideBarMenuProps> = ({ nav, closeFn }) => {
       link: '/contact-us',
     },
     {
-      text: langContent[lang.lang].Header.title_six,
-      link: '/cart',
-    },
-    {
       text: isLogin
         ? langContent[lang.lang].Header.sub_title_seven
         : langContent[lang.lang].Header.title_seven,
@@ -266,10 +280,10 @@ export const SideBarMenu: React.FC<SideBarMenuProps> = ({ nav, closeFn }) => {
 
   return (
     <ul
-      className={`z-10 pb-10 block mdx:hidden  transition-all ease-linear font-sans overflow-y-scroll scroll-hide ${
+      className={`z-10 pb-4 block mdx:hidden  transition-all ease-linear font-sans  overflow-y-scroll scroll-hide ${
         nav
           ? 'absolute top-0 left-0 duration-100 w-full h-screen bg-background-footer flex flex-col justify-start items-center pt-24'
-          : 'absolute top-24 left-[-100%]  duration-100  '
+          : 'absolute top-24 left-[-100%]  duration-100'
       }`}
     >
       {menuList.map((item, i) => {
@@ -277,31 +291,21 @@ export const SideBarMenu: React.FC<SideBarMenuProps> = ({ nav, closeFn }) => {
           <li
             key={i}
             className={`group py-3 text-lg w-full text-center ${
-              i == 6 ? 'border-y-[1px]' : 'border-t-[1px]'
-            } border-gray-700 hover:bg-primary hover:text-primary-foreground hover:border-transparent transition-colors duration-300 ease-in-out cursor-pointer`}
+              menuList.length - 1 === i ? 'border-y-[1px]' : 'border-t-[1px]'
+            }
+             border-gray-700 hover:bg-primary hover:text-primary-foreground hover:border-transparent transition-colors duration-300 ease-in-out cursor-pointer`}
             onClick={() => {
               router.push(item.link);
               closeFn(false);
             }}
           >
-            {i == 6 ? (
-              <p className="flex justify-center">
-                {item.text}
-                {count ? (
-                  <span className="block mx-2 text-primary group-hover:text-primary-foreground transition-colors duration-500 w-fit">
-                    ( {count > 99 ? '99+' : count} )
-                  </span>
-                ) : null}
-              </p>
-            ) : (
-              item.text
-            )}
+            {item.text}
           </li>
         );
       })}
       {isLogin ? (
         <li
-          className={`group py-3 text-lg w-full text-center border-y-[1px] 
+          className={`group py-3 text-lg w-full text-center border-b-[1px] 
            border-gray-700 hover:bg-primary hover:text-primary-foreground hover:border-transparent transition-colors duration-300 ease-in-out cursor-pointer`}
           onClick={handleLogout}
         >

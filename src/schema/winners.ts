@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 export const getWinnersSchema = z.object({
+  is_admin: z.boolean().default(false),
   first: z.number(),
   rows: z.number(),
   lang_id: z.number().default(1),

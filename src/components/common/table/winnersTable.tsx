@@ -84,6 +84,7 @@ export default function WinnersDataTable() {
     first: 0,
     rows: 10,
     lang_id: 1,
+    is_admin: true,
   });
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
@@ -167,7 +168,7 @@ export default function WinnersDataTable() {
       header: 'Customer Name',
       cell: ({ row }) => (
         <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
-          <div className="h-10 w-14 rounded-lg overflow-hidden relative">
+          <div className="h-10 w-16 rounded-lg overflow-hidden relative">
             <Image
               className="object-cover bg-ac-2 "
               src={

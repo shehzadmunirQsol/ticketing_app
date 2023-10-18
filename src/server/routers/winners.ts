@@ -14,7 +14,7 @@ export const winnerRouter = router({
       const { filters, ...payload } = input;
       const filterPayload: any = { ...filters };
 
-      if (filterPayload?.searchQuery) delete filterPayload.searchQuery;
+      delete filterPayload.searchQuery;
       if (filterPayload?.endDate) delete filterPayload.endDate;
       if (filterPayload?.startDate) delete filterPayload.startDate;
       const where: any = { is_deleted: false, ...filterPayload };
@@ -46,22 +46,17 @@ export const winnerRouter = router({
             },
           },
         });
-        where.OR.push({
-          Customer: {
-            last_name: {
-              contains: input?.filters?.searchQuery,
-              mode: 'insensitive',
+
+        if (input.is_admin) {
+          where.OR.push({
+            Customer: {
+              email: {
+                contains: input?.filters?.searchQuery,
+                mode: 'insensitive',
+              },
             },
-          },
-        });
-        where.OR.push({
-          Customer: {
-            email: {
-              contains: input?.filters?.searchQuery,
-              mode: 'insensitive',
-            },
-          },
-        });
+          });
+        }
       }
       if (input?.filters?.startDate && !input?.filters?.endDate) {
         const startDate = new Date(input?.filters?.startDate)
@@ -82,11 +77,14 @@ export const winnerRouter = router({
         const endDate = new Date(inputEndDate.setHours(23, 59));
         where.created_at = { gte: new Date(startDate), lte: endDate };
       }
+      if (input.is_admin === false) {
+        where.is_enabled = true;
+      }
 
       const winnersPromise = prisma.winner.findMany({
         skip: input.first * input.rows,
         take: input.rows,
-        orderBy: { created_at: 'desc' },
+        orderBy: { id: 'desc' },
         where: where,
         select: {
           id: true,
