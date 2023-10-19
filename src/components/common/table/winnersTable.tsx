@@ -101,46 +101,46 @@ export default function WinnersDataTable() {
   }, [data]);
 
   const columns: ColumnDef<WinnerType>[] = [
-    // {
-    //   id: 'ID',
-    //   header: 'Winners ID',
-    //   enableHiding: false,
-    //   cell: ({ row }) => {
-    //     return (
-    //       <DropdownMenu>
-    //         <DropdownMenuTrigger asChild>
-    //           <Button variant="ghost" className="max-w-fit px-2">
-    //             <span className="sr-only">Open menu</span>
-    //             <div className=" hover:text-primary w-14 text-left ">
-    //               # {row.original.id}
-    //             </div>
-    //             {/* <MoreHorizontal className="h-4 w-4" /> */}
-    //           </Button>
-    //         </DropdownMenuTrigger>
-    //         <DropdownMenuContent align="end">
-    //           <DropdownMenuItem
-    //             onClick={() => handleEnable(row.original, true)}
-    //           >
-    //             Add Image
-    //           </DropdownMenuItem>
-    //         </DropdownMenuContent>
-    //       </DropdownMenu>
-    //     );
-    //   },
-    // },
-    // {
-    //   id: 'Enabled',
-    //   header: 'Enabled',
+    {
+      id: 'ID',
+      header: 'Winners ID',
+      enableHiding: false,
+      cell: ({ row }) => {
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="max-w-fit px-2">
+                <span className="sr-only">Open menu</span>
+                <div className=" hover:text-primary w-14 text-left ">
+                  # {row.original.id}
+                </div>
+                {/* <MoreHorizontal className="h-4 w-4" /> */}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem
+                onClick={() => handleEnable(row.original, true)}
+              >
+                Add Image
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        );
+      },
+    },
+    {
+      id: 'Enabled',
+      header: 'Enabled',
 
-    //   cell: ({ row }) => {
-    //     return (
-    //       <Switch
-    //         checked={row?.original?.is_enabled}
-    //         onCheckedChange={() => handleEnable(row.original, false)}
-    //       />
-    //     );
-    //   },
-    // },
+      cell: ({ row }) => {
+        return (
+          <Switch
+            checked={row?.original?.is_enabled}
+            onCheckedChange={() => handleEnable(row.original, false)}
+          />
+        );
+      },
+    },
 
     {
       accessorKey: 'Product',
@@ -276,6 +276,7 @@ export default function WinnersDataTable() {
 
   const csvData = [
     [
+      'Winner ID',
       'Product',
       'Customer Name',
       'Customer Email',
@@ -283,7 +284,8 @@ export default function WinnersDataTable() {
       'Draw Date',
       'Ticket No.',
     ],
-    ...winnersData?.map(({ Event, Customer, draw_date, ticket_num }) => [
+    ...winnersData?.map(({ id, Event, Customer, draw_date, ticket_num }) => [
+      id,
       Event?.EventDescription[0]?.name,
       Customer?.first_name,
       Customer?.email,
