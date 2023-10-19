@@ -30,7 +30,7 @@ export const Winners = () => {
   const { data: winnersList, isFetching } = trpc.winner.get.useQuery(filters, {
     refetchOnWindowFocus: false,
     onSuccess(data) {
-      if (filters.first > 0 && data?.data?.length) {
+      if (filters.first > 0) {
         setProducts([...products, ...data.data]);
       } else {
         setProducts(data.data);
