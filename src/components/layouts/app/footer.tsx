@@ -20,8 +20,8 @@ interface LinkItemProps {
 }
 function Footer() {
   const { lang } = useSelector((state: RootState) => state.layout);
-  const router = useRouter()
-  const [isModal, setIsModal] = useState(false)
+  const router = useRouter();
+  const [isModal, setIsModal] = useState(false);
 
   return (
     <footer className="h-full  bg-background-footer !z-50">
@@ -56,7 +56,7 @@ function Footer() {
                   <Button
                     variant="rounded-outline"
                     className="z-30 font-bold bg-transparent min-w-max "
-                    onClick={()=>setIsModal(true)}
+                    onClick={() => setIsModal(true)}
                   >
                     <div>
                       {langContent[lang.lang].Footer.SUBSCRIBE_BTN}
@@ -71,9 +71,9 @@ function Footer() {
                   <p>{langContent[lang.lang].Footer.ADDRESS_SUB_TITLE_ONE}</p>
                   <p>{langContent[lang.lang].Footer.ADDRESS_SUB_TITLE_TWO}</p>
                   <p>{langContent[lang.lang].Footer.ADDRESS_SUB_TITLE_THREE}</p>
-                  <p className="text-xs my-2">
+                  {/* <p className="text-xs my-2">
                     {langContent[lang.lang].Footer.ADDRESS_SUB_TITLE_FOUR}
-                  </p>
+                  </p> */}
                 </div>
                 <div className=" flex items-center justify-center md:justify-start  w-64  text-sm text-white">
                   <Image
@@ -174,17 +174,24 @@ function Footer() {
             </div>
           </div>
 
-          <div className="flex h-20  px-4 sm:mt-8 md:px-8 md:h-32  w-full relative justify-end items-end ">
+          <div className="flex flex-col px-4 sm:mt-8 md:px-8 w-full relative justify-end items-end gap-3">
             <Image
-              className="w-full h-full object-contain  z-40"
+              className="w-full h-full object-contain  z-40 "
               src={Group16}
               quality={100}
               alt="Sunset in the mountains"
             />
+            <p className="text-xs my-2">
+              {langContent[lang.lang].Footer.ADDRESS_SUB_TITLE_FOUR}
+            </p>
           </div>
         </div>
       </div>
-      <NewsLetterDialog isModal={isModal} setIsModal={setIsModal} title={"Newsletter"}/>
+      <NewsLetterDialog
+        isModal={isModal}
+        setIsModal={setIsModal}
+        title={'Newsletter'}
+      />
     </footer>
   );
 }

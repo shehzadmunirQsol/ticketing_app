@@ -30,9 +30,13 @@ import { contactSchema, contactSchemaInput } from '~/schema/contact';
 import { useToast } from '~/components/ui/use-toast';
 import Link from 'next/link';
 import ContactImage from '../../../public/assets/contact-us.svg';
+import location from '../../../public/assets/icons/location.svg';
+import phone from '../../../public/assets/icons/phone.svg';
+import mail from '../../../public/assets/icons/mail.svg';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import ReCAPTCHA from "react-google-recaptcha"
+import Image  from 'next/image';
 
 export default function Contact() {
   const { toast } = useToast();
@@ -130,6 +134,46 @@ export default function Contact() {
           <div className="font-black  py-4 ">
             <p className="text-xl pl-6 px-4 lg:px-8">Contact Us</p>
             <hr className=" opacity-20 mt-4" />
+
+            <div className="flex flex-col justify-start align-start pl-6 px-4 lg:px-8 gap-2 mt-4">
+              <Image
+                className="object-contain mb-2"
+                src={location}
+                quality={100}
+                alt="Location"
+              />
+              <div className="text-grayColor text-lg font-[600]">Address</div>
+              <div className="flex flex-col text-grayColor font-thin">
+                <span>Dream Car Giveaways Limited</span>
+                <span>Berry Hill Industrial Estate,</span>
+                <span>Droitwich, WR9 9AB</span>
+              </div>
+            </div>
+            <div className="flex flex-col justify-start align-start pl-6 px-4 lg:px-8 gap-2 mt-4">
+              <Image
+                className="object-contain mb-2"
+                src={phone}
+                quality={100}
+                alt="Location"
+              />
+              <div className="text-grayColor text-lg font-[600]">General enquiry</div>
+              <div className="flex flex-col text-grayColor font-thin">
+                <span className="mb-2">01386719064</span>
+                <span>Info@dreamcargiveaways.co.uk</span>
+              </div>
+            </div>
+            <div className="flex flex-col justify-start align-start pl-6 px-4 lg:px-8 gap-2 mt-4">
+              <Image
+                className="object-contain mb-2"
+                src={mail}
+                quality={100}
+                alt="Location"
+              />
+              <div className="text-grayColor text-lg font-[600]">Sell your car</div>
+              <div className="text-grayColor font-thin">
+                sellyourcar@dreamcargiveaways.co.uk
+              </div>
+            </div>
           </div>
           <Form {...form}>
             <form
@@ -270,12 +314,12 @@ export default function Contact() {
                 />
               </div>
               <div className="flex flex-col sm:flex-row justify-between items-center gap-6 h-18">
-                <div className='h-fit object-contain w-fit ' >
+                <div className="h-fit object-contain w-fit ">
                   <ReCAPTCHA
                     ref={recaptchaRef}
                     size="normal"
                     badge="inline"
-                    theme='dark'
+                    theme="dark"
                     sitekey={process.env.NEXT_PUBLIC_SITE_KEY as string}
                     onChange={showResponse}
                   />

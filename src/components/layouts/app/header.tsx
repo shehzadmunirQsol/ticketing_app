@@ -107,6 +107,21 @@ function Header() {
       </div>
 
       <div className="mdx:hidden flex justify-between gap-2 items-center">
+        <Link href={'/cart'}>
+            <Button
+              variant="outline"
+              size="icon_square"
+              className="border-primary relative"
+            >
+              <i className="fa-solid fa-cart-shopping" />
+              {count ? (
+                <span className="absolute -top-3 -right-3 inline-flex items-center my-auto justify-center bg-red-600 text-white rounded-full w-7 h-7 text-xs">
+                  {count > 99 ? '99+' : count}
+                </span>
+              ) : null}
+            </Button>
+          </Link>
+          
         <Select onValueChange={toggleLanguageHandler}>
           <SelectTrigger className="h-9 w-9 rounded-none border-primary text-center  justify-center text-gray-200">
             <SelectValue placeholder="EN" />

@@ -107,20 +107,20 @@ function BannerSlider() {
               } transition-all  duration-500 ease-in-out items-center text-white z-40`}
             >
               <div className="px-4  space-y-1 sm:space-y-1.5 md:space-y-2 lg:space-y-3">
-                <p className=" text-2xl  sm:text-4xl md:text-5xl lg:text-[calc(3vw+10px)] xl:text-[55px] font-[900]  tracking-[-1px] ">
+                <p className="text-xl  sm:text-4xl md:text-5xl lg:text-[calc(3vw+10px)] xl:text-[55px] font-[800] sm:font-[900]  tracking-[-1px] ">
                   {carSlider[currentIndex]?.title}
                 </p>
                 {carSlider[currentIndex]?.price ? (
-                  <p className="text-2xl sm:text-4xl md:text-5xl lg:text-[calc(3vw+10px)] xl:text-[55px] tracking-[-1px]  ">
+                  <p className="text-xl sm:text-4xl md:text-5xl lg:text-[calc(3vw+10px)] xl:text-[55px] tracking-[-1px]  ">
                     + {carSlider[currentIndex]?.price}
                   </p>
                 ) : (
                   ''
                 )}
-                <p className="sm:block  text-lg md:text-xl  font-normal  ">
+                <p className="sm:block  text-sm md:text-xl  font-normal  ">
                   {carSlider[currentIndex]?.description}
                 </p>
-                <p className=" text-lg  sm:text-2xl tracking-[-1px]  font-[700]  ">
+                <p className=" text-base  sm:text-2xl tracking-[-1px] font-[600] sm:font-[700]  ">
                   {carSlider[currentIndex]?.date}
                 </p>
               </div>
@@ -140,7 +140,7 @@ function BannerSlider() {
             {/* text select cards */}
             <Link
               href={carSlider[currentIndex]?.link}
-              className={`py-4 lg:p-0 w-10/12 lg:w-1/2 self-center object-contain object-bottom transform rtl:-scale-x-100 ltr:scale-100 ltr:right-6 rtl:left-4 md:ltr:-right-40 md:rtl:-left-16                
+              className={`pb-6 pt-2 lg:p-0 w-10/12 lg:w-1/2 self-center object-contain object-bottom transform rtl:-scale-x-100 ltr:scale-100 ltr:right-6 rtl:left-4 md:ltr:-right-40 md:rtl:-left-16                
                 ${
                   showElement ? 'fading-animation' : ''
                 } transition-all duration-500 ease-in-out items-end

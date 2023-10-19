@@ -126,7 +126,7 @@ function ProductSection(props: producctInterface) {
       {
         breakpoint: 480,
         settings: {
-          slidesToShow: 1.05,
+          slidesToShow: 1.15,
           slidesToScroll: 1,
         },
       },
@@ -134,7 +134,7 @@ function ProductSection(props: producctInterface) {
   };
   return (
     <div className=" max-w-[1600px]  mx-auto w-full ">
-      <div className="px-4 relative gap-3 flex-col md:flex-row md:h-auto py-6  z-30 sm:items-center items-start w-full md:justify-between mb-6 flex h-fit sm:h-28 ">
+      <div className="px-4 relative gap-3 flex-col md:flex-row md:h-auto py-6  z-30 sm:items-center items-start w-full md:justify-between mb-0 sm:mb-6 flex h-fit sm:h-28 ">
         <p className="text-gray-200 !text-xl sm:!text-3xl lg:!text-5xl font-black uppercase ">
           {props?.title}
         </p>
