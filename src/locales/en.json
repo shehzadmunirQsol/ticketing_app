@@ -296,7 +296,9 @@
     "WINNER_HEADING":"Won",
     "WINNER_TICKET":"Winning ticket",
     "WINNER_DATE":"Draw date",
-    "WINNER_SUB_HEADING":"Won a"
+    "WINNER_SUB_HEADING":"Won",
+    "CONGRATULATIONS":"Congratulation to",
+    "CONGRATS_WINNING":"for winning"
   },
   "Cart":{
     "HEADING":"BASKET",

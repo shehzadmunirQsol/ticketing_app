@@ -1,7 +1,11 @@
 import { router, publicProcedure } from '../trpc';
 import { TRPCError } from '@trpc/server';
 import { prisma } from '~/server/prisma';
-import { getWinnersSchema, selectWinnerSchema } from '~/schema/winners';
+import {
+  getWinnersSchema,
+  selectWinnerSchema,
+  updateWinnerSchema,
+} from '~/schema/winners';
 import { EMAIL_TEMPLATE_IDS, sendEmail } from '~/utils/helper';
 
 export const winnerRouter = router({
@@ -10,11 +14,11 @@ export const winnerRouter = router({
       const { filters, ...payload } = input;
       const filterPayload: any = { ...filters };
 
-      if (filterPayload?.searchQuery) delete filterPayload.searchQuery;
+      delete filterPayload.searchQuery;
       if (filterPayload?.endDate) delete filterPayload.endDate;
       if (filterPayload?.startDate) delete filterPayload.startDate;
       const where: any = { is_deleted: false, ...filterPayload };
-      console.log({ filters }, 'filters_input');
+
       if (input?.filters?.searchQuery) {
         where.OR = [];
         where.OR.push({
@@ -29,9 +33,12 @@ export const winnerRouter = router({
             },
           },
         });
-        if (+input?.filters?.searchQuery) {
+        if (input?.filters?.searchQuery) {
           where.OR.push({
-            ticket_num: +input?.filters?.searchQuery,
+            ticket_num: {
+              contains: input?.filters?.searchQuery,
+              mode: 'insensitive',
+            },
           });
         }
         where.OR.push({
@@ -42,22 +49,17 @@ export const winnerRouter = router({
             },
           },
         });
-        where.OR.push({
-          Customer: {
-            last_name: {
-              contains: input?.filters?.searchQuery,
-              mode: 'insensitive',
+
+        if (input.is_admin) {
+          where.OR.push({
+            Customer: {
+              email: {
+                contains: input?.filters?.searchQuery,
+                mode: 'insensitive',
+              },
             },
-          },
-        });
-        where.OR.push({
-          Customer: {
-            email: {
-              contains: input?.filters?.searchQuery,
-              mode: 'insensitive',
-            },
-          },
-        });
+          });
+        }
       }
       if (input?.filters?.startDate && !input?.filters?.endDate) {
         const startDate = new Date(input?.filters?.startDate)
@@ -78,13 +80,19 @@ export const winnerRouter = router({
         const endDate = new Date(inputEndDate.setHours(23, 59));
         where.created_at = { gte: new Date(startDate), lte: endDate };
       }
+      if (input.is_admin === false) {
+        where.is_enabled = true;
+      }
 
       const winnersPromise = prisma.winner.findMany({
         skip: input.first * input.rows,
         take: input.rows,
-        orderBy: { created_at: 'desc' },
+        orderBy: { id: 'desc' },
         where: where,
         select: {
+          id: true,
+          thumb: true,
+          is_enabled: true,
           draw_date: true,
           is_cash_alt: true,
           ticket_num: true,
@@ -112,16 +120,13 @@ export const winnerRouter = router({
       });
 
       const totalWinnersPromise = prisma.winner.count({
-       where: where,
+        where: where,
       });
 
       const [totalWinners, winners] = await Promise.all([
         totalWinnersPromise,
         winnersPromise,
       ]);
-
-      console.log("count:", totalWinners,
-        "data:", winners,)
 
       return {
         message: 'Events found',
@@ -137,6 +142,17 @@ export const winnerRouter = router({
     }
   }),
 
+  update: publicProcedure
+    .input(updateWinnerSchema)
+    .mutation(async ({ input }) => {
+      const { winner_id, ...payload } = input;
+      const winner = await prisma.winner.update({
+        where: { id: winner_id },
+        data: payload,
+      });
+
+      return { data: winner, message: 'Winner Updated successfully!' };
+    }),
   selectWinner: publicProcedure
     .input(selectWinnerSchema)
     .mutation(async ({ input }) => {
@@ -148,7 +164,7 @@ export const winnerRouter = router({
         const winnerPayload = {
           ...payloadIds,
           draw_date: drawDate,
-          ticket_num: Math.floor(Math.random() * 99999),
+          ticket_num: Math.floor(Math.random() * 99999).toString(),
           is_enabled: true,
         };
 

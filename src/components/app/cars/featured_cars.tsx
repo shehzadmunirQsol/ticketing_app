@@ -6,9 +6,6 @@ import { Button } from '~/components/ui/button';
 import ProductCard from '../../common/card';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
-
-import ImageSlider from '~/public/assets/cars_gallery.png';
-import ImageSlider2 from '~/public/assets/cars_gallery_1.png';
 import Image from 'next/image';
 import { trpc } from '~/utils/trpc';
 import { renderNFTImage } from '~/utils/helper';
@@ -26,7 +23,6 @@ const FeaturedCars = () => {
   const slide2 = useRef<any>();
 
   const { lang } = useSelector((state: RootState) => state.layout);
-  const [products, setProducts] = useState<Array<any>>([]);
 
   const [filters, setFilters] = useState({
     first: 0,
@@ -34,18 +30,12 @@ const FeaturedCars = () => {
     is_featured: 1,
   });
 
-  const {
-    data: prductsList,
-    isFetched,
-    isLoading,
-    isError,
-  } = trpc.event.getFeatured.useQuery(
+  const { data: prductsList } = trpc.event.getFeatured.useQuery(
     { ...filters, lang_id: lang.lang_id },
     {
       refetchOnWindowFocus: false,
     },
   );
-  console.log({ prductsList });
   const next = () => {
     slide?.current.slickNext();
   };

@@ -59,22 +59,26 @@ function WinnarsCard(props: cardInterface) {
 
       <div className="px-4 mt-6 py-4">
         <div className=" text-lg md:text-2xl lg:text-3xl mb-2">
-          <p className="text-gray-200   font-extrabold leading-loose">
-            {props?.data?.Customer?.first_name} {langContent[lang.lang].Winners.WINNER_HEADING}
-          </p>
-          <p className="text-gray-200  leading-loose lg:-mt-5 md:-mt-5 -mt-2">
-            {props?.data?.Event?.EventDescription[0]?.name}
+          <p className="text-gray-200 overflow-hidden h-14 md:h-24 lg:h-28 ">
+            {langContent[lang.lang].Winners.CONGRATULATIONS}{' '}
+            <span className="font-bold">
+              {props?.data?.Customer?.first_name}
+            </span>{' '}
+            {langContent[lang.lang].Winners.CONGRATS_WINNING}{' '}
+            <span className="font-bold">
+              {props?.data?.Event?.EventDescription[0]?.name}
+            </span>
           </p>
         </div>
         <div className=" text-lightColor lg:text-lg md:text-lg text-sm font-normal leading-normal">
           <p>
-          {langContent[lang.lang].Winners.WINNER_TICKET}{' '}
+            {langContent[lang.lang].Winners.WINNER_TICKET}{' '}
             <span className="text-primary lg:text-lg md:text-lg text-sm font-black leading-[18px] ml-6 ">
               #{props?.data?.ticket_num}
             </span>
           </p>
           <p>
-          {langContent[lang.lang].Winners.WINNER_DATE}
+            {langContent[lang.lang].Winners.WINNER_DATE}
             <span className="text-primary lg:text-lg md:text-lg text-sm font-black leading-[18px] ml-16 ">
               {formattedDate}
             </span>
@@ -83,7 +87,8 @@ function WinnarsCard(props: cardInterface) {
         <hr className=" opacity-20 mt-4" />
         <div className=" mt-2">
           <p className="text-sm opacity-75 text-grayColor">
-            {props?.data?.Customer?.first_name} {langContent[lang.lang].Winners.WINNER_SUB_HEADING}{' '}
+            {props?.data?.Customer?.first_name}{' '}
+            {langContent[lang.lang].Winners.WINNER_SUB_HEADING}{' '}
             {props?.data?.Event?.EventDescription[0]?.name}
           </p>
         </div>

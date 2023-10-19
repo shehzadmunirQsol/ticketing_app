@@ -112,10 +112,10 @@ function ProductCard(props: cardInterface) {
                 {(props?.data?.total_tickets).toLocaleString()}
               </span>
             </div>
-            <div className="font-bold text-xl lg:text-2xl xl:text-3xl line-clamp-1">
+            <div className="font-bold overflow-hidden h-10 md:h-20 text-xl lg:text-2xl xl:text-3xl line-clamp-1">
               {langContent[lang.lang].Index.productcard.WIN_TITLE ?? ''}
 
-              <span className="text-gray-200  font-semibold leading-loose mx-2 ">
+              <span className="text-gray-200  font-semibold mx-2 ">
                 {props?.data?.EventDescription[0]?.name}
               </span>
             </div>
@@ -127,7 +127,7 @@ function ProductCard(props: cardInterface) {
             <hr className=" opacity-20 mt-4" />
 
             {props?.data?.category_id === 1 && props?.data?.cash_alt ? (
-              <div className=" mt-2">
+              <div className="h-6  overflow-hidden mt-2">
                 <span className="text-gray-200 text-md xl:text-lg font-semibold leading-[18px]">
                   {langContent[lang.lang].Index.productcard.ALTERNATIVE_TITLE}
                 </span>
@@ -147,7 +147,6 @@ function ProductCard(props: cardInterface) {
               <Button
                 variant="rounded"
                 className="font-[800] tracking-tight text-md xl:text-lg "
-                disabled={props.type == 'upcoming' ? true : false}
               >
                 {langContent[lang.lang].Index.productcard.ENTER_BTN}
               </Button>

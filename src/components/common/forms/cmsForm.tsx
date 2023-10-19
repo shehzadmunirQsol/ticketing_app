@@ -16,7 +16,7 @@ import { useEffect, useState } from 'react';
 import { getS3ImageUrl } from '~/service/api/s3Url.service';
 import { trpc } from '~/utils/trpc';
 import { useRouter } from 'next/router';
-import { compressImage, createSlug } from '~/utils/helper';
+import { compressImage, createSlug, isValidImageType } from '~/utils/helper';
 import { LoadingDialog } from '../modal/loadingModal';
 import { LanguageInterface } from '../language_select';
 // import { Editor } from 'primereact/editor';
@@ -53,6 +53,7 @@ export default function CmsForm(props: CategoryFormInterface) {
   const form = useForm<cmsSchemaForm>({
     resolver: zodResolver(cmsSchema),
     defaultValues: {
+      thumb: '',
       type: addFaqsType[0]?.faqType as
         | 'event_faqs'
         | 'faqs'
@@ -67,12 +68,10 @@ export default function CmsForm(props: CategoryFormInterface) {
     },
   });
 
-  const [image, setImage] = useState<File>();
-  const [loading, setLoading] = useState<boolean>(false);
+  // const [optimizeFile, setOptimizeFile] = useState<File | null>(null);
+  const [imageLoading, setImageLoading] = useState<boolean>(false);
   const [contentEn, setContentEn] = useState<any>(eventFaqs);
   const [contentAr, setContentAr] = useState<any>(eventFaqsAn);
-  console.log(form.formState.errors, 'form.formState.errors');
-  console.log(form.getValues()?.slug, 'form.formState.value');
   // Getting Data
   const { data, isFetching } = trpc.cms.getById.useQuery(
     { id: +id },
@@ -82,6 +81,7 @@ export default function CmsForm(props: CategoryFormInterface) {
       onSuccess(res: any) {
         // form.setValue('slug', res?.data?.slug as string);
         form.setValue('type', res?.data?.type as any);
+        form.setValue('thumb', res?.data?.thumb);
         form.setValue(
           'en.title',
           res?.data?.CMSDescription[0]?.title as string,
@@ -124,7 +124,7 @@ export default function CmsForm(props: CategoryFormInterface) {
 
     form.setValue('en.content', newContent);
   };
-  // updating data
+  // updating cms
   const updateCmsId = trpc.cms.updateById.useMutation({
     onSuccess: (res: any) => {
       console.log(res);
@@ -138,7 +138,7 @@ export default function CmsForm(props: CategoryFormInterface) {
     },
   });
 
-  // cms customer
+  // add cms
   const AddCmsContent = trpc.cms.addCmsContent.useMutation({
     onSuccess: (res: any) => {
       console.log(res, 'REs');
@@ -151,19 +151,19 @@ export default function CmsForm(props: CategoryFormInterface) {
   // 2. Define a submit handler.
   async function onSubmit(values: any) {
     try {
-      console.log({ values }, 'slogDATAsddasdsa');
+      if (values.thumb === '') alert('Please select an image');
 
       const payload: any = {
         ...values,
       };
-      const result = await AddCmsContent.mutateAsync({ ...payload });
+      await AddCmsContent.mutateAsync({ ...payload });
       toast({
         variant: 'success',
         title: 'Cms Content Add Successfully',
       });
       localStorage.removeItem('cmscontent');
 
-      router.back();
+      router.replace('/admin/cms');
     } catch (error: any) {
       toast({
         variant: 'destructive',
@@ -185,11 +185,14 @@ export default function CmsForm(props: CategoryFormInterface) {
   // update data andler
   const onSubmitUpdate = async (values: any) => {
     try {
+      if (values.thumb === '') alert('Please select an image');
+
       const payload = {
         id: +id,
         // content: content,
         ...values,
       };
+
       await updateCmsId.mutateAsync(payload);
       toast({
         variant: 'success',
@@ -197,7 +200,7 @@ export default function CmsForm(props: CategoryFormInterface) {
       });
       localStorage.removeItem('cmscontent');
 
-      router.push('/admin/cms');
+      router.replace('/admin/cms');
     } catch (error: any) {
       toast({
         variant: 'destructive',
@@ -205,6 +208,40 @@ export default function CmsForm(props: CategoryFormInterface) {
       });
     }
   };
+
+  async function uploadOnS3Handler(originalFile: any) {
+    if (originalFile?.name) {
+      const response = await getS3ImageUrl(originalFile);
+      if (!response.success)
+        return console.log('response.message', response.message);
+
+      const isImage = isValidImageType(originalFile?.type);
+
+      const nftSource = {
+        thumb: '',
+      };
+
+      if (isImage) {
+        nftSource.thumb = response?.data;
+      }
+
+      return nftSource;
+    } else {
+      return console.log('Please Select Image');
+    }
+  }
+
+  async function singleImageHandler(originalFile: File) {
+    setImageLoading(true);
+
+    const optimizedFile = await compressImage(originalFile);
+    if (!optimizedFile) return alert('Please select an image');
+    const nftSource = await uploadOnS3Handler(optimizedFile);
+    const thumb = nftSource ? nftSource?.thumb : '';
+
+    form.setValue('thumb', thumb);
+    setImageLoading(false);
+  }
 
   // language handle
   const langError =
@@ -236,7 +273,6 @@ export default function CmsForm(props: CategoryFormInterface) {
     }
   };
 
-  console.log(form.getValues().type, 'getvalues');
   // Editor Config
   const editorConfig = {
     stylesSet: 'default',
@@ -246,8 +282,6 @@ export default function CmsForm(props: CategoryFormInterface) {
   };
 
   const enabled = id ? true : false;
-
-  console.log(data?.data, 'datadatadata');
 
   // rich text editor content
   const renderHeader = () => {
@@ -286,8 +320,9 @@ export default function CmsForm(props: CategoryFormInterface) {
     );
   };
 
+  console.log('edit form');
+
   const header = renderHeader();
-  console.log(form.getValues(), 'form.getValues()');
   return (
     <Form {...form}>
       <form
@@ -301,6 +336,22 @@ export default function CmsForm(props: CategoryFormInterface) {
               : 'hidden lg:space-y-4 space-y-4'
           }
         >
+          <Input
+            className="disabled:cursor-copy"
+            placeholder="Image URL"
+            value={process.env.NEXT_PUBLIC_MEDIA_BASE_URL + form.watch('thumb')}
+            disabled={true}
+          />
+
+          <ImageInput
+            register={form.register('thumb')}
+            reset={form.reset}
+            getValues={form.getValues}
+            setValue={form.setValue}
+            onChange={singleImageHandler}
+            onRemove={() => form.setValue('thumb', '')}
+            required={true}
+          />
           <div className="flex flex-col lg:flex-row md:flex-row justify-between  gap-2 ">
             {/* <FormField
               control={form.control}
@@ -720,14 +771,10 @@ export default function CmsForm(props: CategoryFormInterface) {
           </Button>
         </div>
         <LoadingDialog
-          open={
-            AddCmsContent.isLoading ||
-            loading ||
-            updateCmsId.isLoading ||
-            isFetching
-          }
+          open={AddCmsContent.isLoading || updateCmsId.isLoading || isFetching}
           text={`${isFetching ? 'Loading' : id ? 'Updating' : 'Adding'} CMS...`}
         />
+        <LoadingDialog open={imageLoading} text={`Image uploading...`} />
       </form>
     </Form>
   );
