@@ -487,7 +487,7 @@ model Winner {
   id          Int     @id @default(autoincrement())
   customer_id Int
   event_id    Int
-  ticket_num  Int
+  ticket_num  String
   thumb       String? @default("")
   is_cash_alt Boolean @default(false)
   is_enabled  Boolean @default(false)
@@ -659,6 +659,7 @@ enum SettingEnums {
   WONDER
   PAYMENT
   IMAGE_GALLERY
+  CONFIG
 }
 
 enum LanguageEnums {

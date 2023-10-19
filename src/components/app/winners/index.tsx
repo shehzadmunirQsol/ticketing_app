@@ -43,7 +43,7 @@ export const Winners = () => {
       lang_id: lang.lang_id,
       first: 0,
       rows: 9,
-      filters: { searchQuery },
+      filters: { searchQuery: searchQuery?.trim() },
     });
   }, [searchQuery]);
 
@@ -56,7 +56,12 @@ export const Winners = () => {
     }
   }
 
-  console.log({ searchQuery });
+  function searchHandler(e: React.ChangeEvent<HTMLInputElement>) {
+    const value = e.target.value?.trimStart();
+    if (value?.length <= 72) {
+      setSearch(value);
+    }
+  }
 
   return (
     <div>
@@ -78,7 +83,7 @@ export const Winners = () => {
             <i className="fa fa-search text-xl" />
             <input
               ref={inputRef}
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={searchHandler}
               value={search}
               className="flex-1 bg-transparent border-none outline-none"
               placeholder="Search your friends and other lucky people... "
