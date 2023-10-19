@@ -116,8 +116,8 @@ function ProductCard(props: cardInterface) {
                 {props?.data?.EventDescription[0]?.name}
               </span>
             </div>
-            <div className="relative w-full opacity-75  text-gray-200  text-md font-normal leading-normal ">
-              <p className="  h-12  overflow-hidden ">
+            <div className="relative w-full opacity-75  text-gray-200  text-md font-light sm:font-normal leading-normal ">
+              <p className="overflow-hidden ">
                 {customTruncate(props?.data?.EventDescription[0]?.desc, 100)}
               </p>
             </div>
