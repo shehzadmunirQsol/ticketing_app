@@ -61,27 +61,30 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
           <div className="flex flex-col mb-10 lg:items-start items-start">
             <div className="flex-grow w-full">
               <div className="flex flex-col gap-2">
+                <div className="flex justify-between items-center">
+
                 <span className=" text-xs text-gray-300 ">
                   {Math.round(
                     (Number(data?.tickets_sold) / Number(data?.total_tickets)) *
-                      100,
-                  )}
+                    100,
+                    )}
                   % {langContent[lang.lang].ProductDetail.description.SOLD}
                 </span>
+                <span className='text-xs text-gray-300'>{(data?.tickets_sold)?.toLocaleString()} /{" "}{(data?.total_tickets)?.toLocaleString()}</span>
+                    </div>
                 <Progress value={percentageSold} className="w-full" />
-                <span className='w-full text-center text-xs text-gray-300'>{(data?.tickets_sold)?.toLocaleString()} /{" "}{(data?.total_tickets)?.toLocaleString()}</span>
 
               </div>
             </div>
             <div>
-              <p className="mt-6 text-2xl  md:text-4xl xl:text-5xl font-normal tracking-[1px] sm:tracking-[-1px] text-white  ">
+              <p className="mt-3 sm:mt-6 text-2xl  md:text-4xl xl:text-5xl font-normal tracking-[1px] sm:tracking-[-1px] text-white  ">
                 <span className=" font-black mr-1">
                   {lang.lang_id === 2 ? 'يفوز' : 'WIN '}{' '}
                 </span>
                 {data?.EventDescription[0]?.name}
               </p>
             </div>
-            <div className="flex flex-col lg:flex-row  mt-6 lg:items-center  justify-between  w-full">
+            <div className="flex flex-col lg:flex-row  mt-3 sm:mt-6 lg:items-center  justify-between  w-full">
               {data?.category_id == 1 && (
                 <p className=" text-white text-xl  lg:text-2xl ">
                   {lang.lang_id === 2
@@ -98,7 +101,7 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
                 AED {(price ?? 0)?.toLocaleString()}
               </p>
             </div>
-            <div className="mb-4 py-6">
+            <div className="mb-4 py-3 sm:py-6">
               <p className="lg:text-xl text-md text-white opacity-75 ">
                 {customTruncate(data?.EventDescription[0]?.desc, 100)}
               </p>

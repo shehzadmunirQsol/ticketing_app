@@ -17,9 +17,9 @@ const EntiresDetail = (props: any) => {
   };
 
   return (
-    <div className="my-12 bg-backgroundDark  rounded-md border  border-border ">
-      <div className="container px-10 py-10 w-full">
-        <div className="flex flex-col -m-4 text-center justify-center items-start gap-4 md:gap-8 lg:items-center lg:justify-between lg:gap-0  lg:flex-row">
+    <div className="my-6 sm:my-12 bg-backgroundDark  rounded-md border  border-border ">
+      <div className="p-4 sm:p-10 w-full">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {langContent[lang.lang].ProductDetail.entries.array.map(
             (item, index) => {
               return (
@@ -27,9 +27,9 @@ const EntiresDetail = (props: any) => {
                   key={index}
                   className={`flex ${
                     item.LINK
-                      ? 'flex-col justify-start '
-                      : 'flex-row justify-center'
-                  } items-center `}
+                      ? 'flex-col justify-start items-start'
+                      : 'flex-row justify-start lg:justify-center items-center'
+                  } `}
                 >
                   <div className={`flex  justify-center items-center `}>
                     <Image
@@ -57,7 +57,7 @@ const EntiresDetail = (props: any) => {
                     </p>
                   </div>
                   {item.LINK && (
-                    <p className="text-white text-sm underline -mt-2 -ml-5">
+                    <p className="text-white text-sm underline mt-0 ml-5 self-end">
                       {item?.LINK}
                     </p>
                   )}

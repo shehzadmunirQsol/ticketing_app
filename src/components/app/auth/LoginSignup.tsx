@@ -188,16 +188,16 @@ export default function LoginSignup() {
           defaultValue={defaultValue === 'login' ? 'login' : 'signup'}
           className="flex flex-col flex-wrap  w-full  lg:text-left  rounded-none border-none   bg-card "
         >
-          <TabsList className=" w-full rounded-none border-none ">
+          <TabsList className=" w-full rounded-none border-none shadow-none">
             <TabsTrigger
               value="login"
-              className="w-full font-black text-md -mt-1 font-sans rounded-none border-none m-0  "
+              className="w-full font-black text-md -mt-1 font-sans rounded-none border-none m-0 shadow-none"
             >
               {langContent[lang.lang].Auth.TAB_LOGIN}
             </TabsTrigger>
             <TabsTrigger
               value="signup"
-              className="w-full font-sans text-md font-black"
+              className="w-full font-sans text-md font-black shadow-none"
             >
               {langContent[lang.lang].Auth.TAB_REGISTER}
             </TabsTrigger>
@@ -206,14 +206,14 @@ export default function LoginSignup() {
             <Form {...formLogin}>
               <form
                 onSubmit={formLogin.handleSubmit(onSubmitLogin)}
-                className="justify-center items-center px-2 lg:px-8 py-4 space-y-4 w-full h-full"
+                className="justify-center items-center px-2 lg:px-8 pb-4 pt-2 sm:py-4 space-y-4 w-full h-full"
               >
                 <div className="w-full">
                   <FormField
                     control={formLogin.control}
                     name="user"
                     render={({ field }) => (
-                      <FormItem className="mb-4">
+                      <FormItem className="mb-3 sm:mb-4">
                         <FormLabel className="text-xs font-thin text-grayColor">
                           Email address <sup className="">*</sup>
                         </FormLabel>
@@ -283,7 +283,7 @@ export default function LoginSignup() {
                       control={formSignup.control}
                       name="first_name"
                       render={({ field }) => (
-                        <FormItem className="mb-4  w-full">
+                        <FormItem className="mb-3 sm:mb-4  w-full">
                           <FormLabel className="text-xs font-thin text-grayColor">
                             First Name <sup className="">*</sup>
                           </FormLabel>
@@ -305,7 +305,7 @@ export default function LoginSignup() {
                       control={formSignup.control}
                       name="last_name"
                       render={({ field }) => (
-                        <FormItem className="mb-4 w-full">
+                        <FormItem className="mb-3 sm:mb-4 w-full">
                           <FormLabel className="text-xs font-thin text-grayColor">
                             Last Name <sup className="">*</sup>
                           </FormLabel>
@@ -377,7 +377,7 @@ export default function LoginSignup() {
                       control={formSignup.control}
                       name="gender"
                       render={({ field }) => (
-                        <FormItem className="mb-4  w-full">
+                        <FormItem className="mb-3 sm:mb-4  w-full">
                           <FormLabel className="text-xs font-thin text-grayColor">
                             Gender <sup className="">*</sup>
                           </FormLabel>
@@ -413,7 +413,7 @@ export default function LoginSignup() {
                       control={formSignup.control}
                       name="dob"
                       render={({ field }) => (
-                        <FormItem className="mb-4 w-full">
+                        <FormItem className="mb-3 sm:mb-4 w-full">
                           <FormLabel className="text-xs font-thin text-grayColor">
                             Date of Birth <sup className="">*</sup>
                           </FormLabel>
@@ -439,7 +439,7 @@ export default function LoginSignup() {
                       control={formSignup.control}
                       name="country"
                       render={({ field }) => (
-                        <FormItem className="mb-4 w-full ">
+                        <FormItem className="mb-3 sm:mb-4 w-full ">
                           <FormLabel className="text-xs text-white">
                             Country/ Region <sup className="text-white">*</sup>
                           </FormLabel>
@@ -481,7 +481,7 @@ export default function LoginSignup() {
                     control={formSignup.control}
                     name="email"
                     render={({ field }) => (
-                      <FormItem className="mb-4 ">
+                      <FormItem className="mb-3 sm:mb-4 ">
                         <FormLabel className="text-xs  font-thin text-grayColor">
                           Email Address <sup className="">*</sup>
                         </FormLabel>

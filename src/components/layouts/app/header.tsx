@@ -122,6 +122,16 @@ function Header() {
             </Button>
           </Link>
           
+          <Link href={isLogin ? '/account' : '/login'}>
+            <Button
+              variant="outline"
+              size="icon_square"
+              className="border-primary"
+            >
+              <i className="fa-solid fa-user" />
+            </Button>
+          </Link>
+          
         <Select onValueChange={toggleLanguageHandler}>
           <SelectTrigger className="h-9 w-9 rounded-none border-primary text-center  justify-center text-gray-200">
             <SelectValue placeholder="EN" />

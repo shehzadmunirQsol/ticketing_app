@@ -3,7 +3,10 @@ import { Button } from '@/ui/button';
 import Image from 'next/image';
 import Lines from '~/public/assets/icons/Lines_Big.png';
 import Group16 from '~/public/assets/icons/Group16.svg';
-import Group17 from '~/public/assets/icons/Group17.png';
+import visa from '~/public/assets/icons/visa.svg';
+import master from '~/public/assets/icons/master.svg';
+import Paypal from '~/public/assets/icons/Paypal.svg';
+import applePay from '~/public/assets/icons/applePay.svg';
 import Glow from '~/components/common/glow';
 import Link from 'next/link';
 import langContent from '~/locales';
@@ -40,7 +43,7 @@ function Footer() {
         <div className="relative z-30 ">
           <div className="relative p-4 py-6 md:px-14 md:py-14">
             <div className="sm:flex sm:justify-between ">
-              <div className=" mb-6 md:mb-0 flex flex-col gap-8 w-10/12 sm:w-[300px] lg:w-[360px]">
+              <div className=" mb-6 md:mb-0 flex flex-col gap-8 w-100 sm:w-[300px] lg:w-[360px]">
                 <div>
                   {/* <Button
                     variant="rounded-outline"
@@ -75,10 +78,28 @@ function Footer() {
                     {langContent[lang.lang].Footer.ADDRESS_SUB_TITLE_FOUR}
                   </p> */}
                 </div>
-                <div className=" flex items-center justify-center md:justify-start  w-64  text-sm text-white">
+                <div className=" flex items-center justify-start md:justify-start  text-sm text-white gap-3 sm:gap-4">
                   <Image
-                    className="w-full h-full object-contain "
-                    src={Group17}
+                    className="h-full object-contain "
+                    src={visa}
+                    quality={100}
+                    alt="Sunset in the mountains"
+                  />
+                  <Image
+                    className="h-full object-contain "
+                    src={master}
+                    quality={100}
+                    alt="Sunset in the mountains"
+                  />
+                  <Image
+                    className="h-full object-contain "
+                    src={Paypal}
+                    quality={100}
+                    alt="Sunset in the mountains"
+                  />
+                  <Image
+                    className="h-full object-contain "
+                    src={applePay}
                     quality={100}
                     alt="Sunset in the mountains"
                   />

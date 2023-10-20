@@ -46,7 +46,8 @@
     --muted-foreground: 240 5% 64.9%;
     --accent: 12 6.5% 15.1%;
     --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
+    /* --destructive: 0 62.8% 30.6%; */
+    --destructive: 0 72% 51%;
     --destructive-foreground: 0 85.7% 97.3%;
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
@@ -953,4 +954,15 @@ input[type='number'] {
 }
 .mt-faq{
   margin-top: 5.5rem;
+}
+
+/*Counter*/
+.timer-box{
+  min-width:42px;
+}
+
+@media only screen and (min-width: 767.98px){
+  .timer-box{
+    min-width:90px;
+  }
 }

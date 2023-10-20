@@ -19,7 +19,7 @@ const CompititionDetail = ({ data }: any) => {
           <p className="lg:text-5xl md:text-4xl text-2xl   font-black uppercase">
           {langContent[lang.lang].ProductDetail.description.HEADING}
           </p>
-          <div className="border-b-4 w-16 border-primary mt-4 mb-14"></div>
+          <div className="border-b-4 w-16 border-primary mt-2 md:mt-4 mb-4 md:mb-7 lg:mb-14"></div>
 
           {dataCode ? (
             <div className="mt-10 mb-10 relative pb-20 ">

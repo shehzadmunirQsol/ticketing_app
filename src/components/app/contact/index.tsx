@@ -131,45 +131,51 @@ export default function Contact() {
           />
         </div>
         <div className="pb-6 flex flex-col h-full lg:max-h-[700px] w-full    lg:w-3/5  mx-auto lg:mx-0  lg:text-left  rounded-none border-none  bg-card ">
-          <div className="font-black  py-4 ">
+          <div className="font-black  pt-4 pb-6">
             <p className="text-xl pl-6 px-4 lg:px-8">Contact Us</p>
             <hr className=" opacity-20 mt-4" />
 
-            <div className="flex flex-col justify-start align-start pl-6 px-4 lg:px-8 gap-2 mt-4">
+            <div className="flex flex-col justify-start align-start pl-6 px-4 lg:px-8 gap-2 py-3">
+              <div className="flex gap-3 items-center">
               <Image
-                className="object-contain mb-2"
+                className="object-contain"
                 src={location}
                 quality={100}
                 alt="Location"
               />
               <div className="text-grayColor text-lg font-[600]">Address</div>
+              </div>
               <div className="flex flex-col text-grayColor font-thin">
                 <span>Dream Car Giveaways Limited</span>
                 <span>Berry Hill Industrial Estate,</span>
                 <span>Droitwich, WR9 9AB</span>
               </div>
             </div>
-            <div className="flex flex-col justify-start align-start pl-6 px-4 lg:px-8 gap-2 mt-4">
+            <div className="flex flex-col justify-start align-start pl-6 px-4 lg:px-8 gap-2 py-3">
+              <div className="flex gap-3 items-center">
               <Image
-                className="object-contain mb-2"
+                className="object-contain"
                 src={phone}
                 quality={100}
                 alt="Location"
               />
               <div className="text-grayColor text-lg font-[600]">General enquiry</div>
+              </div>
               <div className="flex flex-col text-grayColor font-thin">
                 <span className="mb-2">01386719064</span>
                 <span>Info@dreamcargiveaways.co.uk</span>
               </div>
             </div>
-            <div className="flex flex-col justify-start align-start pl-6 px-4 lg:px-8 gap-2 mt-4">
+            <div className="flex flex-col justify-start align-start pl-6 px-4 lg:px-8 gap-2 py-3">
+              <div className="flex gap-3 items-center">
               <Image
-                className="object-contain mb-2"
+                className="object-contain"
                 src={mail}
                 quality={100}
                 alt="Location"
               />
               <div className="text-grayColor text-lg font-[600]">Sell your car</div>
+              </div>
               <div className="text-grayColor font-thin">
                 sellyourcar@dreamcargiveaways.co.uk
               </div>

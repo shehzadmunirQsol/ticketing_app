@@ -27,7 +27,7 @@ const CounterStyle = ({ range, setRange, min, max }: token) => {
 
   return (
     <div>
-      <div className="flex items-center my-10 text-center" dir="ltr">
+      <div className="flex items-center my-6 sm:my-10 text-center" dir="ltr">
         <button
           onClick={() => handlerCounter('b')}
           className={`bg-primary lg:w-14 md:w-14 w-10 md:h-12 h-10  ${
