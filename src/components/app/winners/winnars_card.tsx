@@ -61,11 +61,11 @@ function WinnarsCard(props: cardInterface) {
         <div className=" text-lg md:text-2xl lg:text-3xl mb-2">
           <p className="text-gray-200 overflow-hidden h-14 md:h-24 lg:h-28 ">
             {langContent[lang.lang].Winners.CONGRATULATIONS}{' '}
-            <span className="text-primary">
+            <span className="font-bold">
               {props?.data?.Customer?.first_name}
             </span>{' '}
             {langContent[lang.lang].Winners.CONGRATS_WINNING}{' '}
-            <span className="text-primary">
+            <span className="font-bold">
               {props?.data?.Event?.EventDescription[0]?.name}
             </span>
           </p>

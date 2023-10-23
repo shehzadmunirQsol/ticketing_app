@@ -69,7 +69,7 @@ export type WinnerType = {
   thumb?: string;
   is_enabled: boolean;
   draw_date: Date | null;
-  ticket_num: number;
+  ticket_num: string;
   id: number;
 };
 

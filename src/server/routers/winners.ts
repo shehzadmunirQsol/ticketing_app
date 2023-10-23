@@ -33,9 +33,12 @@ export const winnerRouter = router({
             },
           },
         });
-        if (+input?.filters?.searchQuery) {
+        if (input?.filters?.searchQuery) {
           where.OR.push({
-            ticket_num: +input?.filters?.searchQuery,
+            ticket_num: {
+              contains: input?.filters?.searchQuery,
+              mode: 'insensitive',
+            },
           });
         }
         where.OR.push({
@@ -161,7 +164,7 @@ export const winnerRouter = router({
         const winnerPayload = {
           ...payloadIds,
           draw_date: drawDate,
-          ticket_num: Math.floor(Math.random() * 99999),
+          ticket_num: Math.floor(Math.random() * 99999).toString(),
           is_enabled: true,
         };
 
