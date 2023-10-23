@@ -118,6 +118,7 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
                   ticketInBasket={ticketInBasket}
                   setRange={setRange}
                   user_ticket_limit={userTicketLimit}
+                  perCustomerLimit={data?.user_ticket_limit}
                   ticketPurchased={ticketPurchased}
                   event={data}
                 />
