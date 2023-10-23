@@ -29,7 +29,7 @@ interface addressDialogInterface {
   city?: string | null;
   phone_number?: string | null;
   phone_code?: string | null;
-  postal_code?: number | null;
+  postal_code?: string | null;
 }
 export function AddressDialog(props: addressDialogInterface) {
   const { toast } = useToast();

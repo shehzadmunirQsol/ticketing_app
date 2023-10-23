@@ -582,7 +582,14 @@ input.wpwl-control {
 }
 .wpwl-wrapper > button {
   background-color: hsl(var(--primary)) !important;
-  color: white;
+  color: hsl(var(--primary-foreground)) !important;
+  font-weight: 700;
+  transition: 0.15s ease-in all;
+  border: none !important;
+}
+.wpwl-wrapper > button:hover {
+  background-color: hsl(var(--primary-foreground)) !important;
+  color: hsl(var(--primary)) !important;
 }
 
 .wpwl-form-registrations {
@@ -935,24 +942,20 @@ input[type='number'] {
   }
 } */
 
-
 @media print {
   body {
-    color: black; 
+    color: black;
   }
-  #divToPrint{
-  color: black; 
+  #divToPrint {
+    color: black;
   }
 }
-
-
-
 
 /* external class */
 .absolute {
   position: absolute;
 }
-.mt-faq{
+.mt-faq {
   margin-top: 5.5rem;
 }
 

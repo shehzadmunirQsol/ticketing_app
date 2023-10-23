@@ -274,6 +274,7 @@ export default function OrdersDataTable() {
       ),
     },
   ];
+  
   const table = useReactTable({
     data: orderData as Order[],
     columns,

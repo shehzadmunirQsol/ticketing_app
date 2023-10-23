@@ -18,6 +18,7 @@ import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
+  DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/ui/dropdown-menu';
 import {
@@ -47,6 +48,9 @@ import {
 } from '@radix-ui/react-icons';
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 import { CSVLink } from 'react-csv';
+import PlaceholderImage from '~/public/assets/face/male-profile-image-placeholder.png';
+import { WinnersEnableDialog, ImageUploadDialog } from '../modal/winnersModal';
+import { Switch } from '~/components/ui/switch';
 export type WinnerType = {
   Event: {
     id: number;
@@ -62,34 +66,82 @@ export type WinnerType = {
     phone_number?: string;
   };
   is_cash_alt: boolean;
+  thumb?: string;
+  is_enabled: boolean;
   draw_date: Date | null;
-  ticket_num: number;
+  ticket_num: string;
+  id: number;
 };
 
 export default function WinnersDataTable() {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [filterID, setFilterID] = useState({});
+  const [isEnableModal, setIsEnableModal] = useState(false);
+  const [isImageModal, setIsImageModal] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<any>({});
 
   const [filters, setFilters] = useState({
     first: 0,
     rows: 10,
     lang_id: 1,
+    is_admin: true,
   });
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
 
-  const { data, isLoading } = trpc.winner.get.useQuery(
+  const { data, isLoading, refetch } = trpc.winner.get.useQuery(
     { ...filters, filters: { ...filterID } },
     {
-      refetchOnWindowFocus: true,
+      refetchOnWindowFocus: false,
     },
   );
 
-  const winnesData = React.useMemo(() => {
+  const winnersData = React.useMemo(() => {
     return Array.isArray(data?.data) && data?.data?.length ? data?.data : [];
   }, [data]);
 
   const columns: ColumnDef<WinnerType>[] = [
+    // {
+    //   id: 'ID',
+    //   header: 'Winners ID',
+    //   enableHiding: false,
+    //   cell: ({ row }) => {
+    //     return (
+    //       <DropdownMenu>
+    //         <DropdownMenuTrigger asChild>
+    //           <Button variant="ghost" className="max-w-fit px-2">
+    //             <span className="sr-only">Open menu</span>
+    //             <div className=" hover:text-primary w-14 text-left ">
+    //               # {row.original.id}
+    //             </div>
+    //             {/* <MoreHorizontal className="h-4 w-4" /> */}
+    //           </Button>
+    //         </DropdownMenuTrigger>
+    //         <DropdownMenuContent align="end">
+    //           <DropdownMenuItem
+    //             onClick={() => handleEnable(row.original, true)}
+    //           >
+    //             Add Image
+    //           </DropdownMenuItem>
+    //         </DropdownMenuContent>
+    //       </DropdownMenu>
+    //     );
+    //   },
+    // },
+    // {
+    //   id: 'Enabled',
+    //   header: 'Enabled',
+
+    //   cell: ({ row }) => {
+    //     return (
+    //       <Switch
+    //         checked={row?.original?.is_enabled}
+    //         onCheckedChange={() => handleEnable(row.original, false)}
+    //       />
+    //     );
+    //   },
+    // },
+
     {
       accessorKey: 'Product',
       header: 'Product',
@@ -115,26 +167,23 @@ export default function WinnersDataTable() {
       accessorKey: 'Customer Name',
       header: 'Customer Name',
       cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap ">
-          {row?.original?.Customer?.first_name}
-        </div>
-      ),
-    },
-    {
-      accessorKey: 'Customer Email',
-      header: 'Customer Email',
-      cell: ({ row }) => (
-        <div className="text-ellipsis whitespace-nowrap ">
-          {row?.original?.Customer?.email}
-        </div>
-      ),
-    },
-    {
-      accessorKey: 'Phone No.',
-      header: 'Phone No.',
-      cell: ({ row }) => (
-        <div className="text-ellipsis whitespace-nowrap ">
-          {row?.original?.Customer?.phone_number ?? 'N/A'}
+        <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
+          <div className="h-10 w-16 rounded-lg overflow-hidden relative">
+            <Image
+              className="object-cover bg-ac-2 "
+              src={
+                row?.original?.thumb
+                  ? `${process.env.NEXT_PUBLIC_MEDIA_BASE_URL}${row?.original?.thumb}`
+                  : PlaceholderImage
+              }
+              alt={row?.original?.Event.EventDescription[0]?.name ?? ''}
+              fill
+            />
+          </div>
+
+          <p className="w-32 text-ellipsis whitespace-nowrap overflow-hidden">
+            {row?.original?.Customer?.first_name}
+          </p>
         </div>
       ),
     },
@@ -148,17 +197,36 @@ export default function WinnersDataTable() {
       ),
     },
     {
-      accessorKey: 'Ticket No.',
+      accessorKey: 'Customer Email',
+      header: 'Customer Email',
+      cell: ({ row }) => (
+        <div className="text-ellipsis whitespace-nowrap ">
+          {row?.original?.Customer?.email}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'Phone No',
+      header: 'Phone No.',
+      cell: ({ row }) => (
+        <div className="text-ellipsis whitespace-nowrap ">
+          {row?.original?.Customer?.phone_number ?? 'N/A'}
+        </div>
+      ),
+    },
+
+    {
+      accessorKey: 'Ticket No',
       header: 'Ticket No.',
       cell: ({ row }) => (
-        <div className="text-ellipsis whitespace-nowrap text-primary">
+        <div className="text-ellipsis whitespace-nowrap text-primary w-24">
           #{row?.original?.ticket_num}
         </div>
       ),
     },
   ];
   const table = useReactTable({
-    data: winnesData as WinnerType[],
+    data: winnersData as WinnerType[],
     columns,
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
@@ -208,6 +276,7 @@ export default function WinnersDataTable() {
 
   const csvData = [
     [
+      'Winner ID',
       'Product',
       'Customer Name',
       'Customer Email',
@@ -215,7 +284,8 @@ export default function WinnersDataTable() {
       'Draw Date',
       'Ticket No.',
     ],
-    ...winnesData?.map(({ Event, Customer, draw_date, ticket_num }) => [
+    ...winnersData?.map(({ id, Event, Customer, draw_date, ticket_num }) => [
+      id,
       Event?.EventDescription[0]?.name,
       Customer?.first_name,
       Customer?.email,
@@ -225,10 +295,25 @@ export default function WinnersDataTable() {
     ]),
   ];
 
+  function handleEnable(winner: WinnerType, isImage: boolean) {
+    setSelectedItem({
+      name: winner.Customer.first_name,
+      winnerId: winner.id,
+      isEnable: winner.is_enabled,
+      thumb: winner.thumb,
+    });
+
+    if (isImage) {
+      setIsImageModal(true);
+    } else {
+      setIsEnableModal(true);
+    }
+  }
+
   return (
     <div className="w-full space-y-4">
       <div className="flex items-center justify-between">
-        {winnesData?.length ? (
+        {winnersData?.length ? (
           <Button variant="outline">
             <CSVLink filename="winners.csv" data={csvData}>
               Export to CSV
@@ -416,6 +501,24 @@ export default function WinnersDataTable() {
       </div>
 
       <LoadingDialog open={isLoading} text={'Loading data...'} />
+      <WinnersEnableDialog
+        {...{
+          selectedItem,
+          setSelectedItem,
+          isEnableModal,
+          setIsEnableModal,
+          refetch,
+        }}
+      />
+      <ImageUploadDialog
+        {...{
+          selectedItem,
+          setSelectedItem,
+          isImageModal,
+          setIsImageModal,
+          refetch,
+        }}
+      />
     </div>
   );
 }

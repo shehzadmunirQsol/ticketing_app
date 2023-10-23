@@ -29,11 +29,11 @@ export const createCategorySchema = z.object({
       }).trim(),
     desc: z
       .string()
-      .min(6, {
+      .min(2, {
         message: 'Description must be at least 2 characters',
       })
-      .max(5000, {
-        message: 'Description must not exceed 5000 characters',
+      .max(300, {
+        message: 'Description must not exceed 300 characters',
       }).trim()
       .optional(),
     lang_id: z.number(),
@@ -49,11 +49,11 @@ export const createCategorySchema = z.object({
       }).trim(),
     desc: z
       .string()
-      .min(6, {
+      .min(2, {
         message: 'Description must be at least 2 characters',
       })
-      .max(5000, {
-        message: 'Description must not exceed 5000 characters',
+      .max(300, {
+        message: 'Description must not exceed 300 characters',
       }).trim(),
     lang_id: z.number(),
   }),
@@ -74,11 +74,11 @@ export const updateCategorySchema = z.object({
       }).trim(),
     desc: z
       .string()
-      .min(6, {
+      .min(2, {
         message: 'Description must be at least 2 characters',
       })
-      .max(5000, {
-        message: 'Description must not exceed 5000 characters',
+      .max(300, {
+        message: 'Description must not exceed 300 characters',
       }).trim()
       .optional(),
     lang_id: z.number(),

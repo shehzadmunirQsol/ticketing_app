@@ -20,6 +20,7 @@ export const getTicketPurchasedSchema = z.object({
 
 export const removeCartItemSchema = z.object({
   cart_item_id: z.number(),
+  isLast: z.boolean(),
 });
 
 export const addToCartSchema = z.object({

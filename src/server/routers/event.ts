@@ -257,6 +257,7 @@ export const eventRouter = router({
     .input(deleteEventSchema)
     .mutation(async ({ input }) => {
       try {
+        console.log(input,"INPUT::")
         const event = await prisma.event.update({
           where: { id: input.id },
           data: { is_deleted: true },
@@ -354,20 +355,20 @@ export const eventRouter = router({
       }
     }),
 
-  getUpcomimg: publicProcedure
+  getUpcoming: publicProcedure
     .input(getClosingSoon)
     .query(async ({ input }) => {
       try {
         const where: any = {
           is_deleted: false,
-          EventDescription: { some: { lang_id: input?.lang_id } },
+          // EventDescription: { some: { lang_id: input?.lang_id } },
         };
         const todayDate = new Date();
         const endingDate = new Date();
         endingDate.setDate(endingDate.getDate() + 21);
 
         // upcoming means its going to start
-        if (input?.type == 'upcomming') where.launch_date = { gte: todayDate };
+        if (input?.type == 'upcoming') where.launch_date = { gte: todayDate };
         if (input?.type == 'closing') {
           where.launch_date = { lte: new Date(todayDate) };
           where.end_date = {
@@ -514,7 +515,7 @@ export const eventRouter = router({
             CMS: {
               include: {
                 CMSDescription: {
-                  where: { lang_id: input.lang_id },
+                  where: { lang_id: input.lang_id, is_deleted: false },
                   select: {
                     content: true,
                     lang_id: true,
