@@ -65,18 +65,20 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
             <div className="flex-grow w-full">
               <div className="flex flex-col gap-2">
                 <div className="flex justify-between items-center">
-
-                <span className=" text-xs text-gray-300 ">
-                  {Math.round(
-                    (Number(data?.tickets_sold) / Number(data?.total_tickets)) *
-                    100,
+                  <span className=" text-xs text-gray-300 ">
+                    {Math.round(
+                      (Number(data?.tickets_sold) /
+                        Number(data?.total_tickets)) *
+                        100,
                     )}
-                  % {langContent[lang.lang].ProductDetail.description.SOLD}
-                </span>
-                <span className='text-xs text-gray-300'>{(data?.tickets_sold)?.toLocaleString()} /{" "}{(data?.total_tickets)?.toLocaleString()}</span>
-                    </div>
+                    % {langContent[lang.lang].ProductDetail.description.SOLD}
+                  </span>
+                  <span className="text-xs text-gray-300">
+                    {data?.tickets_sold?.toLocaleString()} /{' '}
+                    {data?.total_tickets?.toLocaleString()}
+                  </span>
+                </div>
                 <Progress value={percentageSold} className="w-full" />
-
               </div>
             </div>
             <div>
@@ -109,7 +111,7 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
               <p className="lg:text-xl text-md text-white opacity-75 ">
                 {customTruncate(data?.EventDescription[0]?.desc, 100)}
               </p>
-            </div> 
+            </div>
 
             <div className="w-full relative">
               <div className="relative z-10">
@@ -117,6 +119,7 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
                   range={range}
                   ticketInBasket={ticketInBasket}
                   setRange={setRange}
+                  perCustomerLimit={data?.user_ticket_limit}
                   user_ticket_limit={userTicketLimit}
                   ticketPurchased={ticketPurchased}
                   event={data}
@@ -126,7 +129,6 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
             </div>
 
             <CountDown dateString="1698782400000" />
-
           </div>
         </div>
       </div>
