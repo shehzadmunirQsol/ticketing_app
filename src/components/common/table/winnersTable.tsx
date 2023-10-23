@@ -276,6 +276,7 @@ export default function WinnersDataTable() {
 
   const csvData = [
     [
+      'Winner ID',
       'Product',
       'Customer Name',
       'Customer Email',
@@ -283,7 +284,8 @@ export default function WinnersDataTable() {
       'Draw Date',
       'Ticket No.',
     ],
-    ...winnersData?.map(({ Event, Customer, draw_date, ticket_num }) => [
+    ...winnersData?.map(({ id, Event, Customer, draw_date, ticket_num }) => [
+      id,
       Event?.EventDescription[0]?.name,
       Customer?.first_name,
       Customer?.email,

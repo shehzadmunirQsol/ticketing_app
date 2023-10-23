@@ -7,7 +7,7 @@ import {
   getCouponSchema,
   updateCouponSchema,
   updateSchema,
-  deleteCouponSchema
+  deleteCouponSchema,
 } from '~/schema/coupon';
 import { prisma } from '~/server/prisma';
 
@@ -234,6 +234,19 @@ export const couponRouter = router({
     .input(createCouponSchema)
     .mutation(async ({ input }) => {
       try {
+        const isExist = await prisma.coupon.findFirst({
+          where: {
+            coupon_code: input?.coupon_code?.toUpperCase(),
+            is_deleted: false,
+          },
+        });
+        if (isExist) {
+          throw new TRPCError({
+            code: 'FORBIDDEN',
+            message: 'Coupon code must be unique!',
+          });
+        }
+
         const payload: any = {
           user_id: input?.user_id,
           name: input?.name,
@@ -315,11 +328,11 @@ export const couponRouter = router({
       return setting_banner;
     }),
 
-    delete: publicProcedure
+  delete: publicProcedure
     .input(deleteCouponSchema)
     .mutation(async ({ input }) => {
       try {
-        console.log(input,"INPUT::")
+        console.log(input, 'INPUT::');
         const coupon = await prisma.coupon.update({
           where: { id: input.id },
           data: { is_deleted: true },

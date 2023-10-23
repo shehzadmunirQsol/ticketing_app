@@ -138,7 +138,7 @@ model Coupon {
   id            Int           @id @default(autoincrement())
   user_id       Int
   name          String
-  coupon_code   String        @unique @db.VarChar(6)
+  coupon_code   String        @db.VarChar(6)
   discount      Int
   coupon_limit  Int? // this coupon limit is for customers not for the total limit
   is_percentage Boolean       @default(false)

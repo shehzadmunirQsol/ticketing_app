@@ -19,24 +19,28 @@ export const winnerRouter = router({
       if (filterPayload?.startDate) delete filterPayload.startDate;
       const where: any = { is_deleted: false, ...filterPayload };
 
-      if (input?.filters?.searchQuery) {
+      if (input?.filters?.searchQuery?.trim()) {
+        const query =
+          isNaN(Number(input?.filters?.searchQuery?.trim())) === false
+            ? Number(input?.filters?.searchQuery?.trim()).toLocaleString()
+            : input?.filters?.searchQuery?.trim();
         where.OR = [];
         where.OR.push({
           Event: {
             EventDescription: {
               some: {
                 name: {
-                  contains: input?.filters?.searchQuery,
+                  contains: query,
                   mode: 'insensitive',
                 },
               },
             },
           },
         });
-        if (input?.filters?.searchQuery) {
+        if (query) {
           where.OR.push({
             ticket_num: {
-              contains: input?.filters?.searchQuery,
+              contains: query,
               mode: 'insensitive',
             },
           });
@@ -44,7 +48,7 @@ export const winnerRouter = router({
         where.OR.push({
           Customer: {
             first_name: {
-              contains: input?.filters?.searchQuery,
+              contains: query,
               mode: 'insensitive',
             },
           },
@@ -54,7 +58,7 @@ export const winnerRouter = router({
           where.OR.push({
             Customer: {
               email: {
-                contains: input?.filters?.searchQuery,
+                contains: query,
                 mode: 'insensitive',
               },
             },
