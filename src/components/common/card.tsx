@@ -87,8 +87,8 @@ function ProductCard(props: cardInterface) {
           </div>
 
           <div className="px-6 mt-6 py-4">
-            <div className="flex flex-col gap-1">
-              <div className="flex justify-between items-center gap-3">
+            <div className="flex flex-col gap-1 mb-2">
+              <div className="flex justify-between items-center gap-3 mb-2">
               <span className=" text-xs text-gray-300">
                 {Math.round(
                   (Number(props?.data?.tickets_sold) /
@@ -113,7 +113,6 @@ function ProductCard(props: cardInterface) {
             </div>
             <div className="font-bold text-xl lg:text-2xl xl:text-3xl line-clamp-1">
               {langContent[lang.lang].Index.productcard.WIN_TITLE ?? ''}
-
               <span className="text-gray-200  font-semibold leading-loose mx-2 ">
                 {props?.data?.EventDescription[0]?.name}
               </span>
@@ -130,7 +129,7 @@ function ProductCard(props: cardInterface) {
                 <span className="text-gray-200 text-md xl:text-lg font-semibold leading-[18px]">
                   {langContent[lang.lang].Index.productcard.ALTERNATIVE_TITLE}
                 </span>
-                <span className="text-primary text-lg font-[600] leading-[18px]">
+                <span className="text-primary text-lg font-[500] leading-[18px]">
                   {' '}
                   AED {(props?.data?.cash_alt ?? 0)?.toLocaleString()}
                 </span>
@@ -140,7 +139,7 @@ function ProductCard(props: cardInterface) {
             )}
 
             <div className="flex  justify-between items-center mt-4 sm:mt-8 gap-4">
-              <div className="text-primary text-lg font-[600] leading-[18px]">
+              <div className="text-primary text-2xl font-[500] leading-[18px]">
                 AED {props?.data?.price}
               </div>
               <Button

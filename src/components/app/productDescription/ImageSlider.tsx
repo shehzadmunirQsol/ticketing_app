@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Progress } from '../../ui/progress';
 import Counter from './Counter';
 import ImageSliderStyle from './ImageSliderStyle';
+import CountDown from './CountDown';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
 import { useRouter } from 'next/router';
@@ -15,6 +16,8 @@ import {
 import Glow from '~/components/common/glow';
 
 const ImageSlider = ({ data, ticketPurchased }: any) => {
+
+  const counterRef = React.useRef<any>(null);
   const { cart } = useSelector((state: RootState) => state.cart);
   const { lang } = useSelector((state: RootState) => state.layout);
 
@@ -51,14 +54,68 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
     quantity: range[0] ?? 0,
   });
 
+  useEffect(() => {
+    counter();
+  }, []);
+  /**Counter */
+
+  const counter = () => {
+    // Set the date we're counting down to
+    const countDownDate: any = 1698782400000; //new Date("Oct 31, 2023 24:00:00").getTime();
+
+    // Update the count down every 1 second
+    setInterval(() => {
+      // Get todays date and time
+      const now: any = new Date().getTime();
+
+      // Find the distance between now an the count down date
+      const distance: any = countDownDate - now;
+
+      // Time calculations for days, hours, minutes and seconds
+      const days: any = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours: any = Math.floor(
+        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+      );
+      const minutes: any = Math.floor(
+        (distance % (1000 * 60 * 60)) / (1000 * 60),
+      );
+      const seconds: any = Math.floor((distance % (1000 * 60)) / 1000);
+
+      // Output the result in an element with id="demo"
+      if (counterRef && counterRef.current!==null) {
+        counterRef.current.innerHTML =
+          '<div class="flex flex-row md:flex-col md:justify-start md:items-start space-x-2 md:space-y-4"><div class="flex space-x-1 md:space-x-4 flex-1 md:flex-none"><p class="timer-box flex flex-col gap-1 md:gap-3 items-center py-3 px-1 md:p-4 min-w-fit w-full border-2 border-primary rounded-xl"><span class="text-3xl sm:text-5xl font-normal text-primary">' +
+          days +
+          '</span><span class="text-xs sm:text-base text-white">' +
+          'Days' +
+          '</span></p> ' +
+          '<p class="timer-box flex flex-col gap-1 md:gap-3 items-center py-3 px-1 md:p-4 min-w-fit w-full border-2 border-primary rounded-xl"><span class="text-3xl sm:text-5xl font-normal text-primary">' +
+          hours +
+          '</span><span class="text-xs sm:text-base text-white">' +
+          'Hours' +
+          '</span></p> ' +
+          '<p class="timer-box flex flex-col gap-1 md:gap-3 items-center py-3 px-1 md:p-4 min-w-fit w-full border-2 border-primary rounded-xl"><span class="text-3xl sm:text-5xl font-normal text-primary">' +
+          minutes +
+          '</span><span class="text-xs sm:text-base text-white">' +
+          'Mins' +
+          '</span></p> ' +
+          '<p class="timer-box flex flex-col gap-1 md:gap-3 items-center py-3 px-1 md:p-4 min-w-fit w-full border-2 border-primary rounded-xl"><span class="text-3xl sm:text-5xl font-normal text-primary">' +
+          seconds +
+          '</span><span class="text-xs sm:text-base text-white">' +
+          'Secs' +
+          '</span></p></div></div>';
+      }
+    }, 1000);
+  };
+
   return (
     <section className="text-gray-600 body-font">
-      <div className="py-4 mx-auto flex flex-wrap">
-        <div className="lg:w-1/2 w-full mb-10 lg:mb-0 rounded-lg overflow-hidden">
+      <div className="py-4 mb-5 mx-auto flex flex-wrap">
+        <div className="lg:w-1/2 w-full rounded-lg overflow-hidden">
           <ImageSliderStyle data={data} />
         </div>
-        <div className="flex flex-col flex-wrap lg:py-6 -mb-10 lg:w-1/2 w-full lg:pl-12 lg:text-left  ">
-          <div className="flex flex-col mb-10 lg:items-start items-start">
+        <div className="flex flex-col flex-wrap lg:py-6 -mb-10 lg:w-1/2 w-full lg:text-left bg-card px-5 py-6">
+          <div className="flex flex-col lg:items-start items-start">
             <div className="flex-grow w-full">
               <div className="flex flex-col gap-2">
                 <div className="flex justify-between items-center">
@@ -101,14 +158,15 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
                 AED {(price ?? 0)?.toLocaleString()}
               </p>
             </div>
+
             <div className="mb-4 py-3 sm:py-6">
               <p className="lg:text-xl text-md text-white opacity-75 ">
                 {customTruncate(data?.EventDescription[0]?.desc, 100)}
               </p>
-            </div>
+            </div> 
 
             <div className="w-full relative">
-              <div className="relative  z-10">
+              <div className="relative z-10">
                 <Counter
                   range={range}
                   ticketInBasket={ticketInBasket}
@@ -120,6 +178,9 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
               </div>
               <Glow className="absolute bottom-0 -right-16   p-2   w-2/5 h-[180px]   " />
             </div>
+
+            <CountDown dateString="1699646400000" />
+
           </div>
         </div>
       </div>
