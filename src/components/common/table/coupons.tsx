@@ -98,7 +98,7 @@ export default function CouponsDataTable() {
   const [title, setTitle] = React.useState('');
   const [type, setType] = React.useState('');
   const [isModal, setIsModal] = React.useState(false);
-  
+  const [isModalDelete, setIsModalDelete] = React.useState(false);
 
   // APi
   const { data, refetch, isLoading } = trpc.coupon.get.useQuery(
@@ -112,19 +112,16 @@ export default function CouponsDataTable() {
     return Array.isArray(data?.data) ? data?.data : [];
   }, [data]);
 
-    // delete product
-    const deleteCoupon = (data: any, type: string) => {
-      setSelectedItem(data);
-      setTitle('Coupon');
-      setType(type);
-      setIsModal(true);
-    };
-  
-
+  // delete product
+  const deleteCoupon = (data: any, type: string) => {
+    setSelectedItem(data);
+    setTitle('Coupon');
+    setType(type);
+    setIsModalDelete(true);
+  };
 
   // handle modal
   const handleEnbled = (data: any, type: string) => {
-    console.log({ data, type }, 'enable check');
     if (!data?.is_approved) {
       setSelectedItem(data);
       setTitle('Coupon');
@@ -199,6 +196,24 @@ export default function CouponsDataTable() {
       ),
     },
     {
+      accessorKey: 'Start Date',
+      header: 'Start Date',
+      cell: ({ row }) => (
+        <div className="capitalize text-ellipsis whitespace-nowrap ">
+          {displayDate(row?.original?.start_date)}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'End Date',
+      header: 'End Date',
+      cell: ({ row }) => (
+        <div className="capitalize text-ellipsis whitespace-nowrap ">
+          {displayDate(row?.original?.end_date)}
+        </div>
+      ),
+    },
+    {
       id: 'Enabled',
       header: 'Enabled',
 
@@ -218,24 +233,7 @@ export default function CouponsDataTable() {
         );
       },
     },
-    {
-      accessorKey: 'Start Date',
-      header: 'Start Date',
-      cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap ">
-          {displayDate(row?.original?.start_date)}
-        </div>
-      ),
-    },
-    {
-      accessorKey: 'End Date',
-      header: 'End Date',
-      cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap ">
-          {displayDate(row?.original?.end_date)}
-        </div>
-      ),
-    },
+
     {
       id: 'actions',
       enableHiding: false,
@@ -256,14 +254,10 @@ export default function CouponsDataTable() {
                 <DropdownMenuItem>Edit</DropdownMenuItem>
               </Link>
               <DropdownMenuItem
-                  onClick={() => deleteCoupon(row?.original, 'delete')}
-                >
-                  Delete
-                </DropdownMenuItem>
-
-
-
-
+                onClick={() => deleteCoupon(row?.original, 'delete')}
+              >
+                Delete
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         );
@@ -566,8 +560,8 @@ export default function CouponsDataTable() {
         setSelectedItem={setSelectedItem}
         title={title}
         setTitle={setTitle}
-        isModal={isModal}
-        setIsModal={setIsModal}
+        isModal={isModalDelete}
+        setIsModal={setIsModalDelete}
         refetch={refetch}
         type={type}
         setType={setType}

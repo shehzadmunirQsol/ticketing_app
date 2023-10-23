@@ -46,14 +46,17 @@ function WinnarsCard(props: cardInterface) {
       className={`rounded-sm shadow-lg bg-card ${props?.class}`}
       ref={cardRef}
     >
-      <div>
+      <div className="relative w-full h-56">
         <Image
-          width={150}
-          height={100}
-          className="w-full h-full object-cover bg-white"
-          src={WinnerImage}
+          fill
+          className=" w-full h-full object-cover bg-white"
+          src={
+            props?.data?.thumb
+              ? `${process.env.NEXT_PUBLIC_MEDIA_BASE_URL}${props?.data?.thumb}`
+              : WinnerImage
+          }
+          alt={props?.data?.Event?.EventDescription[0]?.name ?? ''}
           quality={100}
-          alt="Sunset in the mountains"
         />
       </div>
 
