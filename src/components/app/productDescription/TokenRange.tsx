@@ -35,8 +35,8 @@ const TokenRange = ({ range, setRange, min, max }: token) => {
         </div>
       </div>
       <div className="flex justify-between" dir='ltr'>
-        <p className="text-card-gray font-black">{min?.toLocaleString()}</p>
-        <p className="text-card-gray font-black">{max?.toLocaleString()}</p>
+        <p className="text-card-gray font-black text-white">{min?.toLocaleString()}</p>
+        <p className="text-card-gray font-black text-white">{max?.toLocaleString()}</p>
       </div>
     </div>
   );

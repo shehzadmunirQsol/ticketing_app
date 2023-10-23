@@ -116,12 +116,12 @@ function ProductCard(props: cardInterface) {
             </div>
             <div className="font-bold overflow-hidden h-10 md:h-20 text-xl lg:text-2xl xl:text-3xl line-clamp-1">
               {langContent[lang.lang].Index.productcard.WIN_TITLE ?? ''}
-              <span className="text-gray-200  font-semibold leading-loose mx-2 ">
+              <span className="text-gray-200  font-semibold mx-2 ">
                 {props?.data?.EventDescription[0]?.name}
               </span>
             </div>
             <div className="relative w-full opacity-75  text-gray-200  text-md font-light sm:font-normal leading-normal ">
-              <p className="overflow-hidden ">
+              <p className="h-12 overflow-hidden ">
                 {customTruncate(props?.data?.EventDescription[0]?.desc, 100)}
               </p>
             </div>
