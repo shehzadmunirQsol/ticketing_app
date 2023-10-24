@@ -64,7 +64,7 @@ const ProductDetail = () => {
       const seconds: any = Math.floor((distance % (1000 * 60)) / 1000);
 
       // Output the result in an element with id="demo"
-      if (counterRef) {
+      if (counterRef && counterRef.current) {
         counterRef.current.innerHTML =
           '<div class="flex flex-row md:flex-col md:justify-start md:items-start space-x-2 md:space-y-4"><div class="flex flex-col md:flex-row justify-center md:row md:items-start"><span class="text-lg font-normal md:text-2xl">COMPETITION</span><span class="text-2xl font-normal">CLOSES IN</span></div><div class="flex space-x-1 md:space-x-4 flex-1 md:flex-none"><p class="timer-box flex flex-col gap-3 md:gap-6 items-center py-4 px-1 md:p-4 min-w-fit w-full border-2 border-primary rounded-xl"><span class="text-3xl sm:text-5xl font-normal text-primary">' +
           days +
