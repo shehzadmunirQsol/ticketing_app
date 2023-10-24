@@ -3,7 +3,10 @@ import { Button } from '@/ui/button';
 import Image from 'next/image';
 import Lines from '~/public/assets/icons/Lines_Big.png';
 import Group16 from '~/public/assets/icons/Group16.svg';
-import Group17 from '~/public/assets/icons/Group17.png';
+import visa from '~/public/assets/icons/visa.svg';
+import master from '~/public/assets/icons/master.svg';
+import Paypal from '~/public/assets/icons/Paypal.svg';
+import applePay from '~/public/assets/icons/applePay.svg';
 import Glow from '~/components/common/glow';
 import Link from 'next/link';
 import langContent from '~/locales';
@@ -20,8 +23,8 @@ interface LinkItemProps {
 }
 function Footer() {
   const { lang } = useSelector((state: RootState) => state.layout);
-  const router = useRouter()
-  const [isModal, setIsModal] = useState(false)
+  const router = useRouter();
+  const [isModal, setIsModal] = useState(false);
 
   return (
     <footer className="h-full  bg-background-footer !z-50">
@@ -40,7 +43,7 @@ function Footer() {
         <div className="relative z-30 ">
           <div className="relative p-4 py-6 md:px-14 md:py-14">
             <div className="sm:flex sm:justify-between ">
-              <div className=" mb-6 md:mb-0 flex flex-col gap-8 w-10/12 sm:w-[300px] lg:w-[360px]">
+              <div className=" mb-6 md:mb-0 flex flex-col gap-8 w-100 sm:w-[300px] lg:w-[360px]">
                 <div>
                   {/* <Button
                     variant="rounded-outline"
@@ -56,7 +59,7 @@ function Footer() {
                   <Button
                     variant="rounded-outline"
                     className="z-30 font-bold bg-transparent min-w-max "
-                    onClick={()=>setIsModal(true)}
+                    onClick={() => setIsModal(true)}
                   >
                     <div>
                       {langContent[lang.lang].Footer.SUBSCRIBE_BTN}
@@ -71,14 +74,32 @@ function Footer() {
                   <p>{langContent[lang.lang].Footer.ADDRESS_SUB_TITLE_ONE}</p>
                   <p>{langContent[lang.lang].Footer.ADDRESS_SUB_TITLE_TWO}</p>
                   <p>{langContent[lang.lang].Footer.ADDRESS_SUB_TITLE_THREE}</p>
-                  <p className="text-xs my-2">
+                  <p className="text-xs my-2 hidden sm:block">
                     {langContent[lang.lang].Footer.ADDRESS_SUB_TITLE_FOUR}
                   </p>
                 </div>
-                <div className=" flex items-center justify-center md:justify-start  w-64  text-sm text-white">
+                <div className=" flex items-center justify-start md:justify-start  text-sm text-white gap-3 sm:gap-4">
                   <Image
-                    className="w-full h-full object-contain "
-                    src={Group17}
+                    className="h-full object-contain "
+                    src={visa}
+                    quality={100}
+                    alt="Sunset in the mountains"
+                  />
+                  <Image
+                    className="h-full object-contain "
+                    src={master}
+                    quality={100}
+                    alt="Sunset in the mountains"
+                  />
+                  <Image
+                    className="h-full object-contain "
+                    src={Paypal}
+                    quality={100}
+                    alt="Sunset in the mountains"
+                  />
+                  <Image
+                    className="h-full object-contain "
+                    src={applePay}
                     quality={100}
                     alt="Sunset in the mountains"
                   />
@@ -174,17 +195,24 @@ function Footer() {
             </div>
           </div>
 
-          <div className="flex h-20  px-4 sm:mt-8 md:px-8 md:h-32  w-full relative justify-end items-end ">
+          <div className="flex flex-col px-4 sm:mt-8 md:px-8 w-full relative justify-end items-end gap-3">
             <Image
-              className="w-full h-full object-contain  z-40"
+              className="w-full h-full object-contain  z-40 "
               src={Group16}
               quality={100}
               alt="Sunset in the mountains"
             />
+            <p className="text-xs my-2 block sm:hidden">
+              {langContent[lang.lang].Footer.ADDRESS_SUB_TITLE_FOUR}
+            </p>
           </div>
         </div>
       </div>
-      <NewsLetterDialog isModal={isModal} setIsModal={setIsModal} title={"Newsletter"}/>
+      <NewsLetterDialog
+        isModal={isModal}
+        setIsModal={setIsModal}
+        title={'Newsletter'}
+      />
     </footer>
   );
 }

@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Progress } from '../../ui/progress';
 import Counter from './Counter';
 import ImageSliderStyle from './ImageSliderStyle';
+import CountDown from './CountDown';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
 import { useRouter } from 'next/router';
@@ -53,39 +54,44 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
   const price = +(range[0] as number) * data?.price;
   const percentageSold = (data?.tickets_sold / data?.total_tickets) * 100;
 
+  console.log({ data });
+
   return (
     <section className="text-gray-600 body-font">
-      <div className="py-4 mx-auto flex flex-wrap">
-        <div className="lg:w-1/2 w-full mb-10 lg:mb-0 rounded-lg overflow-hidden">
+      <div className="py-4 mb-5 mx-auto flex flex-wrap">
+        <div className="lg:w-1/2 w-full rounded-lg overflow-hidden">
           <ImageSliderStyle data={data} />
         </div>
-        <div className="flex flex-col flex-wrap lg:py-6 -mb-10 lg:w-1/2 w-full lg:pl-12 lg:text-left  ">
-          <div className="flex flex-col mb-10 lg:items-start items-start">
+        <div className="flex flex-col flex-wrap lg:py-6 -mb-10 lg:w-1/2 w-full lg:text-left bg-card px-5 py-6">
+          <div className="flex flex-col lg:items-start items-start">
             <div className="flex-grow w-full">
               <div className="flex flex-col gap-2">
-                <span className=" text-xs text-gray-300 ">
-                  {Math.round(
-                    (Number(data?.tickets_sold) / Number(data?.total_tickets)) *
-                      100,
-                  )}
-                  % {langContent[lang.lang].ProductDetail.description.SOLD}
-                </span>
+                <div className="flex justify-between items-center">
+                  <span className=" text-xs text-gray-300 ">
+                    {Math.round(
+                      (Number(data?.tickets_sold) /
+                        Number(data?.total_tickets)) *
+                        100,
+                    )}
+                    % {langContent[lang.lang].ProductDetail.description.SOLD}
+                  </span>
+                  <span className="text-xs text-gray-300">
+                    {data?.tickets_sold?.toLocaleString()} /{' '}
+                    {data?.total_tickets?.toLocaleString()}
+                  </span>
+                </div>
                 <Progress value={percentageSold} className="w-full" />
-                <span className="w-full text-center text-xs text-gray-300">
-                  {data?.tickets_sold?.toLocaleString()} /{' '}
-                  {data?.total_tickets?.toLocaleString()}
-                </span>
               </div>
             </div>
             <div>
-              <p className="mt-6 text-2xl  md:text-4xl xl:text-5xl font-normal tracking-[1px] sm:tracking-[-1px] text-white  ">
+              <p className="mt-3 sm:mt-6 text-2xl  md:text-4xl xl:text-5xl font-normal tracking-[1px] sm:tracking-[-1px] text-white  ">
                 <span className=" font-black mr-1">
                   {lang.lang_id === 2 ? 'يفوز' : 'WIN '}{' '}
                 </span>
                 {data?.EventDescription[0]?.name}
               </p>
             </div>
-            <div className="flex flex-col lg:flex-row  mt-6 lg:items-center  justify-between  w-full">
+            <div className="flex flex-col lg:flex-row  mt-3 sm:mt-6 lg:items-center  justify-between  w-full">
               {data?.category_id == 1 && (
                 <p className=" text-white text-xl  lg:text-2xl ">
                   {lang.lang_id === 2
@@ -102,26 +108,31 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
                 AED {(price ?? 0)?.toLocaleString()}
               </p>
             </div>
-            <div className="mb-4 py-6">
+
+            <div className="mb-4 py-3 sm:py-6">
               <p className="lg:text-xl text-md text-white opacity-75 ">
                 {customTruncate(data?.EventDescription[0]?.desc, 100)}
               </p>
             </div>
 
             <div className="w-full relative">
-              <div className="relative  z-10">
+              <div className="relative z-10">
                 <Counter
                   range={range}
                   ticketInBasket={ticketInBasket}
                   setRange={setRange}
-                  user_ticket_limit={userTicketLimit}
                   perCustomerLimit={data?.user_ticket_limit}
+                  user_ticket_limit={userTicketLimit}
                   ticketPurchased={ticketPurchased}
                   event={data}
                 />
               </div>
               <Glow className="absolute bottom-0 -right-16   p-2   w-2/5 h-[180px]   " />
             </div>
+
+            {data?.end_date?.getTime() > Date.now() ? (
+              <CountDown dateString={data?.end_date?.getTime()?.toString()} />
+            ) : null}
           </div>
         </div>
       </div>

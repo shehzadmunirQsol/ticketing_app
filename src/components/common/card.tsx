@@ -44,7 +44,7 @@ function ProductCard(props: cardInterface) {
     observer.observe(cardRef.current);
   }, [props?.isLast]);
 
-  const spaceElement = props?.isCash ? null : <div className="h-6 xl:h-9" />;
+  const spaceElement = props?.isCash ? null : <div className="h-8 xl:h-9 hidden md:block" />;
   const today = new Date().toISOString().split('T')[0];
   const time = props?.data?.end_date;
   const endDay = props?.data && time && time?.toISOString().split('T')[0];
@@ -75,7 +75,7 @@ function ProductCard(props: cardInterface) {
             <Image
               width={550}
               height={450}
-              className="w-full h-[230px] object-cover bg-white"
+              className="w-full h-[180px] sm:h-[230px] object-cover bg-white"
               src={props?.cash ?? renderNFTImage(props?.data) ?? CarImage}
               quality={100}
               alt="Sunset in the mountains"
@@ -90,7 +90,8 @@ function ProductCard(props: cardInterface) {
           </div>
 
           <div className="px-6 mt-6 py-4">
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-1 mb-2">
+              <div className="flex justify-between items-center gap-3 mb-2">
               <span className=" text-xs text-gray-300">
                 {Math.round(
                   (Number(props?.data?.tickets_sold) /
@@ -99,6 +100,11 @@ function ProductCard(props: cardInterface) {
                 )}
                 % {langContent[lang.lang].Index.productcard.SOLD_TITLE}
               </span>
+              <span className="text-xs text-gray-300">
+                {(props?.data?.tickets_sold).toLocaleString()} /{' '}
+                {(props?.data?.total_tickets).toLocaleString()}
+              </span>
+              </div>
               <Progress
                 value={
                   (Number(props?.data?.tickets_sold) /
@@ -107,20 +113,15 @@ function ProductCard(props: cardInterface) {
                 }
                 className="w-full"
               />
-              <span className="w-full text-center text-xs text-gray-300">
-                {(props?.data?.tickets_sold).toLocaleString()} /{' '}
-                {(props?.data?.total_tickets).toLocaleString()}
-              </span>
             </div>
             <div className="font-bold overflow-hidden h-10 md:h-20 text-xl lg:text-2xl xl:text-3xl line-clamp-1">
               {langContent[lang.lang].Index.productcard.WIN_TITLE ?? ''}
-
               <span className="text-gray-200  font-semibold mx-2 ">
                 {props?.data?.EventDescription[0]?.name}
               </span>
             </div>
-            <div className="relative w-full opacity-75  text-gray-200  text-md font-normal leading-normal ">
-              <p className="  h-12  overflow-hidden ">
+            <div className="relative w-full opacity-75  text-gray-200  text-md font-light sm:font-normal leading-normal ">
+              <p className="h-12 overflow-hidden ">
                 {customTruncate(props?.data?.EventDescription[0]?.desc, 100)}
               </p>
             </div>
@@ -131,7 +132,7 @@ function ProductCard(props: cardInterface) {
                 <span className="text-gray-200 text-md xl:text-lg font-semibold leading-[18px]">
                   {langContent[lang.lang].Index.productcard.ALTERNATIVE_TITLE}
                 </span>
-                <span className="text-primary text-md xl:text-lg font-black leading-[18px]">
+                <span className="text-primary text-lg font-[500] leading-[18px]">
                   {' '}
                   AED {(props?.data?.cash_alt ?? 0)?.toLocaleString()}
                 </span>
@@ -140,13 +141,13 @@ function ProductCard(props: cardInterface) {
               spaceElement
             )}
 
-            <div className="flex  justify-between items-center mt-8 gap-4">
-              <div className="text-primary text-md xl:text-lg font-black leading-[18px]">
+            <div className="flex  justify-between items-center mt-4 sm:mt-8 gap-4">
+              <div className="text-primary text-2xl font-[500] leading-[18px]">
                 AED {props?.data?.price}
               </div>
               <Button
                 variant="rounded"
-                className="font-[800] tracking-tight text-md xl:text-lg "
+                className="font-[700] sm:font-[800] tracking-tight text-md xl:text-lg "
               >
                 {langContent[lang.lang].Index.productcard.ENTER_BTN}
               </Button>

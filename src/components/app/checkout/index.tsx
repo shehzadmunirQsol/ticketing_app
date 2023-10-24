@@ -18,7 +18,6 @@ import {
 
 import { Input } from '@/ui/input';
 import { useForm } from 'react-hook-form';
-import Group17 from '~/public/assets/icons/Group17.png';
 import Image from 'next/image';
 import Glow from '~/components/common/glow';
 import { CouponModal } from './Coupon';
@@ -37,6 +36,10 @@ import Script from 'next/script';
 import jqeury from 'jquery';
 import { CardDailog } from '~/components/common/modal/cardModal';
 import langContent from '~/locales';
+import visa from '~/public/assets/icons/visa.svg';
+import master from '~/public/assets/icons/master.svg';
+import Paypal from '~/public/assets/icons/Paypal.svg';
+import applePay from '~/public/assets/icons/applePay.svg';
 
 import countryJSON from '~/data/countries.json';
 const countries = countryJSON.map((item) => item.country);
@@ -737,12 +740,32 @@ function Checkout() {
                     <p className="text-sm text-cardGray">
                       {langContent[lang.lang].Checkout.ACCEPT}
                     </p>
-                    <Image
-                      className="w-64 object-contain  "
-                      src={Group17}
-                      quality={100}
-                      alt="Sunset in the mountains"
-                    />
+                    <div className=" flex items-center justify-start md:justify-start  text-sm text-white gap-3 sm:gap-4">
+                      <Image
+                        className="h-full object-contain w-10"
+                        src={visa}
+                        quality={100}
+                        alt="Sunset in the mountains"
+                      />
+                      <Image
+                        className="h-full object-contain w-10"
+                        src={master}
+                        quality={100}
+                        alt="Sunset in the mountains"
+                      />
+                      <Image
+                        className="h-full object-contain w-10"
+                        src={Paypal}
+                        quality={100}
+                        alt="Sunset in the mountains"
+                      />
+                      <Image
+                        className="h-full object-contain w-10"
+                        src={applePay}
+                        quality={100}
+                        alt="Sunset in the mountains"
+                      />
+                    </div>
                   </div>
 
                   <Button

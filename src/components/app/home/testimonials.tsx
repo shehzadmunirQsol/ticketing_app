@@ -16,7 +16,6 @@ import { RootState } from '~/store/store';
 import { useSelector } from 'react-redux';
 import langContent from '~/locales';
 
-
 function Testimonials() {
   const { lang } = useSelector((state: RootState) => state.layout);
 
@@ -72,8 +71,7 @@ function Testimonials() {
           <div className="relative bg-transparent">
             <div className="absolute top-0 p-8  w-full  bg-teal-400 bg-opacity-50 rounded-full blur-3xl"></div>
             <div className="text-center   text-white  text-xl ">
-            {langContent[lang.lang].Index.testimonials.HEADING}
-
+              {langContent[lang.lang].Index.testimonials.HEADING}
             </div>
             <div className="mt-2  text-center text-gray-200 text-5xl font-black leading-[48px]">
               {' '}
@@ -89,11 +87,11 @@ function Testimonials() {
         </div>
       </div>
 
-      <div className="block sm:hidden py-6 space-y-8">
+      <div className="block sm:hidden p-0 sm:py-6 space-y-8">
         <div
           className={`${
             lang?.dir == 'rtl' ? ' flex-row-reverse' : 'md:ml-0'
-          }  flex gap-2 z-10 items-center justify-center `}
+          }  gap-2 z-10 items-center justify-center hidden sm:flex`}
         >
           <Button
             variant="rounded"
@@ -110,21 +108,43 @@ function Testimonials() {
             <i className="fa-solid fa-chevron-right"></i>
           </Button>
         </div>
-        <div className="z-30 px-4 relative h-full w-full mx-auto ">
-          <Slider ref={slider} {...settings}>
-            {langContent[lang.lang].Index.testimonials.array?.map((item, index) => {
-              return (
-                <Review
-                  key={index}
-                  {...item}
-                  class={`${
-                    langContent[lang.lang].Index.testimonials.array?.length != index + 1 ? 'xsm:mr-4' : ''
-                  }  min-h-[14rem]`}
-                  index={index}
-                />
-              );
-            })}
-          </Slider>
+        <div className="flex items-center relative">
+          <Button
+            variant="rounded"
+            className="button prev-btn h-8 w-8 md:h-14 md:w-14 absolute left-1 z-50 sm:hidden"
+            onClick={previous}
+          >
+            <i className="fa-solid fa-chevron-left"></i>
+          </Button>
+          <Button
+            variant="rounded"
+            className="button next-btn h-8 w-8 md:h-14 md:w-14 absolute right-1 z-50 sm:hidden"
+            onClick={next}
+          >
+            <i className="fa-solid fa-chevron-right"></i>
+          </Button>
+          <div className="z-30 px-4 relative h-full w-full mx-auto ">
+            <Slider ref={slider} {...settings}>
+              {langContent[lang.lang].Index.testimonials.array?.map(
+                (item, index) => {
+                  return (
+                    <Review
+                      key={index}
+                      {...item}
+                      class={`${
+                        langContent[lang.lang].Index.testimonials.array
+                          ?.length !=
+                        index + 1
+                          ? 'xsm:mr-4'
+                          : ''
+                      }  min-h-[14rem]`}
+                      index={index}
+                    />
+                  );
+                },
+              )}
+            </Slider>
+          </div>
         </div>
       </div>
 
@@ -138,7 +158,6 @@ function Testimonials() {
 }
 
 export default Testimonials;
-
 
 type ReviewType = {
   class: string;
@@ -180,12 +199,11 @@ function Review(item: ReviewType) {
   );
 }
 
-
-const images:any= {
-  1:Face1,
-  2:Face2,
-  3:Face3,
-  4:Face4,
-  5:Face5,
-  6:Face6
-}
+const images: any = {
+  1: Face1,
+  2: Face2,
+  3: Face3,
+  4: Face4,
+  5: Face5,
+  6: Face6,
+};

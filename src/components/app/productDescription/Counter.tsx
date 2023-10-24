@@ -100,7 +100,7 @@ const Counter: React.FC<CounterProps> = ({
   }
 
   return (
-    <div className="relative bg-backgroundDark p-4">
+    <div className="relative">
       {ticketPurchased >= perCustomerLimit ? (
         <div className="sm:p-4 space-y-4 grid items-center">
           <i className="fas fa-gauge-high text-7xl lg:text-9xl text-primary text-center" />

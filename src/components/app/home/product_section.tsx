@@ -130,7 +130,7 @@ function ProductSection(props: productInterface) {
       {
         breakpoint: 480,
         settings: {
-          slidesToShow: 1.05,
+          slidesToShow: 1.15,
           slidesToScroll: 1,
         },
       },
@@ -138,14 +138,14 @@ function ProductSection(props: productInterface) {
   };
   return (
     <div className=" max-w-[1600px]  mx-auto w-full ">
-      <div className="px-4 relative flex gap-3 flex-col md:flex-row h-28 md:h-auto py-6  z-30 items-center w-full md:justify-between mb-6">
-        <p className="text-gray-200 !text-xl sm:!text-3xl lg:!text-5xl font-black uppercase  ">
+      <div className="px-4 relative gap-3 flex-col md:flex-row md:h-auto py-6  z-30 sm:items-center items-start w-full md:justify-between mb-0 sm:mb-6 flex h-fit sm:h-28 ">
+        <p className="text-gray-200 !text-xl sm:!text-3xl lg:!text-5xl font-black uppercase ">
           {props?.title}
         </p>
         <div
           className={`${
             lang?.dir == 'rtl' ? ' flex-row-reverse' : 'md:ml-0'
-          }  flex gap-2 z-10 items-center justify-center `}
+          } gap-2 z-10 items-center justify-center sm:flex hidden`}
         >
           <Button
             variant="rounded"
