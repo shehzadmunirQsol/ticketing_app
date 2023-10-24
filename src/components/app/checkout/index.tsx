@@ -37,7 +37,7 @@ import jqeury from 'jquery';
 import { CardDailog } from '~/components/common/modal/cardModal';
 import langContent from '~/locales';
 import visa from '~/public/assets/icons/visa.svg';
-import master from '~/public/assets/icons/master.svg';
+import master from '~/public/assets/icons/Master.svg';
 import Paypal from '~/public/assets/icons/Paypal.svg';
 import applePay from '~/public/assets/icons/applePay.svg';
 
