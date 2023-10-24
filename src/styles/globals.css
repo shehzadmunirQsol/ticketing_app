@@ -953,6 +953,9 @@ input[type='number'] {
 .absolute {
   position: absolute;
 }
+.h-\[450px\] {
+  height: 450px;
+}
 .mt-faq {
   margin-top: 5.5rem;
 }
