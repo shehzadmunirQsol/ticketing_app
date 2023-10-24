@@ -36,7 +36,8 @@ const ProductDetail = () => {
       ? JSON.parse(data?.data?.meta as string)
       : '';
 
-  return (
+
+      return (
     <div className="bg-background">
       <Tabs data={data?.data} comp_detail={comp_detail} />
       <div id="BuyTickets" className="px-4 md:px-14 ">
