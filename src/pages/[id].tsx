@@ -58,7 +58,7 @@ const CmsFunc = dynamic(() => import('~/components/app/cms/index'), {
 
 const AboutUsContent = ` <div className='bg-background'>
 
-<div className="w-full relative h-[750px] md:h-[650px] lg:h-[550px] text-center">
+<div className="w-full relative !h-[450px] md:!h-[550px] text-center">
     <div className="relative w-full h-full">
       <Image
         src="https://media.winnar.com/upload/about-page-background.png"
@@ -336,7 +336,7 @@ const AboutUsContentTwo = `
 `;
 
 const faqUpdatePage = `
-<div class="w-full relative h-[750px] md:h-[650px] lg:h-[550px] z-40 text-center "><img alt="/" class="object-cover  w-full h-full block bg-black/50" fill="" quality="{100}" src="https://media.winnar.com/upload/faq-banner.png" />
+<div class="w-full relative !h-[250px] md:!h-[450px]  z-40 text-center "><img alt="/" class="object-cover  w-full h-full block bg-black/50" fill="" quality="{100}" src="https://media.winnar.com/upload/faq-banner.png" />
 <div class="absolute h-[35px] w-full text-center top-[50%] flex items-center">
 <div class="w-full text-center">
 <p class="text-white drop-shadow-2xl text-center w-full text-4xl  lg:text-5xl tracking-tighter   font-[900]">FAQs</p>
