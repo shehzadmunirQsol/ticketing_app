@@ -131,7 +131,6 @@ export default function WinnersDataTable() {
     // {
     //   id: 'Enabled',
     //   header: 'Enabled',
-
     //   cell: ({ row }) => {
     //     return (
     //       <Switch
