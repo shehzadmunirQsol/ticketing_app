@@ -54,6 +54,8 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
   const price = +(range[0] as number) * data?.price;
   const percentageSold = (data?.tickets_sold / data?.total_tickets) * 100;
 
+  console.log({ data });
+
   return (
     <section className="text-gray-600 body-font">
       <div className="py-4 mb-5 mx-auto flex flex-wrap">
@@ -121,7 +123,6 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
                   setRange={setRange}
                   perCustomerLimit={data?.user_ticket_limit}
                   user_ticket_limit={userTicketLimit}
-                  perCustomerLimit={data?.user_ticket_limit}
                   ticketPurchased={ticketPurchased}
                   event={data}
                 />
@@ -129,7 +130,9 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
               <Glow className="absolute bottom-0 -right-16   p-2   w-2/5 h-[180px]   " />
             </div>
 
-            <CountDown dateString="1698782400000" />
+            {data?.end_date?.getTime() > Date.now() ? (
+              <CountDown dateString={data?.end_date?.getTime()?.toString()} />
+            ) : null}
           </div>
         </div>
       </div>
