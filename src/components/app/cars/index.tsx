@@ -11,7 +11,6 @@ import FeaturedCars from './featured_cars';
 import Testimonials from '../home/testimonials';
 import langContent from '~/locales';
 
-
 const CarsPage = () => {
   const { lang } = useSelector((state: RootState) => state.layout);
   const [products, setProducts] = useState<Array<any>>([]);
@@ -56,17 +55,19 @@ const CarsPage = () => {
       <div className="relative pt-24"></div>
       <FeaturedCars />
       <div className="pb-20 block slg:hidden">
-        <BannerTitle image={CarsBg} text={langContent[lang.lang].Cars.MAIN_HEADING} />
+        <BannerTitle
+          image={CarsBg}
+          text={langContent[lang.lang].Cars.MAIN_HEADING}
+        />
       </div>
       <div className="relative h-full px-4 md:px-14 pb-20">
         <p className="hidden slg:block text-2xl md:text-5xl pt-24 pb-10 tracking-tighter font-extrabold text-white ">
-        {langContent[lang.lang].Cars.HEADING}
-
+          {langContent[lang.lang].Cars.HEADING}
         </p>
         <Glow className=" absolute  top-1/2 -left-16 w-1/5 h-[350px] overflow-hidden " />
         <Glow className=" absolute  bottom-0 -right-16 w-1/5 h-[350px] overflow-hidden " />
 
-        <div className=" grid gap-6 grid-cols-1 md:grid-cols-2 z-40 lg:grid-cols-3  justify-between mx-auto ">
+        <div className=" grid gap-6 grid-cols-1 sm:grid-cols-2 z-40 lg:grid-cols-3  justify-between mx-auto ">
           {products?.map((itemList, i) => {
             return (
               <div className="z-40" key={itemList?.id}>

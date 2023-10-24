@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Progress } from '../../ui/progress';
 import Counter from './Counter';
 import ImageSliderStyle from './ImageSliderStyle';
+import CountDown from './CountDown';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
 import { useRouter } from 'next/router';
@@ -29,16 +30,6 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
     (item) => item.event_id === +(eventId ?? 0),
   );
 
-  useEffect(() => {
-    if (cartItem) {
-      ticketInBasket.current = cartItem.quantity ?? 0;
-      setRange([cartItem.quantity ?? 0]);
-    }
-  }, [cartItem]);
-
-  const price = +(range[0] as number) * data?.price;
-  const percentageSold = (data?.tickets_sold / data?.total_tickets) * 100;
-
   const ticketEventPayload = {
     total_tickets: data?.total_tickets,
     tickets_sold: data?.tickets_sold ?? 0,
@@ -51,14 +42,26 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
     quantity: range[0] ?? 0,
   });
 
+  useEffect(() => {
+    if (cartItem) {
+      ticketInBasket.current = cartItem.quantity ?? 0;
+      setRange([cartItem.quantity ?? 0]);
+    } else {
+      setRange([userTicketLimit > 10 ? 10 : userTicketLimit]);
+    }
+  }, [cartItem, userTicketLimit]);
+
+  const price = +(range[0] as number) * data?.price;
+  const percentageSold = (data?.tickets_sold / data?.total_tickets) * 100;
+
   return (
     <section className="text-gray-600 body-font">
-      <div className="py-4 mx-auto flex flex-wrap">
-        <div className="lg:w-1/2 w-full mb-10 lg:mb-0 rounded-lg overflow-hidden">
+      <div className="py-4 mb-5 mx-auto flex flex-wrap">
+        <div className="lg:w-1/2 w-full rounded-lg overflow-hidden">
           <ImageSliderStyle data={data} />
         </div>
-        <div className="flex flex-col flex-wrap lg:py-6 -mb-10 lg:w-1/2 w-full lg:pl-12 lg:text-left  ">
-          <div className="flex flex-col mb-10 lg:items-start items-start">
+        <div className="flex flex-col flex-wrap lg:py-6 -mb-10 lg:w-1/2 w-full lg:text-left bg-card px-5 py-6">
+          <div className="flex flex-col lg:items-start items-start">
             <div className="flex-grow w-full">
               <div className="flex flex-col gap-2">
                 <div className="flex justify-between items-center">
@@ -101,25 +104,30 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
                 AED {(price ?? 0)?.toLocaleString()}
               </p>
             </div>
+
             <div className="mb-4 py-3 sm:py-6">
               <p className="lg:text-xl text-md text-white opacity-75 ">
                 {customTruncate(data?.EventDescription[0]?.desc, 100)}
               </p>
-            </div>
+            </div> 
 
             <div className="w-full relative">
-              <div className="relative  z-10">
+              <div className="relative z-10">
                 <Counter
                   range={range}
                   ticketInBasket={ticketInBasket}
                   setRange={setRange}
                   user_ticket_limit={userTicketLimit}
+                  perCustomerLimit={data?.user_ticket_limit}
                   ticketPurchased={ticketPurchased}
                   event={data}
                 />
               </div>
               <Glow className="absolute bottom-0 -right-16   p-2   w-2/5 h-[180px]   " />
             </div>
+
+            <CountDown dateString="1698782400000" />
+
           </div>
         </div>
       </div>

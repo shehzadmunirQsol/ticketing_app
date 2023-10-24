@@ -24,10 +24,13 @@ import { LoadingDialog } from '../modal/loadingModal';
 
 const BannerFormSchema = z.object({
   thumb: z.any(),
-  link: z.string({
-    required_error: 'Please enter a video link',
-  }),
-
+  link: z
+    .string({
+      required_error: 'Please enter a product link',
+    })
+    .min(1, {
+      message: 'Please enter a product link',
+    }),
   en: z.object({
     model: z
       .string({
@@ -308,7 +311,7 @@ export function BannerForm() {
       throw new Error('Please Select Image');
     }
   }
-  console.log({ isFetching });
+
   return (
     <Form {...form}>
       <form
@@ -555,8 +558,7 @@ export function BannerForm() {
             </TabsContent>
           </Tabs>
         </div>
-        <div className="flex items-center justify-between">
-          <div></div>
+        <div className="flex items-center justify-end">
           <Button type="submit" variant={'clip'} className="w-1/2">
             {index ? 'Edit Banner' : 'Add Banner'}
           </Button>

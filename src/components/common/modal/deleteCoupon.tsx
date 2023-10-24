@@ -22,15 +22,13 @@ interface SettingDialogInterface {
   type: string;
   setType: any;
 }
-export function CouponDialog(props: SettingDialogInterface) {
+export function CouponDeleteDialog(props: SettingDialogInterface) {
   const { toast } = useToast();
   const [loading, setLoading] = useState<boolean>(false);
 
-  const bannerUpdate: any = trpc.coupon.update.useMutation({
+  const deleteCoupon: any = trpc.coupon.delete.useMutation({
     onSuccess: () => {
       console.log('upload successfully');
-
-      // router.push('/store/wallet-connect');
     },
     onError(error: any) {
       console.log({ error });
@@ -41,16 +39,11 @@ export function CouponDialog(props: SettingDialogInterface) {
     try {
       setLoading(true);
       const payload: any = {
-        coupon_id: props?.selectedItem?.id,
+        id: props?.selectedItem?.id,
       };
-      if (props?.type == 'enabled')
-        payload.is_enabled = !props?.selectedItem?.is_enabled;
-      if (props?.type == 'disabled')
-        payload.is_enabled = !props?.selectedItem?.is_enabled;
       if (props?.type == 'delete')
         payload.is_deleted = !props?.selectedItem?.is_deleted;
-      // let data: any;
-      const data = await bannerUpdate.mutateAsync({ ...payload });
+      const data = await deleteCoupon.mutateAsync({ ...payload });
 
       if (data) {
         setLoading(false);
@@ -58,10 +51,9 @@ export function CouponDialog(props: SettingDialogInterface) {
         props.setIsModal(false);
 
         toast({
-          variant: `${props?.type === 'enabled' ? 'disable' : 'success'}`,
-          title: `${props?.title} ${
-            props?.type === 'enabled' ? 'Disabled' : 'Enabled'
-          } Successfully`,
+          variant: `${props?.type === 'enabled' ? "disable" : "success"}`,
+          title: `${props?.title} ${props?.type === 'enabled' ? 'Disabled' : 'Delete'
+            } Successfully`,
         });
         props?.refetch();
       } else {
@@ -84,14 +76,14 @@ export function CouponDialog(props: SettingDialogInterface) {
           <DialogHeader>
             <DialogTitle>{props?.title}</DialogTitle>
             <DialogDescription>
-              <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-4 ">
                 <div className="  flex gap-2 items-center p-2  ">
-                  <p>
-                    Note: By Saving this information customer{' '}
-                    <span className="text-primary">
-                      {props?.type !== 'enabled' ? 'can apply' : 'cannot apply'}
+                <p>
+                    Are You Sure You Want to {props?.type}{' '} this{' '}
+                    <span className="text-primary capitalize">
+                      {props?.selectedItem?.name}
                     </span>{' '}
-                    this coupon on cart.
+                     Coupon
                   </p>
                 </div>
               </div>
@@ -104,7 +96,7 @@ export function CouponDialog(props: SettingDialogInterface) {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      <LoadingDialog open={loading} text={'Saving data...'} />
+      <LoadingDialog open={loading} text={'Deleting coupon...'} />
     </>
   );
 }

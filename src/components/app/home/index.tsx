@@ -9,7 +9,6 @@ import langContent from '~/locales';
 import { RootState } from '~/store/store';
 import { useSelector } from 'react-redux';
 
-
 export default function Home() {
   const { lang } = useSelector((state: RootState) => state.layout);
   return (
@@ -36,7 +35,7 @@ export default function Home() {
           slidesToShow={2.5}
           center={false}
           title={langContent[lang.lang].Index.upcoming.HEADING}
-          type="upcomming"
+          type="upcoming"
           breakpoint={[2, 1, 1]}
           breakpointScreens={[900, 850, 600]}
         />

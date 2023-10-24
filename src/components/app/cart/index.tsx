@@ -106,6 +106,7 @@ export default function CartPage() {
                     cart_id={cart?.id ?? 0}
                     customer_id={cart?.customer_id ?? 0}
                     ticketPurchased={ticketPurchased}
+                    cartItemsLength={cart?.cartItems?.length ?? 0}
                   />
                 );
               })}
@@ -119,13 +120,13 @@ export default function CartPage() {
                   placeholder="Coupon code"
                   type="text"
                   onChange={(e: any) => setCode(e.target.value)}
-                  disabled={cart.isDiscount}
+                  disabled={cart.isDiscount || couponApply.isLoading}
                   className="px-4 flex-1 bg-transparent border-none z-10 "
                 />
                 <Button
                   variant={'ghost'}
                   onClick={handleApply}
-                  disabled={!code || cart.isDiscount}
+                  disabled={!code || cart.isDiscount || couponApply.isLoading}
                   className="text-primary border-l border-border z-10 "
                 >
                   {cart.isDiscount

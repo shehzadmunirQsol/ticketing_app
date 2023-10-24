@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 export const getWinnersSchema = z.object({
+  is_admin: z.boolean().default(false),
   first: z.number(),
   rows: z.number(),
   lang_id: z.number().default(1),
@@ -14,3 +15,11 @@ export const selectWinnerSchema = z.object({
   customer_name: z.string(),
   event_name: z.string(),
 });
+
+export const updateWinnerSchema = z.object({
+  winner_id: z.number(),
+  is_enabled: z.boolean().optional(),
+  thumb: z.string().optional(),
+});
+
+export type UpdateWinnerSchema = z.infer<typeof updateWinnerSchema>;

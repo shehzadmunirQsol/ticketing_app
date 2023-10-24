@@ -17,7 +17,6 @@ import Highlights from './highlights';
 
 const ProductDetail = () => {
   const router = useRouter();
-  const counterRef = React.useRef<any>(null);
   const { lang } = useSelector((state: RootState) => state.layout);
   const { id } = URIDecoder(router?.query?.id ?? '');
   const { data, isLoading } = trpc.event.getEventsById.useQuery(
@@ -29,6 +28,7 @@ const ProductDetail = () => {
 
   const comp_detail: any = data?.data?.EventDescription[0]?.comp_details;
   const Faqs: any = data?.data?.CMS;
+  console.log(Faqs,"Faqs")
 
   const isMeta = data?.data?.category_id === 1;
   const meta =
@@ -98,7 +98,6 @@ const ProductDetail = () => {
           data={data?.data}
           ticketPurchased={data?.ticketPurchased}
         />
-        <div ref={counterRef}></div>
         <div>
           <EntiresDetail data={data?.data} />
           {isMeta ? <Highlights meta={meta} /> : null}
@@ -110,7 +109,7 @@ const ProductDetail = () => {
       <div className="relative px-4 md:px-14  ">
         <div className="relative z-10 ">
           {comp_detail ? <CompititionDetail data={data?.data} /> : <></>}
-          {Faqs && Faqs?.is_enabled ? (
+          { Faqs?.is_enabled && Faqs?.CMSDescription?.length > 0 ?  (
             <AccordianFaqs data={data?.data} />
           ) : (
             <></>

@@ -81,11 +81,13 @@ export const signupCustomerSchemaInput = z.object({
     .max(30, {
       message: 'lastname must not exceed 30 characters',
     }),
-  code: z.string({ required_error: 'Enter code' })
+  code: z
+    .string({ required_error: 'Enter code' })
     .regex(new RegExp(/^(00|\+)[0-9]+$/), 'Invalid code')
     .min(1, {
       message: 'Enter code',
-    }).trim(),
+    })
+    .trim(),
   phone_number: z
     .string({
       required_error: 'Please enter your phone no',
@@ -209,6 +211,9 @@ export const addCustomerAddress = z.object({
       required_error: 'Please enter your street address',
       invalid_type_error: 'Please enter your street address',
     })
+    .min(1, {
+      message: 'Please enter your street address',
+    })
     .trim(),
   street_address_2: z
     .string({
@@ -222,11 +227,17 @@ export const addCustomerAddress = z.object({
       required_error: 'Please enter your state',
       invalid_type_error: 'Please enter your state',
     })
+    .min(1, {
+      message: 'Please enter your state',
+    })
     .trim(),
   city: z
     .string({
       required_error: 'Please enter your city',
       invalid_type_error: 'Please enter your city',
+    })
+    .min(1, {
+      message: 'Please enter your city',
     })
     .trim(),
   country: z
@@ -234,18 +245,43 @@ export const addCustomerAddress = z.object({
       required_error: 'Please enter your country',
       invalid_type_error: 'Please enter your country',
     })
+    .min(1, {
+      message: 'Please enter your country',
+    })
     .trim(),
   phone_number: z
     .string({
       required_error: 'Please enter your phone no',
       invalid_type_error: 'Please enter your phone no',
     })
+    .regex(new RegExp(/^[0-9]+$/), 'Please enter a valid phone no.')
+    .min(9, {
+      message: 'Number should be at more than 7 characters',
+    })
+    .max(15, {
+      message: 'Number should be at less than 15 characters',
+    })
     .trim(),
-  phone_code: z.string().trim(),
-  postal_code: z.number({
-    required_error: 'Please enter your postal code',
-    invalid_type_error: 'Please enter your postal code',
-  }),
+  phone_code: z
+    .string({
+      required_error: 'Enter code',
+    })
+    .regex(new RegExp(/^(\+)?[0-9]+$/), 'Invalid code')
+    .min(1, {
+      message: 'Enter code',
+    })
+    .max(4, {
+      message: 'Invalid code',
+    })
+    .trim(),
+  postal_code: z
+    .string({
+      required_error: 'Please enter your postal code',
+      invalid_type_error: 'Please enter your postal code',
+    })
+    .min(1, {
+      message: 'Please enter your postal code',
+    }),
 });
 export const updateCustomerAddress = z.object({
   id: z.number().optional(),
@@ -281,7 +317,9 @@ export const accountsDetailSchemaInput = z.object({
       message: 'Name must not exceed 24 characters',
     })
     .trim(),
-  dob: z.date().optional().nullable(),
+  dob: z.date().refine((d) => d >= new Date("1900-01-01") && d <= new Date("2100-01-01"), {
+    message:"Enter a valid date"
+  }).optional().nullable(),
 });
 
 export type accountsDetailSchemaInput = z.infer<

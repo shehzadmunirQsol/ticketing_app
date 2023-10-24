@@ -8,17 +8,7 @@ import {
   deleteMyAccountCustomerSchemaInput,
 } from '~/schema/customer';
 
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '~/components/ui/select';
-
 import countryJSON from '~/data/countries.json';
-const countries = countryJSON.map((item) => item.country);
 
 import {
   Form,

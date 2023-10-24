@@ -104,8 +104,9 @@ export default function LoginSignup() {
   // Signup
   const onSubmitSignup = async (values: any) => {
     try {
+      const payload = { ...values, email: values.email.toLowerCase() };
       formLogin.reset();
-      await registerCustomer.mutateAsync(values);
+      await registerCustomer.mutateAsync(payload);
       setOtpIsModal(true);
     } catch (e: any) {
       setOtpIsModal(false);
@@ -140,8 +141,11 @@ export default function LoginSignup() {
     }
 
     try {
+      const payload = { ...values, user: values.user.toLowerCase() };
+      console.log({ payload });
+
       formSignup.reset();
-      const loginResult = await loginCustomer.mutateAsync(values);
+      const loginResult = await loginCustomer.mutateAsync(payload);
 
       dispatch(userAuth(loginResult?.user));
       toast({
@@ -151,7 +155,7 @@ export default function LoginSignup() {
 
       router.back();
     } catch (e: any) {
-      if (e.shape.message == 'Your Account is Not Verified') {
+      if (e?.shape?.message == 'Your Account is Not Verified') {
         setOtpIsModal(true);
       } else {
         setOtpIsModal(false);

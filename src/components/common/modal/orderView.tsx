@@ -40,7 +40,6 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
       enabled: props?.selectedItem?.id ? true : false,
     },
   );
-  console.log(props, 'Mein hun props ');
 
   const orderRoute = () => {
     if (router.asPath === '/admin/orders') {

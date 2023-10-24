@@ -33,6 +33,9 @@ function ProductCard(props: cardInterface) {
 
     const observer = new IntersectionObserver(([entry]: any) => {
       if (props?.isLast && entry.isIntersecting) {
+        // console.log({ today, endDay }, today == endDay, 'product');
+        // console.log('isLast', props.isLast, props.type);
+
         if (props?.nextPage) props?.nextPage();
         observer.unobserve(entry.target);
       }
@@ -45,7 +48,7 @@ function ProductCard(props: cardInterface) {
   const today = new Date().toISOString().split('T')[0];
   const time = props?.data?.end_date;
   const endDay = props?.data && time && time?.toISOString().split('T')[0];
-  console.log({ today, endDay }, today == endDay, 'product');
+
   return (
     props?.data && (
       <Link
@@ -87,8 +90,8 @@ function ProductCard(props: cardInterface) {
           </div>
 
           <div className="px-6 mt-6 py-4">
-            <div className="flex flex-col gap-1">
-              <div className="flex justify-between items-center gap-3">
+            <div className="flex flex-col gap-1 mb-2">
+              <div className="flex justify-between items-center gap-3 mb-2">
               <span className=" text-xs text-gray-300">
                 {Math.round(
                   (Number(props?.data?.tickets_sold) /
@@ -111,26 +114,25 @@ function ProductCard(props: cardInterface) {
                 className="w-full"
               />
             </div>
-            <div className="font-bold text-xl lg:text-2xl xl:text-3xl line-clamp-1">
+            <div className="font-bold overflow-hidden h-10 md:h-20 text-xl lg:text-2xl xl:text-3xl line-clamp-1">
               {langContent[lang.lang].Index.productcard.WIN_TITLE ?? ''}
-
-              <span className="text-gray-200  font-semibold leading-loose mx-2 ">
+              <span className="text-gray-200  font-semibold mx-2 ">
                 {props?.data?.EventDescription[0]?.name}
               </span>
             </div>
             <div className="relative w-full opacity-75  text-gray-200  text-md font-light sm:font-normal leading-normal ">
-              <p className="overflow-hidden ">
+              <p className="h-12 overflow-hidden ">
                 {customTruncate(props?.data?.EventDescription[0]?.desc, 100)}
               </p>
             </div>
             <hr className=" opacity-20 mt-4" />
 
             {props?.data?.category_id === 1 && props?.data?.cash_alt ? (
-              <div className=" mt-2">
+              <div className="h-6  overflow-hidden mt-2">
                 <span className="text-gray-200 text-md xl:text-lg font-semibold leading-[18px]">
                   {langContent[lang.lang].Index.productcard.ALTERNATIVE_TITLE}
                 </span>
-                <span className="text-primary text-lg font-[600] leading-[18px]">
+                <span className="text-primary text-lg font-[500] leading-[18px]">
                   {' '}
                   AED {(props?.data?.cash_alt ?? 0)?.toLocaleString()}
                 </span>
@@ -140,13 +142,12 @@ function ProductCard(props: cardInterface) {
             )}
 
             <div className="flex  justify-between items-center mt-4 sm:mt-8 gap-4">
-              <div className="text-primary text-lg font-[600] leading-[18px]">
+              <div className="text-primary text-2xl font-[500] leading-[18px]">
                 AED {props?.data?.price}
               </div>
               <Button
                 variant="rounded"
                 className="font-[700] sm:font-[800] tracking-tight text-md xl:text-lg "
-                disabled={props.type == 'upcomming' ? true : false}
               >
                 {langContent[lang.lang].Index.productcard.ENTER_BTN}
               </Button>

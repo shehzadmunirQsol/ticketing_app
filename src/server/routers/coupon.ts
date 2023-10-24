@@ -7,6 +7,7 @@ import {
   getCouponSchema,
   updateCouponSchema,
   updateSchema,
+  deleteCouponSchema,
 } from '~/schema/coupon';
 import { prisma } from '~/server/prisma';
 
@@ -233,6 +234,19 @@ export const couponRouter = router({
     .input(createCouponSchema)
     .mutation(async ({ input }) => {
       try {
+        const isExist = await prisma.coupon.findFirst({
+          where: {
+            coupon_code: input?.coupon_code?.toUpperCase(),
+            is_deleted: false,
+          },
+        });
+        if (isExist) {
+          throw new TRPCError({
+            code: 'FORBIDDEN',
+            message: 'Coupon code must be unique!',
+          });
+        }
+
         const payload: any = {
           user_id: input?.user_id,
           name: input?.name,
@@ -312,5 +326,30 @@ export const couponRouter = router({
         data: payload,
       });
       return setting_banner;
+    }),
+
+  delete: publicProcedure
+    .input(deleteCouponSchema)
+    .mutation(async ({ input }) => {
+      try {
+        console.log(input, 'INPUT::');
+        const coupon = await prisma.coupon.update({
+          where: { id: input.id },
+          data: { is_deleted: true },
+        });
+        if (!coupon) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Coupon not found',
+          });
+        }
+
+        return { data: coupon, message: 'Coupon deleted' };
+      } catch (error: any) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: error?.message,
+        });
+      }
     }),
 });

@@ -383,7 +383,12 @@ export const cartRouter = router({
     .input(removeCartItemSchema)
     .mutation(async ({ input }) => {
       try {
-        await prisma.cartItem.delete({ where: { id: input.cart_item_id } });
+        const item = await prisma.cartItem.delete({ where: { id: input.cart_item_id } });
+
+        if(input.isLast){
+           await prisma.couponApply.deleteMany({ where: { cart_id: item.cart_id, is_used: false } })
+           await prisma.cart.delete({ where: { id: item.cart_id } })
+        }
 
         return { message: 'Item removed' };
       } catch (error: any) {

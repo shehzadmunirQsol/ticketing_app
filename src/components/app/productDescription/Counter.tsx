@@ -16,6 +16,7 @@ interface CounterProps {
   user_ticket_limit: number;
   ticketInBasket: { current: number };
   ticketPurchased: number;
+  perCustomerLimit:number;
   event: any;
 }
 
@@ -26,6 +27,7 @@ const Counter: React.FC<CounterProps> = ({
   ticketInBasket,
   ticketPurchased,
   event,
+  perCustomerLimit
 }) => {
   const { user, isLogin } = useSelector((state: RootState) => state.auth);
   const { lang } = useSelector((state: RootState) => state.layout);
@@ -98,8 +100,8 @@ const Counter: React.FC<CounterProps> = ({
   }
 
   return (
-    <div className="relative bg-card p-4">
-      {ticketPurchased >= user_ticket_limit ? (
+    <div className="relative">
+      {ticketPurchased >= perCustomerLimit ? (
         <div className="sm:p-4 space-y-4 grid items-center">
           <i className="fas fa-gauge-high text-7xl lg:text-9xl text-primary text-center" />
           <h3 className="text-base md:text-xl lg:text-2xl text-center text-white">
@@ -139,7 +141,7 @@ const Counter: React.FC<CounterProps> = ({
               className="w-full text-black font-sans font-[900]  tracking-[-1px] h-12 text-sm xs:text-xl"
               variant="clip"
               onClick={addToBasketHandler}
-              disabled={ticketInBasket.current === range[0]}
+              disabled={ticketInBasket.current === range[0] || addToBasket.isLoading}
             >
               {langContent[lang.lang].ProductDetail.counter.BASKET_BUTTON}
             </Button>

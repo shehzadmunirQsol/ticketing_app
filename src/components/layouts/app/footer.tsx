@@ -74,9 +74,9 @@ function Footer() {
                   <p>{langContent[lang.lang].Footer.ADDRESS_SUB_TITLE_ONE}</p>
                   <p>{langContent[lang.lang].Footer.ADDRESS_SUB_TITLE_TWO}</p>
                   <p>{langContent[lang.lang].Footer.ADDRESS_SUB_TITLE_THREE}</p>
-                  {/* <p className="text-xs my-2">
+                  <p className="text-xs my-2 hidden sm:block">
                     {langContent[lang.lang].Footer.ADDRESS_SUB_TITLE_FOUR}
-                  </p> */}
+                  </p>
                 </div>
                 <div className=" flex items-center justify-start md:justify-start  text-sm text-white gap-3 sm:gap-4">
                   <Image
@@ -202,7 +202,7 @@ function Footer() {
               quality={100}
               alt="Sunset in the mountains"
             />
-            <p className="text-xs my-2">
+            <p className="text-xs my-2 block sm:hidden">
               {langContent[lang.lang].Footer.ADDRESS_SUB_TITLE_FOUR}
             </p>
           </div>

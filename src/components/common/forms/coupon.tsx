@@ -73,10 +73,10 @@ export default function CouponForm() {
       form.setValue('is_limited', categoryData?.data?.is_limited ? '1' : '0');
       form.setValue('coupon_limit', categoryData?.data?.coupon_limit ?? 0);
       if (categoryData?.data?.start_date) {
-        form.setValue('start_date', categoryData?.data?.start_date as any);
+        form.setValue('start_date', categoryData?.data?.start_date?.toISOString()?.split('T')[0] as any);
       }
       if (categoryData?.data?.end_date) {
-        form.setValue('end_date', categoryData?.data?.end_date as any);
+        form.setValue('end_date', categoryData?.data?.end_date?.toISOString()?.split('T')[0] as any);
       }
     }
   }, [isLoading, isFetched, categoryData, form]);
@@ -239,7 +239,7 @@ export default function CouponForm() {
                   <Input
                     type={'number'}
                     min={1}
-                    max={form.watch('is_percentage') == '1' ? 100 : 100000}
+                    max={form.watch('is_percentage') == '1' ? 90 : 100000}
                     placeholder={'Enter Discount '}
                     {...form.register('discount', {
                       valueAsNumber: true,
@@ -253,7 +253,6 @@ export default function CouponForm() {
               </FormItem>
             )}
           />
-          {!index && (
             <FormField
               control={form.control}
               name="start_date"
@@ -267,6 +266,7 @@ export default function CouponForm() {
                     <Input
                       type={'date'}
                       placeholder={'Start Date'}
+                      disabled={index ?true:false}
                       min={new Date().toISOString().split('T')[0]}
                       {...form.register('start_date', {
                         valueAsDate: true,
@@ -280,8 +280,7 @@ export default function CouponForm() {
                 </FormItem>
               )}
             />
-          )}
-          {!index && (
+       
             <FormField
               control={form.control}
               name="end_date"
@@ -309,7 +308,6 @@ export default function CouponForm() {
                 </FormItem>
               )}
             />
-          )}
 
           <FormField
             control={form.control}

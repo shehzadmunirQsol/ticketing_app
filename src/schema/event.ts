@@ -129,11 +129,15 @@ export const EventFormSchema = z.object({
     name: z
       .string({
         required_error: 'Please enter a event name',
+      }).min(1,{
+        message:"Please enter event name"
       })
       .trim(),
     desc: z
       .string({
         required_error: 'Please enter a description',
+      }).min(1,{
+        message:"Please enter description"
       })
       .trim(),
     comp_details: z
@@ -146,11 +150,15 @@ export const EventFormSchema = z.object({
     name: z
       .string({
         required_error: 'Please enter a event name',
+      }).min(1,{
+        message:"Please enter event name"
       })
       .trim(),
     desc: z
       .string({
         required_error: 'Please enter a description',
+      }).min(1,{
+        message:"Please enter description"
       })
       .trim()
       .optional(),

@@ -10,7 +10,6 @@ import Glow from '~/components/common/glow';
 import { trpc } from '~/utils/trpc';
 import langContent from '~/locales';
 
-
 const CashPage = () => {
   const { lang } = useSelector((state: RootState) => state.layout);
   const [products, setProducts] = useState<Array<any>>([]);
@@ -52,11 +51,11 @@ const CashPage = () => {
   return (
     <>
       <div className="relative pt-24"></div>
-      <BannerTitle image={CashBg} text={""} />
-      <div className="relative h-full px-4 md:px-14 py-20">
+      <BannerTitle image={CashBg} text={''} />
+      <div className="relative h-full px-4 py-14 md:px-14 md:py-20">
         <Glow className=" absolute  top-1/4 -right-16  p-2   w-1/6 h-[150px]  " />
         <Glow className=" absolute  bottom-14 -right-16  w-1/6 h-[150px] " />
-        <div className=" grid gap-6 grid-cols-1 md:grid-cols-2  z-40  lg:grid-cols-3   justify-between ">
+        <div className=" grid gap-6 grid-cols-1 sm:grid-cols-2  z-40  lg:grid-cols-3">
           {products?.map((itemList, i) => {
             return (
               <div className="z-40" key={i}>
