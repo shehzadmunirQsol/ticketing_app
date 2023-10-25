@@ -86,20 +86,26 @@ export function ImageInput(props: any) {
 
   useEffect(() => {
     const imgSrc = props?.getValues('thumb');
-    console.log({ imgSrc });
 
     if (imgSrc && !imgSrc?.includes('blob:http')) {
       const linkData = `${process.env.NEXT_PUBLIC_MEDIA_BASE_URL}${imgSrc}`;
-      console.log({ linkData });
       setImage(linkData);
     }
   }, [props?.getValues('thumb')]);
 
-  function handleChange(e: any) {
-    const imageUrl = URL.createObjectURL(e.target.files[0]);
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e?.target?.files?.length ? e.target.files[0] : null;
+    if (!file) return alert('Please select an image!');
+    if (!file.type?.startsWith('image/'))
+      return alert('Please select a valid image!');
+    const oneKb = 1000;
+    if (file.size > oneKb * 1000)
+      return alert('Cannot upload image more than 1 MB!');
+
+    const imageUrl = URL.createObjectURL(file);
 
     setImage(imageUrl);
-    props.onChange(e.target.files[0]);
+    props.onChange(file);
   }
 
   function handleDelete() {
@@ -143,6 +149,9 @@ export function ImageInput(props: any) {
               <p className="text-xs text-gray-500 dark:text-gray-400">
                 File types supported: JPG, PNG, SVG
               </p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">
+                Max Size 1 MB
+              </p>
             </div>
             <input
               id="dropzone-file"
@@ -180,9 +189,12 @@ export function MultiFileInput(props: any) {
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     if (e.target.files) {
+      const oneKb = 1000;
+
       const newFiles = Array.from(e.target.files);
-      const imageFiles = newFiles.filter((file: File) =>
-        file.type.startsWith('image/'),
+      const imageFiles = newFiles.filter(
+        (file: File) =>
+          file.type.startsWith('image/') && file.size <= oneKb * 1000,
       );
 
       if ([...props?.files, ...imageFiles].length >= 15) {
@@ -283,6 +295,9 @@ export function MultiFileInput(props: any) {
               </p>
               <p className="text-xs text-gray-500 dark:text-gray-400">
                 File types supported: JPG, PNG, SVG
+              </p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">
+                Max Size 1 MB
               </p>
             </div>
             <input

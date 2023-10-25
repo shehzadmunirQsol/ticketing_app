@@ -54,6 +54,8 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
   const price = +(range[0] as number) * data?.price;
   const percentageSold = (data?.tickets_sold / data?.total_tickets) * 100;
 
+  console.log({ data });
+
   return (
     <section className="text-gray-600 body-font">
       <div className="py-4 mb-5 mx-auto flex flex-wrap">
@@ -65,18 +67,20 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
             <div className="flex-grow w-full">
               <div className="flex flex-col gap-2">
                 <div className="flex justify-between items-center">
-
-                <span className=" text-xs text-gray-300 ">
-                  {Math.round(
-                    (Number(data?.tickets_sold) / Number(data?.total_tickets)) *
-                    100,
+                  <span className=" text-xs text-gray-300 ">
+                    {Math.round(
+                      (Number(data?.tickets_sold) /
+                        Number(data?.total_tickets)) *
+                        100,
                     )}
-                  % {langContent[lang.lang].ProductDetail.description.SOLD}
-                </span>
-                <span className='text-xs text-gray-300'>{(data?.tickets_sold)?.toLocaleString()} /{" "}{(data?.total_tickets)?.toLocaleString()}</span>
-                    </div>
+                    % {langContent[lang.lang].ProductDetail.description.SOLD}
+                  </span>
+                  <span className="text-xs text-gray-300">
+                    {data?.tickets_sold?.toLocaleString()} /{' '}
+                    {data?.total_tickets?.toLocaleString()}
+                  </span>
+                </div>
                 <Progress value={percentageSold} className="w-full" />
-
               </div>
             </div>
             <div>
@@ -109,7 +113,7 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
               <p className="lg:text-xl text-md text-white opacity-75 ">
                 {customTruncate(data?.EventDescription[0]?.desc, 100)}
               </p>
-            </div> 
+            </div>
 
             <div className="w-full relative">
               <div className="relative z-10">
@@ -117,8 +121,8 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
                   range={range}
                   ticketInBasket={ticketInBasket}
                   setRange={setRange}
-                  user_ticket_limit={userTicketLimit}
                   perCustomerLimit={data?.user_ticket_limit}
+                  user_ticket_limit={userTicketLimit}
                   ticketPurchased={ticketPurchased}
                   event={data}
                 />
@@ -126,8 +130,9 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
               <Glow className="absolute bottom-0 -right-16   p-2   w-2/5 h-[180px]   " />
             </div>
 
-            <CountDown dateString="1698782400000" />
-
+            {data?.end_date?.getTime() > Date.now() ? (
+              <CountDown dateString={data?.end_date?.getTime()?.toString()} />
+            ) : null}
           </div>
         </div>
       </div>
