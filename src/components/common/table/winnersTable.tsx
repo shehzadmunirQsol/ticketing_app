@@ -101,37 +101,36 @@ export default function WinnersDataTable() {
   }, [data]);
 
   const columns: ColumnDef<WinnerType>[] = [
-    // {
-    //   id: 'ID',
-    //   header: 'Winners ID',
-    //   enableHiding: false,
-    //   cell: ({ row }) => {
-    //     return (
-    //       <DropdownMenu>
-    //         <DropdownMenuTrigger asChild>
-    //           <Button variant="ghost" className="max-w-fit px-2">
-    //             <span className="sr-only">Open menu</span>
-    //             <div className=" hover:text-primary w-14 text-left ">
-    //               # {row.original.id}
-    //             </div>
-    //             {/* <MoreHorizontal className="h-4 w-4" /> */}
-    //           </Button>
-    //         </DropdownMenuTrigger>
-    //         <DropdownMenuContent align="end">
-    //           <DropdownMenuItem
-    //             onClick={() => handleEnable(row.original, true)}
-    //           >
-    //             Add Image
-    //           </DropdownMenuItem>
-    //         </DropdownMenuContent>
-    //       </DropdownMenu>
-    //     );
-    //   },
-    // },
+    {
+      id: 'ID',
+      header: 'Winners ID',
+      enableHiding: false,
+      cell: ({ row }) => {
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="max-w-fit px-2">
+                <span className="sr-only">Open menu</span>
+                <div className=" hover:text-primary w-14 text-left ">
+                  # {row.original.id}
+                </div>
+                {/* <MoreHorizontal className="h-4 w-4" /> */}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem
+                onClick={() => handleEnable(row.original, true)}
+              >
+                Add Image
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        );
+      },
+    },
     // {
     //   id: 'Enabled',
     //   header: 'Enabled',
-
     //   cell: ({ row }) => {
     //     return (
     //       <Switch
