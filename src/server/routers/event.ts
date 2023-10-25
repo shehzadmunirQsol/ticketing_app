@@ -226,7 +226,9 @@ export const eventRouter = router({
         const eventCustomers =
           await prisma.$queryRaw`SELECT e.id AS event_id, e.thumb,e.end_date, e.price, oe.customer_id, c.email,c.phone_number,ed.name AS event_name, c.first_name, c.last_name, 
           CAST( SUM( oe.quantity ) AS INT ) AS quantity,
-          CAST( SUM( o.discount_amount ) AS INT ) AS discount_amount
+          CAST( SUM( oe.quantity * oe.ticket_price ) AS INT ) AS sub_total_amount,
+          CAST( SUM( o.discount_amount ) AS INT ) AS discount_amount,
+          CAST( SUM( ( oe.quantity * oe.ticket_price ) - discount_amount ) AS INT ) AS total_amount
             FROM event AS e
             JOIN event_description AS ed
             ON e.id = ed.event_id
@@ -236,7 +238,7 @@ export const eventRouter = router({
             ON o.id = oe.order_id
             JOIN customer AS c
             ON c.id = oe.customer_id
-            GROUP BY e.id, c.id,oe.customer_id,ed.id,o.id
+            GROUP BY e.id, c.id,oe.customer_id,ed.id
             HAVING e.id = ${input.event_id} AND ed.lang_id= 1
             order BY quantity DESC  
           `;
@@ -257,7 +259,7 @@ export const eventRouter = router({
     .input(deleteEventSchema)
     .mutation(async ({ input }) => {
       try {
-        console.log(input,"INPUT::")
+        console.log(input, 'INPUT::');
         const event = await prisma.event.update({
           where: { id: input.id },
           data: { is_deleted: true },
