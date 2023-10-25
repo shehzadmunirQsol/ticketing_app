@@ -30,8 +30,9 @@
     --background-entires: 0, 0%, 16%, 1;
     --primary-light: 169, 71%, 48%, 1;
     --foreground: 0 0% 95%;
-    /* --card: 206, 18%, 8%, 1; */
-    --card: 0, 0%, 19%,1;
+    /* --card: 206, 18%, 8%, 1; 
+    --card: 0, 0%, 19%,1;*/
+    --card: 0, 0%, 16.47%, 1;
     --light-text: 0, 0%, 92%, 0.75;
     --card-gray: 0, 0%, 50%, 1;
     --texts-gray: 0, 0%, 92%, 1;
