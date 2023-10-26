@@ -314,7 +314,7 @@ export const eventRouter = router({
         });
 
         const eventPromise = prisma.event.findMany({
-          orderBy: { created_at: 'asc' },
+          orderBy: { created_at: 'desc' },
           skip: input.first * input.rows,
           take: input.rows,
           where: where,
@@ -385,7 +385,7 @@ export const eventRouter = router({
         });
 
         const eventPromise = prisma.event.findMany({
-          orderBy: { created_at: 'asc' },
+          orderBy: { created_at: 'desc' },
           skip: input.first * input.rows,
           take: input.rows,
           where: where,
@@ -448,7 +448,7 @@ export const eventRouter = router({
       });
 
       const eventPromise = prisma.event.findMany({
-        orderBy: { created_at: 'asc' },
+        orderBy: { created_at: 'desc' },
         skip: input.first * input.rows,
         take: input.rows,
         where: where,
