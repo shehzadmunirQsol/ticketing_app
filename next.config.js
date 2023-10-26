@@ -26,6 +26,19 @@ module.exports = getConfig({
   publicRuntimeConfig: {
     NODE_ENV: env.NODE_ENV,
   },
+  async headers() {
+    return [
+      {
+        source: '/.well-known/apple-developer-merchantid-domain-association',
+        headers: [
+          {
+            key: 'Content-Type',
+            value: 'text/plain; charset=utf-8',
+          },
+        ],
+      },
+    ];
+  },
 
   images: {
     // disableStaticImages: true,
@@ -34,7 +47,6 @@ module.exports = getConfig({
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
 
     domains: ['images.unsplash.com', 'media.winnar.com'],
-
   },
   /** We run eslint as a separate task in CI */
   eslint: { ignoreDuringBuilds: !!process.env.CI },
