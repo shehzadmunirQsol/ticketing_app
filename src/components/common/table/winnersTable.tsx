@@ -128,18 +128,18 @@ export default function WinnersDataTable() {
         );
       },
     },
-    // {
-    //   id: 'Enabled',
-    //   header: 'Enabled',
-    //   cell: ({ row }) => {
-    //     return (
-    //       <Switch
-    //         checked={row?.original?.is_enabled}
-    //         onCheckedChange={() => handleEnable(row.original, false)}
-    //       />
-    //     );
-    //   },
-    // },
+    {
+      id: 'Enabled',
+      header: 'Enabled',
+      cell: ({ row }) => {
+        return (
+          <Switch
+            checked={row?.original?.is_enabled}
+            onCheckedChange={() => handleEnable(row.original, false)}
+          />
+        );
+      },
+    },
 
     {
       accessorKey: 'Product',
