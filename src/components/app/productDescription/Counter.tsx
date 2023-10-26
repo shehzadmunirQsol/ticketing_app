@@ -16,7 +16,7 @@ interface CounterProps {
   user_ticket_limit: number;
   ticketInBasket: { current: number };
   ticketPurchased: number;
-  perCustomerLimit:number;
+  perCustomerLimit: number;
   event: any;
 }
 
@@ -27,7 +27,7 @@ const Counter: React.FC<CounterProps> = ({
   ticketInBasket,
   ticketPurchased,
   event,
-  perCustomerLimit
+  perCustomerLimit,
 }) => {
   const { user, isLogin } = useSelector((state: RootState) => state.auth);
   const { lang } = useSelector((state: RootState) => state.layout);
@@ -51,6 +51,13 @@ const Counter: React.FC<CounterProps> = ({
       is_subscribe: cartItem?.is_subscribe ?? false,
       quantity: range[0] ?? 0,
     };
+
+    const eventCartData = cart?.cartItems?.map((event) => ({
+      id: event?.event_id,
+      price: event?.Event?.price,
+      name: event?.Event?.EventDescription[0]?.name,
+      quantity: event?.quantity,
+    }));
 
     try {
       if (isLogin) {
@@ -94,6 +101,25 @@ const Counter: React.FC<CounterProps> = ({
         variant: 'success',
         title: 'Item added successfully!',
       });
+
+      if ('sendinblue' in window && window?.sendinblue) {
+        const eventData = {
+          id: eventId,
+          price: event.price,
+          name: event.EventDescription[0].name,
+          quantity: payload.quantity,
+        };
+        eventCartData.push(eventData);
+        const sendinblue: any = window.sendinblue;
+
+        sendinblue?.track(
+          'cart_updated' /*mandatory*/,
+          {} /*user data optional*/,
+          { cart_id: cart.id, data: eventCartData } /*optional*/,
+        ) as any;
+
+        console.log('pushed cart_updated to brevo');
+      }
     } catch (error: any) {
       console.log({ error });
     }
@@ -141,7 +167,9 @@ const Counter: React.FC<CounterProps> = ({
               className="w-full text-black font-sans font-[900]  tracking-[-1px] h-12 text-sm xs:text-xl"
               variant="clip"
               onClick={addToBasketHandler}
-              disabled={ticketInBasket.current === range[0] || addToBasket.isLoading}
+              disabled={
+                ticketInBasket.current === range[0] || addToBasket.isLoading
+              }
             >
               {langContent[lang.lang].ProductDetail.counter.BASKET_BUTTON}
             </Button>

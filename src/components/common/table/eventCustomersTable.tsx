@@ -194,7 +194,7 @@ export default function OrdersDataTable() {
       id: 'actions',
       enableHiding: false,
       cell: ({ row }) => {
-        return new Date() > row?.original?.end_date ? (
+        return (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="h-8 w-8 p-0">
@@ -212,7 +212,7 @@ export default function OrdersDataTable() {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-        ) : null;
+        );
       },
     },
   ];

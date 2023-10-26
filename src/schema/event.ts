@@ -129,15 +129,20 @@ export const EventFormSchema = z.object({
     name: z
       .string({
         required_error: 'Please enter a event name',
-      }).min(1,{
-        message:"Please enter event name"
+      })
+      .min(1, {
+        message: 'Please enter event name',
       })
       .trim(),
     desc: z
       .string({
         required_error: 'Please enter a description',
-      }).min(1,{
-        message:"Please enter description"
+      })
+      .min(1, {
+        message: 'Please enter description',
+      })
+      .max(100, {
+        message: 'Cannot add more than 100 characters',
       })
       .trim(),
     comp_details: z
@@ -150,16 +155,22 @@ export const EventFormSchema = z.object({
     name: z
       .string({
         required_error: 'Please enter a event name',
-      }).min(1,{
-        message:"Please enter event name"
+      })
+      .min(1, {
+        message: 'Please enter event name',
       })
       .trim(),
     desc: z
       .string({
         required_error: 'Please enter a description',
-      }).min(1,{
-        message:"Please enter description"
       })
+      .min(1, {
+        message: 'Please enter description',
+      })
+      .max(100, {
+        message: 'Cannot add more than 100 characters',
+      })
+
       .trim()
       .optional(),
     comp_details: z

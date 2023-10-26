@@ -1,4 +1,4 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Button } from '~/components/ui/button';
 import {
   Dialog,
@@ -10,6 +10,7 @@ import {
 } from '~/components/ui/dialog';
 import { useToast } from '~/components/ui/use-toast';
 import { addCart, removeFromCart } from '~/store/reducers/cart';
+import { RootState } from '~/store/store';
 import { trpc } from '~/utils/trpc';
 
 interface SettingDialogInterface {
@@ -23,6 +24,8 @@ interface SettingDialogInterface {
 }
 
 export function RemoveItemDialog(props: SettingDialogInterface) {
+  const { cart } = useSelector((state: RootState) => state.cart);
+
   const { toast } = useToast();
   const dispatch = useDispatch();
 
@@ -31,11 +34,14 @@ export function RemoveItemDialog(props: SettingDialogInterface) {
   async function removeItemHandler() {
     try {
       if (props?.isLogin) {
-        const payload = { cart_item_id: props?.cart_item_id, isLast:props?.isLast };
+        const payload = {
+          cart_item_id: props?.cart_item_id,
+          isLast: props?.isLast,
+        };
 
         await removeCartItem.mutateAsync(payload);
       }
-      if(props?.isLast){
+      if (props?.isLast) {
         dispatch(
           addCart({
             id: null,
@@ -45,10 +51,42 @@ export function RemoveItemDialog(props: SettingDialogInterface) {
             isPercentage: false,
             cartItems: [],
           }),
-        );  
-      }else{
-        dispatch(removeFromCart({ event_id: props?.event_id }));
+        );
+
+        if ('sendinblue' in window && window?.sendinblue) {
+          const sendinblue: any = window.sendinblue;
+
+          sendinblue?.track(
+            'cart_deleted' /*mandatory*/,
+            {} /*user data optional*/,
+            {} /*optional*/,
+          ) as any;
+
+          console.log('pushed cart_deleted to brevo');
+        }
+      } else {
+        const eventCartData = cart?.cartItems
+          ?.filter((cartItem) => cartItem.id !== props?.cart_item_id)
+          ?.map((cartItem) => ({
+            id: cartItem?.event_id,
+            price: cartItem?.Event?.price,
+            name: cartItem?.Event?.EventDescription[0]?.name,
+            quantity: cartItem?.quantity,
+          }));
+
+        if ('sendinblue' in window && window?.sendinblue) {
+          const sendinblue: any = window.sendinblue;
+          sendinblue?.track(
+            'cart_updated' /*mandatory*/,
+            {} /*user data optional*/,
+            { cart_id: cart.id, data: eventCartData } /*optional*/,
+          );
+
+          console.log('pushed cart_updated to brevo');
+        }
       }
+
+      dispatch(removeFromCart({ event_id: props?.event_id }));
       props?.openChangeHandler();
       toast({
         variant: 'success',

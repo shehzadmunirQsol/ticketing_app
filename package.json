@@ -86,7 +86,7 @@
     "jsonwebtoken": "^9.0.1",
     "lucide-react": "^0.127.0",
     "navigation-menu": "^1.0.0",
-    "next": "^13.2.1",
+    "next": "13.4.1",
     "next-themes": "^0.2.1",
     "nextjs-cors": "^2.1.2",
     "nodemailer": "^6.9.4",

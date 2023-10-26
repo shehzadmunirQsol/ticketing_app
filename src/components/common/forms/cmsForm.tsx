@@ -321,6 +321,7 @@ export default function CmsForm(props: CategoryFormInterface) {
   };
 
   console.log('edit form');
+  console.log(form.watch('en.content'), 'en.content');
 
   const header = renderHeader();
   return (
@@ -551,7 +552,6 @@ export default function CmsForm(props: CategoryFormInterface) {
                               className=" bg-black"
                               headerTemplate={header}
                               onTextChange={(e: any) => {
-                                console.log(e.htmlValue, 'e.htmlValue');
                                 field.onChange(e.htmlValue);
                                 // form.setValue('en.content', e.htmlValue)
                               }}
