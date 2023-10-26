@@ -64,10 +64,10 @@ const CarsPage = () => {
         <p className="hidden slg:block text-2xl md:text-5xl pt-24 pb-10 tracking-tighter font-extrabold text-white ">
           {langContent[lang.lang].Cars.HEADING}
         </p>
-        <Glow className=" absolute  top-1/2 -left-16 w-1/5 h-[350px] overflow-hidden " />
-        <Glow className=" absolute  bottom-0 -right-16 w-1/5 h-[350px] overflow-hidden " />
+        <Glow className="absolute  top-1/2 -left-16 w-1/5 h-[350px] overflow-hidden " />
+        <Glow className="absolute  bottom-0 -right-16 w-1/5 h-[350px] overflow-hidden " />
 
-        <div className=" grid gap-6 grid-cols-1 sm:grid-cols-2 z-40 lg:grid-cols-3  justify-between mx-auto ">
+        <div className="grid gap-8 md:gap-6 grid-cols-1 sm:grid-cols-2 z-40 lg:grid-cols-3 justify-between mx-auto ">
           {products?.map((itemList, i) => {
             return (
               <div className="z-40" key={itemList?.id}>

@@ -968,8 +968,31 @@ input[type='number'] {
   min-width:42px;
 }
 
+.bottlebx {
+  bottom: 15px;
+}
+.capchabx iframe {
+  height: 74px !important;
+  width: 301px !important;
+}
+.errormsg .absolute {
+  position: static !important;
+}
 @media only screen and (min-width: 767.98px){
   .timer-box{
-    min-width:90px;
+    min-width:100px;
+  }
+  .bottlebx {
+    bottom: 120px;
+  }
+}
+
+@media only screen and (max-width: 767px){
+  .smtext {
+    font-size: 10px;
+    line-height: 12px;
+  }
+  input:checked + section.box {
+    border-bottom-color: #ffffff1a;
   }
 }

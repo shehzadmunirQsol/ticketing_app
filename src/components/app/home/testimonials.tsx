@@ -148,7 +148,7 @@ function Testimonials() {
         </div>
       </div>
 
-      <div className="hidden sm:grid grid-cols-2 lg:grid-cols-3 justify-start items-start gap-4 px-4 md:px-14 py-6 md:py-12 mb-4">
+      <div className="hidden sm:grid grid-cols-2 lg:grid-cols-3 justify-start items-start gap-8 px-4 md:px-14 py-6 md:py-12 mb-4">
         {langContent[lang.lang].Index.testimonials.array.map((item, index) => {
           return <Review key={index} {...item} index={index} />;
         })}
@@ -172,7 +172,7 @@ type ReviewType = {
 function Review(item: ReviewType) {
   return (
     <div
-      className={`relative flex  h-full  mdx:h-fit p-6 gap-x-4  sm:w-full border-t border-l  border-white/20 bg-testimonials backdrop-blur-lg rounded-md bg-clip-padding backdrop-filter  bg-opacity-10  ${item?.class}`}
+      className={`relative flex h-full p-6 gap-x-4  sm:w-full border-t border-l border-white/20 bg-testimonials backdrop-blur-lg rounded-md bg-clip-padding backdrop-filter bg-opacity-10  ${item?.class}`}
     >
       <div className="z-10 h-12 w-14  rounded-full  bg-white">
         <Image

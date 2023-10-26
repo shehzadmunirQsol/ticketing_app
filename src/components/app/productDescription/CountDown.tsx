@@ -34,22 +34,22 @@ const CountDown = ({ dateString }: any) => {
       // Output the result in an element 
       if (counterRef && counterRef.current!==null) {
         counterRef.current.innerHTML =
-          '<div class="flex flex-row md:flex-col md:justify-start md:items-start space-x-2 md:space-y-4"><div class="flex space-x-1 md:space-x-4 flex-1 md:flex-none"><p class="timer-box flex flex-col gap-1 md:gap-3 items-center py-3 px-1 md:p-4 min-w-fit w-full border-2 border-primary rounded-xl"><span class="text-3xl sm:text-5xl font-normal text-primary">' +
+          '<div class="flex flex-row md:flex-col md:justify-start md:items-start space-x-2 md:space-y-4"><div class="flex space-x-1 md:space-x-4 flex-1 md:flex-none"><p class="timer-box flex flex-col gap-1 md:gap-1 items-center py-2 px-1 md:p-2 min-w-fit w-full border-2 border-primary rounded-xl"><span class="text-3xl sm:text-5xl font-normal text-primary">' +
           days +
           '</span><span class="text-xs sm:text-base text-white">' +
           'Days' +
           '</span></p> ' +
-          '<p class="timer-box flex flex-col gap-1 md:gap-3 items-center py-3 px-1 md:p-4 min-w-fit w-full border-2 border-primary rounded-xl"><span class="text-3xl sm:text-5xl font-normal text-primary">' +
+          '<p class="timer-box flex flex-col gap-1 md:gap-1 items-center py-2 px-1 md:p-2 min-w-fit w-full border-2 border-primary rounded-xl"><span class="text-3xl sm:text-5xl font-normal text-primary">' +
           hours +
           '</span><span class="text-xs sm:text-base text-white">' +
           'Hours' +
           '</span></p> ' +
-          '<p class="timer-box flex flex-col gap-1 md:gap-3 items-center py-3 px-1 md:p-4 min-w-fit w-full border-2 border-primary rounded-xl"><span class="text-3xl sm:text-5xl font-normal text-primary">' +
+          '<p class="timer-box flex flex-col gap-1 md:gap-1 items-center py-2 px-1 md:p-2 min-w-fit w-full border-2 border-primary rounded-xl"><span class="text-3xl sm:text-5xl font-normal text-primary">' +
           minutes +
           '</span><span class="text-xs sm:text-base text-white">' +
           'Mins' +
           '</span></p> ' +
-          '<p class="timer-box flex flex-col gap-1 md:gap-3 items-center py-3 px-1 md:p-4 min-w-fit w-full border-2 border-primary rounded-xl"><span class="text-3xl sm:text-5xl font-normal text-primary">' +
+          '<p class="timer-box flex flex-col gap-1 md:gap-1 items-center py-2 px-1 md:p-2 min-w-fit w-full border-2 border-primary rounded-xl"><span class="text-3xl sm:text-5xl font-normal text-primary">' +
           seconds +
           '</span><span class="text-xs sm:text-base text-white">' +
           'Secs' +

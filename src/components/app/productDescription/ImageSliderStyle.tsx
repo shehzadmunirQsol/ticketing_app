@@ -48,17 +48,17 @@ const BannerSlider = ({ data }: any) => {
     eventImages = [{ thumb: data?.thumb }, ...data?.EventImages];
   }
   const settings = {
-    className: ' h-full  w-full  md:px-6    ',
+    className: ' h-full w-full md:px-6 ',
     customPaging: function (i: number) {
       return (
-        <a className=" h-20 w-28  cursor-pointer ">
+        <a className="h-20 w-28 cursor-pointer ">
           <Image
             alt="feature"
             src={renderNFTImage(eventImages[i + 1])}
             width={1000}
             height={1000}
             loading="lazy"
-            className="h-20 w-28  object-cover rounded-sm object-center   duration-700 ease-in-out"
+            className="h-20 w-28 object-cover rounded-sm object-center duration-700 ease-in-out"
           />
           {/* <img src={`${baseUrl}/abstract0${i + 1}.jpg`} /> */}
         </a>
@@ -99,17 +99,17 @@ const BannerSlider = ({ data }: any) => {
                     loading="lazy"
                     className=" object-cover rounded-sm object-center h-full w-full  duration-700 ease-in-out"
                   />
-                  <div className="absolute bottom-0 md:bottom-8  lg:right-10 md:right-10 right-4 rounded-full w-14 p-1 bg-gradient-to-b from-primary to-neutral-900">
-                    <Image
-                      className="w-14 h-12  lg:w-full lg:h-full object-cover  rounded-full bg-white"
-                      src={BottleImage}
-                      alt="Sunset in the mountains"
-                    />
-                  </div>
                 </div>
               );
             })}
         </Slider>
+      </div>
+      <div className="bottlebx absolute lg:right-10 md:right-10 right-4 rounded-full w-14 p-1 bg-gradient-to-b from-primary to-neutral-900">
+          <Image
+            className="w-14 h-12  lg:w-full lg:h-full object-cover  rounded-full bg-white"
+            src={BottleImage}
+            alt="Sunset in the mountains"
+          />
       </div>
     </div>
   );

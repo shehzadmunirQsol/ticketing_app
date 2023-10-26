@@ -34,10 +34,10 @@ const EntiresDetail = (props: any) => {
                   <div className={`flex  justify-center items-center `}>
                     <Image
                       src={images[item.data]}
-                      className="ltr:mr-3 rtl:ml-3"
+                      className="ltr:mr-2 ltr:md:mr-3 rtl:ml-2 rtl:md:ml-3"
                       alt={'image'}
                     />
-                    <p className="leading-relaxed  text-md md:text-xl text-primary font-semibold">
+                    <p className="text-sm md:text-xl text-primary font-semibold">
                       {item.HEADING}{' '}
                       {item.data === 3 ? (
                         <span className="font-black">
