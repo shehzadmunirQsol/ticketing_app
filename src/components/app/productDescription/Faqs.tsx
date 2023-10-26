@@ -67,18 +67,11 @@ const AccordianFaqs = ({ data }: any) => {
   });
   return (
     <section id="AccordianFaqs" className="relative">
-      <>
-        <div className="mt-10 ">
-          <p className="text-5xl font-black">
-            {' '}
-            {langContent[lang.lang].ProductDetail.faqs.HEADING}
-          </p>
-          <div className="border-b-4 w-16 border-primary mt-4"></div>
-        </div>
-        <div className="mt-10 mb-10 relative pb-20 ">
-          {reactElementsForFAQs}
-        </div>
-      </>
+      <p className="text-5xl font-black">
+        {langContent[lang.lang].ProductDetail.faqs.HEADING}
+      </p>
+      <div className="border-b-4 w-16 border-primary mt-4"></div>
+      <div className=" relative pb-20 ">{reactElementsForFAQs}</div>
     </section>
   );
 };

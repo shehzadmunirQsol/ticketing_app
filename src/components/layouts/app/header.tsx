@@ -103,7 +103,7 @@ export default function Header() {
               </Button>
             </Link>
 
-            <Select onValueChange={toggleLanguageHandler}>
+            {/* <Select onValueChange={toggleLanguageHandler}>
               <SelectTrigger className="h-9 w-9 rounded-none border-primary text-center  justify-center text-gray-200">
                 <SelectValue placeholder="EN" />
               </SelectTrigger>
@@ -113,23 +113,24 @@ export default function Header() {
                   <SelectItem value="ar">AR</SelectItem>
                 </SelectGroup>
               </SelectContent>
-            </Select>
+            </Select> */}
           </div>
         </div>
 
         <div className="mdx:hidden flex justify-between gap-2 items-center">
           {nav ? (
-            <Select value={lang.lang} onValueChange={toggleLanguageHandler}>
-              <SelectTrigger className="z-50 h-9 w-9 rounded-none border-primary text-center  justify-center text-gray-200">
-                <SelectValue placeholder="EN" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectItem value="en">EN</SelectItem>
-                  <SelectItem value="ar">AR</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
+            // <Select value={lang.lang} onValueChange={toggleLanguageHandler}>
+            //   <SelectTrigger className="z-50 h-9 w-9 rounded-none border-primary text-center  justify-center text-gray-200">
+            //     <SelectValue placeholder="EN" />
+            //   </SelectTrigger>
+            //   <SelectContent>
+            //     <SelectGroup>
+            //       <SelectItem value="en">EN</SelectItem>
+            //       <SelectItem value="ar">AR</SelectItem>
+            //     </SelectGroup>
+            //   </SelectContent>
+            // </Select>
+            <></>
           ) : (
             <Link className="z-[999]" href={'/cart'}>
               <Button

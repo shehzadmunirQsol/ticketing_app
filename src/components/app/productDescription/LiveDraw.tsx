@@ -44,8 +44,14 @@ function LiveDraw(props: any) {
                 alt="Sunset in the mountains"
               />{' '}
               <p className="text-md font-semibold text-black">
-                {props?.data?.end_date?.getHours()}:
-                {props?.data?.end_date?.getMinutes()} PM GST
+                {props?.data?.end_date?.getHours()?.toString()?.length > 1
+                  ? props?.data?.end_date?.getHours()
+                  : '0' + props?.data?.end_date?.getHours()}
+                :
+                {props?.data?.end_date?.getMinutes()?.toString()?.length > 1
+                  ? props?.data?.end_date?.getMinutes()
+                  : '0' + props?.data?.end_date?.getMinutes()}{' '}
+                PM GST
               </p>
             </div>
           </div>

@@ -172,6 +172,8 @@ export const eventRouter = router({
         delete payload.meta;
       }
 
+      if (!payload.faq_id) payload.faq_id = undefined;
+
       const event = await prisma.event.update({
         where: { id: event_id },
         data: payload,
