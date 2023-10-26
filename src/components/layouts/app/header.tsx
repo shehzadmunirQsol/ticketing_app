@@ -34,7 +34,7 @@ export default function Header() {
 
   useEffect(() => {
     const changeColor = () =>
-      window.scrollY >= 100 ? setColor(true) : setColor(false);
+      window.scrollY >= 10 ? setColor(true) : setColor(false);
 
     window.addEventListener('scroll', changeColor);
 
@@ -53,7 +53,7 @@ export default function Header() {
 
   return (
     <div
-      className={`fixed max-w-[1600px] w-full z-50 top-0 h-24  duration-500 
+      className={`fixed max-w-[1600px] w-full z-50 top-0 md:h-24  duration-500 
       ${
         router.route == '/'
           ? color
@@ -64,7 +64,7 @@ export default function Header() {
        transform ease-in-out`}
     >
       <div
-        className={`py-8 px-4 md:px-14 w-full flex items-center justify-between `}
+        className={`py-5 md:py-8 px-4 md:px-14 w-full flex items-center justify-between `}
       >
         <Link onClick={() => setNav(false)} href="/" className="z-50">
           <Image

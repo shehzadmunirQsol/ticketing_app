@@ -209,7 +209,7 @@ export function AddCustomerAddressDialog(props: SelectCustomerInterface) {
                           <Input
                             type="text"
                             className='rounded-md'
-                            placeholder="Enter postal code"
+                            placeholder="Enter Postal Code"
                             {...form.register('postal_code')}
                           />
                         </FormControl>
@@ -254,11 +254,10 @@ export function AddCustomerAddressDialog(props: SelectCustomerInterface) {
                           <FormItem className=" w-full">
                             <FormControl className="rounded-md ">
                               <Input
- 
                                 maxLength={15}
                                 type="string"
                                 className="w-full"
-                                placeholder="Enter your phone number"
+                                placeholder="Enter Your Phone Number"
                                 {...field}
                               />
                             </FormControl>
@@ -278,7 +277,7 @@ export function AddCustomerAddressDialog(props: SelectCustomerInterface) {
                     render={({ field }) => (
                       <FormItem className="w-full ">
                         <FormLabel className="text-sm text-cardGray">
-                          Country/ Region <sup className="text-red-500">*</sup>
+                          Country / Region <sup className="text-red-500">*</sup>
                         </FormLabel>
                         <Select
                           onValueChange={field.onChange}
@@ -287,7 +286,7 @@ export function AddCustomerAddressDialog(props: SelectCustomerInterface) {
                           <FormControl className="bg-inputColor">
                             <SelectTrigger className=" rounded-md h-10  ">
                               <SelectValue
-                                placeholder="Select your country"
+                                placeholder="Select Your Country"
                                 className=""
                               />
                             </SelectTrigger>
@@ -323,7 +322,7 @@ export function AddCustomerAddressDialog(props: SelectCustomerInterface) {
                         <FormControl>
                           <Input
                             type="text"
-                            placeholder="Enter You State"
+                            placeholder="Enter Your State"
                             className='rounded-md'
                             {...field}
                           />
@@ -345,7 +344,7 @@ export function AddCustomerAddressDialog(props: SelectCustomerInterface) {
                         <FormControl>
                           <Input
                             type="text"
-                            placeholder="Enter You City"
+                            placeholder="Enter Your City"
                             className='rounded-md'
                             {...field}
                           />
@@ -384,12 +383,12 @@ export function AddCustomerAddressDialog(props: SelectCustomerInterface) {
                     render={({ field }) => (
                       <FormItem className=" w-full ">
                         <FormLabel className="text-sm text-cardGray">
-                          Appartment
+                        Apartment
                         </FormLabel>
                         <FormControl>
                           <Input
                             type="text"
-                            placeholder="Enter Appartment"
+                            placeholder="Enter Apartment"
                             className='rounded-md'
                             {...field}
                           />

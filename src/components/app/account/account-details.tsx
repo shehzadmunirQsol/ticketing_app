@@ -91,7 +91,7 @@ const AccountDetails = () => {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmitAccountDetail)}
-            className="justify-center items-center  space-y-4 "
+            className="justify-center items-center"
           >
             <FormField
               control={form.control}
@@ -269,7 +269,7 @@ function PasswordChange({ email }: any) {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmitAccountPassword)}
-            className="justify-center items-center space-y-4"
+            className="justify-center items-center"
           >
             <FormField
               control={form.control}

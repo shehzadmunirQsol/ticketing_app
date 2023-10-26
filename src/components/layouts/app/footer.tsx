@@ -74,9 +74,9 @@ function Footer() {
                   <p>{langContent[lang.lang].Footer.ADDRESS_SUB_TITLE_ONE}</p>
                   <p>{langContent[lang.lang].Footer.ADDRESS_SUB_TITLE_TWO}</p>
                   <p>{langContent[lang.lang].Footer.ADDRESS_SUB_TITLE_THREE}</p>
-                  <p className="text-xs my-2 hidden sm:block">
+                  {/* <p className="text-xs my-2 hidden sm:block">
                     {langContent[lang.lang].Footer.ADDRESS_SUB_TITLE_FOUR}
-                  </p>
+                  </p> */}
                 </div>
                 <div className=" flex items-center justify-start md:justify-start  text-sm text-white gap-3 sm:gap-4">
                   <Image
@@ -195,14 +195,14 @@ function Footer() {
             </div>
           </div>
 
-          <div className="flex flex-col px-4 sm:mt-8 md:px-8 w-full relative justify-end items-end gap-3">
+          <div className="flex flex-col px-4 sm:mt-1 md:px-8 w-full relative gap-3">
             <Image
               className="w-full h-full object-contain  z-40 "
               src={Group16}
               quality={100}
               alt="Sunset in the mountains"
             />
-            <p className="text-xs my-2 block sm:hidden">
+            <p className="w-full text-xs smtext mt-2 mb-3 text-center">
               {langContent[lang.lang].Footer.ADDRESS_SUB_TITLE_FOUR}
             </p>
           </div>

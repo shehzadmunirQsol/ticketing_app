@@ -59,7 +59,7 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
   return (
     <section className="text-gray-600 body-font">
       <div className="py-4 mb-5 mx-auto flex flex-wrap">
-        <div className="lg:w-1/2 w-full rounded-lg overflow-hidden">
+        <div className="lg:w-1/2 w-full rounded-lg overflow-hidden md:pr-4">
           <ImageSliderStyle data={data} />
         </div>
         <div className="flex flex-col flex-wrap lg:py-6 -mb-10 lg:w-1/2 w-full lg:text-left bg-card px-5 py-6">
@@ -109,7 +109,7 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
               </p>
             </div>
 
-            <div className="mb-4 py-3 sm:py-6">
+            <div className="py-3 sm:py-6">
               <p className="lg:text-xl text-md text-white opacity-75 ">
                 {customTruncate(data?.EventDescription[0]?.desc, 100)}
               </p>

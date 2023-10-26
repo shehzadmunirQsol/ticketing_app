@@ -142,7 +142,7 @@ function BannerSlider() {
             {/* text select cards */}
             <Link
               href={carSlider[currentIndex]?.link}
-              className={`pb-6 pt-2 lg:p-0 w-10/12 lg:w-1/2 self-center object-contain object-bottom transform rtl:-scale-x-100 ltr:scale-100 ltr:right-6 rtl:left-4 md:ltr:-right-40 md:rtl:-left-16                
+              className={`pb-2 pt-2 lg:p-0 w-10/12 lg:w-1/2 self-center object-contain object-bottom transform rtl:-scale-x-100 ltr:scale-100 ltr:right-6 rtl:left-4 md:ltr:-right-40 md:rtl:-left-16                
                 ${
                   showElement ? 'fading-animation' : ''
                 } transition-all duration-500 ease-in-out items-end
@@ -159,15 +159,15 @@ function BannerSlider() {
             </Link>
           </div>
           <div className="banner-bottom">
-            <div className="hidden z-30  items-end lg:flex justify-between gap-3 mx-auto sm:mx-0">
+            <div className="z-30 items-end flex justify-between gap-1 lg:gap-3 mx-auto sm:mx-0">
               {carSlider.map((item: any, i: number) => (
                 <div
                   key={i}
-                  className="group w-[120px] text-center font-semibold hover:cursor-pointer"
+                  className="group w-[90px] lg:w-[120px] text-center font-semibold hover:cursor-pointer"
                   onClick={() => goToSlide(i)}
                 >
                   <div
-                    className={`border-2 p-3 ${
+                    className={`border-2 p-1 lg:border-2 lg:p-3 ${
                       currentIndex === i
                         ? 'border-primary'
                         : 'border-transparent'
@@ -181,7 +181,7 @@ function BannerSlider() {
                       className="rounded-md object-contain object-center group-hover:rounded-none transform rtl:-scale-x-100 ltr:scale-100"
                     />
                   </div>
-                  <p className="mt-1 text-xs mx-auto">{item.model}</p>
+                  <p className="mt-1 text-xs mx-auto smtext">{item.model}</p>
                 </div>
               ))}
             </div>

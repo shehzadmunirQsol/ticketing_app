@@ -13,12 +13,12 @@ function LiveDraw(props: any) {
 
   return (
     <div className="relative  mb-20 max-w-[1600px]  ">
-      <div className="   bg-primary lg:py-10  grid grid-cols-1 lg:grid-cols-2 gap-4 items-center md:items-start  px-4 md:px-14">
+      <div className="bg-primary py-4 lg:py-10  grid grid-cols-1 lg:grid-cols-2 gap-4 items-center md:items-start  px-4 md:px-14">
         <div className="   flex flex-col justify-center items-center  w-full">
-          <p className="  py-4 md:py-0 ltr:text-left rtl:text-right md:mb-30 text-background font-[1000] tracking-[-3px] !text-6xl   md:!text-6xl lg:!text-8xl uppercase">
+          <p className="  py-4 md:py-0 ltr:text-left rtl:text-right md:mb-30 text-background font-black tracking-[-3px] !text-6xl   md:!text-6xl lg:!text-8xl uppercase">
             {langContent[lang.lang].ProductDetail.livedraw.HEADING}
           </p>
-          <div className=" flex justify-start items-start border-2 border-gray-900 border-l-0 border-r-0   py-4 m-auto mx-10 md:py-0 text-left !w-full md:!max-w-[310px] sm:!max-w-[310px] xs:!max-w-[310px] lg:mt-10  ">
+          <div className="flex justify-start items-start border-2 border-gray-900 border-l-0 border-r-0 py-2 md:py-4 m-auto mx-10 md:py-0 text-left !w-full md:!max-w-[310px] sm:!max-w-[310px] xs:!max-w-[310px] lg:mt-10  ">
             <div
               className={`flex justify-start items-center my-2 border-2 border-t-0 ${
                 lang.lang === 'en' ? 'border-l-0 pr-4 ' : 'border-r-0 pl-4'
@@ -57,7 +57,7 @@ function LiveDraw(props: any) {
           </div>
         </div>
 
-        <div className="flex flex-col gap-8 lg:space-y-4 justify-center my-auto max-w-lg text-left mb-4">
+        <div className="flex flex-col gap-4 md:gap-4 lg:space-y-4 justify-center my-auto max-w-lg text-left mb-4 mt-4 md:mt-0">
           {langContent[lang.lang].ProductDetail.livedraw.array?.map(
             (item, index) => {
               return (
@@ -70,7 +70,7 @@ function LiveDraw(props: any) {
                     src={Icon}
                     alt="Sunset in the mountains"
                   />
-                  <p className="text-background text-xl font-medium  ltr:text-left rtl:text-right ">
+                  <p className="text-background text-base md:text-xl font-medium  ltr:text-left rtl:text-right ">
                     {item?.description}
                   </p>
                 </div>

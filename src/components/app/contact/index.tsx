@@ -119,7 +119,7 @@ export default function Contact() {
             text2={'Support, Questions'}
           />
         </div>
-        <div className="pb-6 flex flex-col h-full lg:max-h-[700px] w-full    lg:w-3/5  mx-auto lg:mx-0  lg:text-left  rounded-none border-none  bg-card ">
+        <div className="pb-6 flex flex-col h-full  w-full    lg:w-3/5  mx-auto lg:mx-0  lg:text-left  rounded-none border-none  bg-card ">
           <div className="font-black  pt-4 pb-6">
             <p className="text-xl pl-6 px-4 lg:px-8">Contact Us</p>
             <hr className=" opacity-20 mt-4" />
@@ -135,9 +135,11 @@ export default function Contact() {
               <div className="text-grayColor text-lg font-[600]">Address</div>
               </div>
               <div className="flex flex-col text-grayColor font-thin">
-                <span>Dream Car Giveaways Limited</span>
-                <span>Berry Hill Industrial Estate,</span>
-                <span>Droitwich, WR9 9AB</span>
+                <span>Winnar LLC</span>
+                <span>Office 16, 17th Floor,</span>
+                <span>Centrum Business Lounge</span>
+                <span>Bay Gate Tower, Business Bay,</span>
+                <span>Dubai, UAE</span>
               </div>
             </div>
             <div className="flex flex-col justify-start align-start pl-6 px-4 lg:px-8 gap-2 py-3">
@@ -152,7 +154,7 @@ export default function Contact() {
               </div>
               <div className="flex flex-col text-grayColor font-thin">
                 <span className="mb-2">01386719064</span>
-                <span>Info@dreamcargiveaways.co.uk</span>
+                <span>contact@winnar.com</span>
               </div>
             </div>
             <div className="flex flex-col justify-start align-start pl-6 px-4 lg:px-8 gap-2 py-3">
@@ -166,7 +168,7 @@ export default function Contact() {
               <div className="text-grayColor text-lg font-[600]">Sell your car</div>
               </div>
               <div className="text-grayColor font-thin">
-                sellyourcar@dreamcargiveaways.co.uk
+                sellyourcar@winnar.com
               </div>
             </div>
           </div>
@@ -180,7 +182,7 @@ export default function Contact() {
                   control={form.control}
                   name="name"
                   render={({ field }) => (
-                    <FormItem className="mb-4 ">
+                    <FormItem className="">
                       <FormLabel className="text-xs font-thin  text-grayColor">
                         Your Name*
                       </FormLabel>
@@ -202,7 +204,7 @@ export default function Contact() {
                   control={form.control}
                   name="email"
                   render={({ field }) => (
-                    <FormItem className="mb-6 ">
+                    <FormItem className="">
                       <FormLabel className="text-xs  font-thin text-grayColor">
                         Email Address*
                       </FormLabel>
@@ -221,10 +223,10 @@ export default function Contact() {
                   )}
                 />
 
-                <div className=" w-full ">
-                  <p className="text-xs font-thin text-grayColor  mb-2 ">
-                    Phone Number*
-                  </p>
+                <div className="space-y-2 w-full">
+                  <FormLabel className="text-xs  font-thin text-grayColor">
+                  Phone Number*
+                  </FormLabel>
                   <div className="flex items-start  gap-2 ">
                     <FormField
                       control={form.control}
@@ -259,7 +261,7 @@ export default function Contact() {
                             />
                           </FormControl>
 
-                          <div className="relative pb-6">
+                          <div className="relative pb-2">
                             <FormMessage />
                           </div>
                         </FormItem>
@@ -283,7 +285,7 @@ export default function Contact() {
                         />
                       </FormControl>
 
-                      <div className="relative pb-6">
+                      <div className="relative pb-2">
                         <FormMessage />
                       </div>
                     </FormItem>
@@ -291,7 +293,7 @@ export default function Contact() {
                 />
               </div>
               <div className="flex flex-col sm:flex-row justify-between items-center gap-6 h-18">
-                <div className="h-fit object-contain w-fit ">
+                <div className="h-fit object-contain w-fit capchabx">
                   <ReCAPTCHA
                     ref={recaptchaRef}
                     size="normal"

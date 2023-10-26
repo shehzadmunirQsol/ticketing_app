@@ -30,8 +30,9 @@
     --background-entires: 0, 0%, 16%, 1;
     --primary-light: 169, 71%, 48%, 1;
     --foreground: 0 0% 95%;
-    /* --card: 206, 18%, 8%, 1; */
-    --card: 0, 0%, 19%,1;
+    /* --card: 206, 18%, 8%, 1; 
+    --card: 0, 0%, 19%,1;*/
+    --card: 0, 0%, 16.47%, 1;
     --light-text: 0, 0%, 92%, 0.75;
     --card-gray: 0, 0%, 50%, 1;
     --texts-gray: 0, 0%, 92%, 1;
@@ -495,7 +496,7 @@ html {
   width: 20px;
   height: 20px;
   margin: 5px;
-  border-radius: 50%;
+  border-radius: 50%; 
   outline: none;
 }
 .dot:hover {
@@ -967,8 +968,31 @@ input[type='number'] {
   min-width:42px;
 }
 
+.bottlebx {
+  bottom: 15px;
+}
+.capchabx iframe {
+  height: 74px !important;
+  width: 301px !important;
+}
+.errormsg .absolute {
+  position: static !important;
+}
 @media only screen and (min-width: 767.98px){
   .timer-box{
-    min-width:90px;
+    min-width:100px;
+  }
+  .bottlebx {
+    bottom: 120px;
+  }
+}
+
+@media only screen and (max-width: 767px){
+  .smtext {
+    font-size: 10px;
+    line-height: 12px;
+  }
+  input:checked + section.box {
+    border-bottom-color: #ffffff1a;
   }
 }

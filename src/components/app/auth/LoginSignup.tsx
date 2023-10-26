@@ -217,7 +217,7 @@ export default function LoginSignup() {
                     control={formLogin.control}
                     name="user"
                     render={({ field }) => (
-                      <FormItem className="mb-3 sm:mb-4">
+                      <FormItem className="">
                         <FormLabel className="text-xs font-thin text-grayColor">
                           Email address <sup className="">*</sup>
                         </FormLabel>
@@ -229,7 +229,7 @@ export default function LoginSignup() {
                             className="rounded-md"
                           />
                         </FormControl>
-                        <div className="relative pb-2">
+                        <div className="relative pb-2 errormsg">
                           <FormMessage />
                         </div>
                       </FormItem>
@@ -239,7 +239,7 @@ export default function LoginSignup() {
                     control={formLogin.control}
                     name="password"
                     render={({ field }) => (
-                      <FormItem className="mb-6">
+                      <FormItem className="">
                         <FormLabel className="text-xs font-thin text-grayColor">
                           Password <sup className="">*</sup>
                         </FormLabel>
@@ -251,14 +251,14 @@ export default function LoginSignup() {
                             className="rounded-md"
                           />
                         </FormControl>
-                        <div className="relative pb-2">
+                        <div className="relative pb-2 errormsg">
                           <FormMessage />
                         </div>
                       </FormItem>
                     )}
                   />
                 </div>
-                <div className="flex flex-col md:flex-row   justify-end items-center gap-6 ">
+                <div className="flex flex-col md:flex-row   justify-end items-center gap-4 ">
                   <p
                     className="underline text-xs lg:text-base md:text-base my-auto ltr:self-start rtl:self-end  cursor-pointer"
                     onClick={() => setIsModal(true)}
@@ -275,19 +275,21 @@ export default function LoginSignup() {
               </form>
             </Form>
           </TabsContent>
+
+
           <TabsContent value="signup">
             <Form {...formSignup}>
               <form
                 onSubmit={formSignup.handleSubmit(onSubmitSignup)}
-                className=" justify-center items-center px-2 lg:px-8 py-4 space-y-4 w-full h-full"
+                className=" justify-center items-center px-2 lg:px-8 py-4 space-y-2 w-full h-full"
               >
                 <div className="">
-                  <div className="flex flex-col sm:flex-row justify-center items-center gap-2">
+                  <div className="flex flex-col sm:flex-row justify-center items-center md:gap-4">
                     <FormField
                       control={formSignup.control}
                       name="first_name"
                       render={({ field }) => (
-                        <FormItem className="mb-3 sm:mb-4  w-full">
+                        <FormItem className="w-full">
                           <FormLabel className="text-xs font-thin text-grayColor">
                             First Name <sup className="">*</sup>
                           </FormLabel>
@@ -299,7 +301,7 @@ export default function LoginSignup() {
                               className="rounded-md"
                             />
                           </FormControl>
-                          <div className="relative pb-2">
+                          <div className="relative pb-2 errormsg">
                             <FormMessage />
                           </div>
                         </FormItem>
@@ -309,7 +311,7 @@ export default function LoginSignup() {
                       control={formSignup.control}
                       name="last_name"
                       render={({ field }) => (
-                        <FormItem className="mb-3 sm:mb-4 w-full">
+                        <FormItem className=" w-full">
                           <FormLabel className="text-xs font-thin text-grayColor">
                             Last Name <sup className="">*</sup>
                           </FormLabel>
@@ -321,7 +323,7 @@ export default function LoginSignup() {
                               className="rounded-md"
                             />
                           </FormControl>
-                          <div className="relative pb-2">
+                          <div className="relative pb-2 errormsg">
                             <FormMessage />
                           </div>
                         </FormItem>
@@ -329,7 +331,7 @@ export default function LoginSignup() {
                     />
                   </div>
 
-                  <div className="flex flex-col sm:flex-row justify-center items-start gap-2">
+                  <div className="flex flex-col sm:flex-row justify-center items-start md:gap-4">
                     <div className="w-full">
                       <FormLabel className="text-xs font-thin text-grayColor">
                         Phone Number <sup className="">*</sup>
@@ -347,7 +349,7 @@ export default function LoginSignup() {
                                 maxLength={5}
                                 {...field}
                               />
-                              <div className="relative pb-2">
+                              <div className="relative pb-2 errormsg">
                                 <FormMessage />
                               </div>
                             </FormItem>
@@ -368,7 +370,7 @@ export default function LoginSignup() {
                                 />
                               </FormControl>
 
-                              <div className="relative pb-2">
+                              <div className="relative pb-2 errormsg">
                                 <FormMessage />
                               </div>
                             </FormItem>
@@ -381,7 +383,7 @@ export default function LoginSignup() {
                       control={formSignup.control}
                       name="gender"
                       render={({ field }) => (
-                        <FormItem className="mb-3 sm:mb-4  w-full">
+                        <FormItem className="w-full">
                           <FormLabel className="text-xs font-thin text-grayColor">
                             Gender <sup className="">*</sup>
                           </FormLabel>
@@ -404,7 +406,7 @@ export default function LoginSignup() {
                               </SelectGroup>
                             </SelectContent>
                           </Select>
-                          <div className="relative pb-2">
+                          <div className="relative pb-2 errormsg">
                             <FormMessage />
                           </div>
                         </FormItem>
@@ -412,12 +414,12 @@ export default function LoginSignup() {
                     />
                   </div>
 
-                  <div className="flex flex-col sm:flex-row justify-center items-center gap-2">
+                  <div className="flex flex-col sm:flex-row justify-center items-center md:gap-4">
                     <FormField
                       control={formSignup.control}
                       name="dob"
                       render={({ field }) => (
-                        <FormItem className="mb-3 sm:mb-4 w-full">
+                        <FormItem className="w-full">
                           <FormLabel className="text-xs font-thin text-grayColor">
                             Date of Birth <sup className="">*</sup>
                           </FormLabel>
@@ -432,7 +434,7 @@ export default function LoginSignup() {
                               })}
                             />
                           </FormControl>
-                          <div className="relative pb-2">
+                          <div className="relative pb-2 errormsg">
                             <FormMessage />
                           </div>
                         </FormItem>
@@ -443,7 +445,7 @@ export default function LoginSignup() {
                       control={formSignup.control}
                       name="country"
                       render={({ field }) => (
-                        <FormItem className="mb-3 sm:mb-4 w-full ">
+                        <FormItem className="w-full ">
                           <FormLabel className="text-xs text-white">
                             Country/ Region <sup className="text-white">*</sup>
                           </FormLabel>
@@ -474,7 +476,7 @@ export default function LoginSignup() {
                             </SelectContent>
                           </Select>
 
-                          <div className="relative pb-2">
+                          <div className="relative pb-2 errormsg">
                             <FormMessage />
                           </div>
                         </FormItem>
@@ -485,7 +487,7 @@ export default function LoginSignup() {
                     control={formSignup.control}
                     name="email"
                     render={({ field }) => (
-                      <FormItem className="mb-3 sm:mb-4 ">
+                      <FormItem className="">
                         <FormLabel className="text-xs  font-thin text-grayColor">
                           Email Address <sup className="">*</sup>
                         </FormLabel>
@@ -497,7 +499,7 @@ export default function LoginSignup() {
                             className="rounded-md"
                           />
                         </FormControl>
-                        <div className="relative pb-2">
+                        <div className="relative pb-2 errormsg">
                           <FormMessage />
                         </div>
                       </FormItem>
@@ -507,7 +509,7 @@ export default function LoginSignup() {
                     control={formSignup.control}
                     name="password"
                     render={({ field }) => (
-                      <FormItem className="mb-12 ">
+                      <FormItem className="">
                         <FormLabel className="text-xs font-thin text-grayColor">
                           Password <sup className="">*</sup>
                         </FormLabel>
@@ -519,7 +521,7 @@ export default function LoginSignup() {
                             className="rounded-md"
                           />
                         </FormControl>
-                        <div className="relative pb-2">
+                        <div className="relative pb-2 errormsg">
                           <FormMessage />
                         </div>
                       </FormItem>
