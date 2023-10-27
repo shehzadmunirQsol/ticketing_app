@@ -56,11 +56,7 @@ export function RemoveItemDialog(props: SettingDialogInterface) {
         if ('sendinblue' in window && window?.sendinblue) {
           const sendinblue: any = window.sendinblue;
 
-          sendinblue?.track(
-            'cart_deleted' /*mandatory*/,
-            {} /*user data optional*/,
-            {} /*optional*/,
-          ) as any;
+          sendinblue?.track('cart_deleted' /*mandatory*/) as any;
 
           console.log('pushed cart_deleted to brevo');
         }
@@ -78,8 +74,11 @@ export function RemoveItemDialog(props: SettingDialogInterface) {
           const sendinblue: any = window.sendinblue;
           sendinblue?.track(
             'cart_updated' /*mandatory*/,
-            {} /*user data optional*/,
-            { cart_id: cart.id, data: eventCartData } /*optional*/,
+            JSON.stringify({}) /*user data optional*/,
+            JSON.stringify({
+              cart_id: cart.id,
+              data: eventCartData,
+            }) /*optional*/,
           );
 
           console.log('pushed cart_updated to brevo');

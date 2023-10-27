@@ -180,3 +180,8 @@ export const EMAIL_TEMPLATE_IDS = {
 export const priceTranslator = (price: number, lang = 'en') => {
   return price.toLocaleString(`${lang}-EG`);
 };
+
+
+export const EMAILS ={
+  contact: "contact@app.winnar.com",
+}

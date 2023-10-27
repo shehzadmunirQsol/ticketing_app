@@ -35,8 +35,8 @@ import phone from '../../../public/assets/icons/phone.svg';
 import mail from '../../../public/assets/icons/mail.svg';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import ReCAPTCHA from "react-google-recaptcha"
-import Image  from 'next/image';
+import ReCAPTCHA from 'react-google-recaptcha';
+import Image from 'next/image';
 
 export default function Contact() {
   const { toast } = useToast();
@@ -79,8 +79,6 @@ export default function Contact() {
     },
   });
 
-  
-
   const validate = (value: string) => {
     const matches = value.match(/^[0-9]/);
     return (matches && matches?.length > 0) || 'Please enter a valid number';
@@ -91,7 +89,7 @@ export default function Contact() {
     if (!recaptchaToken) {
       toast({
         variant: 'destructive',
-        title: 'Invalid Captcha: Please try again.',
+        title: 'Please verify captcha!',
       });
       return;
     }
@@ -101,7 +99,7 @@ export default function Contact() {
       if (contact) {
         toast({
           variant: 'success',
-          title: 'Email Sent.',
+          title: 'Email Sent successfully!',
         });
       }
     } catch (error) {
@@ -126,13 +124,13 @@ export default function Contact() {
 
             <div className="flex flex-col justify-start align-start pl-6 px-4 lg:px-8 gap-2 py-3">
               <div className="flex gap-3 items-center">
-              <Image
-                className="object-contain"
-                src={location}
-                quality={100}
-                alt="Location"
-              />
-              <div className="text-grayColor text-lg font-[600]">Address</div>
+                <Image
+                  className="object-contain"
+                  src={location}
+                  quality={100}
+                  alt="Location"
+                />
+                <div className="text-grayColor text-lg font-[600]">Address</div>
               </div>
               <div className="flex flex-col text-grayColor font-thin">
                 <span>Winnar LLC</span>
@@ -144,13 +142,15 @@ export default function Contact() {
             </div>
             <div className="flex flex-col justify-start align-start pl-6 px-4 lg:px-8 gap-2 py-3">
               <div className="flex gap-3 items-center">
-              <Image
-                className="object-contain"
-                src={phone}
-                quality={100}
-                alt="Location"
-              />
-              <div className="text-grayColor text-lg font-[600]">General enquiry</div>
+                <Image
+                  className="object-contain"
+                  src={phone}
+                  quality={100}
+                  alt="Location"
+                />
+                <div className="text-grayColor text-lg font-[600]">
+                  General enquiry
+                </div>
               </div>
               <div className="flex flex-col text-grayColor font-thin">
                 <span className="mb-2">01386719064</span>
@@ -159,13 +159,15 @@ export default function Contact() {
             </div>
             <div className="flex flex-col justify-start align-start pl-6 px-4 lg:px-8 gap-2 py-3">
               <div className="flex gap-3 items-center">
-              <Image
-                className="object-contain"
-                src={mail}
-                quality={100}
-                alt="Location"
-              />
-              <div className="text-grayColor text-lg font-[600]">Sell your car</div>
+                <Image
+                  className="object-contain"
+                  src={mail}
+                  quality={100}
+                  alt="Location"
+                />
+                <div className="text-grayColor text-lg font-[600]">
+                  Sell your car
+                </div>
               </div>
               <div className="text-grayColor font-thin">
                 sellyourcar@winnar.com
@@ -225,7 +227,7 @@ export default function Contact() {
 
                 <div className="space-y-2 w-full">
                   <FormLabel className="text-xs  font-thin text-grayColor">
-                  Phone Number*
+                    Phone Number*
                   </FormLabel>
                   <div className="flex items-start  gap-2 ">
                     <FormField
@@ -307,6 +309,7 @@ export default function Contact() {
                 <Button
                   className="  lg:w-52 md:w-52 w-full     text-black font-sans font-[900]   text-xl tracking-[-1px]"
                   variant="clip"
+                  disabled={contactUs.isLoading}
                 >
                   SEND MESSAGE
                 </Button>
