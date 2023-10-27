@@ -114,8 +114,11 @@ const Counter: React.FC<CounterProps> = ({
 
         sendinblue?.track(
           'cart_updated' /*mandatory*/,
-          {} /*user data optional*/,
-          { cart_id: cart.id, data: eventCartData } /*optional*/,
+          JSON.stringify({}) /*user data optional*/,
+          JSON.stringify({
+            cart_id: cart.id,
+            data: eventCartData,
+          }) /*optional*/,
         ) as any;
 
         console.log('pushed cart_updated to brevo');

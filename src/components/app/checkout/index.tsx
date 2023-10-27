@@ -131,7 +131,7 @@ function Checkout() {
 
   useEffect(() => {
     return () => {
-      if (getStatus.isSuccess === false) {
+      if (getStatus?.isSuccess === false && form.getValues()?.cart_id > 0) {
         if ('sendinblue' in window && window?.sendinblue) {
           const userProperties = form.getValues();
           const data = cart?.cartItems?.map((event) => ({
@@ -144,8 +144,8 @@ function Checkout() {
 
           sendinblue?.track(
             'checkout_abandoned' /*mandatory*/,
-            userProperties /*user data optional*/,
-            { cart_id: cart.id, data } /*optional*/,
+            JSON.stringify(userProperties) /*user data optional*/,
+            JSON.stringify({ cart_id: cart.id, data }) /*optional*/,
           ) as any;
 
           console.log('pushed checkout_abandoned to brevo');
@@ -177,8 +177,8 @@ function Checkout() {
 
               sendinblue?.track(
                 'order_completed' /*mandatory*/,
-                userProperties /*user data optional*/,
-                data /*optional*/,
+                JSON.stringify(userProperties) /*user data optional*/,
+                JSON.stringify(data) /*optional*/,
               ) as any;
 
               console.log('pushed order_completed to brevo');

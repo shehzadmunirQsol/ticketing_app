@@ -22,7 +22,11 @@ import {
 import { hashPass, isSamePass } from '~/utils/hash';
 import { signJWT, verifyJWT } from '~/utils/jwt';
 import { serialize } from 'cookie';
-import { generateOTP, isValidEmail, sendEmail } from '~/utils/helper';
+import { EMAILS, generateOTP, isValidEmail, sendEmail } from '~/utils/helper';
+import {
+  AddContactPayloadType,
+  addContactsToBrevoList,
+} from '~/service/api/addContacts.service';
 
 export const customerRouter = router({
   get: publicProcedure.query(async ({ ctx }) => {
@@ -259,7 +263,7 @@ export const customerRouter = router({
 
           const mailOptions: any = {
             template_id: 2,
-            from: 'no-reply@winnar.com',
+            from: EMAILS.contact,
             to: input.email,
             subject: 'Email Verification OTP CODE',
             params: {
@@ -309,7 +313,7 @@ export const customerRouter = router({
 
           const mailOptions: any = {
             template_id: 2,
-            from: 'no-reply@winnar.com',
+            from: EMAILS.contact,
             to: user.email,
             subject: 'Email Verification OTP CODE',
             params: {
@@ -519,16 +523,54 @@ export const customerRouter = router({
               otp: '',
             },
           });
+
           const resgistranMailOptions = {
             template_id: 10,
-            from: 'no-reply@winnar.com',
-            subject: 'Thank you for sigining up for Winnar',
+            from: EMAILS.contact,
+            subject: 'Thank you for signing up in Winnar',
             to: user.email,
             params: {
               first_name: user?.first_name,
             },
           };
           await sendEmail(resgistranMailOptions);
+
+          const customerAddress = await prisma.customerAddress.findFirst({
+            where: { customer_id: updateResponse.id },
+          });
+
+          const addContactPayload: AddContactPayloadType = {
+            email: updateResponse.email,
+            attributes: {},
+          };
+
+          if (updateResponse.first_name)
+            addContactPayload.attributes.firstname = updateResponse.first_name;
+          if (updateResponse.last_name)
+            addContactPayload.attributes.lastname = updateResponse.last_name;
+          if (updateResponse.first_name && updateResponse.last_name)
+            addContactPayload.attributes.FULL_NAME =
+              updateResponse.first_name && updateResponse.last_name;
+          if (updateResponse.gender)
+            addContactPayload.attributes.GENDER =
+              updateResponse.gender === 'male' ? '1' : '2';
+          if (updateResponse.dob)
+            addContactPayload.attributes.DATE_OF_BIRTH =
+              updateResponse?.dob?.toISOString()?.split('T')[0] ?? '';
+          if (customerAddress?.street_address_1)
+            addContactPayload.attributes.ADDRESS =
+              customerAddress?.street_address_1;
+          if (customerAddress?.city)
+            addContactPayload.attributes.CITY = customerAddress?.city;
+          if (customerAddress?.country)
+            addContactPayload.attributes.COUNTRY = customerAddress?.country;
+          if (customerAddress?.state)
+            addContactPayload.attributes.STATE = customerAddress?.state;
+          if (customerAddress?.phone_code && customerAddress?.phone_number)
+            addContactPayload.attributes.PHONE =
+              customerAddress?.phone_code + customerAddress?.phone_number;
+
+          await addContactsToBrevoList(addContactPayload);
         }
         const jwt = signJWT({ email: user.email, id: user.id });
         const serialized = serialize('winnar-token', jwt, {
@@ -579,7 +621,7 @@ export const customerRouter = router({
 
           const mailOptions: any = {
             template_id: 2,
-            from: 'no-reply@winnar.com',
+            from: EMAILS.contact,
             to: updateResponse.email,
             subject: 'Email Verification OTP CODE',
             params: {
