@@ -494,9 +494,7 @@ export const customerRouter = router({
       try {
         const otpCode = `${input.otp_1}${input.otp_2}${input.otp_3}${input.otp_4}`;
 
-        const validity = isValidEmail(input.emailOrUser)
-          ? { email: input.emailOrUser }
-          : { username: input.emailOrUser };
+        const validity = { email: input.emailOrUser, is_deleted: false };
         const user = await prisma.customer.findFirst({
           where: validity,
         });
