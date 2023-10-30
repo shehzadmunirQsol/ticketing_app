@@ -28,7 +28,7 @@ const ProductDetail = () => {
 
   const comp_detail: any = data?.data?.EventDescription[0]?.comp_details;
   const Faqs: any = data?.data?.CMS;
-  console.log(Faqs,"Faqs")
+  console.log(Faqs, 'Faqs');
 
   const isMeta = data?.data?.category_id === 1;
   const meta =
@@ -36,10 +36,14 @@ const ProductDetail = () => {
       ? JSON.parse(data?.data?.meta as string)
       : '';
 
-
-      return (
+  return (
     <div className="bg-background">
-      <Tabs data={data?.data} comp_detail={comp_detail} />
+      <Tabs
+        isFAQ={!!Faqs?.is_enabled}
+        isCompetition={!!comp_detail}
+        data={data?.data}
+        comp_detail={comp_detail}
+      />
       <div id="BuyTickets" className="px-4 md:px-14 ">
         <ImageSlider
           data={data?.data}
@@ -55,12 +59,10 @@ const ProductDetail = () => {
 
       <div className="relative px-4 md:px-14  ">
         <div className="relative z-10 ">
-          {comp_detail ? <CompititionDetail data={data?.data} /> : <></>}
-          { Faqs?.is_enabled && Faqs?.CMSDescription?.length > 0 ?  (
+          {comp_detail ? <CompititionDetail data={data?.data} /> : null}
+          {Faqs?.is_enabled && Faqs?.CMSDescription?.length > 0 ? (
             <AccordianFaqs data={data?.data} />
-          ) : (
-            <></>
-          )}
+          ) : null}
         </div>
         <Glow className="absolute bottom-0 -right-16   p-2   w-1/5 h-[80px]   " />
       </div>

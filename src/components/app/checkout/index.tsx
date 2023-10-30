@@ -89,6 +89,17 @@ function Checkout() {
     },
   });
 
+  const getStatus = trpc.order.getStatus.useMutation({
+    onSuccess: () => {
+      console.log('upload successfully');
+    },
+    onError(error: any) {
+      setLoading(false);
+
+      console.log({ error });
+    },
+  });
+
   useEffect(() => {
     if (user) {
       form.setValue('cart_id', cart?.id ?? 0);
@@ -118,16 +129,30 @@ function Checkout() {
     }
   }, [user, cart]);
 
-  const getStatus = trpc.order.getStatus.useMutation({
-    onSuccess: () => {
-      console.log('upload successfully');
-    },
-    onError(error: any) {
-      setLoading(false);
+  useEffect(() => {
+    return () => {
+      if (getStatus?.isSuccess === false && form.getValues()?.cart_id > 0) {
+        if ('sendinblue' in window && window?.sendinblue) {
+          const userProperties = form.getValues();
+          const data = cart?.cartItems?.map((event) => ({
+            id: event?.event_id,
+            price: event?.Event?.price,
+            name: event?.Event?.EventDescription[0]?.name,
+            quantity: event?.quantity,
+          }));
+          const sendinblue: any = window.sendinblue;
 
-      console.log({ error });
-    },
-  });
+          sendinblue?.track(
+            'checkout_abandoned' /*mandatory*/,
+            JSON.stringify(userProperties) /*user data optional*/,
+            JSON.stringify({ cart_id: cart.id, data }) /*optional*/,
+          ) as any;
+
+          console.log('pushed checkout_abandoned to brevo');
+        }
+      }
+    };
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -139,8 +164,28 @@ function Checkout() {
             checkout_id: data?.id as string,
           });
           if (Resdata?.status) {
+            if ('sendinblue' in window && window?.sendinblue) {
+              const userProperties = form.getValues();
+              const data = cart?.cartItems?.map((event) => ({
+                id: event?.event_id,
+                price: event?.Event?.price,
+                name: event?.Event?.EventDescription[0]?.name,
+                quantity: event?.quantity,
+              }));
+
+              const sendinblue: any = window.sendinblue;
+
+              sendinblue?.track(
+                'order_completed' /*mandatory*/,
+                JSON.stringify(userProperties) /*user data optional*/,
+                JSON.stringify(data) /*optional*/,
+              ) as any;
+
+              console.log('pushed order_completed to brevo');
+            }
+
             setTimeout(() => {
-              router.push('/');
+              router.push('/account');
               toast({
                 variant: 'success',
                 title: 'Order Successful! 🎉',

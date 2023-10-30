@@ -58,10 +58,11 @@ export default function EventForm() {
     },
   );
 
-  const filteredCms =
-    cms?.filter((item: any) => item?.type === 'event_faqs') || [];
+  const filteredCms = cms?.filter(
+    (item) => item?.type === 'event_faqs' && item?.is_enabled,
+  );
 
-  const modifiedArray = filteredCms.map((item: any) => ({
+  const modifiedArray = filteredCms?.map((item: any) => ({
     id: item.id,
     name: item.CMSDescription[0]?.title || '', // Access the first "title" in CMSDescription
   }));
@@ -197,7 +198,6 @@ export default function EventForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const eventId = router.query.index ? +router.query.index : 0;
-  console.log(eventId, 'eventId');
 
   const form = useForm<z.infer<typeof EventFormSchema>>({
     resolver: zodResolver(EventFormSchema),
@@ -251,6 +251,12 @@ export default function EventForm() {
       if (eventId > 0) {
         const removed_images = removedImages.map((image) => image.id);
         const payloadValue = { ...values };
+
+        payloadValue.video_src = payloadValue.video_src.replace(
+          'watch?v=',
+          'embed/',
+        );
+        console.log({ payloadValue });
         await updateEvent.mutateAsync({
           ...payloadValue,
           event_id: eventId,
@@ -258,6 +264,10 @@ export default function EventForm() {
         });
       } else {
         const payloadValue = { ...values };
+        payloadValue.video_src = payloadValue.video_src.replace(
+          'watch?v=',
+          'embed/',
+        );
         await createEvent.mutateAsync(payloadValue);
       }
 
@@ -335,10 +345,10 @@ export default function EventForm() {
 
       form.setValue('en.name', en?.name as string);
       form.setValue('en.desc', en?.desc as string);
-      form.setValue('en.comp_details', en?.desc as string);
+      form.setValue('en.comp_details', en?.comp_details as string);
       form.setValue('ar.name', ar?.name as string);
       form.setValue('ar.desc', ar?.desc as string);
-      form.setValue('ar.comp_details', ar?.desc as string);
+      form.setValue('ar.comp_details', ar?.comp_details as string);
       form.setValue('cash_alt', payload.data?.cash_alt);
       form.setValue('category_id', payload.data?.category_id);
       form.setValue('faq_id', payload.data?.faq_id as any);
@@ -406,7 +416,6 @@ export default function EventForm() {
   };
 
   const header = renderHeader();
-  console.log(form.getValues(), 'form.getValues');
 
   return (
     <>
@@ -513,7 +522,7 @@ export default function EventForm() {
                   name="en.comp_details"
                   render={({ field }) => (
                     <FormItem className=" ">
-                      <FormLabel>Competiton Details</FormLabel>
+                      <FormLabel>Competition Details</FormLabel>
                       <FormControl>
                         <Editor
                           id={field.name}
@@ -521,10 +530,14 @@ export default function EventForm() {
                           value={field.value}
                           className=" bg-black"
                           headerTemplate={header}
-                          onTextChange={(e) => field.onChange(e.textValue)}
+                          onTextChange={(e: any) => {
+                            field.onChange(e.htmlValue);
+                            // form.setValue('en.content', e.htmlValue)
+                          }}
                           // p-editor-container="bg-black"
                           style={{ height: '320px', backgroundColor: 'black' }}
                         />
+
                         {/* <Textarea placeholder="Enter Description..." {...field} /> */}
                       </FormControl>
 
@@ -903,7 +916,7 @@ export default function EventForm() {
           <div className="flex items-center justify-between">
             <div></div>
             <Button type="submit" variant={'clip'} className="w-1/2">
-              {eventId > 0 ? 'Edit Product' : 'Add Product'}
+              {eventId > 0 ? 'Save Product' : 'Add Product'}
             </Button>
           </div>
         </form>
@@ -911,7 +924,7 @@ export default function EventForm() {
       {eventId > 0 ? (
         <LoadingDialog open={isEventLoading} text={'Loading...'} />
       ) : null}
-      <LoadingDialog open={isSubmitting} text={'Saving data...'} />
+      <LoadingDialog open={isSubmitting} text={'Saving product...'} />
     </>
   );
 }

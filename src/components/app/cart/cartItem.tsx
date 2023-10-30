@@ -34,6 +34,7 @@ type SubscriptionType = 'weekly' | 'monthly' | 'quarterly' | null;
 
 export default function CartItem(props: CartItemProp) {
   const { cart_id, customer_id, cartItem } = props;
+  const { cart } = useSelector((state: RootState) => state.cart);
 
   const { isLogin } = useSelector((state: RootState) => state.auth);
   const [isSubscribe, setIsSubscribe] = useState(cartItem?.is_subscribe);
@@ -66,6 +67,13 @@ export default function CartItem(props: CartItemProp) {
       quantity,
     };
 
+    const eventCartData = cart?.cartItems?.map((event) => ({
+      id: event?.event_id,
+      price: event?.Event?.price,
+      name: event?.Event?.EventDescription[0]?.name,
+      quantity: event?.quantity,
+    }));
+
     try {
       if (isLogin) {
         const apiPayload = {
@@ -94,6 +102,28 @@ export default function CartItem(props: CartItemProp) {
         variant: 'success',
         title: 'Item updated successfully!',
       });
+
+      if ('sendinblue' in window && window?.sendinblue) {
+        const eventData = {
+          id: cartItem?.event_id,
+          price: cartItem?.Event?.price,
+          name: cartItem?.Event?.EventDescription[0]?.name,
+          quantity: payload.quantity,
+        };
+        eventCartData.push(eventData);
+        const sendinblue: any = window.sendinblue;
+
+        sendinblue?.track(
+          'cart_updated' /*mandatory*/,
+          JSON.stringify({}) /*user data optional*/,
+          JSON.stringify({
+            cart_id: cart.id,
+            data: eventCartData,
+          }) /*optional*/,
+        ) as any;
+
+        console.log('pushed cart_updated to brevo');
+      }
     } catch (error: any) {
       console.log({ error });
     }

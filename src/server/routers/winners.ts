@@ -169,7 +169,7 @@ export const winnerRouter = router({
           ...payloadIds,
           draw_date: drawDate,
           ticket_num: Math.floor(Math.random() * 99999).toString(),
-          is_enabled: true,
+          is_enabled: false,
         };
 
         const eventPromise = prisma.event.update({

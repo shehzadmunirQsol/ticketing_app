@@ -172,6 +172,8 @@ export const eventRouter = router({
         delete payload.meta;
       }
 
+      if (!payload.faq_id) payload.faq_id = undefined;
+
       const event = await prisma.event.update({
         where: { id: event_id },
         data: payload,
@@ -312,7 +314,7 @@ export const eventRouter = router({
         });
 
         const eventPromise = prisma.event.findMany({
-          orderBy: { created_at: 'asc' },
+          orderBy: { created_at: 'desc' },
           skip: input.first * input.rows,
           take: input.rows,
           where: where,
@@ -383,7 +385,7 @@ export const eventRouter = router({
         });
 
         const eventPromise = prisma.event.findMany({
-          orderBy: { created_at: 'asc' },
+          orderBy: { created_at: 'desc' },
           skip: input.first * input.rows,
           take: input.rows,
           where: where,
@@ -446,7 +448,7 @@ export const eventRouter = router({
       });
 
       const eventPromise = prisma.event.findMany({
-        orderBy: { created_at: 'asc' },
+        orderBy: { created_at: 'desc' },
         skip: input.first * input.rows,
         take: input.rows,
         where: where,

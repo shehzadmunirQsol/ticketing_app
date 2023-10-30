@@ -43,8 +43,6 @@ export default function AddressesView() {
     (address) => !usedAddress?.includes(address?.value as any),
   );
 
-  console.log({ addresses }, 'addresses');
-
   addresses?.map((addresse) => console.log(typeof addresse.postal_code));
 
   return (
