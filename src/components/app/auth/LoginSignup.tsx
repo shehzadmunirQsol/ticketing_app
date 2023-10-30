@@ -276,7 +276,6 @@ export default function LoginSignup() {
             </Form>
           </TabsContent>
 
-
           <TabsContent value="signup">
             <Form {...formSignup}>
               <form
@@ -346,7 +345,7 @@ export default function LoginSignup() {
                                 type="text"
                                 className="rounded-md w-20 "
                                 placeholder="+971"
-                                maxLength={5}
+                                maxLength={4}
                                 {...field}
                               />
                               <div className="relative pb-2 errormsg">
