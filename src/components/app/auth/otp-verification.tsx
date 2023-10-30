@@ -60,7 +60,7 @@ export function OtpVerificationDailog(props: OtpVerificationDailogInterface) {
       });
       dispatch(userAuth(res?.user));
       props.setOtpIsModal(false);
-      // router.push('/');
+      router.push('/');
     },
     onError: (err) => {
       console.log(err.message, 'err');
