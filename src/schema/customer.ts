@@ -66,20 +66,20 @@ export const signupCustomerSchemaInput = z.object({
       message: 'Password must not exceed 30 characters',
     }),
   first_name: z
-    .string({ required_error: 'Please enter your firstname' })
+    .string({ required_error: 'Please enter your First Name' })
     .min(2, {
-      message: 'firstname must be at least 2 characters',
+      message: 'First Name must be at least 2 characters',
     })
     .max(30, {
-      message: 'firstname must not exceed 30 characters',
+      message: 'First Name must not exceed 30 characters',
     }),
   last_name: z
-    .string({ required_error: 'Please enter your lastname' })
+    .string({ required_error: 'Please enter your Last Name' })
     .min(2, {
-      message: 'lastname must be at least 2 characters',
+      message: 'Last Name must be at least 2 characters',
     })
     .max(30, {
-      message: 'lastname must not exceed 30 characters',
+      message: 'Last Name must not exceed 30 characters',
     }),
   phone_number: z
     .string({
@@ -149,9 +149,7 @@ export const loginCustomerSchema = z.object({
     .email({
       message: 'Please use a valid email',
     })
-    .refine((val) => (val.includes('*') ? false : true), {
-      message: 'Please use a valid email',
-    }),
+    .trim(),
   password: z
     .string({ required_error: 'Please enter your password' })
     .min(6, {
@@ -159,10 +157,11 @@ export const loginCustomerSchema = z.object({
     })
     .max(30, {
       message: 'Password must not exceed 30 characters',
-    }),
+    })
+    .trim(),
 });
 export const loginCustomerSchemaInput = z.object({
-  user: z.string({ required_error: 'Please enter your username' }),
+  user: z.string({ required_error: 'Please enter your username' }).trim(),
   password: z
     .string({ required_error: 'Please enter your password' })
     .min(6, {
@@ -170,7 +169,8 @@ export const loginCustomerSchemaInput = z.object({
     })
     .max(30, {
       message: 'Password must not exceed 30 characters',
-    }),
+    })
+    .trim(),
 });
 
 export type loginCustomerInput = z.TypeOf<typeof loginCustomerSchema>;
@@ -181,17 +181,18 @@ export const forgotPasswordCustomerSchema = z.object({
       required_error: 'Please enter your email',
       invalid_type_error: 'Please enter your email',
     })
-    .email(),
+    .email()
+    .trim(),
 });
 export type forgotPasswordCustomerSchemaInput = z.TypeOf<
   typeof forgotPasswordCustomerSchema
 >;
 
 export const resetPasswordCustomerSchema = z.object({
-  email: z.string(),
-  otp: z.string(),
-  password: z.string(),
-  confirmPassword: z.string(),
+  email: z.string().trim(),
+  otp: z.string().trim(),
+  password: z.string().trim(),
+  confirmPassword: z.string().trim(),
 });
 export type resetPasswordCustomerSchemaInput = z.TypeOf<
   typeof resetPasswordCustomerSchema
