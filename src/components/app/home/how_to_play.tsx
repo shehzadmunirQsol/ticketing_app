@@ -13,14 +13,14 @@ function HowtoSection() {
   const { lang } = useSelector((state: RootState) => state.layout);
   return (
     <div className="w-full  mb-16 bg-primary relative">
-      <div className="relative top-0 mx-auto grid grid-cols-1 lg:grid-cols-2 gap-4 px-5 pt-7 pb-8 md:p-14">
+      <div className="relative top-0 mx-auto grid grid-cols-1 lg:grid-cols-2 gap-4 px-5 pt-7 pb-8 md:p-10">
         <div className=" my-auto   w-full ">
           <p className={`w-full md:!max-w-[460px] mr-auto pb-4 md:py-0 ltr:text-left rtl:text-right text-black font-black tracking-[-1px] text-3xl xsm:text-6xl lg:text-8xl`}>
           {langContent[lang.lang].Index.howtoplay.HEADING}
           </p>
         </div>
 
-        <div className="flex flex-col gap-8 sm:space-y-4 ">
+        <div className="flex flex-col gap-6 sm:space-y-4 ">
           {langContent[lang.lang].Index.howtoplay.array?.map((item, index) => {
             return (
               <div key={index} className="relative flex gap-2 md:gap-4   items-center ">

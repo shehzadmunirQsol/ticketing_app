@@ -109,7 +109,7 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
               </p>
             </div>
 
-            <div className="py-3 sm:py-6">
+            <div className="py-3 sm:py-4">
               <p className="lg:text-xl text-md text-white opacity-75 ">
                 {customTruncate(data?.EventDescription[0]?.desc, 100)}
               </p>
@@ -127,7 +127,7 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
                   event={data}
                 />
               </div>
-              <Glow className="absolute bottom-0 -right-16   p-2   w-2/5 h-[180px]   " />
+              {/* <Glow className="absolute bottom-0 -right-16   p-2   w-2/5 h-[180px]   " /> */}
             </div>
 
             {data?.end_date?.getTime() > Date.now() ? (

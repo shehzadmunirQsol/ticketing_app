@@ -117,10 +117,10 @@ function AboutCarousel(props: any) {
               return (
                 <div
                   key={index}
-                  className={`down mr-6 ${
+                  className={`mr-6 ${
                     isEven
-                      ? 'mb-0 sm:mb-64 md:mb-64 lg:mb-64 '
-                      : 'mt-0 sm:mt-36 md:mt-36 lg:mt-36 '
+                      ? 'mb-4 sm:mb-64 '
+                      : 'mt-4 sm:mt-36 '
                   }`}
                 >
                   <div className="content">
