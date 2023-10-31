@@ -750,7 +750,7 @@ function Checkout() {
                       {langContent[lang.lang].Checkout.INFO}{' '}
                       <span className="text-white">
                         {' '}
-                        <Link href="/privacy-policy">
+                        <Link target="_blank" href="/privacy-policy">
                           {' '}
                           {langContent[lang.lang].Checkout.POLICY}{' '}
                         </Link>
@@ -771,7 +771,7 @@ function Checkout() {
                       >
                         {langContent[lang.lang].Checkout.SUB_INFO}
                         <span className="text-white">
-                          <Link href="/terms-condition">
+                          <Link target="_blank" href="/terms-condition">
                             {' '}
                             {langContent[lang.lang].Checkout.TERMS_CONDITION}
                           </Link>
