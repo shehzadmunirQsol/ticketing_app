@@ -123,7 +123,7 @@ function VideoSlider(props: producctInterface) {
   };
   return (
     <div className=" relative  mx-auto  w-full ">
-      <div className="mt-4 md:mt-6 relative flex flex-col md:flex-row h-28 md:h-auto py-6 justify-center w-full md:justify-between mb-6 gap-4 sm:items-center items-start">
+      <div className="relative flex flex-col md:flex-row md:h-auto py-2 md:py-6 justify-center w-full md:justify-between gap-4 sm:items-center items-start">
         <div>
           <p className="text-gray-200 text-left sm:text-center text-3xl ltr:sm:text-left rtl:sm:text-right  sm:text-5xl font-black uppercase  ">
             {props?.title}

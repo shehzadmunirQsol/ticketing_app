@@ -38,13 +38,13 @@ const ProductDetail = () => {
 
   return (
     <div className="bg-background">
-      <Tabs
+      {/* <Tabs
         isFAQ={!!Faqs?.is_enabled}
         isCompetition={!!comp_detail}
         data={data?.data}
         comp_detail={comp_detail}
-      />
-      <div id="BuyTickets" className="px-4 md:px-14 ">
+      /> */}
+      <div id="BuyTickets" className="px-4 md:px-14 mt-24">
         <ImageSlider
           data={data?.data}
           ticketPurchased={data?.ticketPurchased}

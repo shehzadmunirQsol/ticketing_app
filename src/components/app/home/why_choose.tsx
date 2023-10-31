@@ -12,7 +12,7 @@ function WhyChoose() {
   const { lang } = useSelector((state: RootState) => state.layout);
 
   return (
-    <div className="relative w-full mx-auto mb-2 px-4 md:px-14 sm:py-8">
+    <div className="relative w-full mx-auto mb-2 px-4 md:px-14 sm:pt-8">
       <div className="text-gray-200 text-center text-3xl  ltr:sm:text-left rtl:sm:text-right  sm:text-5xl font-black uppercase ">
         {langContent[lang.lang].Index.choose.HEADING}
       </div>

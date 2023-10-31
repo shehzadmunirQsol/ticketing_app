@@ -15,7 +15,7 @@ const TokenRange = ({ range, setRange, min, max }: token) => {
   // cons
   return (
     <div>
-      <div className="range-slider-container mt-8 sm:mt-14 cursor-pointer" >
+      <div className="range-slider-container mt-8 cursor-pointer" >
         <Slider
           defaultValue={range}
           value={range}
