@@ -1,7 +1,7 @@
 import { router, publicProcedure } from '../trpc';
 import { TRPCError } from '@trpc/server';
 import { contactSchema } from '~/schema/contact';
-import { EMAILS, sendEmail } from '~/utils/helper';
+import { sendEmail } from '~/utils/helper';
 
 export const contactRouter = router({
   contact: publicProcedure
@@ -16,7 +16,7 @@ export const contactRouter = router({
         const mailOptions = {
           template_id: 4,
           from: payload.email,
-          to: EMAILS.contact,
+          to: process.env.ADMIN as string,
           subject: 'Contact Request ',
           params: {
             user_name: payload.name,

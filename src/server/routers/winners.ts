@@ -6,7 +6,7 @@ import {
   selectWinnerSchema,
   updateWinnerSchema,
 } from '~/schema/winners';
-import { EMAIL_TEMPLATE_IDS, sendEmail } from '~/utils/helper';
+import { EMAILS, EMAIL_TEMPLATE_IDS, sendEmail } from '~/utils/helper';
 
 export const winnerRouter = router({
   get: publicProcedure.input(getWinnersSchema).query(async ({ input }) => {
@@ -192,7 +192,7 @@ export const winnerRouter = router({
 
         const mailOptions = {
           template_id: EMAIL_TEMPLATE_IDS.SELECT_WINNER,
-          from: 'no-reply@winnar.com',
+          from: EMAILS.contact,
           to: customer_email,
           subject: 'Winner Selected!',
           params: {
