@@ -90,26 +90,28 @@ const BannerSlider = ({ data }: any) => {
           {data?.EventImages?.length &&
             data?.EventImages?.map((item: any, index: number) => {
               return (
-                <div className="h-[18rem] lg:h-[38rem] relative" key={index}>
-                  <Image
-                    alt="feature"
-                    src={renderNFTImage(item)}
-                    width={5000}
-                    height={5000}
-                    loading="lazy"
-                    className=" object-cover rounded-sm object-center h-full w-full  duration-700 ease-in-out"
-                  />
+                <div className="">
+                  <div className="h-[18rem] lg:h-[28rem] relative" key={index}>
+                    <Image
+                      alt="feature"
+                      src={renderNFTImage(item)}
+                      width={5000}
+                      height={5000}
+                      loading="lazy"
+                      className=" object-cover rounded-sm object-center h-full w-full  duration-700 ease-in-out"
+                    />
+                  </div>
                 </div>
               );
             })}
         </Slider>
       </div>
       <div className="bottlebx absolute lg:right-10 md:right-10 right-4 rounded-full w-14 p-1 bg-gradient-to-b from-primary to-neutral-900">
-          <Image
-            className="w-14 h-12  lg:w-full lg:h-full object-cover  rounded-full bg-white"
-            src={BottleImage}
-            alt="Sunset in the mountains"
-          />
+        <Image
+          className="w-14 h-12  lg:w-full lg:h-full object-cover  rounded-full bg-white"
+          src={BottleImage}
+          alt="Sunset in the mountains"
+        />
       </div>
     </div>
   );

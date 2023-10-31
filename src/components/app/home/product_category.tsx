@@ -40,7 +40,7 @@ function CategorySection() {
   // const categoryList = categoryData ? categoryData.data : [];
 
   return (
-    <div className="max-w-[1600px] mx-auto  w-full bg-background  py-14   px-4 md:px-14">
+    <div className="max-w-[1600px] mx-auto  w-full bg-background  py-7 md:py-14   px-4 md:px-14">
       <div className=" grid sm:grid-cols-1 md:grid-cols-2  mx-auto w-fit">
         {categoryData?.data.map((item, i) => {
           const nameList = item.name.split(' ');
