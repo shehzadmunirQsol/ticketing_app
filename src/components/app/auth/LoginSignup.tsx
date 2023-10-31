@@ -104,7 +104,7 @@ export default function LoginSignup() {
   // Signup
   const onSubmitSignup = async (values: any) => {
     try {
-      const payload = { ...values, email: values.email.toLowerCase() };
+      const payload = { ...values, email: values.email.toLowerCase().trim() };
       formLogin.reset();
       await registerCustomer.mutateAsync(payload);
       setOtpIsModal(true);
@@ -141,7 +141,7 @@ export default function LoginSignup() {
     }
 
     try {
-      const payload = { ...values, user: values.user.toLowerCase() };
+      const payload = { ...values, user: values.user.toLowerCase().trim() };
       console.log({ payload });
 
       formSignup.reset();
@@ -225,7 +225,14 @@ export default function LoginSignup() {
                           <Input
                             type="text"
                             placeholder="Enter Email Address"
-                            {...field}
+                            {...formLogin.register('user', {
+                              onChange(event) {
+                                formLogin.setValue(
+                                  'user',
+                                  event?.target?.value?.trim(),
+                                );
+                              },
+                            })}
                             className="rounded-md"
                           />
                         </FormControl>
@@ -275,7 +282,6 @@ export default function LoginSignup() {
               </form>
             </Form>
           </TabsContent>
-
 
           <TabsContent value="signup">
             <Form {...formSignup}>
@@ -346,7 +352,7 @@ export default function LoginSignup() {
                                 type="text"
                                 className="rounded-md w-20 "
                                 placeholder="+971"
-                                maxLength={5}
+                                maxLength={4}
                                 {...field}
                               />
                               <div className="relative pb-2 errormsg">

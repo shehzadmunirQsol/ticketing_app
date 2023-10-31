@@ -218,6 +218,7 @@ export const customerRouter = router({
           const isEmailExist = await prisma.customer?.findFirst({
             where: {
               email: input.email,
+              is_deleted: false,
             },
           });
 
@@ -493,9 +494,7 @@ export const customerRouter = router({
       try {
         const otpCode = `${input.otp_1}${input.otp_2}${input.otp_3}${input.otp_4}`;
 
-        const validity = isValidEmail(input.emailOrUser)
-          ? { email: input.emailOrUser }
-          : { username: input.emailOrUser };
+        const validity = { email: input.emailOrUser, is_deleted: false };
         const user = await prisma.customer.findFirst({
           where: validity,
         });
@@ -545,12 +544,11 @@ export const customerRouter = router({
           };
 
           if (updateResponse.first_name)
-            addContactPayload.attributes.firstname = updateResponse.first_name;
+            addContactPayload.attributes.FIRSTNAME = updateResponse.first_name;
           if (updateResponse.last_name)
-            addContactPayload.attributes.lastname = updateResponse.last_name;
+            addContactPayload.attributes.LASTNAME = updateResponse.last_name;
           if (updateResponse.first_name && updateResponse.last_name)
-            addContactPayload.attributes.FULL_NAME =
-              updateResponse.first_name && updateResponse.last_name;
+            addContactPayload.attributes.FULL_NAME = `${updateResponse.first_name} ${updateResponse.last_name}`;
           if (updateResponse.gender)
             addContactPayload.attributes.GENDER =
               updateResponse.gender === 'male' ? '1' : '2';
