@@ -290,7 +290,7 @@ export default function Contact() {
                       <div className="relative pb-2">
                         <FormMessage />
                       </div>
-                    </FormItem>  
+                    </FormItem>   
                   )}
                 />
               </div> 
