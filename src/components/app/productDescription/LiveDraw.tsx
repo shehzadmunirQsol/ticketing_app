@@ -18,7 +18,7 @@ function LiveDraw(props: any) {
           <p className="  py-4 md:py-0 ltr:text-left rtl:text-right md:mb-30 text-background font-black tracking-[-3px] !text-6xl   md:!text-6xl lg:!text-8xl uppercase">
             {langContent[lang.lang].ProductDetail.livedraw.HEADING}
           </p>
-          <div className="flex justify-start items-start border-2 border-gray-900 border-l-0 border-r-0 py-2 md:py-4 m-auto mx-10 md:py-0 text-left !w-full md:!max-w-[310px] sm:!max-w-[310px] xs:!max-w-[310px] lg:mt-10  ">
+          <div className="flex justify-start items-start border-2 border-gray-900 border-l-0 border-r-0 py-2 md:py-4 m-auto mx-10 md:py-0 text-left lg:mt-10  ">
             <div
               className={`flex justify-start items-center my-2 border-2 border-t-0 ${
                 lang.lang === 'en' ? 'border-l-0 pr-4 ' : 'border-r-0 pl-4'
