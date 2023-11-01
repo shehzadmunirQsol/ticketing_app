@@ -366,7 +366,7 @@ export const eventRouter = router({
       try {
         const where: any = {
           is_deleted: false,
-          // EventDescription: { some: { lang_id: input?.lang_id } },
+          draw_date: null,
         };
         const todayDate = new Date();
         const endingDate = new Date();
