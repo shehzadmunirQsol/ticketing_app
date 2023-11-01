@@ -22,6 +22,7 @@ import {
 import { hashPass, isSamePass } from '~/utils/hash';
 import { signJWT, verifyJWT } from '~/utils/jwt';
 import { serialize } from 'cookie';
+import { setCookie, deleteCookie } from 'cookies-next';
 import { EMAILS, generateOTP, isValidEmail, sendEmail } from '~/utils/helper';
 import {
   AddContactPayloadType,
@@ -351,13 +352,24 @@ export const customerRouter = router({
           });
         }
         const jwt = signJWT({ email: user.email, id: user.id });
-        const serialized = serialize('winnar-token', jwt, {
+
+        // const serialized = serialize('winnar-token', jwt, {
+        //   httpOnly: true,
+        //   path: '/',
+        //   sameSite: 'strict',
+        // });
+
+        // ctx?.res?.setHeader('Set-Cookie', serialized);
+
+        const { req, res } = ctx;
+        setCookie('winnar-token', jwt, {
+          req,
+          res,
           httpOnly: true,
           path: '/',
           sameSite: 'strict',
         });
 
-        ctx?.res?.setHeader('Set-Cookie', serialized);
         const { password, otp, ...userApiData } = user;
 
         return { user: userApiData, jwt };
@@ -571,13 +583,25 @@ export const customerRouter = router({
           await addContactsToBrevoList(addContactPayload);
         }
         const jwt = signJWT({ email: user.email, id: user.id });
-        const serialized = serialize('winnar-token', jwt, {
+
+        // const serialized = serialize('winnar-token', jwt, {
+        //   httpOnly: true,
+        //   path: '/',
+        //   sameSite: 'strict',
+        // });
+
+        // ctx?.res?.setHeader('Set-Cookie', serialized);
+
+        const { req, res } = ctx;
+
+        setCookie('winnar-token', jwt, {
+          req,
+          res,
           httpOnly: true,
           path: '/',
           sameSite: 'strict',
         });
 
-        ctx?.res?.setHeader('Set-Cookie', serialized);
         const { password, otp, ...userApiData } = user;
 
         return { user: userApiData, jwt };
@@ -873,14 +897,24 @@ export const customerRouter = router({
 
   logout: publicProcedure.input(logoutSchema).mutation(async ({ ctx }) => {
     try {
-      const serialized = serialize('winnar-token', '', {
+      // const serialized = serialize('winnar-token', '', {
+      //   httpOnly: true,
+      //   path: '/',
+      //   sameSite: 'strict',
+      //   // secure: process.env.NODE_ENV !== "development",
+      // });
+      // console.log('Serialized :: ', serialized);
+      // ctx?.res?.setHeader('Set-Cookie', serialized);
+
+      const { req, res } = ctx;
+      deleteCookie('winnar-token', {
+        req,
+        res,
         httpOnly: true,
         path: '/',
         sameSite: 'strict',
-        // secure: process.env.NODE_ENV !== "development",
       });
-      console.log('Serialized :: ', serialized);
-      ctx?.res?.setHeader('Set-Cookie', serialized);
+
       return { message: 'Logout successfully!' };
     } catch (error: any) {
       throw new TRPCError({

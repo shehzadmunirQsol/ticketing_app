@@ -34,7 +34,6 @@ const Account = () => {
   });
 
   async function handleLogout() {
-    console.log('Logout Working');
     try {
       const response = await logout.mutateAsync({});
       console.log('Response : ', response);
