@@ -293,7 +293,7 @@ export default function Contact() {
                     </FormItem>
                   )}
                 />
-              </div>
+              </div> 
               <div className="flex flex-col sm:flex-row justify-between items-center gap-6 h-18">
                 <div className="h-fit object-contain w-fit capchabx">
                   <ReCAPTCHA

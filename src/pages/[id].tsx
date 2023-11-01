@@ -16,6 +16,7 @@ export async function getStaticPaths() {
     },
     where: {
       is_enabled: true,
+      is_deleted: false,
     },
   });
   const filterData = response?.filter(

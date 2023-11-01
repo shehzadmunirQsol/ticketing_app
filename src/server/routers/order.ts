@@ -13,7 +13,7 @@ import https from 'https';
 import countryJSON from '~/data/countries.json';
 
 import { prisma } from '~/server/prisma';
-import { EMAIL_TEMPLATE_IDS, sendEmail } from '~/utils/helper';
+import { EMAILS, EMAIL_TEMPLATE_IDS, sendEmail } from '~/utils/helper';
 
 export const orderRouter = router({
   checkout: publicProcedure
@@ -222,7 +222,7 @@ export const orderRouter = router({
 
         const mailOptions = {
           template_id: EMAIL_TEMPLATE_IDS.ORDER_SUCCESS,
-          from: 'no-reply@winnar.com',
+          from: EMAILS.contact,
           to: input.values.email,
           subject: 'Your order has been placed 🎉',
           params: {
@@ -785,7 +785,7 @@ export const orderRouter = router({
 
             const mailOptions = {
               template_id: EMAIL_TEMPLATE_IDS.ORDER_SUCCESS,
-              from: 'no-reply@winnar.com',
+              from: EMAILS.contact,
               to: payload.values.email,
               subject: 'Your order has been placed 🎉',
               params: {
