@@ -51,7 +51,6 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
     }
   }, [cartItem, userTicketLimit]);
 
-  const price = +(range[0] as number) * data?.price;
   const percentageSold = (data?.tickets_sold / data?.total_tickets) * 100;
 
   console.log({ data });
@@ -103,10 +102,6 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
                   </span>
                 </p>
               )}
-
-              <p className=" lg:text-2xl text-xl  pl-0 text-primary font-black ">
-                AED {(price ?? 0)?.toLocaleString()}
-              </p>
             </div>
 
             <div className="py-3 sm:py-4">

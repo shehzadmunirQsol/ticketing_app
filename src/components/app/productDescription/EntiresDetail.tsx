@@ -27,7 +27,7 @@ const EntiresDetail = (props: any) => {
                   key={index}
                   className={`flex ${
                     item.LINK
-                      ? 'flex-col justify-start items-start relative top-4'
+                      ? 'flex-col justify-start items-start relative world-wide-shipping-container'
                       : 'flex-row justify-start lg:justify-center items-center'
                   } `}
                 >
