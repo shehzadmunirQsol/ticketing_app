@@ -73,6 +73,13 @@ export type WinnerType = {
   id: number;
 };
 
+const initialFilters = {
+  first: 0,
+  rows: 10,
+  lang_id: 1,
+  is_admin: true,
+};
+
 export default function WinnersDataTable() {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [filterID, setFilterID] = useState({});
@@ -80,12 +87,7 @@ export default function WinnersDataTable() {
   const [isImageModal, setIsImageModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState<any>({});
 
-  const [filters, setFilters] = useState({
-    first: 0,
-    rows: 10,
-    lang_id: 1,
-    is_admin: true,
-  });
+  const [filters, setFilters] = useState(initialFilters);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
 
@@ -355,6 +357,7 @@ export default function WinnersDataTable() {
             value={filterID}
             setValue={setFilterID}
             setFilters={setFilters}
+            initial={initialFilters}
           />
         </div>
       </div>

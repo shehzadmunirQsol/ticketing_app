@@ -130,13 +130,7 @@ function CurrentandPast({ customer_id }: currentandpastprops) {
 
       <div className="w-full p-4 border-[1px] border-t-0 border-[#808080] h-fit rounded-b-md">
         {customer_id != undefined ? (
-          <>
-            {select === 0 ? (
-              <OrdersDataByIdTable filters={filters} setFilters={setFilters} />
-            ) : (
-              <OrdersDataByIdTable filters={filters} setFilters={setFilters} />
-            )}
-          </>
+          <OrdersDataByIdTable filters={filters} setFilters={setFilters} />
         ) : (
           <>
             <div className="flex flex-col my-auto h-full items-center justify-center">

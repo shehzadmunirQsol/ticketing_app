@@ -211,7 +211,7 @@ export const SideBarMenu: React.FC<SideBarMenuProps> = ({ nav, closeFn }) => {
         }),
       );
       closeFn(false);
-      router.replace('/login');
+      router.push('/login');
     } catch (error: any) {
       console.log('Error ', error);
       toast({

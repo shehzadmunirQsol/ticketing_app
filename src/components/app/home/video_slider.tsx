@@ -36,8 +36,6 @@ function VideoSlider(props: producctInterface) {
     initialOrderFilters,
     {
       refetchOnWindowFocus: false,
-
-      // enabled: user?.id ? true : false,
     },
   );
 
@@ -46,8 +44,6 @@ function VideoSlider(props: producctInterface) {
       setVideoCardSlider(videoData?.data);
     }
   }, [videoData?.data]);
-
-  console.log({ videoCardSlider });
 
   const slide = useRef<any>();
   const next = () => {

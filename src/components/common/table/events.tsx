@@ -42,7 +42,7 @@ import { LoadingDialog } from '../modal/loadingModal';
 import { setSelectedEvent } from '~/store/reducers/admin_layout';
 import { useDispatch } from 'react-redux';
 import { TableFilters } from './table_filters';
-import {EventDeleteDialog} from '~/components/common/modal/eventDeleteModal';
+import { EventDeleteDialog } from '~/components/common/modal/eventDeleteModal';
 import {
   Select,
   SelectContent,
@@ -75,20 +75,17 @@ export type Category = {
   updated_at: Date;
 };
 
+const initialFilter = {
+  first: 0,
+  rows: 10,
+  lang_id: 1,
+};
 export default function EventsDataTable() {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [filterID, setFilterID] = useState({});
-  const initialFilter = {
-    first: 0,
-    rows: 10,
-    lang_id: 1,
-  };
-  const [filters, setFilters] = useState<GetEventSchema>({
-    ...initialFilter,
-  });
+  const [filters, setFilters] = useState<GetEventSchema>(initialFilter);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
-
   const [selectedItem, setSelectedItem] = useState({});
   const [title, setTitle] = useState('');
   const [type, setType] = useState('');
@@ -96,12 +93,14 @@ export default function EventsDataTable() {
 
   const dispatch = useDispatch();
 
-  const { data, isLoading,refetch } = trpc.event.get.useQuery(
+  const { data, isLoading, refetch } = trpc.event.get.useQuery(
     { ...filters, filters: { ...filterID } },
     {
       refetchOnWindowFocus: false,
+      retry: 1,
     },
   );
+
   const { data: categoryData } = trpc.category.getCategory.useQuery({
     lang_id: 1,
   });
@@ -128,7 +127,55 @@ export default function EventsDataTable() {
   const eventData = React.useMemo(() => {
     return Array.isArray(data?.data) && data?.data?.length ? data?.data : [];
   }, [data]);
+
   const columns: ColumnDef<Category>[] = [
+    {
+      id: 'actions',
+      enableHiding: false,
+      header: '',
+      cell: ({ row }) => {
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+
+              <Link href={`/admin/events/edit/${row?.original?.id}`}>
+                <DropdownMenuItem>Edit</DropdownMenuItem>
+              </Link>
+
+              {row?.original.tickets_sold != null &&
+              row?.original.tickets_sold === 0 ? (
+                <DropdownMenuItem
+                  onClick={() => deleteUser(row?.original, 'delete')}
+                >
+                  Delete
+                </DropdownMenuItem>
+              ) : null}
+
+              {row?.original?.tickets_sold > 0 ? (
+                <>
+                  <DropdownMenuSeparator />
+                  <Link
+                    onClick={() => dispatch(setSelectedEvent(row.original))}
+                    href={`/admin/events/event-customers/${row.original.id}`}
+                  >
+                    <DropdownMenuItem>Product Customers</DropdownMenuItem>
+                  </Link>
+                </>
+              ) : null}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        );
+      },
+    },
+
     {
       accessorKey: 'Name',
       header: 'Name',
@@ -165,6 +212,33 @@ export default function EventsDataTable() {
       cell: ({ row }) => (
         <div className="text-ellipsis whitespace-nowrap overflow-hidden w-28">
           {categories[row?.original?.category_id]}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'Launch Date',
+      header: 'Launch Date',
+      cell: ({ row }) => (
+        <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
+          {displayDate(row?.original?.launch_date)}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'End Date',
+      header: 'End Date',
+      cell: ({ row }) => (
+        <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
+          {displayDate(row?.original?.end_date)}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'Created At',
+      header: 'Created At',
+      cell: ({ row }) => (
+        <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
+          {displayDate(row?.original?.created_at)}
         </div>
       ),
     },
@@ -228,81 +302,8 @@ export default function EventsDataTable() {
         </p>
       ),
     },
-    {
-      accessorKey: 'Launch Date',
-      header: 'Launch Date',
-      cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
-          {displayDate(row?.original?.launch_date)}
-        </div>
-      ),
-    },
-    {
-      accessorKey: 'End Date',
-      header: 'End Date',
-      cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
-          {displayDate(row?.original?.end_date)}
-        </div>
-      ),
-    },
-    {
-      accessorKey: 'Created At',
-      header: 'Created At',
-      cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
-          {displayDate(row?.original?.created_at)}
-        </div>
-      ),
-    },
-    {
-      id: 'actions',
-      enableHiding: false,
-      header: 'Actions',
-      cell: ({ row }) => {
-        console.log(row?.original,"row?.original")
-        return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-
-              <Link href={`/admin/events/edit/${row?.original?.id}`}>
-                <DropdownMenuItem>Edit</DropdownMenuItem>
-              </Link>
-
-              {row?.original.tickets_sold != null && row?.original.tickets_sold === 0
-               ? (
-                <DropdownMenuItem
-                  onClick={() => deleteUser(row?.original, 'delete')}
-                >
-                  Delete
-                </DropdownMenuItem>
-              ) : null}
-
-              {row?.original?.tickets_sold > 0 ? (
-                <>
-                  <DropdownMenuSeparator />
-                  <Link
-                    onClick={() => dispatch(setSelectedEvent(row.original))}
-                    href={`/admin/events/event-customers/${row.original.id}`}
-                  >
-                    <DropdownMenuItem>Product Customers</DropdownMenuItem>
-                  </Link>
-                </>
-              ) : null}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        );
-      },
-    },
   ];
+
   const table = useReactTable({
     data: eventData as Category[],
     columns,
@@ -350,7 +351,7 @@ export default function EventsDataTable() {
         },
         {
           name: 'Closed',
-          value: 'in-active',
+          value: 'closed',
         },
       ],
     },
