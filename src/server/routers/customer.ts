@@ -398,7 +398,7 @@ export const customerRouter = router({
         //  email
         const mailOptions = {
           template_id: 5,
-          from: 'no-reply@winnar.com',
+          from: EMAILS.contact,
           to: input.email,
           subject: 'Forgot Password request to Winnar',
 
