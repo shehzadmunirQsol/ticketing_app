@@ -4,9 +4,12 @@ import Image from 'next/image';
 import { Button } from '~/components/ui/button';
 import { renderNFTImage } from '~/utils/helper';
 import Slider from 'react-slick';
-
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+
+import 'photoswipe/dist/photoswipe.css';
+import { Gallery, Item } from 'react-photoswipe-gallery';
+
 function SampleNextArrow(props: any) {
   const { className, style, onClick } = props;
   return (
@@ -81,30 +84,46 @@ const BannerSlider = ({ data }: any) => {
     nextArrow: <SampleNextArrow />,
     prevArrow: <SamplePrevArrow />,
   };
+
   return (
     <div className="relative">
       <div
         className={`  ease-in animate-in  transition-transform duration-500 transform translate-x-[calc(-100% * var(${currentIndex}))]`}
+        id="galleryID"
       >
-        <Slider {...settings}>
-          {data?.EventImages?.length &&
-            data?.EventImages?.map((item: any, index: number) => {
-              return (
-                <div className="">
-                  <div className="h-[18rem] lg:h-[28rem] relative" key={index}>
-                    <Image
-                      alt="feature"
-                      src={renderNFTImage(item)}
-                      width={5000}
-                      height={5000}
-                      loading="lazy"
-                      className=" object-cover rounded-sm object-center h-full w-full  duration-700 ease-in-out"
-                    />
-                  </div>
-                </div>
-              );
-            })}
-        </Slider>
+        <Gallery>
+          <Slider {...settings}>
+            {data?.EventImages?.length &&
+              data?.EventImages?.map((item: any, index: number) => {
+                return (
+                  <Item
+                    original={renderNFTImage(item)}
+                    thumbnail={renderNFTImage(item)}
+                    width="1024"
+                    height="768"
+                    key={index}
+                  >
+                    {({ ref, open }) => (
+                      <div
+                        ref={ref as React.MutableRefObject<HTMLDivElement>}
+                        onClick={open}
+                        className="h-[18rem] lg:h-[28rem] relative"
+                      >
+                        <Image
+                          alt="feature"
+                          src={renderNFTImage(item)}
+                          width={5000}
+                          height={5000}
+                          loading="lazy"
+                          className="object-cover rounded-sm object-center h-full w-full  duration-700 ease-in-out"
+                        />
+                      </div>
+                    )}
+                  </Item>
+                );
+              })}
+          </Slider>
+        </Gallery>
       </div>
       <div className="bottlebx absolute lg:right-10 md:right-10 right-4 rounded-full w-14 p-1 bg-gradient-to-b from-primary to-neutral-900">
         <Image

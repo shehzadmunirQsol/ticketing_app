@@ -128,6 +128,8 @@ const Counter: React.FC<CounterProps> = ({
     }
   }
 
+   const price = +(range[0] as number) * event?.price;
+
   return (
     <div className="relative">
       {ticketPurchased >= perCustomerLimit ? (
@@ -153,6 +155,9 @@ const Counter: React.FC<CounterProps> = ({
               </p>
             ) : null}
           </div>
+          <p className=" lg:text-2xl text-xl  pl-0 text-primary font-black pt-1">
+            AED {(price ?? 0)?.toLocaleString()}
+          </p>
           <TokenRange
             range={range}
             setRange={setRange}
