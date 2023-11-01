@@ -31,7 +31,6 @@ function Index({ children }: DefaultLayoutProps) {
       if (data?.data) {
         dispatch(userAuth(data?.data));
       }
-      console.log({ data });
     },
     onError(error) {
       console.log({ error });

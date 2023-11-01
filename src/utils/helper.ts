@@ -39,7 +39,6 @@ type EmailOptionsType = {
 };
 
 export const sendEmail = async (mailOptions: EmailOptionsType) => {
-  console.log(mailOptions, 'mailOptions');
   try {
     const options = {
       method: 'POST',
@@ -60,8 +59,8 @@ export const sendEmail = async (mailOptions: EmailOptionsType) => {
     const res = await fetch('https://api.brevo.com/v3/smtp/email', options);
 
     if (!res.ok) {
-      console.log(res);
-      return console.log('email did not send');
+      console.log('email did not send');
+      return;
     }
   } catch (error) {
     console.log(error);
@@ -139,7 +138,6 @@ export function getAvailableTickets({
   ticketPurchased,
   quantity,
 }: AvailableTicketsType) {
-  console.log({ event, ticketPurchased, quantity });
   const availableTickets = event?.total_tickets - (event?.tickets_sold ?? 0);
 
   const userTicketLimit =
@@ -158,9 +156,7 @@ export function URIGenerator(title = '' as string, id = 0 as number) {
 }
 
 export function URIDecoder(url = '' as any) {
-  console.log({ url });
   const decodedURI = decodeURI(url ?? '') ?? '';
-  console.log({ decodedURI });
 
   const id = decodedURI?.split('-')?.at(-1) ?? '';
   const title = decodedURI?.substring(0, decodedURI?.length - (id?.length + 2));
@@ -181,7 +177,6 @@ export const priceTranslator = (price: number, lang = 'en') => {
   return price.toLocaleString(`${lang}-EG`);
 };
 
-
-export const EMAILS ={
-  contact: "contact@app.winnar.com",
-}
+export const EMAILS = {
+  contact: 'contact@app.winnar.com',
+};

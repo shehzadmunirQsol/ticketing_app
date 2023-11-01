@@ -1,20 +1,12 @@
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
-
-import CarImage from '~/public/assets/card_image.png';
-
 import { useSelector } from 'react-redux';
 import Image from 'next/image';
 import { trpc } from '~/utils/trpc';
 import { RootState } from '~/store/store';
 import { renderNFTImage } from '~/utils/helper';
 import Link from 'next/link';
-interface producctInterface {
-  class?: string;
-  title: string;
-  center: boolean;
-  slidesToShow?: number;
-}
+
 function CategorySection() {
   const { lang } = useSelector((state: RootState) => state.layout);
 
@@ -24,20 +16,9 @@ function CategorySection() {
     first: 0,
   };
 
-  const {
-    data: categoryData,
-    refetch: categoryDataRefetch,
-    isFetched,
-    isLoading,
-    isError,
-    isSuccess,
-  } = trpc.category.get.useQuery(categoryFilters, {
+  const { data: categoryData } = trpc.category.get.useQuery(categoryFilters, {
     refetchOnWindowFocus: false,
   });
-
-  console.log({ categoryData }, 'categoryData');
-  
-  // const categoryList = categoryData ? categoryData.data : [];
 
   return (
     <div className="max-w-[1600px] mx-auto  w-full bg-background  py-7 md:py-14   px-4 md:px-14">
@@ -56,8 +37,6 @@ function CategorySection() {
                   src={renderNFTImage(item)}
                   width={760}
                   height={840}
-                  // fill
-
                   quality={100}
                   alt="car"
                 />
@@ -67,8 +46,6 @@ function CategorySection() {
                     {nameList.map((name, index) => (
                       <p key={index}>{name}</p>
                     ))}
-                    {/* <div className=''>
-                  </div> */}
                   </div>
                 </div>
                 <div className="absolute  w-full  bottom-4 p-4 flex gap-4 justify-between items-center">

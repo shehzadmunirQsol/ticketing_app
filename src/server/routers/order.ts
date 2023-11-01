@@ -1240,7 +1240,6 @@ async function CreateSubscription(APidata: any) {
           }
         });
       });
-      console.log({ data }, 'data for test');
       postRequest.on('error', reject);
       postRequest.write(data);
       postRequest.end();

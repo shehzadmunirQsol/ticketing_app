@@ -70,17 +70,19 @@ export type Order = {
   updated_at: Date;
 };
 
+const initialFilters: any = {
+  first: 0,
+  rows: 10,
+  lang_id: 1,
+};
+
 export default function OrdersDataTable() {
   const [selectedItem, setSelectedItem] = useState({});
   const [title, setTitle] = useState('');
   const [type, setType] = useState('');
   const [isModal, setIsModal] = useState(false);
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [filters, setFilters] = useState<GetEventSchema>({
-    first: 0,
-    rows: 10,
-    lang_id: 1,
-  });
+  const [filters, setFilters] = useState<GetEventSchema>(initialFilters);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
   const [filterID, setFilterID] = useState({});
@@ -274,7 +276,7 @@ export default function OrdersDataTable() {
       ),
     },
   ];
-  
+
   const table = useReactTable({
     data: orderData as Order[],
     columns,
@@ -425,6 +427,7 @@ export default function OrdersDataTable() {
             value={filterID}
             setValue={setFilterID}
             setFilters={setFilters}
+            initial={initialFilters}
           />
         </div>
       </div>

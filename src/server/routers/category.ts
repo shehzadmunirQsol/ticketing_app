@@ -30,7 +30,7 @@ export const categoryRouter = router({
       });
 
       const categoryPromise = prisma.categoryView.findMany({
-        orderBy: { created_at: 'asc' },
+        orderBy: { id: 'asc' },
         skip: input.first * input.rows,
         take: input.rows,
         where: where,

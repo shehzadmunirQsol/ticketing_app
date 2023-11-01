@@ -62,7 +62,6 @@ export default function SubscriptionDataTable() {
   const { data, isLoading } = trpc.subscription.get.useQuery(filters, {
     refetchOnWindowFocus: false,
   });
-  console.log({ data });
   const subscriptionData = React.useMemo(() => {
     return Array.isArray(data?.data) ? data?.data : [];
   }, [data]);

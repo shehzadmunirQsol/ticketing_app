@@ -80,11 +80,12 @@ export default function OrdersDataByIdTable(props: OrderTableProps) {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
 
-  const { data, isFetching, refetch } = trpc.order.getOrders.useQuery(
+  const { data, isFetching } = trpc.order.getOrders.useQuery(
     { ...props.filters },
     {
       refetchOnWindowFocus: false,
       enabled: props?.filters.customer_id ? true : false,
+      retry: 1,
     },
   );
 

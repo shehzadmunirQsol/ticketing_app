@@ -90,8 +90,6 @@ function BannerSlider() {
     return () => clearTimeout(animationTimeout);
   }, [currentIndex]);
 
-  console.log({ BannerApiData });
-
   return (
     <div
       className={`mdx:py-10 lg:py-20 transition-all ease-in-out ${

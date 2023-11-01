@@ -15,13 +15,14 @@ import { verifyJWT } from '~/utils/jwt';
 export const eventRouter = router({
   get: publicProcedure.input(getEventSchema).query(async ({ input }) => {
     try {
-      const { filters, ...payload } = input;
+      const { filters } = input;
       const filterPayload: any = { ...filters };
 
-      if (filterPayload?.searchQuery) delete filterPayload.searchQuery;
-      if (filterPayload?.endDate) delete filterPayload.endDate;
-      if (filterPayload?.startDate) delete filterPayload.startDate;
-      if (filterPayload?.status) delete filterPayload.status;
+      delete filterPayload.searchQuery;
+      delete filterPayload.endDate;
+      delete filterPayload.startDate;
+      delete filterPayload.status;
+
       const where: any = {
         is_deleted: false,
         lang_id: input.lang_id,
@@ -38,19 +39,13 @@ export const eventRouter = router({
         });
       }
 
+      const today = new Date();
       if (input?.filters?.status == 'active') {
-        const startDate = new Date()?.toISOString().split('T')[0] as string;
-        where.launch_date = { gte: new Date(startDate) };
+        where.launch_date = { lte: today };
+        where.end_date = { gte: today };
       }
-      if (input?.filters?.status == 'in-active') {
-        const startDate = new Date()?.toISOString().split('T')[0] as string;
-        where.end_date = { lte: new Date(startDate) };
-      }
-      if (input?.filters?.endDate) {
-        const endDate = new Date(input?.filters?.endDate)
-          ?.toISOString()
-          .split('T')[0] as string;
-        where.end_date = { lte: new Date(endDate) };
+      if (input?.filters?.status == 'closed') {
+        where.end_date = { lte: today };
       }
       if (input?.filters?.startDate) {
         const startDate = new Date(input?.filters?.startDate)
@@ -58,10 +53,14 @@ export const eventRouter = router({
           .split('T')[0] as string;
         where.launch_date = { gte: new Date(startDate) };
       }
+      if (input?.filters?.endDate) {
+        const endDate = new Date(input?.filters?.endDate)
+          ?.toISOString()
+          .split('T')[0] as string;
+        where.end_date = { lte: new Date(endDate) };
+      }
 
       if (input.category_id) where.category_id = input.category_id;
-
-      // if (input.event_id) where.id = input.event_id;
 
       const totalEventPromise = prisma.eventView.count({
         where: where,
@@ -286,9 +285,11 @@ export const eventRouter = router({
     .input(getEventSchema)
     .query(async ({ input }) => {
       try {
+        const today = new Date();
         const where: any = {
           is_deleted: false,
-          end_date: { gte: new Date() },
+          launch_date: { lte: today },
+          end_date: { gte: today },
           draw_date: null,
         };
 

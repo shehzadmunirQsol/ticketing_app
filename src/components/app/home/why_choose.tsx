@@ -33,7 +33,7 @@ function WhyChoose() {
                 />
               </div>
               <div>
-                <div className='ltr:text-left rtl:text-right'>
+                <div className="ltr:text-left rtl:text-right">
                   <div className="text-2xl sm:text-4xl  leading-tight text-center sm:text-start">
                     {item?.title}
                   </div>
@@ -52,9 +52,8 @@ function WhyChoose() {
 
 export default WhyChoose;
 
-
-const images:any ={
-  1:Frame11,
-  2:Frame12,
-  3:Frame13
-}
+const images: any = {
+  1: Frame11,
+  2: Frame12,
+  3: Frame13,
+};
