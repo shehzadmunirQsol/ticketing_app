@@ -66,14 +66,16 @@ export type CartType = {
   updated_at: Date;
 };
 
+const initialFilters: any = {
+  first: 0,
+  rows: 10,
+};
+
 export default function OrdersDataTable() {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [filterID, setFilterID] = useState({});
 
-  const [filters, setFilters] = useState<GetCartItemsSchema>({
-    first: 0,
-    rows: 10,
-  });
+  const [filters, setFilters] = useState<GetCartItemsSchema>(initialFilters);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
 
@@ -280,6 +282,7 @@ export default function OrdersDataTable() {
             value={filterID}
             setValue={setFilterID}
             setFilters={setFilters}
+            initial={initialFilters}
           />
         </div>
       </div>

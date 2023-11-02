@@ -78,20 +78,19 @@ export type Category = {
   updated_at: Date;
 };
 
+const initialFilters: any = {
+  first: 0,
+  rows: 10,
+};
+
 export default function CouponsDataTable() {
   // use toast
   const { toast } = useToast();
   const router = useRouter();
-  const { is_enabled } = router.query;
-  console.log({ is_enabled });
-  // use states
   const [sorting, setSorting] = useState<SortingState>([]);
   const [filterID, setFilterID] = useState({});
 
-  const [filters, setFilters] = useState<getCustomerSchema>({
-    first: 0,
-    rows: 10,
-  });
+  const [filters, setFilters] = useState<getCustomerSchema>(initialFilters);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
   const [selectedItem, setSelectedItem] = React.useState({});
@@ -401,6 +400,7 @@ export default function CouponsDataTable() {
           value={filterID}
           setValue={setFilterID}
           setFilters={setFilters}
+          initial={initialFilters}
         />
       </div>
       <div className="rounded-md border border-border ">

@@ -13,7 +13,6 @@ import {
   customTruncate,
   getAvailableTickets,
 } from '~/utils/helper';
-import Glow from '~/components/common/glow';
 
 const ImageSlider = ({ data, ticketPurchased }: any) => {
   const { cart } = useSelector((state: RootState) => state.cart);
@@ -52,8 +51,6 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
   }, [cartItem, userTicketLimit]);
 
   const percentageSold = (data?.tickets_sold / data?.total_tickets) * 100;
-
-  console.log({ data });
 
   return (
     <section className="text-gray-600 body-font">
@@ -122,7 +119,6 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
                   event={data}
                 />
               </div>
-              {/* <Glow className="absolute bottom-0 -right-16   p-2   w-2/5 h-[180px]   " /> */}
             </div>
 
             {data?.end_date?.getTime() > Date.now() ? (

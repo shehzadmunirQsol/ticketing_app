@@ -355,12 +355,23 @@ export default function EventForm() {
       form.setValue('is_cash_alt', payload.data?.is_cash_alt);
       form.setValue(
         'end_date',
-        payload.data?.end_date?.toISOString()?.split('T')[0] as any,
+        payload?.data?.end_date
+          ?.toISOString()
+          ?.slice(
+            0,
+            payload?.data?.end_date?.toISOString()?.lastIndexOf(':'),
+          ) as any,
       );
       form.setValue(
         'launch_date',
-        payload.data?.launch_date?.toISOString()?.split('T')[0] as any,
+        payload.data?.launch_date
+          ?.toISOString()
+          ?.slice(
+            0,
+            payload?.data?.launch_date?.toISOString()?.lastIndexOf(':'),
+          ) as any,
       );
+
       form.setValue('price', payload.data?.price);
       form.setValue('thumb', payload.data?.thumb);
       form.setValue('total_tickets', payload.data?.total_tickets);
@@ -687,25 +698,20 @@ export default function EventForm() {
                     );
                   }
                   if (item?.type == 'date') {
-                    const launchMinDate = new Date();
+                    const today = new Date();
 
                     const launchDate = isNaN(
                       form?.watch('launch_date')?.getTime(),
                     )
-                      ? launchMinDate
+                      ? today
                       : form?.watch('launch_date');
 
                     const minDate = (
-                      item?.name === 'launch_date' ? launchMinDate : launchDate
+                      item?.name === 'launch_date' ? today : launchDate
                     )
                       ?.toISOString()
-                      ?.split('T')[0];
+                      ?.slice(0, new Date()?.toISOString()?.lastIndexOf(':'));
 
-                    console.log({
-                      minDate,
-                      launchMinDate,
-                      launchDate,
-                    });
                     return (
                       <FormField
                         key={i}
@@ -722,7 +728,7 @@ export default function EventForm() {
                                     ? handleDisabled
                                     : false
                                 }
-                                type={'date'}
+                                type={'datetime-local'}
                                 placeholder={item?.placeholder}
                                 min={minDate}
                                 {...form.register(item?.name, {

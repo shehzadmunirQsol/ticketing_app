@@ -33,9 +33,6 @@ function ProductCard(props: cardInterface) {
 
     const observer = new IntersectionObserver(([entry]: any) => {
       if (props?.isLast && entry.isIntersecting) {
-        // console.log({ today, endDay }, today == endDay, 'product');
-        // console.log('isLast', props.isLast, props.type);
-
         if (props?.nextPage) props?.nextPage();
         observer.unobserve(entry.target);
       }
@@ -44,10 +41,12 @@ function ProductCard(props: cardInterface) {
     observer.observe(cardRef.current);
   }, [props?.isLast]);
 
-  const spaceElement = props?.isCash ? null : <div className="h-8 xl:h-9 hidden md:block" />;
-  const today = new Date().toISOString().split('T')[0];
-  const time = props?.data?.end_date;
-  const endDay = props?.data && time && time?.toISOString().split('T')[0];
+  const spaceElement = props?.isCash ? null : (
+    <div className="h-8 xl:h-9 hidden md:block" />
+  );
+  const isLastDay = props?.data?.end_date
+    ? props?.data?.end_date?.getTime() <= Date.now() + 24 * 60 * 60 * 1000
+    : false;
 
   return (
     props?.data && (
@@ -63,11 +62,16 @@ function ProductCard(props: cardInterface) {
           ref={cardRef}
         >
           <div className="relative ">
-            {endDay == today ? (
-              <div className=" absolute top-0 w-fit p-2 z-2 bg-primary text-black text-sm">
-                <span className=" font-bold">CLOSES TODAY</span>{' '}
-                {endDay && new Date(endDay)?.getHours()}:
-                {endDay && new Date(endDay)?.getMinutes()}
+            {isLastDay ? (
+              <div className="font-bold absolute top-0 w-fit p-2 z-2 bg-primary text-black text-sm">
+                <span className="">CLOSES TODAY</span>{' '}
+                {props?.data?.end_date?.getHours()?.toString()?.length > 1
+                  ? props?.data?.end_date?.getHours()
+                  : '0' + props?.data?.end_date?.getHours()}
+                :
+                {props?.data?.end_date?.getMinutes()?.toString()?.length > 1
+                  ? props?.data?.end_date?.getMinutes()
+                  : '0' + props?.data?.end_date?.getMinutes()}{' '}
               </div>
             ) : (
               ''
@@ -92,18 +96,18 @@ function ProductCard(props: cardInterface) {
           <div className="px-6 mt-6 py-4">
             <div className="flex flex-col gap-1 mb-2">
               <div className="flex justify-between items-center gap-3 mb-2">
-              <span className=" text-xs text-gray-300">
-                {Math.round(
-                  (Number(props?.data?.tickets_sold) /
-                    Number(props?.data?.total_tickets)) *
-                    100,
-                )}
-                % {langContent[lang.lang].Index.productcard.SOLD_TITLE}
-              </span>
-              <span className="text-xs text-gray-300">
-                {(props?.data?.tickets_sold).toLocaleString()} /{' '}
-                {(props?.data?.total_tickets).toLocaleString()}
-              </span>
+                <span className=" text-xs text-gray-300">
+                  {Math.round(
+                    (Number(props?.data?.tickets_sold) /
+                      Number(props?.data?.total_tickets)) *
+                      100,
+                  )}
+                  % {langContent[lang.lang].Index.productcard.SOLD_TITLE}
+                </span>
+                <span className="text-xs text-gray-300">
+                  {(props?.data?.tickets_sold).toLocaleString()} /{' '}
+                  {(props?.data?.total_tickets).toLocaleString()}
+                </span>
               </div>
               <Progress
                 value={
@@ -132,7 +136,7 @@ function ProductCard(props: cardInterface) {
                 <span className="text-gray-200 text-md text-sm xl:text-lg font-semibold leading-[18px]">
                   {langContent[lang.lang].Index.productcard.ALTERNATIVE_TITLE}
                 </span>
-                <br className="block md:hidden"/>
+                <br className="block md:hidden" />
                 <span className="text-primary text-sm xl:text-lg font-[500] leading-[18px]">
                   {' '}
                   AED {(props?.data?.cash_alt ?? 0)?.toLocaleString()}

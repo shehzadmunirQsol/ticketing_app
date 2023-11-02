@@ -142,7 +142,6 @@ export default function LoginSignup() {
 
     try {
       const payload = { ...values, user: values.user.toLowerCase().trim() };
-      console.log({ payload });
 
       formSignup.reset();
       const loginResult = await loginCustomer.mutateAsync(payload);
@@ -153,7 +152,11 @@ export default function LoginSignup() {
         title: 'Login Successfully ',
       });
 
-      router.back();
+      if (window.history.length > 2) {
+        router.back();
+      } else {
+        router.replace('/');
+      }
     } catch (e: any) {
       if (e?.shape?.message == 'Your Account is Not Verified') {
         setOtpIsModal(true);
