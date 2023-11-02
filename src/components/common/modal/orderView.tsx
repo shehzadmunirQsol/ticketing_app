@@ -103,7 +103,6 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
 
                   <div className="w-full mb-8">
                     <div className="flex justify-between font-bold uppercase py-2">
-                      <div className="flex-1 text-start">Ticket</div>
                       <div className="flex-[2] text-start">Name</div>
                       <div className="flex-1 text-center">Quantity</div>
                       <div className="flex-1 text-center">Price</div>
@@ -119,9 +118,6 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
                                 key={index}
                                 className="flex gap-2 py-2 sm:py-4"
                               >
-                                <div className="flex-1 text-start">
-                                  #{item?.id}
-                                </div>
                                 <div className="flex-[2] text-start">
                                   {item?.Event?.EventDescription[0]?.name}
                                 </div>
