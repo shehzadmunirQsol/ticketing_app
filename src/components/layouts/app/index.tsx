@@ -45,7 +45,7 @@ function Index({ children }: DefaultLayoutProps) {
 
       onSuccess(data) {
         const cartString = localStorage.getItem('winnar-cart');
-        if (cartString?.includes('"cartItems":[{"')) {
+        if (cartString?.includes('"cartItems":[{"') && data.data?.id) {
           createCartHandler(cartString, data.data?.id);
         } else if (data?.data) {
           const cart = {
@@ -70,9 +70,11 @@ function Index({ children }: DefaultLayoutProps) {
 
   useEffect(() => {
     const cartString = localStorage.getItem('winnar-cart');
-    if (cartString) {
+    if (cartString?.includes('"cartItems":[{"')) {
       const cart = JSON.parse(cartString);
       dispatch(addCart(cart));
+    } else {
+      localStorage.removeItem('winnar-cart');
     }
   }, [dispatch]);
 

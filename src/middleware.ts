@@ -3,7 +3,6 @@ import type { NextRequest } from 'next/server';
 import { getAdminToken, getToken } from '~/utils/authToken';
 
 export function middleware(request: NextRequest) {
-  // Clone the request headers and set a new header x-hello-from-middleware1
   if (request.nextUrl.pathname.startsWith('/admin')) {
     const storeRequestHeaders = new Headers(request.headers);
 
@@ -24,6 +23,7 @@ export function middleware(request: NextRequest) {
       request.nextUrl.pathname,
     );
     const token = getToken(storeRequestHeaders);
+
     if (request.nextUrl.pathname === '/login' && token)
       return NextResponse.redirect(new URL('/', request.url));
     if (request.nextUrl.pathname.includes('/reset-password') && token)

@@ -99,7 +99,7 @@ export default function LoginSignup() {
   });
 
   // login customer
-  const loginCustomer = trpc.customer.loginCustomer.useMutation({});
+  const loginCustomer = trpc.customer.loginCustomer.useMutation();
 
   // Signup
   const onSubmitSignup = async (values: any) => {

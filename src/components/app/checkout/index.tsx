@@ -30,7 +30,7 @@ import { trpc } from '~/utils/trpc';
 import { useRouter } from 'next/router';
 import { LoadingDialog } from '~/components/common/modal/loadingModal';
 import { useToast } from '~/components/ui/use-toast';
-import { addCart } from '~/store/reducers/cart';
+import { addCart, setOrderID } from '~/store/reducers/cart';
 import Link from 'next/link';
 import Script from 'next/script';
 import jqeury from 'jquery';
@@ -42,6 +42,7 @@ import Paypal from '~/public/assets/icons/Paypal.svg';
 import applePay from '~/public/assets/icons/applePay.svg';
 
 import countryJSON from '~/data/countries.json';
+import { ViewContentDialog } from '~/components/common/modal/cms';
 const countries = countryJSON.map((item) => item.country);
 
 function Checkout() {
@@ -62,6 +63,9 @@ function Checkout() {
   const [selectedItem, setSelectedItem] = useState({});
   const [type, setType] = useState('');
   const [addressType, setAddressType] = useState('');
+  const [CMSType, setCMSType] = useState<
+    'terms-condition' | 'privacy-policy' | ''
+  >('');
 
   // 1. Define your form.
   const form = useForm<CreateCheckoutSchema>({
@@ -147,8 +151,6 @@ function Checkout() {
             JSON.stringify(userProperties) /*user data optional*/,
             JSON.stringify({ cart_id: cart.id, data }) /*optional*/,
           ) as any;
-
-          console.log('pushed checkout_abandoned to brevo');
         }
       }
     };
@@ -163,6 +165,7 @@ function Checkout() {
           const Resdata = await getStatus.mutateAsync({
             checkout_id: data?.id as string,
           });
+
           if (Resdata?.status) {
             if ('sendinblue' in window && window?.sendinblue) {
               const userProperties = form.getValues();
@@ -180,12 +183,9 @@ function Checkout() {
                 JSON.stringify(userProperties) /*user data optional*/,
                 JSON.stringify(data) /*optional*/,
               ) as any;
-
-              console.log('pushed order_completed to brevo');
             }
 
             setTimeout(() => {
-              router.push('/account');
               toast({
                 variant: 'success',
                 title: 'Order Successful! 🎉',
@@ -200,6 +200,8 @@ function Checkout() {
                   cartItems: [],
                 }),
               );
+              dispatch(setOrderID(Resdata?.order_id ?? 0));
+              router.replace('/order-success');
             }, 3000);
           }
         }
@@ -287,7 +289,7 @@ function Checkout() {
                 // Create the HTML elements
 
                 const createRegistrationHtml =
-                  '<div class="flex gap-2 items-center"> <div class="customInput"><input id="store-payment" type="checkbox" name="createRegistration" value="true" /></div> <label htmlfor="store-payment" class="customLabel">Store payment details?</label> </div>';
+                  '<div class="flex gap-2 items-center"> <div class="customInput"><input id="store-payment" type="checkbox" name="createRegistration" value="true" /> <label for="store-payment" class="customLabel">Store payment details?</label> ';
                 jqeury('form.wpwl-form-card')
                   .find('.wpwl-button')
                   .before(createRegistrationHtml);
@@ -306,7 +308,7 @@ function Checkout() {
               setTimeout(addCustomElement, 4000);
             }}
           ></Script>
-          <div className=" relative  bg-background   ">
+          <div className=" relative  bg-background min-h-[50vh]">
             <h2 className="lg:text-4xl md:text-4xl text-2xl font-black uppercase mb-6">
               {langContent[lang.lang].Checkout.SUB_HEADING}
             </h2>
@@ -748,12 +750,11 @@ function Checkout() {
                     </div>
                     <p className="lg:text-base md:text-sm text-sm text-cardGray md:w-[65%] lg:w-[85%]">
                       {langContent[lang.lang].Checkout.INFO}{' '}
-                      <span className="text-white">
-                        {' '}
-                        <Link target="_blank" href="/privacy-policy">
-                          {' '}
-                          {langContent[lang.lang].Checkout.POLICY}{' '}
-                        </Link>
+                      <span
+                        onClick={() => setCMSType('privacy-policy')}
+                        className="text-white cursor-pointer"
+                      >
+                        {langContent[lang.lang].Checkout.POLICY}
                       </span>
                       .
                     </p>
@@ -769,12 +770,12 @@ function Checkout() {
                         htmlFor="terms-and-conditions"
                         className="text-sm text-cardGray cursor-pointer"
                       >
-                        {langContent[lang.lang].Checkout.SUB_INFO}
-                        <span className="text-white">
-                          <Link target="_blank" href="/terms-condition">
-                            {' '}
-                            {langContent[lang.lang].Checkout.TERMS_CONDITION}
-                          </Link>
+                        {langContent[lang.lang].Checkout.SUB_INFO}{' '}
+                        <span
+                          onClick={() => setCMSType('terms-condition')}
+                          className="text-white cursor-pointer"
+                        >
+                          {langContent[lang.lang].Checkout.TERMS_CONDITION}
                         </span>
                         .
                       </label>
@@ -853,6 +854,8 @@ function Checkout() {
         setIndex={setIndex}
         values={form.getValues()}
       />
+
+      <ViewContentDialog type={CMSType} setType={setCMSType} />
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { Button } from '~/components/ui/button';
 import {
   Dialog,
@@ -118,6 +118,47 @@ export function CmsDailog(props: SettingDialogInterface) {
         </DialogContent>
       </Dialog>
       <LoadingDialog open={loading} text={'Saving data...'} />
+    </>
+  );
+}
+
+type ViewContentDialogTypes = {
+  setType: Dispatch<SetStateAction<'terms-condition' | 'privacy-policy' | ''>>;
+  type: 'terms-condition' | 'privacy-policy' | '';
+};
+
+export function ViewContentDialog(props: ViewContentDialogTypes) {
+  const isEnabled = props?.type?.length > 0;
+
+  const { data, isFetching } = trpc.cms.getOneContent.useQuery(
+    { type: props?.type },
+    { enabled: isEnabled },
+  );
+
+  return (
+    <>
+      <Dialog
+        open={props?.type?.length > 0}
+        onOpenChange={() => props.setType('')}
+      >
+        <DialogContent className="sm:max-w-[625px] h-[90vh] sm:h-[90dvh] overflow-y-scroll">
+          <DialogHeader>
+            <DialogDescription>
+              <div
+                className=" cmsStyle p-4 "
+                dangerouslySetInnerHTML={
+                  {
+                    __html:
+                      data?.data?.CMSDescription[0]?.content?.toString() ??
+                      'HTML CONTENT NOT FOUND',
+                  } as any
+                }
+              />
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
+      <LoadingDialog open={isFetching} text={'loading...'} />
     </>
   );
 }

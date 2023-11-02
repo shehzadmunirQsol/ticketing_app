@@ -251,34 +251,6 @@ export default function OrdersDataTable() {
     }));
   }
 
-  // FILTER OPTIONS
-  const roleOptions1 = [
-    {
-      Icon: 'fal fa-chevron-down',
-      text: 'Search',
-      filtername: 'searchQuery',
-      type: 'text',
-    },
-
-    {
-      Icon: 'fal fa-chevron-down',
-      text: 'From Date',
-      filtername: 'startDate',
-      type: 'date',
-    },
-    {
-      Icon: 'fal fa-chevron-down',
-      text: 'To Date',
-      filtername: 'endDate',
-      type: 'date',
-    },
-    {
-      Icon: 'fal fa-chevron-down',
-      text: 'Clear Filter',
-      filtername: 'Clear',
-    },
-  ];
-
   const csvData = [
     [
       'Product',

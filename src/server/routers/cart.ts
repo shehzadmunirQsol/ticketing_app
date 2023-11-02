@@ -132,19 +132,29 @@ export const cartRouter = router({
           // });
         }
         if (input?.filters?.startDate && !input?.filters?.endDate) {
-          const startDate = (new Date(input?.filters?.startDate))?.toISOString().split("T")[0] as string;
+          const startDate = new Date(input?.filters?.startDate)
+            ?.toISOString()
+            .split('T')[0] as string;
           payload.created_at = { gte: new Date(startDate) };
         }
         if (input?.filters?.endDate && !input?.filters?.startDate) {
-          const endDate = (new Date(input?.filters?.endDate))?.toISOString().split("T")[0] as string;
+          const endDate = new Date(input?.filters?.endDate)
+            ?.toISOString()
+            .split('T')[0] as string;
           payload.created_at = { lte: new Date(endDate) };
         }
         if (input?.filters?.endDate && input?.filters?.startDate) {
-          const startDate = (new Date(input?.filters?.startDate))?.toISOString().split("T")[0] as string;
-          const endDate = (new Date(input?.filters?.endDate))?.toISOString().split("T")[0] as string;
-          payload.created_at = { gte: new Date(startDate), lte: new Date(endDate) };
+          const startDate = new Date(input?.filters?.startDate)
+            ?.toISOString()
+            .split('T')[0] as string;
+          const endDate = new Date(input?.filters?.endDate)
+            ?.toISOString()
+            .split('T')[0] as string;
+          payload.created_at = {
+            gte: new Date(startDate),
+            lte: new Date(endDate),
+          };
         }
-  
 
         const totalItemsPromise = prisma.cartItem.count({
           where: payload,
@@ -383,11 +393,15 @@ export const cartRouter = router({
     .input(removeCartItemSchema)
     .mutation(async ({ input }) => {
       try {
-        const item = await prisma.cartItem.delete({ where: { id: input.cart_item_id } });
+        const item = await prisma.cartItem.delete({
+          where: { id: input.cart_item_id },
+        });
 
-        if(input.isLast){
-           await prisma.couponApply.deleteMany({ where: { cart_id: item.cart_id, is_used: false } })
-           await prisma.cart.delete({ where: { id: item.cart_id } })
+        if (input.isLast) {
+          await prisma.couponApply.deleteMany({
+            where: { cart_id: item.cart_id, is_used: false },
+          });
+          await prisma.cart.delete({ where: { id: item.cart_id } });
         }
 
         return { message: 'Item removed' };

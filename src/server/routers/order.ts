@@ -641,7 +641,6 @@ export const orderRouter = router({
             );
             throw new Error(error.message);
           });
-        console.log('paymentRes', paymentRes?.data);
         if (paymentRes?.data) {
           const statusData = paymentRes?.data;
           const successStatus =
@@ -679,7 +678,7 @@ export const orderRouter = router({
                 },
               });
             }
-            console.log({ payload }, 'total processing payload');
+
             const cart = await prisma.cart.findUnique({
               where: { id: payload?.values?.cart_id },
               include: {
@@ -731,7 +730,7 @@ export const orderRouter = router({
                 : discount;
             const totalPaymentId = paymentRes?.data?.id;
             const { total_id, ...valuesData }: any = { ...payload?.values };
-            console.log({ total_id });
+
             const orderPayload: any = {
               ...valuesData,
               phone_number:
@@ -743,10 +742,11 @@ export const orderRouter = router({
               total_amount: subTotalAmount - discountAmount,
               total_payment_id: totalPaymentId,
             };
+
             if (payload?.values?.code) delete orderPayload?.code;
             if (payload?.values?.cart_id) delete orderPayload?.cart_id;
             if (payload?.values?.total_id) delete orderPayload?.total_id;
-            console.log({ orderPayload, payload }, 'orderPayload, payload');
+
             const orderEventPayload = cart?.CartItems.map((item) => ({
               event_id: item.Event.id,
               customer_id: payload?.values?.customer_id,
@@ -763,6 +763,7 @@ export const orderRouter = router({
                   },
                 },
               },
+              
             });
             const eventPromises = cart.CartItems.map((item) =>
               prisma.event.update({
@@ -831,10 +832,13 @@ export const orderRouter = router({
             if (useAPIData?.password) delete useAPIData?.password;
             if (useAPIData?.otp) delete useAPIData?.password;
 
+            
+
             return {
               message: paymentRes?.data,
               status: true,
               user: useAPIData,
+              order_id:order.id
             };
           }
         }

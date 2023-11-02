@@ -74,6 +74,11 @@ export const cmsSchemaInput = z.object({
 export type cmsSchemaForm = z.infer<typeof cmsSchema>;
 
 export const getCmsSchema = z.object({});
+
+export const getOneContentSchema = z.object({
+  type: z.enum(['terms-condition', 'privacy-policy', '']).default(''),
+});
+
 export const getCmsContentByIdSchema = z.object({
   id: z.number(),
 });
