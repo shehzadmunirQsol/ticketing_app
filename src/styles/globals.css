@@ -873,7 +873,7 @@ input:checked + section.box .icon-class {
   transform: rotate(180deg);
   transition: transform 0.3s ease-in-out;
   color: #23d2b3;
-}
+} 
 input:checked + section.box {
   border-bottom-color: #23d2b3;
 }
