@@ -45,7 +45,7 @@ function Index({ children }: DefaultLayoutProps) {
 
       onSuccess(data) {
         const cartString = localStorage.getItem('winnar-cart');
-        if (cartString?.includes('"cartItems":[{"') && data.data?.id) {
+        if (cartString?.includes('"cartItems":[{"')) {
           createCartHandler(cartString, data.data?.id);
         } else if (data?.data) {
           const cart = {

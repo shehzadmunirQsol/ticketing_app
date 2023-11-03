@@ -36,7 +36,7 @@ export default function CartItem(props: CartItemProp) {
   const { cart_id, customer_id, cartItem } = props;
   const { cart } = useSelector((state: RootState) => state.cart);
 
-  const { isLogin } = useSelector((state: RootState) => state.auth);
+  const { isLogin, user } = useSelector((state: RootState) => state.auth);
   const [isSubscribe, setIsSubscribe] = useState(cartItem?.is_subscribe);
   const [isModal, setIsModal] = useState(false);
 
@@ -115,14 +115,12 @@ export default function CartItem(props: CartItemProp) {
 
         sendinblue?.track(
           'cart_updated' /*mandatory*/,
-          JSON.stringify({}) /*user data optional*/,
+          JSON.stringify({ email: user?.email ?? '' }) /*user data optional*/,
           JSON.stringify({
             cart_id: cart.id,
             data: eventCartData,
           }) /*optional*/,
         ) as any;
-
-        console.log('pushed cart_updated to brevo');
       }
     } catch (error: any) {
       console.log({ error });

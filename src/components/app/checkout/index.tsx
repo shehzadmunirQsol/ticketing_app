@@ -207,7 +207,7 @@ function Checkout() {
         }
       } catch (e: any) {
         setLoading(false);
-        router.push('/checkout');
+        router.replace('/checkout');
 
         toast({
           variant: 'destructive',

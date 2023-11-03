@@ -55,7 +55,7 @@ export default function SuccessInvoice() {
         height={1200}
         numberOfPieces={1200}
         opacity={0.8}
-        recycle={recycle}
+        recycle={orderID > 0 && recycle}
       />
 
       <div className="min-h-screen px-4 md:px-0">

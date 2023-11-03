@@ -50,7 +50,7 @@ const initialState: CartState = {
   },
   count: 0,
   totalAmount: 0,
-  orderID: 207,
+  orderID: 0,
 };
 
 type AddToCartType = Pick<Cart, 'id' | 'customer_id'>;

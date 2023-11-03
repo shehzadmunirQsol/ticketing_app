@@ -9,7 +9,7 @@ import { ScrollBar } from '../ui/scroll-area';
 import { displayDate } from '~/utils/helper';
 import LogoImage from '~/public/assets/logo.png';
 
-const Invoice = (props: any) => {
+const Invoice = () => {
   const { lang } = useSelector((state: RootState) => state.layout);
   const router = useRouter();
   const { id } = router.query;
@@ -45,7 +45,7 @@ const Invoice = (props: any) => {
     <>
       {OrderApiData && (
         <div
-          className="bg-card h-full text-gray-400 rounded-lg  px-8 py-10 max-w-xl mx-auto  "
+          className="bg-card h-full text-gray-400 rounded-lg mx-auto w-full px-8 py-10 sm:w-3/4 md:w-2/3"
           id="divToPrint"
         >
           <div className="flex flex-col md:flex-row items-center justify-between mb-8">
@@ -56,7 +56,7 @@ const Invoice = (props: any) => {
                 alt="Logo"
               />
             </div>
-            <div className=" xs:text-center sm:text-left">
+            <div className=" xs:text-center md:text-left">
               <div className="font-bold text-xl mb-2">INVOICE</div>
               <div className="text-sm">
                 Date: {displayDate(OrderApiData?.data?.created_at)}
@@ -85,7 +85,7 @@ const Invoice = (props: any) => {
 
             <div className="w-full mb-8">
               <div className="flex justify-between font-bold uppercase py-2">
-                <div className="flex-1 text-start">Name</div>
+                <div className="flex-[2] text-start">Name</div>
                 <div className="flex-1 text-center">Quantity</div>
                 <div className="flex-1 text-center">Price</div>
                 <div className="flex-1 text-right">Total</div>
@@ -95,7 +95,7 @@ const Invoice = (props: any) => {
                   OrderApiData?.data?.OrderEvent?.map(
                     (item: any, index: number) => (
                       <div key={index} className="flex gap-2 py-4">
-                        <div className="flex-1 text-start">
+                        <div className="flex-[2] text-start">
                           {item?.Event?.EventDescription[0]?.name}
                         </div>
                         <div className="flex-1 text-center">

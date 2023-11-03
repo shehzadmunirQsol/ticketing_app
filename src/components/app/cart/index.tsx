@@ -16,7 +16,7 @@ export default function CartPage() {
     (state: RootState) => state.cart,
   );
   const { lang } = useSelector((state: RootState) => state.layout);
-  const { isLogin, user } = useSelector((state: RootState) => state.auth);
+  const { isLogin } = useSelector((state: RootState) => state.auth);
 
   const eventIds = cart.cartItems.map((item) => item.event_id);
   const [code, setCode] = useState('');
