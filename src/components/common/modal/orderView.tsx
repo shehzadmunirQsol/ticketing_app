@@ -4,7 +4,6 @@ import {
   DialogContent,
   DialogDescription,
   DialogFooter,
-  DialogHeader,
 } from '~/components/ui/dialog';
 
 import { trpc } from '~/utils/trpc';
