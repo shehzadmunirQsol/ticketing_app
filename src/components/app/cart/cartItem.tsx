@@ -144,6 +144,8 @@ export default function CartItem(props: CartItemProp) {
     quantity: cartItem?.quantity,
   });
 
+  const categoryRoute = cartItem?.Event?.category_id === 1 ? 'cars' : 'cash';
+
   return (
     <div data-name="card" className="py-3 mdx:py-6 border-t border-white/40">
       <div className="mb-2 flex items-center justify-between mdx:hidden">
@@ -175,7 +177,7 @@ export default function CartItem(props: CartItemProp) {
         </div>
         <div className="flex-1 flex items-center justify-between space-x-4">
           <Link
-            href={`/product-detail/${URIGenerator(
+            href={`/${categoryRoute}/${URIGenerator(
               cartItem?.Event?.EventDescription[0]?.name ?? '',
               cartItem?.event_id,
             )}`}

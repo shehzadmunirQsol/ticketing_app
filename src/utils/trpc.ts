@@ -2,6 +2,7 @@ import { httpBatchLink, loggerLink } from '@trpc/client';
 import { createTRPCNext } from '@trpc/next';
 import { inferRouterInputs, inferRouterOutputs } from '@trpc/server';
 import { NextPageContext } from 'next';
+import { getCookie } from 'cookies-next';
 // ℹ️ Type-only import:
 // https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-8.html#type-only-imports-and-export
 import type { AppRouter } from '~/server/routers/_app';
@@ -77,9 +78,21 @@ export const trpc = createTRPCNext<AppRouter, SSRContext>({
               // This is so you can pass through things like cookies when we're server-side rendering
 
               // If you're using Node 18, omit the "connection" header
+
+              let token = '';
+
+              const ls = ctx.req.headers.cookie?.split('; ');
+              const winnarToken = ls?.find((x) =>
+                x.startsWith('winnar-token='),
+              );
+              console.log({ ls, winnarToken });
+              if (winnarToken)
+                token = winnarToken?.replace('winnar-token=', '');
+
               const { connection: _connection, ...headers } = ctx.req.headers;
               return {
                 ...headers,
+                Authorization: `Bearer ${token}`,
                 // Optional: inform server that it's an SSR request
                 'x-ssr': '1',
               };

@@ -52,6 +52,8 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
 
   const percentageSold = (data?.tickets_sold / data?.total_tickets) * 100;
 
+  console.log({ data });
+
   return (
     <section className="text-gray-600 body-font">
       <div className="py-4 mb-5 mx-auto flex flex-wrap">
@@ -106,24 +108,26 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
                 {customTruncate(data?.EventDescription[0]?.desc, 100)}
               </p>
             </div>
-
-            <div className="w-full relative">
-              <div className="relative z-10">
-                <Counter
-                  range={range}
-                  ticketInBasket={ticketInBasket}
-                  setRange={setRange}
-                  perCustomerLimit={data?.user_ticket_limit}
-                  user_ticket_limit={userTicketLimit}
-                  ticketPurchased={ticketPurchased}
-                  event={data}
-                />
-              </div>
-            </div>
-
-            {data?.end_date?.getTime() > Date.now() ? (
-              <CountDown dateString={data?.end_date?.getTime()?.toString()} />
-            ) : null}
+            {data?.draw_date || data?.end_date?.getTime() > Date.now() ? (
+              <>
+                <div className="w-full relative">
+                  <div className="relative z-10">
+                    <Counter
+                      range={range}
+                      ticketInBasket={ticketInBasket}
+                      setRange={setRange}
+                      perCustomerLimit={data?.user_ticket_limit}
+                      user_ticket_limit={userTicketLimit}
+                      ticketPurchased={ticketPurchased}
+                      event={data}
+                    />
+                  </div>
+                </div>
+                <CountDown dateString={data?.end_date?.getTime()?.toString()} />
+              </>
+            ) : (
+              <h2>This is competition is closed</h2>
+            )}
           </div>
         </div>
       </div>

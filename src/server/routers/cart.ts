@@ -29,6 +29,7 @@ const cartInclude = {
           tickets_sold: true,
           user_ticket_limit: true,
           total_tickets: true,
+          category_id: true,
 
           EventDescription: {
             where: { lang_id: 1 },
@@ -357,6 +358,7 @@ export const cartRouter = router({
                 tickets_sold: true,
                 user_ticket_limit: true,
                 total_tickets: true,
+                category_id: true,
                 EventDescription: {
                   where: { lang_id: 1 },
                   select: {

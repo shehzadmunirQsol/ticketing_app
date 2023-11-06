@@ -151,7 +151,8 @@ export function getAvailableTickets({
 }
 
 export function URIGenerator(title = '' as string, id = 0 as number) {
-  const url = `${title?.replaceAll(' ', '-')}-${id}`;
+  const url = `${title?.replace(new RegExp(' ', 'g'), '-')}-${id}`;
+
   return encodeURI(url);
 }
 

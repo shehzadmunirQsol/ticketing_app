@@ -48,10 +48,12 @@ function ProductCard(props: cardInterface) {
     ? props?.data?.end_date?.getTime() <= Date.now() + 24 * 60 * 60 * 1000
     : false;
 
+  const categoryRoute = props?.data?.category_id === 1 ? 'cars' : 'cash';
+
   return (
     props?.data && (
       <Link
-        href={`/product-detail/${URIGenerator(
+        href={`/${categoryRoute}/${URIGenerator(
           props?.data?.EventDescription[0]?.name,
           props?.data?.id,
         )}`}
