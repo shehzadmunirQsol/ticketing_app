@@ -146,6 +146,7 @@ export default function LoginSignup() {
       formSignup.reset();
       const loginResult = await loginCustomer.mutateAsync(payload);
 
+      localStorage.setItem('winnar-token', loginResult.jwt);
       dispatch(userAuth(loginResult?.user));
       toast({
         variant: 'success',

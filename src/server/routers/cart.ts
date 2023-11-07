@@ -44,19 +44,22 @@ const cartInclude = {
 };
 
 export const cartRouter = router({
-  get: publicProcedure.input(getCartSchema).query(async ({ ctx }) => {
+  get: publicProcedure.input(getCartSchema).query(async ({ ctx, input }) => {
     try {
-      const token = ctx?.req?.cookies['winnar-token'];
+      // const token = ctx?.req?.cookies['winnar-token'];
+      // console.log({token})
 
-      let userData;
-      if (token) {
-        userData = await verifyJWT(token);
-      } else {
-        return { data: null };
-      }
+      // let userData;
+      // if (token) {
+      //   userData = await verifyJWT(token);
+      // } else {
+      //   return { data: null };
+      // }
+
+      // console.log({userData})
 
       const cart = await prisma.cart.findFirst({
-        where: { customer_id: userData.id, is_deleted: false },
+        where: { customer_id: input.customer_id, is_deleted: false },
         include: cartInclude,
       });
 

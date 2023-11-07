@@ -41,6 +41,15 @@ export interface SSRContext extends NextPageContext {
   status?: number;
 }
 
+let token: string;
+export function setToken(newToken: string) {
+  /**
+   * You can also save the token to cookies, and initialize from
+   * cookies above.
+   */
+  token = newToken;
+}
+
 /**
  * A set of strongly-typed React hooks from your `AppRouter` type signature with `createReactQueryHooks`.
  * @link https://trpc.io/docs/react#3-create-trpc-hooks
@@ -79,15 +88,14 @@ export const trpc = createTRPCNext<AppRouter, SSRContext>({
 
               // If you're using Node 18, omit the "connection" header
 
-              let token = '';
-
-              const ls = ctx.req.headers.cookie?.split('; ');
-              const winnarToken = ls?.find((x) =>
-                x.startsWith('winnar-token='),
-              );
-              console.log({ ls, winnarToken });
-              if (winnarToken)
-                token = winnarToken?.replace('winnar-token=', '');
+              // let token = '';
+              // const ls = ctx.req.headers.cookie?.split('; ');
+              // const winnarToken = ls?.find((x) =>
+              //   x.startsWith('winnar-token='),
+              // );
+              // console.log({ ls, winnarToken });
+              // if (winnarToken)
+              //   token = winnarToken?.replace('winnar-token=', '');
 
               const { connection: _connection, ...headers } = ctx.req.headers;
               return {

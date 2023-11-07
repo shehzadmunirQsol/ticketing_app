@@ -29,7 +29,9 @@ import {
 
 export const customerRouter = router({
   get: publicProcedure.query(async ({ ctx }) => {
-    const token = ctx?.req?.cookies['winnar-token'];
+    // const token = ctx?.req?.cookies['winnar-token'];
+    const token = (ctx?.req?.headers.Authorization as string)?.split(' ')[1];
+    console.log({ token });
 
     let userData;
     if (token) {

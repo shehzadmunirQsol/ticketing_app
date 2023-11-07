@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import Header from './header';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
@@ -16,6 +16,8 @@ function Index({ children }: DefaultLayoutProps) {
   const { lang } = useSelector((state: RootState) => state.layout);
   const { user, isLogin } = useSelector((state: RootState) => state.auth);
 
+  const [userToken, setUserToken] = useState<string | null>(null);
+
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -27,6 +29,7 @@ function Index({ children }: DefaultLayoutProps) {
 
   trpc.customer.get.useQuery(undefined, {
     refetchOnWindowFocus: false,
+    enabled: userToken ? true : false,
     onSuccess(data) {
       if (data?.data) {
         dispatch(userAuth(data?.data));
@@ -76,6 +79,7 @@ function Index({ children }: DefaultLayoutProps) {
     } else {
       localStorage.removeItem('winnar-cart');
     }
+    setUserToken(localStorage.getItem('winnar-token'));
   }, [dispatch]);
 
   async function createCartHandler(
