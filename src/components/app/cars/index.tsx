@@ -4,9 +4,6 @@ import ProductCard from '~/components/common/card';
 import Glow from '~/components/common/glow';
 import { RootState } from '~/store/store';
 import { trpc } from '~/utils/trpc';
-
-import CarsBg from '~/public/assets/Cars Page Banner.png';
-import BannerTitle from '~/components/common/banner_title';
 import FeaturedCars from './featured_cars';
 import Testimonials from '../home/testimonials';
 import langContent from '~/locales';
@@ -54,14 +51,8 @@ const CarsPage = () => {
       {/* this div below ↓ it to add spacing to avoid header */}
       <div className="relative pt-24"></div>
       <FeaturedCars />
-      <div className="pb-20 block slg:hidden">
-        <BannerTitle
-          image={CarsBg}
-          text={langContent[lang.lang].Cars.MAIN_HEADING}
-        />
-      </div>
-      <div className="relative h-full px-4 md:px-14 pb-20">
-        <p className="hidden slg:block text-2xl md:text-5xl pt-24 pb-10 tracking-tighter font-extrabold text-white ">
+      <div className="relative h-full px-4 py-14 md:px-14 md:py-20">
+        <p className="hidden slg:block text-2xl md:text-5xl pb-10 tracking-tighter font-extrabold text-white ">
           {langContent[lang.lang].Cars.HEADING}
         </p>
         <Glow className="absolute  top-1/2 -left-16 w-1/5 h-[350px] overflow-hidden " />

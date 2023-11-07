@@ -37,6 +37,7 @@ interface CartState {
   count: number;
   totalAmount: number;
   orderID: number;
+  isCartLoaded: boolean;
 }
 
 // Define the initial state using that type
@@ -52,6 +53,7 @@ const initialState: CartState = {
   count: 0,
   totalAmount: 0,
   orderID: 0,
+  isCartLoaded: false,
 };
 
 type AddToCartType = Pick<Cart, 'id' | 'customer_id'>;
@@ -133,6 +135,9 @@ export const cartSlice = createSlice({
     setOrderID: (state, action: PayloadAction<number>) => {
       state.orderID = action.payload;
     },
+    setCartLoaded: (state) => {
+      state.isCartLoaded = true;
+    },
   },
 });
 
@@ -154,8 +159,14 @@ function getTotalAmount(cartItems: CartItemInterface[]): number {
   return totalAmount;
 }
 
-export const { addCart, addToCart, removeFromCart, addDiscount, setOrderID } =
-  cartSlice.actions;
+export const {
+  addCart,
+  addToCart,
+  removeFromCart,
+  addDiscount,
+  setOrderID,
+  setCartLoaded,
+} = cartSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectCount = (state: RootState) => state.cart;

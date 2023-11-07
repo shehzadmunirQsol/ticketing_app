@@ -34,7 +34,6 @@ const Account = () => {
   async function handleLogout() {
     try {
       const response = await logout.mutateAsync({});
-      console.log('Response : ', response);
       toast({
         variant: 'success',
         title: 'Logout successfully! ',
@@ -52,7 +51,7 @@ const Account = () => {
           cartItems: [],
         }),
       );
-      router.push('/login');
+      window.location.href = '/login';
     } catch (error: any) {
       console.log('Error ', error);
       toast({

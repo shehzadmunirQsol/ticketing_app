@@ -4,7 +4,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
 import Footer from './footer';
 import { trpc } from '~/utils/trpc';
-import { CartItemInterface, addCart } from '~/store/reducers/cart';
+import {
+  CartItemInterface,
+  addCart,
+  setCartLoaded,
+} from '~/store/reducers/cart';
 import { Toaster } from '~/components/ui/toaster';
 import { userAuth } from '~/store/reducers/auth';
 import { LoadingDialog } from '~/components/common/modal/loadingModal';
@@ -62,6 +66,7 @@ function Index({ children }: DefaultLayoutProps) {
 
           dispatch(addCart(cart));
         }
+        dispatch(setCartLoaded());
       },
       onError(error) {
         console.log({ error });
