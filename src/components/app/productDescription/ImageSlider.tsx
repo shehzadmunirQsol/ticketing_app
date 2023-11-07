@@ -60,8 +60,8 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
         <div className="lg:w-1/2 w-full rounded-lg overflow-hidden md:pr-4">
           <ImageSliderStyle data={data} />
         </div>
-        <div className="flex flex-col flex-wrap lg:py-6 -mb-10 lg:w-1/2 w-full lg:text-left bg-card px-5 py-6">
-          <div className="flex flex-col lg:items-start items-start">
+        <div className="lg:py-6 -mb-10 lg:w-1/2 w-full lg:text-left bg-card px-5 py-6">
+          <div className="flex flex-col items-start">
             <div className="flex-grow w-full">
               <div className="flex flex-col gap-2">
                 <div className="flex justify-between items-center">
@@ -108,25 +108,28 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
                 {customTruncate(data?.EventDescription[0]?.desc, 100)}
               </p>
             </div>
-            {data?.draw_date || data?.end_date?.getTime() > Date.now() ? (
+            {!data?.draw_date && data?.end_date?.getTime() > Date.now() ? (
               <>
-                <div className="w-full relative">
-                  <div className="relative z-10">
-                    <Counter
-                      range={range}
-                      ticketInBasket={ticketInBasket}
-                      setRange={setRange}
-                      perCustomerLimit={data?.user_ticket_limit}
-                      user_ticket_limit={userTicketLimit}
-                      ticketPurchased={ticketPurchased}
-                      event={data}
-                    />
-                  </div>
+                <div className="w-full relative z-10">
+                  <Counter
+                    range={range}
+                    ticketInBasket={ticketInBasket}
+                    setRange={setRange}
+                    perCustomerLimit={data?.user_ticket_limit}
+                    user_ticket_limit={userTicketLimit}
+                    ticketPurchased={ticketPurchased}
+                    event={data}
+                  />
                 </div>
                 <CountDown dateString={data?.end_date?.getTime()?.toString()} />
               </>
             ) : (
-              <h2>This is competition is closed</h2>
+              <div className="w-full sm:p-4 space-y-4 grid items-center">
+                <i className="fas fa-road-lock text-7xl lg:text-9xl text-primary text-center" />
+                <h3 className="text-base md:text-xl lg:text-2xl text-center text-white">
+                  This Competition is Closed
+                </h3>
+              </div>
             )}
           </div>
         </div>
@@ -136,3 +139,50 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
 };
 
 export default ImageSlider;
+
+function DisplayCounter(props: any) {
+  const { data } = props;
+
+  let element: React.ReactNode;
+
+  if (data?.draw_date) {
+    element = (
+      <div className="w-full sm:p-4 space-y-4 grid items-center">
+        <i className="fas fa-road-lock text-7xl lg:text-9xl text-primary text-center" />
+        <h3 className="text-base md:text-xl lg:text-2xl text-center text-white">
+          This Competition is Drawn
+        </h3>
+      </div>
+    );
+  } else if (Date.now() > data?.end_date?.getTime()) {
+    element = (
+      <div className="w-full sm:p-4 space-y-4 grid items-center">
+        <i className="fas fa-road-lock text-7xl lg:text-9xl text-primary text-center" />
+        <h3 className="text-base md:text-xl lg:text-2xl text-center text-white">
+          This Competition is Closed
+        </h3>
+      </div>
+    );
+  } else {
+    element = (
+      <>
+        <div className="w-full relative">
+          <div className="relative z-10">
+            <Counter
+              range={props?.range}
+              ticketInBasket={props?.ticketInBasket}
+              setRange={props?.setRange}
+              perCustomerLimit={data?.user_ticket_limit}
+              user_ticket_limit={props?.userTicketLimit}
+              ticketPurchased={props?.ticketPurchased}
+              event={data}
+            />
+          </div>
+        </div>
+        <CountDown dateString={data?.end_date?.getTime()?.toString()} />
+      </>
+    );
+  }
+
+  return element;
+}
