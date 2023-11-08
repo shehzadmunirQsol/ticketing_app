@@ -34,33 +34,33 @@ const CountDown = ({ dateString }: any) => {
       // Output the result in an element 
       if (counterRef && counterRef.current!==null) {
         counterRef.current.innerHTML =
-          '<div class="flex flex-row md:flex-col md:justify-start md:items-start space-x-2 md:space-y-4"><div class="flex space-x-1 md:space-x-4 flex-1 md:flex-none"><p class="timer-box flex flex-col gap-1 md:gap-1 items-center py-2 px-1 md:p-2 min-w-fit w-full border-2 border-primary rounded-xl"><span class="text-3xl sm:text-5xl font-normal text-primary">' +
+          '<div class="counterrow"><p class="timer-box">' +
           days +
-          '</span><span class="text-xs sm:text-base text-white">' +
+          '<span>' +
           'Days' +
           '</span></p> ' +
-          '<p class="timer-box flex flex-col gap-1 md:gap-1 items-center py-2 px-1 md:p-2 min-w-fit w-full border-2 border-primary rounded-xl"><span class="text-3xl sm:text-5xl font-normal text-primary">' +
+          '<p class="timer-box">' +
           hours +
-          '</span><span class="text-xs sm:text-base text-white">' +
+          '<span>' +
           'Hours' +
           '</span></p> ' +
-          '<p class="timer-box flex flex-col gap-1 md:gap-1 items-center py-2 px-1 md:p-2 min-w-fit w-full border-2 border-primary rounded-xl"><span class="text-3xl sm:text-5xl font-normal text-primary">' +
+          '<p class="timer-box">' +
           minutes +
-          '</span><span class="text-xs sm:text-base text-white">' +
+          '<span>' +
           'Mins' +
           '</span></p> ' +
-          '<p class="timer-box flex flex-col gap-1 md:gap-1 items-center py-2 px-1 md:p-2 min-w-fit w-full border-2 border-primary rounded-xl"><span class="text-3xl sm:text-5xl font-normal text-primary">' +
+          '<p class="timer-box">' +
           seconds +
-          '</span><span class="text-xs sm:text-base text-white">' +
+          '<span>' +
           'Secs' +
-          '</span></p></div></div>';
+          '</span></p></div>';
       }
     }, 1000);
   };
 
   return (
-        <div className="w-full relative counterbx mt-6">
-        <div className="flex flex-col md:flex-row justify-start md:row md:items-start text-lg font-bold md:text-2xl mb-2 text-white">Competition closes in</div>
+        <div className="w-full relative counterbx mt-5">
+        <div className="text-xl mb-2 text-white">Competition closes in</div>
         <div ref={counterRef}></div> 
         </div>
   );

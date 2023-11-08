@@ -963,11 +963,6 @@ input[type='number'] {
   margin-top: 5.5rem;
 }
 
-/*Counter*/
-.timer-box{
-  min-width:42px;
-}
-
 .bottlebx {
   bottom: 15px;
 }
@@ -979,9 +974,6 @@ input[type='number'] {
   position: static !important;
 }
 @media only screen and (min-width: 767.98px){
-  .timer-box{
-    min-width:100px;
-  }
   .bottlebx {
     bottom: 120px;
   }
@@ -1045,12 +1037,12 @@ input[type='number'] {
   width: 100%;
   position: relative;
   overflow: hidden;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 .herobanner .imgbx::before {
   content: "";
   display: block;
-  padding-bottom: 64.10%; /*780 x 500*/
+  padding-bottom: 66.66%; /*780 x 520*/
 }
 .herobanner .imgbx img {
   position: absolute;
@@ -1076,7 +1068,7 @@ input[type='number'] {
     background-color: #23d2b3 !important;
     border-radius: 50%;
     top: auto !important;
-    bottom: -14px;
+    bottom: -20px;
     transform: none !important;
     z-index: 9;
 }
@@ -1105,6 +1097,50 @@ input[type='number'] {
 }
 .mobilebx {
   display: none;
+}
+.detailbx {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.detailbx .col-55 {
+  flex: 0 0 auto;
+    width: 55%;
+}
+.detailbx .col-40 {
+  flex: 0 0 auto;
+    width: 40%;
+    padding: 20px;
+}
+
+.counterrow {
+  display: flex;
+  max-width: 270px;
+}
+.timer-box {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1;
+  text-align: center;
+  border-radius: 6px;
+  padding-top: 6px;
+  padding-bottom: 10px;
+  border: 1px solid #23d2b3;
+  font-size: 28px;
+  line-height: 1;
+  font-weight: 500;
+  color: #23d2b3;
+  margin: 0 5px;
+}
+.timer-box span {
+  display: block;
+  font-size: 14px;
+  font-weight: normal;
+  color: #fff;
+  margin-top: 5px;
+}
+.highlightbx {
+  min-width: 75px;
 }
 
 @media only screen and (max-width: 1024px) {
@@ -1190,6 +1226,26 @@ input[type='number'] {
 }
 input:checked + section.box {
   border-bottom-color: #ffffff1a;
+}
+.detailbx .col-55 {
+    width: 100%;
+}
+.detailbx .col-40 {
+    width: 100%;
+    padding: 15px;
+    margin-top: 20px;
+}
+.counterrow {
+  max-width: 250px;
+}
+.timer-box {
+  font-size: 24px;
+}
+.timer-box span {
+  font-size: 12px;
+}
+.highlightbx {
+  min-width: 65px;
 }
 }
 

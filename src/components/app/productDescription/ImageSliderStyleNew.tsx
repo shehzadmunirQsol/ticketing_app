@@ -36,7 +36,7 @@ function SamplePrevArrow(props: any) {
   );
 }
 
-const BannerSlider = ({ data }: any) => {
+const ImageSliderStyleNew = ({ data }: any) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showElement, setShowElement] = useState(false);
   console.log(currentIndex, 'currentIndexcurrentIndexcurrentIndex');
@@ -136,4 +136,4 @@ const BannerSlider = ({ data }: any) => {
   );
 };
 
-export default BannerSlider;
+export default ImageSliderStyleNew;

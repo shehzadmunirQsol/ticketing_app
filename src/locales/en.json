@@ -125,7 +125,7 @@
   "ProductDetail":{
     "counter":{
       "TICKETS":"How many entries?",
-      "NUMBERS_OF_TICKET":"Number of ENTRIES",
+      "NUMBERS_OF_TICKET":"Number of Entries",
       "BASKET_BUTTON":"ADD ENTRIES TO BASKET"
     },
     "entries":{

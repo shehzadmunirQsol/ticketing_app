@@ -48,10 +48,11 @@ const ProductDetail = () => {
         <ImageSlider
           data={data?.data}
           ticketPurchased={data?.ticketPurchased}
+          higlightmeta={meta}
         />
         <div>
           <EntiresDetail data={data?.data} />
-          {isMeta ? <Highlights meta={meta} /> : null}
+          {/* {isMeta ? <Highlights meta={meta} /> : null} */}
           <VideoSection data={data?.data} />
         </div>
       </div>
