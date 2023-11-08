@@ -294,9 +294,10 @@ export const couponRouter = router({
           coupon_code: input?.coupon_code?.toUpperCase(),
           is_percentage: input?.is_percentage == '1' ? true : false,
           is_limited: input?.is_limited == '1' ? true : false,
-
           discount: input?.discount,
+          end_date: input?.end_date,
         };
+
         if (input?.coupon_limit) payload.coupon_limit = +input?.coupon_limit;
         const coupon = await prisma.coupon.update({
           where: { id: input?.coupon_id },

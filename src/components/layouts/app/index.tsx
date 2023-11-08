@@ -1,10 +1,14 @@
-import React, { ReactNode, useEffect } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import Header from './header';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
 import Footer from './footer';
 import { trpc } from '~/utils/trpc';
-import { CartItemInterface, addCart } from '~/store/reducers/cart';
+import {
+  CartItemInterface,
+  addCart,
+  setCartLoaded,
+} from '~/store/reducers/cart';
 import { Toaster } from '~/components/ui/toaster';
 import { userAuth } from '~/store/reducers/auth';
 import { LoadingDialog } from '~/components/common/modal/loadingModal';
@@ -15,6 +19,8 @@ type DefaultLayoutProps = { children: ReactNode };
 function Index({ children }: DefaultLayoutProps) {
   const { lang } = useSelector((state: RootState) => state.layout);
   const { user, isLogin } = useSelector((state: RootState) => state.auth);
+
+  const [userToken, setUserToken] = useState<string | null>(null);
 
   const router = useRouter();
   const dispatch = useDispatch();
@@ -27,6 +33,7 @@ function Index({ children }: DefaultLayoutProps) {
 
   trpc.customer.get.useQuery(undefined, {
     refetchOnWindowFocus: false,
+    enabled: userToken ? true : false,
     onSuccess(data) {
       if (data?.data) {
         dispatch(userAuth(data?.data));
@@ -59,6 +66,7 @@ function Index({ children }: DefaultLayoutProps) {
 
           dispatch(addCart(cart));
         }
+        dispatch(setCartLoaded());
       },
       onError(error) {
         console.log({ error });
@@ -70,10 +78,13 @@ function Index({ children }: DefaultLayoutProps) {
 
   useEffect(() => {
     const cartString = localStorage.getItem('winnar-cart');
-    if (cartString) {
+    if (cartString?.includes('"cartItems":[{"')) {
       const cart = JSON.parse(cartString);
       dispatch(addCart(cart));
+    } else {
+      localStorage.removeItem('winnar-cart');
     }
+    setUserToken(localStorage.getItem('winnar-token'));
   }, [dispatch]);
 
   async function createCartHandler(

@@ -55,11 +55,10 @@ export function RemoveItemDialog(props: SettingDialogInterface) {
 
         if ('sendinblue' in window && window?.sendinblue) {
           const sendinblue: any = window.sendinblue;
-
           sendinblue?.track('cart_deleted' /*mandatory*/) as any;
-
-          console.log('pushed cart_deleted to brevo');
         }
+
+        localStorage.removeItem('winnar-cart');
       } else {
         const eventCartData = cart?.cartItems
           ?.filter((cartItem) => cartItem.id !== props?.cart_item_id)

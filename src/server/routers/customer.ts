@@ -13,7 +13,6 @@ import {
   addCustomerAddress,
   getCustomerAddress,
   accountsDetailSchema,
-  passwordChangeSchema,
   deleteMyAccountCustomerSchema,
   logoutSchema,
   updateCustomerAddress,
@@ -21,7 +20,6 @@ import {
 } from '~/schema/customer';
 import { hashPass, isSamePass } from '~/utils/hash';
 import { signJWT, verifyJWT } from '~/utils/jwt';
-import { serialize } from 'cookie';
 import { setCookie, deleteCookie } from 'cookies-next';
 import { EMAILS, generateOTP, isValidEmail, sendEmail } from '~/utils/helper';
 import {
@@ -31,7 +29,8 @@ import {
 
 export const customerRouter = router({
   get: publicProcedure.query(async ({ ctx }) => {
-    const token = ctx?.req?.cookies['winnar-token'];
+    // const token = ctx?.req?.cookies['winnar-token'];
+    const token = (ctx?.req?.headers.Authorization as string)?.split(' ')[1];
     console.log({ token });
 
     let userData;
@@ -40,8 +39,6 @@ export const customerRouter = router({
     } else {
       return { data: null };
     }
-
-    console.log({ userData }, 'userData');
 
     const user = await prisma.customer.findUnique({
       where: { id: userData.id },
@@ -353,21 +350,13 @@ export const customerRouter = router({
         }
         const jwt = signJWT({ email: user.email, id: user.id });
 
-        // const serialized = serialize('winnar-token', jwt, {
-        //   httpOnly: true,
-        //   path: '/',
-        //   sameSite: 'strict',
-        // });
-
-        // ctx?.res?.setHeader('Set-Cookie', serialized);
-
         const { req, res } = ctx;
         setCookie('winnar-token', jwt, {
           req,
           res,
-          httpOnly: true,
-          path: '/',
-          sameSite: 'strict',
+          // httpOnly: true,
+          // path: '/',
+          // sameSite: 'strict',
         });
 
         const { password, otp, ...userApiData } = user;
@@ -584,22 +573,14 @@ export const customerRouter = router({
         }
         const jwt = signJWT({ email: user.email, id: user.id });
 
-        // const serialized = serialize('winnar-token', jwt, {
-        //   httpOnly: true,
-        //   path: '/',
-        //   sameSite: 'strict',
-        // });
-
-        // ctx?.res?.setHeader('Set-Cookie', serialized);
-
         const { req, res } = ctx;
 
         setCookie('winnar-token', jwt, {
           req,
           res,
-          httpOnly: true,
-          path: '/',
-          sameSite: 'strict',
+          // httpOnly: true,
+          // path: '/',
+          // sameSite: 'strict',
         });
 
         const { password, otp, ...userApiData } = user;
@@ -897,22 +878,13 @@ export const customerRouter = router({
 
   logout: publicProcedure.input(logoutSchema).mutation(async ({ ctx }) => {
     try {
-      // const serialized = serialize('winnar-token', '', {
-      //   httpOnly: true,
-      //   path: '/',
-      //   sameSite: 'strict',
-      //   // secure: process.env.NODE_ENV !== "development",
-      // });
-      // console.log('Serialized :: ', serialized);
-      // ctx?.res?.setHeader('Set-Cookie', serialized);
-
       const { req, res } = ctx;
       deleteCookie('winnar-token', {
         req,
         res,
-        httpOnly: true,
-        path: '/',
-        sameSite: 'strict',
+        // httpOnly: true,
+        // path: '/',
+        // sameSite: 'strict',
       });
 
       return { message: 'Logout successfully!' };

@@ -111,27 +111,30 @@ const ImageSlider = ({ data, ticketPurchased, higlightmeta }: any) => {
                 {customTruncate(data?.EventDescription[0]?.desc, 100)}
               </p>
             </div>
-
-            <div className="w-full relative">
-              <div className="relative z-10">
-                <Counter
-                  range={range}
-                  ticketInBasket={ticketInBasket}
-                  setRange={setRange}
-                  perCustomerLimit={data?.user_ticket_limit}
-                  user_ticket_limit={userTicketLimit}
-                  ticketPurchased={ticketPurchased}
-                  event={data}
-                />
+            {!data?.draw_date && data?.end_date?.getTime() > Date.now() ? (
+              <>
+                <div className="w-full relative z-10">
+                  <Counter
+                    range={range}
+                    ticketInBasket={ticketInBasket}
+                    setRange={setRange}
+                    perCustomerLimit={data?.user_ticket_limit}
+                    user_ticket_limit={userTicketLimit}
+                    ticketPurchased={ticketPurchased}
+                    event={data}
+                  />
+                </div>
+                <CountDown dateString={data?.end_date?.getTime()?.toString()} />
+                {higlightmeta ? <Highlights meta={higlightmeta} /> : null }
+              </>
+            ) : (
+              <div className="w-full sm:p-4 space-y-4 grid items-center">
+                <i className="fas fa-road-lock text-7xl lg:text-9xl text-primary text-center" />
+                <h3 className="text-base md:text-xl lg:text-2xl text-center text-white">
+                  This Competition is Closed
+                </h3>
               </div>
-            </div>
-
-            {data?.end_date?.getTime() > Date.now() ? (
-              <CountDown dateString={data?.end_date?.getTime()?.toString()} />
-            ) : null}
-
-            {higlightmeta ? <Highlights meta={higlightmeta} /> : null }
-
+            )}
           </div>
         </div>
       </div>
@@ -140,3 +143,50 @@ const ImageSlider = ({ data, ticketPurchased, higlightmeta }: any) => {
 };
 
 export default ImageSlider;
+
+function DisplayCounter(props: any) {
+  const { data } = props;
+
+  let element: React.ReactNode;
+
+  if (data?.draw_date) {
+    element = (
+      <div className="w-full sm:p-4 space-y-4 grid items-center">
+        <i className="fas fa-road-lock text-7xl lg:text-9xl text-primary text-center" />
+        <h3 className="text-base md:text-xl lg:text-2xl text-center text-white">
+          This Competition is Drawn
+        </h3>
+      </div>
+    );
+  } else if (Date.now() > data?.end_date?.getTime()) {
+    element = (
+      <div className="w-full sm:p-4 space-y-4 grid items-center">
+        <i className="fas fa-road-lock text-7xl lg:text-9xl text-primary text-center" />
+        <h3 className="text-base md:text-xl lg:text-2xl text-center text-white">
+          This Competition is Closed
+        </h3>
+      </div>
+    );
+  } else {
+    element = (
+      <>
+        <div className="w-full relative">
+          <div className="relative z-10">
+            <Counter
+              range={props?.range}
+              ticketInBasket={props?.ticketInBasket}
+              setRange={props?.setRange}
+              perCustomerLimit={data?.user_ticket_limit}
+              user_ticket_limit={props?.userTicketLimit}
+              ticketPurchased={props?.ticketPurchased}
+              event={data}
+            />
+          </div>
+        </div>
+        <CountDown dateString={data?.end_date?.getTime()?.toString()} />
+      </>
+    );
+  }
+
+  return element;
+}

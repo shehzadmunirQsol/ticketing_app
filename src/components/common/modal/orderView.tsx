@@ -4,7 +4,6 @@ import {
   DialogContent,
   DialogDescription,
   DialogFooter,
-  DialogHeader,
 } from '~/components/ui/dialog';
 
 import { trpc } from '~/utils/trpc';
@@ -52,7 +51,7 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
   return (
     <>
       <Dialog open={props?.isModal} onOpenChange={(e) => props.setIsModal(e)}>
-        <DialogContent className=" my-auto max-h-[800px] h-[calc(100%-100px)]  overflow-y-hidden  ">
+        <DialogContent className=" my-auto max-h-[800px] h-[calc(100%-100px)] max-w-xl md:max-w-[768px] overflow-y-hidden  ">
           <DialogFooter className=" sm:justify-start items-start w-full   ">
             <Link href={orderRoute()} target="_blank">
               <Button onClick={() => props.setIsModal(false)}>
@@ -63,7 +62,7 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
           <DialogDescription className="relative bg-card h-full rounded-lg  overflow-y-scroll   scroll-hide">
             {OrderApiData && (
               <div
-                className="bg-card h-full text-gray-400 rounded-lg  px-8 py-10 max-w-xl mx-auto  "
+                className="bg-card h-full text-gray-400 rounded-lg  px-8 py-10  mx-auto  "
                 id="divToPrint"
               >
                 <div className="flex flex-col md:flex-row items-center justify-between mb-8">
@@ -101,36 +100,43 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
                 <ScrollArea className="w-full  ">
                   <ScrollBar orientation="horizontal"></ScrollBar>
 
-
                   <div className="w-full mb-8">
                     <div className="flex justify-between font-bold uppercase py-2">
-                      <div className="flex-1">Name</div>
-                      <div className="flex-1">Quantity</div>
-                      <div className="flex-1">Price</div>
-                      <div className="flex-1">Total</div>
+                      <div className="flex-[2] text-start">Name</div>
+                      <div className="flex-1 text-center">Quantity</div>
+                      <div className="flex-1 text-center">Price</div>
+                      <div className="flex-1 text-right">Total</div>
                     </div>
-                    <div className="mt-2">
-                      {OrderApiData?.data?.OrderEvent &&
-                        OrderApiData?.data?.OrderEvent?.map(
-                          (item: any, index: number) => (
-                            <div key={index} className="flex gap-2 py-4">
-                              <div className="flex-1">
-                                {item?.Event?.EventDescription[0]?.name}
+
+                    {isFetching ? null : (
+                      <div className="mt-2">
+                        {OrderApiData?.data?.OrderEvent &&
+                          OrderApiData?.data?.OrderEvent?.map(
+                            (item: any, index: number) => (
+                              <div
+                                key={index}
+                                className="flex gap-2 py-2 sm:py-4"
+                              >
+                                <div className="flex-[2] text-start">
+                                  {item?.Event?.EventDescription[0]?.name}
+                                </div>
+                                <div className="flex-1 text-center">
+                                  {item?.quantity}
+                                </div>
+                                <div className="flex-1 text-center">
+                                  AED {item?.ticket_price.toFixed(2)}
+                                </div>
+                                <div className="flex-1 text-right">
+                                  AED{' '}
+                                  {(
+                                    item?.ticket_price * item?.quantity
+                                  ).toFixed(2)}
+                                </div>
                               </div>
-                              <div className="flex-1">{item?.quantity}</div>
-                              <div className="flex-1">
-                                AED {item?.ticket_price.toFixed(2)}
-                              </div>
-                              <div className="flex-1">
-                                AED{' '}
-                                {(item?.ticket_price * item?.quantity).toFixed(
-                                  2,
-                                )}
-                              </div>
-                            </div>
-                          ),
-                        )}
-                    </div>
+                            ),
+                          )}
+                      </div>
+                    )}
                   </div>
                 </ScrollArea>
 

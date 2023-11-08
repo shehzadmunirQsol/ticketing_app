@@ -1,5 +1,3 @@
-import { useRouter } from 'next/router';
-import { useState } from 'react';
 import { Button } from '~/components/ui/button';
 import {
   Dialog,
@@ -12,96 +10,136 @@ import {
 import { useToast } from '~/components/ui/use-toast';
 import { trpc } from '~/utils/trpc';
 import { LoadingDialog } from './loadingModal';
+import { toggleSwitchType, EventType } from '../table/events';
 
 interface deleteEventDialogInterface {
-    selectedItem: any;
-    isModal: boolean;
-    title: string;
-    setTitle: any;
-    setSelectedItem: any;
-    setIsModal: any;
-    refetch: any;
-    type: string;
-    setType: any;
-  }
+  selectedItem: EventType;
+  setSelectedItem: any;
+  isModal: boolean;
+  setIsModal: any;
+  refetch: any;
+  type: toggleSwitchType;
+  setType: any;
+}
 
 export function EventDeleteDialog(props: deleteEventDialogInterface) {
-    console.log(props.selectedItem.name,"selectedItem")
-    const { toast } = useToast();
-    const [loading, setLoading] = useState<boolean>(false);
-  
-    const deleteEvent: any = trpc.event.delete.useMutation({
-      onSuccess: () => {
-        console.log('upload successfully');
-      },
-      onError(error: any) {
-        console.log({ error });
-      },
-    });
-  
-    const handleClick = async () => {
-      try {
-        setLoading(true);
-        const payload: any = {
-          id: props?.selectedItem?.id,
-        };
-        if (props?.type == 'delete')
-          payload.is_deleted = !props?.selectedItem?.is_deleted;
-        const data = await deleteEvent.mutateAsync({ ...payload });
-  
-        if (data) {
-          setLoading(false);
-  
-          props.setIsModal(false);
-  
-          toast({
-            variant: `${props?.type === 'enabled' ? "disable" : "success"}`,
-            title: `${props?.title} ${props?.type === 'enabled' ? 'Disabled' : 'Delete'
-              } Successfully`,
-          });
-          props?.refetch();
-        } else {
-          throw new Error('Data update Error');
-        }
-      } catch (e: any) {
-        setLoading(false);
-  
-        props.setIsModal(false);
+  const { toast } = useToast();
+
+  const switchUpdate = trpc.event.switchUpdate.useMutation({
+    onSuccess: () => {
+      console.log('upload successfully');
+    },
+    onError(error: any) {
+      console.log({ error });
+    },
+  });
+
+  const handleClick = async () => {
+    try {
+      const payload = {
+        id: props?.selectedItem?.id,
+        type: props?.type,
+        value: !props?.selectedItem[props?.type],
+      };
+
+      const data = await switchUpdate.mutateAsync(payload);
+
+      if (data) {
         toast({
-          variant: 'destructive',
-          title: e.message,
+          variant: `${
+            props?.selectedItem[props?.type] ? 'disable' : 'success'
+          }`,
+          title: `${
+            typeToTitle[props?.type][props?.selectedItem[props?.type] + '']
+              ?.title + 'd'
+          } Successfully`,
         });
+        props?.refetch();
+      } else {
+        throw new Error('Data update Error');
       }
-    };
-    return (
-      <>
-        <Dialog open={props?.isModal} onOpenChange={(e) => props.setIsModal(e)}>
-          <DialogContent className="sm:max-w-[425px]">
-            <DialogHeader>
-              <DialogTitle className='uppercase'>{props?.title}</DialogTitle>
-              <DialogDescription>
-                <div className="flex flex-col gap-4">
-                  <div className="  flex gap-2 items-center p-2  ">
+    } catch (e: any) {
+      toast({
+        variant: 'destructive',
+        title: e.message,
+      });
+    }
+
+    props?.setIsModal(false);
+    props?.setSelectedItem({});
+  };
+
+  return (
+    <>
+      <Dialog
+        open={props?.isModal}
+        onOpenChange={(e) => props?.setIsModal(false)}
+      >
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle className="uppercase">Product</DialogTitle>
+            <DialogDescription>
+              <div className="flex flex-col gap-4">
+                <div className="flex gap-2 items-center p-2  ">
                   <p>
-                    Are You Sure You Want to {props?.type}{' '} 
+                    Are You Sure You Want to{' '}
+                    {
+                      typeToTitle[props?.type][
+                        props?.selectedItem[props?.type] + ''
+                      ]?.title
+                    }{' '}
                     <span className="text-primary capitalize">
                       {props?.selectedItem?.name}
                     </span>{' '}
-                     Product
+                    Product?
                   </p>
-                  </div>
                 </div>
-              </DialogDescription>
-            </DialogHeader>
-            <DialogFooter>
-              <Button type="submit" onClick={() => handleClick()}>
-                Yes
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
-        <LoadingDialog open={loading} text={'Deleting Product...'} />
-      </>
-    );
-  }
-  
+              </div>
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button type="submit" onClick={() => handleClick()}>
+              Yes
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+      <LoadingDialog
+        open={switchUpdate.isLoading}
+        text={`${
+          typeToTitle[props?.type][props?.selectedItem[props?.type] + '']
+            ?.loading
+        } Product...`}
+      />
+    </>
+  );
+}
+
+const typeToTitle: any = {
+  is_deleted: {
+    false: {
+      title: 'Delete',
+      loading: 'Deleting',
+    },
+  },
+  is_enabled: {
+    true: {
+      title: 'Disable',
+      loading: 'Disabling',
+    },
+    false: {
+      title: 'Enable',
+      loading: 'Enabling',
+    },
+  },
+  is_featured: {
+    true: {
+      title: 'Un Feature',
+      loading: 'Un Featuring',
+    },
+    false: {
+      title: 'Feature',
+      loading: 'Featuring',
+    },
+  },
+};

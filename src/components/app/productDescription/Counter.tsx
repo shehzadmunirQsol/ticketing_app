@@ -79,6 +79,7 @@ const Counter: React.FC<CounterProps> = ({
             tickets_sold: event.tickets_sold,
             user_ticket_limit: event.user_ticket_limit,
             total_tickets: event.total_tickets,
+            category_id: event.category_id,
 
             EventDescription: [
               {
@@ -114,21 +115,19 @@ const Counter: React.FC<CounterProps> = ({
 
         sendinblue?.track(
           'cart_updated' /*mandatory*/,
-          JSON.stringify({}) /*user data optional*/,
+          JSON.stringify({ email: user?.email }) /*user data optional*/,
           JSON.stringify({
             cart_id: cart.id,
             data: eventCartData,
           }) /*optional*/,
         ) as any;
-
-        console.log('pushed cart_updated to brevo');
       }
     } catch (error: any) {
       console.log({ error });
     }
   }
 
-   const price = +(range[0] as number) * event?.price;
+  const price = +(range[0] as number) * event?.price;
 
   return (
     <div className="relative">

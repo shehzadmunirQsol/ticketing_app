@@ -2,7 +2,7 @@ import { router, publicProcedure } from '../trpc';
 import { TRPCError } from '@trpc/server';
 import {
   EventFormSchema,
-  deleteEventSchema,
+  switchUpdateSchema,
   getClosingSoon,
   getEventSchema,
   getFeatured,
@@ -256,14 +256,13 @@ export const eventRouter = router({
       }
     }),
 
-  delete: publicProcedure
-    .input(deleteEventSchema)
+  switchUpdate: publicProcedure
+    .input(switchUpdateSchema)
     .mutation(async ({ input }) => {
       try {
-        console.log(input, 'INPUT::');
         const event = await prisma.event.update({
           where: { id: input.id },
-          data: { is_deleted: true },
+          data: { [input.type]: input.value },
         });
         if (!event) {
           throw new TRPCError({
@@ -272,7 +271,7 @@ export const eventRouter = router({
           });
         }
 
-        return { data: event, message: 'Event deleted' };
+        return { data: event, message: 'Event updated' };
       } catch (error: any) {
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
@@ -288,6 +287,7 @@ export const eventRouter = router({
         const today = new Date();
         const where: any = {
           is_deleted: false,
+          is_enabled: true,
           launch_date: { lte: today },
           end_date: { gte: today },
           draw_date: null,
@@ -366,6 +366,7 @@ export const eventRouter = router({
       try {
         const where: any = {
           is_deleted: false,
+          is_enabled: true,
           draw_date: null,
         };
         const todayDate = new Date();
@@ -435,6 +436,7 @@ export const eventRouter = router({
     try {
       const where: any = {
         is_deleted: false,
+        is_enabled: true,
         end_date: { gte: new Date() },
         draw_date: null,
         category_id: 1,
