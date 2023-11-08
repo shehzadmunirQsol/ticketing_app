@@ -100,7 +100,7 @@ const BannerSlider = ({ data }: any) => {
                     original={renderNFTImage(item)}
                     thumbnail={renderNFTImage(item)}
                     width="1024"
-                    height="768"
+                    height="576"
                     key={index}
                   >
                     {({ ref, open }) => (
