@@ -22,9 +22,9 @@ function WhyChoose() {
           return (
             <div
               key={index}
-              className="text-center sm:text-left py-3 sm:py-6 w-full space-y-2 md:space-y-4 text-white items-center border-t-2  md:border-b-2 md:border-b-border  border-t-primary "
+              className="text-center py-3 sm:py-6 w-full space-y-2 md:space-y-3 text-white items-center border-t-2  md:border-b-2 md:border-b-border  border-t-primary "
             >
-              <div className="h-20 mx-auto sm:m-0 w-20">
+              <div className="text-center h-20 mx-auto w-20">
                 <Image
                   className="w-full h-full object-contain "
                   src={images[item.img]}
@@ -33,11 +33,11 @@ function WhyChoose() {
                 />
               </div>
               <div>
-                <div className="ltr:text-left rtl:text-right">
-                  <div className="text-2xl sm:text-4xl  leading-tight text-center sm:text-start">
+                <div className="text-center">
+                  <div className="text-2xl sm:text-3xl leading-tight text-center">
                     {item?.title}
                   </div>
-                  <div className=" text-base font-normal text-gray-500 text-border leading-tight text-center sm:text-start mt-2">
+                  <div className="text-base font-normal text-gray-500 text-border leading-tight text-center mt-2">
                     {item?.desc}
                   </div>
                 </div>
