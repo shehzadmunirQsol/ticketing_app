@@ -1,9 +1,9 @@
 import { z } from 'zod';
 
 export const applyCouponSchema = z.object({
-  customer_id: z.number(),
-  cart_id: z.number(),
-  coupon_code: z.string(),
+  customer_id: z.number().min(1),
+  cart_id: z.number().min(1),
+  coupon_code: z.string().min(3, { message: 'Invalid coupon code' }),
 });
 
 export const addToCartSchema = z.object({
@@ -23,7 +23,7 @@ export const getCouponSchema = z.object({
   first: z.number(),
   rows: z.number(),
   filters: z.any().optional(),
-  is_enabled:z.boolean().optional(),
+  is_enabled: z.boolean().optional(),
 });
 
 export const deleteCouponSchema = z.object({
@@ -33,9 +33,12 @@ export const deleteCouponSchema = z.object({
 export const createCouponSchema = z.object({
   user_id: z.number(),
   coupon_id: z.number().optional(),
-  name: z.string({ required_error: ' Please enter a name' }).min(2, {
-    message: 'Coupon Name must be at least 2 characters',
-  }).trim(),
+  name: z
+    .string({ required_error: ' Please enter a name' })
+    .min(2, {
+      message: 'Coupon Name must be at least 2 characters',
+    })
+    .trim(),
   coupon_code: z
     .string({ required_error: ' Please enter a coupon code' })
     .min(6, {
@@ -43,7 +46,9 @@ export const createCouponSchema = z.object({
     })
     .max(6, {
       message: 'Coupon Code must be 6 characters',
-    }).trim().refine(s => !s.includes(' '), `Please don't use spaces`),
+    })
+    .trim()
+    .refine((s) => !s.includes(' '), `Please don't use spaces`),
   is_percentage: z.string({ required_error: ' Please select a discount type' }),
   is_limited: z.string(),
   coupon_limit: z.number().optional(),
@@ -68,11 +73,14 @@ export const updateSchema = z.object({
     })
     .max(6, {
       message: 'Coupon Code must be at least 6 characters',
-    }).trim().refine(s => !s.includes(' '), `Please don't use spaces`),
+    })
+    .trim()
+    .refine((s) => !s.includes(' '), `Please don't use spaces`),
   is_percentage: z.string(),
   is_limited: z.string(),
   coupon_limit: z.number().optional(),
   discount: z.number(),
+  end_date: z.date(),
 });
 export const updateCouponSchema = z.object({
   coupon_id: z.number(),

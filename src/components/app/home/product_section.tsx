@@ -64,12 +64,15 @@ function ProductSection(props: productInterface) {
     });
   }, [lang.lang_id]);
 
-  const next = () => {
-    slide?.current?.slickNext();
-  };
   const previous = () => {
+    console.log('previous');
     slide?.current?.slickPrev();
   };
+  const next = () => {
+    console.log('next');
+    slide?.current?.slickNext();
+  };
+
   const settings = {
     className: 'center slider variable-width flex gap-3',
 
@@ -150,7 +153,7 @@ function ProductSection(props: productInterface) {
           <Button
             variant="rounded"
             className="button prev-btn h-10 w-10 md:h-14 md:w-14"
-            onClick={() => previous()}
+            onClick={previous}
           >
             {/* <i className="fa-solid fa-left-arrow" /> */}
             <i className="fa-solid fa-chevron-left"></i>
@@ -158,7 +161,7 @@ function ProductSection(props: productInterface) {
           <Button
             variant="rounded"
             className="button next-btn h-10 w-10 md:h-14 md:w-14"
-            onClick={() => next()}
+            onClick={next}
           >
             <i className="fa-solid fa-chevron-right"></i>
           </Button>

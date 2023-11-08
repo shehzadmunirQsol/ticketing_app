@@ -46,8 +46,12 @@ export const getFeatured = z.object({
   lang_id: z.number(),
 });
 
-export const deleteEventSchema = z.object({
+export const switchUpdateSchema = z.object({
   id: z.number(),
+  type: z
+    .enum(['is_deleted', 'is_featured', 'is_enabled'])
+    .default('is_enabled'),
+  value: z.boolean().default(false),
 });
 
 export const EventFormSchema = z.object({

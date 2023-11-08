@@ -3,14 +3,6 @@ import { Button } from '@/ui/button';
 import LogoImage from '~/public/assets/logo.png';
 import Image from 'next/image';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '~/components/ui/select';
 import { useRouter } from 'next/router';
 import { toggleLang } from '~/store/reducers/layout';
 import { RootState } from '~/store/store';
@@ -24,7 +16,6 @@ import { trpc } from '~/utils/trpc';
 export default function Header() {
   const router = useRouter();
   const { isLogin } = useSelector((state: RootState) => state.auth);
-  const { lang } = useSelector((state: RootState) => state.layout);
   const { count } = useSelector((state: RootState) => state.cart);
 
   const [color, setColor] = useState(false);
@@ -175,7 +166,6 @@ interface SideBarMenuProps {
 }
 
 export const SideBarMenu: React.FC<SideBarMenuProps> = ({ nav, closeFn }) => {
-  const { count } = useSelector((state: RootState) => state.cart);
   const { lang } = useSelector((state: RootState) => state.layout);
   const { isLogin } = useSelector((state: RootState) => state.auth);
   const [hide, setHide] = useState(false);
@@ -211,7 +201,7 @@ export const SideBarMenu: React.FC<SideBarMenuProps> = ({ nav, closeFn }) => {
         }),
       );
       closeFn(false);
-      router.push('/login');
+      window.location.replace('/');
     } catch (error: any) {
       console.log('Error ', error);
       toast({

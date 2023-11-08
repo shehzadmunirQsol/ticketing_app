@@ -14,7 +14,6 @@ import { orderRouter } from './order';
 import { cmsRouter } from './cms';
 import { subscriptionRouter } from './subscription';
 import { dashboardRouter } from './dashboard';
-import { NextApiRequest, NextApiResponse } from 'next';
 
 export const appRouter = router({
   admin: adminUserRouter,

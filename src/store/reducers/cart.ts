@@ -15,6 +15,7 @@ export interface CartItemInterface {
   Event: {
     thumb: string;
     price: number;
+    category_id: number;
     end_date: Date | null;
     tickets_sold: number | null;
     user_ticket_limit: number;
@@ -35,6 +36,8 @@ interface CartState {
   cart: Cart & { cartItems: CartItemInterface[] };
   count: number;
   totalAmount: number;
+  orderID: number;
+  isCartLoaded: boolean;
 }
 
 // Define the initial state using that type
@@ -49,6 +52,8 @@ const initialState: CartState = {
   },
   count: 0,
   totalAmount: 0,
+  orderID: 0,
+  isCartLoaded: false,
 };
 
 type AddToCartType = Pick<Cart, 'id' | 'customer_id'>;
@@ -88,10 +93,9 @@ export const cartSlice = createSlice({
       state.cart.customer_id = action.payload.customer_id;
       state.cart.cartItems = cartItems;
 
-      if (!state.cart.id) {
+      if (!state?.cart?.id && state?.cart?.cartItems?.length) {
         localStorage.setItem('winnar-cart', JSON.stringify(state.cart));
       } else {
-        console.log("localStorage.removeItem('winnar-cart')");
         localStorage.removeItem('winnar-cart');
       }
     },
@@ -104,11 +108,9 @@ export const cartSlice = createSlice({
       state.totalAmount = getTotalAmount(cartItems);
       state.cart.cartItems = cartItems;
 
-      if (!state.cart.id) {
+      if (!state?.cart?.id && state?.cart?.cartItems?.length) {
         localStorage.setItem('winnar-cart', JSON.stringify(state.cart));
       } else {
-        console.log("localStorage.removeItem('winnar-cart')");
-
         localStorage.removeItem('winnar-cart');
       }
     },
@@ -124,13 +126,17 @@ export const cartSlice = createSlice({
       state.cart.discount = action.payload.discount;
       state.cart.isPercentage = action.payload.isPercentage;
 
-      if (!state.cart.id) {
+      if (!state?.cart?.id && state?.cart?.cartItems?.length) {
         localStorage.setItem('winnar-cart', JSON.stringify(state.cart));
       } else {
-        console.log("localStorage.removeItem('winnar-cart')");
-
         localStorage.removeItem('winnar-cart');
       }
+    },
+    setOrderID: (state, action: PayloadAction<number>) => {
+      state.orderID = action.payload;
+    },
+    setCartLoaded: (state) => {
+      state.isCartLoaded = true;
     },
   },
 });
@@ -153,8 +159,14 @@ function getTotalAmount(cartItems: CartItemInterface[]): number {
   return totalAmount;
 }
 
-export const { addCart, addToCart, removeFromCart, addDiscount } =
-  cartSlice.actions;
+export const {
+  addCart,
+  addToCart,
+  removeFromCart,
+  addDiscount,
+  setOrderID,
+  setCartLoaded,
+} = cartSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectCount = (state: RootState) => state.cart;

@@ -1,16 +1,22 @@
+import { getCookie } from 'cookies-next';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { getAdminToken, getToken } from '~/utils/authToken';
+// import { getAdminToken, getToken } from '~/utils/authToken';
 
-export function middleware(request: NextRequest) {
-  // Clone the request headers and set a new header x-hello-from-middleware1
+export function middleware(request: NextRequest, response: NextResponse) {
   if (request.nextUrl.pathname.startsWith('/admin')) {
-    const storeRequestHeaders = new Headers(request.headers);
+    // const storeRequestHeaders = new Headers(request.headers);
+    // const token = getAdminToken(storeRequestHeaders);
+
+    const token = getCookie('winnar-admin-token', {
+      req: request,
+      res: response,
+    });
 
     const isProtectedAdminRoutes = ['/admin/login'].includes(
       request.nextUrl.pathname,
     );
-    const token = getAdminToken(storeRequestHeaders);
+
     if (isProtectedAdminRoutes && token)
       return NextResponse.redirect(new URL('/admin/dashboard', request.url));
     if (!isProtectedAdminRoutes && !token)
@@ -18,12 +24,14 @@ export function middleware(request: NextRequest) {
   }
 
   if (request.nextUrl.pathname.startsWith('/')) {
-    const storeRequestHeaders = new Headers(request.headers);
+    // const storeRequestHeaders = new Headers(request.headers);
+    // const token = getToken(storeRequestHeaders);
+    const token = getCookie('winnar-token', { req: request, res: response });
 
     const isProtectedRoutes = ['/checkout', '/account'].includes(
       request.nextUrl.pathname,
     );
-    const token = getToken(storeRequestHeaders);
+
     if (request.nextUrl.pathname === '/login' && token)
       return NextResponse.redirect(new URL('/', request.url));
     if (request.nextUrl.pathname.includes('/reset-password') && token)

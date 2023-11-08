@@ -6,7 +6,6 @@ import AddressesView from './address-view';
 import AccountDetails from './account-details';
 import { trpc } from '~/utils/trpc';
 import { useToast } from '~/components/ui/use-toast';
-import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import { addCart } from '~/store/reducers/cart';
 import { userLogout } from '~/store/reducers/auth';
@@ -15,7 +14,6 @@ import { RootState } from '~/store/store';
 
 const Account = () => {
   const { toast } = useToast();
-  const router = useRouter();
   const dispatch = useDispatch();
 
   const { lang } = useSelector((state: RootState) => state.layout);
@@ -34,7 +32,6 @@ const Account = () => {
   async function handleLogout() {
     try {
       const response = await logout.mutateAsync({});
-      console.log('Response : ', response);
       toast({
         variant: 'success',
         title: 'Logout successfully! ',
@@ -52,7 +49,7 @@ const Account = () => {
           cartItems: [],
         }),
       );
-      router.push('/login');
+      window.location.replace('/');
     } catch (error: any) {
       console.log('Error ', error);
       toast({

@@ -28,7 +28,6 @@ const ProductDetail = () => {
 
   const comp_detail: any = data?.data?.EventDescription[0]?.comp_details;
   const Faqs: any = data?.data?.CMS;
-  console.log(Faqs, 'Faqs');
 
   const isMeta = data?.data?.category_id === 1;
   const meta =

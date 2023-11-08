@@ -36,7 +36,7 @@ export default function CartItem(props: CartItemProp) {
   const { cart_id, customer_id, cartItem } = props;
   const { cart } = useSelector((state: RootState) => state.cart);
 
-  const { isLogin } = useSelector((state: RootState) => state.auth);
+  const { isLogin, user } = useSelector((state: RootState) => state.auth);
   const [isSubscribe, setIsSubscribe] = useState(cartItem?.is_subscribe);
   const [isModal, setIsModal] = useState(false);
 
@@ -115,14 +115,12 @@ export default function CartItem(props: CartItemProp) {
 
         sendinblue?.track(
           'cart_updated' /*mandatory*/,
-          JSON.stringify({}) /*user data optional*/,
+          JSON.stringify({ email: user?.email ?? '' }) /*user data optional*/,
           JSON.stringify({
             cart_id: cart.id,
             data: eventCartData,
           }) /*optional*/,
         ) as any;
-
-        console.log('pushed cart_updated to brevo');
       }
     } catch (error: any) {
       console.log({ error });
@@ -145,6 +143,8 @@ export default function CartItem(props: CartItemProp) {
     ticketPurchased: props?.ticketPurchased,
     quantity: cartItem?.quantity,
   });
+
+  const categoryRoute = cartItem?.Event?.category_id === 1 ? 'cars' : 'cash';
 
   return (
     <div data-name="card" className="py-3 mdx:py-6 border-t border-white/40">
@@ -177,7 +177,7 @@ export default function CartItem(props: CartItemProp) {
         </div>
         <div className="flex-1 flex items-center justify-between space-x-4">
           <Link
-            href={`/product-detail/${URIGenerator(
+            href={`/${categoryRoute}/${URIGenerator(
               cartItem?.Event?.EventDescription[0]?.name ?? '',
               cartItem?.event_id,
             )}`}

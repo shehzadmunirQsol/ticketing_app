@@ -56,8 +56,9 @@ import {
 } from '@radix-ui/react-icons';
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 import { CSVLink } from 'react-csv';
+import { Switch } from '~/components/ui/switch';
 
-export type Category = {
+export type EventType = {
   thumb: string;
   name: string;
   desc: string | null;
@@ -68,12 +69,17 @@ export type Category = {
   tickets_sold: number;
   user_ticket_limit: number;
   is_cash_alt: boolean;
+  is_enabled: boolean;
+  is_deleted: boolean;
+  is_featured: boolean;
   cash_alt: number;
   launch_date: Date;
   end_date: Date;
   created_at: Date;
   updated_at: Date;
 };
+
+export type toggleSwitchType = 'is_deleted' | 'is_featured' | 'is_enabled';
 
 const initialFilter = {
   first: 0,
@@ -86,9 +92,8 @@ export default function EventsDataTable() {
   const [filters, setFilters] = useState<GetEventSchema>(initialFilter);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
-  const [selectedItem, setSelectedItem] = useState({});
-  const [title, setTitle] = useState('');
-  const [type, setType] = useState('');
+  const [selectedItem, setSelectedItem] = useState<any>({});
+  const [toggleType, setToggleType] = useState<toggleSwitchType>('is_enabled');
   const [isModal, setIsModal] = useState(false);
 
   const dispatch = useDispatch();
@@ -116,19 +121,11 @@ export default function EventsDataTable() {
     {},
   );
 
-  // delete product
-  const deleteUser = (data: any, type: string) => {
-    setSelectedItem(data);
-    setTitle('Product');
-    setType(type);
-    setIsModal(true);
-  };
-
   const eventData = React.useMemo(() => {
     return Array.isArray(data?.data) && data?.data?.length ? data?.data : [];
   }, [data]);
 
-  const columns: ColumnDef<Category>[] = [
+  const columns: ColumnDef<EventType>[] = [
     {
       id: 'actions',
       enableHiding: false,
@@ -153,7 +150,7 @@ export default function EventsDataTable() {
               {row?.original.tickets_sold != null &&
               row?.original.tickets_sold === 0 ? (
                 <DropdownMenuItem
-                  onClick={() => deleteUser(row?.original, 'delete')}
+                  onClick={() => switchHandler(row.original, 'is_deleted')}
                 >
                   Delete
                 </DropdownMenuItem>
@@ -172,6 +169,31 @@ export default function EventsDataTable() {
               ) : null}
             </DropdownMenuContent>
           </DropdownMenu>
+        );
+      },
+    },
+    {
+      id: 'Featured',
+      header: 'Featured',
+      cell: ({ row }) => {
+        return (
+          <Switch
+            checked={row?.original?.is_featured}
+            onCheckedChange={() => switchHandler(row.original, 'is_featured')}
+          />
+        );
+      },
+    },
+    {
+      id: 'Enabled',
+      header: 'Enabled',
+      cell: ({ row }) => {
+        return (
+          <Switch
+            disabled={row?.original?.tickets_sold > 0}
+            checked={row?.original?.is_enabled}
+            onCheckedChange={() => switchHandler(row.original, 'is_enabled')}
+          />
         );
       },
     },
@@ -263,22 +285,22 @@ export default function EventsDataTable() {
       ),
     },
     {
-      accessorKey: 'Token Purchased',
-      header: 'Token Purchased',
+      accessorKey: 'Per User Limit',
+      header: 'Per User Limit',
       cell: ({ row }) => (
-        <p className="w-28 text-center text-ellipsis whitespace-nowrap overflow-hidden">
-          {row?.original?.tickets_sold}
+        <p className="w-32 text-center text-ellipsis whitespace-nowrap overflow-hidden">
+          {row?.original?.user_ticket_limit}
           &nbsp;
           <sub>qty</sub>
         </p>
       ),
     },
     {
-      accessorKey: 'Per User Limit',
-      header: 'Per User Limit',
+      accessorKey: 'Token Purchased',
+      header: 'Token Purchased',
       cell: ({ row }) => (
-        <p className="w-32 text-center text-ellipsis whitespace-nowrap overflow-hidden">
-          {row?.original?.user_ticket_limit}
+        <p className="w-28 text-center text-ellipsis whitespace-nowrap overflow-hidden">
+          {row?.original?.tickets_sold}
           &nbsp;
           <sub>qty</sub>
         </p>
@@ -305,7 +327,7 @@ export default function EventsDataTable() {
   ];
 
   const table = useReactTable({
-    data: eventData as Category[],
+    data: eventData as EventType[],
     columns,
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
@@ -328,6 +350,12 @@ export default function EventsDataTable() {
   function handlePagination(page: number) {
     if (page < 0) return;
     setFilters((prevFilters) => ({ ...prevFilters, first: page }));
+  }
+
+  function switchHandler(event: EventType, type: toggleSwitchType) {
+    setSelectedItem(event);
+    setToggleType(type);
+    setIsModal(true);
   }
 
   // FILTER OPTIONS
@@ -624,13 +652,11 @@ export default function EventsDataTable() {
       <EventDeleteDialog
         selectedItem={selectedItem}
         setSelectedItem={setSelectedItem}
-        title={title}
-        setTitle={setTitle}
+        refetch={refetch}
+        type={toggleType}
+        setType={setToggleType}
         isModal={isModal}
         setIsModal={setIsModal}
-        refetch={refetch}
-        type={type}
-        setType={setType}
       />
       <LoadingDialog open={isLoading} text={'Loading data...'} />
     </div>

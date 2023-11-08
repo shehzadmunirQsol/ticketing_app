@@ -99,7 +99,7 @@ export default function LoginSignup() {
   });
 
   // login customer
-  const loginCustomer = trpc.customer.loginCustomer.useMutation({});
+  const loginCustomer = trpc.customer.loginCustomer.useMutation();
 
   // Signup
   const onSubmitSignup = async (values: any) => {
@@ -146,6 +146,7 @@ export default function LoginSignup() {
       formSignup.reset();
       const loginResult = await loginCustomer.mutateAsync(payload);
 
+      localStorage.setItem('winnar-token', loginResult.jwt);
       dispatch(userAuth(loginResult?.user));
       toast({
         variant: 'success',

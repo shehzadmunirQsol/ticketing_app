@@ -6,6 +6,7 @@ import {
   getCmsContentByIdSchema,
   updateCmsContentById,
   cmsStatusUpdateById,
+  getOneContentSchema,
 } from '~/schema/cms';
 import { prisma } from '~/server/prisma';
 
@@ -43,31 +44,29 @@ export const cmsRouter = router({
   getCmsContent: publicProcedure.input(getCmsSchema).query(async (input) => {
     try {
       const cms = await prisma?.cMS?.findMany({
-        where:{
-          is_deleted:false
-          
+        where: {
+          is_deleted: false,
         },
         orderBy: { created_at: 'desc' },
         include: {
-
           CMSDescription: {
-            orderBy:{
-              lang_id:'asc'
+            orderBy: {
+              lang_id: 'asc',
             },
-            select:{
-              CMS:true,
-              cms_id:true,
-              content:true,
-              created_at:true,
-              desc:true,
-              id:true,
-              is_deleted:true,
-              lang_id:true,
-              Language:true,
-              meta_keywords:true,
-              title:true,
-              updated_at:true,
-            }
+            select: {
+              CMS: true,
+              cms_id: true,
+              content: true,
+              created_at: true,
+              desc: true,
+              id: true,
+              is_deleted: true,
+              lang_id: true,
+              Language: true,
+              meta_keywords: true,
+              title: true,
+              updated_at: true,
+            },
           },
         },
       });
@@ -79,6 +78,40 @@ export const cmsRouter = router({
       });
     }
   }),
+  getOneContent: publicProcedure
+    .input(getOneContentSchema)
+    .query(async ({ input }) => {
+      try {
+        if (!input.type) return { data: null };
+
+        const cms = await prisma?.cMS?.findFirst({
+          where: {
+            is_deleted: false,
+            is_enabled: true,
+            slug: input.type,
+          },
+          select: {
+            id: true,
+            slug: true,
+            type: true,
+            CMSDescription: {
+              orderBy: {
+                lang_id: 'asc',
+              },
+              select: {
+                content: true,
+              },
+            },
+          },
+        });
+        return { data: cms };
+      } catch (error: any) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: error.message,
+        });
+      }
+    }),
 
   getById: publicProcedure
     .input(getCmsContentByIdSchema)
@@ -88,23 +121,23 @@ export const cmsRouter = router({
           where: { id: input.id },
           include: {
             CMSDescription: {
-              orderBy:{
-                lang_id:'asc'
+              orderBy: {
+                lang_id: 'asc',
               },
-              select:{
-                CMS:true,
-                cms_id:true,
-                content:true,
-                created_at:true,
-                desc:true,
-                id:true,
-                is_deleted:true,
-                lang_id:true,
-                Language:true,
-                meta_keywords:true,
-                title:true,
-                updated_at:true,
-              }
+              select: {
+                CMS: true,
+                cms_id: true,
+                content: true,
+                created_at: true,
+                desc: true,
+                id: true,
+                is_deleted: true,
+                lang_id: true,
+                Language: true,
+                meta_keywords: true,
+                title: true,
+                updated_at: true,
+              },
             },
           },
         });
@@ -189,26 +222,26 @@ export const cmsRouter = router({
         }
 
         const { id, ...payload } = input;
-        if(input?.is_deleted)
-        {
-
+        if (input?.is_deleted) {
           await prisma.cMS.update({
-           where: {id: id,},
-           data: {...payload,
-          CMSDescription:{
-            updateMany:{
-              where:{
-                cms_id:id
+            where: { id: id },
+            data: {
+              ...payload,
+              CMSDescription: {
+                updateMany: {
+                  where: {
+                    cms_id: id,
+                  },
+                  data: {
+                    is_deleted: true,
+                  },
+                },
               },
-              data:{
-                is_deleted:true
-              }
-            }
-          }},
-         });
-        }else{
+            },
+          });
+        } else {
           await prisma.cMS.update({
-            where: {id: id,},
+            where: { id: id },
             data: payload,
           });
         }
