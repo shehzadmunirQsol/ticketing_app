@@ -9,6 +9,7 @@ import ProductCard from '~/components/common/card';
 import Glow from '~/components/common/glow';
 import { trpc } from '~/utils/trpc';
 import langContent from '~/locales';
+import ProductSection from '../home/product_section';
 
 const CashPage = () => {
   const { lang } = useSelector((state: RootState) => state.layout);
@@ -52,35 +53,50 @@ const CashPage = () => {
     <>
       <div className="relative pt-24"></div>
       <BannerTitle image={CashBg} text={''} />
-      <div className="relative h-full px-4 py-14 md:px-14 md:py-20">
-        <Glow className=" absolute  top-1/4 -right-16  p-2   w-1/6 h-[150px]  " />
-        <Glow className=" absolute  bottom-14 -right-16  w-1/6 h-[150px] " />
-        <div className=" grid gap-6 grid-cols-1 sm:grid-cols-2  z-40  lg:grid-cols-3">
-          {products?.map((itemList, i) => {
-            return (
-              <div className="z-40" key={i}>
-                <ProductCard
-                  isLast={i === products.length - 1}
-                  nextPage={nextPage}
-                  dir={lang.dir}
-                  data={itemList}
-                />
+      <div className=" h-full px-4 space-y-8 py-14 md:px-14 md:space-y-12 md:py-20">
+        <div className="relative">
+          {/* Will look into it later when finalizing */}
+
+          {/* <Glow className=" absolute  top-1/4 -right-16  p-2   w-1/6 h-[150px]  " />
+          <Glow className=" absolute  bottom-14 -right-16  w-1/6 h-[150px] " /> */}
+          <div className=" grid gap-6 grid-cols-1 sm:grid-cols-2  z-40  lg:grid-cols-3">
+            {products?.map((itemList, i) => {
+              return (
+                <div className="z-40" key={i}>
+                  <ProductCard
+                    isLast={i === products.length - 1}
+                    nextPage={nextPage}
+                    dir={lang.dir}
+                    data={itemList}
+                  />
+                </div>
+              );
+            })}
+          </div>
+
+          {/* doudt should it load more on action or automatically */}
+          {products.length != prductsList?.count ? (
+            <div className="w-fit mx-auto">
+              <div className="text-center my-4">
+                <p className="tracking-tight font-bold">Load More</p>
+                <i className="fas fa-arrow-down  text-teal-400 text-5xl my-2  "></i>
               </div>
-            );
-          })}
+            </div>
+          ) : (
+            ''
+          )}
         </div>
 
-        {/* doudt should it load more on action or automatically */}
-        {products.length != prductsList?.count ? (
-          <div className="w-fit mx-auto">
-            <div className="text-center my-4">
-              <p className="tracking-tight font-bold">Load More</p>
-              <i className="fas fa-arrow-down  text-teal-400 text-5xl my-2  "></i>
-            </div>
-          </div>
-        ) : (
-          ''
-        )}
+        <ProductSection
+          class="w-3/5 md:w-full"
+          slidesToShow={3}
+          center={false}
+          title={'Closed Competitions'}
+          type="drawn"
+          breakpoint={[3, 2, 1.5]}
+          breakpointScreens={[1350, 1050, 800]}
+          categoryId={2}
+        />
       </div>
     </>
   );

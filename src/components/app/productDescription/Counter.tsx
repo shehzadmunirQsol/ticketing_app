@@ -20,15 +20,17 @@ interface CounterProps {
   event: any;
 }
 
-export default function Counter({
-  range,
-  setRange,
-  user_ticket_limit,
-  ticketInBasket,
-  ticketPurchased,
-  event,
-  perCustomerLimit,
-}: CounterProps) {
+export default function Counter(props: CounterProps) {
+  const {
+    range,
+    setRange,
+    user_ticket_limit,
+    ticketInBasket,
+    ticketPurchased,
+    event,
+    perCustomerLimit,
+  } = props;
+
   const { user, isLogin } = useSelector((state: RootState) => state.auth);
   const { lang } = useSelector((state: RootState) => state.layout);
   const { cart } = useSelector((state: RootState) => state.cart);
@@ -80,6 +82,7 @@ export default function Counter({
             user_ticket_limit: event.user_ticket_limit,
             total_tickets: event.total_tickets,
             category_id: event.category_id,
+            is_enabled: event.is_enabled,
 
             EventDescription: [
               {
@@ -131,7 +134,14 @@ export default function Counter({
 
   return (
     <div className="relative">
-      {ticketPurchased >= perCustomerLimit ? (
+      {event?.tickets_sold >= event?.total_tickets ? (
+        <div className="sm:p-4 space-y-4 grid items-center">
+          <i className="fas fa-gauge-high text-7xl lg:text-9xl text-primary text-center" />
+          <h3 className="text-base md:text-xl lg:text-2xl text-center text-white">
+            SOLD OUT: All Tickets Have Been Purchased!
+          </h3>
+        </div>
+      ) : ticketPurchased >= perCustomerLimit ? (
         <div className="sm:p-4 space-y-4 grid items-center">
           <i className="fas fa-gauge-high text-7xl lg:text-9xl text-primary text-center" />
           <h3 className="text-base md:text-xl lg:text-2xl text-center text-white">

@@ -146,12 +146,27 @@ export default function CartItem(props: CartItemProp) {
 
   const categoryRoute = cartItem?.Event?.category_id === 1 ? 'cars' : 'cash';
 
+  const isDateEnded = cartItem?.Event?.end_date
+    ? Date.now() > cartItem?.Event?.end_date?.getTime()
+    : false;
+
+  const isNotEnabled = !cartItem?.Event?.is_enabled;
+
+  let tooltipMessage = '';
+
+  if (isDateEnded)
+    tooltipMessage = "Competition is closed, can't proceed to checkout!";
+  else if (isNotEnabled)
+    tooltipMessage = "Competition is not enabled, can't proceed to checkout!";
+  else if (isTicketLimit) tooltipMessage = 'Cannot buy more entries';
+  else if (isTicketLimitExceeded)
+    tooltipMessage = "Competition closed, can't proceed to checkout!";
+
   return (
     <div data-name="card" className="py-3 mdx:py-6 border-t border-white/40">
       <div className="mb-2 flex items-center justify-between mdx:hidden">
         <p className="text-xl font-bold">
           {cartItem?.Event?.EventDescription[0]?.name}
-          {/* Win This 800BHP Ferrari E63s Night Edition + AED 1,000 Cash! */}
         </p>
         <i
           onClick={() => setIsModal((preModal) => !preModal)}
@@ -184,14 +199,18 @@ export default function CartItem(props: CartItemProp) {
             className="hidden flex-1 mdx:block text-xl xl:text-2xl "
           >
             {cartItem?.Event?.EventDescription[0]?.name}
-            {/* Win This 800BHP Ferrari E63s Night Edition + AED 1,000 Cash! */}
           </Link>
           <div className="flex flex-col space-y-2">
             <div className="flex justify-between items-center min-w-[450px] w-1/2 max-w-[550px]">
               <div className="bg-card flex items-center justify-between overflow-hidden ">
                 <Button
                   className="p-2 bg-primary text-background"
-                  disabled={cartItem?.quantity === 1 || addToBasket.isLoading}
+                  disabled={
+                    isDateEnded ||
+                    isNotEnabled ||
+                    cartItem?.quantity === 1 ||
+                    addToBasket.isLoading
+                  }
                   onClick={() => addToBasketHandler('decrement')}
                 >
                   <i className="fas fa-minus text-xl xl:text-2xl font-extrabold" />
@@ -199,13 +218,22 @@ export default function CartItem(props: CartItemProp) {
                 <p className="w-16 text-center text-xl">{cartItem?.quantity}</p>
 
                 <TooltipProvider>
-                  <Tooltip open={isTicketLimit || isTicketLimitExceeded}>
+                  <Tooltip
+                    open={
+                      isTicketLimit ||
+                      isTicketLimitExceeded ||
+                      isDateEnded ||
+                      isNotEnabled
+                    }
+                  >
                     <TooltipTrigger asChild>
                       <Button
                         className="p-2 bg-primary text-background"
                         disabled={
-                          isTicketLimitExceeded ||
                           isTicketLimit ||
+                          isTicketLimitExceeded ||
+                          isDateEnded ||
+                          isNotEnabled ||
                           addToBasket.isLoading
                         }
                         onClick={() => addToBasketHandler('increment')}
@@ -214,11 +242,7 @@ export default function CartItem(props: CartItemProp) {
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent>
-                      <p className="font-bold">
-                        {isTicketLimitExceeded
-                          ? "Limit Exceeded, can't proceed to checkout!"
-                          : 'Cannot buy more entries'}
-                      </p>
+                      <p className="font-bold">{tooltipMessage}</p>
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>

@@ -6,7 +6,6 @@ import { RootState } from '~/store/store';
 import { trpc } from '~/utils/trpc';
 import { renderNFTImage } from '~/utils/helper';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import langContent from '~/locales';
 
 function BannerSlider() {
@@ -14,7 +13,6 @@ function BannerSlider() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [carSlider, setCarSlider] = useState<Array<any>>([]);
   const [showElement, setShowElement] = useState(false);
-  const router = useRouter();
 
   const initialOrderFilters: any = {
     lang_id: lang.lang_id,
@@ -124,17 +122,14 @@ function BannerSlider() {
                   {carSlider[currentIndex]?.date}
                 </p>
               </div>
-              <>
+              <Link href={carSlider[currentIndex]?.link}>
                 <Button
                   className=" mb-2 lg:mb-0 mx-4 min-w-fit sm:w-44 text-black font-sans font-[900] mt-3  tracking-[-1px] "
                   variant="clip"
-                  onClick={() => {
-                    router.push(carSlider[currentIndex]?.link);
-                  }}
                 >
                   {langContent[lang.lang].Index.banner.ENTER_BTN}
                 </Button>
-              </>
+              </Link>
             </div>
 
             {/* text select cards */}

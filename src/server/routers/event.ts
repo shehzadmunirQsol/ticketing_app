@@ -346,7 +346,6 @@ export const eventRouter = router({
           });
         }
 
-        console.log(totalEvent, event, 'event data');
         return {
           message: 'Events found',
           count: totalEvent,
@@ -382,6 +381,9 @@ export const eventRouter = router({
             lte: new Date(endingDate),
           };
         }
+        if (input?.type == 'drawn') where.draw_date = { not: null };
+        if (input?.category_id) where.category_id = input?.category_id;
+
         const totalEventPromise = prisma.event.count({
           where: where,
         });
@@ -503,11 +505,23 @@ export const eventRouter = router({
       try {
         const descriptionPayload: any =
           input.type === 'admin' ? undefined : { lang_id: input.lang_id };
+
         const event = await prisma.event.findUnique({
           where: {
             id: input.id,
           },
           include: {
+            Winner: {
+              select: {
+                ticket_num: true,
+                Customer: {
+                  select: {
+                    first_name: true,
+                    last_name: true,
+                  },
+                },
+              },
+            },
             EventDescription: {
               where: descriptionPayload,
               select: {

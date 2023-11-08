@@ -78,7 +78,7 @@ export default function CartPage() {
     ? totalAmount * (cart?.discount / 100)
     : cart?.discount;
 
-  const isItemsLimitExceeded = cart?.cartItems?.some((cartItem) => {
+  const isCheckoutDisabled = cart?.cartItems?.some((cartItem) => {
     const userTicketLimit = userTicketLimits?.data?.find(
       (userLimit) => userLimit?.event_id === cartItem?.event_id,
     );
@@ -96,10 +96,15 @@ export default function CartPage() {
       quantity: cartItem?.quantity,
     });
 
-    return isTicketLimitExceeded;
+    const isDateEnded = cartItem?.Event?.end_date
+      ? Date.now() > cartItem?.Event?.end_date?.getTime()
+      : false;
+    const isNotEnabled = !cartItem?.Event?.is_enabled;
+
+    return isTicketLimitExceeded || isDateEnded || isNotEnabled;
   });
 
-  console.log({ isItemsLimitExceeded });
+  console.log({ isCheckoutDisabled });
 
   return (
     <div className="relative mt-24 z-20">
@@ -185,20 +190,20 @@ export default function CartPage() {
                   AED {(totalAmount - discountAmount)?.toFixed(2)}
                 </p>
               </div>
-              <a className="block" href="/checkout">
-                <Button
-                  variant={'clip'}
-                  size={'full'}
-                  className="uppercase text-lg font-black z-10 "
-                >
-                  {langContent[lang.lang].Cart.CHECHKOUT_BTN}
-                </Button>
-              </a>
+              <Button
+                disabled={isCheckoutDisabled}
+                variant={'clip'}
+                size={'full'}
+                className="uppercase text-lg font-black z-10"
+                onClick={() => (window.location.href = '/checkout')}
+              >
+                {langContent[lang.lang].Cart.CHECHKOUT_BTN}
+              </Button>
             </div>
             <Glow className="absolute right-0 -z-10 bottom-0 w-1/6 h-40 overflow-hidden" />
           </div>
 
-          <div className="relative py-4 sm:px-10 z-10 bg-card-foreground">
+          <div className="relative py-4 px-4 md:gap-14 md:px-14 z-10 bg-card-foreground">
             <ProductSection
               class="mx-auto w-3/5 md:w-full"
               slidesToShow={3}
@@ -206,7 +211,7 @@ export default function CartPage() {
               breakpoint={[3, 2, 1.5]}
               breakpointScreens={[1350, 1050, 800]}
               title={langContent[lang.lang].Cart.LAST_OFFER}
-              type="no-glow"
+              type="closing"
             />
             <Glow className="absolute right-0 bottom-0 w-1/6 h-20 overflow-hidden -z-20" />
           </div>

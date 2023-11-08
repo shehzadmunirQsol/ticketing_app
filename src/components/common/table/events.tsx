@@ -177,6 +177,7 @@ export default function EventsDataTable() {
       cell: ({ row }) => {
         return (
           <Switch
+            disabled={row?.original?.category_id !== 1}
             checked={row?.original?.is_featured}
             onCheckedChange={() => switchHandler(row.original, 'is_featured')}
           />

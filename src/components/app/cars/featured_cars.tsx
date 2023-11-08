@@ -27,18 +27,17 @@ const FeaturedCars = () => {
 
   const { lang } = useSelector((state: RootState) => state.layout);
 
-  const [filters, setFilters] = useState({
-    first: 0,
-    rows: 9,
-    is_featured: 1,
-  });
-
   const {
     data: productsList,
     isLoading,
     isFetching,
   } = trpc.event.getFeatured.useQuery(
-    { ...filters, lang_id: lang.lang_id },
+    {
+      first: 0,
+      rows: 9,
+      is_featured: 1,
+      lang_id: lang.lang_id,
+    },
     {
       refetchOnWindowFocus: false,
     },

@@ -43,10 +43,13 @@ import applePay from '~/public/assets/icons/applePay.svg';
 
 import countryJSON from '~/data/countries.json';
 import { ViewContentDialog } from '~/components/common/modal/cms';
+import { getAvailableTickets } from '~/utils/helper';
 const countries = countryJSON.map((item) => item.country);
 
 function Checkout() {
-  const { cart, totalAmount } = useSelector((state: RootState) => state.cart);
+  const { cart, totalAmount, isCartLoaded } = useSelector(
+    (state: RootState) => state.cart,
+  );
   const { user } = useSelector((state: RootState) => state.auth);
   const { lang } = useSelector((state: RootState) => state.layout);
 
@@ -105,6 +108,20 @@ function Checkout() {
   });
 
   useEffect(() => {
+    const isCheckoutDisabled = cart?.cartItems?.some((cartItem) => {
+      const isDateEnded = cartItem?.Event?.end_date
+        ? Date.now() > cartItem?.Event?.end_date?.getTime()
+        : false;
+      const isNotEnabled = !cartItem?.Event?.is_enabled;
+
+      return isDateEnded || isNotEnabled;
+    });
+
+    if (isCartLoaded && isCheckoutDisabled) {
+      router.replace('/cart');
+      return;
+    }
+
     if (user) {
       form.setValue('cart_id', cart?.id ?? 0);
       form.setValue('customer_id', cart?.customer_id ?? 0);

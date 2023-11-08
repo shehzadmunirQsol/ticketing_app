@@ -15,7 +15,7 @@ import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
 import { FileInput } from '~/components/common/file_input';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { trpc } from '~/utils/trpc';
 import { getS3ImageUrl } from '~/service/api/s3Url.service';
 import { compressImage, isValidImageType } from '~/utils/helper';
@@ -336,7 +336,16 @@ export function BannerForm() {
                 <FormItem>
                   <FormLabel>Link</FormLabel>
                   <FormControl>
-                    <Input type="text" placeholder="Enter Link" {...field} />
+                    <div className="flex bg-input items-center">
+                      <p className="border border-input px-4">
+                        {process.env.NEXT_PUBLIC_BASE_URL}
+                      </p>
+                      <Input
+                        type="text flex-1"
+                        placeholder="Enter Link"
+                        {...field}
+                      />
+                    </div>
                   </FormControl>
                   <div className="relative pb-4">
                     <FormMessage />

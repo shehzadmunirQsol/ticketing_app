@@ -44,9 +44,10 @@ function ProductCard(props: cardInterface) {
   const spaceElement = props?.isCash ? null : (
     <div className="h-8 xl:h-9 hidden md:block" />
   );
-  const isLastDay = props?.data?.end_date
-    ? props?.data?.end_date?.getTime() <= Date.now() + 24 * 60 * 60 * 1000
-    : false;
+  const isLastDay =
+    props?.data?.draw_date === null && props?.data?.end_date
+      ? props?.data?.end_date?.getTime() <= Date.now() + 24 * 60 * 60 * 1000
+      : false;
 
   const categoryRoute = props?.data?.category_id === 1 ? 'cars' : 'cash';
 

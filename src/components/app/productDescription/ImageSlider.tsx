@@ -52,8 +52,6 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
 
   const percentageSold = (data?.tickets_sold / data?.total_tickets) * 100;
 
-  console.log({ data });
-
   return (
     <section className="text-gray-600 body-font">
       <div className="py-4 mb-5 mx-auto flex flex-wrap">
@@ -90,7 +88,7 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
               </p>
             </div>
             <div className="flex flex-col lg:flex-row  mt-3 sm:mt-6 lg:items-center  justify-between  w-full">
-              {data?.category_id == 1 && (
+              {data?.draw_date === null && data?.category_id == 1 && (
                 <p className=" text-white text-xl  lg:text-2xl ">
                   {lang.lang_id === 2
                     ? 'البديل النقدي'
@@ -140,11 +138,21 @@ function DisplayCounter(props: { data: any }) {
 
   let element: React.ReactNode;
 
+  const winnerName = data?.Winner?.length
+    ? data?.Winner[0]?.Customer?.first_name +
+      ' ' +
+      data?.Winner[0]?.Customer?.last_name
+    : '';
+  const ticketNumber = data?.Winner?.length ? data?.Winner[0]?.ticket_num : '';
+
   if (data?.draw_date) {
     element = (
-      <div className="w-full space-y-4 grid items-center">
-        <h3 className="text-base md:text-xl text-white">
+      <div className="w-full space-y-2 grid items-center">
+        <p className="text-base text-white/80">
           Drawn on the {data?.draw_date?.toDateString()}
+        </p>
+        <h3 className="text-base md:text-2xl text-white">
+          Congratulations to {winnerName} with number {ticketNumber}
         </h3>
       </div>
     );
