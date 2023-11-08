@@ -13,6 +13,8 @@ import { Toaster } from '~/components/ui/toaster';
 import { userAuth } from '~/store/reducers/auth';
 import { LoadingDialog } from '~/components/common/modal/loadingModal';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
+import { Button } from '~/components/ui/button';
 
 type DefaultLayoutProps = { children: ReactNode };
 
@@ -136,6 +138,7 @@ function Index({ children }: DefaultLayoutProps) {
           {children}
           <LoadingDialog open={createCart.isLoading} text={'Loading...'} />
           <Footer />
+          <CookiesLabel />
         </>
       ) : (
         <>{children}</>
@@ -145,3 +148,43 @@ function Index({ children }: DefaultLayoutProps) {
 }
 
 export default Index;
+
+function CookiesLabel() {
+  const [isAccepted, setIsAccepted] = useState(true);
+
+  useEffect(() => {
+    const isCookieAccepted =
+      localStorage.getItem('winnar-cookies') === 'accepted';
+
+    setIsAccepted(isCookieAccepted);
+  }, []);
+
+  function setCookiesHandler() {
+    setIsAccepted(true);
+    localStorage.setItem('winnar-cookies', 'accepted');
+  }
+
+  return (
+    <div
+      className={`${
+        isAccepted ? 'hidden' : 'block'
+      } z-[999999] shadow-lg w-full fixed bottom-0 bg-background-footer space-y-2 px-4 py-4 sm:px-14`}
+    >
+      <h3 className="text-lg sm:text-xl">Cookies on this site</h3>
+      <p>
+        We use cookies to provide a better user experience. By using our site,
+        you agree to our use of cookies. See our{' '}
+        <Link className="text-primary" href="/privacy-policy">
+          Privacy Policy
+        </Link>{' '}
+        to learn more.
+      </p>
+      <div className="flex gap-2">
+        <Button onClick={() => setIsAccepted(true)} variant="secondary">
+          Close
+        </Button>
+        <Button onClick={setCookiesHandler}>Accept All Cookies</Button>
+      </div>
+    </div>
+  );
+}
