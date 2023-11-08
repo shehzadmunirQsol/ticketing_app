@@ -102,7 +102,6 @@ export default function EventsDataTable() {
     { ...filters, filters: { ...filterID } },
     {
       refetchOnWindowFocus: false,
-      retry: 1,
     },
   );
 

@@ -85,7 +85,6 @@ export default function OrdersDataByIdTable(props: OrderTableProps) {
     {
       refetchOnWindowFocus: false,
       enabled: props?.filters.customer_id ? true : false,
-      retry: 1,
     },
   );
 

@@ -145,9 +145,15 @@ export function getAvailableTickets({
       ? event?.user_ticket_limit - ticketPurchased
       : availableTickets;
 
-  const isTicketLimit = quantity >= userTicketLimit;
+  const isTicketLimit = quantity == userTicketLimit;
+  const isTicketLimitExceeded = quantity > userTicketLimit;
 
-  return { userTicketLimit, availableTickets, isTicketLimit };
+  return {
+    userTicketLimit,
+    availableTickets,
+    isTicketLimit,
+    isTicketLimitExceeded,
+  };
 }
 
 export function URIGenerator(title = '' as string, id = 0 as number) {

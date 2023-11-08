@@ -10,6 +10,7 @@ import { useToast } from '~/components/ui/use-toast';
 import CartItem from './cartItem';
 import { addDiscount } from '~/store/reducers/cart';
 import langContent from '~/locales';
+import { getAvailableTickets } from '~/utils/helper';
 
 export default function CartPage() {
   const { cart, totalAmount, count } = useSelector(
@@ -73,9 +74,32 @@ export default function CartPage() {
     }
   }
 
-  const discountAmount = cart.isPercentage
-    ? totalAmount * (cart.discount / 100)
-    : cart.discount;
+  const discountAmount = cart?.isPercentage
+    ? totalAmount * (cart?.discount / 100)
+    : cart?.discount;
+
+  const isItemsLimitExceeded = cart?.cartItems?.some((cartItem) => {
+    const userTicketLimit = userTicketLimits?.data?.find(
+      (userLimit) => userLimit?.event_id === cartItem?.event_id,
+    );
+    const ticketPurchased = userTicketLimit?._sum?.quantity ?? 0;
+
+    const ticketEventPayload = {
+      total_tickets: cartItem?.Event?.total_tickets,
+      tickets_sold: cartItem?.Event?.tickets_sold ?? 0,
+      user_ticket_limit: cartItem?.Event?.user_ticket_limit,
+    };
+
+    const { isTicketLimitExceeded } = getAvailableTickets({
+      event: ticketEventPayload,
+      ticketPurchased: ticketPurchased,
+      quantity: cartItem?.quantity,
+    });
+
+    return isTicketLimitExceeded;
+  });
+
+  console.log({ isItemsLimitExceeded });
 
   return (
     <div className="relative mt-24 z-20">

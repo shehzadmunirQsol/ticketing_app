@@ -138,7 +138,7 @@ export default function CartItem(props: CartItemProp) {
     user_ticket_limit: props.cartItem?.Event?.user_ticket_limit,
   };
 
-  const { isTicketLimit } = getAvailableTickets({
+  const { isTicketLimit, isTicketLimitExceeded } = getAvailableTickets({
     event: ticketEventPayload,
     ticketPurchased: props?.ticketPurchased,
     quantity: cartItem?.quantity,
@@ -199,18 +199,26 @@ export default function CartItem(props: CartItemProp) {
                 <p className="w-16 text-center text-xl">{cartItem?.quantity}</p>
 
                 <TooltipProvider>
-                  <Tooltip open={isTicketLimit}>
+                  <Tooltip open={isTicketLimit || isTicketLimitExceeded}>
                     <TooltipTrigger asChild>
                       <Button
                         className="p-2 bg-primary text-background"
-                        disabled={isTicketLimit || addToBasket.isLoading}
+                        disabled={
+                          isTicketLimitExceeded ||
+                          isTicketLimit ||
+                          addToBasket.isLoading
+                        }
                         onClick={() => addToBasketHandler('increment')}
                       >
                         <i className="fas fa-plus text-xl xl:text-2xl font-extrabold" />
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent>
-                      <p>Cannot buy more entries</p>
+                      <p className="font-bold">
+                        {isTicketLimitExceeded
+                          ? "Limit Exceeded, can't proceed to checkout!"
+                          : 'Cannot buy more entries'}
+                      </p>
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>

@@ -20,7 +20,7 @@ interface CounterProps {
   event: any;
 }
 
-const Counter: React.FC<CounterProps> = ({
+export default function Counter({
   range,
   setRange,
   user_ticket_limit,
@@ -28,7 +28,7 @@ const Counter: React.FC<CounterProps> = ({
   ticketPurchased,
   event,
   perCustomerLimit,
-}) => {
+}: CounterProps) {
   const { user, isLogin } = useSelector((state: RootState) => state.auth);
   const { lang } = useSelector((state: RootState) => state.layout);
   const { cart } = useSelector((state: RootState) => state.cart);
@@ -185,6 +185,4 @@ const Counter: React.FC<CounterProps> = ({
       )}
     </div>
   );
-};
-
-export default Counter;
+}

@@ -33,7 +33,11 @@ const FeaturedCars = () => {
     is_featured: 1,
   });
 
-  const { data: productsList, isLoading } = trpc.event.getFeatured.useQuery(
+  const {
+    data: productsList,
+    isLoading,
+    isFetching,
+  } = trpc.event.getFeatured.useQuery(
     { ...filters, lang_id: lang.lang_id },
     {
       refetchOnWindowFocus: false,
@@ -55,7 +59,7 @@ const FeaturedCars = () => {
     slide2?.current?.slickPrev();
   };
 
-  return productsList?.data?.length || isLoading ? (
+  return productsList?.data?.length || isLoading || isFetching ? (
     <>
       <div className="hidden slg:flex sm:flex-col ">
         <div className="flex max-h-[100%]   z-40">

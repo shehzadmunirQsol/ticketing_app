@@ -124,12 +124,7 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
                 <CountDown dateString={data?.end_date?.getTime()?.toString()} />
               </>
             ) : (
-              <div className="w-full sm:p-4 space-y-4 grid items-center">
-                <i className="fas fa-road-lock text-7xl lg:text-9xl text-primary text-center" />
-                <h3 className="text-base md:text-xl lg:text-2xl text-center text-white">
-                  This Competition is Closed
-                </h3>
-              </div>
+              <DisplayCounter data={data} />
             )}
           </div>
         </div>
@@ -140,21 +135,20 @@ const ImageSlider = ({ data, ticketPurchased }: any) => {
 
 export default ImageSlider;
 
-function DisplayCounter(props: any) {
+function DisplayCounter(props: { data: any }) {
   const { data } = props;
 
   let element: React.ReactNode;
 
   if (data?.draw_date) {
     element = (
-      <div className="w-full sm:p-4 space-y-4 grid items-center">
-        <i className="fas fa-road-lock text-7xl lg:text-9xl text-primary text-center" />
-        <h3 className="text-base md:text-xl lg:text-2xl text-center text-white">
-          This Competition is Drawn
+      <div className="w-full space-y-4 grid items-center">
+        <h3 className="text-base md:text-xl text-white">
+          Drawn on the {data?.draw_date?.toDateString()}
         </h3>
       </div>
     );
-  } else if (Date.now() > data?.end_date?.getTime()) {
+  } else {
     element = (
       <div className="w-full sm:p-4 space-y-4 grid items-center">
         <i className="fas fa-road-lock text-7xl lg:text-9xl text-primary text-center" />
@@ -163,26 +157,6 @@ function DisplayCounter(props: any) {
         </h3>
       </div>
     );
-  } else {
-    element = (
-      <>
-        <div className="w-full relative">
-          <div className="relative z-10">
-            <Counter
-              range={props?.range}
-              ticketInBasket={props?.ticketInBasket}
-              setRange={props?.setRange}
-              perCustomerLimit={data?.user_ticket_limit}
-              user_ticket_limit={props?.userTicketLimit}
-              ticketPurchased={props?.ticketPurchased}
-              event={data}
-            />
-          </div>
-        </div>
-        <CountDown dateString={data?.end_date?.getTime()?.toString()} />
-      </>
-    );
   }
-
   return element;
 }

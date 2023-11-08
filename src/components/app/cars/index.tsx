@@ -49,7 +49,7 @@ const CarsPage = () => {
   return (
     <div className="mx-auto  w-full bg-background">
       {/* this div below ↓ it to add spacing to avoid header */}
-      <div className="relative pt-24"></div>
+      <div className="relative pt-20"></div>
       <FeaturedCars />
       <div className="relative h-full px-4 py-14 md:px-14 md:py-20">
         <p className="hidden slg:block text-2xl md:text-5xl pb-10 tracking-tighter font-extrabold text-white ">
