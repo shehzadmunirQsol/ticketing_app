@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Progress } from '../../ui/progress';
 import Counter from './Counter';
-// import ImageSliderStyle from './ImageSliderStyle';
 import ImageSliderStyleOld from './ImageSliderStyleOld';
 import CountDown from './CountDown';
 import { useSelector } from 'react-redux';
