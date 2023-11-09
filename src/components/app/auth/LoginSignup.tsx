@@ -41,6 +41,11 @@ import {
 import langContent from '~/locales';
 import { RootState } from '~/store/store';
 
+
+import { PhoneInput } from 'react-international-phone';
+import 'react-international-phone/style.css';
+
+
 import countryJSON from '~/data/countries.json';
 const countries = countryJSON.map((item) => item.country);
 
@@ -347,7 +352,50 @@ export default function LoginSignup() {
                         Phone Number <sup className="">*</sup>
                       </FormLabel>
                       <div className="flex flex-row gap-2 mt-2 ">
-                        <FormField
+                        
+
+                      <FormField
+                          control={formSignup.control}
+                          name="code"
+                          render={({ field }) => (
+                            <FormItem>
+
+                              <PhoneInput
+                                className="rounded-md w-20 countrycode"
+                                defaultCountry="ae"
+                                inputProps={{ maxLength: 4, ...field }} 
+                                {...field} 
+                              /> 
+
+                              {/* <PhoneInput
+                                className="rounded-md w-20 "
+                                defaultCountry="ae"
+                                name="code"
+                                value={formSignup.getValues('code')}
+                                onChange={(event) => {
+                                  console.log(event); 
+                                  formSignup.setValue(
+                                    'code',
+                                    event.trim(),
+                                  )
+                                }}
+                                inputProps={{ maxLength: 4 }} 
+                              />  */}
+
+                              <div className="relative pb-2 errormsg">
+                                <FormMessage />
+                              </div>
+                            </FormItem>
+                          )}
+                        />
+
+                      
+
+
+
+
+
+                        {/* <FormField
                           control={formSignup.control}
                           name="code"
                           render={({ field }) => (
@@ -364,7 +412,9 @@ export default function LoginSignup() {
                               </div>
                             </FormItem>
                           )}
-                        />
+                        /> */}
+
+
                         <FormField
                           control={formSignup.control}
                           name="phone_number"
