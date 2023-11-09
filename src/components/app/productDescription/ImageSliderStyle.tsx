@@ -59,7 +59,7 @@ const ImageSliderStyle = ({ data }: any) => {
           data && data.EventImages ?
             <Slider {...productslide} className="productslider" ref={slidermain}>
               {
-                data.EventImages.map((edata, key) => {
+                data.EventImages.map((edata:any, key:any) => {
                   return <div className="item">
                     <div className="imgbx">
                       <Image
@@ -92,7 +92,7 @@ const ImageSliderStyle = ({ data }: any) => {
           data && data.EventImages ?
             <Slider {...thumbslide} className="thumbslider smallarrows" ref={sliderthumb}>
               {
-                data.EventImages.map((edata, key) => {
+                data.EventImages.map((edata:any, key:any) => {
                   return (
                     <div className="item" key={key} onClick={() => slidermain.current.slickGoTo(key)}>
                       <div className="imgbx">

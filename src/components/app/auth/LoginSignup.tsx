@@ -361,7 +361,7 @@ export default function LoginSignup() {
                             <FormItem>
 
                               <PhoneInput
-                                className="rounded-md w-20 countrycode"
+                                className="rounded-md countrycode"
                                 defaultCountry="ae"
                                 inputProps={{ maxLength: 4, ...field }} 
                                 {...field} 
