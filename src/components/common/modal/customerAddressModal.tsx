@@ -34,6 +34,10 @@ import countryJSON from '~/data/countries.json';
 import { LoadingDialog } from './loadingModal';
 import { formatTrpcError } from '~/utils/helper';
 import { useEffect } from 'react';
+
+import { PhoneInput } from 'react-international-phone';
+import 'react-international-phone/style.css';
+
 const countries = countryJSON.map((item) => item.country);
 
 interface SelectCustomerInterface {
@@ -225,7 +229,40 @@ export function AddCustomerAddressDialog(props: SelectCustomerInterface) {
                     </FormLabel>
 
                     <div className="flex gap-2">
-                      <FormField
+
+                    <FormField
+                        control={form.control}
+                        name="phone_code"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormControl className="rounded-md ">
+
+                            <PhoneInput
+                                className="rounded-md w-20 countrycode"
+                                defaultCountry="ae"
+                                inputProps={{ minLength: 1, maxLength: 4, ...field }} 
+                                {...field} 
+                              /> 
+
+                              {/* <Input
+                                minLength={1}
+                                type="text"
+                                maxLength={4}
+                                className="w-20"
+                                placeholder="+971"
+                                {...field}
+                              /> */}
+                            </FormControl>
+
+                            <div className="relative pb-5">
+                              <FormMessage />
+                            </div>
+                          </FormItem>
+                        )}
+                      />
+ 
+
+                      {/* <FormField
                         control={form.control}
                         name="phone_code"
                         render={({ field }) => (
@@ -246,7 +283,7 @@ export function AddCustomerAddressDialog(props: SelectCustomerInterface) {
                             </div>
                           </FormItem>
                         )}
-                      />
+                      /> */}
                       <FormField
                         control={form.control}
                         name="phone_number"

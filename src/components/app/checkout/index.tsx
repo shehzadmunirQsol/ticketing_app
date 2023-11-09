@@ -41,6 +41,9 @@ import master from '~/public/assets/icons/Master.svg';
 import Paypal from '~/public/assets/icons/Paypal.svg';
 import applePay from '~/public/assets/icons/applePay.svg';
 
+import { PhoneInput } from 'react-international-phone';
+import 'react-international-phone/style.css';
+
 import countryJSON from '~/data/countries.json';
 import { ViewContentDialog } from '~/components/common/modal/cms';
 const countries = countryJSON.map((item) => item.country);
@@ -605,7 +608,37 @@ function Checkout() {
                         Phone Number
                       </p>
                       <div className="flex flex-row gap-2 ">
-                        <FormField
+
+
+                      <FormField
+                          control={form.control}
+                          name="code"
+                          render={({ field }) => (
+                            <FormItem>
+
+                              <PhoneInput
+                                className="rounded-md w-20 countrycode"
+                                defaultCountry="ae"
+                                inputProps={{ minLength: 1, maxLength: 4, ...field }} 
+                                {...field} 
+                              /> 
+
+                              {/* <Input
+                                type="text"
+                                className="rounded-md w-20 bg-inputColor"
+                                placeholder="+971"
+                                maxLength={5}
+                                {...field}
+                              /> */}
+                              <div className="relative">
+                                <FormMessage />
+                              </div>
+                            </FormItem>
+                          )}
+                        />
+
+
+                        {/* <FormField
                           control={form.control}
                           name="code"
                           render={({ field }) => (
@@ -622,7 +655,7 @@ function Checkout() {
                               </div>
                             </FormItem>
                           )}
-                        />
+                        /> */}
                         <FormField
                           control={form.control}
                           name="phone_number"
