@@ -76,7 +76,7 @@ function BannerSlider() {
   <div className="rightbx">
   {
     carSliderNew ?
-      <Slider ref={slider} {...mainSlider}>
+      <Slider ref={slider} {...mainSlider} className="slidernavdown">
 
 {carSliderNew.map((data, key) => {
                     return <div className="item">

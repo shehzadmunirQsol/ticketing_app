@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Progress } from '../../ui/progress';
 import Counter from './Counter';
 import ImageSliderStyle from './ImageSliderStyle';
-import ImageSliderStyleNew from './ImageSliderStyleNew';
 import CountDown from './CountDown';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
@@ -60,7 +59,6 @@ const ImageSlider = ({ data, ticketPurchased, higlightmeta }: any) => {
     <section className="text-gray-600 body-font">
       <div className="detailbx">
         <div className="col-55">
-          {/* <ImageSliderStyleNew data={data} /> */}
           <ImageSliderStyle data={data} />
         </div>
         <div className="col-40 bg-card">

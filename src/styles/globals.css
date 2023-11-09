@@ -975,7 +975,7 @@ input[type='number'] {
 }
 @media only screen and (min-width: 767.98px){
   .bottlebx {
-    bottom: 120px;
+    bottom: 40px;
   }
 }
 
@@ -1067,17 +1067,11 @@ input[type='number'] {
     height: 56px !important;
     background-color: #23d2b3 !important;
     border-radius: 50%;
-    top: auto !important;
-    bottom: -20px;
-    transform: none !important;
     z-index: 9;
 }
-.slick-prev {
-  left: auto !important;
-  right: 66px !important;
-}
-.slick-next {
-  right: 0 !important;
+.smallarrows .slick-prev, .smallarrows .slick-next {
+  width: 36px !important;
+  height: 36px !important;
 }
 .slick-prev:before, .slick-next:before {
   content: "\f053" !important;
@@ -1089,6 +1083,22 @@ input[type='number'] {
 }
 .slick-next:before {
   content: "\f054" !important;
+}
+.slick-disabled {
+  opacity: 0.5;
+  cursor: default !important;
+}
+.slidernavdown .slick-prev, .slidernavdown .slick-next {
+    top: auto !important;
+    bottom: -20px;
+    transform: none !important;
+}
+.slidernavdown .slick-next {
+  right: 0 !important;
+}
+.slidernavdown .slick-prev {
+  left: auto !important;
+  right: 66px !important;
 }
 .dblogo img {
   width: 250px;
@@ -1112,6 +1122,20 @@ input[type='number'] {
     width: 40%;
     padding: 20px;
 }
+.productslider {
+  margin-bottom: 20px;
+  font-size: 0;
+}
+.productslider .imgbx img,
+.thumbslider .imgbx img {
+  width: 100%;
+  height: auto;
+}
+.thumbslider {
+  font-size: 0;
+}
+.thumbslider .slick-list {margin: 0 -5px;}
+.thumbslider .slick-slide>div {padding: 0 5px;}
 
 .counterrow {
   display: flex;
@@ -1212,13 +1236,31 @@ input[type='number'] {
 .slick-prev, .slick-next {
   width: 36px !important;
   height: 36px !important;
-  bottom: -9px;
 }
 .slick-prev:before, .slick-next:before {
   font-size: 12px !important;
 }
-.slick-prev {
-  right: 46px !important;
+.slidernavdown .slick-prev, .slidernavdown .slick-next {
+  bottom: -9px;
+}
+.slidernavdown .slick-prev {
+  right: 43px !important;
+}
+.smallarrows .slick-prev, .smallarrows .slick-next {
+  width: 24px !important;
+  height: 24px !important;
+}
+.smallarrows .slick-prev:before, .smallarrows .slick-next:before {
+  font-size: 10px !important;
+}
+.productslider {
+  margin-bottom: 10px;
+}
+.thumbslider .slick-prev {
+  left: -10px;
+}
+.thumbslider .slick-next {
+  right: -10px;
 }
 .smtext {
   font-size: 10px;
