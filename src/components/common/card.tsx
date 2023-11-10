@@ -21,7 +21,7 @@ interface CardInterface {
   type?: string;
 }
 
-function ProductCard(props: CardInterface) {
+export default function ProductCard(props: CardInterface) {
   const cardRef = useRef<HTMLDivElement>(null);
   const { lang } = useSelector((state: RootState) => state.layout);
 
@@ -87,16 +87,12 @@ function ProductCard(props: CardInterface) {
               quality={100}
               alt="Sunset in the mountains"
             />
-            <div className="absolute -bottom-8 left-4 rounded-full w-20 p-1 bg-gradient-to-b from-primary to-neutral-900">
-              <NextImage
-                className="w-full h-full object-cover  rounded-full bg-white"
-                src={BottleImage}
-                alt="Sunset in the mountains"
-              />
+            <div className="bottlebx prodbottle">
+              <NextImage src={BottleImage} alt="Sunset in the mountains" />
             </div>
           </div>
 
-          <div className="px-6 mt-6 py-4">
+          <div className="px-6 py-4 mt-2 md:mt-6">
             <div className="flex flex-col gap-1 mb-2">
               <div className="flex justify-between items-center gap-3 mb-2">
                 <span className=" text-xs text-gray-300">
@@ -121,41 +117,37 @@ function ProductCard(props: CardInterface) {
                 className="w-full"
               />
             </div>
-            <div className="font-bold overflow-hidden h-13 md:h-20 text-xl lg:text-2xl xl:text-3xl line-clamp-1">
+            <div className="font-bold overflow-hidden h-16 md:h-20 text-xl lg:text-2xl xl:text-3xl line-clamp-1">
               {langContent[lang.lang].Index.productcard.WIN_TITLE ?? ''}
               <span className="text-gray-200  font-semibold mx-2 ">
                 {props?.data?.EventDescription[0]?.name}
               </span>
             </div>
             <div className="relative w-full opacity-75  text-gray-200 text-md text-xs md:text-base font-light sm:font-normal leading-normal">
-              <p className="h-12 overflow-hidden">
+              <p className="h-9 md:h-12 overflow-hidden">
                 {customTruncate(props?.data?.EventDescription[0]?.desc, 100)}
               </p>
             </div>
             <hr className=" opacity-20 mt-4" />
 
-            {props?.data?.category_id === 1 && props?.data?.cash_alt ? (
-              <div className="h-15 md:h-6 overflow-hidden mt-2">
-                <span className="text-gray-200 text-md text-sm xl:text-lg font-semibold leading-[18px]">
-                  {langContent[lang.lang].Index.productcard.ALTERNATIVE_TITLE}
-                </span>
-                <br className="block md:hidden" />
-                <span className="text-primary text-sm xl:text-lg font-[500] leading-[18px]">
-                  {' '}
-                  AED {(props?.data?.cash_alt ?? 0)?.toLocaleString()}
-                </span>
-              </div>
-            ) : (
-              spaceElement
-            )}
+            <div className="h-15 md:h-6 overflow-hidden mt-2">
+              <span className="text-gray-200 text-md text-sm xl:text-lg font-semibold leading-[18px]">
+                {langContent[lang.lang].Index.productcard.ALTERNATIVE_TITLE}
+              </span>
+              <br className="block md:hidden" />
+              <span className="text-primary text-sm xl:text-lg font-[500] leading-[18px]">
+                {' '}
+                AED {(props?.data?.cash_alt ?? 0)?.toLocaleString()}
+              </span>
+            </div>
 
-            <div className="flex  justify-between items-center mt-4 sm:mt-8 gap-4">
+            <div className="flex  justify-between items-center mt-3 sm:mt-8 gap-4">
               <div className="text-primary text-xl md:text-2xl font-[500] leading-[18px]">
                 AED {props?.data?.price}
               </div>
               <Button
                 variant="rounded"
-                className="font-[700] sm:font-[800] tracking-tight text-md text-sm md:text-base xl:text-lg "
+                className="font-[700] sm:font-[800] tracking-tight text-md text-sm md:text-base xl:text-lg h-8 md:h-10"
               >
                 {langContent[lang.lang].Index.productcard.ENTER_BTN}
               </Button>
@@ -166,5 +158,3 @@ function ProductCard(props: CardInterface) {
     )
   );
 }
-
-export default ProductCard;

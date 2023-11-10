@@ -27,7 +27,7 @@ const EntiresDetail = (props: any) => {
                   key={index}
                   className={`flex ${
                     item.LINK
-                      ? 'flex-col justify-start items-start relative world-wide-shipping-container'
+                      ? 'flex-row justify-start lg:justify-center items-center'
                       : 'flex-row justify-start lg:justify-center items-center'
                   } `}
                 >
@@ -56,11 +56,11 @@ const EntiresDetail = (props: any) => {
                       )}
                     </p>
                   </div>
-                  {item.LINK && (
+                  {/* {item.LINK && (
                     <p className="text-white text-sm underline mt-0 ml-5 self-end">
                       {item?.LINK}
                     </p>
-                  )}
+                  )} */}
                 </div>
               );
             },

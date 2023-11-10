@@ -141,7 +141,7 @@ function ProductSection(props: productInterface) {
   };
   return (
     <div className=" max-w-[1600px]  mx-auto w-full ">
-      <div className="relative gap-3 flex-col md:flex-row md:h-auto z-30 sm:items-center items-start w-full md:justify-between mb-0 sm:mb-6 flex h-fit">
+      <div className="pl-3 pr-6 pt-6 relative gap-3 flex-col md:flex-row md:h-auto z-30 sm:items-center items-start w-full md:justify-between mb-3 sm:mb-6 flex h-fit">
         <p className="text-gray-200 !text-xl sm:!text-3xl lg:!text-5xl font-black uppercase ">
           {props?.title}
         </p>

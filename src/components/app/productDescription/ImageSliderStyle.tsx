@@ -1,133 +1,109 @@
-import React, { useState } from 'react';
+import React, { useRef } from 'react';
 import BottleImage from '~/public/assets/bottle.png';
 import NextImage from '@/ui/img';
-import { Button } from '~/components/ui/button';
 import { renderNFTImage } from '~/utils/helper';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import 'photoswipe/dist/photoswipe.css';
-import { Gallery, Item } from 'react-photoswipe-gallery';
 
-function SampleNextArrow(props: any) {
-  const { onClick } = props;
-  return (
-    <Button
-      variant="rounded"
-      className="slide-arrow next-arrow h-10 w-10 md:h-14 md:w-14  absolute right-2 md:right-0 top-[42%]  md:top-[38%] z-40"
-      onClick={onClick}
-    >
-      <i className="fa-solid fa-chevron-right"></i>
-    </Button>
-  );
-}
-
-function SamplePrevArrow(props: any) {
-  const { onClick } = props;
-  return (
-    <Button
-      variant="rounded"
-      className="slide-arrow prev-arrow h-10 w-10 md:h-14 md:w-14 absolute left-2 md:left-0 top-[42%]  md:top-[38%]  z-40"
-      onClick={onClick}
-    >
-      <i className="fa-solid fa-chevron-left"></i>
-    </Button>
-  );
-}
-
-const BannerSlider = ({ data }: any) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  // FOR ANIMATION IN THE
-
+export default function ImageSliderStyle({ data }: any) {
   let eventImages: any = [];
 
   if (data?.EventImages?.length) {
     eventImages = [{ thumb: data?.thumb }, ...data?.EventImages];
   }
-  const settings = {
-    className: ' h-full w-full md:px-6 ',
-    customPaging: function (i: number) {
-      return (
-        <a className="h-20 w-28 cursor-pointer ">
-          <NextImage
-            alt="feature"
-            src={renderNFTImage(eventImages[i + 1])}
-            width={1000}
-            height={1000}
-            loading="lazy"
-            className="h-20 w-28 object-cover rounded-sm object-center duration-700 ease-in-out"
-          />
-          {/* <img src={`${baseUrl}/abstract0${i + 1}.jpg`} /> */}
-        </a>
-      );
-    },
-    dots: true,
 
-    appendDots: (dots: any) => <ul>{dots}</ul>,
-    dotsClass: 'hidden md:flex flex-row flex-wrap gap-2 mt-4',
+  const slidermain = useRef<any>(null);
+  const sliderthumb = useRef<any>(null);
 
-    infinite: true,
-    speed: 500,
+  const productslide = {
+    asNavFor: sliderthumb.current,
+    ref: slidermain,
     slidesToShow: 1,
-    slidesToScroll: 1,
-    mobileFirst: true,
-    autoplay: true,
-    autoplaySpeed: 5000,
-    fade: false,
-    arrows: true,
-    nextArrow: <SampleNextArrow />,
-    prevArrow: <SamplePrevArrow />,
+    arrows: false,
+    swipeToSlide: true,
+    focusOnSelect: true,
+    responsive: [
+      {
+        breakpoint: 991,
+        settings: {
+          arrows: true,
+        },
+      },
+    ],
+  };
+
+  const thumbslide = {
+    asNavFor: slidermain.current,
+    ref: sliderthumb,
+    slidesToShow: 5,
+    infinite: false,
+    responsive: [
+      {
+        breakpoint: 767,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+        },
+      },
+    ],
   };
 
   return (
-    <div className="relative">
-      <div
-        className={`  ease-in animate-in  transition-transform duration-500 transform translate-x-[calc(-100% * var(${currentIndex}))]`}
-        id="galleryID"
-      >
-        <Gallery>
-          <Slider {...settings}>
-            {data?.EventImages?.length &&
-              data?.EventImages?.map((item: any, index: number) => {
-                return (
-                  <Item
-                    original={renderNFTImage(item)}
-                    thumbnail={renderNFTImage(item)}
-                    width="1024"
-                    height="576"
-                    key={index}
-                  >
-                    {({ ref, open }) => (
-                      <div
-                        ref={ref as React.MutableRefObject<HTMLDivElement>}
-                        onClick={open}
-                        className="h-[18rem] lg:h-[28rem] relative"
-                      >
-                        <NextImage
-                          alt="feature"
-                          src={renderNFTImage(item)}
-                          width={5000}
-                          height={5000}
-                          loading="lazy"
-                          className="object-cover rounded-sm object-center h-full w-full  duration-700 ease-in-out"
-                        />
-                      </div>
-                    )}
-                  </Item>
-                );
-              })}
+    <div>
+      <div className="relative mobmb-1">
+        {data && data.EventImages ? (
+          <Slider {...productslide} className="productslider" ref={slidermain}>
+            {data.EventImages.map((edata: any, key: any) => {
+              return (
+                <div key={key} className="item">
+                  <div className="imgbx">
+                    <NextImage
+                      src={renderNFTImage(edata)}
+                      alt="banner image"
+                      width={100}
+                      height={100}
+                    />
+                  </div>
+                </div>
+              );
+            })}
           </Slider>
-        </Gallery>
+        ) : null}
+        <div className="bottlebx">
+          <NextImage src={BottleImage} alt="Sunset in the mountains" />
+        </div>
       </div>
-      <div className="bottlebx absolute lg:right-10 md:right-10 right-4 rounded-full w-14 p-1 bg-gradient-to-b from-primary to-neutral-900">
-        <NextImage
-          className="w-14 h-12  lg:w-full lg:h-full object-cover  rounded-full bg-white"
-          src={BottleImage}
-          alt="Sunset in the mountains"
-        />
+
+      <div className="relative hidden lg:block">
+        {data && data.EventImages ? (
+          <Slider
+            {...thumbslide}
+            className="thumbslider smallarrows"
+            ref={sliderthumb}
+          >
+            {data.EventImages.map((edata: any, key: any) => {
+              return (
+                <div
+                  className="item"
+                  key={key}
+                  onClick={() => slidermain.current.slickGoTo(key)}
+                >
+                  <div className="imgbx">
+                    <NextImage
+                      src={renderNFTImage(edata)}
+                      alt="banner image"
+                      width={100}
+                      height={100}
+                    />
+                  </div>
+                </div>
+              );
+            })}
+          </Slider>
+        ) : null}
       </div>
     </div>
   );
-};
-
-export default BannerSlider;
+}

@@ -97,14 +97,12 @@ export default function CartPage() {
     });
 
     const isDateEnded = cartItem?.Event?.end_date
-      ? Date.now() > cartItem?.Event?.end_date?.getTime()
+      ? Date.now() > new Date(cartItem?.Event?.end_date)?.getTime()
       : false;
     const isNotEnabled = !cartItem?.Event?.is_enabled;
 
     return isTicketLimitExceeded || isDateEnded || isNotEnabled;
   });
-
-  console.log({ isCheckoutDisabled });
 
   return (
     <div className="relative mt-24 z-20">

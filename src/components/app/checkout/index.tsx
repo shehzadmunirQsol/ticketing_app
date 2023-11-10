@@ -38,10 +38,10 @@ import visa from '~/public/assets/icons/visa.svg';
 import master from '~/public/assets/icons/Master.svg';
 import Paypal from '~/public/assets/icons/Paypal.svg';
 import applePay from '~/public/assets/icons/applePay.svg';
-
+import { PhoneInput } from 'react-international-phone';
+import 'react-international-phone/style.css';
 import countryJSON from '~/data/countries.json';
 import { ViewContentDialog } from '~/components/common/modal/cms';
-import { getAvailableTickets } from '~/utils/helper';
 import NextImage from '~/components/ui/img';
 const countries = countryJSON.map((item) => item.country);
 
@@ -109,7 +109,7 @@ function Checkout() {
   useEffect(() => {
     const isCheckoutDisabled = cart?.cartItems?.some((cartItem) => {
       const isDateEnded = cartItem?.Event?.end_date
-        ? Date.now() > cartItem?.Event?.end_date?.getTime()
+        ? Date.now() > new Date(cartItem?.Event?.end_date)?.getTime()
         : false;
       const isNotEnabled = !cartItem?.Event?.is_enabled;
 
@@ -626,6 +626,36 @@ function Checkout() {
                           name="code"
                           render={({ field }) => (
                             <FormItem>
+                              <PhoneInput
+                                className="rounded-md w-20 countrycode"
+                                defaultCountry="ae"
+                                inputProps={{
+                                  minLength: 1,
+                                  maxLength: 4,
+                                  ...field,
+                                }}
+                                {...field}
+                              />
+
+                              {/* <Input
+                                type="text"
+                                className="rounded-md w-20 bg-inputColor"
+                                placeholder="+971"
+                                maxLength={5}
+                                {...field}
+                              /> */}
+                              <div className="relative">
+                                <FormMessage />
+                              </div>
+                            </FormItem>
+                          )}
+                        />
+
+                        {/* <FormField
+                          control={form.control}
+                          name="code"
+                          render={({ field }) => (
+                            <FormItem>
                               <Input
                                 type="text"
                                 className="rounded-md w-20 bg-inputColor"
@@ -638,7 +668,7 @@ function Checkout() {
                               </div>
                             </FormItem>
                           )}
-                        />
+                        /> */}
                         <FormField
                           control={form.control}
                           name="phone_number"

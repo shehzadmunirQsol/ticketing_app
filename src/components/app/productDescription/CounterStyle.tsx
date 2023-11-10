@@ -27,7 +27,7 @@ const CounterStyle = ({ range, setRange, min, max }: token) => {
 
   return (
     <div>
-      <div className="flex items-center my-6 sm:my-10 text-center" dir="ltr">
+      <div className="flex items-center my-4 text-center" dir="ltr">
         <button
           onClick={() => handlerCounter('b')}
           className={`bg-primary lg:w-14 md:w-14 w-10 md:h-12 h-10  ${
@@ -37,16 +37,16 @@ const CounterStyle = ({ range, setRange, min, max }: token) => {
           <NextImage
             src={decrement}
             alt="decrement"
-            className="w-10 mx-auto p-2 "
+            className="w-8 mx-auto p-2 "
           />
         </button>
 
         <div className="flex justify-center border-2 border-backgroundEntires w-full items-center align-middle text-xl text-white  text-center bg-background md:h-12 h-10 ">
-          <p className="inline-flex items-end gap-2 text-xs md:text-sm lg:text-xl">
+          <p className="inline-flex items-end gap-2 text-xs md:text-sm lg:text-base">
             {' '}
             {
               langContent[lang.lang].ProductDetail.counter.NUMBERS_OF_TICKET
-            }: <span className="font-black "> {range}</span>
+            }: <span className="font-bold"> {range}</span>
           </p>
         </div>
         <button
@@ -58,7 +58,7 @@ const CounterStyle = ({ range, setRange, min, max }: token) => {
           <NextImage
             src={increment}
             alt="increment"
-            className="lg:w-10 md:lg:w-10 w-6 mx-auto  p-1 md:lg:p-2 lg:p-2"
+            className="lg:w-8 md:lg:w-8 w-6 mx-auto  p-1 md:lg:p-2 lg:p-2"
           />
         </button>
       </div>

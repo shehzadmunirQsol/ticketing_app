@@ -43,21 +43,22 @@ const ProductDetail = () => {
         data={data?.data}
         comp_detail={comp_detail}
       /> */}
-      <div id="BuyTickets" className="px-4 md:px-14 mt-24">
+      <div id="BuyTickets" className="px-4 md:px-14 mt-16 md:mt-24">
         <ImageSlider
           data={data?.data}
           ticketPurchased={data?.ticketPurchased}
+          higlightmeta={meta}
         />
         <div>
           <EntiresDetail data={data?.data} />
-          {isMeta ? <Highlights meta={meta} /> : null}
+          {/* {isMeta ? <Highlights meta={meta} /> : null} */}
           <VideoSection data={data?.data} />
         </div>
       </div>
       <LiveDraw data={data?.data} />
 
       <div className="relative px-4 md:px-14  ">
-        <div className="relative z-10 ">
+        <div className="relative">
           {comp_detail ? <CompititionDetail data={data?.data} /> : null}
           {Faqs?.is_enabled && Faqs?.CMSDescription?.length > 0 ? (
             <AccordianFaqs data={data?.data} />

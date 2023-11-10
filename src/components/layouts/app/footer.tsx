@@ -40,7 +40,7 @@ function Footer() {
             />
           </div>
         </div>
-        <div className="relative z-30 ">
+        <div className="relative">
           <div className="relative p-4 py-6 md:px-14 md:py-14">
             <div className="sm:flex sm:justify-between ">
               <div className=" mb-6 md:mb-0 flex flex-col gap-8 w-100 sm:w-[300px] lg:w-[360px]">
@@ -197,7 +197,7 @@ function Footer() {
 
           <div className="flex flex-col px-4 sm:mt-1 md:px-8 w-full relative gap-3">
             <NextImage
-              className="w-full h-full object-contain  z-40 "
+              className="w-full h-full object-contain"
               src={Group16}
               quality={100}
               alt="Sunset in the mountains"

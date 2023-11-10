@@ -147,7 +147,7 @@ export default function CartItem(props: CartItemProp) {
   const categoryRoute = cartItem?.Event?.category_id === 1 ? 'cars' : 'cash';
 
   const isDateEnded = cartItem?.Event?.end_date
-    ? Date.now() > cartItem?.Event?.end_date?.getTime()
+    ? Date.now() > new Date(cartItem?.Event?.end_date)?.getTime()
     : false;
 
   const isNotEnabled = !cartItem?.Event?.is_enabled;

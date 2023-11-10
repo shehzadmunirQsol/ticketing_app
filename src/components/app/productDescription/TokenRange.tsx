@@ -26,17 +26,17 @@ const TokenRange = ({ range, setRange, min, max }: token) => {
         />
         <br />
         <div
-          className="absolute left-1/2  transform -translate-x-1/2 bottom-3 p-2 font-black bg-opacity-70  text-primary rounded-md text-lg whitespace-nowrap"
+          className="absolute left-1/2  transform -translate-x-1/2 bottom-3 p-2 font-bold bg-opacity-70  text-primary rounded-md text-lg whitespace-nowrap"
           style={{ left: `${percentage}%` }}
         >
           {range}
         </div>
       </div>
       <div className="flex justify-between" dir="ltr">
-        <p className="text-card-gray font-black text-white">
+        <p className="text-card-gray font-bold text-white">
           {min?.toLocaleString()}
         </p>
-        <p className="text-card-gray font-black text-white">
+        <p className="text-card-gray font-bold text-white">
           {max?.toLocaleString()}
         </p>
       </div>

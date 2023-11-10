@@ -143,15 +143,15 @@ export default function Counter(props: CounterProps) {
         </div>
       ) : ticketPurchased >= perCustomerLimit ? (
         <div className="sm:p-4 space-y-4 grid items-center">
-          <i className="fas fa-gauge-high text-7xl lg:text-9xl text-primary text-center" />
+          <i className="fas fa-gauge-high text-7xl text-primary text-center" />
           <h3 className="text-base md:text-xl lg:text-2xl text-center text-white">
             You have reached your max limit
           </h3>
         </div>
       ) : (
         <>
-          <div className="flex items-center justify-between">
-            <p className="text-lg text-white">
+          <div className="flex items-center justify-between mt-3">
+            <p className="text-base text-white">
               {langContent[lang.lang].ProductDetail.counter.TICKETS}
             </p>
             {ticketPurchased ? (
@@ -164,9 +164,6 @@ export default function Counter(props: CounterProps) {
               </p>
             ) : null}
           </div>
-          <p className=" lg:text-2xl text-xl  pl-0 text-primary font-black pt-1">
-            AED {(price ?? 0)?.toLocaleString()}
-          </p>
           <TokenRange
             range={range}
             setRange={setRange}
@@ -179,9 +176,12 @@ export default function Counter(props: CounterProps) {
             min={1}
             max={user_ticket_limit}
           />
-          <div className="mt-6">
+          <p className="lg:text-3xl text-xl pl-0 text-primary font-bold pt-2">
+            AED {(price ?? 0)?.toLocaleString()}
+          </p>
+          <div className="mt-3 mobfixedbtn">
             <Button
-              className="w-full text-black font-sans font-[900]  tracking-[-1px] h-12 text-sm xs:text-xl"
+              className="w-full text-black font-sans font-bold h-10 md:h-12 text-base md:text-lg"
               variant="clip"
               onClick={addToBasketHandler}
               disabled={

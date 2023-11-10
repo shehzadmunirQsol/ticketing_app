@@ -105,6 +105,7 @@
     "react-google-recaptcha": "^3.1.0",
     "react-hook-form": "^7.45.4",
     "react-hot-toast": "^2.4.1",
+    "react-international-phone": "^4.0.3",
     "react-photoswipe-gallery": "^2.2.7",
     "react-redux": "^8.0.5",
     "react-slick": "^0.29.0",
