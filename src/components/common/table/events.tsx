@@ -33,7 +33,6 @@ import {
 } from '@/ui/table';
 import LanguageSelect, { LanguageInterface } from '../language_select';
 import { trpc } from '~/utils/trpc';
-import Image from 'next/image';
 import { displayDate, renderNFTImage } from '~/utils/helper';
 import Link from 'next/link';
 import { GetEventSchema } from '~/schema/event';
@@ -57,6 +56,7 @@ import {
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 import { CSVLink } from 'react-csv';
 import { Switch } from '~/components/ui/switch';
+import NextImage from '~/components/ui/img';
 
 export type EventType = {
   thumb: string;
@@ -102,7 +102,6 @@ export default function EventsDataTable() {
     { ...filters, filters: { ...filterID } },
     {
       refetchOnWindowFocus: false,
-      retry: 1,
     },
   );
 
@@ -178,6 +177,7 @@ export default function EventsDataTable() {
       cell: ({ row }) => {
         return (
           <Switch
+            disabled={row?.original?.category_id !== 1}
             checked={row?.original?.is_featured}
             onCheckedChange={() => switchHandler(row.original, 'is_featured')}
           />
@@ -204,7 +204,7 @@ export default function EventsDataTable() {
       cell: ({ row }) => {
         return (
           <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
-            <Image
+            <NextImage
               className="object-cover bg-ac-2 h-10 w-16 rounded-lg"
               src={renderNFTImage(row.original)}
               alt={row?.original?.name}

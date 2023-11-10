@@ -53,6 +53,7 @@ import {
   DoubleArrowRightIcon,
 } from '@radix-ui/react-icons';
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
+import NextImage from '~/components/ui/img';
 export default function DataTableBanner() {
   const [sorting, setSorting] = useState<SortingState>([]);
   const initialOrderFilters: any = {
@@ -111,7 +112,7 @@ export default function DataTableBanner() {
 
         return (
           <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
-            <Image
+            <NextImage
               className="object-cover bg-ac-2 h-10 w-16 rounded-lg"
               src={renderNFTImage(payment)}
               alt={row?.original?.title}

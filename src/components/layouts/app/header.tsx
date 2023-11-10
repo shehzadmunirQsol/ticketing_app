@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from '@/ui/button';
 import LogoImage from '~/public/assets/logo.png';
-import Image from 'next/image';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import { toggleLang } from '~/store/reducers/layout';
@@ -12,6 +11,7 @@ import { addCart } from '~/store/reducers/cart';
 import { userLogout } from '~/store/reducers/auth';
 import { useToast } from '~/components/ui/use-toast';
 import { trpc } from '~/utils/trpc';
+import NextImage from '~/components/ui/img';
 
 export default function Header() {
   const router = useRouter();
@@ -58,7 +58,7 @@ export default function Header() {
         className={`py-3 md:py-5 px-4 md:px-14 w-full flex items-center justify-between `}
       >
         <Link onClick={() => setNav(false)} href="/" className="z-50">
-          <Image
+          <NextImage
             src={LogoImage}
             alt="Logo Image"
             width={150}

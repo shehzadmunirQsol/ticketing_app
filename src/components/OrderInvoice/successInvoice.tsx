@@ -11,6 +11,7 @@ import Confetti from 'react-confetti';
 import { useEffect, useState } from 'react';
 import { setOrderID } from '~/store/reducers/cart';
 import { Button } from '../ui/button';
+import NextImage from '../ui/img';
 
 export default function SuccessInvoice() {
   const { lang } = useSelector((state: RootState) => state.layout);
@@ -65,7 +66,7 @@ export default function SuccessInvoice() {
         >
           <div className="flex flex-col md:flex-row items-center justify-between mb-8">
             <div className="flex items-center">
-              <Image
+              <NextImage
                 className="h-16  object-contain mr-2"
                 src={LogoImage}
                 alt="Logo"

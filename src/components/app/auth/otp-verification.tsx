@@ -11,13 +11,13 @@ import {
 import { useToast } from '~/components/ui/use-toast';
 import { trpc } from '~/utils/trpc';
 import OtpImage from '~/public/assets/otp-screen.svg';
-import Image from 'next/image';
 import { useRef, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { userAuth } from '~/store/reducers/auth';
 import { LoadingDialog } from '~/components/common/modal/loadingModal';
 import langContent from '~/locales';
 import { RootState } from '~/store/store';
+import NextImage from '~/components/ui/img';
 
 interface OtpVerificationDailogInterface {
   otpIsModal: boolean;
@@ -53,14 +53,16 @@ export function OtpVerificationDailog(props: OtpVerificationDailogInterface) {
 
   // Response OTP Verification
   const otpVerification = trpc.customer.verificationOtpCustomer.useMutation({
-    onSuccess: (res: any) => {
+    onSuccess: (res) => {
       toast({
         variant: 'success',
-        title: 'Login successfully ',
+        title: 'Login successfully',
       });
+
       dispatch(userAuth(res?.user));
+      localStorage.setItem('winnar-token', res?.jwt);
       props.setOtpIsModal(false);
-      router.push('/');
+      router.replace('/');
     },
     onError: (err) => {
       console.log(err.message, 'err');
@@ -188,7 +190,11 @@ export function OtpVerificationDailog(props: OtpVerificationDailogInterface) {
                 {langContent[lang.lang].Auth.OTPSCREEN.SUB_HEADING}
               </p>
               <div className="flex items-center justify-center my-6">
-                <Image src={OtpImage} alt="otpImage" className="max-w-full" />
+                <NextImage
+                  src={OtpImage}
+                  alt="otpImage"
+                  className="max-w-full"
+                />
               </div>
             </DialogTitle>
             <DialogDescription>

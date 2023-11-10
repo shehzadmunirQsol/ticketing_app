@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import React, { useState } from 'react';
-import Image from 'next/image';
+import NextImage from '../ui/img';
 
 export function FileInput(props: any) {
   const [image, setImage] = useState<any>(null);
@@ -33,7 +33,7 @@ export function FileInput(props: any) {
           >
             <i className={` fa fa-remove text-xl `}></i>
           </div>
-          <Image
+          <NextImage
             width={5000}
             height={5000}
             src={image}
@@ -49,7 +49,7 @@ export function FileInput(props: any) {
           >
             <div className="flex flex-col items-center justify-center pt-5 pb-6">
               <i className="fas fa-image text-7xl"></i>
-              {/* <Image
+              {/* <NextImage
                 width={10}
                 height={10}
                 src={UploadImage.src}
@@ -81,6 +81,7 @@ export function FileInput(props: any) {
     </div>
   );
 }
+
 export function ImageInput(props: any) {
   const [image, setImage] = useState<string>('');
 
@@ -124,7 +125,7 @@ export function ImageInput(props: any) {
           >
             <i className={` fa fa-remove text-xl `}></i>
           </div>
-          <Image
+          <NextImage
             width={5000}
             height={5000}
             src={image}
@@ -244,7 +245,7 @@ export function MultiFileInput(props: any) {
                   key={item}
                   className="relative h-56 min-w-[280px] w-1/3 max-w-xs"
                 >
-                  <Image
+                  <NextImage
                     width={1200}
                     className=" h-full p-2 bg-white rounded-md w-full"
                     height={1200}

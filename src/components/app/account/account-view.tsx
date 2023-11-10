@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import OrdersDataByIdTable from '~/components/common/table/ordersByIdTable';
-import Image from 'next/image';
 import { Button } from '~/components/ui/button';
 import { Separator } from '~/components/ui/separator';
 import Current from '~/public/assets/not-current-entrie.png';
 import { RootState } from '~/store/store';
 import langContent from '~/locales';
+import NextImage from '~/components/ui/img';
 
 const AccountView = ({ control }: any) => {
   const { lang } = useSelector((state: RootState) => state.layout);
@@ -134,7 +134,7 @@ function CurrentandPast({ customer_id }: currentandpastprops) {
         ) : (
           <>
             <div className="flex flex-col my-auto h-full items-center justify-center">
-              <Image src={Current} alt="/" />
+              <NextImage src={Current} alt="/" />
               <p className="text-center text-gray-300 text-md my-2 px-6">
                 {langContent[lang.lang].MyAccount.AccountView.INFO}
               </p>

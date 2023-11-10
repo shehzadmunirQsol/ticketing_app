@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import React, { useEffect, useRef } from 'react';
 import CarImage from '~/public/assets/card_image.png';
 import BottleImage from '~/public/assets/bottle.png';
@@ -9,8 +8,9 @@ import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
 import Link from 'next/link';
 import langContent from '~/locales';
+import NextImage from '../ui/img';
 
-interface cardInterface {
+interface CardInterface {
   class?: string;
   dir?: string;
   cash?: any;
@@ -21,7 +21,7 @@ interface cardInterface {
   type?: string;
 }
 
-function ProductCard(props: cardInterface) {
+export default function ProductCard(props: CardInterface) {
   const cardRef = useRef<HTMLDivElement>(null);
   const { lang } = useSelector((state: RootState) => state.layout);
 
@@ -44,9 +44,10 @@ function ProductCard(props: cardInterface) {
   const spaceElement = props?.isCash ? null : (
     <div className="h-8 xl:h-9 hidden md:block" />
   );
-  const isLastDay = props?.data?.end_date
-    ? props?.data?.end_date?.getTime() <= Date.now() + 24 * 60 * 60 * 1000
-    : false;
+  const isLastDay =
+    props?.data?.draw_date === null && props?.data?.end_date
+      ? props?.data?.end_date?.getTime() <= Date.now() + 24 * 60 * 60 * 1000
+      : false;
 
   const categoryRoute = props?.data?.category_id === 1 ? 'cars' : 'cash';
 
@@ -78,7 +79,7 @@ function ProductCard(props: cardInterface) {
             ) : (
               ''
             )}
-            <Image
+            <NextImage
               width={550}
               height={450}
               className="w-full h-[180px] sm:h-[230px] object-cover bg-white"
@@ -87,10 +88,7 @@ function ProductCard(props: cardInterface) {
               alt="Sunset in the mountains"
             />
             <div className="bottlebx prodbottle">
-              <Image
-                src={BottleImage}
-                alt="Sunset in the mountains"
-              />
+              <NextImage src={BottleImage} alt="Sunset in the mountains" />
             </div>
           </div>
 
@@ -132,16 +130,16 @@ function ProductCard(props: cardInterface) {
             </div>
             <hr className=" opacity-20 mt-4" />
 
-              <div className="h-15 md:h-6 overflow-hidden mt-2">
-                <span className="text-gray-200 text-md text-sm xl:text-lg font-semibold leading-[18px]">
-                  {langContent[lang.lang].Index.productcard.ALTERNATIVE_TITLE}
-                </span>
-                <br className="block md:hidden" />
-                <span className="text-primary text-sm xl:text-lg font-[500] leading-[18px]">
-                  {' '}
-                  AED {(props?.data?.cash_alt ?? 0)?.toLocaleString()}
-                </span>
-              </div>
+            <div className="h-15 md:h-6 overflow-hidden mt-2">
+              <span className="text-gray-200 text-md text-sm xl:text-lg font-semibold leading-[18px]">
+                {langContent[lang.lang].Index.productcard.ALTERNATIVE_TITLE}
+              </span>
+              <br className="block md:hidden" />
+              <span className="text-primary text-sm xl:text-lg font-[500] leading-[18px]">
+                {' '}
+                AED {(props?.data?.cash_alt ?? 0)?.toLocaleString()}
+              </span>
+            </div>
 
             <div className="flex  justify-between items-center mt-3 sm:mt-8 gap-4">
               <div className="text-primary text-xl md:text-2xl font-[500] leading-[18px]">
@@ -160,5 +158,3 @@ function ProductCard(props: cardInterface) {
     )
   );
 }
-
-export default ProductCard;

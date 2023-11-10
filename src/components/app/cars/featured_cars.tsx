@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -6,12 +6,12 @@ import { Button } from '~/components/ui/button';
 import ProductCard from '../../common/card';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
-import Image from 'next/image';
 import { trpc } from '~/utils/trpc';
 import { renderNFTImage } from '~/utils/helper';
 import BannerTitle from '~/components/common/banner_title';
 import CarsBg from '~/public/assets/Cars Page Banner.png';
 import langContent from '~/locales';
+import NextImage from '~/components/ui/img';
 
 const FeaturedCars = () => {
   const settings = {
@@ -27,14 +27,17 @@ const FeaturedCars = () => {
 
   const { lang } = useSelector((state: RootState) => state.layout);
 
-  const [filters, setFilters] = useState({
-    first: 0,
-    rows: 9,
-    is_featured: 1,
-  });
-
-  const { data: productsList, isLoading } = trpc.event.getFeatured.useQuery(
-    { ...filters, lang_id: lang.lang_id },
+  const {
+    data: productsList,
+    isLoading,
+    isFetching,
+  } = trpc.event.getFeatured.useQuery(
+    {
+      first: 0,
+      rows: 9,
+      is_featured: 1,
+      lang_id: lang.lang_id,
+    },
     {
       refetchOnWindowFocus: false,
     },
@@ -55,7 +58,7 @@ const FeaturedCars = () => {
     slide2?.current?.slickPrev();
   };
 
-  return productsList?.data?.length || isLoading ? (
+  return productsList?.data?.length || isLoading || isFetching ? (
     <>
       <div className="hidden slg:flex sm:flex-col ">
         <div className="flex max-h-[100%]   z-40">
@@ -85,7 +88,7 @@ const FeaturedCars = () => {
                     className="relative md:w-[700px] md:h-[460px] lg:h-[580px] "
                     key={i}
                   >
-                    <Image
+                    <NextImage
                       src={renderNFTImage(item)}
                       alt="/"
                       // width={1300}
@@ -146,7 +149,7 @@ const FeaturedCars = () => {
                     className="relative md:w-[700px] md:h-[460px] lg:h-[580px] "
                     key={i}
                   >
-                    <Image
+                    <NextImage
                       src={renderNFTImage(item)}
                       alt="/"
                       fill

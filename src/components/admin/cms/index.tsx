@@ -12,7 +12,7 @@ import {
 import { MoreHorizontal } from 'lucide-react';
 import { LoadingDialog } from '~/components/common/modal/loadingModal';
 import { CmsDailog } from '~/components/common/modal/cms';
-import Image from 'next/image';
+import NextImage from '~/components/ui/img';
 
 function Cms() {
   const [selectedItem, setSelectedItem] = React.useState({});
@@ -76,7 +76,7 @@ function Cms() {
                     href={`/admin/cms/edit/${item?.id}`}
                     className="rounded-md overflow-hidden border-border hover:opacity-80"
                   >
-                    <Image
+                    <NextImage
                       className={`h-60 w-full object-cover`}
                       src={process.env.NEXT_PUBLIC_MEDIA_BASE_URL + item?.thumb}
                       alt={item?.CMSDescription[0]?.title}
@@ -113,7 +113,7 @@ function Cms() {
                     key={item?.id}
                     className="rounded-md overflow-hidden border-border hover:opacity-80"
                   >
-                    <Image
+                    <NextImage
                       className={`h-60 w-full object-cover`}
                       src={process.env.NEXT_PUBLIC_MEDIA_BASE_URL + item?.thumb}
                       alt={item?.CMSDescription[0]?.title}

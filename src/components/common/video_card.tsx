@@ -1,26 +1,17 @@
-import Image from 'next/image';
 import React from 'react';
-import VideoThumb from '~/public/assets/video_thumb.png';
 import LogoThumb from '~/public/assets/logo_video.png';
 import Play from '~/public/assets/play.png';
 import Share from '~/public/assets/icons/send.svg';
-
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/ui/dialog';
+import { Dialog, DialogContent, DialogTrigger } from '@/ui/dialog';
 import { renderNFTImage } from '~/utils/helper';
+import NextImage from '../ui/img';
 
-interface cardInterface {
+interface CardInterface {
   class?: string;
   dir?: string;
   data?: any;
 }
-const VideoCard = (props: cardInterface) => {
+const VideoCard = (props: CardInterface) => {
   return (
     <div className={`relative group  ${props?.class} `}>
       <Dialog>
@@ -29,7 +20,7 @@ const VideoCard = (props: cardInterface) => {
         >
           <div className="absolute flex mt-2  justify-between items-center w-full  z-30">
             <div className="relative h-10 w-10  rounded-full bg-black z-40 ml-2">
-              <Image src={LogoThumb} alt="/" fill />
+              <NextImage src={LogoThumb} alt="/" fill />
             </div>
 
             {/* <i className="fa fa-share-from-square text-white text-2xl "></i> */}
@@ -40,11 +31,11 @@ const VideoCard = (props: cardInterface) => {
                   console.log('in sharing');
                 }}
               >
-                <Image src={Share} alt="/" width={30} height={30} />
+                <NextImage src={Share} alt="/" width={30} height={30} />
               </div>
             </DialogTrigger>
           </div>
-          <Image
+          <NextImage
             src={renderNFTImage(props?.data)}
             fill
             alt=""
@@ -53,7 +44,7 @@ const VideoCard = (props: cardInterface) => {
           <DialogTrigger>
             <div className="absolute h-full w-full flex justify-center mx-auto  items-center ">
               {/* <i className="fa-regular fa-circle-play text-6xl  "></i> */}
-              <Image src={Play} alt="/" className="w-14 h-14" />
+              <NextImage src={Play} alt="/" className="w-14 h-14" />
             </div>
           </DialogTrigger>
           <DialogContent>

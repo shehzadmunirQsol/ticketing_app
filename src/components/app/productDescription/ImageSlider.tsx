@@ -53,8 +53,6 @@ const ImageSlider = ({ data, ticketPurchased, higlightmeta }: any) => {
 
   const percentageSold = (data?.tickets_sold / data?.total_tickets) * 100;
 
-  const isMeta = higlightmeta;
-
   return (
     <section className="text-gray-600 body-font">
       <div className="detailbx">
@@ -91,7 +89,7 @@ const ImageSlider = ({ data, ticketPurchased, higlightmeta }: any) => {
               </p>
             </div>
             <div className="flex flex-col lg:flex-row  mt-1 lg:items-center  justify-between  w-full">
-              {data?.category_id == 1 && (
+              {data?.draw_date === null && data?.category_id == 1 && (
                 <p className="text-white text-lg md:text-xl">
                   {lang.lang_id === 2
                     ? 'البديل النقدي'
@@ -109,7 +107,9 @@ const ImageSlider = ({ data, ticketPurchased, higlightmeta }: any) => {
                 {customTruncate(data?.EventDescription[0]?.desc, 100)}
               </p>
             </div>
-            {!data?.draw_date && data?.end_date?.getTime() > Date.now() ? (
+            {!data?.draw_date &&
+            data?.is_enabled &&
+            data?.end_date?.getTime() > Date.now() ? (
               <>
                 <div className="w-full relative z-10">
                   <Counter
@@ -123,15 +123,10 @@ const ImageSlider = ({ data, ticketPurchased, higlightmeta }: any) => {
                   />
                 </div>
                 <CountDown dateString={data?.end_date?.getTime()?.toString()} />
-                {higlightmeta ? <Highlights meta={higlightmeta} /> : null }
+                {higlightmeta ? <Highlights meta={higlightmeta} /> : null}
               </>
             ) : (
-              <div className="w-full sm:p-4 space-y-4 grid items-center">
-                <i className="fas fa-road-lock text-7xl lg:text-9xl text-primary text-center" />
-                <h3 className="text-base md:text-xl lg:text-2xl text-center text-white">
-                  This Competition is Closed
-                </h3>
-              </div>
+              <DisplayCounter data={data} />
             )}
           </div>
         </div>
@@ -142,21 +137,30 @@ const ImageSlider = ({ data, ticketPurchased, higlightmeta }: any) => {
 
 export default ImageSlider;
 
-function DisplayCounter(props: any) {
+function DisplayCounter(props: { data: any }) {
   const { data } = props;
 
   let element: React.ReactNode;
 
+  const winnerName = data?.Winner?.length
+    ? data?.Winner[0]?.Customer?.first_name +
+      ' ' +
+      data?.Winner[0]?.Customer?.last_name
+    : '';
+  const ticketNumber = data?.Winner?.length ? data?.Winner[0]?.ticket_num : '';
+
   if (data?.draw_date) {
     element = (
-      <div className="w-full sm:p-4 space-y-4 grid items-center">
-        <i className="fas fa-road-lock text-7xl lg:text-9xl text-primary text-center" />
-        <h3 className="text-base md:text-xl lg:text-2xl text-center text-white">
-          This Competition is Drawn
+      <div className="w-full space-y-2 grid items-center">
+        <p className="text-base text-white/80">
+          Drawn on the {data?.draw_date?.toDateString()}
+        </p>
+        <h3 className="text-base md:text-2xl text-white">
+          Congratulations to {winnerName} with number {ticketNumber}
         </h3>
       </div>
     );
-  } else if (Date.now() > data?.end_date?.getTime()) {
+  } else {
     element = (
       <div className="w-full sm:p-4 space-y-4 grid items-center">
         <i className="fas fa-road-lock text-7xl lg:text-9xl text-primary text-center" />
@@ -165,26 +169,6 @@ function DisplayCounter(props: any) {
         </h3>
       </div>
     );
-  } else {
-    element = (
-      <>
-        <div className="w-full relative">
-          <div className="relative z-10">
-            <Counter
-              range={props?.range}
-              ticketInBasket={props?.ticketInBasket}
-              setRange={props?.setRange}
-              perCustomerLimit={data?.user_ticket_limit}
-              user_ticket_limit={props?.userTicketLimit}
-              ticketPurchased={props?.ticketPurchased}
-              event={data}
-            />
-          </div>
-        </div>
-        <CountDown dateString={data?.end_date?.getTime()?.toString()} />
-      </>
-    );
   }
-
   return element;
 }

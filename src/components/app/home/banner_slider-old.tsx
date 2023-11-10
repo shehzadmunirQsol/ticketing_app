@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Image from 'next/image';
 import { Button } from '~/components/ui/button';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
@@ -8,6 +7,7 @@ import { renderNFTImage } from '~/utils/helper';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import langContent from '~/locales';
+import NextImage from '~/components/ui/img';
 
 function BannerSliderOld() {
   const { lang } = useSelector((state: RootState) => state.layout);
@@ -15,7 +15,6 @@ function BannerSliderOld() {
   const [carSlider, setCarSlider] = useState<Array<any>>([]);
   const [showElement, setShowElement] = useState(false);
   const router = useRouter();
-
 
   const initialOrderFilters: any = {
     lang_id: lang.lang_id,
@@ -148,7 +147,7 @@ function BannerSliderOld() {
                 
                 `}
             >
-              <Image
+              <NextImage
                 src={renderNFTImage(carSlider[currentIndex])}
                 alt="banner image"
                 quality={100}
@@ -172,7 +171,7 @@ function BannerSliderOld() {
                         : 'border-transparent'
                     } group-hover:border-primary`}
                   >
-                    <Image
+                    <NextImage
                       src={renderNFTImage(item)}
                       alt="/"
                       width={100}

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
   ColumnDef,
-  // ColumnFiltersState,
   SortingState,
   VisibilityState,
   flexRender,
@@ -12,7 +11,6 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { ChevronDown } from 'lucide-react';
-
 import { Button } from '@/ui/button';
 import {
   DropdownMenu,
@@ -32,7 +30,6 @@ import {
 import { trpc } from '~/utils/trpc';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 import { LoadingDialog } from '../modal/loadingModal';
-import Image from 'next/image';
 import { displayDate } from '~/utils/helper';
 import { TableFilters } from './table_filters';
 import {
@@ -51,6 +48,7 @@ import { CSVLink } from 'react-csv';
 import PlaceholderImage from '~/public/assets/face/male-profile-image-placeholder.png';
 import { WinnersEnableDialog, ImageUploadDialog } from '../modal/winnersModal';
 import { Switch } from '~/components/ui/switch';
+import NextImage from '~/components/ui/img';
 export type WinnerType = {
   Event: {
     id: number;
@@ -149,7 +147,7 @@ export default function WinnersDataTable() {
       cell: ({ row }) => {
         return (
           <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
-            <Image
+            <NextImage
               className="object-cover bg-ac-2 h-10 w-16 rounded-lg"
               src={`${process.env.NEXT_PUBLIC_MEDIA_BASE_URL}${row?.original?.Event.thumb}`}
               alt={row?.original?.Event.EventDescription[0]?.name ?? ''}
@@ -170,7 +168,7 @@ export default function WinnersDataTable() {
       cell: ({ row }) => (
         <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
           <div className="h-10 w-16 rounded-lg overflow-hidden relative">
-            <Image
+            <NextImage
               className="object-cover bg-ac-2 "
               src={
                 row?.original?.thumb

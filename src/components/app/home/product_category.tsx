@@ -1,11 +1,11 @@
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
 import { useSelector } from 'react-redux';
-import Image from 'next/image';
 import { trpc } from '~/utils/trpc';
 import { RootState } from '~/store/store';
 import { renderNFTImage } from '~/utils/helper';
 import Link from 'next/link';
+import NextImage from '~/components/ui/img';
 
 function CategorySection() {
   const { lang } = useSelector((state: RootState) => state.layout);
@@ -32,7 +32,7 @@ function CategorySection() {
             >
               <Link href={i == 0 ? `/cars` : i == 1 ? '/cash' : '/'}>
                 <div className=" absolute  w-full  h-full categoryClip  bg-primaryLight opacity-40 transition-all ease-in-out duration-300 "></div>
-                <Image
+                <NextImage
                   className=" bg-white opacity-30  h-64 md:h-96 object-cover"
                   src={renderNFTImage(item)}
                   width={760}

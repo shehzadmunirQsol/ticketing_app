@@ -10,11 +10,11 @@ import Face5 from '~/public/assets/face/face5.png';
 import Face6 from '~/public/assets/face/face6.png';
 import Group15 from '~/public/assets/icons/Group15.png';
 import LogoImage from '~/public/assets/logo.png';
-import Image from 'next/image';
 import { Button } from '~/components/ui/button';
 import { RootState } from '~/store/store';
 import { useSelector } from 'react-redux';
 import langContent from '~/locales';
+import NextImage from '~/components/ui/img';
 
 function Testimonials() {
   const { lang } = useSelector((state: RootState) => state.layout);
@@ -60,7 +60,7 @@ function Testimonials() {
     <div className="relative flex flex-col sm:gap-14 justify-start w-full mx-auto mb-2 sm:py-4">
       <div className="relative w-full m-auto flex flex-col items-center justify-center">
         <div className=" z-10 h-64 w-62 ">
-          <Image
+          <NextImage
             className="w-full h-full object-contain "
             src={Group15}
             quality={100}
@@ -75,7 +75,7 @@ function Testimonials() {
             </div>
             <div className="mt-2  text-center text-gray-200 text-5xl font-black leading-[48px]">
               {' '}
-              <Image
+              <NextImage
                 src={LogoImage}
                 alt="Logo Image"
                 width={150}
@@ -175,7 +175,7 @@ function Review(item: ReviewType) {
       className={`relative flex h-full p-6 gap-x-4  sm:w-full border-t border-l border-white/20 bg-testimonials backdrop-blur-lg rounded-md bg-clip-padding backdrop-filter bg-opacity-10  ${item?.class}`}
     >
       <div className="z-10 h-12 w-14  rounded-full  bg-white">
-        <Image
+        <NextImage
           className="w-full h-full object-cover rounded-full"
           // src={item.face}
           src={images[item.img] as any}

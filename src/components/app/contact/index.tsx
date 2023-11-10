@@ -36,7 +36,7 @@ import mail from '../../../public/assets/icons/mail.svg';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import ReCAPTCHA from 'react-google-recaptcha';
-import Image from 'next/image';
+import NextImage from '~/components/ui/img';
 
 export default function Contact() {
   const { toast } = useToast();
@@ -124,7 +124,7 @@ export default function Contact() {
 
             <div className="flex flex-col justify-start align-start pl-6 px-4 lg:px-8 gap-2 py-3">
               <div className="flex gap-3 items-center">
-                <Image
+                <NextImage
                   className="object-contain"
                   src={location}
                   quality={100}
@@ -142,7 +142,7 @@ export default function Contact() {
             </div>
             <div className="flex flex-col justify-start align-start pl-6 px-4 lg:px-8 gap-2 py-3">
               <div className="flex gap-3 items-center">
-                <Image
+                <NextImage
                   className="object-contain"
                   src={phone}
                   quality={100}
@@ -159,7 +159,7 @@ export default function Contact() {
             </div>
             <div className="flex flex-col justify-start align-start pl-6 px-4 lg:px-8 gap-2 py-3">
               <div className="flex gap-3 items-center">
-                <Image
+                <NextImage
                   className="object-contain"
                   src={mail}
                   quality={100}
@@ -290,10 +290,10 @@ export default function Contact() {
                       <div className="relative pb-2">
                         <FormMessage />
                       </div>
-                    </FormItem>   
+                    </FormItem>
                   )}
                 />
-              </div> 
+              </div>
               <div className="flex flex-col sm:flex-row justify-between items-center gap-6 h-18">
                 <div className="h-fit object-contain w-fit capchabx">
                   <ReCAPTCHA

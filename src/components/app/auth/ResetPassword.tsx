@@ -18,12 +18,8 @@ import langContent from '~/locales';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
 
-
-
 export default function ResetPassword() {
-
   const { lang } = useSelector((state: RootState) => state.layout);
-
 
   const { toast } = useToast();
   const router = useRouter();
@@ -36,12 +32,12 @@ export default function ResetPassword() {
       setUserDetail({ ...router.query });
     }
   }, []);
-  console.log({userDetail})
+  console.log({ userDetail });
 
   // Reset Password Customer
   const customerResetPassword = trpc.customer.resetPasswordCustomer.useMutation(
     {
-      onSuccess: async (res: any) => {
+      onSuccess: async () => {
         toast({
           variant: 'success',
           title: 'Reset Password Successfully',
@@ -77,11 +73,13 @@ export default function ResetPassword() {
 
   return (
     <div className="w-full  lg:w-2/3 md:w-2/3  mt-36 mb-20 mx-auto bg-card py-10 px-5 lg:px-10 md:px-10 max-w-[1300px]">
-      <p className="text-3xl text-primary font-black px-2 lg:px-8 uppercase">{langContent[lang.lang].Auth.RESETPASSWORD.HEADING}</p>
-      <Form {...formResetPassword} >
+      <p className="text-3xl text-primary font-black px-2 lg:px-8 uppercase">
+        {langContent[lang.lang].Auth.RESETPASSWORD.HEADING}
+      </p>
+      <Form {...formResetPassword}>
         <form
           onSubmit={formResetPassword.handleSubmit(onSubmit)}
-          dir='ltr'
+          dir="ltr"
           className="justify-center items-center px-2 lg:px-8 py-4 space-y-4"
         >
           <FormField

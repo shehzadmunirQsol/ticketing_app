@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { cn } from '~/utils/cn';
 import { Input } from '@/ui/input';
 import { Label } from '@/ui/label';
@@ -20,7 +19,6 @@ export default function AuthenticationPage() {
         </div>
         {/* <UserAuthForm /> */}
         <LoginForm />
-      
       </div>
     </div>
   );

@@ -31,11 +31,7 @@ import {
   TableRow,
 } from '@/ui/table';
 import { trpc } from '~/utils/trpc';
-import {
-  customEmailTruncateHandler,
-  customTruncate,
-  displayDate,
-} from '~/utils/helper';
+import { customEmailTruncateHandler, displayDate } from '~/utils/helper';
 import { getCustomerSchema } from '~/schema/customer';
 import {
   Tooltip,

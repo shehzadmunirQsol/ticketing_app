@@ -1,10 +1,10 @@
 import React from 'react';
-import Image from 'next/image';
+import NextImage from '../ui/img';
 
 const SideImage = ({ image, text, text2 }: any) => {
   return (
     <div className="relative max-w-[500px] ">
-      <Image
+      <NextImage
         src={image.src}
         width={500}
         height={580}

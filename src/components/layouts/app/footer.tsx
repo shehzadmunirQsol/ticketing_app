@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Button } from '@/ui/button';
-import Image from 'next/image';
 import Lines from '~/public/assets/icons/Lines_Big.png';
 import Group16 from '~/public/assets/icons/Group16.svg';
 import visa from '~/public/assets/icons/visa.svg';
@@ -14,6 +13,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
 import { useRouter } from 'next/router';
 import { NewsLetterDialog } from '~/components/common/modal/newsLetterModal';
+import NextImage from '~/components/ui/img';
 
 interface LinkItemProps {
   name: string;
@@ -32,7 +32,7 @@ function Footer() {
         <div className=" absolute  p-1 w-1/2 z-20  h-full  ">
           <Glow className="absolute bottom-0 -left-16 z-20  p-2   w-1/2 h-1/3  " />
           <div className="absolute top-0   p-2  w-full h-full z-4   ">
-            <Image
+            <NextImage
               className="w-full h-full object-contain "
               src={Lines}
               quality={100}
@@ -79,25 +79,25 @@ function Footer() {
                   </p> */}
                 </div>
                 <div className=" flex items-center justify-start md:justify-start  text-sm text-white gap-3 sm:gap-4">
-                  <Image
+                  <NextImage
                     className="h-full object-contain "
                     src={visa}
                     quality={100}
                     alt="Sunset in the mountains"
                   />
-                  <Image
+                  <NextImage
                     className="h-full object-contain "
                     src={master}
                     quality={100}
                     alt="Sunset in the mountains"
                   />
-                  <Image
+                  <NextImage
                     className="h-full object-contain "
                     src={Paypal}
                     quality={100}
                     alt="Sunset in the mountains"
                   />
-                  <Image
+                  <NextImage
                     className="h-full object-contain "
                     src={applePay}
                     quality={100}
@@ -196,7 +196,7 @@ function Footer() {
           </div>
 
           <div className="flex flex-col px-4 sm:mt-1 md:px-8 w-full relative gap-3">
-            <Image
+            <NextImage
               className="w-full h-full object-contain"
               src={Group16}
               quality={100}

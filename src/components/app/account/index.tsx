@@ -31,7 +31,7 @@ const Account = () => {
 
   async function handleLogout() {
     try {
-      const response = await logout.mutateAsync({});
+      await logout.mutateAsync({});
       toast({
         variant: 'success',
         title: 'Logout successfully! ',

@@ -14,31 +14,27 @@ interface productInterface {
   center: boolean;
   data?: any;
   slidesToShow?: number;
-  type: string;
+  type: 'upcoming' | 'closing' | 'drawn';
   breakpointScreens?: Array<number>;
   breakpoint?: Array<number>;
+  categoryId?: 1 | 2;
   // slide: React.Ref<null>;
 }
 function ProductSection(props: productInterface) {
   const { lang } = useSelector((state: RootState) => state.layout);
   const [products, setProducts] = useState<Array<any>>([]);
 
-  const orderFilters = {
-    lang_id: lang.lang_id,
-  };
-
   const [filters, setFilters] = useState({
     first: 0,
     rows: 9,
     type: props?.type,
+    lang_id: lang.lang_id,
+    category_id: props?.categoryId,
   });
 
-  const { data: productsList } = trpc.event.getUpcoming.useQuery(
-    { ...orderFilters, ...filters },
-    {
-      refetchOnWindowFocus: false,
-    },
-  );
+  const { data: productsList } = trpc.event.getUpcoming.useQuery(filters, {
+    refetchOnWindowFocus: false,
+  });
 
   function nextPage() {
     if (products.length % filters.rows === 0) {
@@ -61,6 +57,8 @@ function ProductSection(props: productInterface) {
       first: 0,
       rows: 9,
       type: props?.type,
+      lang_id: lang.lang_id,
+      category_id: props?.categoryId,
     });
   }, [lang.lang_id]);
 
@@ -95,9 +93,11 @@ function ProductSection(props: productInterface) {
             : 1024,
         settings: {
           slidesToShow:
-            props?.breakpoint && props?.breakpoint[0] !== undefined
+            props?.breakpoint?.length &&
+            props?.breakpoint[0] &&
+            products?.length >= props?.breakpoint[0]
               ? props?.breakpoint[0]
-              : 2,
+              : products.length,
           slidesToScroll: 1,
           centerMode: false,
         },
@@ -168,18 +168,14 @@ function ProductSection(props: productInterface) {
         </div>
       </div>
 
-      <div className="z-30 px-4 w-full mx-auto">
+      <div className="z-30 w-full mx-auto">
         {/* glow */}
         <div className="relative">
-          {props.type === 'no-glow' ? (
-            ''
-          ) : (
-            <div
-              className={`absolute bottom-10 ${
-                props.type == 'closing' ? 'right-0' : 'left-0'
-              }  z-2  w-1/5 h-3/5  bg-teal-400 bg-opacity-50 rounded-full blur-3xl`}
-            ></div>
-          )}
+          <div
+            className={`absolute bottom-10 ${
+              props.type == 'closing' ? 'right-0' : 'left-0'
+            }  z-2  w-1/5 h-3/5  bg-teal-400 bg-opacity-50 rounded-full blur-3xl`}
+          />
         </div>
 
         <Slider ref={slide} {...settings}>

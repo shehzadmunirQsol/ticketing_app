@@ -15,10 +15,8 @@ import {
   SelectGroup,
   SelectValue,
 } from '@/ui/select';
-
 import { Input } from '@/ui/input';
 import { useForm } from 'react-hook-form';
-import Image from 'next/image';
 import Glow from '~/components/common/glow';
 import { CouponModal } from './Coupon';
 import { useEffect, useState } from 'react';
@@ -40,16 +38,17 @@ import visa from '~/public/assets/icons/visa.svg';
 import master from '~/public/assets/icons/Master.svg';
 import Paypal from '~/public/assets/icons/Paypal.svg';
 import applePay from '~/public/assets/icons/applePay.svg';
-
 import { PhoneInput } from 'react-international-phone';
 import 'react-international-phone/style.css';
-
 import countryJSON from '~/data/countries.json';
 import { ViewContentDialog } from '~/components/common/modal/cms';
+import NextImage from '~/components/ui/img';
 const countries = countryJSON.map((item) => item.country);
 
 function Checkout() {
-  const { cart, totalAmount } = useSelector((state: RootState) => state.cart);
+  const { cart, totalAmount, isCartLoaded } = useSelector(
+    (state: RootState) => state.cart,
+  );
   const { user } = useSelector((state: RootState) => state.auth);
   const { lang } = useSelector((state: RootState) => state.layout);
 
@@ -108,6 +107,20 @@ function Checkout() {
   });
 
   useEffect(() => {
+    const isCheckoutDisabled = cart?.cartItems?.some((cartItem) => {
+      const isDateEnded = cartItem?.Event?.end_date
+        ? Date.now() > new Date(cartItem?.Event?.end_date)?.getTime()
+        : false;
+      const isNotEnabled = !cartItem?.Event?.is_enabled;
+
+      return isDateEnded || isNotEnabled;
+    });
+
+    if (isCartLoaded && isCheckoutDisabled) {
+      router.replace('/cart');
+      return;
+    }
+
     if (user) {
       form.setValue('cart_id', cart?.id ?? 0);
       form.setValue('customer_id', cart?.customer_id ?? 0);
@@ -608,20 +621,21 @@ function Checkout() {
                         Phone Number
                       </p>
                       <div className="flex flex-row gap-2 ">
-
-
-                      <FormField
+                        <FormField
                           control={form.control}
                           name="code"
                           render={({ field }) => (
                             <FormItem>
-
                               <PhoneInput
                                 className="rounded-md w-20 countrycode"
                                 defaultCountry="ae"
-                                inputProps={{ minLength: 1, maxLength: 4, ...field }} 
-                                {...field} 
-                              /> 
+                                inputProps={{
+                                  minLength: 1,
+                                  maxLength: 4,
+                                  ...field,
+                                }}
+                                {...field}
+                              />
 
                               {/* <Input
                                 type="text"
@@ -636,7 +650,6 @@ function Checkout() {
                             </FormItem>
                           )}
                         />
-
 
                         {/* <FormField
                           control={form.control}
@@ -814,25 +827,25 @@ function Checkout() {
                     {langContent[lang.lang].Checkout.ACCEPT}
                   </p>
                   <div className=" flex items-center justify-start md:justify-start  text-sm text-white gap-3 sm:gap-4">
-                    <Image
+                    <NextImage
                       className="h-full object-contain w-10"
                       src={visa}
                       quality={100}
                       alt="Sunset in the mountains"
                     />
-                    <Image
+                    <NextImage
                       className="h-full object-contain w-10"
                       src={master}
                       quality={100}
                       alt="Sunset in the mountains"
                     />
-                    <Image
+                    <NextImage
                       className="h-full object-contain w-10"
                       src={Paypal}
                       quality={100}
                       alt="Sunset in the mountains"
                     />
-                    <Image
+                    <NextImage
                       className="h-full object-contain w-10"
                       src={applePay}
                       quality={100}

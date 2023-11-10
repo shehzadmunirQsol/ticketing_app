@@ -1,12 +1,11 @@
 import React from 'react';
-
 import Frame11 from '~/public/assets/icons/Frame16.svg';
 import Frame12 from '~/public/assets/icons/Group14.png';
 import Frame13 from '~/public/assets/icons/Frame15.svg';
 import langContent from '~/locales';
-import Image from 'next/image';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
+import NextImage from '~/components/ui/img';
 
 function WhyChoose() {
   const { lang } = useSelector((state: RootState) => state.layout);
@@ -25,7 +24,7 @@ function WhyChoose() {
               className="text-center py-3 sm:py-6 w-full space-y-2 md:space-y-3 text-white items-center border-t-2  md:border-b-2 md:border-b-border  border-t-primary "
             >
               <div className="text-center h-20 mx-auto w-20">
-                <Image
+                <NextImage
                   className="w-full h-full object-contain "
                   src={images[item.img]}
                   quality={100}

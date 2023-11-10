@@ -20,6 +20,7 @@ export interface CartItemInterface {
     tickets_sold: number | null;
     user_ticket_limit: number;
     total_tickets: number;
+    is_enabled: boolean;
 
     EventDescription: {
       name: string;

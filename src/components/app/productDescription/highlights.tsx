@@ -3,10 +3,10 @@ import EngineIcon from '~/public/assets/icons/engine.svg';
 import PowerIcon from '~/public/assets/icons/power.svg';
 import KmsIcon from '~/public/assets/icons/kms.svg';
 import YearIcon from '~/public/assets/icons/year.svg';
-import Image from 'next/image';
 import langContent from '~/locales';
 import { RootState } from '~/store/store';
 import { useSelector } from 'react-redux';
+import NextImage from '~/components/ui/img';
 
 function Highlights(props: any) {
   const { meta } = props;
@@ -24,7 +24,7 @@ function Highlights(props: any) {
             key={highlight.key}
             className="highlightbx flex flex-col rtl:ml-4 gap-1 items-center p-2 min-w-fit w-full border border-primary rounded-lg text-center"
           >
-            <Image
+            <NextImage
               src={highlight.icon}
               width={100}
               height={100}

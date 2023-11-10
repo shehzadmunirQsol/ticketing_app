@@ -5,10 +5,8 @@ import {
   DialogDescription,
   DialogFooter,
 } from '~/components/ui/dialog';
-
 import { trpc } from '~/utils/trpc';
 import { LoadingDialog } from './loadingModal';
-import Image from 'next/image';
 import { displayDate } from '~/utils/helper';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 import LogoImage from '~/public/assets/logo.png';
@@ -16,6 +14,7 @@ import { RootState } from '~/store/store';
 import { Button } from '~/components/ui/button';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import NextImage from '~/components/ui/img';
 
 interface OrderViewDialogInterface {
   selectedItem: any;
@@ -67,7 +66,7 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
               >
                 <div className="flex flex-col md:flex-row items-center justify-between mb-8">
                   <div className="flex items-center">
-                    <Image
+                    <NextImage
                       className="h-16  object-contain mr-2"
                       src={LogoImage}
                       alt="Logo"

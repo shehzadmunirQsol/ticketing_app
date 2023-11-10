@@ -33,7 +33,7 @@ export const getClosingSoon = z.object({
   rows: z.number(),
   lang_id: z.number(),
   launc_date: z.date().optional(),
-  type: z.string(),
+  type: z.enum(['upcoming', 'closing', 'drawn']).default('upcoming'),
 });
 
 export const getFeatured = z.object({

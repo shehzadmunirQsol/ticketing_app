@@ -1,7 +1,6 @@
 import React from 'react';
 import { Button } from '@/ui/button';
 import LogoImage from '~/public/assets/logo.png';
-import Image from 'next/image';
 import { useDispatch } from 'react-redux';
 import { trpc } from '~/utils/trpc';
 import { toggleSidebar } from '~/store/reducers/admin_layout';
@@ -35,6 +34,7 @@ import {
   userAdminAuth,
   userAdminIsLogin,
 } from '~/store/reducers/adminAuthSlice';
+import NextImage from '~/components/ui/img';
 function Header() {
   const dispatch = useDispatch();
 
@@ -61,7 +61,7 @@ function Header() {
         </Button>
       </div>
 
-      <Image src={LogoImage} alt="Logoimage" width={150} height={140} />
+      <NextImage src={LogoImage} alt="Logoimage" width={150} height={140} />
       <DropdownMenuDemo />
     </div>
   );

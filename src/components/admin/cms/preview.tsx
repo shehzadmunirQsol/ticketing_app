@@ -1,6 +1,4 @@
-import Head from 'next/head.js';
 import { useRouter } from 'next/router';
-import Script from 'next/script';
 import React, { useEffect, useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
 import parse from 'html-react-parser';
@@ -10,7 +8,6 @@ import { Lang } from '~/store/reducers/layout';
 const Preview = () => {
   const router = useRouter();
   const [data, setData] = useState<any>({});
-  const [slug, setSlug] = useState<any>('');
 
   const en: Lang = {
     dir: 'ltr',
@@ -27,13 +24,8 @@ const Preview = () => {
   // Function to read data from localStorage
   const getDataFromLocalStorage = () => {
     const storedData = JSON.parse(localStorage.getItem('cmscontent') as string);
-    const slugData = JSON.parse(localStorage.getItem('cmsslug') as string);
-    console.log(slugData, 'slugData');
     if (storedData) {
       setData(storedData);
-    }
-    if (slugData) {
-      setSlug(slugData);
     }
   };
 
@@ -92,10 +84,14 @@ const Preview = () => {
           <TabsTrigger value="ar">Arabic</TabsTrigger>
         </TabsList>
         <TabsContent value="en">
-          <div className="min-h-screen mt-10 cmsStyle px-4 md:px-14">{reactElementsEnglish}</div>
+          <div className="min-h-screen mt-10 cmsStyle px-4 md:px-14">
+            {reactElementsEnglish}
+          </div>
         </TabsContent>
         <TabsContent value="ar">
-            <div dir="rtl" className="min-h-screen mt-10 cmsStyle px-4 md:px-14">{reactElementsArabic}</div>
+          <div dir="rtl" className="min-h-screen mt-10 cmsStyle px-4 md:px-14">
+            {reactElementsArabic}
+          </div>
         </TabsContent>
       </Tabs>
     </div>

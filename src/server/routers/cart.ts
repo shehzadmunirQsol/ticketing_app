@@ -30,6 +30,7 @@ const cartInclude = {
           user_ticket_limit: true,
           total_tickets: true,
           category_id: true,
+          is_enabled: true,
 
           EventDescription: {
             where: { lang_id: 1 },
@@ -46,18 +47,6 @@ const cartInclude = {
 export const cartRouter = router({
   get: publicProcedure.input(getCartSchema).query(async ({ ctx, input }) => {
     try {
-      // const token = ctx?.req?.cookies['winnar-token'];
-      // console.log({token})
-
-      // let userData;
-      // if (token) {
-      //   userData = await verifyJWT(token);
-      // } else {
-      //   return { data: null };
-      // }
-
-      // console.log({userData})
-
       const cart = await prisma.cart.findFirst({
         where: { customer_id: input.customer_id, is_deleted: false },
         include: cartInclude,
@@ -362,6 +351,7 @@ export const cartRouter = router({
                 user_ticket_limit: true,
                 total_tickets: true,
                 category_id: true,
+                is_enabled: true,
                 EventDescription: {
                   where: { lang_id: 1 },
                   select: {

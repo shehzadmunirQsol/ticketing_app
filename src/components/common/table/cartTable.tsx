@@ -48,6 +48,7 @@ import {
 } from '@radix-ui/react-icons';
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 import { CSVLink } from 'react-csv';
+import NextImage from '~/components/ui/img';
 export type CartType = {
   id: number;
   is_subscribe: boolean;
@@ -96,7 +97,7 @@ export default function OrdersDataTable() {
       cell: ({ row }) => {
         return (
           <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
-            <Image
+            <NextImage
               className="object-cover bg-ac-2 h-10 w-16 rounded-lg"
               src={`${process.env.NEXT_PUBLIC_MEDIA_BASE_URL}${row?.original?.Event?.thumb}`}
               alt={row?.original?.Event?.EventDescription[0]?.name ?? ''}

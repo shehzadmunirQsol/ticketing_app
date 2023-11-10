@@ -3,10 +3,10 @@ import image1 from '../../../public/assets/only.svg';
 import image2 from '../../../public/assets/entires.svg';
 import image3 from '../../../public/assets/maxperson.svg';
 import image4 from '../../../public/assets/wordwide.svg';
-import Image from 'next/image';
 import langContent from '~/locales';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
+import NextImage from '~/components/ui/img';
 
 const EntiresDetail = (props: any) => {
   const { lang } = useSelector((state: RootState) => state.layout);
@@ -32,7 +32,7 @@ const EntiresDetail = (props: any) => {
                   } `}
                 >
                   <div className={`flex  justify-center items-center `}>
-                    <Image
+                    <NextImage
                       src={images[item.data]}
                       className="ltr:mr-2 ltr:md:mr-3 rtl:ml-2 rtl:md:ml-3"
                       alt={'image'}
