@@ -43,7 +43,7 @@ const ProductDetail = () => {
         data={data?.data}
         comp_detail={comp_detail}
       /> */}
-      <div id="BuyTickets" className="px-4 md:px-14 mt-24">
+      <div id="BuyTickets" className="px-4 md:px-14 mt-16 md:mt-24">
         <ImageSlider
           data={data?.data}
           ticketPurchased={data?.ticketPurchased}

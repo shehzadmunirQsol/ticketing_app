@@ -60,7 +60,7 @@ const CountDown = ({ dateString }: any) => {
 
   return (
         <div className="w-full relative counterbx mt-5">
-        <div className="text-xl mb-2 text-white">Competition closes in</div>
+        <div className="text-basic md:text-lg mb-2 text-white">Competition closes in</div>
         <div ref={counterRef}></div> 
         </div>
   );
