@@ -1384,12 +1384,16 @@ input:checked + section.box {
   min-width: 65px;
 }
 .mobfixedbtn {
-  position: fixed;
-  width: 100%;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 9;
+    position: fixed;
+    width: calc(100% - 32px);
+    left: 16px;
+    right: 16px;
+    bottom: 15px;
+    z-index: 9;
+    background: #000;
+}
+.mobfixedbtn .disabled\:opacity-50:disabled {
+  opacity: 0.7 !important;
 }
 }
 
