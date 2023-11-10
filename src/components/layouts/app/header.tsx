@@ -44,7 +44,7 @@ export default function Header() {
 
   return (
     <div
-      className={`fixed max-w-[1600px] w-full z-50 top-0  duration-500 
+      className={`fixed max-w-[1600px] w-full z-99 top-0  duration-500 
       ${
         router.route == '/'
           ? color
