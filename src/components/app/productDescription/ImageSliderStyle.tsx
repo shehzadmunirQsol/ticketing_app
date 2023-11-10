@@ -31,6 +31,14 @@ const ImageSliderStyle = ({ data }: any) => {
     arrows: false,
     swipeToSlide: true,
     focusOnSelect: true,
+    responsive: [
+      {
+        breakpoint: 991,
+        settings: {
+          arrows: true
+        }
+      }
+    ]
   };
 
   const thumbslide = {
@@ -44,8 +52,6 @@ const ImageSliderStyle = ({ data }: any) => {
         settings: {
           slidesToShow: 3,
           slidesToScroll: 1,
-          infinite: true,
-          dots: true
         }
       }
     ]
@@ -55,7 +61,7 @@ const ImageSliderStyle = ({ data }: any) => {
   return (
     <div>
 
-      <div className="relative">
+      <div className="relative mobmb-1">
         {
           data && data.EventImages ?
             <Slider {...productslide} className="productslider" ref={slidermain}>
@@ -78,17 +84,15 @@ const ImageSliderStyle = ({ data }: any) => {
             :
             null
         }
-
-        <div className="bottlebx absolute lg:right-10 md:right-10 right-4 rounded-full w-14 p-1 bg-gradient-to-b from-primary to-neutral-900">
+        <div className="bottlebx">
           <Image
-            className="w-14 h-12  lg:w-full lg:h-full object-cover  rounded-full bg-white"
             src={BottleImage}
             alt="Sunset in the mountains"
           />
         </div>
       </div>
 
-      <div className="relative">
+      <div className="relative hidden lg:block">
         {
           data && data.EventImages ?
             <Slider {...thumbslide} className="thumbslider smallarrows" ref={sliderthumb}>

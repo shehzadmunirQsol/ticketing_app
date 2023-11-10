@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Progress } from '../../ui/progress';
 import Counter from './Counter';
 import ImageSliderStyle from './ImageSliderStyle';
-// import ImageSliderStyleOld from './ImageSliderStyleOld';
 import CountDown from './CountDown';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
@@ -93,7 +92,7 @@ const ImageSlider = ({ data, ticketPurchased, higlightmeta }: any) => {
             </div>
             <div className="flex flex-col lg:flex-row  mt-1 lg:items-center  justify-between  w-full">
               {data?.category_id == 1 && (
-                <p className=" text-white text-xl">
+                <p className="text-white text-lg md:text-xl">
                   {lang.lang_id === 2
                     ? 'البديل النقدي'
                     : 'Cash Prize Alternative '}{' '}
@@ -105,7 +104,7 @@ const ImageSlider = ({ data, ticketPurchased, higlightmeta }: any) => {
               )}
             </div>
 
-            <div className="pt-2 pb-1">
+            <div className="pt-1 md:pt-2 pb-1">
               <p className="text-base text-white opacity-75 ">
                 {customTruncate(data?.EventDescription[0]?.desc, 100)}
               </p>

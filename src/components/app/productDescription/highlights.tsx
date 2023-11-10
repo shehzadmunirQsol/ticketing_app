@@ -14,7 +14,7 @@ function Highlights(props: any) {
 
   return (
     <div className="">
-      <div className="text-xl mb-2 text-white mt-5">
+      <div className="text-basic md:text-lg mb-2 text-white mt-5">
         {langContent[lang.lang].ProductDetail.highlights.title}
       </div>
 
