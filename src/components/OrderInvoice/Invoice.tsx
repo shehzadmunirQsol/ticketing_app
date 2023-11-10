@@ -8,6 +8,7 @@ import { trpc } from '~/utils/trpc';
 import { ScrollBar } from '../ui/scroll-area';
 import { displayDate } from '~/utils/helper';
 import LogoImage from '~/public/assets/logo.png';
+import NextImage from '../ui/img';
 
 const Invoice = () => {
   const { lang } = useSelector((state: RootState) => state.layout);
@@ -50,7 +51,7 @@ const Invoice = () => {
         >
           <div className="flex flex-col md:flex-row items-center justify-between mb-8">
             <div className="flex items-center">
-              <Image
+              <NextImage
                 className="h-16  object-contain mr-2"
                 src={LogoImage}
                 alt="Logo"

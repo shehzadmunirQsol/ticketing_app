@@ -1,9 +1,9 @@
-import Image from 'next/image';
 import React, { useEffect, useRef } from 'react';
 import WinnerImage from '~/public/assets/winner.svg';
 import langContent from '~/locales';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
+import NextImage from '~/components/ui/img';
 
 interface cardInterface {
   class?: string;
@@ -47,7 +47,7 @@ function WinnarsCard(props: cardInterface) {
       ref={cardRef}
     >
       <div className="relative w-full h-56">
-        <Image
+        <NextImage
           fill
           className=" w-full h-full object-cover bg-white"
           src={

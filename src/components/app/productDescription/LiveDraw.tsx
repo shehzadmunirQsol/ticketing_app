@@ -3,10 +3,9 @@ import Icon from '~/public/assets/check.svg';
 import calender from '~/public/assets/calender.svg';
 import clock from '~/public/assets/watch.svg';
 import langContent from '~/locales';
-
-import Image from 'next/image';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
+import NextImage from '~/components/ui/img';
 
 function LiveDraw(props: any) {
   const { lang } = useSelector((state: RootState) => state.layout);
@@ -24,7 +23,7 @@ function LiveDraw(props: any) {
                 lang.lang === 'en' ? 'border-l-0 pr-4 ' : 'border-r-0 pl-4'
               }  border-b-0 border-gray-900 w-30 `}
             >
-              <Image
+              <NextImage
                 width={3}
                 height={3}
                 className="w-10 h-10 object-cover"
@@ -36,7 +35,7 @@ function LiveDraw(props: any) {
               </p>
             </div>
             <div className="flex justify-center items-center ml-4 my-2">
-              <Image
+              <NextImage
                 width={3}
                 height={3}
                 className="w-10 h-10 object-cover"
@@ -65,7 +64,7 @@ function LiveDraw(props: any) {
                   key={index}
                   className="flex gap-4  items-center md:pl-4 sm:pl-4  xs:pl-4  "
                 >
-                  <Image
+                  <NextImage
                     className="w-6 h-6 object-cover"
                     src={Icon}
                     alt="Sunset in the mountains"

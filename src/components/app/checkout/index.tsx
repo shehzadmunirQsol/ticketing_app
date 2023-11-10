@@ -15,10 +15,8 @@ import {
   SelectGroup,
   SelectValue,
 } from '@/ui/select';
-
 import { Input } from '@/ui/input';
 import { useForm } from 'react-hook-form';
-import Image from 'next/image';
 import Glow from '~/components/common/glow';
 import { CouponModal } from './Coupon';
 import { useEffect, useState } from 'react';
@@ -44,6 +42,7 @@ import applePay from '~/public/assets/icons/applePay.svg';
 import countryJSON from '~/data/countries.json';
 import { ViewContentDialog } from '~/components/common/modal/cms';
 import { getAvailableTickets } from '~/utils/helper';
+import NextImage from '~/components/ui/img';
 const countries = countryJSON.map((item) => item.country);
 
 function Checkout() {
@@ -798,25 +797,25 @@ function Checkout() {
                     {langContent[lang.lang].Checkout.ACCEPT}
                   </p>
                   <div className=" flex items-center justify-start md:justify-start  text-sm text-white gap-3 sm:gap-4">
-                    <Image
+                    <NextImage
                       className="h-full object-contain w-10"
                       src={visa}
                       quality={100}
                       alt="Sunset in the mountains"
                     />
-                    <Image
+                    <NextImage
                       className="h-full object-contain w-10"
                       src={master}
                       quality={100}
                       alt="Sunset in the mountains"
                     />
-                    <Image
+                    <NextImage
                       className="h-full object-contain w-10"
                       src={Paypal}
                       quality={100}
                       alt="Sunset in the mountains"
                     />
-                    <Image
+                    <NextImage
                       className="h-full object-contain w-10"
                       src={applePay}
                       quality={100}

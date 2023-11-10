@@ -2,14 +2,12 @@
 import React, { useEffect, useState } from 'react';
 import BannerTitle from '~/components/common/banner_title';
 import CashBg from '~/public/assets/Cash Prize Page Web.png';
-import Cash from '~/public/assets/cash-1.png';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
 import ProductCard from '~/components/common/card';
-import Glow from '~/components/common/glow';
 import { trpc } from '~/utils/trpc';
-import langContent from '~/locales';
 import ProductSection from '../home/product_section';
+// import Glow from '~/components/common/glow';
 
 const CashPage = () => {
   const { lang } = useSelector((state: RootState) => state.layout);

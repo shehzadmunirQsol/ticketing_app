@@ -32,8 +32,8 @@ import { trpc } from '~/utils/trpc';
 import { GetEventSchema } from '~/schema/event';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 import { LoadingDialog } from '../modal/loadingModal';
-import Image from 'next/image';
 import { displayDate, renderNFTImage } from '~/utils/helper';
+import NextImage from '~/components/ui/img';
 
 export type Category = {
   id: number;
@@ -72,7 +72,7 @@ export default function SubscriptionDataTable() {
       cell: ({ row }) => {
         return (
           <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
-            <Image
+            <NextImage
               className="object-contain bg-ac-2 h-10 w-16 rounded-lg"
               src={renderNFTImage(row.original.Event)}
               alt={row?.original?.Event?.EventDescription[0]?.name}

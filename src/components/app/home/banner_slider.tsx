@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Image from 'next/image';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
 import { trpc } from '~/utils/trpc';
@@ -7,6 +6,7 @@ import { renderNFTImage } from '~/utils/helper';
 import Link from 'next/link';
 import Slider from 'react-slick';
 import DubaiETlogo from '~/public/assets/dubai-eq-logo.png';
+import NextImage from '~/components/ui/img';
 
 function BannerSlider() {
   const { lang } = useSelector((state: RootState) => state.layout);
@@ -55,7 +55,7 @@ function BannerSlider() {
           ENTER NOW
         </Link>
         <div className="dblogo desktopbx">
-          <Image src={DubaiETlogo} alt="banner image" />
+          <NextImage src={DubaiETlogo} alt="banner image" />
         </div>
       </div>
 
@@ -67,7 +67,7 @@ function BannerSlider() {
                 <div key={key} className="item">
                   <Link href={data.link}>
                     <div className="imgbx">
-                      <Image
+                      <NextImage
                         src={renderNFTImage(data)}
                         alt="banner image"
                         quality={100}
@@ -91,7 +91,7 @@ function BannerSlider() {
           ENTER NOW
         </Link>
         <div className="dblogo">
-          <Image src={DubaiETlogo} alt="banner image" />
+          <NextImage src={DubaiETlogo} alt="banner image" />
         </div>
       </div>
     </div>

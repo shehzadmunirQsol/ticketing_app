@@ -42,7 +42,10 @@ function Index({ children }: DefaultLayoutProps) {
       }
     },
     onError(error) {
-      console.log({ error });
+      if (error.message === 'jwt malformed') {
+        setUserToken(null);
+        localStorage.removeItem('winnar-token');
+      }
     },
   });
 

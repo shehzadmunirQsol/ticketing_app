@@ -1,10 +1,10 @@
 import React from 'react';
-import Image from 'next/image';
 import increment from '../../../public/assets/increment.svg';
 import decrement from '../../../public/assets/decrement.svg';
 import langContent from '~/locales';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
+import NextImage from '~/components/ui/img';
 
 interface token {
   range: number[];
@@ -34,7 +34,7 @@ const CounterStyle = ({ range, setRange, min, max }: token) => {
             lang.lang === 'en' ? 'rounded-r-sm' : 'rounded-l-sm'
           }`}
         >
-          <Image
+          <NextImage
             src={decrement}
             alt="decrement"
             className="w-10 mx-auto p-2 "
@@ -55,7 +55,7 @@ const CounterStyle = ({ range, setRange, min, max }: token) => {
             lang.lang === 'en' ? 'rounded-l-sm' : 'rounded-r-sm'
           }`}
         >
-          <Image
+          <NextImage
             src={increment}
             alt="increment"
             className="lg:w-10 md:lg:w-10 w-6 mx-auto  p-1 md:lg:p-2 lg:p-2"

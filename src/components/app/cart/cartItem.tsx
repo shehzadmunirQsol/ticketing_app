@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import BottleImage from '~/public/assets/bottle.png';
 import { Switch } from '~/components/ui/switch';
 import { Button } from '~/components/ui/button';
@@ -21,6 +20,7 @@ import {
 } from '~/components/ui/tooltip';
 import Link from 'next/link';
 import { RootState } from '~/store/store';
+import NextImage from '~/components/ui/img';
 
 type CartItemProp = {
   cartItem: CartItemInterface;
@@ -176,14 +176,14 @@ export default function CartItem(props: CartItemProp) {
 
       <div className="flex items-start justify-between space-y-4">
         <div className="relative mr-10 min-w-[140px] min-h-[90px] mdx:min-w-[176px] mdx:min-h-[112px]">
-          <Image
+          <NextImage
             src={renderNFTImage({ thumb: cartItem.Event.thumb })}
             fill
             alt={'car image'}
             className="w-full h-full absolute object-contain"
           />
           <div className="p-1 w-12 h-12 rounded-full overflow-hidden absolute top-[30%] -right-6 bg-gradient-to-b from-primary to-neutral-900">
-            <Image
+            <NextImage
               src={BottleImage}
               alt={'car image'}
               className="w-12 h-12 object-cover  rounded-full bg-white"

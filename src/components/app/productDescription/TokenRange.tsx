@@ -1,8 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Slider } from '~/components/ui/slider';
-import { Button } from '~/components/ui/button';
-import { cn } from '~/utils/cn';
-import { Maximize2 } from 'lucide-react';
+
 interface token {
   range: any;
   setRange: any;
@@ -15,7 +13,7 @@ const TokenRange = ({ range, setRange, min, max }: token) => {
   // cons
   return (
     <div>
-      <div className="range-slider-container mt-8 cursor-pointer" >
+      <div className="range-slider-container mt-8 cursor-pointer">
         <Slider
           defaultValue={range}
           value={range}
@@ -34,9 +32,13 @@ const TokenRange = ({ range, setRange, min, max }: token) => {
           {range}
         </div>
       </div>
-      <div className="flex justify-between" dir='ltr'>
-        <p className="text-card-gray font-black text-white">{min?.toLocaleString()}</p>
-        <p className="text-card-gray font-black text-white">{max?.toLocaleString()}</p>
+      <div className="flex justify-between" dir="ltr">
+        <p className="text-card-gray font-black text-white">
+          {min?.toLocaleString()}
+        </p>
+        <p className="text-card-gray font-black text-white">
+          {max?.toLocaleString()}
+        </p>
       </div>
     </div>
   );

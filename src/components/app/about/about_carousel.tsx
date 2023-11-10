@@ -4,7 +4,7 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { Button } from '../../ui/button';
-import Image from 'next/image';
+import NextImage from '~/components/ui/img';
 
 function AboutCarousel(props: any) {
   const { lang } = props;
@@ -129,7 +129,7 @@ function AboutCarousel(props: any) {
                 <div className="content">
                   <div className="content-overlay"></div>
                   <div className="w-full h-full">
-                    <Image
+                    <NextImage
                       src={item?.img}
                       alt="/"
                       className="w-full h-full object-contain"

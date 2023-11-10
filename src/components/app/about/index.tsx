@@ -1,13 +1,13 @@
-import Image from 'next/image';
 import AboutCarousel from './about_carousel';
 import { Button } from '~/components/ui/button';
+import NextImage from '~/components/ui/img';
 
 export default function AboutUs() {
   return (
     <div className="bg-background">
       <div className="w-full relative !h-[450px] md:!h-[550px] text-center">
         <div className="relative w-full h-full bg-black/50">
-          <Image
+          <NextImage
             src="https://media.winnar.com/upload/8d6ed34e-7362-4e98-8731-8f9d03c4bec7-WINNAR-04-small.png"
             alt="/"
             fill
@@ -119,7 +119,7 @@ export default function AboutUs() {
       </div>
 
       <div className="w-full relative h-[250px] lg:h-[550px] z-40 text-center">
-        <Image
+        <NextImage
           src="https://media.winnar.com/upload/about-background-2.png"
           alt="/"
           fill

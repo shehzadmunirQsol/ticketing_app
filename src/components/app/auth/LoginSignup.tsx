@@ -475,7 +475,7 @@ export default function LoginSignup() {
                             <SelectContent className="max-h-[300px] overflow-y-auto">
                               <SelectGroup>
                                 {countries &&
-                                  countries?.map((country, i) => {
+                                  countries?.map((country) => {
                                     return (
                                       <SelectItem key={country} value={country}>
                                         {country?.toUpperCase()}
@@ -575,8 +575,3 @@ export default function LoginSignup() {
     </section>
   );
 }
-const countryCode = [
-  {
-    code: '+971',
-  },
-];

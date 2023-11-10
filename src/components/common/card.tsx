@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import React, { useEffect, useRef } from 'react';
 import CarImage from '~/public/assets/card_image.png';
 import BottleImage from '~/public/assets/bottle.png';
@@ -9,8 +8,9 @@ import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
 import Link from 'next/link';
 import langContent from '~/locales';
+import NextImage from '../ui/img';
 
-interface cardInterface {
+interface CardInterface {
   class?: string;
   dir?: string;
   cash?: any;
@@ -21,7 +21,7 @@ interface cardInterface {
   type?: string;
 }
 
-function ProductCard(props: cardInterface) {
+function ProductCard(props: CardInterface) {
   const cardRef = useRef<HTMLDivElement>(null);
   const { lang } = useSelector((state: RootState) => state.layout);
 
@@ -79,7 +79,7 @@ function ProductCard(props: cardInterface) {
             ) : (
               ''
             )}
-            <Image
+            <NextImage
               width={550}
               height={450}
               className="w-full h-[180px] sm:h-[230px] object-cover bg-white"
@@ -88,7 +88,7 @@ function ProductCard(props: cardInterface) {
               alt="Sunset in the mountains"
             />
             <div className="absolute -bottom-8 left-4 rounded-full w-20 p-1 bg-gradient-to-b from-primary to-neutral-900">
-              <Image
+              <NextImage
                 className="w-full h-full object-cover  rounded-full bg-white"
                 src={BottleImage}
                 alt="Sunset in the mountains"

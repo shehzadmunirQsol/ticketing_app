@@ -32,7 +32,6 @@ import {
   TableRow,
 } from '@/ui/table';
 import { trpc } from '~/utils/trpc';
-import Image from 'next/image';
 import { displayDate, renderNFTImage } from '~/utils/helper';
 import Link from 'next/link';
 import { Switch } from '~/components/ui/switch';
@@ -53,6 +52,7 @@ import {
   DoubleArrowRightIcon,
 } from '@radix-ui/react-icons';
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
+import NextImage from '~/components/ui/img';
 export default function DataTableSpotLight() {
   const initialOrderFilters: any = {
     startDate: null,
@@ -109,7 +109,7 @@ export default function DataTableSpotLight() {
         return (
           <>
             <div className="flex items-center  gap-2">
-              <Image
+              <NextImage
                 className="object-contain bg-ac-2 h-10 w-16 rounded-lg"
                 src={renderNFTImage(payment)}
                 alt={row?.original?.name}

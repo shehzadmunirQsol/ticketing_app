@@ -1,5 +1,4 @@
 import React from 'react';
-import parse from 'html-react-parser';
 import langContent from '~/locales';
 import { RootState } from '~/store/store';
 import { useSelector } from 'react-redux';
@@ -8,9 +7,6 @@ const CompititionDetail = ({ data }: any) => {
   const { lang } = useSelector((state: RootState) => state.layout);
 
   const dataCode: any = data?.EventDescription[0].comp_details;
-  const reactElementsForCompDetail = parse(dataCode || '', {
-    replace: (node: any) => node,
-  });
 
   return (
     <section id="CompititionDetail">

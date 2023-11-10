@@ -5,7 +5,6 @@ import Glow from '~/components/common/glow';
 import { RootState } from '~/store/store';
 import { trpc } from '~/utils/trpc';
 import FeaturedCars from './featured_cars';
-import Testimonials from '../home/testimonials';
 import langContent from '~/locales';
 import ProductSection from '../home/product_section';
 

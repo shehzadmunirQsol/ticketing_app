@@ -1,28 +1,24 @@
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React from 'react';
 import { trpc } from '~/utils/trpc';
 import LogoImage from '~/public/assets/logo.png';
-import Image from 'next/image';
 import { displayDate } from '~/utils/helper';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 import { LoadingDialog } from '~/components/common/modal/loadingModal';
-import { Separator } from '~/components/ui/separator';
+import NextImage from '~/components/ui/img';
 
 export default function OrderView() {
   const router = useRouter();
   const { index } = router.query;
   const initialOrderFilters: any = {};
   if (index) initialOrderFilters.order_id = +index;
-  const {
-    data: OrderApiData,
-    isFetched,
-    isLoading,
-  } = trpc.order.getByID.useQuery(initialOrderFilters, {
-    refetchOnWindowFocus: false,
-
-    enabled: index ? true : false,
-  });
-  console.log({ OrderApiData });
+  const { data: OrderApiData, isLoading } = trpc.order.getByID.useQuery(
+    initialOrderFilters,
+    {
+      refetchOnWindowFocus: false,
+      enabled: index ? true : false,
+    },
+  );
 
   return (
     <div className="relative p-8 space-y-8 ">
@@ -30,7 +26,7 @@ export default function OrderView() {
         <div className="bg-white rounded-lg shadow-lg px-8 py-10 max-w-xl mx-auto">
           <div className="flex flex-col md:flex-row items-center justify-between mb-8">
             <div className="flex items-center">
-              <Image
+              <NextImage
                 className="h-16  object-contain mr-2"
                 src={LogoImage}
                 alt="Logo"
@@ -108,7 +104,6 @@ export default function OrderView() {
           </ScrollArea>
 
           <div className=" flex justify-between items-center">
-
             <div>
               <div className="flex justify-between items-center mb-6">
                 <div className="text-gray-700 mr-2">Subtotal:</div>
@@ -126,7 +121,6 @@ export default function OrderView() {
                 </div>
               )}
 
-              
               <div className="flex justify-between items-center mb-6 border-t-2  border-gray-300">
                 <div className="text-gray-700 mr-2">Total:</div>
                 <div className="text-gray-700 font-bold text-xl">
@@ -146,7 +140,7 @@ export default function OrderView() {
             <div className="text-gray-700">
               123 Main St., Anytown, USA 12345
             </div>
-          </div> 
+          </div>
         </div>
       )}
       <LoadingDialog open={isLoading} text={'Loading data...'} />

@@ -1,17 +1,16 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import BottleImage from '~/public/assets/bottle.png';
-import Image from 'next/image';
+import NextImage from '@/ui/img';
 import { Button } from '~/components/ui/button';
 import { renderNFTImage } from '~/utils/helper';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-
 import 'photoswipe/dist/photoswipe.css';
 import { Gallery, Item } from 'react-photoswipe-gallery';
 
 function SampleNextArrow(props: any) {
-  const { className, style, onClick } = props;
+  const { onClick } = props;
   return (
     <Button
       variant="rounded"
@@ -24,7 +23,7 @@ function SampleNextArrow(props: any) {
 }
 
 function SamplePrevArrow(props: any) {
-  const { className, style, onClick } = props;
+  const { onClick } = props;
   return (
     <Button
       variant="rounded"
@@ -38,12 +37,7 @@ function SamplePrevArrow(props: any) {
 
 const BannerSlider = ({ data }: any) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [showElement, setShowElement] = useState(false);
-  console.log(currentIndex, 'currentIndexcurrentIndexcurrentIndex');
-
   // FOR ANIMATION IN THE
-
-  const slide = useRef<any>(null);
 
   let eventImages: any = [];
 
@@ -55,7 +49,7 @@ const BannerSlider = ({ data }: any) => {
     customPaging: function (i: number) {
       return (
         <a className="h-20 w-28 cursor-pointer ">
-          <Image
+          <NextImage
             alt="feature"
             src={renderNFTImage(eventImages[i + 1])}
             width={1000}
@@ -109,7 +103,7 @@ const BannerSlider = ({ data }: any) => {
                         onClick={open}
                         className="h-[18rem] lg:h-[28rem] relative"
                       >
-                        <Image
+                        <NextImage
                           alt="feature"
                           src={renderNFTImage(item)}
                           width={5000}
@@ -126,7 +120,7 @@ const BannerSlider = ({ data }: any) => {
         </Gallery>
       </div>
       <div className="bottlebx absolute lg:right-10 md:right-10 right-4 rounded-full w-14 p-1 bg-gradient-to-b from-primary to-neutral-900">
-        <Image
+        <NextImage
           className="w-14 h-12  lg:w-full lg:h-full object-cover  rounded-full bg-white"
           src={BottleImage}
           alt="Sunset in the mountains"
