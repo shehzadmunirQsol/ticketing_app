@@ -169,7 +169,7 @@ const Counter: React.FC<CounterProps> = ({
           <p className="lg:text-3xl text-xl pl-0 text-primary font-bold pt-2">
             AED {(price ?? 0)?.toLocaleString()}
           </p>
-          <div className="mt-3">
+          <div className="mt-3 mobfixedbtn">
             <Button
               className="w-full text-black font-sans font-bold h-10 md:h-12 text-base md:text-lg"
               variant="clip"

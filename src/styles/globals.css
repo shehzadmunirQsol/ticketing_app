@@ -964,7 +964,7 @@ input[type='number'] {
 }
 
 .bottlebx {
-  padding: 5px;
+  padding: 4px;
   width: 56px;
   height: 56px;
   border-radius: 50%;
@@ -981,6 +981,13 @@ input[type='number'] {
   width: 100%;
   height: 100%;
   border-radius: 50%;
+}
+.bottlebx.prodbottle {
+width: 72px;
+height: 72px;
+right: auto !important;
+left: 20px;
+bottom: -30px;
 }
 .capchabx iframe {
   height: 74px !important;
@@ -1347,6 +1354,13 @@ input[type='number'] {
   bottom: 10px;
   right: 10px;
 }
+.bottlebx.prodbottle {
+  padding: 2px;
+  width: 42px;
+  height: 42px;
+  left: 20px;
+  bottom: -15px;
+  }
 .mobmb-1 {
   margin-bottom: -1px;
 }
@@ -1368,6 +1382,14 @@ input:checked + section.box {
 }
 .highlightbx {
   min-width: 65px;
+}
+.mobfixedbtn {
+  position: fixed;
+  width: 100%;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9;
 }
 }
 

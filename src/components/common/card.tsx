@@ -86,16 +86,15 @@ function ProductCard(props: cardInterface) {
               quality={100}
               alt="Sunset in the mountains"
             />
-            <div className="absolute -bottom-8 left-4 rounded-full w-20 p-1 bg-gradient-to-b from-primary to-neutral-900">
+            <div className="bottlebx prodbottle">
               <Image
-                className="w-full h-full object-cover  rounded-full bg-white"
                 src={BottleImage}
                 alt="Sunset in the mountains"
               />
             </div>
           </div>
 
-          <div className="px-6 mt-6 py-4">
+          <div className="px-6 py-4 mt-2 md:mt-6">
             <div className="flex flex-col gap-1 mb-2">
               <div className="flex justify-between items-center gap-3 mb-2">
                 <span className=" text-xs text-gray-300">
