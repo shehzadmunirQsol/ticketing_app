@@ -120,20 +120,19 @@ function ProductCard(props: cardInterface) {
                 className="w-full"
               />
             </div>
-            <div className="font-bold overflow-hidden h-13 md:h-20 text-xl lg:text-2xl xl:text-3xl line-clamp-1">
+            <div className="font-bold overflow-hidden h-16 md:h-20 text-xl lg:text-2xl xl:text-3xl line-clamp-1">
               {langContent[lang.lang].Index.productcard.WIN_TITLE ?? ''}
               <span className="text-gray-200  font-semibold mx-2 ">
                 {props?.data?.EventDescription[0]?.name}
               </span>
             </div>
             <div className="relative w-full opacity-75  text-gray-200 text-md text-xs md:text-base font-light sm:font-normal leading-normal">
-              <p className="h-12 overflow-hidden">
+              <p className="h-9 md:h-12 overflow-hidden">
                 {customTruncate(props?.data?.EventDescription[0]?.desc, 100)}
               </p>
             </div>
             <hr className=" opacity-20 mt-4" />
 
-            {props?.data?.category_id === 1 && props?.data?.cash_alt ? (
               <div className="h-15 md:h-6 overflow-hidden mt-2">
                 <span className="text-gray-200 text-md text-sm xl:text-lg font-semibold leading-[18px]">
                   {langContent[lang.lang].Index.productcard.ALTERNATIVE_TITLE}
@@ -144,17 +143,14 @@ function ProductCard(props: cardInterface) {
                   AED {(props?.data?.cash_alt ?? 0)?.toLocaleString()}
                 </span>
               </div>
-            ) : (
-              spaceElement
-            )}
 
-            <div className="flex  justify-between items-center mt-4 sm:mt-8 gap-4">
+            <div className="flex  justify-between items-center mt-3 sm:mt-8 gap-4">
               <div className="text-primary text-xl md:text-2xl font-[500] leading-[18px]">
                 AED {props?.data?.price}
               </div>
               <Button
                 variant="rounded"
-                className="font-[700] sm:font-[800] tracking-tight text-md text-sm md:text-base xl:text-lg "
+                className="font-[700] sm:font-[800] tracking-tight text-md text-sm md:text-base xl:text-lg h-8 md:h-10"
               >
                 {langContent[lang.lang].Index.productcard.ENTER_BTN}
               </Button>

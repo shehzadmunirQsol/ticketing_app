@@ -1185,6 +1185,9 @@ input[type='number'] {
   color: #fff !important;
   border: 1px solid hsl(var(--input-card)) !important;
 }
+.z-99 {
+  z-index: 99;
+}
 
 
 @media only screen and (max-width: 1024px) {
@@ -1233,6 +1236,9 @@ input[type='number'] {
 .herobanner .leftbx h4 {
   font-size: 16px;
   margin-top: 10px;
+}
+.herobanner .leftbx .winbtn {
+  margin-top: 0;
 }
 .dblogo img {
   width: 180px;
