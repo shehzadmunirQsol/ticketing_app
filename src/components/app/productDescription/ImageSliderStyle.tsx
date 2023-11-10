@@ -19,9 +19,10 @@ const ImageSliderStyle = ({ data }: any) => {
   if (data?.EventImages?.length) {
     eventImages = [{ thumb: data?.thumb }, ...data?.EventImages];
   }
-
-  const slidermain = useRef();
-  const sliderthumb = useRef();
+ 
+  const slidermain = useRef<any>(null);
+  const sliderthumb = useRef<any>(null);
+ 
 
   const productslide = {
     asNavFor: sliderthumb.current,
