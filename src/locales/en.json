@@ -201,7 +201,7 @@
   "Header":{
       "title_one":"Cars",
       "title_two":"Cash",
-      "title_three":"Winners",
+      "title_three":"Winnar",
       "title_four":"About Us",
       "title_five":"Contact Us",
       "title_six":"Cart",
@@ -217,7 +217,7 @@
           "link": "/cash"
         },
         {
-          "name": "Winners",
+          "name": "Winnar",
           "link": "/winners"
         },
         {
@@ -249,7 +249,7 @@
         "link": "/cash"
       },
       {
-        "name": "Winners",
+        "name": "Winnar",
         "link": "/winners"
       },
       {
@@ -292,7 +292,7 @@
     "HEADING":"CASH"
   },
   "Winners":{
-    "HEADING":"WINNERS",
+    "HEADING":"Winnar",
     "WINNER_HEADING":"Won",
     "WINNER_TICKET":"Winning ticket",
     "WINNER_DATE":"Draw date",

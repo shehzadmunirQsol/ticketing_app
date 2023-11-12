@@ -15,6 +15,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { trpc } from '~/utils/trpc';
 import SideImage from '../../common/SideImage';
+import Image from 'next/image';
 import {
   signupCustomerInput,
   loginCustomerInput,
@@ -25,6 +26,8 @@ import { useToast } from '~/components/ui/use-toast';
 import Link from 'next/link';
 import { ForgotPasswordDailog } from './ForgotPassword';
 import CarImage from '../../../public/assets/CarLogin.svg';
+import EyeOpen from '../../../public/assets/eye-open.png';
+import EyeClose from '../../../public/assets/eye-close.png';
 import { userAuth } from '~/store/reducers/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import { OtpVerificationDailog } from './otp-verification';
@@ -50,6 +53,12 @@ import countryJSON from '~/data/countries.json';
 const countries = countryJSON.map((item) => item.country);
 
 export default function LoginSignup() {
+
+  const [showPassword, setShowPassword] = useState(false);
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   const { lang } = useSelector((state: RootState) => state.layout);
 
   const { toast } = useToast();
@@ -259,13 +268,25 @@ export default function LoginSignup() {
                         <FormLabel className="text-xs font-thin text-grayColor">
                           Password <sup className="">*</sup>
                         </FormLabel>
-                        <FormControl>
+                        <FormControl className="relative">
+                          <div>
                           <Input
-                            type="password"
+                            type={showPassword ? 'text' : 'password'}
                             placeholder="Enter Your Password"
                             {...field}
                             className="rounded-md"
                           />
+                          <div
+                            className="eyeicon"
+                            onClick={togglePasswordVisibility}
+                          >
+                            {showPassword ? (
+                              <Image src={EyeOpen} alt="img" />
+                            ) : (
+                              <Image src={EyeClose} alt="img" />
+                            )}
+                          </div>
+                          </div>
                         </FormControl>
                         <div className="relative pb-2 errormsg">
                           <FormMessage />
@@ -352,8 +373,6 @@ export default function LoginSignup() {
                         Phone Number <sup className="">*</sup>
                       </FormLabel>
                       <div className="flex flex-row gap-2 mt-2 ">
-                        
-
                       <FormField
                           control={formSignup.control}
                           name="code"
@@ -389,12 +408,6 @@ export default function LoginSignup() {
                           )}
                         />
 
-                      
-
-
-
-
-
                         {/* <FormField
                           control={formSignup.control}
                           name="code"
@@ -413,7 +426,6 @@ export default function LoginSignup() {
                             </FormItem>
                           )}
                         /> */}
-
 
                         <FormField
                           control={formSignup.control}
@@ -438,68 +450,6 @@ export default function LoginSignup() {
                         />
                       </div>
                     </div>
-
-                    <FormField
-                      control={formSignup.control}
-                      name="gender"
-                      render={({ field }) => (
-                        <FormItem className="w-full">
-                          <FormLabel className="text-xs font-thin text-grayColor">
-                            Gender <sup className="">*</sup>
-                          </FormLabel>
-                          <Select
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                            value={field.value}
-                          >
-                            <FormControl>
-                              <SelectTrigger className=" h-10  bg-inputColor">
-                                <SelectValue placeholder={`Select Gender`} />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              <SelectGroup>
-                                <SelectItem value={'male'}>{'Male'}</SelectItem>
-                                <SelectItem value={'female'}>
-                                  {'Female'}
-                                </SelectItem>
-                              </SelectGroup>
-                            </SelectContent>
-                          </Select>
-                          <div className="relative pb-2 errormsg">
-                            <FormMessage />
-                          </div>
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-
-                  <div className="flex flex-col sm:flex-row justify-center items-center md:gap-4">
-                    <FormField
-                      control={formSignup.control}
-                      name="dob"
-                      render={({ field }) => (
-                        <FormItem className="w-full">
-                          <FormLabel className="text-xs font-thin text-grayColor">
-                            Date of Birth <sup className="">*</sup>
-                          </FormLabel>
-                          <FormControl>
-                            <Input
-                              type={'date'}
-                              placeholder={'Enter DOB'}
-                              max={minDateFormatted}
-                              className="rounded-md "
-                              {...formSignup.register('dob', {
-                                valueAsDate: true,
-                              })}
-                            />
-                          </FormControl>
-                          <div className="relative pb-2 errormsg">
-                            <FormMessage />
-                          </div>
-                        </FormItem>
-                      )}
-                    />
 
                     <FormField
                       control={formSignup.control}
@@ -543,6 +493,70 @@ export default function LoginSignup() {
                       )}
                     />
                   </div>
+
+                  <div className="flex flex-col sm:flex-row justify-center items-center md:gap-4">
+                    <FormField
+                      control={formSignup.control}
+                      name="dob"
+                      render={({ field }) => (
+                        <FormItem className="w-full">
+                          <FormLabel className="text-xs font-thin text-grayColor">
+                            Date of Birth <sup className="">*</sup>
+                          </FormLabel>
+                          <FormControl>
+                            <Input
+                              type={'date'}
+                              placeholder={'Enter DOB'}
+                              max={minDateFormatted}
+                              className="rounded-md "
+                              {...formSignup.register('dob', {
+                                valueAsDate: true,
+                              })}
+                            />
+                          </FormControl>
+                          <div className="relative pb-2 errormsg">
+                            <FormMessage />
+                          </div>
+                        </FormItem>
+                      )}
+                    />
+
+<FormField
+                      control={formSignup.control}
+                      name="gender"
+                      render={({ field }) => (
+                        <FormItem className="w-full">
+                          <FormLabel className="text-xs font-thin text-grayColor">
+                            Gender <sup className="">*</sup>
+                          </FormLabel>
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                            value={field.value}
+                          >
+                            <FormControl>
+                              <SelectTrigger className=" h-10  bg-inputColor">
+                                <SelectValue placeholder={`Select Gender`} />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              <SelectGroup>
+                                <SelectItem value={'male'}>{'Male'}</SelectItem>
+                                <SelectItem value={'female'}>
+                                  {'Female'}
+                                </SelectItem>
+                              </SelectGroup>
+                            </SelectContent>
+                          </Select>
+                          <div className="relative pb-2 errormsg">
+                            <FormMessage />
+                          </div>
+                        </FormItem>
+                      )}
+                    />
+
+                    
+                  </div>
                   <FormField
                     control={formSignup.control}
                     name="email"
@@ -573,13 +587,25 @@ export default function LoginSignup() {
                         <FormLabel className="text-xs font-thin text-grayColor">
                           Password <sup className="">*</sup>
                         </FormLabel>
-                        <FormControl>
+                        <FormControl className="relative">
+                          <div>
                           <Input
-                            type="password"
-                            placeholder="Enter your password"
+                            type={showPassword ? 'text' : 'password'}
+                            placeholder="Enter Your Password"
                             {...field}
                             className="rounded-md"
                           />
+                          <div
+                            className="eyeicon"
+                            onClick={togglePasswordVisibility}
+                          >
+                            {showPassword ? (
+                              <Image src={EyeOpen} alt="img" />
+                            ) : (
+                              <Image src={EyeClose} alt="img" />
+                            )}
+                          </div>
+                          </div>
                         </FormControl>
                         <div className="relative pb-2 errormsg">
                           <FormMessage />

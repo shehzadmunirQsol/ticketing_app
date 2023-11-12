@@ -287,13 +287,8 @@ export const addCustomerAddress = z.object({
     })
     .trim(),
   postal_code: z
-    .string({
-      required_error: 'Please enter your postal code',
-      invalid_type_error: 'Please enter your postal code',
-    })
-    .min(1, {
-      message: 'Please enter your postal code',
-    }),
+  .string()
+  .optional(),
 });
 export const updateCustomerAddress = z.object({
   id: z.number().optional(),

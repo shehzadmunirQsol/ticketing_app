@@ -573,7 +573,7 @@ function Checkout() {
                       render={({ field }) => (
                         <FormItem className=" w-full ">
                           <FormLabel className="text-sm text-cardGray">
-                            Postcode <sup className="text-red-500">*</sup>
+                          P.O. Box
                           </FormLabel>
                           <FormControl className="rounded-md bg-inputColor">
                             <Input

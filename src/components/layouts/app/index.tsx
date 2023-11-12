@@ -141,6 +141,7 @@ function Index({ children }: DefaultLayoutProps) {
           {children}
           <LoadingDialog open={createCart.isLoading} text={'Loading...'} />
           <Footer />
+          <SignUpSticky / >
           <CookiesLabel />
         </>
       ) : (
@@ -169,24 +170,61 @@ function CookiesLabel() {
 
   return (
     <div
-      className={`${
-        isAccepted ? 'hidden' : 'block'
-      } z-[999999] shadow-lg w-full fixed bottom-0 bg-background-footer space-y-2 px-4 py-4 sm:px-14`}
-    >
-      <h3 className="text-lg sm:text-xl">Cookies on this site</h3>
-      <p>
-        We use cookies to provide a better user experience. By using our site,
-        you agree to our use of cookies. See our{' '}
-        <Link className="text-primary" href="/privacy-policy">
-          Privacy Policy
-        </Link>{' '}
-        to learn more.
-      </p>
-      <div className="flex gap-2">
-        <Button onClick={() => setIsAccepted(true)} variant="secondary">
-          Close
-        </Button>
-        <Button onClick={setCookiesHandler}>Accept All Cookies</Button>
+      className={`${ isAccepted ? 'hidden' : 'block' } cookiesec`}>
+      <div className="mycontainer px-2 md:px-12">
+        <div className="row align-items-center">
+          <div className="col">  
+            <h3>Cookie Policy</h3>
+            <p>Should you choose to proceed in accessing this website, non-permanent cookies will be placed on your computer to enhance your experience whilst using the site. If you do not wish to have such non-permanent cookies placed on your computer please exit the site now. Alternatively, please click Accept All Cookies to proceed.</p>     
+          </div>
+          <div className="col-auto mt-3 md:mt-0">  
+          <div className="winbtn winbtnormal font-sans"  onClick={setCookiesHandler} role="button" tabIndex={0}>
+            Accept All Cookies
+          </div>
+          {/* <div className="winbtn winbtnormal font-sans" onClick={() => setIsAccepted(true)} role="button" tabIndex={0}>
+            Close
+          </div>  */}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+function SignUpSticky() {
+  const [isSignup, setIsSignup] = useState(true);
+
+  useEffect(() => {
+    const isSignupCookieAccepted =
+      localStorage.getItem('signup-cookies') === 'accepted';
+      setIsSignup(isSignupCookieAccepted);
+  }, []);
+
+  function setSignupHandler() {
+    setIsSignup(true);
+    localStorage.setItem('signup-cookies', 'accepted');
+  }
+
+  return (
+    <div className={`${ isSignup ? 'hidden' : 'block' } cookiesec`}>
+
+
+<div className="mycontainer px-2 md:px-12">
+        <div className="row align-items-center justify-content-center">
+          <div className="col-auto">  
+            <h3>SignUp</h3>
+            <p>Please Signup for Winnar.</p>     
+          </div>
+          <div className="col-auto mt-3 md:mt-0">  
+        <Link href="/login" className="winbtn winbtnormal font-sans">
+        Signup
+        </Link>
+          <div className="winbtn winbtnormal font-sans"  onClick={setSignupHandler} role="button" tabIndex={0}>
+            Close
+          </div>
+          </div>
+        </div>
       </div>
     </div>
   );

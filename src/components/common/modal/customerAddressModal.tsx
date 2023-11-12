@@ -207,13 +207,13 @@ export function AddCustomerAddressDialog(props: SelectCustomerInterface) {
                     render={() => (
                       <FormItem className=" w-full mb-2">
                         <FormLabel className="text-sm text-cardGray ">
-                          Postal Code <sup className="text-red-500">*</sup>
+                        P.O. Box 
                         </FormLabel>
                         <FormControl>
                           <Input
                             type="text"
                             className='rounded-md'
-                            placeholder="Enter Postal Code"
+                            placeholder="Enter P.O. Box"
                             {...form.register('postal_code')}
                           />
                         </FormControl>
