@@ -77,10 +77,10 @@ function ProductSection(props: productInterface) {
     dots: false,
     infinite: false,
     speed: 500,
-    slidesToShow:
-      props?.slidesToShow && products.length > props?.slidesToShow
-        ? props?.slidesToShow
-        : products.length,
+    // slidesToShow: props?.slidesToShow && products.length > props?.slidesToShow
+    //     ? props?.slidesToShow
+    //     : products.length,
+    slidesToShow: 3,
     slidesToScroll: 1,
     arrows: false,
     centerMode: false,

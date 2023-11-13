@@ -228,7 +228,7 @@ export function ItemMenuDemo() {
       icon: 'fa-solid fa-globe',
     },
     {
-      name: 'Winners',
+      name: 'Winnars',
       link: `/#`,
       icon: 'fa-sharp fa-regular fa-images',
     },
