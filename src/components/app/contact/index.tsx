@@ -38,6 +38,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import ReCAPTCHA from 'react-google-recaptcha';
 import NextImage from '~/components/ui/img';
 
+import { PhoneInput } from 'react-international-phone';
+import 'react-international-phone/style.css';
+
 export default function Contact() {
   const { toast } = useToast();
   const router = useRouter();
@@ -233,13 +236,21 @@ export default function Contact() {
                       name="code"
                       render={({ field }) => (
                         <FormItem>
-                          <Input
+
+                          <PhoneInput
+                            className="rounded-md countrycode"
+                            defaultCountry="ae"
+                            inputProps={{ maxLength: 4, placeholder:"+971", ...field }} 
+                            {...field} 
+                          /> 
+
+                          {/* <Input
                             type="text"
                             className="rounded-md w-20 bg-inputColor"
                             placeholder="+971"
                             maxLength={4}
                             {...field}
-                          />
+                          /> */}
                           <div className="relative pb-2 errormsg">
                             <FormMessage />
                           </div>

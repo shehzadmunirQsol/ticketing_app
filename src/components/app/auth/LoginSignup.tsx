@@ -383,7 +383,7 @@ export default function LoginSignup() {
                               <PhoneInput
                                 className="rounded-md countrycode"
                                 defaultCountry="ae"
-                                inputProps={{ maxLength: 4, ...field }} 
+                                inputProps={{ maxLength: 4, placeholder:"+971", ...field }} 
                                 {...field} 
                               /> 
 
