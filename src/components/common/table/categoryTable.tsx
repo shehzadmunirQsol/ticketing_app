@@ -33,7 +33,6 @@ import {
 import LanguageSelect, { LanguageInterface } from '../language_select';
 import { GetCategorySchema } from '~/schema/category';
 import { trpc } from '~/utils/trpc';
-import Image from 'next/image';
 import { renderNFTImage } from '~/utils/helper';
 import Link from 'next/link';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
@@ -50,6 +49,7 @@ import {
   DoubleArrowRightIcon,
 } from '@radix-ui/react-icons';
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
+import NextImage from '~/components/ui/img';
 
 export type Category = {
   thumb: string;
@@ -67,7 +67,7 @@ export const columns: ColumnDef<Category>[] = [
     cell: ({ row }) => {
       return (
         <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
-          <Image
+          <NextImage
             className="object-cover bg-ac-2 h-10 w-16 rounded-lg"
             src={renderNFTImage(row.original)}
             alt={row?.original?.name}
@@ -104,7 +104,7 @@ export const columns: ColumnDef<Category>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <Link href={`/admin/category/edit/${row?.original?.id}`}>
-              <DropdownMenuItem>Edit Category</DropdownMenuItem>
+              <DropdownMenuItem>Edit </DropdownMenuItem>
             </Link>
           </DropdownMenuContent>
         </DropdownMenu>

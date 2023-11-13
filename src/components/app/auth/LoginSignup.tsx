@@ -41,6 +41,11 @@ import {
 import langContent from '~/locales';
 import { RootState } from '~/store/store';
 
+
+import { PhoneInput } from 'react-international-phone';
+import 'react-international-phone/style.css';
+
+
 import countryJSON from '~/data/countries.json';
 const countries = countryJSON.map((item) => item.country);
 
@@ -99,13 +104,14 @@ export default function LoginSignup() {
   });
 
   // login customer
-  const loginCustomer = trpc.customer.loginCustomer.useMutation({});
+  const loginCustomer = trpc.customer.loginCustomer.useMutation();
 
   // Signup
   const onSubmitSignup = async (values: any) => {
     try {
+      const payload = { ...values, email: values.email.toLowerCase().trim() };
       formLogin.reset();
-      await registerCustomer.mutateAsync(values);
+      await registerCustomer.mutateAsync(payload);
       setOtpIsModal(true);
     } catch (e: any) {
       setOtpIsModal(false);
@@ -140,18 +146,25 @@ export default function LoginSignup() {
     }
 
     try {
-      formSignup.reset();
-      const loginResult = await loginCustomer.mutateAsync(values);
+      const payload = { ...values, user: values.user.toLowerCase().trim() };
 
+      formSignup.reset();
+      const loginResult = await loginCustomer.mutateAsync(payload);
+
+      localStorage.setItem('winnar-token', loginResult.jwt);
       dispatch(userAuth(loginResult?.user));
       toast({
         variant: 'success',
         title: 'Login Successfully ',
       });
 
-      router.back();
+      if (window.history.length > 2) {
+        router.back();
+      } else {
+        router.replace('/');
+      }
     } catch (e: any) {
-      if (e.shape.message == 'Your Account is Not Verified') {
+      if (e?.shape?.message == 'Your Account is Not Verified') {
         setOtpIsModal(true);
       } else {
         setOtpIsModal(false);
@@ -188,16 +201,16 @@ export default function LoginSignup() {
           defaultValue={defaultValue === 'login' ? 'login' : 'signup'}
           className="flex flex-col flex-wrap  w-full  lg:text-left  rounded-none border-none   bg-card "
         >
-          <TabsList className=" w-full rounded-none border-none ">
+          <TabsList className=" w-full rounded-none border-none shadow-none">
             <TabsTrigger
               value="login"
-              className="w-full font-black text-md -mt-1 font-sans rounded-none border-none m-0  "
+              className="w-full font-black text-md -mt-1 font-sans rounded-none border-none m-0 shadow-none"
             >
               {langContent[lang.lang].Auth.TAB_LOGIN}
             </TabsTrigger>
             <TabsTrigger
               value="signup"
-              className="w-full font-sans text-md font-black"
+              className="w-full font-sans text-md font-black shadow-none"
             >
               {langContent[lang.lang].Auth.TAB_REGISTER}
             </TabsTrigger>
@@ -206,14 +219,14 @@ export default function LoginSignup() {
             <Form {...formLogin}>
               <form
                 onSubmit={formLogin.handleSubmit(onSubmitLogin)}
-                className="justify-center items-center px-2 lg:px-8 py-4 space-y-4 w-full h-full"
+                className="justify-center items-center px-2 lg:px-8 pb-4 pt-2 sm:py-4 space-y-4 w-full h-full"
               >
                 <div className="w-full">
                   <FormField
                     control={formLogin.control}
                     name="user"
                     render={({ field }) => (
-                      <FormItem className="mb-4">
+                      <FormItem className="">
                         <FormLabel className="text-xs font-thin text-grayColor">
                           Email address <sup className="">*</sup>
                         </FormLabel>
@@ -221,11 +234,18 @@ export default function LoginSignup() {
                           <Input
                             type="text"
                             placeholder="Enter Email Address"
-                            {...field}
+                            {...formLogin.register('user', {
+                              onChange(event) {
+                                formLogin.setValue(
+                                  'user',
+                                  event?.target?.value?.trim(),
+                                );
+                              },
+                            })}
                             className="rounded-md"
                           />
                         </FormControl>
-                        <div className="relative pb-2">
+                        <div className="relative pb-2 errormsg">
                           <FormMessage />
                         </div>
                       </FormItem>
@@ -235,7 +255,7 @@ export default function LoginSignup() {
                     control={formLogin.control}
                     name="password"
                     render={({ field }) => (
-                      <FormItem className="mb-6">
+                      <FormItem className="">
                         <FormLabel className="text-xs font-thin text-grayColor">
                           Password <sup className="">*</sup>
                         </FormLabel>
@@ -247,14 +267,14 @@ export default function LoginSignup() {
                             className="rounded-md"
                           />
                         </FormControl>
-                        <div className="relative pb-2">
+                        <div className="relative pb-2 errormsg">
                           <FormMessage />
                         </div>
                       </FormItem>
                     )}
                   />
                 </div>
-                <div className="flex flex-col md:flex-row   justify-end items-center gap-6 ">
+                <div className="flex flex-col md:flex-row   justify-end items-center gap-4 ">
                   <p
                     className="underline text-xs lg:text-base md:text-base my-auto ltr:self-start rtl:self-end  cursor-pointer"
                     onClick={() => setIsModal(true)}
@@ -271,19 +291,20 @@ export default function LoginSignup() {
               </form>
             </Form>
           </TabsContent>
+
           <TabsContent value="signup">
             <Form {...formSignup}>
               <form
                 onSubmit={formSignup.handleSubmit(onSubmitSignup)}
-                className=" justify-center items-center px-2 lg:px-8 py-4 space-y-4 w-full h-full"
+                className=" justify-center items-center px-2 lg:px-8 py-4 space-y-2 w-full h-full"
               >
                 <div className="">
-                  <div className="flex flex-col sm:flex-row justify-center items-center gap-2">
+                  <div className="flex flex-col sm:flex-row justify-center items-center md:gap-4">
                     <FormField
                       control={formSignup.control}
                       name="first_name"
                       render={({ field }) => (
-                        <FormItem className="mb-4  w-full">
+                        <FormItem className="w-full">
                           <FormLabel className="text-xs font-thin text-grayColor">
                             First Name <sup className="">*</sup>
                           </FormLabel>
@@ -295,7 +316,7 @@ export default function LoginSignup() {
                               className="rounded-md"
                             />
                           </FormControl>
-                          <div className="relative pb-2">
+                          <div className="relative pb-2 errormsg">
                             <FormMessage />
                           </div>
                         </FormItem>
@@ -305,7 +326,7 @@ export default function LoginSignup() {
                       control={formSignup.control}
                       name="last_name"
                       render={({ field }) => (
-                        <FormItem className="mb-4 w-full">
+                        <FormItem className=" w-full">
                           <FormLabel className="text-xs font-thin text-grayColor">
                             Last Name <sup className="">*</sup>
                           </FormLabel>
@@ -317,7 +338,7 @@ export default function LoginSignup() {
                               className="rounded-md"
                             />
                           </FormControl>
-                          <div className="relative pb-2">
+                          <div className="relative pb-2 errormsg">
                             <FormMessage />
                           </div>
                         </FormItem>
@@ -325,13 +346,56 @@ export default function LoginSignup() {
                     />
                   </div>
 
-                  <div className="flex flex-col sm:flex-row justify-center items-start gap-2">
+                  <div className="flex flex-col sm:flex-row justify-center items-start md:gap-4">
                     <div className="w-full">
                       <FormLabel className="text-xs font-thin text-grayColor">
                         Phone Number <sup className="">*</sup>
                       </FormLabel>
                       <div className="flex flex-row gap-2 mt-2 ">
-                        <FormField
+                        
+
+                      <FormField
+                          control={formSignup.control}
+                          name="code"
+                          render={({ field }) => (
+                            <FormItem>
+
+                              <PhoneInput
+                                className="rounded-md countrycode"
+                                defaultCountry="ae"
+                                inputProps={{ maxLength: 4, ...field }} 
+                                {...field} 
+                              /> 
+
+                              {/* <PhoneInput
+                                className="rounded-md w-20 "
+                                defaultCountry="ae"
+                                name="code"
+                                value={formSignup.getValues('code')}
+                                onChange={(event) => {
+                                  console.log(event); 
+                                  formSignup.setValue(
+                                    'code',
+                                    event.trim(),
+                                  )
+                                }}
+                                inputProps={{ maxLength: 4 }} 
+                              />  */}
+
+                              <div className="relative pb-2 errormsg">
+                                <FormMessage />
+                              </div>
+                            </FormItem>
+                          )}
+                        />
+
+                      
+
+
+
+
+
+                        {/* <FormField
                           control={formSignup.control}
                           name="code"
                           render={({ field }) => (
@@ -340,15 +404,17 @@ export default function LoginSignup() {
                                 type="text"
                                 className="rounded-md w-20 "
                                 placeholder="+971"
-                                maxLength={5}
+                                maxLength={4}
                                 {...field}
                               />
-                              <div className="relative pb-2">
+                              <div className="relative pb-2 errormsg">
                                 <FormMessage />
                               </div>
                             </FormItem>
                           )}
-                        />
+                        /> */}
+
+
                         <FormField
                           control={formSignup.control}
                           name="phone_number"
@@ -364,7 +430,7 @@ export default function LoginSignup() {
                                 />
                               </FormControl>
 
-                              <div className="relative pb-2">
+                              <div className="relative pb-2 errormsg">
                                 <FormMessage />
                               </div>
                             </FormItem>
@@ -377,7 +443,7 @@ export default function LoginSignup() {
                       control={formSignup.control}
                       name="gender"
                       render={({ field }) => (
-                        <FormItem className="mb-4  w-full">
+                        <FormItem className="w-full">
                           <FormLabel className="text-xs font-thin text-grayColor">
                             Gender <sup className="">*</sup>
                           </FormLabel>
@@ -400,7 +466,7 @@ export default function LoginSignup() {
                               </SelectGroup>
                             </SelectContent>
                           </Select>
-                          <div className="relative pb-2">
+                          <div className="relative pb-2 errormsg">
                             <FormMessage />
                           </div>
                         </FormItem>
@@ -408,12 +474,12 @@ export default function LoginSignup() {
                     />
                   </div>
 
-                  <div className="flex flex-col sm:flex-row justify-center items-center gap-2">
+                  <div className="flex flex-col sm:flex-row justify-center items-center md:gap-4">
                     <FormField
                       control={formSignup.control}
                       name="dob"
                       render={({ field }) => (
-                        <FormItem className="mb-4 w-full">
+                        <FormItem className="w-full">
                           <FormLabel className="text-xs font-thin text-grayColor">
                             Date of Birth <sup className="">*</sup>
                           </FormLabel>
@@ -428,7 +494,7 @@ export default function LoginSignup() {
                               })}
                             />
                           </FormControl>
-                          <div className="relative pb-2">
+                          <div className="relative pb-2 errormsg">
                             <FormMessage />
                           </div>
                         </FormItem>
@@ -439,7 +505,7 @@ export default function LoginSignup() {
                       control={formSignup.control}
                       name="country"
                       render={({ field }) => (
-                        <FormItem className="mb-4 w-full ">
+                        <FormItem className="w-full ">
                           <FormLabel className="text-xs text-white">
                             Country/ Region <sup className="text-white">*</sup>
                           </FormLabel>
@@ -459,7 +525,7 @@ export default function LoginSignup() {
                             <SelectContent className="max-h-[300px] overflow-y-auto">
                               <SelectGroup>
                                 {countries &&
-                                  countries?.map((country, i) => {
+                                  countries?.map((country) => {
                                     return (
                                       <SelectItem key={country} value={country}>
                                         {country?.toUpperCase()}
@@ -470,7 +536,7 @@ export default function LoginSignup() {
                             </SelectContent>
                           </Select>
 
-                          <div className="relative pb-2">
+                          <div className="relative pb-2 errormsg">
                             <FormMessage />
                           </div>
                         </FormItem>
@@ -481,7 +547,7 @@ export default function LoginSignup() {
                     control={formSignup.control}
                     name="email"
                     render={({ field }) => (
-                      <FormItem className="mb-4 ">
+                      <FormItem className="">
                         <FormLabel className="text-xs  font-thin text-grayColor">
                           Email Address <sup className="">*</sup>
                         </FormLabel>
@@ -493,7 +559,7 @@ export default function LoginSignup() {
                             className="rounded-md"
                           />
                         </FormControl>
-                        <div className="relative pb-2">
+                        <div className="relative pb-2 errormsg">
                           <FormMessage />
                         </div>
                       </FormItem>
@@ -503,7 +569,7 @@ export default function LoginSignup() {
                     control={formSignup.control}
                     name="password"
                     render={({ field }) => (
-                      <FormItem className="mb-12 ">
+                      <FormItem className="">
                         <FormLabel className="text-xs font-thin text-grayColor">
                           Password <sup className="">*</sup>
                         </FormLabel>
@@ -515,7 +581,7 @@ export default function LoginSignup() {
                             className="rounded-md"
                           />
                         </FormControl>
-                        <div className="relative pb-2">
+                        <div className="relative pb-2 errormsg">
                           <FormMessage />
                         </div>
                       </FormItem>
@@ -559,8 +625,3 @@ export default function LoginSignup() {
     </section>
   );
 }
-const countryCode = [
-  {
-    code: '+971',
-  },
-];

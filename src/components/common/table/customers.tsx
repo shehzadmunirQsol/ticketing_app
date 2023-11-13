@@ -31,11 +31,7 @@ import {
   TableRow,
 } from '@/ui/table';
 import { trpc } from '~/utils/trpc';
-import {
-  customEmailTruncateHandler,
-  customTruncate,
-  displayDate,
-} from '~/utils/helper';
+import { customEmailTruncateHandler, displayDate } from '~/utils/helper';
 import { getCustomerSchema } from '~/schema/customer';
 import {
   Tooltip,
@@ -80,21 +76,20 @@ export type CustomerType = {
   updated_at: Date;
 };
 
+const initialFilters: any = {
+  first: 0,
+  rows: 10,
+};
+
 export default function CustomersDataTable() {
   // use toast
   const { toast } = useToast();
   const router = useRouter();
   const { is_verified } = router.query;
-  console.log({ is_verified });
-
-  // use states
   const [sorting, setSorting] = useState<SortingState>([]);
   const [filterID, setFilterID] = useState({});
 
-  const [filters, setFilters] = useState<getCustomerSchema>({
-    first: 0,
-    rows: 10,
-  });
+  const [filters, setFilters] = useState<getCustomerSchema>(initialFilters);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
   const [selectedItem, setSelectedItem] = useState({});
@@ -131,12 +126,16 @@ export default function CustomersDataTable() {
       type == 'delete'
         ? setPara('Are you sure you want to Delete this customer?')
         : type == 'enable'
-          ? setPara('Are you sure you want to Enable this customer?')
-          : type == 'disable'
-            ? setPara('Are you sure you want to Disable this customer?')
-            : type == 'block'
-              ? setPara(`Are you sure you want to ${data.is_blocked ? "Unblock" : "Block"} this customer?`)
-              : setPara('');
+        ? setPara('Are you sure you want to Enable this customer?')
+        : type == 'disable'
+        ? setPara('Are you sure you want to Disable this customer?')
+        : type == 'block'
+        ? setPara(
+            `Are you sure you want to ${
+              data.is_blocked ? 'Unblock' : 'Block'
+            } this customer?`,
+          )
+        : setPara('');
     }
     setType(type);
     setIsModal(true);
@@ -162,8 +161,6 @@ export default function CustomersDataTable() {
           </TooltipProvider>
         </div>
       );
-
-
     } else {
       return (
         <p className="text-ellipsis text-left whitespace-nowrap overflow-hidden w-32  text-white">
@@ -178,7 +175,7 @@ export default function CustomersDataTable() {
       <p className="text-ellipsis text-left whitespace-nowrap overflow-hidden w-32  text-white">
         {data.last_name}
       </p>
-    )
+    );
   };
 
   // handle modal
@@ -267,10 +264,16 @@ export default function CustomersDataTable() {
           <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
             <TooltipProvider>
               <Tooltip>
-                <TooltipTrigger>{row?.original?.phone_number != null ? row?.original?.phone_number : "N/A"}</TooltipTrigger>
+                <TooltipTrigger>
+                  {row?.original?.phone_number != null
+                    ? row?.original?.phone_number
+                    : 'N/A'}
+                </TooltipTrigger>
                 <TooltipContent>
                   <p className="text-base font-normal">
-                    {row?.original?.phone_number != null ? row?.original?.phone_number : "N/A"}
+                    {row?.original?.phone_number != null
+                      ? row?.original?.phone_number
+                      : 'N/A'}
                   </p>
                 </TooltipContent>
               </Tooltip>
@@ -278,6 +281,15 @@ export default function CustomersDataTable() {
           </div>
         );
       },
+    },
+    {
+      accessorKey: 'Created at',
+      header: 'Created at',
+      cell: ({ row }) => (
+        <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
+          {displayDate(row?.original?.created_at)}
+        </div>
+      ),
     },
 
     {
@@ -319,15 +331,6 @@ export default function CustomersDataTable() {
     },
 
     {
-      accessorKey: 'Created at',
-      header: 'Created at',
-      cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
-          {displayDate(row?.original?.created_at)}
-        </div>
-      ),
-    },
-    {
       id: 'actions',
       enableHiding: false,
       header: 'Actions',
@@ -362,7 +365,12 @@ export default function CustomersDataTable() {
                   <DropdownMenuItem
                     onClick={() => deleteUser(row?.original, 'block')}
                   >
-                    {row?.original?.is_blocked ? "Unblock Customer" : "Block Customer"}
+                    {row?.original?.is_blocked ? 'Unblock' : 'Block'}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => deleteUser(row?.original, 'delete')}
+                  >
+                    Delete
                   </DropdownMenuItem>
                 </>
               )}
@@ -477,14 +485,14 @@ export default function CustomersDataTable() {
         is_verified,
         created_at,
       }) => [
-          first_name,
-          last_name,
-          email,
-          phone_number,
-          dob?.toLocaleDateString(),
-          is_verified ? 'Yes' : 'No',
-          created_at?.toLocaleDateString(),
-        ],
+        first_name,
+        last_name,
+        email,
+        phone_number,
+        dob?.toLocaleDateString(),
+        is_verified ? 'Yes' : 'No',
+        created_at?.toLocaleDateString(),
+      ],
     ),
   ];
 
@@ -534,6 +542,7 @@ export default function CustomersDataTable() {
             value={filterID}
             setValue={setFilterID}
             setFilters={setFilters}
+            initial={initialFilters}
           />
         </div>
       </div>
@@ -551,9 +560,9 @@ export default function CustomersDataTable() {
                         {header.isPlaceholder
                           ? null
                           : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
+                              header.column.columnDef.header,
+                              header.getContext(),
+                            )}
                       </TableHead>
                     );
                   })}
@@ -651,7 +660,7 @@ export default function CustomersDataTable() {
               disabled={
                 (filters.first + 1) * filters.rows > (data?.count ?? 0) ||
                 Math.ceil((data?.count ?? 0) / filters.rows) ==
-                filters.first + 1
+                  filters.first + 1
               }
             >
               <span className="sr-only">Go to next page</span>
@@ -669,7 +678,7 @@ export default function CustomersDataTable() {
               disabled={
                 (filters.first + 1) * filters.rows > (data?.count ?? 0) ||
                 Math.ceil((data?.count ?? 0) / filters.rows) ==
-                filters.first + 1
+                  filters.first + 1
               }
             >
               <span className="sr-only">Go to last page</span>

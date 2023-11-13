@@ -46,7 +46,7 @@
         },
         {
           "step":"Step 02",
-          "title":"Purchase water bottle automatically donated to our charity partner's",
+          "title":"Purchase water bottle which is automatically donated to our charity partner's",
           "img":2
         },
         {
@@ -124,9 +124,9 @@
   },
   "ProductDetail":{
     "counter":{
-      "TICKETS":"How many tickets?",
-      "NUMBERS_OF_TICKET":"Number of Tickets",
-      "BASKET_BUTTON":"ADD TICKETS TO BASKET"
+      "TICKETS":"How many entries?",
+      "NUMBERS_OF_TICKET":"Number of Entries",
+      "BASKET_BUTTON":"ADD ENTRIES TO BASKET"
     },
     "entries":{
       "array":[
@@ -154,14 +154,23 @@
         }
       ]
     },
+    "highlights":{
+      "title":"Highlights",
+      "engine":"Engine",
+      "power":"Power",
+      "kms":"Kms",
+      "year":"Year"
+    },
     "description":{
 
       "HEADING":"DESCRIPTION",
       "SOLD":"Sold"
     },
+
     "faqs":{
       "HEADING":"FAQs"
     },
+
     "livedraw":{
       "HEADING":"LIVE DRAW",
       "array":[
@@ -227,7 +236,7 @@
     "ADDRESS_SUB_TITLE":"Office 16, 17th Floor,",
     "ADDRESS_SUB_TITLE_ONE":"Centrum Business Lounge",
     "ADDRESS_SUB_TITLE_TWO":"Bay Gate Tower, Business Bay,",
-    "ADDRESS_SUB_TITLE_THREE":"Dubai, UAE,",
+    "ADDRESS_SUB_TITLE_THREE":"Dubai, UAE",
     "ADDRESS_SUB_TITLE_FOUR":"© Copyright Winnar Trading LLC Regulated by Dubai Economic Department and Department of Economy and Tourism Trade License No.: 1193751",
     "CONNECT_TITLE":" CONNECT WITH US",
     "array":[
@@ -287,7 +296,9 @@
     "WINNER_HEADING":"Won",
     "WINNER_TICKET":"Winning ticket",
     "WINNER_DATE":"Draw date",
-    "WINNER_SUB_HEADING":"Won a"
+    "WINNER_SUB_HEADING":"Won",
+    "CONGRATULATIONS":"Congratulation to",
+    "CONGRATS_WINNING":"for winning"
   },
   "Cart":{
     "HEADING":"BASKET",

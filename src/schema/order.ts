@@ -42,8 +42,10 @@ export const createCheckoutSchema = z.object({
     required_error: "Please enter your email"
   }).email({ message: "Please enter a valid email" }),
   code: z.string({ required_error: 'Enter code' })
-    .regex(new RegExp(/^(00|\+)[0-9]+$/), 'Invalid code')
+    .regex(new RegExp(/^(\+)?[0-9]+$/), 'Invalid code')
     .min(1, {
+      message: 'Enter code',
+    }).max(4, {
       message: 'Enter code',
     }),
   phone_number: z.string({ required_error: 'Please enter your number' })

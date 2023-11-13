@@ -11,73 +11,67 @@ import parse from 'html-react-parser';
 import { RootState } from '~/store/store';
 import { useSelector } from 'react-redux';
 
+const eventFaqs = `
+<nav class="accordion w-full   arrows">
+<div class="mt-4">
+
+    <input type="radio" name="accordion" id="cb1" />
+    <section class="box border-b border-t   border-lightColorBorder hover:border-b-primary shadow-lg hover:shadow-2xl  pr-4 overflow-hidden">
+      <label class="box-title  text-xl py-4 text-xl  font-bold text-white w-full flex items-center justify-between h-full" for="cb1"><p>How is the winner chosen?</p>  <i class="fas fa-chevron-down icon-class"></i></label>
+      <label class="box-close" for="acc-close"></label>
+      <div class="box-content text-base mt-4 text-grayColor pb-4">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold">&lsquo;My Account&rsquo;</span> and in your email confirmation.</div>
+    </section>
+    <input type="radio" name="accordion" id="cb2" />
+    <section class="box border-b border-lightColorBorder hover:border-b-primary shadow-lg hover:shadow-2xl pr-4 overflow-hidden">
+      <label class="box-title  py-4 text-xl text-xl font-bold text-white w-full flex items-center justify-between " for="cb2"><p>What if a competition does not sell out?</p>  <i class="fas fa-chevron-down icon-class"></i></label>
+      <label class="box-close" for="acc-close"></label>
+      <div class="box-content text-base mt-4 text-grayColor pb-4">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold">&lsquo;My Account&rsquo;</span> and in your email confirmation.</div>
+    </section>
+    <input type="radio" name="accordion" id="cb3" />
+    <section class="box border-b border-lightColorBorder hover:border-b-primary shadow-lg hover:shadow-2xl  pr-4 overflow-hidden">
+      <label class="box-title  py-4 text-xl text-xl font-bold text-white w-full flex items-center justify-between " for="cb3"><p>Is ‘Winnar’ a scam?</p>  <i class="fas fa-chevron-down icon-class"></i></label>
+      <label class="box-close" for="acc-close"></label>
+      <div class="box-content text-base mt-4 text-grayColor pb-4">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold">&lsquo;My Account&rsquo;</span> and in your email confirmation.</div>
+    </section>
+    <input type="radio" name="accordion" id="cb4" />
+    <section class="box border-b  border-lightColorBorder hover:border-b-primary shadow-lg hover:shadow-2xl  pr-4 overflow-hidden">
+      <label class="box-title  py-4 text-xl text-xl font-bold text-white w-full flex items-center justify-between " for="cb4"><p>Why am I receiving communications from Winnar?</p>  <i class="fas fa-chevron-down icon-class"></i></label>
+      <label class="box-close" for="acc-close"></label>
+      <div class="box-content text-base mt-4 text-grayColor pb-4">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold">&lsquo;My Account&rsquo;</span> and in your email confirmation.</div>
+    </section>
+    <input type="radio" name="accordion" id="acc-close" />
+    </div>
+  </nav>
+`;
+
+let carouselHeading: any = {};
+const findElementsWithAttribute = (node: any) => {
+  if (node.type === 'tag') {
+    const shortcode = node?.attribs;
+    console.log(shortcode, 'shortcode');
+    if (shortcode?.data === 'main-carousel-heading') {
+      carouselHeading = JSON.parse(node?.children[0]?.data) as any;
+      console.log(carouselHeading, 'carouselHeading');
+      return <></>;
+    }
+
+    return node;
+  }
+};
 const AccordianFaqs = ({ data }: any) => {
   const { lang } = useSelector((state: RootState) => state.layout);
 
   const dataCode: any = data?.CMS?.CMSDescription[0]?.content;
   const reactElementsForFAQs = parse(dataCode || '', {
-    replace: (node: any) => node,
+    replace: (node: any) => findElementsWithAttribute(node),
   });
-console.log({dataCode})
   return (
     <section id="AccordianFaqs" className="relative">
-      {dataCode ? (
-        <>
-          <div className="mt-10 ">
-            <p className="text-5xl font-black">  {langContent[lang.lang].ProductDetail.faqs.HEADING}
-</p>
-            <div className="border-b-4 w-16 border-primary mt-4"></div>
-          </div>
-          <div className="mt-10 mb-10 relative pb-20 ">
-            {reactElementsForFAQs}
-          </div>
-        </>
-      ) : (
-        <div className="mt-10 mb-10 relative pb-20 ">
-          <p className="text-5xl font-black ">FAQs</p>
-          <div className="border-b-4 w-16 border-primary mt-4"></div>
-          <div className="relative">
-            <Accordion type="single" collapsible className="w-full z-50">
-              <AccordionItem value="item-1">
-                <AccordionTrigger className="hover:no-underline focus-visible:text-green py-6">
-                  <p className="lg:text-3xl  text-xl ">Competition Rulesasdsadsad</p>
-                </AccordionTrigger>
-                <AccordionContent>
-                  Yes. It adheres to the WAI-ARIA design pattern.
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="item-2">
-                <AccordionTrigger className="hover:no-underline focus-visible:text-green py-6">
-                  <p className="lg:text-3xl  text-xl ">Is it styled?</p>
-                </AccordionTrigger>
-                <AccordionContent>
-                  Yes. It comes with default styles that matches the other
-                  components&apos; aesthetic.
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="item-3">
-                <AccordionTrigger className="hover:no-underline focus-visible:text-green py-6">
-                  <p className="lg:text-3xl  text-xl ">Is it animated?</p>
-                </AccordionTrigger>
-                <AccordionContent>
-                  Yes. It&apos;s animated by default, but you can disable it if
-                  you prefer.
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="item-4">
-                <AccordionTrigger className="hover:no-underline focus-visible:text-green py-6">
-                  <p className="lg:text-3xl  text-xl ">When is the draw?</p>
-                </AccordionTrigger>
-                <AccordionContent>
-                  Yes. It&apos;s animated by default, but you can disable it if
-                  you prefer.
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-            {/* <Glow className=" absolute  -bottom-[100px] -right-16  p-2   w-1/5 h-[350px] " /> */}
-          </div>
-        </div>
-      )}
+      <p className="text-5xl font-black">
+        {langContent[lang.lang].ProductDetail.faqs.HEADING}
+      </p>
+      <div className="border-b-4 w-16 border-primary mt-4"></div>
+      <div className=" relative pb-20 ">{reactElementsForFAQs}</div>
     </section>
   );
 };

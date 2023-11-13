@@ -1,15 +1,11 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useToast } from '~/components/ui/use-toast';
 import { RootState } from '~/store/store';
 import { trpc } from '~/utils/trpc';
-import { formatTrpcError } from '~/utils/helper';
 import langContent from '~/locales';
 import { Button } from '~/components/ui/button';
 import { AddCustomerAddressDialog } from '~/components/common/modal/customerAddressModal';
 import { LoadingDialog } from '~/components/common/modal/loadingModal';
-
-import countryJSON from '~/data/countries.json';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,9 +14,7 @@ import {
   DropdownMenuTrigger,
 } from '~/components/ui/dropdown-menu';
 import { MoreHorizontal } from 'lucide-react';
-import { MoreVertical } from 'lucide-react';
 import { AddressDialog } from '~/components/common/modal/addressModal';
-const countries = countryJSON.map((item) => item.country);
 
 export default function AddressesView() {
   const [isModal, setIsModal] = useState(false);
@@ -48,6 +42,8 @@ export default function AddressesView() {
   const availableAddressTypes = addressType.filter(
     (address) => !usedAddress?.includes(address?.value as any),
   );
+
+  addresses?.map((addresse) => console.log(typeof addresse.postal_code));
 
   return (
     <div className="py-4 sm:px-6 space-y-4">
@@ -95,12 +91,11 @@ type CustomerAddressType = {
   city: string | null;
   phone_number: string | null;
   phone_code: string | null;
-  postal_code: number | null;
+  postal_code: any;
   is_default: boolean;
 };
 
 function CustomerAddress(props: CustomerAddressType) {
-  const { toast } = useToast();
   const { lang } = useSelector((state: RootState) => state.layout);
   const [title, setTitle] = useState('');
   const [type, setType] = useState('');
@@ -237,4 +232,4 @@ const addressType = [
     label: 'Other',
     value: 'other',
   },
-];   
+];

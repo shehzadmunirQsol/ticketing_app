@@ -46,7 +46,7 @@ export function ForgotPasswordDailog(props: ForgotPasswordDialogInterface) {
   // forgot password
   const customerForgotPassword =
     trpc.customer.forgotPasswordCustomer.useMutation({
-      onSuccess: async (res: any) => {
+      onSuccess: async () => {
         props.setIsModal(false);
         toast({
           variant: 'success',
@@ -108,7 +108,6 @@ export function ForgotPasswordDailog(props: ForgotPasswordDialogInterface) {
                       </FormItem>
                     )}
                   />
-
 
                   <div className="w-full mx-auto">
                     <div className=" flex items-center justify-center">

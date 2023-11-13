@@ -8,18 +8,14 @@ import { trpc } from '~/utils/trpc';
 import { ScrollBar } from '../ui/scroll-area';
 import { displayDate } from '~/utils/helper';
 import LogoImage from '~/public/assets/logo.png';
+import NextImage from '../ui/img';
 
-const Invoice = (props:any) => {
+const Invoice = () => {
   const { lang } = useSelector((state: RootState) => state.layout);
   const router = useRouter();
   const { id } = router.query;
 
-  console.log(router.asPath,"invoice router")
-  const {
-    data: OrderApiData,
-    isFetching,
-    isFetched,
-  } = trpc.order.getByID.useQuery(
+  const { data: OrderApiData, isFetched } = trpc.order.getByID.useQuery(
     { order_id: Number(id) as any, lang_id: lang.lang_id },
     {
       refetchOnWindowFocus: false,
@@ -27,11 +23,6 @@ const Invoice = (props:any) => {
       enabled: id ? true : false,
     },
   );
-
-
-  const routesWithoutNavbarAndFooter = '/admin/orders';
-
-  const shouldShowNavbarAndFooter = !router.pathname.startsWith(routesWithoutNavbarAndFooter);
 
   useEffect(() => {
     if (isFetched) {
@@ -42,9 +33,9 @@ const Invoice = (props:any) => {
 
       // print close action
       const handleAfterPrint = () => {
-        console.log("i am working",shouldShowNavbarAndFooter)
-        location.replace(props?.admin ?'/admin/orders':'/account')
+        window.close();
       };
+
       window.addEventListener('afterprint', handleAfterPrint);
       window.print();
       document.body.innerHTML = originalContents;
@@ -55,18 +46,18 @@ const Invoice = (props:any) => {
     <>
       {OrderApiData && (
         <div
-          className="bg-card h-full text-gray-400 rounded-lg  px-8 py-10 max-w-xl mx-auto  "
+          className="bg-card h-full text-gray-400 rounded-lg mx-auto w-full px-8 py-10 sm:w-3/4 md:w-2/3"
           id="divToPrint"
         >
           <div className="flex flex-col md:flex-row items-center justify-between mb-8">
             <div className="flex items-center">
-              <Image
+              <NextImage
                 className="h-16  object-contain mr-2"
                 src={LogoImage}
                 alt="Logo"
               />
             </div>
-            <div className=" xs:text-center sm:text-left">
+            <div className=" xs:text-center md:text-left">
               <div className="font-bold text-xl mb-2">INVOICE</div>
               <div className="text-sm">
                 Date: {displayDate(OrderApiData?.data?.created_at)}
@@ -93,66 +84,35 @@ const Invoice = (props:any) => {
           <ScrollArea className="w-full  ">
             <ScrollBar orientation="horizontal"></ScrollBar>
 
-            {/* <table className="w-full text-left mb-8  ">
-              <thead className="gap-2 space-x-2">
-                <tr>
-                  <th className=" font-bold uppercase py-2">Name</th>
-                  <th className=" font-bold uppercase py-2">Quantity</th>
-                  <th className=" font-bold uppercase py-2">Price</th>
-                  <th className=" font-bold uppercase py-2">Total</th>
-                </tr>
-              </thead>
-              <tbody>
+            <div className="w-full mb-8">
+              <div className="flex justify-between font-bold uppercase py-2">
+                <div className="flex-[2] text-start">Name</div>
+                <div className="flex-1 text-center">Quantity</div>
+                <div className="flex-1 text-center">Price</div>
+                <div className="flex-1 text-right">Total</div>
+              </div>
+              <div className="mt-2">
                 {OrderApiData?.data?.OrderEvent &&
                   OrderApiData?.data?.OrderEvent?.map(
-                    (item: any, index: number) => {
-                      return (
-                        <tr key={index} className="gap-2 space-x-2">
-                          <td className="py-4 ">
-                            {item?.Event?.EventDescription[0]?.name}
-                          </td>
-                          <td className="py-4 ">{item?.quantity}</td>
-                          <td className="py-4 ">
-                            AED {item?.ticket_price.toFixed(2)}
-                          </td>
-                          <td className="py-4 ">
-                            AED{' '}
-                            {(item?.ticket_price * item?.quantity).toFixed(2)}
-                          </td>
-                        </tr>
-                      );
-                    },
+                    (item: any, index: number) => (
+                      <div key={index} className="flex gap-2 py-4">
+                        <div className="flex-[2] text-start">
+                          {item?.Event?.EventDescription[0]?.name}
+                        </div>
+                        <div className="flex-1 text-center">
+                          {item?.quantity}
+                        </div>
+                        <div className="flex-1 text-center">
+                          AED {item?.ticket_price.toFixed(2)}
+                        </div>
+                        <div className="flex-1 text-right">
+                          AED {(item?.ticket_price * item?.quantity).toFixed(2)}
+                        </div>
+                      </div>
+                    ),
                   )}
-              </tbody>
-            </table> */}
-
-<div className="w-full mb-8">
-  <div className="flex justify-between font-bold uppercase py-2">
-    <div className="flex-1 text-start">Name</div>
-    <div className="flex-1 text-center">Quantity</div>
-    <div className="flex-1 text-center">Price</div>
-    <div className="flex-1 text-right">Total</div>
-  </div>
-  <div className="mt-2">
-    {OrderApiData?.data?.OrderEvent &&
-      OrderApiData?.data?.OrderEvent?.map((item: any, index: number) => (
-        <div key={index} className="flex gap-2 py-4">
-          <div className="flex-1 text-start">
-            {item?.Event?.EventDescription[0]?.name}
-          </div>
-          <div className="flex-1 text-center">{item?.quantity}</div>
-          <div className="flex-1 text-center">
-            AED {item?.ticket_price.toFixed(2)}
-          </div>
-          <div className="flex-1 text-right">
-            AED {(item?.ticket_price * item?.quantity).toFixed(2)}
-          </div>
-        </div>
-      ))}
-  </div>
-</div>
-
-
+              </div>
+            </div>
           </ScrollArea>
 
           <div className=" flex justify-between items-center">

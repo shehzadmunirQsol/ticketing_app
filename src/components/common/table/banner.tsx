@@ -53,6 +53,7 @@ import {
   DoubleArrowRightIcon,
 } from '@radix-ui/react-icons';
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
+import NextImage from '~/components/ui/img';
 export default function DataTableBanner() {
   const [sorting, setSorting] = useState<SortingState>([]);
   const initialOrderFilters: any = {
@@ -111,7 +112,7 @@ export default function DataTableBanner() {
 
         return (
           <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
-            <Image
+            <NextImage
               className="object-cover bg-ac-2 h-10 w-16 rounded-lg"
               src={renderNFTImage(payment)}
               alt={row?.original?.title}
@@ -158,7 +159,7 @@ export default function DataTableBanner() {
       cell: ({ row }) => {
         return (
           <p className="w-40 text-ellipsis whitespace-nowrap overflow-hidden">
-            {row?.original?.link}
+            {row?.original?.link !== '' ? row?.original?.link : 'N/A'}
           </p>
         );
       },
@@ -170,7 +171,7 @@ export default function DataTableBanner() {
       cell: ({ row }) => {
         return (
           <p className="w-40 text-ellipsis whitespace-nowrap overflow-hidden">
-            {row?.original?.price}
+            {row?.original?.price !== '' ? row?.original?.price : 'N/A'}
           </p>
         );
       },
@@ -182,7 +183,7 @@ export default function DataTableBanner() {
       cell: ({ row }) => {
         return (
           <p className="w-40 text-ellipsis whitespace-nowrap overflow-hidden">
-            {row?.original?.date}
+            {row?.original?.date !== '' ? row?.original?.date : 'N/A'}
           </p>
         );
       },
@@ -230,12 +231,12 @@ export default function DataTableBanner() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <Link href={`/admin/settings/banners/edit/${payment?.id}`}>
-                <DropdownMenuItem>Edit Banner</DropdownMenuItem>
+                <DropdownMenuItem>Edit</DropdownMenuItem>
               </Link>
               <DropdownMenuItem
                 onClick={() => handleEnbled(row?.original, 'delete')}
               >
-                Delete Banner
+                Delete
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import React, { useState } from 'react';
-import Image from 'next/image';
+import NextImage from '../ui/img';
 
 export function FileInput(props: any) {
   const [image, setImage] = useState<any>(null);
@@ -33,7 +33,7 @@ export function FileInput(props: any) {
           >
             <i className={` fa fa-remove text-xl `}></i>
           </div>
-          <Image
+          <NextImage
             width={5000}
             height={5000}
             src={image}
@@ -49,7 +49,7 @@ export function FileInput(props: any) {
           >
             <div className="flex flex-col items-center justify-center pt-5 pb-6">
               <i className="fas fa-image text-7xl"></i>
-              {/* <Image
+              {/* <NextImage
                 width={10}
                 height={10}
                 src={UploadImage.src}
@@ -81,25 +81,32 @@ export function FileInput(props: any) {
     </div>
   );
 }
+
 export function ImageInput(props: any) {
   const [image, setImage] = useState<string>('');
 
   useEffect(() => {
     const imgSrc = props?.getValues('thumb');
-    console.log({ imgSrc });
 
     if (imgSrc && !imgSrc?.includes('blob:http')) {
       const linkData = `${process.env.NEXT_PUBLIC_MEDIA_BASE_URL}${imgSrc}`;
-      console.log({ linkData });
       setImage(linkData);
     }
   }, [props?.getValues('thumb')]);
 
-  function handleChange(e: any) {
-    const imageUrl = URL.createObjectURL(e.target.files[0]);
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e?.target?.files?.length ? e.target.files[0] : null;
+    if (!file) return alert('Please select an image!');
+    if (!file.type?.startsWith('image/'))
+      return alert('Please select a valid image!');
+    const oneKb = 1000;
+    if (file.size > oneKb * 1000)
+      return alert('Cannot upload image more than 1 MB!');
+
+    const imageUrl = URL.createObjectURL(file);
 
     setImage(imageUrl);
-    props.onChange(e.target.files[0]);
+    props.onChange(file);
   }
 
   function handleDelete() {
@@ -118,7 +125,7 @@ export function ImageInput(props: any) {
           >
             <i className={` fa fa-remove text-xl `}></i>
           </div>
-          <Image
+          <NextImage
             width={5000}
             height={5000}
             src={image}
@@ -142,6 +149,9 @@ export function ImageInput(props: any) {
               </p>
               <p className="text-xs text-gray-500 dark:text-gray-400">
                 File types supported: JPG, PNG, SVG
+              </p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">
+                Max Size 1 MB
               </p>
             </div>
             <input
@@ -180,9 +190,12 @@ export function MultiFileInput(props: any) {
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     if (e.target.files) {
+      const oneKb = 1000;
+
       const newFiles = Array.from(e.target.files);
-      const imageFiles = newFiles.filter((file: File) =>
-        file.type.startsWith('image/'),
+      const imageFiles = newFiles.filter(
+        (file: File) =>
+          file.type.startsWith('image/') && file.size <= oneKb * 1000,
       );
 
       if ([...props?.files, ...imageFiles].length >= 15) {
@@ -232,7 +245,7 @@ export function MultiFileInput(props: any) {
                   key={item}
                   className="relative h-56 min-w-[280px] w-1/3 max-w-xs"
                 >
-                  <Image
+                  <NextImage
                     width={1200}
                     className=" h-full p-2 bg-white rounded-md w-full"
                     height={1200}
@@ -283,6 +296,9 @@ export function MultiFileInput(props: any) {
               </p>
               <p className="text-xs text-gray-500 dark:text-gray-400">
                 File types supported: JPG, PNG, SVG
+              </p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">
+                Max Size 1 MB
               </p>
             </div>
             <input

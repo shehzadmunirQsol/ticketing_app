@@ -58,9 +58,10 @@ export function CouponDialog(props: SettingDialogInterface) {
         props.setIsModal(false);
 
         toast({
-          variant: `${props?.type === 'enabled' ? "disable" : "success"}`,
-          title: `${props?.title} ${props?.type === 'enabled' ? 'Disabled' : 'Enabled'
-            } Successfully`,
+          variant: `${props?.type === 'enabled' ? 'disable' : 'success'}`,
+          title: `${props?.title} ${
+            props?.type === 'enabled' ? 'Disabled' : 'Enabled'
+          } Successfully`,
         });
         props?.refetch();
       } else {
@@ -83,15 +84,19 @@ export function CouponDialog(props: SettingDialogInterface) {
           <DialogHeader>
             <DialogTitle>{props?.title}</DialogTitle>
             <DialogDescription>
-              <div className="flex flex-col gap-4 mt-4">
+              <div className="flex flex-col gap-4">
                 <div className="  flex gap-2 items-center p-2  ">
-                  <p>Note: By Saving this information customer <span className='text-primary'>{props?.type !== 'enabled' ? "can apply" : "cannot apply"}</span>  this
-                    coupon on cart.</p>
+                  <p>
+                    Note: By Saving this information customer{' '}
+                    <span className="text-primary">
+                      {props?.type !== 'enabled' ? 'can apply' : 'cannot apply'}
+                    </span>{' '}
+                    this coupon on cart.
+                  </p>
                 </div>
               </div>
             </DialogDescription>
           </DialogHeader>
-          <div className=" py-2"></div>
           <DialogFooter>
             <Button type="submit" onClick={() => handleClick()}>
               Yes

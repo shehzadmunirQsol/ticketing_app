@@ -33,7 +33,6 @@ import {
 } from '@/ui/table';
 import LanguageSelect, { LanguageInterface } from '../language_select';
 import { trpc } from '~/utils/trpc';
-import Image from 'next/image';
 import { displayDate, renderNFTImage } from '~/utils/helper';
 import Link from 'next/link';
 import { GetEventSchema } from '~/schema/event';
@@ -42,6 +41,7 @@ import { LoadingDialog } from '../modal/loadingModal';
 import { setSelectedEvent } from '~/store/reducers/admin_layout';
 import { useDispatch } from 'react-redux';
 import { TableFilters } from './table_filters';
+import { EventDeleteDialog } from '~/components/common/modal/eventDeleteModal';
 import {
   Select,
   SelectContent,
@@ -55,8 +55,10 @@ import {
 } from '@radix-ui/react-icons';
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 import { CSVLink } from 'react-csv';
+import { Switch } from '~/components/ui/switch';
+import NextImage from '~/components/ui/img';
 
-export type Category = {
+export type EventType = {
   thumb: string;
   name: string;
   desc: string | null;
@@ -67,6 +69,9 @@ export type Category = {
   tickets_sold: number;
   user_ticket_limit: number;
   is_cash_alt: boolean;
+  is_enabled: boolean;
+  is_deleted: boolean;
+  is_featured: boolean;
   cash_alt: number;
   launch_date: Date;
   end_date: Date;
@@ -74,28 +79,32 @@ export type Category = {
   updated_at: Date;
 };
 
+export type toggleSwitchType = 'is_deleted' | 'is_featured' | 'is_enabled';
+
+const initialFilter = {
+  first: 0,
+  rows: 10,
+  lang_id: 1,
+};
 export default function EventsDataTable() {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [filterID, setFilterID] = useState({});
-  const initialFilter = {
-    first: 0,
-    rows: 10,
-    lang_id: 1,
-  };
-  const [filters, setFilters] = useState<GetEventSchema>({
-    ...initialFilter,
-  });
+  const [filters, setFilters] = useState<GetEventSchema>(initialFilter);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
+  const [selectedItem, setSelectedItem] = useState<any>({});
+  const [toggleType, setToggleType] = useState<toggleSwitchType>('is_enabled');
+  const [isModal, setIsModal] = useState(false);
 
   const dispatch = useDispatch();
 
-  const { data, isLoading } = trpc.event.get.useQuery(
+  const { data, isLoading, refetch } = trpc.event.get.useQuery(
     { ...filters, filters: { ...filterID } },
     {
       refetchOnWindowFocus: false,
     },
   );
+
   const { data: categoryData } = trpc.category.getCategory.useQuery({
     lang_id: 1,
   });
@@ -114,14 +123,88 @@ export default function EventsDataTable() {
   const eventData = React.useMemo(() => {
     return Array.isArray(data?.data) && data?.data?.length ? data?.data : [];
   }, [data]);
-  const columns: ColumnDef<Category>[] = [
+
+  const columns: ColumnDef<EventType>[] = [
+    {
+      id: 'actions',
+      enableHiding: false,
+      header: '',
+      cell: ({ row }) => {
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+
+              <Link href={`/admin/events/edit/${row?.original?.id}`}>
+                <DropdownMenuItem>Edit</DropdownMenuItem>
+              </Link>
+
+              {row?.original.tickets_sold != null &&
+              row?.original.tickets_sold === 0 ? (
+                <DropdownMenuItem
+                  onClick={() => switchHandler(row.original, 'is_deleted')}
+                >
+                  Delete
+                </DropdownMenuItem>
+              ) : null}
+
+              {row?.original?.tickets_sold > 0 ? (
+                <>
+                  <DropdownMenuSeparator />
+                  <Link
+                    onClick={() => dispatch(setSelectedEvent(row.original))}
+                    href={`/admin/events/event-customers/${row.original.id}`}
+                  >
+                    <DropdownMenuItem>Product Customers</DropdownMenuItem>
+                  </Link>
+                </>
+              ) : null}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        );
+      },
+    },
+    {
+      id: 'Featured',
+      header: 'Featured',
+      cell: ({ row }) => {
+        return (
+          <Switch
+            disabled={row?.original?.category_id !== 1}
+            checked={row?.original?.is_featured}
+            onCheckedChange={() => switchHandler(row.original, 'is_featured')}
+          />
+        );
+      },
+    },
+    {
+      id: 'Enabled',
+      header: 'Enabled',
+      cell: ({ row }) => {
+        return (
+          <Switch
+            disabled={row?.original?.tickets_sold > 0}
+            checked={row?.original?.is_enabled}
+            onCheckedChange={() => switchHandler(row.original, 'is_enabled')}
+          />
+        );
+      },
+    },
+
     {
       accessorKey: 'Name',
       header: 'Name',
       cell: ({ row }) => {
         return (
           <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
-            <Image
+            <NextImage
               className="object-cover bg-ac-2 h-10 w-16 rounded-lg"
               src={renderNFTImage(row.original)}
               alt={row?.original?.name}
@@ -155,66 +238,6 @@ export default function EventsDataTable() {
       ),
     },
     {
-      accessorKey: 'Token Price',
-      header: 'Token Price',
-      cell: ({ row }) => (
-        <p className="w-20 text-center text-ellipsis whitespace-nowrap overflow-hidden">
-          {(row?.original?.price).toFixed(2)}
-        </p>
-      ),
-    },
-    {
-      accessorKey: 'Token Cap',
-      header: 'Token Cap',
-      cell: ({ row }) => (
-        <p className="w-20 text-ellipsis whitespace-nowrap overflow-hidden">
-          {row?.original?.total_tickets}
-          &nbsp;
-          <sub>qty</sub>
-        </p>
-      ),
-    },
-    {
-      accessorKey: 'Token Purchased',
-      header: 'Token Purchased',
-      cell: ({ row }) => (
-        <p className="w-28 text-center text-ellipsis whitespace-nowrap overflow-hidden">
-          {row?.original?.tickets_sold}
-          &nbsp;
-          <sub>qty</sub>
-        </p>
-      ),
-    },
-    {
-      accessorKey: 'Per User Limit',
-      header: 'Per User Limit',
-      cell: ({ row }) => (
-        <p className="w-32 text-center text-ellipsis whitespace-nowrap overflow-hidden">
-          {row?.original?.user_ticket_limit}
-          &nbsp;
-          <sub>qty</sub>
-        </p>
-      ),
-    },
-    {
-      accessorKey: 'Alternative Selling Option',
-      header: 'Alternative Selling Option',
-      cell: ({ row }) => (
-        <p className="w-48 text-center text-ellipsis whitespace-nowrap overflow-hidden">
-          {row?.original?.is_cash_alt ? 'Yes' : 'No'}
-        </p>
-      ),
-    },
-    {
-      accessorKey: 'Cash Amount',
-      header: 'Cash Amount',
-      cell: ({ row }) => (
-        <p className="w-32 text-center text-ellipsis whitespace-nowrap overflow-hidden">
-          {row?.original?.is_cash_alt ? row?.original?.cash_alt : 'N/A'}
-        </p>
-      ),
-    },
-    {
       accessorKey: 'Launch Date',
       header: 'Launch Date',
       cell: ({ row }) => (
@@ -242,45 +265,69 @@ export default function EventsDataTable() {
       ),
     },
     {
-      id: 'actions',
-      enableHiding: false,
-      header: 'Actions',
-      cell: ({ row }) => {
-        return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-
-              <Link href={`/admin/events/edit/${row?.original?.id}`}>
-                <DropdownMenuItem>Edit Product</DropdownMenuItem>
-              </Link>
-
-              {row?.original?.tickets_sold > 0 ? (
-                <>
-                  <DropdownMenuSeparator />
-                  <Link
-                    onClick={() => dispatch(setSelectedEvent(row.original))}
-                    href={`/admin/events/event-customers/${row.original.id}`}
-                  >
-                    <DropdownMenuItem>Product Customers</DropdownMenuItem>
-                  </Link>
-                </>
-              ) : null}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        );
-      },
+      accessorKey: 'Token Price',
+      header: 'Token Price',
+      cell: ({ row }) => (
+        <p className="w-20 text-center text-ellipsis whitespace-nowrap overflow-hidden">
+          {(row?.original?.price).toFixed(2)}
+        </p>
+      ),
+    },
+    {
+      accessorKey: 'Token Cap',
+      header: 'Token Cap',
+      cell: ({ row }) => (
+        <p className="w-20 text-ellipsis whitespace-nowrap overflow-hidden">
+          {row?.original?.total_tickets}
+          &nbsp;
+          <sub>qty</sub>
+        </p>
+      ),
+    },
+    {
+      accessorKey: 'Per User Limit',
+      header: 'Per User Limit',
+      cell: ({ row }) => (
+        <p className="w-32 text-center text-ellipsis whitespace-nowrap overflow-hidden">
+          {row?.original?.user_ticket_limit}
+          &nbsp;
+          <sub>qty</sub>
+        </p>
+      ),
+    },
+    {
+      accessorKey: 'Token Purchased',
+      header: 'Token Purchased',
+      cell: ({ row }) => (
+        <p className="w-28 text-center text-ellipsis whitespace-nowrap overflow-hidden">
+          {row?.original?.tickets_sold}
+          &nbsp;
+          <sub>qty</sub>
+        </p>
+      ),
+    },
+    {
+      accessorKey: 'Alternative Selling Option',
+      header: 'Alternative Selling Option',
+      cell: ({ row }) => (
+        <p className="w-48 text-center text-ellipsis whitespace-nowrap overflow-hidden">
+          {row?.original?.is_cash_alt ? 'Yes' : 'No'}
+        </p>
+      ),
+    },
+    {
+      accessorKey: 'Cash Amount',
+      header: 'Cash Amount',
+      cell: ({ row }) => (
+        <p className="w-32 text-center text-ellipsis whitespace-nowrap overflow-hidden">
+          {row?.original?.is_cash_alt ? row?.original?.cash_alt : 'N/A'}
+        </p>
+      ),
     },
   ];
+
   const table = useReactTable({
-    data: eventData as Category[],
+    data: eventData as EventType[],
     columns,
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
@@ -305,6 +352,12 @@ export default function EventsDataTable() {
     setFilters((prevFilters) => ({ ...prevFilters, first: page }));
   }
 
+  function switchHandler(event: EventType, type: toggleSwitchType) {
+    setSelectedItem(event);
+    setToggleType(type);
+    setIsModal(true);
+  }
+
   // FILTER OPTIONS
   const roleOptions1 = [
     {
@@ -326,7 +379,7 @@ export default function EventsDataTable() {
         },
         {
           name: 'Closed',
-          value: 'in-active',
+          value: 'closed',
         },
       ],
     },
@@ -596,7 +649,15 @@ export default function EventsDataTable() {
           </div>
         </div>
       </div>
-
+      <EventDeleteDialog
+        selectedItem={selectedItem}
+        setSelectedItem={setSelectedItem}
+        refetch={refetch}
+        type={toggleType}
+        setType={setToggleType}
+        isModal={isModal}
+        setIsModal={setIsModal}
+      />
       <LoadingDialog open={isLoading} text={'Loading data...'} />
     </div>
   );

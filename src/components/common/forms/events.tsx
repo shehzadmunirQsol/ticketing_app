@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Button } from '@/ui/button';
@@ -58,10 +58,11 @@ export default function EventForm() {
     },
   );
 
-  const filteredCms = cms?.filter((item) => item?.type === 'event_faqs') || [];
-  console.log(filteredCms, 'filteredCms');
+  const filteredCms = cms?.filter(
+    (item) => item?.type === 'event_faqs' && item?.is_enabled,
+  );
 
-  const modifiedArray = filteredCms.map((item) => ({
+  const modifiedArray = filteredCms?.map((item: any) => ({
     id: item.id,
     name: item.CMSDescription[0]?.title || '', // Access the first "title" in CMSDescription
   }));
@@ -139,8 +140,35 @@ export default function EventForm() {
       type: 'date',
       name: 'end_date',
       label: 'End Date',
-
       placeholder: 'Please Enter Date',
+    },
+    {
+      type: 'text_meta',
+      name: 'meta.engine',
+      label: 'Engine',
+
+      placeholder: 'Please Enter Engine',
+    },
+    {
+      type: 'text_meta',
+      name: 'meta.power',
+      label: 'Power',
+
+      placeholder: 'Please Enter Power',
+    },
+    {
+      type: 'text_meta',
+      name: 'meta.kms',
+      label: 'KMS',
+
+      placeholder: 'Please Enter KMS',
+    },
+    {
+      type: 'text_meta',
+      name: 'meta.year',
+      label: 'Year',
+
+      placeholder: 'Please Enter Year, 2018 etc',
     },
     {
       type: 'switch',
@@ -148,6 +176,12 @@ export default function EventForm() {
       label: 'Alternative Selling Option',
 
       placeholder: 'Please Enter Price',
+      child: {
+        type: 'switch_text',
+        name: 'cash_alt',
+        label: 'Cash Amount',
+        placeholder: 'Please Enter Price',
+      },
     },
     {
       type: 'switch_text',
@@ -161,7 +195,6 @@ export default function EventForm() {
   const [optimizeFile, setOptimizeFile] = useState<File | null>(null);
   const [optimizeMultiFile, setOptimizeMultiFile] = useState<File[]>([]);
   const [removedImages, setRemovedImages] = useState<EventImageType[]>([]);
-
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const eventId = router.query.index ? +router.query.index : 0;
@@ -173,7 +206,6 @@ export default function EventForm() {
       multi_image: [],
     },
   });
-  console.log(form.formState.errors, 'form.formState.errors');
 
   const { data: eventData, isLoading: isEventLoading } =
     trpc.event.getEventsById.useQuery(
@@ -186,9 +218,17 @@ export default function EventForm() {
         },
       },
     );
-
+  const ticket_sold_Data: any = eventData?.data?.tickets_sold;
+  const handleDisabled =
+    ticket_sold_Data != null && ticket_sold_Data > 0 ? true : false;
   const createEvent = trpc.event.create.useMutation();
   const updateEvent = trpc.event.update.useMutation();
+
+  useEffect(() => {
+    if (form.watch('category_id') === 2) {
+      form.resetField('meta');
+    }
+  }, [form.watch('category_id')]);
 
   // 1. Define your form.
 
@@ -210,14 +250,25 @@ export default function EventForm() {
 
       if (eventId > 0) {
         const removed_images = removedImages.map((image) => image.id);
+        const payloadValue = { ...values };
 
+        payloadValue.video_src = payloadValue.video_src.replace(
+          'watch?v=',
+          'embed/',
+        );
+        console.log({ payloadValue });
         await updateEvent.mutateAsync({
-          ...values,
+          ...payloadValue,
           event_id: eventId,
           removed_images,
         });
       } else {
-        await createEvent.mutateAsync(values);
+        const payloadValue = { ...values };
+        payloadValue.video_src = payloadValue.video_src.replace(
+          'watch?v=',
+          'embed/',
+        );
+        await createEvent.mutateAsync(payloadValue);
       }
 
       toast({
@@ -294,27 +345,49 @@ export default function EventForm() {
 
       form.setValue('en.name', en?.name as string);
       form.setValue('en.desc', en?.desc as string);
-      form.setValue('en.comp_details', en?.desc as string);
+      form.setValue('en.comp_details', en?.comp_details as string);
       form.setValue('ar.name', ar?.name as string);
       form.setValue('ar.desc', ar?.desc as string);
-      form.setValue('ar.comp_details', ar?.desc as string);
+      form.setValue('ar.comp_details', ar?.comp_details as string);
       form.setValue('cash_alt', payload.data?.cash_alt);
       form.setValue('category_id', payload.data?.category_id);
       form.setValue('faq_id', payload.data?.faq_id as any);
       form.setValue('is_cash_alt', payload.data?.is_cash_alt);
       form.setValue(
         'end_date',
-        payload.data?.end_date?.toISOString()?.split('T')[0] as any,
+        payload?.data?.end_date
+          ?.toISOString()
+          ?.slice(
+            0,
+            payload?.data?.end_date?.toISOString()?.lastIndexOf(':'),
+          ) as any,
       );
       form.setValue(
         'launch_date',
-        payload.data?.launch_date?.toISOString()?.split('T')[0] as any,
+        payload.data?.launch_date
+          ?.toISOString()
+          ?.slice(
+            0,
+            payload?.data?.launch_date?.toISOString()?.lastIndexOf(':'),
+          ) as any,
       );
+
       form.setValue('price', payload.data?.price);
       form.setValue('thumb', payload.data?.thumb);
       form.setValue('total_tickets', payload.data?.total_tickets);
       form.setValue('user_ticket_limit', payload.data?.user_ticket_limit);
       form.setValue('video_src', payload.data?.video_src);
+      const metaDate =
+        payload.data?.meta &&
+        payload.data?.meta?.includes('{') &&
+        JSON.parse(payload.data?.meta);
+      console.log({ metaDate });
+      if (metaDate) {
+        form.setValue('meta.engine', metaDate?.engine);
+        form.setValue('meta.kms', metaDate?.kms);
+        form.setValue('meta.year', metaDate?.year);
+        form.setValue('meta.power', metaDate?.power);
+      }
     }
   }
   const renderHeader = () => {
@@ -354,7 +427,7 @@ export default function EventForm() {
   };
 
   const header = renderHeader();
-  console.log(form.getValues(), 'form.getValues');
+
   return (
     <>
       <Form {...form}>
@@ -460,7 +533,7 @@ export default function EventForm() {
                   name="en.comp_details"
                   render={({ field }) => (
                     <FormItem className=" ">
-                      <FormLabel>Competiton Details</FormLabel>
+                      <FormLabel>Competition Details</FormLabel>
                       <FormControl>
                         <Editor
                           id={field.name}
@@ -468,10 +541,14 @@ export default function EventForm() {
                           value={field.value}
                           className=" bg-black"
                           headerTemplate={header}
-                          onTextChange={(e) => field.onChange(e.textValue)}
+                          onTextChange={(e: any) => {
+                            field.onChange(e.htmlValue);
+                            // form.setValue('en.content', e.htmlValue)
+                          }}
                           // p-editor-container="bg-black"
                           style={{ height: '320px', backgroundColor: 'black' }}
                         />
+
                         {/* <Textarea placeholder="Enter Description..." {...field} /> */}
                       </FormControl>
 
@@ -621,25 +698,20 @@ export default function EventForm() {
                     );
                   }
                   if (item?.type == 'date') {
-                    const launchMinDate = new Date();
+                    const today = new Date();
 
                     const launchDate = isNaN(
                       form?.watch('launch_date')?.getTime(),
                     )
-                      ? launchMinDate
+                      ? today
                       : form?.watch('launch_date');
 
                     const minDate = (
-                      item?.name === 'launch_date' ? launchMinDate : launchDate
+                      item?.name === 'launch_date' ? today : launchDate
                     )
                       ?.toISOString()
-                      ?.split('T')[0];
+                      ?.slice(0, new Date()?.toISOString()?.lastIndexOf(':'));
 
-                    console.log({
-                      minDate,
-                      launchMinDate,
-                      launchDate,
-                    });
                     return (
                       <FormField
                         key={i}
@@ -650,7 +722,13 @@ export default function EventForm() {
                             <FormLabel>{item?.label}</FormLabel>
                             <FormControl>
                               <Input
-                                type={'date'}
+                                // disabled={handleDisabled}
+                                disabled={
+                                  item?.name === 'launch_date'
+                                    ? handleDisabled
+                                    : false
+                                }
+                                type={'datetime-local'}
                                 placeholder={item?.placeholder}
                                 min={minDate}
                                 {...form.register(item?.name, {
@@ -667,14 +745,79 @@ export default function EventForm() {
                       />
                     );
                   }
+                  if (item?.type == 'year') {
+                    return (
+                      <FormField
+                        key={i}
+                        control={form.control}
+                        name={item?.name}
+                        render={({ field }) => (
+                          <FormItem className=" flex flex-col gap-2 mt-2 w-full">
+                            <FormLabel>{item?.label}</FormLabel>
+                            <FormControl>
+                              <Input
+                                type={'number'}
+                                placeholder={item?.placeholder}
+                                {...form.register(item?.name, {
+                                  valueAsDate: true,
+                                })}
+                                min="1900"
+                                max="2099"
+                                step="1"
+                              />
+                            </FormControl>
+
+                            <div className="relative pb-4">
+                              <FormMessage />
+                            </div>
+                          </FormItem>
+                        )}
+                      />
+                    );
+                  }
+                  if (item?.type == 'text_meta') {
+                    return (
+                      <div key={i}>
+                        {form.watch('category_id') == 1 && (
+                          <FormField
+                            control={form.control}
+                            name={item?.name}
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>{item?.label}</FormLabel>
+                                <FormControl>
+                                  <Input
+                                    type={
+                                      item?.name == 'meta.year'
+                                        ? 'number'
+                                        : 'text'
+                                    }
+                                    placeholder={item?.placeholder}
+                                    {...form.register(item.name)}
+                                    min="1900"
+                                    max="2099"
+                                    step="1"
+                                  />
+                                </FormControl>
+
+                                <div className="relative pb-4">
+                                  <FormMessage />
+                                </div>
+                              </FormItem>
+                            )}
+                          />
+                        )}
+                      </div>
+                    );
+                  }
                   if (item?.type == 'switch') {
                     return (
-                      <div key={i} className=" h-full">
+                      <div key={i} className=" ">
                         <FormField
                           control={form.control}
                           name={item?.name}
                           render={({ field }) => (
-                            <FormItem className="flex items-center justify-between h-full  gap-2">
+                            <FormItem className="flex items-center h-full  gap-2">
                               <FormLabel>Alternative Selling Option</FormLabel>
                               <FormControl>
                                 <Switch
@@ -689,6 +832,32 @@ export default function EventForm() {
                             </FormItem>
                           )}
                         />
+                        {form.watch('is_cash_alt') && (
+                          <FormField
+                            control={form.control}
+                            name={item?.child?.name}
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>{item?.child?.label}</FormLabel>
+                                <FormControl>
+                                  <Input
+                                    type={'number'}
+                                    defaultValue={1}
+                                    min={1}
+                                    placeholder={item?.child?.placeholder}
+                                    {...form.register(item?.child?.name, {
+                                      valueAsNumber: true,
+                                    })}
+                                  />
+                                </FormControl>
+
+                                <div className="relative pb-4">
+                                  <FormMessage />
+                                </div>
+                              </FormItem>
+                            )}
+                          />
+                        )}
                       </div>
                     );
                   }
@@ -743,38 +912,6 @@ export default function EventForm() {
                         />
                       </div>
                     );
-                  }
-                  if (item?.type == 'switch_text') {
-                    return (
-                      <div key={i}>
-                        {form.watch('is_cash_alt') && (
-                          <FormField
-                            control={form.control}
-                            name={item?.name}
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>{item?.label}</FormLabel>
-                                <FormControl>
-                                  <Input
-                                    type={'number'}
-                                    defaultValue={1}
-                                    min={1}
-                                    placeholder={item?.placeholder}
-                                    {...form.register(item?.name, {
-                                      valueAsNumber: true,
-                                    })}
-                                  />
-                                </FormControl>
-
-                                <div className="relative pb-4">
-                                  <FormMessage />
-                                </div>
-                              </FormItem>
-                            )}
-                          />
-                        )}
-                      </div>
-                    );
                   } else {
                     return <div key={i}></div>;
                   }
@@ -785,7 +922,7 @@ export default function EventForm() {
           <div className="flex items-center justify-between">
             <div></div>
             <Button type="submit" variant={'clip'} className="w-1/2">
-              {eventId > 0 ? 'Edit Product' : 'Add Product'}
+              {eventId > 0 ? 'Save Product' : 'Add Product'}
             </Button>
           </div>
         </form>
@@ -793,7 +930,7 @@ export default function EventForm() {
       {eventId > 0 ? (
         <LoadingDialog open={isEventLoading} text={'Loading...'} />
       ) : null}
-      <LoadingDialog open={isSubmitting} text={'Saving data...'} />
+      <LoadingDialog open={isSubmitting} text={'Saving product...'} />
     </>
   );
 }

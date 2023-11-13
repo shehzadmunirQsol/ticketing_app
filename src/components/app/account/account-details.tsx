@@ -2,24 +2,10 @@ import React, { useState } from 'react';
 import { Button } from '~/components/ui/button';
 import {
   accountsDetailSchemaInput,
-  passwordChangeSchema,
   passwordChangeSchemaInput,
   deleteMyAccountCustomerSchema,
   deleteMyAccountCustomerSchemaInput,
 } from '~/schema/customer';
-
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '~/components/ui/select';
-
-import countryJSON from '~/data/countries.json';
-const countries = countryJSON.map((item) => item.country);
-
 import {
   Form,
   FormControl,
@@ -75,7 +61,10 @@ const AccountDetails = () => {
   // handle account detail
   async function onSubmitAccountDetail(values: accountsDetailSchemaInput) {
     try {
-      const resp = await updateCustomerAccountDetail.mutateAsync({ id: user.id, ...values });
+      const resp = await updateCustomerAccountDetail.mutateAsync({
+        id: user.id,
+        ...values,
+      });
       dispatch(userAuth(resp?.user));
     } catch (error: any) {
       console.log({ error });
@@ -101,7 +90,7 @@ const AccountDetails = () => {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmitAccountDetail)}
-            className="justify-center items-center  space-y-4 "
+            className="justify-center items-center"
           >
             <FormField
               control={form.control}
@@ -147,7 +136,6 @@ const AccountDetails = () => {
             />
 
             <div className="flex flex-col sm:flex-row justify-center items-center gap-2">
-
               <FormItem className=" w-full ">
                 <FormLabel className="text-xs font-thin text-grayColor">
                   Email Address *
@@ -156,7 +144,7 @@ const AccountDetails = () => {
                   <Input
                     type="text"
                     disabled
-                    defaultValue={user?.email ?? ""}
+                    defaultValue={user?.email ?? ''}
                     placeholder="Enter your email address"
                   />
                 </FormControl>
@@ -164,7 +152,6 @@ const AccountDetails = () => {
                   <FormMessage />
                 </div>
               </FormItem>
-
 
               <FormField
                 control={form.control}
@@ -190,8 +177,6 @@ const AccountDetails = () => {
                   </FormItem>
                 )}
               />
-
-
             </div>
 
             <div className=" flex items-center ltr:justify-end rtl:justify-start">
@@ -233,7 +218,7 @@ function PasswordChange({ email }: any) {
     resolver: zodResolver(passwordChangeSchemaInput),
   });
 
-  console.log(form?.getValues(), "helloworld")
+  console.log(form?.getValues(), 'helloworld');
   // handle password update
   const updateCustomerPassword =
     trpc.customer.updateCustomerPassword.useMutation({
@@ -243,9 +228,9 @@ function PasswordChange({ email }: any) {
           variant: 'success',
           title: 'Your Account Password Updated Successfully ',
         });
-        form.setValue("currentPassword", "")
-        form.setValue("newPassword", "")
-        form.setValue("confirmPassword", "")
+        form.setValue('currentPassword', '');
+        form.setValue('newPassword', '');
+        form.setValue('confirmPassword', '');
       },
       onError: (err) => {
         console.log(err.message, 'err');
@@ -254,7 +239,6 @@ function PasswordChange({ email }: any) {
 
   // handle account detail
   async function onSubmitAccountPassword(values: any) {
-
     try {
       const payload: any = {
         email: email,
@@ -279,7 +263,7 @@ function PasswordChange({ email }: any) {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmitAccountPassword)}
-            className="justify-center items-center space-y-4"
+            className="justify-center items-center"
           >
             <FormField
               control={form.control}

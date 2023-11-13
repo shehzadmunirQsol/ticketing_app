@@ -39,7 +39,6 @@ type EmailOptionsType = {
 };
 
 export const sendEmail = async (mailOptions: EmailOptionsType) => {
-  console.log(mailOptions, 'mailOptions');
   try {
     const options = {
       method: 'POST',
@@ -60,8 +59,8 @@ export const sendEmail = async (mailOptions: EmailOptionsType) => {
     const res = await fetch('https://api.brevo.com/v3/smtp/email', options);
 
     if (!res.ok) {
-      console.log(res);
-      return console.log('email did not send');
+      console.log('email did not send');
+      return;
     }
   } catch (error) {
     console.log(error);
@@ -139,7 +138,6 @@ export function getAvailableTickets({
   ticketPurchased,
   quantity,
 }: AvailableTicketsType) {
-  console.log({ event, ticketPurchased, quantity });
   const availableTickets = event?.total_tickets - (event?.tickets_sold ?? 0);
 
   const userTicketLimit =
@@ -147,22 +145,28 @@ export function getAvailableTickets({
       ? event?.user_ticket_limit - ticketPurchased
       : availableTickets;
 
-  const isTicketLimit = quantity >= userTicketLimit;
+  const isTicketLimit = quantity == userTicketLimit;
+  const isTicketLimitExceeded = quantity > userTicketLimit;
 
-  return { userTicketLimit, availableTickets, isTicketLimit };
+  return {
+    userTicketLimit,
+    availableTickets,
+    isTicketLimit,
+    isTicketLimitExceeded,
+  };
 }
 
-export function URIGenerator(title: string, id: number) {
-  const url = `${title?.replaceAll(' ', '-')}-${id}`;
+export function URIGenerator(title = '' as string, id = 0 as number) {
+  const url = `${title?.replace(new RegExp(' ', 'g'), '-')}-${id}`;
+
   return encodeURI(url);
 }
 
-export function URIDecoder(url: any) {
-  console.log({ url });
-  const decodedURI = decodeURI(url ?? '');
-  console.log({ decodedURI });
+export function URIDecoder(url = '' as any) {
+  const decodedURI = decodeURI(url ?? '') ?? '';
+  const splittedUrl = decodedURI?.split('-');
 
-  const id = decodedURI?.split('-')?.at(-1) ?? '';
+  const id = splittedUrl[splittedUrl.length - 1] ?? '';
   const title = decodedURI?.substring(0, decodedURI?.length - (id?.length + 2));
   return { id, title };
 }
@@ -177,6 +181,10 @@ export const EMAIL_TEMPLATE_IDS = {
   NEW_REGISTERED_USER: 10,
 };
 
-export const priceTranslator=(price:number, lang="en")=>{
-  return price.toLocaleString(`${lang}-EG`)
-}
+export const priceTranslator = (price: number, lang = 'en') => {
+  return price.toLocaleString(`${lang}-EG`);
+};
+
+export const EMAILS = {
+  contact: 'contact@app.winnar.com',
+};

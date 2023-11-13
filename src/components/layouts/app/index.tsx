@@ -1,20 +1,28 @@
-import React, { ReactNode, useEffect } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import Header from './header';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
 import Footer from './footer';
 import { trpc } from '~/utils/trpc';
-import { CartItemInterface, addCart } from '~/store/reducers/cart';
+import {
+  CartItemInterface,
+  addCart,
+  setCartLoaded,
+} from '~/store/reducers/cart';
 import { Toaster } from '~/components/ui/toaster';
 import { userAuth } from '~/store/reducers/auth';
 import { LoadingDialog } from '~/components/common/modal/loadingModal';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
+import { Button } from '~/components/ui/button';
 
 type DefaultLayoutProps = { children: ReactNode };
 
 function Index({ children }: DefaultLayoutProps) {
   const { lang } = useSelector((state: RootState) => state.layout);
   const { user, isLogin } = useSelector((state: RootState) => state.auth);
+
+  const [userToken, setUserToken] = useState<string | null>(null);
 
   const router = useRouter();
   const dispatch = useDispatch();
@@ -27,14 +35,17 @@ function Index({ children }: DefaultLayoutProps) {
 
   trpc.customer.get.useQuery(undefined, {
     refetchOnWindowFocus: false,
+    enabled: userToken ? true : false,
     onSuccess(data) {
       if (data?.data) {
         dispatch(userAuth(data?.data));
       }
-      console.log({ data });
     },
     onError(error) {
-      console.log({ error });
+      if (error.message === 'jwt malformed') {
+        setUserToken(null);
+        localStorage.removeItem('winnar-token');
+      }
     },
   });
 
@@ -60,6 +71,7 @@ function Index({ children }: DefaultLayoutProps) {
 
           dispatch(addCart(cart));
         }
+        dispatch(setCartLoaded());
       },
       onError(error) {
         console.log({ error });
@@ -71,10 +83,13 @@ function Index({ children }: DefaultLayoutProps) {
 
   useEffect(() => {
     const cartString = localStorage.getItem('winnar-cart');
-    if (cartString) {
+    if (cartString?.includes('"cartItems":[{"')) {
       const cart = JSON.parse(cartString);
       dispatch(addCart(cart));
+    } else {
+      localStorage.removeItem('winnar-cart');
     }
+    setUserToken(localStorage.getItem('winnar-token'));
   }, [dispatch]);
 
   async function createCartHandler(
@@ -126,6 +141,7 @@ function Index({ children }: DefaultLayoutProps) {
           {children}
           <LoadingDialog open={createCart.isLoading} text={'Loading...'} />
           <Footer />
+          <CookiesLabel />
         </>
       ) : (
         <>{children}</>
@@ -135,3 +151,43 @@ function Index({ children }: DefaultLayoutProps) {
 }
 
 export default Index;
+
+function CookiesLabel() {
+  const [isAccepted, setIsAccepted] = useState(true);
+
+  useEffect(() => {
+    const isCookieAccepted =
+      localStorage.getItem('winnar-cookies') === 'accepted';
+
+    setIsAccepted(isCookieAccepted);
+  }, []);
+
+  function setCookiesHandler() {
+    setIsAccepted(true);
+    localStorage.setItem('winnar-cookies', 'accepted');
+  }
+
+  return (
+    <div
+      className={`${
+        isAccepted ? 'hidden' : 'block'
+      } z-[999999] shadow-lg w-full fixed bottom-0 bg-background-footer space-y-2 px-4 py-4 sm:px-14`}
+    >
+      <h3 className="text-lg sm:text-xl">Cookies on this site</h3>
+      <p>
+        We use cookies to provide a better user experience. By using our site,
+        you agree to our use of cookies. See our{' '}
+        <Link className="text-primary" href="/privacy-policy">
+          Privacy Policy
+        </Link>{' '}
+        to learn more.
+      </p>
+      <div className="flex gap-2">
+        <Button onClick={() => setIsAccepted(true)} variant="secondary">
+          Close
+        </Button>
+        <Button onClick={setCookiesHandler}>Accept All Cookies</Button>
+      </div>
+    </div>
+  );
+}

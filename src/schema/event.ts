@@ -33,7 +33,7 @@ export const getClosingSoon = z.object({
   rows: z.number(),
   lang_id: z.number(),
   launc_date: z.date().optional(),
-  type: z.string(),
+  type: z.enum(['upcoming', 'closing', 'drawn']).default('upcoming'),
 });
 
 export const getFeatured = z.object({
@@ -46,8 +46,12 @@ export const getFeatured = z.object({
   lang_id: z.number(),
 });
 
-export const deleteEventSchema = z.object({
+export const switchUpdateSchema = z.object({
   id: z.number(),
+  type: z
+    .enum(['is_deleted', 'is_featured', 'is_enabled'])
+    .default('is_enabled'),
+  value: z.boolean().default(false),
 });
 
 export const EventFormSchema = z.object({
@@ -89,31 +93,95 @@ export const EventFormSchema = z.object({
     required_error: 'Please enter total tickets limit',
     invalid_type_error: 'Please enter a valid limit',
   }),
-
+  meta: z
+    .object({
+      engine: z
+        .string({
+          required_error: 'Please enter Engine Details',
+          invalid_type_error: 'Please enter a valid limit',
+        })
+        .min(1, {
+          message: 'Please enter Engine',
+        }),
+      power: z
+        .string({
+          required_error: 'Please enter Power Details',
+          invalid_type_error: 'Please enter a valid limit',
+        })
+        .min(1, {
+          message: 'Please enter Power',
+        }),
+      kms: z
+        .string({
+          required_error: 'Please enter KMS',
+          invalid_type_error: 'Please enter a valid limit',
+        })
+        .min(1, {
+          message: 'Please enter KMS',
+        }),
+      year: z
+        .string({
+          required_error: 'Please enter Year',
+          invalid_type_error: 'Please enter a valid limit',
+        })
+        .min(1, {
+          message: 'Please enter Year',
+        }),
+    })
+    .optional(),
   en: z.object({
-    name: z.string({
-      required_error: 'Please enter a event name',
-    }).trim(),
-    desc: z.string({
-      required_error: 'Please enter a description',
-    }).trim(),
-    comp_details: z.string({
-      required_error: 'Please enter the competition details',
-    }).trim(),
-  }),
-  ar: z.object({
-    name: z.string({
-      required_error: 'Please enter a event name',
-    }).trim(),
+    name: z
+      .string({
+        required_error: 'Please enter a event name',
+      })
+      .min(1, {
+        message: 'Please enter event name',
+      })
+      .trim(),
     desc: z
       .string({
         required_error: 'Please enter a description',
-      }).trim()
+      })
+      .min(1, {
+        message: 'Please enter description',
+      })
+      .max(100, {
+        message: 'Cannot add more than 100 characters',
+      })
+      .trim(),
+    comp_details: z
+      .string({
+        required_error: 'Please enter the competition details',
+      })
+      .trim(),
+  }),
+  ar: z.object({
+    name: z
+      .string({
+        required_error: 'Please enter a event name',
+      })
+      .min(1, {
+        message: 'Please enter event name',
+      })
+      .trim(),
+    desc: z
+      .string({
+        required_error: 'Please enter a description',
+      })
+      .min(1, {
+        message: 'Please enter description',
+      })
+      .max(100, {
+        message: 'Cannot add more than 100 characters',
+      })
+
+      .trim()
       .optional(),
     comp_details: z
       .string({
         required_error: 'Please enter the competition details',
-      }).trim()
+      })
+      .trim()
       .optional(),
   }),
 });

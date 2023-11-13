@@ -48,6 +48,7 @@ import {
 } from '@radix-ui/react-icons';
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 import { CSVLink } from 'react-csv';
+import NextImage from '~/components/ui/img';
 export type CartType = {
   id: number;
   is_subscribe: boolean;
@@ -66,14 +67,16 @@ export type CartType = {
   updated_at: Date;
 };
 
+const initialFilters: any = {
+  first: 0,
+  rows: 10,
+};
+
 export default function OrdersDataTable() {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [filterID, setFilterID] = useState({});
 
-  const [filters, setFilters] = useState<GetCartItemsSchema>({
-    first: 0,
-    rows: 10,
-  });
+  const [filters, setFilters] = useState<GetCartItemsSchema>(initialFilters);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
 
@@ -94,7 +97,7 @@ export default function OrdersDataTable() {
       cell: ({ row }) => {
         return (
           <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
-            <Image
+            <NextImage
               className="object-cover bg-ac-2 h-10 w-16 rounded-lg"
               src={`${process.env.NEXT_PUBLIC_MEDIA_BASE_URL}${row?.original?.Event?.thumb}`}
               alt={row?.original?.Event?.EventDescription[0]?.name ?? ''}
@@ -280,6 +283,7 @@ export default function OrdersDataTable() {
             value={filterID}
             setValue={setFilterID}
             setFilters={setFilters}
+            initial={initialFilters}
           />
         </div>
       </div>

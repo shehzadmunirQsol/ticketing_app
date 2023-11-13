@@ -56,11 +56,10 @@ export default function Content() {
             <Collapsible.Trigger asChild>
               <div
                 className={`
-                     ${
-                       active === item.key
-                         ? 'text-primary bg-secondary/80 font-semibold '
-                         : ''
-                     }
+                     ${active === item.key
+                    ? 'text-primary bg-secondary/80 font-semibold '
+                    : ''
+                  }
                         flex items-center mb-2 pr-4 rounded-full hover:bg-secondary/80 hover:text-primary align-middle justify-between cursor-pointer`}
                 onClick={() =>
                   routeHandler({ key: item.key, child: item.child?.length })
@@ -91,9 +90,9 @@ export default function Content() {
                 {isSidebarOpen && item.child && item.child.length > 0 && (
                   <button>
                     {open === item.key ? (
-                      <i className="fa-solid fa-chevron-down" />
-                    ) : (
                       <i className="fa-solid fa-chevron-up" />
+                    ) : (
+                      <i className="fa-solid fa-chevron-down" />
                     )}
                   </button>
                 )}
@@ -108,11 +107,10 @@ export default function Content() {
                     onClick={() => handleClickChild(`${item.key}-${index}`)}
                     key={childItem.title}
                     className={`
-                        ${
-                          active === `${item.key}-${index}`
-                            ? 'text-primary bg-secondary/80 font-semibold '
-                            : ''
-                        }
+                        ${active === `${item.key}-${index}`
+                        ? 'text-primary bg-secondary/80 font-semibold '
+                        : ''
+                      }
                           flex items-center gap-5 cursor-pointer rounded-full hover:bg-secondary/80 hover:text-primary
                         `}
                   >
@@ -202,13 +200,13 @@ const SIDEBAR_DATA = [
       {
         key: '/admin/settings/banners',
 
-        icon: <i className="fa-solid fa-image p-4 rounded-full" />,
+        icon: <i className={` fa-solid fa-image p-4 rounded-full`} />,
         title: 'Banner',
       },
       {
         key: '/admin/settings/spotlight',
 
-        icon: <i className="fa-solid fa-image p-4 rounded-full" />,
+        icon: <i className=" fa-solid fa-image p-4 rounded-full" />,
         title: 'Winnar Wonders',
       },
     ],

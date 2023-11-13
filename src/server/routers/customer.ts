@@ -13,20 +13,24 @@ import {
   addCustomerAddress,
   getCustomerAddress,
   accountsDetailSchema,
-  passwordChangeSchema,
   deleteMyAccountCustomerSchema,
   logoutSchema,
   updateCustomerAddress,
-  passwordChangeSchemaInput
+  passwordChangeSchemaInput,
 } from '~/schema/customer';
 import { hashPass, isSamePass } from '~/utils/hash';
 import { signJWT, verifyJWT } from '~/utils/jwt';
-import { serialize } from 'cookie';
-import { generateOTP, isValidEmail, sendEmail } from '~/utils/helper';
+import { setCookie, deleteCookie } from 'cookies-next';
+import { EMAILS, generateOTP, isValidEmail, sendEmail } from '~/utils/helper';
+import {
+  AddContactPayloadType,
+  addContactsToBrevoList,
+} from '~/service/api/addContacts.service';
 
 export const customerRouter = router({
   get: publicProcedure.query(async ({ ctx }) => {
-    const token = ctx?.req?.cookies['winnar-token'];
+    // const token = ctx?.req?.cookies['winnar-token'];
+    const token = (ctx?.req?.headers.Authorization as string)?.split(' ')[1];
     console.log({ token });
 
     let userData;
@@ -35,8 +39,6 @@ export const customerRouter = router({
     } else {
       return { data: null };
     }
-
-    console.log({ userData }, 'userData');
 
     const user = await prisma.customer.findUnique({
       where: { id: userData.id },
@@ -60,17 +62,30 @@ export const customerRouter = router({
     .mutation(async ({ input }) => {
       const { id, type, ...payload } = input;
 
-      console.log({payload},"payload payload")
+      console.log({ payload }, 'payload payload');
       const customer = await prisma.customer.update({
         where: { id },
         data: payload,
       });
 
-      if (type === 'delete') {
+      if (type === 'block' && customer.is_blocked) {
         const mailOptions = {
           template_id: 11,
           from: 'no-reply@winnar.com',
-          subject: 'Your Account is Deleted',
+          subject: 'Your Account is now Blocked',
+          to: customer.email,
+          params: {
+            first_name: customer?.first_name,
+          },
+        };
+        await sendEmail(mailOptions);
+      }
+
+      if (type === 'block' && !customer.is_blocked) {
+        const mailOptions = {
+          template_id: 44,
+          from: 'no-reply@winnar.com',
+          subject: 'Your Account is now Unlocked',
           to: customer.email,
           params: {
             first_name: customer?.first_name,
@@ -92,7 +107,7 @@ export const customerRouter = router({
         if (filterPayload?.searchQuery) delete filterPayload.searchQuery;
         if (filterPayload?.endDate) delete filterPayload.endDate;
         if (filterPayload?.startDate) delete filterPayload.startDate;
-        const where: any = { is_deleted: false, ...filterPayload, };
+        const where: any = { is_deleted: false, ...filterPayload };
         console.log({ filters }, 'filters_input');
         if (input?.filters?.searchQuery) {
           where.OR = [];
@@ -201,6 +216,7 @@ export const customerRouter = router({
           const isEmailExist = await prisma.customer?.findFirst({
             where: {
               email: input.email,
+              is_deleted: false,
             },
           });
 
@@ -246,7 +262,7 @@ export const customerRouter = router({
 
           const mailOptions: any = {
             template_id: 2,
-            from: 'no-reply@winnar.com',
+            from: EMAILS.contact,
             to: input.email,
             subject: 'Email Verification OTP CODE',
             params: {
@@ -296,7 +312,7 @@ export const customerRouter = router({
 
           const mailOptions: any = {
             template_id: 2,
-            from: 'no-reply@winnar.com',
+            from: EMAILS.contact,
             to: user.email,
             subject: 'Email Verification OTP CODE',
             params: {
@@ -333,13 +349,16 @@ export const customerRouter = router({
           });
         }
         const jwt = signJWT({ email: user.email, id: user.id });
-        const serialized = serialize('winnar-token', jwt, {
-          httpOnly: true,
-          path: '/',
-          sameSite: 'strict',
+
+        const { req, res } = ctx;
+        setCookie('winnar-token', jwt, {
+          req,
+          res,
+          // httpOnly: true,
+          // path: '/',
+          // sameSite: 'strict',
         });
 
-        ctx?.res?.setHeader('Set-Cookie', serialized);
         const { password, otp, ...userApiData } = user;
 
         return { user: userApiData, jwt };
@@ -380,15 +399,16 @@ export const customerRouter = router({
         //  email
         const mailOptions = {
           template_id: 5,
-          from: 'no-reply@winnar.com',
+          from: EMAILS.contact,
           to: input.email,
           subject: 'Forgot Password request to Winnar',
 
           params: {
-            link: `${process.env.NEXT_PUBLIC_BASE_URL
-              }/reset-password?verification_code=${encodeURIComponent(
-                respCode,
-              )}&email=${encodeURIComponent(user.email)}`,
+            link: `${
+              process.env.NEXT_PUBLIC_BASE_URL
+            }/reset-password?verification_code=${encodeURIComponent(
+              respCode,
+            )}&email=${encodeURIComponent(user.email)}`,
           },
         };
         const mailResponse = await sendEmail(mailOptions);
@@ -475,9 +495,7 @@ export const customerRouter = router({
       try {
         const otpCode = `${input.otp_1}${input.otp_2}${input.otp_3}${input.otp_4}`;
 
-        const validity = isValidEmail(input.emailOrUser)
-          ? { email: input.emailOrUser }
-          : { username: input.emailOrUser };
+        const validity = { email: input.emailOrUser, is_deleted: false };
         const user = await prisma.customer.findFirst({
           where: validity,
         });
@@ -505,25 +523,66 @@ export const customerRouter = router({
               otp: '',
             },
           });
+
           const resgistranMailOptions = {
             template_id: 10,
-            from: 'no-reply@winnar.com',
-            subject: 'Thank you for sigining up for Winnar',
+            from: EMAILS.contact,
+            subject: 'Thank you for signing up in Winnar',
             to: user.email,
             params: {
               first_name: user?.first_name,
             },
           };
           await sendEmail(resgistranMailOptions);
+
+          const customerAddress = await prisma.customerAddress.findFirst({
+            where: { customer_id: updateResponse.id },
+          });
+
+          const addContactPayload: AddContactPayloadType = {
+            email: updateResponse.email,
+            attributes: {},
+          };
+
+          if (updateResponse.first_name)
+            addContactPayload.attributes.FIRSTNAME = updateResponse.first_name;
+          if (updateResponse.last_name)
+            addContactPayload.attributes.LASTNAME = updateResponse.last_name;
+          if (updateResponse.first_name && updateResponse.last_name)
+            addContactPayload.attributes.FULL_NAME = `${updateResponse.first_name} ${updateResponse.last_name}`;
+          if (updateResponse.gender)
+            addContactPayload.attributes.GENDER =
+              updateResponse.gender === 'male' ? '1' : '2';
+          if (updateResponse.dob)
+            addContactPayload.attributes.DATE_OF_BIRTH =
+              updateResponse?.dob?.toISOString()?.split('T')[0] ?? '';
+          if (customerAddress?.street_address_1)
+            addContactPayload.attributes.ADDRESS =
+              customerAddress?.street_address_1;
+          if (customerAddress?.city)
+            addContactPayload.attributes.CITY = customerAddress?.city;
+          if (customerAddress?.country)
+            addContactPayload.attributes.COUNTRY = customerAddress?.country;
+          if (customerAddress?.state)
+            addContactPayload.attributes.STATE = customerAddress?.state;
+          if (customerAddress?.phone_code && customerAddress?.phone_number)
+            addContactPayload.attributes.PHONE =
+              customerAddress?.phone_code + customerAddress?.phone_number;
+
+          await addContactsToBrevoList(addContactPayload);
         }
         const jwt = signJWT({ email: user.email, id: user.id });
-        const serialized = serialize('winnar-token', jwt, {
-          httpOnly: true,
-          path: '/',
-          sameSite: 'strict',
+
+        const { req, res } = ctx;
+
+        setCookie('winnar-token', jwt, {
+          req,
+          res,
+          // httpOnly: true,
+          // path: '/',
+          // sameSite: 'strict',
         });
 
-        ctx?.res?.setHeader('Set-Cookie', serialized);
         const { password, otp, ...userApiData } = user;
 
         return { user: userApiData, jwt };
@@ -565,7 +624,7 @@ export const customerRouter = router({
 
           const mailOptions: any = {
             template_id: 2,
-            from: 'no-reply@winnar.com',
+            from: EMAILS.contact,
             to: updateResponse.email,
             subject: 'Email Verification OTP CODE',
             params: {
@@ -629,7 +688,6 @@ export const customerRouter = router({
         // here u will do the mutation
 
         const payload = {
-          // postal_code: Number(input?.postal_code),
           ...input,
         };
         console.log({ payload }, 'payload update bk');
@@ -656,8 +714,6 @@ export const customerRouter = router({
         // here u will do the mutation
 
         const payload = {
-          // postal_code: Number(input?.postal_code),
-
           ...input,
         };
         await prisma.customerAddress.updateMany({
@@ -711,9 +767,9 @@ export const customerRouter = router({
     .mutation(async ({ ctx, input }) => {
       try {
         const { id, ...payload } = input;
-        
+
         // if (!payload?.dob) delete payload?.dob;
-        console.log({input},"acc- detail")
+        console.log({ input }, 'acc- detail');
 
         const updateResponse = await prisma.customer?.update({
           where: {
@@ -822,14 +878,15 @@ export const customerRouter = router({
 
   logout: publicProcedure.input(logoutSchema).mutation(async ({ ctx }) => {
     try {
-      const serialized = serialize('winnar-token', '', {
-        httpOnly: true,
-        path: '/',
-        sameSite: 'strict',
-        // secure: process.env.NODE_ENV !== "development",
+      const { req, res } = ctx;
+      deleteCookie('winnar-token', {
+        req,
+        res,
+        // httpOnly: true,
+        // path: '/',
+        // sameSite: 'strict',
       });
-      console.log('Serialized :: ', serialized);
-      ctx?.res?.setHeader('Set-Cookie', serialized);
+
       return { message: 'Logout successfully!' };
     } catch (error: any) {
       throw new TRPCError({

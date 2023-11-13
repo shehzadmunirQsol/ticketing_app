@@ -10,24 +10,27 @@ import { addToCart } from '~/store/reducers/cart';
 import { URIDecoder } from '~/utils/helper';
 import langContent from '~/locales';
 
-
 interface CounterProps {
   range: number[];
   setRange: React.Dispatch<React.SetStateAction<number[]>>;
   user_ticket_limit: number;
   ticketInBasket: { current: number };
   ticketPurchased: number;
+  perCustomerLimit: number;
   event: any;
 }
 
-const Counter: React.FC<CounterProps> = ({
-  range,
-  setRange,
-  user_ticket_limit,
-  ticketInBasket,
-  ticketPurchased,
-  event,
-}) => {
+export default function Counter(props: CounterProps) {
+  const {
+    range,
+    setRange,
+    user_ticket_limit,
+    ticketInBasket,
+    ticketPurchased,
+    event,
+    perCustomerLimit,
+  } = props;
+
   const { user, isLogin } = useSelector((state: RootState) => state.auth);
   const { lang } = useSelector((state: RootState) => state.layout);
   const { cart } = useSelector((state: RootState) => state.cart);
@@ -51,6 +54,13 @@ const Counter: React.FC<CounterProps> = ({
       quantity: range[0] ?? 0,
     };
 
+    const eventCartData = cart?.cartItems?.map((event) => ({
+      id: event?.event_id,
+      price: event?.Event?.price,
+      name: event?.Event?.EventDescription[0]?.name,
+      quantity: event?.quantity,
+    }));
+
     try {
       if (isLogin) {
         const apiPayload = {
@@ -71,6 +81,8 @@ const Counter: React.FC<CounterProps> = ({
             tickets_sold: event.tickets_sold,
             user_ticket_limit: event.user_ticket_limit,
             total_tickets: event.total_tickets,
+            category_id: event.category_id,
+            is_enabled: event.is_enabled,
 
             EventDescription: [
               {
@@ -93,25 +105,54 @@ const Counter: React.FC<CounterProps> = ({
         variant: 'success',
         title: 'Item added successfully!',
       });
+
+      if ('sendinblue' in window && window?.sendinblue) {
+        const eventData = {
+          id: eventId,
+          price: event.price,
+          name: event.EventDescription[0].name,
+          quantity: payload.quantity,
+        };
+        eventCartData.push(eventData);
+        const sendinblue: any = window.sendinblue;
+
+        sendinblue?.track(
+          'cart_updated' /*mandatory*/,
+          JSON.stringify({ email: user?.email }) /*user data optional*/,
+          JSON.stringify({
+            cart_id: cart.id,
+            data: eventCartData,
+          }) /*optional*/,
+        ) as any;
+      }
     } catch (error: any) {
       console.log({ error });
     }
   }
 
+  const price = +(range[0] as number) * event?.price;
+
   return (
-    <div className="relative bg-backgroundDark p-4">
-      {ticketPurchased >= user_ticket_limit ? (
+    <div className="relative">
+      {event?.tickets_sold >= event?.total_tickets ? (
         <div className="sm:p-4 space-y-4 grid items-center">
           <i className="fas fa-gauge-high text-7xl lg:text-9xl text-primary text-center" />
+          <h3 className="text-base md:text-xl lg:text-2xl text-center text-white">
+            SOLD OUT: All Tickets Have Been Purchased!
+          </h3>
+        </div>
+      ) : ticketPurchased >= perCustomerLimit ? (
+        <div className="sm:p-4 space-y-4 grid items-center">
+          <i className="fas fa-gauge-high text-7xl text-primary text-center" />
           <h3 className="text-base md:text-xl lg:text-2xl text-center text-white">
             You have reached your max limit
           </h3>
         </div>
       ) : (
         <>
-          <div className="flex items-center justify-between">
-            <p className="text-lg text-white">
-            {langContent[lang.lang].ProductDetail.counter.TICKETS}
+          <div className="flex items-center justify-between mt-3">
+            <p className="text-base text-white">
+              {langContent[lang.lang].ProductDetail.counter.TICKETS}
             </p>
             {ticketPurchased ? (
               <p className="text-sm text-white/40 ">
@@ -135,12 +176,17 @@ const Counter: React.FC<CounterProps> = ({
             min={1}
             max={user_ticket_limit}
           />
-          <div className="mt-6">
+          <p className="lg:text-3xl text-xl pl-0 text-primary font-bold pt-2">
+            AED {(price ?? 0)?.toLocaleString()}
+          </p>
+          <div className="mt-3 mobfixedbtn">
             <Button
-              className="w-full text-black font-sans font-[900]  tracking-[-1px] h-12 text-sm xs:text-xl"
+              className="w-full text-black font-sans font-bold h-10 md:h-12 text-base md:text-lg"
               variant="clip"
               onClick={addToBasketHandler}
-              disabled={ticketInBasket.current === range[0]}
+              disabled={
+                ticketInBasket.current === range[0] || addToBasket.isLoading
+              }
             >
               {langContent[lang.lang].ProductDetail.counter.BASKET_BUTTON}
             </Button>
@@ -149,6 +195,4 @@ const Counter: React.FC<CounterProps> = ({
       )}
     </div>
   );
-};
-
-export default Counter;
+}

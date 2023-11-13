@@ -15,7 +15,7 @@ import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
 import { FileInput } from '~/components/common/file_input';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { trpc } from '~/utils/trpc';
 import { getS3ImageUrl } from '~/service/api/s3Url.service';
 import { compressImage, isValidImageType } from '~/utils/helper';
@@ -24,10 +24,13 @@ import { LoadingDialog } from '../modal/loadingModal';
 
 const BannerFormSchema = z.object({
   thumb: z.any(),
-  link: z.string({
-    required_error: 'Please enter a video link',
-  }),
-
+  link: z
+    .string({
+      required_error: 'Please enter a product link',
+    })
+    .min(1, {
+      message: 'Please enter a product link',
+    }),
   en: z.object({
     model: z
       .string({
@@ -308,7 +311,7 @@ export function BannerForm() {
       throw new Error('Please Select Image');
     }
   }
-  console.log({ isFetching });
+
   return (
     <Form {...form}>
       <form
@@ -333,7 +336,16 @@ export function BannerForm() {
                 <FormItem>
                   <FormLabel>Link</FormLabel>
                   <FormControl>
-                    <Input type="text" placeholder="Enter Link" {...field} />
+                    <div className="flex bg-input items-center">
+                      <p className="border border-input px-4">
+                        {process.env.NEXT_PUBLIC_BASE_URL}
+                      </p>
+                      <Input
+                        type="text flex-1"
+                        placeholder="Enter Link"
+                        {...field}
+                      />
+                    </div>
                   </FormControl>
                   <div className="relative pb-4">
                     <FormMessage />
@@ -555,8 +567,7 @@ export function BannerForm() {
             </TabsContent>
           </Tabs>
         </div>
-        <div className="flex items-center justify-between">
-          <div></div>
+        <div className="flex items-center justify-end">
           <Button type="submit" variant={'clip'} className="w-1/2">
             {index ? 'Edit Banner' : 'Add Banner'}
           </Button>

@@ -103,8 +103,6 @@ export function LoginForm() {
 
   const loginUser = trpc.admin.login.useMutation({
     onSuccess: (res: any) => {
-      console.log('return data', res);
-
       if (res.jwt) {
         setAdminToken(res.jwt);
         dispatch(userAdminAuth(res?.user));
@@ -122,7 +120,7 @@ export function LoginForm() {
 
       toast.success('Login Successfully!');
 
-      router.push('/admin/dashboard');
+      router.replace('/admin/dashboard');
     } catch (error: any) {
       const errorMessage = formatTrpcError(error?.shape?.message);
 

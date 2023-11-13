@@ -13,7 +13,7 @@ import https from 'https';
 import countryJSON from '~/data/countries.json';
 
 import { prisma } from '~/server/prisma';
-import { EMAIL_TEMPLATE_IDS, sendEmail } from '~/utils/helper';
+import { EMAILS, EMAIL_TEMPLATE_IDS, sendEmail } from '~/utils/helper';
 
 export const orderRouter = router({
   checkout: publicProcedure
@@ -222,7 +222,7 @@ export const orderRouter = router({
 
         const mailOptions = {
           template_id: EMAIL_TEMPLATE_IDS.ORDER_SUCCESS,
-          from: 'no-reply@winnar.com',
+          from: EMAILS.contact,
           to: input.values.email,
           subject: 'Your order has been placed 🎉',
           params: {
@@ -453,10 +453,12 @@ export const orderRouter = router({
       });
     }
   }),
+
   get: publicProcedure.input(getOrderSchema).query(async ({ input }) => {
     try {
       const { filters, ...inputData } = input;
       const filterPayload: any = { ...filters };
+      console.log(filterPayload, 'filterPayload');
 
       if (filterPayload?.searchQuery) delete filterPayload.searchQuery;
       if (filterPayload?.endDate) delete filterPayload.endDate;
@@ -470,19 +472,17 @@ export const orderRouter = router({
         where.created_at = { gte: new Date(startDate) };
       }
       if (input?.filters?.endDate && !input?.filters?.startDate) {
-        const endDate = new Date(input?.filters?.endDate)
-          ?.toISOString()
-          .split('T')[0] as string;
-        where.created_at = { lte: new Date(endDate) };
+        const inputEndDate = new Date(input?.filters?.endDate);
+        const endDate = new Date(inputEndDate.setHours(23, 59));
+        where.created_at = { lte: endDate };
       }
       if (input?.filters?.endDate && input?.filters?.startDate) {
         const startDate = new Date(input?.filters?.startDate)
           ?.toISOString()
           .split('T')[0] as string;
-        const endDate = new Date(input?.filters?.endDate)
-          ?.toISOString()
-          .split('T')[0] as string;
-        where.created_at = { gte: new Date(startDate), lte: new Date(endDate) };
+        const inputEndDate = new Date(input?.filters?.endDate);
+        const endDate = new Date(inputEndDate.setHours(23, 59));
+        where.created_at = { gte: new Date(startDate), lte: endDate };
       }
 
       if (input?.filters?.searchQuery) {
@@ -641,7 +641,6 @@ export const orderRouter = router({
             );
             throw new Error(error.message);
           });
-        console.log('paymentRes', paymentRes?.data);
         if (paymentRes?.data) {
           const statusData = paymentRes?.data;
           const successStatus =
@@ -679,7 +678,7 @@ export const orderRouter = router({
                 },
               });
             }
-            console.log({ payload }, 'total processing payload');
+
             const cart = await prisma.cart.findUnique({
               where: { id: payload?.values?.cart_id },
               include: {
@@ -731,7 +730,7 @@ export const orderRouter = router({
                 : discount;
             const totalPaymentId = paymentRes?.data?.id;
             const { total_id, ...valuesData }: any = { ...payload?.values };
-            console.log({ total_id });
+
             const orderPayload: any = {
               ...valuesData,
               phone_number:
@@ -743,10 +742,11 @@ export const orderRouter = router({
               total_amount: subTotalAmount - discountAmount,
               total_payment_id: totalPaymentId,
             };
+
             if (payload?.values?.code) delete orderPayload?.code;
             if (payload?.values?.cart_id) delete orderPayload?.cart_id;
             if (payload?.values?.total_id) delete orderPayload?.total_id;
-            console.log({ orderPayload, payload }, 'orderPayload, payload');
+
             const orderEventPayload = cart?.CartItems.map((item) => ({
               event_id: item.Event.id,
               customer_id: payload?.values?.customer_id,
@@ -763,6 +763,7 @@ export const orderRouter = router({
                   },
                 },
               },
+              
             });
             const eventPromises = cart.CartItems.map((item) =>
               prisma.event.update({
@@ -785,7 +786,7 @@ export const orderRouter = router({
 
             const mailOptions = {
               template_id: EMAIL_TEMPLATE_IDS.ORDER_SUCCESS,
-              from: 'no-reply@winnar.com',
+              from: EMAILS.contact,
               to: payload.values.email,
               subject: 'Your order has been placed 🎉',
               params: {
@@ -813,9 +814,11 @@ export const orderRouter = router({
                   },
                 },
                 CouponApply: {
-                  update: {
+                  updateMany: {
                     where: {
-                      id: cart?.CouponApply[0]?.id,
+                      cart_id: cart.id,
+                      is_deleted: false,
+                      is_used: false,
                     },
                     data: {
                       is_used: true,
@@ -829,10 +832,13 @@ export const orderRouter = router({
             if (useAPIData?.password) delete useAPIData?.password;
             if (useAPIData?.otp) delete useAPIData?.password;
 
+            
+
             return {
               message: paymentRes?.data,
               status: true,
               user: useAPIData,
+              order_id:order.id
             };
           }
         }
@@ -1238,7 +1244,6 @@ async function CreateSubscription(APidata: any) {
           }
         });
       });
-      console.log({ data }, 'data for test');
       postRequest.on('error', reject);
       postRequest.write(data);
       postRequest.end();

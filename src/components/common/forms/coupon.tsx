@@ -73,10 +73,16 @@ export default function CouponForm() {
       form.setValue('is_limited', categoryData?.data?.is_limited ? '1' : '0');
       form.setValue('coupon_limit', categoryData?.data?.coupon_limit ?? 0);
       if (categoryData?.data?.start_date) {
-        form.setValue('start_date', categoryData?.data?.start_date as any);
+        form.setValue(
+          'start_date',
+          categoryData?.data?.start_date?.toISOString()?.split('T')[0] as any,
+        );
       }
       if (categoryData?.data?.end_date) {
-        form.setValue('end_date', categoryData?.data?.end_date as any);
+        form.setValue(
+          'end_date',
+          categoryData?.data?.end_date?.toISOString()?.split('T')[0] as any,
+        );
       }
     }
   }, [isLoading, isFetched, categoryData, form]);
@@ -134,7 +140,7 @@ export default function CouponForm() {
       setEndDate(new Date().toISOString().split('T')[0]);
     }
   }, [form.watch('start_date'), form]);
-  console.log(form.watch('start_date'), 'start_date');
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -239,7 +245,7 @@ export default function CouponForm() {
                   <Input
                     type={'number'}
                     min={1}
-                    max={form.watch('is_percentage') == '1' ? 100 : 100000}
+                    max={form.watch('is_percentage') == '1' ? 90 : 100000}
                     placeholder={'Enter Discount '}
                     {...form.register('discount', {
                       valueAsNumber: true,
@@ -253,63 +259,61 @@ export default function CouponForm() {
               </FormItem>
             )}
           />
-          {!index && (
-            <FormField
-              control={form.control}
-              name="start_date"
-              render={({ field }) => (
-                <FormItem className=" flex flex-col gap-2 mt-2 w-full">
-                  <FormLabel>
-                    Start Date
-                    <sup className="text-md text-red-500">*</sup>
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      type={'date'}
-                      placeholder={'Start Date'}
-                      min={new Date().toISOString().split('T')[0]}
-                      {...form.register('start_date', {
-                        valueAsDate: true,
-                      })}
-                    />
-                  </FormControl>
+          <FormField
+            control={form.control}
+            name="start_date"
+            render={({ field }) => (
+              <FormItem className=" flex flex-col gap-2 mt-2 w-full">
+                <FormLabel>
+                  Start Date
+                  <sup className="text-md text-red-500">*</sup>
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    type={'date'}
+                    placeholder={'Start Date'}
+                    disabled={index ? true : false}
+                    min={new Date().toISOString().split('T')[0]}
+                    {...form.register('start_date', {
+                      valueAsDate: true,
+                    })}
+                  />
+                </FormControl>
 
-                  <div className="relative pb-4">
-                    <FormMessage />
-                  </div>
-                </FormItem>
-              )}
-            />
-          )}
-          {!index && (
-            <FormField
-              control={form.control}
-              name="end_date"
-              render={({ field }) => (
-                <FormItem className=" flex flex-col gap-2 mt-2 w-full">
-                  <FormLabel>
-                    End Date
-                    <sup className="text-md text-red-500">*</sup>
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      type={'date'}
-                      placeholder={'End Date'}
-                      min={endDate}
-                      {...form.register('end_date', {
-                        valueAsDate: true,
-                        required: true,
-                      })}
-                    />
-                  </FormControl>
+                <div className="relative pb-4">
+                  <FormMessage />
+                </div>
+              </FormItem>
+            )}
+          />
 
-                  <div className="relative pb-4">
-                    <FormMessage />
-                  </div>
-                </FormItem>
-              )}
-            />
-          )}
+          <FormField
+            control={form.control}
+            name="end_date"
+            render={({ field }) => (
+              <FormItem className=" flex flex-col gap-2 mt-2 w-full">
+                <FormLabel>
+                  End Date
+                  <sup className="text-md text-red-500">*</sup>
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    type={'date'}
+                    placeholder={'End Date'}
+                    min={endDate}
+                    {...form.register('end_date', {
+                      valueAsDate: true,
+                      required: true,
+                    })}
+                  />
+                </FormControl>
+
+                <div className="relative pb-4">
+                  <FormMessage />
+                </div>
+              </FormItem>
+            )}
+          />
 
           <FormField
             control={form.control}

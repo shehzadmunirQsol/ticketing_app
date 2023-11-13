@@ -3,43 +3,41 @@ import image1 from '../../../public/assets/only.svg';
 import image2 from '../../../public/assets/entires.svg';
 import image3 from '../../../public/assets/maxperson.svg';
 import image4 from '../../../public/assets/wordwide.svg';
-import Image from 'next/image';
 import langContent from '~/locales';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
+import NextImage from '~/components/ui/img';
 
 const EntiresDetail = (props: any) => {
   const { lang } = useSelector((state: RootState) => state.layout);
 
   const dynamicData: any = {
-    1: `AED ${props?.data?.price ?? 0 ?.toFixed(0) ?.toLocaleString()}`,
-    2:  props?.data?.total_tickets?.toLocaleString() ?? 0,
+    1: `AED ${props?.data?.price ?? 0?.toFixed(0)?.toLocaleString()}`,
+    2: props?.data?.total_tickets?.toLocaleString() ?? 0,
   };
 
-
-
   return (
-    <div className="my-12 bg-backgroundDark  rounded-md border  border-border ">
-      <div className="container px-10 py-10 w-full">
-        <div className="flex flex-col -m-4 text-center justify-center items-start gap-4 md:gap-8 lg:items-center lg:justify-between lg:gap-0  lg:flex-row">
+    <div className="my-6 sm:my-12 bg-backgroundDark  rounded-md border  border-border ">
+      <div className="p-4 sm:p-6 w-full">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {langContent[lang.lang].ProductDetail.entries.array.map(
             (item, index) => {
               return (
                 <div
-                key={index}
+                  key={index}
                   className={`flex ${
                     item.LINK
-                      ? 'flex-col justify-start '
-                      : 'flex-row justify-center'
-                  } items-center `}
+                      ? 'flex-row justify-start lg:justify-center items-center'
+                      : 'flex-row justify-start lg:justify-center items-center'
+                  } `}
                 >
                   <div className={`flex  justify-center items-center `}>
-                    <Image
+                    <NextImage
                       src={images[item.data]}
-                      className="ltr:mr-4 rtl:ml-4"
+                      className="ltr:mr-2 ltr:md:mr-3 rtl:ml-2 rtl:md:ml-3"
                       alt={'image'}
                     />
-                    <p className="leading-relaxed  text-lg md:text-xl text-primary font-semibold">
+                    <p className="text-sm md:text-xl text-primary font-semibold">
                       {item.HEADING}{' '}
                       {item.data === 3 ? (
                         <span className="font-black">
@@ -58,11 +56,11 @@ const EntiresDetail = (props: any) => {
                       )}
                     </p>
                   </div>
-                  {item.LINK && (
-                    <p className="text-white text-sm underline -mt-2 -ml-5">
+                  {/* {item.LINK && (
+                    <p className="text-white text-sm underline mt-0 ml-5 self-end">
                       {item?.LINK}
                     </p>
-                  )}
+                  )} */}
                 </div>
               );
             },
@@ -76,12 +74,6 @@ const EntiresDetail = (props: any) => {
 export default EntiresDetail;
 
 const images: any = {
-  1: image1,
-  2: image2,
-  3: image3,
-  4: image4,
-};
-const dynamicData: any = {
   1: image1,
   2: image2,
   3: image3,

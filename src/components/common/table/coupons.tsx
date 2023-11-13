@@ -44,6 +44,7 @@ import { Switch } from '~/components/ui/switch';
 import { useToast } from '~/components/ui/use-toast';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 import { CouponDialog } from '../modal/coupon';
+import { CouponDeleteDialog } from '../modal/deleteCoupon';
 import { LoadingDialog } from '../modal/loadingModal';
 import { MoreHorizontal } from 'lucide-react';
 import Link from 'next/link';
@@ -77,26 +78,26 @@ export type Category = {
   updated_at: Date;
 };
 
+const initialFilters: any = {
+  first: 0,
+  rows: 10,
+};
+
 export default function CouponsDataTable() {
   // use toast
   const { toast } = useToast();
   const router = useRouter();
-  const { is_enabled } = router.query;
-  console.log({ is_enabled });
-  // use states
   const [sorting, setSorting] = useState<SortingState>([]);
   const [filterID, setFilterID] = useState({});
 
-  const [filters, setFilters] = useState<getCustomerSchema>({
-    first: 0,
-    rows: 10,
-  });
+  const [filters, setFilters] = useState<getCustomerSchema>(initialFilters);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
   const [selectedItem, setSelectedItem] = React.useState({});
   const [title, setTitle] = React.useState('');
   const [type, setType] = React.useState('');
   const [isModal, setIsModal] = React.useState(false);
+  const [isModalDelete, setIsModalDelete] = React.useState(false);
 
   // APi
   const { data, refetch, isLoading } = trpc.coupon.get.useQuery(
@@ -110,9 +111,16 @@ export default function CouponsDataTable() {
     return Array.isArray(data?.data) ? data?.data : [];
   }, [data]);
 
+  // delete product
+  const deleteCoupon = (data: any, type: string) => {
+    setSelectedItem(data);
+    setTitle('Coupon');
+    setType(type);
+    setIsModalDelete(true);
+  };
+
   // handle modal
   const handleEnbled = (data: any, type: string) => {
-    console.log({ data, type }, 'enable check');
     if (!data?.is_approved) {
       setSelectedItem(data);
       setTitle('Coupon');
@@ -187,6 +195,24 @@ export default function CouponsDataTable() {
       ),
     },
     {
+      accessorKey: 'Start Date',
+      header: 'Start Date',
+      cell: ({ row }) => (
+        <div className="capitalize text-ellipsis whitespace-nowrap ">
+          {displayDate(row?.original?.start_date)}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'End Date',
+      header: 'End Date',
+      cell: ({ row }) => (
+        <div className="capitalize text-ellipsis whitespace-nowrap ">
+          {displayDate(row?.original?.end_date)}
+        </div>
+      ),
+    },
+    {
       id: 'Enabled',
       header: 'Enabled',
 
@@ -206,24 +232,7 @@ export default function CouponsDataTable() {
         );
       },
     },
-    {
-      accessorKey: 'Start Date',
-      header: 'Start Date',
-      cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap ">
-          {displayDate(row?.original?.start_date)}
-        </div>
-      ),
-    },
-    {
-      accessorKey: 'End Date',
-      header: 'End Date',
-      cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap ">
-          {displayDate(row?.original?.end_date)}
-        </div>
-      ),
-    },
+
     {
       id: 'actions',
       enableHiding: false,
@@ -241,8 +250,13 @@ export default function CouponsDataTable() {
               {/* <DropdownMenuLabel>Actions</DropdownMenuLabel> */}
               {/* <DropdownMenuSeparator /> */}
               <Link href={`/admin/coupons/edit/${row?.original?.id}`}>
-                <DropdownMenuItem>Edit Coupon</DropdownMenuItem>
+                <DropdownMenuItem>Edit</DropdownMenuItem>
               </Link>
+              <DropdownMenuItem
+                onClick={() => deleteCoupon(row?.original, 'delete')}
+              >
+                Delete
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         );
@@ -386,6 +400,7 @@ export default function CouponsDataTable() {
           value={filterID}
           setValue={setFilterID}
           setFilters={setFilters}
+          initial={initialFilters}
         />
       </div>
       <div className="rounded-md border border-border ">
@@ -536,6 +551,17 @@ export default function CouponsDataTable() {
         setTitle={setTitle}
         isModal={isModal}
         setIsModal={setIsModal}
+        refetch={refetch}
+        type={type}
+        setType={setType}
+      />
+      <CouponDeleteDialog
+        selectedItem={selectedItem}
+        setSelectedItem={setSelectedItem}
+        title={title}
+        setTitle={setTitle}
+        isModal={isModalDelete}
+        setIsModal={setIsModalDelete}
         refetch={refetch}
         type={type}
         setType={setType}

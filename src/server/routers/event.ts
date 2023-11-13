@@ -2,7 +2,7 @@ import { router, publicProcedure } from '../trpc';
 import { TRPCError } from '@trpc/server';
 import {
   EventFormSchema,
-  deleteEventSchema,
+  switchUpdateSchema,
   getClosingSoon,
   getEventSchema,
   getFeatured,
@@ -15,13 +15,14 @@ import { verifyJWT } from '~/utils/jwt';
 export const eventRouter = router({
   get: publicProcedure.input(getEventSchema).query(async ({ input }) => {
     try {
-      const { filters, ...payload } = input;
+      const { filters } = input;
       const filterPayload: any = { ...filters };
 
-      if (filterPayload?.searchQuery) delete filterPayload.searchQuery;
-      if (filterPayload?.endDate) delete filterPayload.endDate;
-      if (filterPayload?.startDate) delete filterPayload.startDate;
-      if (filterPayload?.status) delete filterPayload.status;
+      delete filterPayload.searchQuery;
+      delete filterPayload.endDate;
+      delete filterPayload.startDate;
+      delete filterPayload.status;
+
       const where: any = {
         is_deleted: false,
         lang_id: input.lang_id,
@@ -38,19 +39,13 @@ export const eventRouter = router({
         });
       }
 
+      const today = new Date();
       if (input?.filters?.status == 'active') {
-        const startDate = new Date()?.toISOString().split('T')[0] as string;
-        where.launch_date = { gte: new Date(startDate) };
+        where.launch_date = { lte: today };
+        where.end_date = { gte: today };
       }
-      if (input?.filters?.status == 'in-active') {
-        const startDate = new Date()?.toISOString().split('T')[0] as string;
-        where.end_date = { lte: new Date(startDate) };
-      }
-      if (input?.filters?.endDate) {
-        const endDate = new Date(input?.filters?.endDate)
-          ?.toISOString()
-          .split('T')[0] as string;
-        where.end_date = { lte: new Date(endDate) };
+      if (input?.filters?.status == 'closed') {
+        where.end_date = { lte: today };
       }
       if (input?.filters?.startDate) {
         const startDate = new Date(input?.filters?.startDate)
@@ -58,10 +53,14 @@ export const eventRouter = router({
           .split('T')[0] as string;
         where.launch_date = { gte: new Date(startDate) };
       }
+      if (input?.filters?.endDate) {
+        const endDate = new Date(input?.filters?.endDate)
+          ?.toISOString()
+          .split('T')[0] as string;
+        where.end_date = { lte: new Date(endDate) };
+      }
 
       if (input.category_id) where.category_id = input.category_id;
-
-      // if (input.event_id) where.id = input.event_id;
 
       const totalEventPromise = prisma.eventView.count({
         where: where,
@@ -100,12 +99,21 @@ export const eventRouter = router({
   }),
   create: publicProcedure.input(EventFormSchema).mutation(async ({ input }) => {
     try {
-      const { en, ar, multi_image, ...eventPayload } = input;
+      const { en, ar, multi_image, meta, ...eventPayload } = input;
+
       const createPayload = {
         ...eventPayload,
         charity_id: 1,
         user_id: 1,
+        meta: undefined as string | undefined,
       };
+
+      if (meta) {
+        createPayload.meta = JSON.stringify(meta);
+      } else {
+        delete createPayload.meta;
+      }
+
       const eventDescPayload = [
         { ...en, lang_id: 1 },
         { ...ar, lang_id: 2 },
@@ -145,14 +153,25 @@ export const eventRouter = router({
         ar,
         multi_image,
         removed_images,
+        meta,
         event_id = 0,
         ...eventPayload
       } = input;
+
       const payload = {
         ...eventPayload,
         charity_id: 1,
         user_id: 1,
+        meta: undefined as string | undefined,
       };
+
+      if (meta) {
+        payload.meta = JSON.stringify(meta);
+      } else {
+        delete payload.meta;
+      }
+
+      if (!payload.faq_id) payload.faq_id = undefined;
 
       const event = await prisma.event.update({
         where: { id: event_id },
@@ -208,7 +227,9 @@ export const eventRouter = router({
         const eventCustomers =
           await prisma.$queryRaw`SELECT e.id AS event_id, e.thumb,e.end_date, e.price, oe.customer_id, c.email,c.phone_number,ed.name AS event_name, c.first_name, c.last_name, 
           CAST( SUM( oe.quantity ) AS INT ) AS quantity,
-          CAST( SUM( o.discount_amount ) AS INT ) AS discount_amount
+          CAST( SUM( oe.quantity * oe.ticket_price ) AS INT ) AS sub_total_amount,
+          CAST( SUM( o.discount_amount ) AS INT ) AS discount_amount,
+          CAST( SUM( ( oe.quantity * oe.ticket_price ) - discount_amount ) AS INT ) AS total_amount
             FROM event AS e
             JOIN event_description AS ed
             ON e.id = ed.event_id
@@ -218,7 +239,7 @@ export const eventRouter = router({
             ON o.id = oe.order_id
             JOIN customer AS c
             ON c.id = oe.customer_id
-            GROUP BY e.id, c.id,oe.customer_id,ed.id,o.id
+            GROUP BY e.id, c.id,oe.customer_id,ed.id
             HAVING e.id = ${input.event_id} AND ed.lang_id= 1
             order BY quantity DESC  
           `;
@@ -235,13 +256,13 @@ export const eventRouter = router({
       }
     }),
 
-  delete: publicProcedure
-    .input(deleteEventSchema)
+  switchUpdate: publicProcedure
+    .input(switchUpdateSchema)
     .mutation(async ({ input }) => {
       try {
         const event = await prisma.event.update({
           where: { id: input.id },
-          data: { is_deleted: true },
+          data: { [input.type]: input.value },
         });
         if (!event) {
           throw new TRPCError({
@@ -250,7 +271,7 @@ export const eventRouter = router({
           });
         }
 
-        return { data: event, message: 'Event deleted' };
+        return { data: event, message: 'Event updated' };
       } catch (error: any) {
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
@@ -263,9 +284,12 @@ export const eventRouter = router({
     .input(getEventSchema)
     .query(async ({ input }) => {
       try {
+        const today = new Date();
         const where: any = {
           is_deleted: false,
-          end_date: { gte: new Date() },
+          is_enabled: true,
+          launch_date: { lte: today },
+          end_date: { gte: today },
           draw_date: null,
         };
 
@@ -291,7 +315,7 @@ export const eventRouter = router({
         });
 
         const eventPromise = prisma.event.findMany({
-          orderBy: { created_at: 'asc' },
+          orderBy: { created_at: 'desc' },
           skip: input.first * input.rows,
           take: input.rows,
           where: where,
@@ -322,7 +346,6 @@ export const eventRouter = router({
           });
         }
 
-        console.log(totalEvent, event, 'event data');
         return {
           message: 'Events found',
           count: totalEvent,
@@ -336,20 +359,21 @@ export const eventRouter = router({
       }
     }),
 
-  getUpcomimg: publicProcedure
+  getUpcoming: publicProcedure
     .input(getClosingSoon)
     .query(async ({ input }) => {
       try {
         const where: any = {
           is_deleted: false,
-          EventDescription: { some: { lang_id: input?.lang_id } },
+          is_enabled: true,
+          draw_date: null,
         };
         const todayDate = new Date();
         const endingDate = new Date();
         endingDate.setDate(endingDate.getDate() + 21);
 
         // upcoming means its going to start
-        if (input?.type == 'upcomming') where.launch_date = { gte: todayDate };
+        if (input?.type == 'upcoming') where.launch_date = { gte: todayDate };
         if (input?.type == 'closing') {
           where.launch_date = { lte: new Date(todayDate) };
           where.end_date = {
@@ -357,12 +381,15 @@ export const eventRouter = router({
             lte: new Date(endingDate),
           };
         }
+        if (input?.type == 'drawn') where.draw_date = { not: null };
+        if (input?.category_id) where.category_id = input?.category_id;
+
         const totalEventPromise = prisma.event.count({
           where: where,
         });
 
         const eventPromise = prisma.event.findMany({
-          orderBy: { created_at: 'asc' },
+          orderBy: { created_at: 'desc' },
           skip: input.first * input.rows,
           take: input.rows,
           where: where,
@@ -411,6 +438,7 @@ export const eventRouter = router({
     try {
       const where: any = {
         is_deleted: false,
+        is_enabled: true,
         end_date: { gte: new Date() },
         draw_date: null,
         category_id: 1,
@@ -425,7 +453,7 @@ export const eventRouter = router({
       });
 
       const eventPromise = prisma.event.findMany({
-        orderBy: { created_at: 'asc' },
+        orderBy: { created_at: 'desc' },
         skip: input.first * input.rows,
         take: input.rows,
         where: where,
@@ -477,11 +505,23 @@ export const eventRouter = router({
       try {
         const descriptionPayload: any =
           input.type === 'admin' ? undefined : { lang_id: input.lang_id };
+
         const event = await prisma.event.findUnique({
           where: {
             id: input.id,
           },
           include: {
+            Winner: {
+              select: {
+                ticket_num: true,
+                Customer: {
+                  select: {
+                    first_name: true,
+                    last_name: true,
+                  },
+                },
+              },
+            },
             EventDescription: {
               where: descriptionPayload,
               select: {
@@ -496,7 +536,7 @@ export const eventRouter = router({
             CMS: {
               include: {
                 CMSDescription: {
-                  where: { lang_id: input.lang_id },
+                  where: { lang_id: input.lang_id, is_deleted: false },
                   select: {
                     content: true,
                     lang_id: true,

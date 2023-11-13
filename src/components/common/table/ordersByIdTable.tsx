@@ -26,7 +26,6 @@ import { trpc } from '~/utils/trpc';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 import { LoadingDialog } from '../modal/loadingModal';
 import { displayDate } from '~/utils/helper';
-import Image from 'next/image';
 import Current from '~/public/assets/not-current-entrie.png';
 import { useRouter } from 'next/router';
 import {
@@ -53,6 +52,7 @@ import {
 import langContent from '~/locales';
 
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
+import NextImage from '~/components/ui/img';
 
 export type Category = {
   id: number;
@@ -80,7 +80,7 @@ export default function OrdersDataByIdTable(props: OrderTableProps) {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
 
-  const { data, isFetching, refetch } = trpc.order.getOrders.useQuery(
+  const { data, isFetching } = trpc.order.getOrders.useQuery(
     { ...props.filters },
     {
       refetchOnWindowFocus: false,
@@ -252,7 +252,7 @@ export default function OrdersDataByIdTable(props: OrderTableProps) {
                         className=" text-center"
                       >
                         <div className="flex flex-col my-auto h-full items-center justify-center">
-                          <Image src={Current} alt="/" />
+                          <NextImage src={Current} alt="/" />
                           <p className="text-center text-gray-300 text-md my-2 px-6">
                             {
                               langContent[lang.lang].MyAccount.AccountView
@@ -369,7 +369,7 @@ export default function OrdersDataByIdTable(props: OrderTableProps) {
       ) : (
         <>
           <div className="flex flex-col my-auto h-full items-center justify-center">
-            <Image src={Current} alt="/" />
+            <NextImage src={Current} alt="/" />
             <p className="text-center text-gray-300 text-md my-2 px-6">
               {langContent[lang.lang].MyAccount.AccountView.TABLE_INFO}
             </p>

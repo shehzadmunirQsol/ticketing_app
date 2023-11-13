@@ -66,34 +66,47 @@ export const signupCustomerSchemaInput = z.object({
       message: 'Password must not exceed 30 characters',
     }),
   first_name: z
-    .string({ required_error: 'Please enter your firstname' })
+    .string({ required_error: 'Please enter your First Name' })
     .min(2, {
-      message: 'firstname must be at least 2 characters',
+      message: 'First Name must be at least 2 characters',
     })
     .max(30, {
-      message: 'firstname must not exceed 30 characters',
+      message: 'First Name must not exceed 30 characters',
     }),
   last_name: z
-    .string({ required_error: 'Please enter your lastname' })
+    .string({ required_error: 'Please enter your Last Name' })
     .min(2, {
-      message: 'lastname must be at least 2 characters',
+      message: 'Last Name must be at least 2 characters',
     })
     .max(30, {
-      message: 'lastname must not exceed 30 characters',
+      message: 'Last Name must not exceed 30 characters',
     }),
-  code: z.string({ required_error: 'Enter code' })
-    .regex(new RegExp(/^(00|\+)[0-9]+$/), 'Invalid code')
-    .min(1, {
-      message: 'Enter code',
-    }).trim(),
   phone_number: z
     .string({
       required_error: 'Please enter your phone no',
       invalid_type_error: 'Please enter your phone no',
     })
+    .regex(new RegExp(/^[0-9]+$/), 'Please enter a valid phone no.')
+    .min(9, {
+      message: 'Should be at more than 9 numbers',
+    })
+    .max(15, {
+      message: 'Should be at less than 15 numbers',
+    })
+    .trim(),
+  code: z
+    .string({
+      required_error: 'Enter code',
+    })
+    .regex(new RegExp(/^(\+)?[0-9]+$/), 'Invalid code')
     .min(1, {
-      message: 'Please enter phone no',
-    }),
+      message: 'Enter code',
+    })
+    .max(4, {
+      message: 'Invalid code',
+    })
+    .trim(),
+
   dob: z.date(),
   country: z
     .string({
@@ -136,9 +149,7 @@ export const loginCustomerSchema = z.object({
     .email({
       message: 'Please use a valid email',
     })
-    .refine((val) => (val.includes('*') ? false : true), {
-      message: 'Please use a valid email',
-    }),
+    .trim(),
   password: z
     .string({ required_error: 'Please enter your password' })
     .min(6, {
@@ -146,10 +157,11 @@ export const loginCustomerSchema = z.object({
     })
     .max(30, {
       message: 'Password must not exceed 30 characters',
-    }),
+    })
+    .trim(),
 });
 export const loginCustomerSchemaInput = z.object({
-  user: z.string({ required_error: 'Please enter your username' }),
+  user: z.string({ required_error: 'Please enter your username' }).trim(),
   password: z
     .string({ required_error: 'Please enter your password' })
     .min(6, {
@@ -157,7 +169,8 @@ export const loginCustomerSchemaInput = z.object({
     })
     .max(30, {
       message: 'Password must not exceed 30 characters',
-    }),
+    })
+    .trim(),
 });
 
 export type loginCustomerInput = z.TypeOf<typeof loginCustomerSchema>;
@@ -168,17 +181,18 @@ export const forgotPasswordCustomerSchema = z.object({
       required_error: 'Please enter your email',
       invalid_type_error: 'Please enter your email',
     })
-    .email(),
+    .email()
+    .trim(),
 });
 export type forgotPasswordCustomerSchemaInput = z.TypeOf<
   typeof forgotPasswordCustomerSchema
 >;
 
 export const resetPasswordCustomerSchema = z.object({
-  email: z.string(),
-  otp: z.string(),
-  password: z.string(),
-  confirmPassword: z.string(),
+  email: z.string().trim(),
+  otp: z.string().trim(),
+  password: z.string().trim(),
+  confirmPassword: z.string().trim(),
 });
 export type resetPasswordCustomerSchemaInput = z.TypeOf<
   typeof resetPasswordCustomerSchema
@@ -209,6 +223,9 @@ export const addCustomerAddress = z.object({
       required_error: 'Please enter your street address',
       invalid_type_error: 'Please enter your street address',
     })
+    .min(1, {
+      message: 'Please enter your street address',
+    })
     .trim(),
   street_address_2: z
     .string({
@@ -222,11 +239,17 @@ export const addCustomerAddress = z.object({
       required_error: 'Please enter your state',
       invalid_type_error: 'Please enter your state',
     })
+    .min(1, {
+      message: 'Please enter your state',
+    })
     .trim(),
   city: z
     .string({
       required_error: 'Please enter your city',
       invalid_type_error: 'Please enter your city',
+    })
+    .min(1, {
+      message: 'Please enter your city',
     })
     .trim(),
   country: z
@@ -234,18 +257,43 @@ export const addCustomerAddress = z.object({
       required_error: 'Please enter your country',
       invalid_type_error: 'Please enter your country',
     })
+    .min(1, {
+      message: 'Please enter your country',
+    })
     .trim(),
   phone_number: z
     .string({
       required_error: 'Please enter your phone no',
       invalid_type_error: 'Please enter your phone no',
     })
+    .regex(new RegExp(/^[0-9]+$/), 'Please enter a valid phone no.')
+    .min(9, {
+      message: 'Should be at more than 9 numbers',
+    })
+    .max(15, {
+      message: 'Should be at less than 15 numbers',
+    })
     .trim(),
-  phone_code: z.string().trim(),
-  postal_code: z.number({
-    required_error: 'Please enter your postal code',
-    invalid_type_error: 'Please enter your postal code',
-  }),
+  phone_code: z
+    .string({
+      required_error: 'Enter code',
+    })
+    .regex(new RegExp(/^(\+)?[0-9]+$/), 'Invalid code')
+    .min(1, {
+      message: 'Enter code',
+    })
+    .max(4, {
+      message: 'Invalid code',
+    })
+    .trim(),
+  postal_code: z
+    .string({
+      required_error: 'Please enter your postal code',
+      invalid_type_error: 'Please enter your postal code',
+    })
+    .min(1, {
+      message: 'Please enter your postal code',
+    }),
 });
 export const updateCustomerAddress = z.object({
   id: z.number().optional(),
@@ -281,7 +329,13 @@ export const accountsDetailSchemaInput = z.object({
       message: 'Name must not exceed 24 characters',
     })
     .trim(),
-  dob: z.date().optional().nullable(),
+  dob: z
+    .date()
+    .refine((d) => d >= new Date('1900-01-01') && d <= new Date('2100-01-01'), {
+      message: 'Enter a valid date',
+    })
+    .optional()
+    .nullable(),
 });
 
 export type accountsDetailSchemaInput = z.infer<
