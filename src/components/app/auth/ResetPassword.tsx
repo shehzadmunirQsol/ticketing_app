@@ -97,7 +97,7 @@ export default function ResetPassword() {
                     {...field}
                   />
                 </FormControl>
-                <div className="relative pb-2">
+                <div className="relative pb-2 errormsg">
                   <FormMessage />
                 </div>
               </FormItem>
@@ -118,7 +118,7 @@ export default function ResetPassword() {
                     {...field}
                   />
                 </FormControl>
-                <div className="relative pb-2">
+                <div className="relative pb-2 errormsg">
                   <FormMessage />
                 </div>
               </FormItem>

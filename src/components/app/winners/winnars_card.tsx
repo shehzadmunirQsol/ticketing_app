@@ -60,9 +60,9 @@ function WinnarsCard(props: cardInterface) {
         />
       </div>
 
-      <div className="px-4 mt-6 py-4">
-        <div className=" text-lg md:text-2xl lg:text-3xl mb-2">
-          <p className="text-gray-200 overflow-hidden h-14 md:h-24 lg:h-28 ">
+      <div className="px-4 py-4">
+        <div className="text-lg md:text-2xl mb-2">
+          <p className="text-gray-200 overflow-hidden h-14 md:h-20">
             {langContent[lang.lang].Winners.CONGRATULATIONS}{' '}
             <span className="font-bold">
               {props?.data?.Customer?.first_name}

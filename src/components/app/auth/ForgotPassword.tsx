@@ -102,7 +102,7 @@ export function ForgotPasswordDailog(props: ForgotPasswordDialogInterface) {
                             {...field}
                           />
                         </FormControl>
-                        <div className="relative pb-2">
+                        <div className="relative pb-2 errormsg">
                           <FormMessage />
                         </div>
                       </FormItem>

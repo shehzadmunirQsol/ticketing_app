@@ -106,7 +106,7 @@ function Footer() {
                 </div>
               </div>
               <div className=" grid grid-cols-1 gap-8 md:gap-6 md:grid-cols-2 w-full sm:w-[300px] lg:w-[360px]">
-                <div className="col-span-2 flex items-center justify-between">
+                <div className="col-span-2 flex items-start justify-between">
                   <ul className="flex-1 text-grayColor opacity-75  space-y-2 sm:space-y-2">
                     {langContent[lang.lang].Footer.array.map((item, index) => {
                       return (
@@ -228,7 +228,7 @@ export function ItemMenuDemo() {
       icon: 'fa-solid fa-globe',
     },
     {
-      name: 'Winners',
+      name: 'Winnars',
       link: `/#`,
       icon: 'fa-sharp fa-regular fa-images',
     },

@@ -201,7 +201,7 @@
   "Header":{
       "title_one":"Cars",
       "title_two":"Cash",
-      "title_three":"Winnar",
+      "title_three":"Winnars",
       "title_four":"About Us",
       "title_five":"Contact Us",
       "title_six":"Cart",
@@ -217,7 +217,7 @@
           "link": "/cash"
         },
         {
-          "name": "Winnar",
+          "name": "Winnars",
           "link": "/winners"
         },
         {
@@ -249,7 +249,7 @@
         "link": "/cash"
       },
       {
-        "name": "Winnar",
+        "name": "Winnars",
         "link": "/winners"
       },
       {
@@ -263,7 +263,7 @@
     ],
     "arrayTwo":[
       {
-        "name": "About Us",
+        "name": "Our Team",
         "link": "/about-us"
       },
       {
@@ -273,10 +273,6 @@
       {
         "name": "Terms & Conditions",
         "link": "/terms-condition"
-      },
-      {
-        "name": "Our Team",
-        "link": "/about-us"
       },
       {
         "name": "Cookie & Privacy Policy",
@@ -292,7 +288,7 @@
     "HEADING":"CASH"
   },
   "Winners":{
-    "HEADING":"Winnar",
+    "HEADING":"Winnars",
     "WINNER_HEADING":"Won",
     "WINNER_TICKET":"Winning ticket",
     "WINNER_DATE":"Draw date",

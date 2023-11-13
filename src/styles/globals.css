@@ -907,9 +907,11 @@ input[type='radio']:not(:checked) + section.box .icon-class {
 
 .cmsStyle h1 {
   font-size: 32px;
+  text-transform: uppercase;
 }
 .cmsStyle h2 {
   font-size: 24px;
+  line-height: 1.2;
 }
 .cmsStyle h3 {
   font-size: 20px;
@@ -1288,7 +1290,18 @@ bottom: -30px;
   padding: 9px;
   background: #23d2b3;
 }
+.relative.pb-2.errormsg {
+  margin-top: 2px;
+}
+form label + * {
+  margin-top: 5px !important;
+}
 /* Desktop */
+
+
+
+
+
 
 @media only screen and (max-width: 1024px) {
 .herobanner .leftbx h1,
@@ -1471,6 +1484,10 @@ input:checked + section.box {
 }
 .col-auto {
   width: 100%;
+}
+.mobbg {
+  background-color: #252525;
+  background-image: initial;
 }
 }
 

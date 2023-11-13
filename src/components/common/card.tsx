@@ -117,21 +117,21 @@ export default function ProductCard(props: CardInterface) {
                 className="w-full"
               />
             </div>
-            <div className="font-bold overflow-hidden h-16 md:h-20 text-xl lg:text-2xl xl:text-3xl line-clamp-1">
+            <div className="font-bold overflow-hidden h-14 md:h-16 text-base lg:text-xl line-clamp-1">
               {langContent[lang.lang].Index.productcard.WIN_TITLE ?? ''}
               <span className="text-gray-200  font-semibold mx-2 ">
                 {props?.data?.EventDescription[0]?.name}
               </span>
             </div>
-            <div className="relative w-full opacity-75  text-gray-200 text-md text-xs md:text-base font-light sm:font-normal leading-normal">
-              <p className="h-9 md:h-12 overflow-hidden">
+            <div className="relative w-full opacity-75  text-gray-200 text-xs md:text-sm font-light sm:font-normal leading-normal">
+              <p className="h-9 md:h-10 overflow-hidden">
                 {customTruncate(props?.data?.EventDescription[0]?.desc, 100)}
               </p>
             </div>
-            <hr className=" opacity-20 mt-4" />
+            <hr className="opacity-20 mt-3 md:mt-4" />
 
             <div className="h-15 md:h-6 overflow-hidden mt-2">
-              <span className="text-gray-200 text-md text-sm xl:text-lg font-semibold leading-[18px]">
+              <span className="text-gray-200 text-md text-sm xl:text-base font-semibold leading-[18px]">
                 {langContent[lang.lang].Index.productcard.ALTERNATIVE_TITLE}
               </span>
               <br className="block md:hidden" />
@@ -141,7 +141,7 @@ export default function ProductCard(props: CardInterface) {
               </span>
             </div>
 
-            <div className="flex  justify-between items-center mt-3 sm:mt-8 gap-4">
+            <div className="flex  justify-between items-center mt-3 sm:mt-6 gap-4">
               <div className="text-primary text-xl md:text-2xl font-[500] leading-[18px]">
                 AED {props?.data?.price}
               </div>

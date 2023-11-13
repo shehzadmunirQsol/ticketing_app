@@ -59,6 +59,11 @@ export default function LoginSignup() {
     setShowPassword(!showPassword);
   };
 
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
+
   const { lang } = useSelector((state: RootState) => state.layout);
 
   const { toast } = useToast();
@@ -242,7 +247,6 @@ export default function LoginSignup() {
                         <FormControl>
                           <Input
                             type="text"
-                            placeholder="Enter Email Address"
                             {...formLogin.register('user', {
                               onChange(event) {
                                 formLogin.setValue(
@@ -272,7 +276,6 @@ export default function LoginSignup() {
                           <div>
                           <Input
                             type={showPassword ? 'text' : 'password'}
-                            placeholder="Enter Your Password"
                             {...field}
                             className="rounded-md"
                           />
@@ -332,7 +335,6 @@ export default function LoginSignup() {
                           <FormControl>
                             <Input
                               type="text"
-                              placeholder="Enter your first name"
                               {...field}
                               className="rounded-md"
                             />
@@ -354,7 +356,6 @@ export default function LoginSignup() {
                           <FormControl>
                             <Input
                               type="text"
-                              placeholder="Enter your last name"
                               {...field}
                               className="rounded-md"
                             />
@@ -382,7 +383,7 @@ export default function LoginSignup() {
                               <PhoneInput
                                 className="rounded-md countrycode"
                                 defaultCountry="ae"
-                                inputProps={{ maxLength: 4, ...field }} 
+                                inputProps={{ maxLength: 4, placeholder:"+971", ...field }} 
                                 {...field} 
                               /> 
 
@@ -437,7 +438,6 @@ export default function LoginSignup() {
                                   min={0}
                                   type="number"
                                   className="w-full"
-                                  placeholder="Enter your phone number"
                                   {...field}
                                 />
                               </FormControl>
@@ -466,10 +466,7 @@ export default function LoginSignup() {
                           >
                             <FormControl className="">
                               <SelectTrigger className=" rounded-md h-10 bg-inputColor ">
-                                <SelectValue
-                                  placeholder="Select your country"
-                                  className=""
-                                />
+                                <SelectValue className="" />
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent className="max-h-[300px] overflow-y-auto">
@@ -506,9 +503,8 @@ export default function LoginSignup() {
                           <FormControl>
                             <Input
                               type={'date'}
-                              placeholder={'Enter DOB'}
                               max={minDateFormatted}
-                              className="rounded-md "
+                              className="rounded-md"
                               {...formSignup.register('dob', {
                                 valueAsDate: true,
                               })}
@@ -536,7 +532,7 @@ export default function LoginSignup() {
                           >
                             <FormControl>
                               <SelectTrigger className=" h-10  bg-inputColor">
-                                <SelectValue placeholder={`Select Gender`} />
+                                <SelectValue />
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
@@ -568,7 +564,6 @@ export default function LoginSignup() {
                         <FormControl>
                           <Input
                             type="text"
-                            placeholder="Enter Your Email Address"
                             {...field}
                             className="rounded-md"
                           />
@@ -579,6 +574,8 @@ export default function LoginSignup() {
                       </FormItem>
                     )}
                   />
+
+
                   <FormField
                     control={formSignup.control}
                     name="password"
@@ -591,7 +588,6 @@ export default function LoginSignup() {
                           <div>
                           <Input
                             type={showPassword ? 'text' : 'password'}
-                            placeholder="Enter Your Password"
                             {...field}
                             className="rounded-md"
                           />
@@ -613,6 +609,46 @@ export default function LoginSignup() {
                       </FormItem>
                     )}
                   />
+
+
+
+                  <FormField
+                    control={formSignup.control}
+                    name="confirmpassword"
+                    render={({ field }) => (
+                      <FormItem className="">
+                        <FormLabel className="text-xs font-thin text-grayColor">
+                          Confirm Password <sup className="">*</sup>
+                        </FormLabel>
+                        <FormControl className="relative">
+                          <div>
+                          <Input
+                            type={showConfirmPassword ? 'text' : 'password'}
+                            placeholder="Enter Your Password"
+                            {...field}
+                            className="rounded-md"
+                          />
+                          <div
+                            className="eyeicon"
+                            onClick={toggleConfirmPasswordVisibility}
+                          >
+                            {showConfirmPassword ? (
+                              <Image src={EyeOpen} alt="img" />
+                            ) : (
+                              <Image src={EyeClose} alt="img" />
+                            )}
+                          </div>
+                          </div>
+                        </FormControl>
+                        <div className="relative pb-2 errormsg">
+                          <FormMessage />
+                        </div>
+                      </FormItem>
+                    )}
+                  />
+
+
+
                 </div>
                 <div className="mt-16 flex flex-col lg:flex-row md:flex-row justify-between items-center gap-6 ">
                   <p className="text-lightColor text-gray-400 font-extralight text-xs w-full lg:w-96  md:w-96  ltr:text-left rtl:text-right">

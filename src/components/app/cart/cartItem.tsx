@@ -163,7 +163,7 @@ export default function CartItem(props: CartItemProp) {
     tooltipMessage = "Competition closed, can't proceed to checkout!";
 
   return (
-    <div data-name="card" className="py-3 mdx:py-6 border-t border-white/40">
+    <div data-name="card" className="py-2 mdx:py-2 border-t border-white/40">
       <div className="mb-2 flex items-center justify-between mdx:hidden">
         <p className="text-xl font-bold">
           {cartItem?.Event?.EventDescription[0]?.name}
@@ -174,7 +174,7 @@ export default function CartItem(props: CartItemProp) {
         />
       </div>
 
-      <div className="flex items-start justify-between space-y-4">
+      <div className="flex items-center justify-between">
         <div className="relative mr-10 min-w-[140px] min-h-[90px] mdx:min-w-[176px] mdx:min-h-[112px]">
           <NextImage
             src={renderNFTImage({ thumb: cartItem.Event.thumb })}
@@ -182,13 +182,13 @@ export default function CartItem(props: CartItemProp) {
             alt={'car image'}
             className="w-full h-full absolute object-contain"
           />
-          <div className="p-1 w-12 h-12 rounded-full overflow-hidden absolute top-[30%] -right-6 bg-gradient-to-b from-primary to-neutral-900">
+          {/* <div className="p-1 w-12 h-12 rounded-full overflow-hidden absolute top-[30%] -right-6 bg-gradient-to-b from-primary to-neutral-900">
             <NextImage
               src={BottleImage}
               alt={'car image'}
               className="w-12 h-12 object-cover  rounded-full bg-white"
             />
-          </div>
+          </div> */}
         </div>
         <div className="flex-1 flex items-center justify-between space-x-4">
           <Link
@@ -196,7 +196,7 @@ export default function CartItem(props: CartItemProp) {
               cartItem?.Event?.EventDescription[0]?.name ?? '',
               cartItem?.event_id,
             )}`}
-            className="hidden flex-1 mdx:block text-xl xl:text-2xl "
+            className="hidden flex-1 mdx:block text-lg md:text-xl "
           >
             {cartItem?.Event?.EventDescription[0]?.name}
           </Link>

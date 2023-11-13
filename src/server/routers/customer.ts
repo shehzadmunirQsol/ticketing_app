@@ -227,6 +227,13 @@ export const customerRouter = router({
             });
           }
 
+          if (input.password !== input.confirmpassword) {
+            throw new TRPCError({
+              code: 'NOT_FOUND',
+              message: 'Password are not Matching',
+            });
+          }
+
           const respCode = await generateOTP(4);
 
           const hashPassword = await hashPass(input.password);
@@ -242,9 +249,10 @@ export const customerRouter = router({
           };
           if (input?.code) delete payload?.code;
 
+          const { confirmpassword, ...modifiedPayload } = payload;
           const customer = await prisma.customer?.create({
             data: {
-              ...payload,
+              ...modifiedPayload,
               CustomerAddress: {
                 createMany: {
                   data: [

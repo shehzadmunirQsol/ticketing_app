@@ -145,7 +145,7 @@ export function AddCustomerAddressDialog(props: SelectCustomerInterface) {
   return (
     <Dialog open={props?.isModal} onOpenChange={props.openChangeHandler}>
       <DialogContent className="p-0">
-        <ScrollArea className="w-full max-w-[700px] h-[calc(100vh-50px)] max-h-[650px] scroll-hide">
+        <ScrollArea className="w-full max-w-[700px] h-[calc(100vh-50px)] max-h-[440px] md:max-h-[530px] scroll-hide">
           <ScrollBar orientation="vertical"></ScrollBar>
           <DialogHeader className="p-6">
             <DialogTitle>{props?.id ? 'Update' : 'Add'} Address</DialogTitle>
@@ -213,7 +213,6 @@ export function AddCustomerAddressDialog(props: SelectCustomerInterface) {
                           <Input
                             type="text"
                             className='rounded-md'
-                            placeholder="Enter P.O. Box"
                             {...form.register('postal_code')}
                           />
                         </FormControl>
@@ -240,7 +239,7 @@ export function AddCustomerAddressDialog(props: SelectCustomerInterface) {
                             <PhoneInput
                                 className="rounded-md w-20 countrycode"
                                 defaultCountry="ae"
-                                inputProps={{ minLength: 1, maxLength: 4, ...field }} 
+                                inputProps={{ minLength: 1, maxLength: 4, placeholder:"+971", ...field }} 
                                 {...field} 
                               /> 
 
@@ -294,7 +293,6 @@ export function AddCustomerAddressDialog(props: SelectCustomerInterface) {
                                 maxLength={15}
                                 type="string"
                                 className="w-full"
-                                placeholder="Enter Your Phone Number"
                                 {...field}
                               />
                             </FormControl>
@@ -323,7 +321,6 @@ export function AddCustomerAddressDialog(props: SelectCustomerInterface) {
                           <FormControl className="bg-inputColor">
                             <SelectTrigger className=" rounded-md h-10  ">
                               <SelectValue
-                                placeholder="Select Your Country"
                                 className=""
                               />
                             </SelectTrigger>
@@ -359,7 +356,6 @@ export function AddCustomerAddressDialog(props: SelectCustomerInterface) {
                         <FormControl>
                           <Input
                             type="text"
-                            placeholder="Enter Your State"
                             className='rounded-md'
                             {...field}
                           />
@@ -381,7 +377,6 @@ export function AddCustomerAddressDialog(props: SelectCustomerInterface) {
                         <FormControl>
                           <Input
                             type="text"
-                            placeholder="Enter Your City"
                             className='rounded-md'
                             {...field}
                           />
@@ -403,7 +398,6 @@ export function AddCustomerAddressDialog(props: SelectCustomerInterface) {
                         <FormControl>
                           <Input
                             type="text"
-                            placeholder="Enter Street Address"
                             className='rounded-md'
                             {...field}
                           />
@@ -420,12 +414,11 @@ export function AddCustomerAddressDialog(props: SelectCustomerInterface) {
                     render={({ field }) => (
                       <FormItem className=" w-full ">
                         <FormLabel className="text-sm text-cardGray">
-                        Apartment
+                        Apartment No.
                         </FormLabel>
                         <FormControl>
                           <Input
                             type="text"
-                            placeholder="Enter Apartment"
                             className='rounded-md'
                             {...field}
                           />

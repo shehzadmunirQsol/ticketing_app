@@ -112,7 +112,7 @@ export default function CartPage() {
         </h2>
       ) : (
         <>
-          <div className="relative py-6 px-4 space-y-10 md:py-16 md:px-14 md:space-y-14 -z-30 ">
+          <div className="relative py-6 px-4 space-y-10 md:py-16 md:px-14 md:space-y-10 -z-30">
             <h2 className="text-2xl md:text-4xl lg:text-5xl z-10 font-black uppercase">
               {langContent[lang.lang].Cart.HEADING}
             </h2>
