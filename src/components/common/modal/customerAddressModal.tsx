@@ -145,7 +145,7 @@ export function AddCustomerAddressDialog(props: SelectCustomerInterface) {
   return (
     <Dialog open={props?.isModal} onOpenChange={props.openChangeHandler}>
       <DialogContent className="p-0">
-        <ScrollArea className="w-full max-w-[700px] h-[calc(100vh-50px)] max-h-[650px] scroll-hide">
+        <ScrollArea className="w-full max-w-[700px] h-[calc(100vh-50px)] max-h-[440px] md:max-h-[530px] scroll-hide">
           <ScrollBar orientation="vertical"></ScrollBar>
           <DialogHeader className="p-6">
             <DialogTitle>{props?.id ? 'Update' : 'Add'} Address</DialogTitle>
