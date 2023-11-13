@@ -36,13 +36,14 @@ export const dashboardRouter = router({
           end_date: { gte: todayDate },
         },
       });
-      const startDate = new Date()?.toISOString().split('T')[0] as string;
+      const startDate = new Date();
 
       const eventsPromise = await prisma.event.count({
         where: {
-          launch_date: { lte: new Date(startDate) },
-          end_date: { gte: new Date(startDate) },
+          launch_date: { lte: startDate },
+          end_date: { gte: startDate },
           is_deleted: false,
+          draw_date: null,
         },
       });
       const ordersAmountPromise = await prisma.order.aggregate({
