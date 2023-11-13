@@ -59,6 +59,11 @@ export default function LoginSignup() {
     setShowPassword(!showPassword);
   };
 
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
+
   const { lang } = useSelector((state: RootState) => state.layout);
 
   const { toast } = useToast();
@@ -579,6 +584,8 @@ export default function LoginSignup() {
                       </FormItem>
                     )}
                   />
+
+
                   <FormField
                     control={formSignup.control}
                     name="password"
@@ -613,6 +620,46 @@ export default function LoginSignup() {
                       </FormItem>
                     )}
                   />
+
+
+
+                  <FormField
+                    control={formSignup.control}
+                    name="confirmpassword"
+                    render={({ field }) => (
+                      <FormItem className="">
+                        <FormLabel className="text-xs font-thin text-grayColor">
+                          Confirm Password <sup className="">*</sup>
+                        </FormLabel>
+                        <FormControl className="relative">
+                          <div>
+                          <Input
+                            type={showConfirmPassword ? 'text' : 'password'}
+                            placeholder="Enter Your Password"
+                            {...field}
+                            className="rounded-md"
+                          />
+                          <div
+                            className="eyeicon"
+                            onClick={toggleConfirmPasswordVisibility}
+                          >
+                            {showConfirmPassword ? (
+                              <Image src={EyeOpen} alt="img" />
+                            ) : (
+                              <Image src={EyeClose} alt="img" />
+                            )}
+                          </div>
+                          </div>
+                        </FormControl>
+                        <div className="relative pb-2 errormsg">
+                          <FormMessage />
+                        </div>
+                      </FormItem>
+                    )}
+                  />
+
+
+
                 </div>
                 <div className="mt-16 flex flex-col lg:flex-row md:flex-row justify-between items-center gap-6 ">
                   <p className="text-lightColor text-gray-400 font-extralight text-xs w-full lg:w-96  md:w-96  ltr:text-left rtl:text-right">

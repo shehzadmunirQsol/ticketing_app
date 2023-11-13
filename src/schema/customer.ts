@@ -20,7 +20,9 @@ export const signupCustomerSchema = z.object({
     .max(30, {
       message: 'Password must not exceed 30 characters',
     }),
-
+  confirmpassword: z
+    .string({ required_error: 'Please enter your password' })
+    ,
   first_name: z
     .string({ required_error: 'Please enter your firstname' })
     .min(2, {
@@ -65,6 +67,9 @@ export const signupCustomerSchemaInput = z.object({
     .max(30, {
       message: 'Password must not exceed 30 characters',
     }),
+  confirmpassword: z
+    .string({ required_error: 'Please enter your password' })
+    ,
   first_name: z
     .string({ required_error: 'Please enter your First Name' })
     .min(2, {
