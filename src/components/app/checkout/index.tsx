@@ -360,16 +360,15 @@ function Checkout() {
                       render={({ field }) => (
                         <FormItem className=" w-full ">
                           <FormLabel className="text-sm text-cardGray ">
-                            Name <sup className="text-red-500">*</sup>
+                            First Name <sup className="text-red-500">*</sup>
                           </FormLabel>
                           <FormControl className="rounded-md bg-inputColor">
                             <Input
                               type="text"
-                              placeholder="Enter your name"
                               {...field}
                             />
                           </FormControl>
-                          <div className="relative pb-2">
+                          <div className="relative pb-2 errormsg">
                             <FormMessage />
                           </div>
                         </FormItem>
@@ -386,11 +385,10 @@ function Checkout() {
                           <FormControl className="rounded-md bg-inputColor">
                             <Input
                               type="text"
-                              placeholder="Enter last name"
                               {...field}
                             />
                           </FormControl>
-                          <div className="relative pb-2">
+                          <div className="relative pb-2 errormsg">
                             <FormMessage />
                           </div>
                         </FormItem>
@@ -399,7 +397,7 @@ function Checkout() {
                   </div>
                   <FormItem className="" dir="ltr">
                     <FormLabel className="text-sm text-cardGray" dir="ltr">
-                      Billing Addresses
+                      Billing Address
                     </FormLabel>
                     <Select
                       value={addressType}
@@ -426,7 +424,7 @@ function Checkout() {
                       </SelectContent>
                     </Select>
 
-                    <div className="relative pb-2">
+                    <div className="relative pb-2 errormsg">
                       <FormMessage />
                     </div>
                   </FormItem>
@@ -447,7 +445,7 @@ function Checkout() {
                               {...field}
                             />
                           </FormControl>
-                          <div className="relative pb-2">
+                          <div className="relative pb-2 errormsg">
                             <FormMessage />
                           </div>
                         </FormItem>
@@ -465,7 +463,7 @@ function Checkout() {
                               {...field}
                             />
                           </FormControl>
-                          <div className="relative pb-2">
+                          <div className="relative pb-2 errormsg">
                             <FormMessage />
                           </div>
                         </FormItem>
@@ -494,7 +492,7 @@ function Checkout() {
                             >
                               <FormControl>
                                 <SelectTrigger className="h-10 rounded-md  bg-inputColor">
-                                  <SelectValue placeholder="Select your country" />
+                                  <SelectValue  />
                                 </SelectTrigger>
                               </FormControl>
                               <SelectContent className="max-h-[300px] overflow-y-auto">
@@ -510,7 +508,7 @@ function Checkout() {
                               </SelectContent>
                             </Select>
 
-                            <div className="relative pb-2">
+                            <div className="relative pb-2 errormsg">
                               <FormMessage />
                             </div>
                           </FormItem>
@@ -529,12 +527,11 @@ function Checkout() {
                             <FormControl className="rounded-md bg-inputColor">
                               <Input
                                 type="text"
-                                placeholder="Enter the state"
                                 {...field}
                               />
                             </FormControl>
 
-                            <div className="relative pb-2">
+                            <div className="relative pb-2 errormsg">
                               <FormMessage />
                             </div>
                           </FormItem>
@@ -557,11 +554,10 @@ function Checkout() {
                           <FormControl className="rounded-md bg-inputColor">
                             <Input
                               type="text"
-                              placeholder="Enter the city"
                               {...field}
                             />
                           </FormControl>
-                          <div className="relative pb-2">
+                          <div className="relative pb-2 errormsg">
                             <FormMessage />
                           </div>
                         </FormItem>
@@ -578,11 +574,10 @@ function Checkout() {
                           <FormControl className="rounded-md bg-inputColor">
                             <Input
                               type="text"
-                              placeholder="Enter your postcode"
                               {...field}
                             />
                           </FormControl>
-                          <div className="relative pb-2">
+                          <div className="relative pb-2 errormsg">
                             <FormMessage />
                           </div>
                         </FormItem>
@@ -601,11 +596,10 @@ function Checkout() {
                           <Input
                             disabled
                             type="email"
-                            placeholder="Enter your email address"
                             {...field}
                           />
                         </FormControl>
-                        <div className="relative pb-2">
+                        <div className="relative pb-2 errormsg">
                           <FormMessage />
                         </div>
                       </FormItem>
@@ -644,7 +638,7 @@ function Checkout() {
                                 maxLength={5}
                                 {...field}
                               /> */}
-                              <div className="relative">
+                              <div className="relative pb-2 errormsg">
                                 <FormMessage />
                               </div>
                             </FormItem>
@@ -678,12 +672,11 @@ function Checkout() {
                                 <Input
                                   type="text"
                                   className="w-full"
-                                  placeholder="Enter your phone number"
                                   {...field}
                                 />
                               </FormControl>
 
-                              <div className="relative">
+                              <div className="relative pb-2 errormsg">
                                 <FormMessage />
                               </div>
                             </FormItem>
@@ -705,7 +698,6 @@ function Checkout() {
                               <Input
                                 max={minDateFormatted}
                                 type="date"
-                                placeholder="Enter your Date of Birth"
                                 {...form.register('dob', {
                                   valueAsDate: true,
                                   required: 'required',

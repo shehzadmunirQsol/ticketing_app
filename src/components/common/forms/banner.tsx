@@ -347,7 +347,7 @@ export function BannerForm() {
                       />
                     </div>
                   </FormControl>
-                  <div className="relative pb-4">
+                  <div className="relative pb-4 errormsg">
                     <FormMessage />
                   </div>
                 </FormItem>

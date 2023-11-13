@@ -70,7 +70,7 @@ const Account = () => {
       <div className="relative pt-24"></div>
       <BannerTitle
         image={BackgroundImage}
-        text={langContent[lang.lang].MyAccount.array[counter]?.title}
+        // text={langContent[lang.lang].MyAccount.array[counter]?.title}
       />
       <div className="relative py-10 max-w-[1600px] md:px-16 px-4 mx-2 sm:mx-auto  flex  flex-col mdx:flex-row justify-start sm:justify-between gap-8 items-start">
         <ul className="sticky top-36  bg-[#101417]   w-full mdx:w-96   rounded-lg ">

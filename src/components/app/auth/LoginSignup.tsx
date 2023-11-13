@@ -242,7 +242,6 @@ export default function LoginSignup() {
                         <FormControl>
                           <Input
                             type="text"
-                            placeholder="Enter Email Address"
                             {...formLogin.register('user', {
                               onChange(event) {
                                 formLogin.setValue(
@@ -272,7 +271,6 @@ export default function LoginSignup() {
                           <div>
                           <Input
                             type={showPassword ? 'text' : 'password'}
-                            placeholder="Enter Your Password"
                             {...field}
                             className="rounded-md"
                           />
@@ -332,7 +330,6 @@ export default function LoginSignup() {
                           <FormControl>
                             <Input
                               type="text"
-                              placeholder="Enter your first name"
                               {...field}
                               className="rounded-md"
                             />
@@ -354,7 +351,6 @@ export default function LoginSignup() {
                           <FormControl>
                             <Input
                               type="text"
-                              placeholder="Enter your last name"
                               {...field}
                               className="rounded-md"
                             />
@@ -437,7 +433,6 @@ export default function LoginSignup() {
                                   min={0}
                                   type="number"
                                   className="w-full"
-                                  placeholder="Enter your phone number"
                                   {...field}
                                 />
                               </FormControl>
@@ -466,10 +461,7 @@ export default function LoginSignup() {
                           >
                             <FormControl className="">
                               <SelectTrigger className=" rounded-md h-10 bg-inputColor ">
-                                <SelectValue
-                                  placeholder="Select your country"
-                                  className=""
-                                />
+                                <SelectValue className="" />
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent className="max-h-[300px] overflow-y-auto">
@@ -506,9 +498,8 @@ export default function LoginSignup() {
                           <FormControl>
                             <Input
                               type={'date'}
-                              placeholder={'Enter DOB'}
                               max={minDateFormatted}
-                              className="rounded-md "
+                              className="rounded-md"
                               {...formSignup.register('dob', {
                                 valueAsDate: true,
                               })}
@@ -536,7 +527,7 @@ export default function LoginSignup() {
                           >
                             <FormControl>
                               <SelectTrigger className=" h-10  bg-inputColor">
-                                <SelectValue placeholder={`Select Gender`} />
+                                <SelectValue />
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
@@ -568,7 +559,6 @@ export default function LoginSignup() {
                         <FormControl>
                           <Input
                             type="text"
-                            placeholder="Enter Your Email Address"
                             {...field}
                             className="rounded-md"
                           />
@@ -591,7 +581,6 @@ export default function LoginSignup() {
                           <div>
                           <Input
                             type={showPassword ? 'text' : 'password'}
-                            placeholder="Enter Your Password"
                             {...field}
                             className="rounded-md"
                           />
