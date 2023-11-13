@@ -27,9 +27,9 @@ export default function DefaultLayout({ children }: DefaultLayoutProps) {
         </Head>
         {router.asPath.startsWith('/admin') ? (
           // <AdminAuth>
+          // </AdminAuth>
           <AdminLayout>{children}</AdminLayout>
         ) : (
-          // {/* </AdminAuth> */}
           <AppLayout>{children}</AppLayout>
         )}
       </ThemeProvider>
