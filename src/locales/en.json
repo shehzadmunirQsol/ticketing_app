@@ -263,7 +263,7 @@
     ],
     "arrayTwo":[
       {
-        "name": "About Us",
+        "name": "Our Team",
         "link": "/about-us"
       },
       {
@@ -273,10 +273,6 @@
       {
         "name": "Terms & Conditions",
         "link": "/terms-condition"
-      },
-      {
-        "name": "Our Team",
-        "link": "/about-us"
       },
       {
         "name": "Cookie & Privacy Policy",

@@ -92,7 +92,7 @@ export default function AboutUs() {
         pera={`The Passionate Team Behind Winnar`}
         imageCrousel={carouselData}
       />
-      <div className="w-full py-10 lg:py-32 lg:px-14 md:px-14 px-4 z-40 text-center bg-Image">
+      <div className="w-full py-10 lg:py-32 lg:px-14 md:px-14 px-4 z-40 text-center bg-Image mobbg">
         <div className=" text-center flex flex-col lg:flex-row gap-x-20 justify-center items-start font-sans lg:mx-auto">
           <p className=" text-white drop-shadow-2xl text-center  font-black text-2xl  lg:text-4xl lg:w-fit sm:mb-5">
             OUR UVP
@@ -127,8 +127,8 @@ export default function AboutUs() {
           className=" object-cover w-full  h-full block bg-black/50"
         />
         <div className="absolute h-[35px] w-full text-center top-[50%] flex items-center">
-          <div className="w-full text-center ">
-            <p className=" text-white drop-shadow-2xl text-center w-full text-xl  lg:text-3xl">
+          <div className="w-full text-center px-4">
+            <p className=" text-white drop-shadow-2xl text-center w-full text-xl lg:text-3xl">
               Get your dream car at a fraction of the price!
             </p>
             <p className="relative h-[35px] -top-[50%]   mt-6 text-white drop-shadow-2xl text-center w-full text-2xl  lg:text-4xl font-[900]">

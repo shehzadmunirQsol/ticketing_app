@@ -214,11 +214,11 @@ function SignUpSticky() {
         <div className="row align-items-center justify-content-center">
           <div className="col-auto">  
             <h3>SignUp</h3>
-            <p>Please Signup for Winnar.</p>     
+            <p>Don't Miss Out!, Sign-up Today!</p>     
           </div>
           <div className="col-auto mt-3 md:mt-0">  
         <Link href="/login" className="winbtn winbtnormal font-sans">
-        Signup
+        Sign-up
         </Link>
           <div className="winbtn winbtnormal font-sans"  onClick={setSignupHandler} role="button" tabIndex={0}>
             Close
