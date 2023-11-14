@@ -138,6 +138,19 @@ export const eventRouter = router({
         });
       }
 
+      const ticketsPayload = [...Array(event.total_tickets)].map(
+        (_, index) => ({
+          event_id: event.id,
+          ticket_num: index + 1,
+        }),
+      );
+
+      prisma.eventTickets
+        .createMany({ data: ticketsPayload })
+        .then((res) => console.log(res, 'eventTickets created'))
+        .catch((err) => console.log(err, 'eventTickets rejected'))
+        .finally(() => console.log('resolve done!'));
+
       return { data: event, message: 'Event created' };
     } catch (error: any) {
       throw new TRPCError({
@@ -207,11 +220,66 @@ export const eventRouter = router({
       if (!event) {
         throw new TRPCError({
           code: 'BAD_REQUEST',
-          message: 'Event not created',
+          message: 'Event not updated',
         });
       }
 
-      return { data: event, message: 'Event created' };
+      const eventTicketCounts = await prisma.eventTickets.count({
+        where: { event_id: event.id },
+      });
+
+      console.log({ eventTicketCounts });
+
+      // case 1- Adding tickets
+      if (eventTicketCounts > 0 && event.total_tickets > eventTicketCounts) {
+        const ticketMargin = event.total_tickets - eventTicketCounts;
+
+        const ticketsPayload = [...Array(ticketMargin)].map((_, index) => ({
+          event_id: event.id,
+          ticket_num: index + 1 + eventTicketCounts,
+        }));
+
+        prisma.eventTickets
+          .createMany({ data: ticketsPayload })
+          .then((res) => console.log(res, 'eventTickets resolve'))
+          .catch((err) => console.log(err, 'eventTickets error'))
+          .finally(() => console.log('resolve done!'));
+
+        // case 2- Removing tickets
+      } else if (
+        eventTicketCounts > 0 &&
+        event.total_tickets < eventTicketCounts
+      ) {
+        const assignedEventTicketCounts = await prisma.eventTickets.count({
+          where: { customer_id: { not: null } },
+        });
+
+        console.log({ assignedEventTicketCounts, event });
+
+        if (event.total_tickets > assignedEventTicketCounts) {
+          prisma.eventTickets
+            .deleteMany({
+              where: {
+                event_id: event.id,
+                ticket_num: {
+                  gt: event.total_tickets,
+                  lte: eventTicketCounts,
+                },
+                customer_id: null,
+              },
+            })
+            .then((res) => console.log(res, 'eventTickets resolve'))
+            .catch((err) => console.log(err, 'eventTickets error'))
+            .finally(() => console.log('resolve done!'));
+        } else {
+          throw new TRPCError({
+            code: 'FORBIDDEN',
+            message: "Tickets are assigned, can't delete tickets!",
+          });
+        }
+      }
+
+      return { data: event, message: 'Event updated' };
     } catch (error: any) {
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
