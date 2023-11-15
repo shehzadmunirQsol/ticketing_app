@@ -170,12 +170,12 @@ export default function CartItem(props: CartItemProp) {
         </p>
         <i
           onClick={() => setIsModal((preModal) => !preModal)}
-          className="fas fa-times cursor-pointer text-white/40 text-sm border min-w-[24px] min-h-[24px] inline-flex items-center justify-center rounded-full"
+          className="fas fa-trash cursor-pointer text-white/60 text-sm min-w-[24px] min-h-[24px]"
         />
       </div>
 
       <div className="flex items-center justify-between">
-        <div className="relative mr-10 min-w-[140px] min-h-[90px] mdx:min-w-[176px] mdx:min-h-[112px]">
+        <div className="relative mr-5 md:mr-10 min-w-[140px] min-h-[90px] mdx:min-w-[176px] mdx:min-h-[112px]">
           <NextImage
             src={renderNFTImage({ thumb: cartItem.Event.thumb })}
             fill
@@ -200,8 +200,8 @@ export default function CartItem(props: CartItemProp) {
           >
             {cartItem?.Event?.EventDescription[0]?.name}
           </Link>
-          <div className="flex flex-col space-y-2">
-            <div className="flex justify-between items-center min-w-[450px] w-1/2 max-w-[550px]">
+          <div className="flex flex-wrap flex-col space-y-2">
+            <div className="flex justify-between items-center min-w-[200px] md:min-w-[450px] w-1/2 max-w-[550px]">
               <div className="bg-card flex items-center justify-between overflow-hidden ">
                 <Button
                   className="p-2 bg-primary text-background"
@@ -247,7 +247,7 @@ export default function CartItem(props: CartItemProp) {
                   </Tooltip>
                 </TooltipProvider>
               </div>
-              <p className="text-xl text-white font-bold">
+              <p className="text-base md:text-xl text-white font-bold mt-2 md:mt-0">
                 AED: {(cartItem?.quantity * cartItem?.Event?.price)?.toFixed(2)}{' '}
               </p>
               <div className="space-y-2">
@@ -311,7 +311,7 @@ export default function CartItem(props: CartItemProp) {
           </div>
           <i
             onClick={() => setIsModal((preModal) => !preModal)}
-            className="hidden mdx:inline-flex fas fa-times cursor-pointer text-white/40 text-sm border min-w-[24px] min-h-[24px]  items-center justify-center rounded-full"
+            className="hidden mdx:inline-flex fas fa-trash cursor-pointer text-white/60 text-base min-w-[24px] min-h-[24px]"
           />
         </div>
       </div>

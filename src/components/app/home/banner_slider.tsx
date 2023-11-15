@@ -87,7 +87,7 @@ function BannerSlider() {
       </div>
 
       <div className="leftbx mobilebx">
-        <Link href="" className="winbtn font-sans">
+        <Link href="/cars" className="winbtn font-sans">
           ENTER NOW
         </Link>
         <div className="dblogo">

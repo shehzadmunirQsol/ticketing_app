@@ -623,14 +623,9 @@ function Checkout() {
                               <PhoneInput
                                 className="rounded-md w-20 countrycode"
                                 defaultCountry="ae"
-                                inputProps={{
-                                  minLength: 1,
-                                  maxLength: 4,
-                                  ...field,
-                                }}
+                                inputProps={{ minLength: 1, maxLength: 4, readOnly: true, ...field }}
                                 {...field}
                               />
-
                               {/* <Input
                                 type="text"
                                 className="rounded-md w-20 bg-inputColor"

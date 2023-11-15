@@ -213,7 +213,6 @@ function SignUpSticky() {
 <div className="mycontainer px-2 md:px-12">
         <div className="row align-items-center justify-content-center">
           <div className="col-auto">  
-            <h3>SignUp</h3>
             <p>Don't Miss Out!, Sign-up Today!</p>     
           </div>
           <div className="col-auto mt-3 md:mt-0">  

@@ -236,14 +236,12 @@ export default function Contact() {
                       name="code"
                       render={({ field }) => (
                         <FormItem>
-
                           <PhoneInput
                             className="rounded-md countrycode"
                             defaultCountry="ae"
-                            inputProps={{ maxLength: 4, placeholder:"+971", ...field }} 
+                            inputProps={{ maxLength: 4, placeholder: "+971", readOnly: true, ...field }} 
                             {...field} 
                           /> 
-
                           {/* <Input
                             type="text"
                             className="rounded-md w-20 bg-inputColor"

@@ -96,11 +96,15 @@ export default function ProductCard(props: CardInterface) {
             <div className="flex flex-col gap-1 mb-2">
               <div className="flex justify-between items-center gap-3 mb-2">
                 <span className=" text-xs text-gray-300">
-                  {Math.round(
-                    (Number(props?.data?.tickets_sold) /
-                      Number(props?.data?.total_tickets)) *
-                      100,
-                  )}
+                {
+                  props?.data?.tickets_sold && props?.data?.total_tickets && (
+                    (() => {
+                      const percentage =
+                        (Number(props.data.tickets_sold) / Number(props.data.total_tickets)) * 100;
+                      return percentage < 1 ? percentage.toFixed(2) : Math.round(percentage);
+                    })()
+                  )
+                }
                   % {langContent[lang.lang].Index.productcard.SOLD_TITLE}
                 </span>
                 <span className="text-xs text-gray-300">

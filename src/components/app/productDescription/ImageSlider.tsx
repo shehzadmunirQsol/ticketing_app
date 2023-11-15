@@ -65,11 +65,7 @@ const ImageSlider = ({ data, ticketPurchased, higlightmeta }: any) => {
               <div className="flex flex-col gap-2">
                 <div className="flex justify-between items-center">
                   <span className=" text-xs text-gray-300 ">
-                    {Math.round(
-                      (Number(data?.tickets_sold) /
-                        Number(data?.total_tickets)) *
-                        100,
-                    )}
+                    {((Number(data?.tickets_sold) / Number(data?.total_tickets)) * 100).toFixed(2)}
                     % {langContent[lang.lang].ProductDetail.description.SOLD}
                   </span>
                   <span className="text-xs text-gray-300">

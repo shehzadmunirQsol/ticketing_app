@@ -239,7 +239,7 @@ export function AddCustomerAddressDialog(props: SelectCustomerInterface) {
                             <PhoneInput
                                 className="rounded-md w-20 countrycode"
                                 defaultCountry="ae"
-                                inputProps={{ minLength: 1, maxLength: 4, placeholder:"+971", ...field }} 
+                                inputProps={{ minLength: 1, maxLength: 4, placeholder:"+971", readOnly: true, ...field }} 
                                 {...field} 
                               /> 
 
