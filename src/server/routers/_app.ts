@@ -14,6 +14,7 @@ import { orderRouter } from './order';
 import { cmsRouter } from './cms';
 import { subscriptionRouter } from './subscription';
 import { dashboardRouter } from './dashboard';
+import { eventTicketRouter } from './eventTicket';
 
 export const appRouter = router({
   admin: adminUserRouter,
@@ -31,6 +32,7 @@ export const appRouter = router({
   order: orderRouter,
   subscription: subscriptionRouter,
   dashboard: dashboardRouter,
+  eventTicket: eventTicketRouter,
 });
 
 export type AppRouter = typeof appRouter;

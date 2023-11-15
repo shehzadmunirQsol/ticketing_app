@@ -228,8 +228,6 @@ export const eventRouter = router({
         where: { event_id: event.id },
       });
 
-      console.log({ eventTicketCounts });
-
       // case 1- Adding tickets
       if (eventTicketCounts > 0 && event.total_tickets > eventTicketCounts) {
         const ticketMargin = event.total_tickets - eventTicketCounts;
@@ -251,10 +249,8 @@ export const eventRouter = router({
         event.total_tickets < eventTicketCounts
       ) {
         const assignedEventTicketCounts = await prisma.eventTickets.count({
-          where: { customer_id: { not: null } },
+          where: { event_id: event.id, customer_id: { not: null } },
         });
-
-        console.log({ assignedEventTicketCounts, event });
 
         if (event.total_tickets > assignedEventTicketCounts) {
           prisma.eventTickets
@@ -272,9 +268,14 @@ export const eventRouter = router({
             .catch((err) => console.log(err, 'eventTickets error'))
             .finally(() => console.log('resolve done!'));
         } else {
+          await prisma.event.update({
+            where: { id: event.id },
+            data: { total_tickets: eventTicketCounts },
+          });
+
           throw new TRPCError({
             code: 'FORBIDDEN',
-            message: "Tickets are assigned, can't delete tickets!",
+            message: "Tickets are assigned, can't remove tickets!",
           });
         }
       }
@@ -291,7 +292,6 @@ export const eventRouter = router({
     .input(getEventCustomers)
     .query(async ({ input }) => {
       try {
-        // const where = `e.id = ${input.event_id} AND ed.lang_id=1`;
         const eventCustomers =
           await prisma.$queryRaw`SELECT e.id AS event_id, e.thumb,e.end_date, e.price, oe.customer_id, c.email,c.phone_number,ed.name AS event_name, c.first_name, c.last_name, 
           CAST( SUM( oe.quantity ) AS INT ) AS quantity,
@@ -631,11 +631,23 @@ export const eventRouter = router({
           ticketPurchased = customerLimit[0]?._sum?.quantity ?? 0;
         }
 
-        return {
-          message: 'events found',
-          data: event,
-          ticketPurchased: ticketPurchased,
-        };
+        if (input.type === 'admin') {
+          const assignedEventTicketCounts = await prisma.eventTickets.count({
+            where: { event_id: input.id, customer_id: { not: null } },
+          });
+
+          return {
+            message: 'events found',
+            data: event,
+            assignedEventTicketCounts,
+          };
+        } else {
+          return {
+            message: 'events found',
+            data: event,
+            ticketPurchased: ticketPurchased,
+          };
+        }
       } catch (error: any) {
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',

@@ -212,15 +212,14 @@ export default function EventForm() {
       { id: eventId, type: 'admin' },
       {
         refetchOnWindowFocus: false,
-        enabled: eventId > 0 ? true : false,
+        enabled: eventId > 0,
         onSuccess: (payload) => {
           setFormData(payload);
         },
       },
     );
   const ticket_sold_Data: any = eventData?.data?.tickets_sold;
-  const handleDisabled =
-    ticket_sold_Data != null && ticket_sold_Data > 0 ? true : false;
+  const handleDisabled = ticket_sold_Data != null && ticket_sold_Data > 0;
   const createEvent = trpc.event.create.useMutation();
   const updateEvent = trpc.event.update.useMutation();
 
@@ -428,6 +427,8 @@ export default function EventForm() {
 
   const header = renderHeader();
 
+  console.log({ eventData });
+
   return (
     <>
       <Form {...form}>
@@ -473,13 +474,13 @@ export default function EventForm() {
               {form.formState.errors?.en && !form.formState.errors?.ar && (
                 <div className="flex gap-2 items-center p-2  text-destructive bg-white bg-opacity-60 rounded-md">
                   <i className="fa-solid fa-circle-info"></i>
-                  <>Kindly provide information in English language</>
+                  Kindly provide information in English language
                 </div>
               )}
               {!form.formState.errors?.en && form.formState.errors?.ar && (
                 <div className="flex gap-2 items-center p-2  text-destructive bg-white bg-opacity-60 rounded-md">
                   <i className="fa-solid fa-circle-info"></i>
-                  <>Kindly provide information in Arabic language</>
+                  Kindly provide information in Arabic language
                 </div>
               )}
             </div>
@@ -605,7 +606,7 @@ export default function EventForm() {
                     name="ar.comp_details"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Competiton Details</FormLabel>
+                        <FormLabel>Competition Details</FormLabel>
                         <FormControl>
                           <div dir="rtl">
                             <Editor
@@ -668,6 +669,12 @@ export default function EventForm() {
                         ? form.watch('total_tickets')
                         : Infinity;
 
+                    const min =
+                      item?.name === 'total_tickets' &&
+                      eventData?.assignedEventTicketCounts
+                        ? eventData?.assignedEventTicketCounts
+                        : item?.min;
+
                     return (
                       <FormField
                         key={i}
@@ -680,7 +687,7 @@ export default function EventForm() {
                               <Input
                                 type={'number'}
                                 defaultValue={item?.min}
-                                min={item?.min}
+                                min={min}
                                 max={max}
                                 placeholder={item?.placeholder}
                                 {...form.register(item?.name, {
