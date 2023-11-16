@@ -21,7 +21,6 @@ type DefaultLayoutProps = { children: ReactNode };
 function Index({ children }: DefaultLayoutProps) {
   const { lang } = useSelector((state: RootState) => state.layout);
   const { user, isLogin } = useSelector((state: RootState) => state.auth);
-
   const [userToken, setUserToken] = useState<string | null>(null);
 
   const router = useRouter();
@@ -141,7 +140,7 @@ function Index({ children }: DefaultLayoutProps) {
           {children}
           <LoadingDialog open={createCart.isLoading} text={'Loading...'} />
           <Footer />
-          <SignUpSticky / >
+          <SignUpSticky />
           <CookiesLabel />
         </>
       ) : (
@@ -170,18 +169,18 @@ function CookiesLabel() {
 
   return (
     <div
-      className={`${ isAccepted ? 'hidden' : 'block' } cookiesec`}>
+      className={`${isAccepted ? 'hidden' : 'block'} cookiesec`}>
       <div className="mycontainer px-2 md:px-12">
         <div className="row align-items-center">
-          <div className="col">  
+          <div className="col">
             <h3>Cookie Policy</h3>
-            <p>Should you choose to proceed in accessing this website, non-permanent cookies will be placed on your computer to enhance your experience whilst using the site. If you do not wish to have such non-permanent cookies placed on your computer please exit the site now. Alternatively, please click Accept All Cookies to proceed.</p>     
+            <p>Should you choose to proceed in accessing this website, non-permanent cookies will be placed on your computer to enhance your experience whilst using the site. If you do not wish to have such non-permanent cookies placed on your computer please exit the site now. Alternatively, please click Accept All Cookies to proceed.</p>
           </div>
-          <div className="col-auto mt-3 md:mt-0">  
-          <div className="winbtn winbtnormal font-sans"  onClick={setCookiesHandler} role="button" tabIndex={0}>
-            Accept All Cookies
-          </div>
-          {/* <div className="winbtn winbtnormal font-sans" onClick={() => setIsAccepted(true)} role="button" tabIndex={0}>
+          <div className="col-auto mt-3 md:mt-0">
+            <div className="winbtn winbtnormal font-sans" onClick={setCookiesHandler} role="button" tabIndex={0}>
+              Accept All Cookies
+            </div>
+            {/* <div className="winbtn winbtnormal font-sans" onClick={() => setIsAccepted(true)} role="button" tabIndex={0}>
             Close
           </div>  */}
           </div>
@@ -192,13 +191,16 @@ function CookiesLabel() {
 }
 
 
+
+
 function SignUpSticky() {
   const [isSignup, setIsSignup] = useState(true);
+  const { user } = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
     const isSignupCookieAccepted =
       localStorage.getItem('signup-cookies') === 'accepted';
-      setIsSignup(isSignupCookieAccepted);
+    setIsSignup(isSignupCookieAccepted);
   }, []);
 
   function setSignupHandler() {
@@ -207,24 +209,25 @@ function SignUpSticky() {
   }
 
   return (
-    <div className={`${ isSignup ? 'hidden' : 'block' } cookiesec`}>
-
-
-<div className="mycontainer px-2 md:px-12">
-        <div className="row align-items-center justify-content-center">
-          <div className="col-auto">  
-            <p>Don't Miss Out!, Sign-up Today!</p>     
-          </div>
-          <div className="col-auto mt-3 md:mt-0">  
-        <Link href="/login" className="winbtn winbtnormal font-sans">
-        Sign-up
-        </Link>
-          <div className="winbtn winbtnormal font-sans"  onClick={setSignupHandler} role="button" tabIndex={0}>
-            Close
-          </div>
+    user === null ?
+      <div className={`${isSignup ? 'hidden' : 'block'} cookiesec`}>
+        <div className="mycontainer px-2 md:px-12">
+          <div className="row align-items-center justify-content-center">
+            <div className="col-auto">
+              <p>Don't Miss Out!, Sign-up Today!</p>
+            </div>
+            <div className="col-auto mt-3 md:mt-0">
+              <Link href="/login" className="winbtn winbtnormal font-sans">
+                Sign-up
+              </Link>
+              <div className="winbtn winbtnormal font-sans" onClick={setSignupHandler} role="button" tabIndex={0}>
+                Close
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+      :
+      null
   );
 }
