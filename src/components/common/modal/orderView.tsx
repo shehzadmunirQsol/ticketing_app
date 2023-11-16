@@ -231,18 +231,25 @@ function ViewTickets(props: ViewTicketsType) {
                 alt="Logo"
               />
 
-              <div className="space-y-4">
-                <h2 className="text-2xl font-bold">
-                  {props?.selectedOrderEvent?.Event?.EventDescription[0]?.name}
-                </h2>
-                <div className="flex flex-wrap justify-between space-y-2">
-                  {eventTickets?.data?.map((eventTicket, index) => (
-                    <p className={`w-20`} key={eventTicket?.ticket_num}>
-                      #{eventTicket?.ticket_num}
-                    </p>
-                  ))}
+              {eventTickets?.data?.length ? (
+                <div className="space-y-4">
+                  <h2 className="text-2xl font-bold">
+                    {
+                      props?.selectedOrderEvent?.Event?.EventDescription[0]
+                        ?.name
+                    }
+                  </h2>
+                  <div className="flex flex-wrap justify-between gap-y-2">
+                    {eventTickets?.data?.map((eventTicket) => (
+                      <p className={`w-20`} key={eventTicket?.ticket_num}>
+                        #{eventTicket?.ticket_num}
+                      </p>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <p className="text-lg text-center my-auto">No Tickets Found!</p>
+              )}
             </div>
           </DialogDescription>
         </DialogContent>

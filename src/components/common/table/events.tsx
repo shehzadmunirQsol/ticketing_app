@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   ColumnDef,
   // ColumnFiltersState,
@@ -41,7 +41,7 @@ import { LoadingDialog } from '../modal/loadingModal';
 import { setSelectedEvent } from '~/store/reducers/admin_layout';
 import { useDispatch } from 'react-redux';
 import { TableFilters } from './table_filters';
-import { EventDeleteDialog } from '~/components/common/modal/eventDeleteModal';
+import { EventSwitchDialog } from '~/components/common/modal/eventDeleteModal';
 import {
   Select,
   SelectContent,
@@ -57,8 +57,9 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 import { CSVLink } from 'react-csv';
 import { Switch } from '~/components/ui/switch';
 import NextImage from '~/components/ui/img';
+import { SearchWinnerDialog } from '../modal/eventModal';
 
-export type EventType = {
+export type EventDataType = {
   thumb: string;
   name: string;
   desc: string | null;
@@ -81,6 +82,13 @@ export type EventType = {
 
 export type toggleSwitchType = 'is_deleted' | 'is_featured' | 'is_enabled';
 
+export type EventTicketCustomerType = {
+  eventName: string;
+  customerName: string;
+  purchaseDate: Date;
+  ticketNumber: number;
+};
+
 const initialFilter = {
   first: 0,
   rows: 10,
@@ -95,8 +103,13 @@ export default function EventsDataTable() {
   const [selectedItem, setSelectedItem] = useState<any>({});
   const [toggleType, setToggleType] = useState<toggleSwitchType>('is_enabled');
   const [isModal, setIsModal] = useState(false);
+  const [isSelectWinnerOpen, setIsSelectWinnerOpen] = useState(false);
+  const [eventTicketCustomers, setEventTicketCustomers] = useState<
+    EventTicketCustomerType[]
+  >([]);
 
   const dispatch = useDispatch();
+  const csvButton = useRef<any>(null);
 
   const { data, isLoading, refetch } = trpc.event.get.useQuery(
     { ...filters, filters: { ...filterID } },
@@ -105,9 +118,17 @@ export default function EventsDataTable() {
     },
   );
 
-  const { data: categoryData } = trpc.category.getCategory.useQuery({
-    lang_id: 1,
-  });
+  const { data: categoryData } = trpc.category.getCategory.useQuery(
+    {
+      lang_id: 1,
+    },
+    {
+      refetchOnWindowFocus: false,
+    },
+  );
+
+  const getAllEventTicketCustomer =
+    trpc.eventTicket.getAllEventTicketCustomer.useMutation();
 
   const categories: { [key: number]: string } = (categoryData ?? [])?.reduce(
     (accumulator, current) => {
@@ -124,7 +145,21 @@ export default function EventsDataTable() {
     return Array.isArray(data?.data) && data?.data?.length ? data?.data : [];
   }, [data]);
 
-  const columns: ColumnDef<EventType>[] = [
+  const ticketCSVData = [
+    ['Raffle Name', 'Name of Participant', 'Date of Purchase', 'Ticket Number'],
+    ...eventTicketCustomers?.map(
+      ({ eventName, customerName, purchaseDate, ticketNumber }) => [
+        eventName,
+        customerName,
+        purchaseDate?.toLocaleDateString(),
+        `#${ticketNumber}`,
+      ],
+    ),
+  ];
+
+  console.log({ ticketCSVData, csvButton });
+
+  const columns: ColumnDef<EventDataType>[] = [
     {
       id: 'actions',
       enableHiding: false,
@@ -164,6 +199,12 @@ export default function EventsDataTable() {
                   >
                     <DropdownMenuItem>Product Customers</DropdownMenuItem>
                   </Link>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onClick={() => selectWinnerHandler(row.original)}
+                  >
+                    Select Winner
+                  </DropdownMenuItem>
                 </>
               ) : null}
             </DropdownMenuContent>
@@ -265,8 +306,8 @@ export default function EventsDataTable() {
       ),
     },
     {
-      accessorKey: 'Token Price',
-      header: 'Token Price',
+      accessorKey: 'Ticket Price',
+      header: 'Ticket Price',
       cell: ({ row }) => (
         <p className="w-20 text-center text-ellipsis whitespace-nowrap overflow-hidden">
           {(row?.original?.price).toFixed(2)}
@@ -274,8 +315,8 @@ export default function EventsDataTable() {
       ),
     },
     {
-      accessorKey: 'Token Cap',
-      header: 'Token Cap',
+      accessorKey: 'Ticket Cap',
+      header: 'Ticket Cap',
       cell: ({ row }) => (
         <p className="w-20 text-ellipsis whitespace-nowrap overflow-hidden">
           {row?.original?.total_tickets}
@@ -296,14 +337,32 @@ export default function EventsDataTable() {
       ),
     },
     {
-      accessorKey: 'Token Purchased',
-      header: 'Token Purchased',
+      accessorKey: 'Ticket Purchased',
+      header: 'Ticket Purchased',
       cell: ({ row }) => (
-        <p className="w-28 text-center text-ellipsis whitespace-nowrap overflow-hidden">
-          {row?.original?.tickets_sold}
-          &nbsp;
-          <sub>qty</sub>
-        </p>
+        <CSVLink
+          filename="purchased_tickets.csv"
+          data={ticketCSVData}
+          ref={csvButton}
+          asyncOnClick={true}
+          onClick={(event, done) => {
+            (async () => {
+              console.log(Date.now());
+              getEventCustomerTicketHandler(row.original);
+
+              for (let i = 0; i < 4000000000; i++) {}
+              console.log(Date.now());
+              done(true);
+            })();
+            // getEventCustomerTicketHandler({ eventData: row.original, done });
+          }}
+        >
+          <p className="w-28 text-center text-ellipsis whitespace-nowrap overflow-hidden">
+            {row?.original?.tickets_sold}
+            &nbsp;
+            <sub>qty</sub>
+          </p>
+        </CSVLink>
       ),
     },
     {
@@ -327,7 +386,7 @@ export default function EventsDataTable() {
   ];
 
   const table = useReactTable({
-    data: eventData as EventType[],
+    data: eventData as EventDataType[],
     columns,
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
@@ -343,6 +402,31 @@ export default function EventsDataTable() {
     },
   });
 
+  async function getEventCustomerTicketHandler(eventData: EventDataType) {
+    try {
+      return getAllEventTicketCustomer
+        .mutateAsync({
+          event_id: eventData?.id,
+        })
+        .then((data) => {
+          const eventTicketCustomers = data.data?.map((ticketData) => ({
+            eventName: eventData?.name,
+            customerName: ticketData?.Customer?.first_name ?? '',
+            purchaseDate: ticketData?.updated_at,
+            ticketNumber: ticketData?.ticket_num,
+          }));
+
+          setEventTicketCustomers(eventTicketCustomers);
+          return true;
+        })
+        .catch((err) => false);
+    } catch (error) {
+      setEventTicketCustomers([]);
+      console.log('done false');
+      console.log({ error });
+    }
+  }
+
   function languageHandler(params: LanguageInterface) {
     setFilters((prevFilters) => ({ ...prevFilters, lang_id: params.id }));
   }
@@ -352,10 +436,20 @@ export default function EventsDataTable() {
     setFilters((prevFilters) => ({ ...prevFilters, first: page }));
   }
 
-  function switchHandler(event: EventType, type: toggleSwitchType) {
+  function switchHandler(event: EventDataType, type: toggleSwitchType) {
     setSelectedItem(event);
     setToggleType(type);
     setIsModal(true);
+  }
+
+  function selectWinnerHandler(event: EventDataType) {
+    setSelectedItem(event);
+    setIsSelectWinnerOpen(true);
+  }
+
+  function selectWinnerCloseHandler() {
+    setSelectedItem({});
+    setIsSelectWinnerOpen(false);
   }
 
   // FILTER OPTIONS
@@ -417,9 +511,9 @@ export default function EventsDataTable() {
       'Name',
       'Description',
       'Category',
-      'Token Price',
-      'Token Cap',
-      'Token Purchased',
+      'Ticket Price',
+      'Ticket Cap',
+      'Ticket Purchased',
       'Per User Limit',
       'Alternative Selling Option',
       'Cash Amount',
@@ -649,14 +743,18 @@ export default function EventsDataTable() {
           </div>
         </div>
       </div>
-      <EventDeleteDialog
+      <EventSwitchDialog
         selectedItem={selectedItem}
         setSelectedItem={setSelectedItem}
         refetch={refetch}
         type={toggleType}
-        setType={setToggleType}
         isModal={isModal}
         setIsModal={setIsModal}
+      />
+      <SearchWinnerDialog
+        open={isSelectWinnerOpen}
+        event={selectedItem}
+        openChangeHandler={selectWinnerCloseHandler}
       />
       <LoadingDialog open={isLoading} text={'Loading data...'} />
     </div>
