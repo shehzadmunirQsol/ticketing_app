@@ -230,7 +230,7 @@ export default function Contact() {
                   <FormLabel className="text-xs  font-thin text-grayColor">
                     Phone Number*
                   </FormLabel>
-                  <div className="flex items-start  gap-2 ">
+                  <div className="flex items-start gap-2">
                     <FormField
                       control={form.control}
                       name="code"

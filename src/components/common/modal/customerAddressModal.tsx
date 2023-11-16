@@ -144,10 +144,10 @@ export function AddCustomerAddressDialog(props: SelectCustomerInterface) {
 
   return (
     <Dialog open={props?.isModal} onOpenChange={props.openChangeHandler}>
-      <DialogContent className="p-0">
-        <ScrollArea className="w-full max-w-[700px] h-[calc(100vh-50px)] max-h-[440px] md:max-h-[530px] scroll-hide">
+      <DialogContent className="max-h-[50vh] h-[calc(100%-200px)] max-w-xl md:max-w-[500px] overflow-y-hidden scroll-hide p-2">
+        <ScrollArea className="h-100 p-4">
           <ScrollBar orientation="vertical"></ScrollBar>
-          <DialogHeader className="p-6">
+          <DialogHeader>
             <DialogTitle>{props?.id ? 'Update' : 'Add'} Address</DialogTitle>
             <DialogDescription>
               <Form {...form}>
@@ -160,7 +160,7 @@ export function AddCustomerAddressDialog(props: SelectCustomerInterface) {
                     name="address_type"
                     render={({ field }) => (
                       <FormItem className="w-full ">
-                        <FormLabel className="text-sm text-cardGray">
+                        <FormLabel className="text-xs  font-thin text-cardGray">
                           Address Type <sup className="text-red-500">*</sup>
                         </FormLabel>
                         <Select
@@ -194,7 +194,7 @@ export function AddCustomerAddressDialog(props: SelectCustomerInterface) {
                           </SelectContent>
                         </Select>
 
-                        <div className="relative pb-4">
+                        <div className="relative pb-2 errormsg">
                           <FormMessage />
                         </div>
                       </FormItem>
@@ -205,8 +205,8 @@ export function AddCustomerAddressDialog(props: SelectCustomerInterface) {
                     control={form.control}
                     name="postal_code"
                     render={() => (
-                      <FormItem className=" w-full mb-2">
-                        <FormLabel className="text-sm text-cardGray ">
+                      <FormItem className="w-full">
+                        <FormLabel className="text-xs  font-thin text-cardGray ">
                         P.O. Box 
                         </FormLabel>
                         <FormControl>
@@ -216,19 +216,18 @@ export function AddCustomerAddressDialog(props: SelectCustomerInterface) {
                             {...form.register('postal_code')}
                           />
                         </FormControl>
-                        <div className="relative pb-6">
+                        <div className="relative pb-2 errormsg">
                           <FormMessage />
                         </div>
                       </FormItem>
                     )}
                   />
                   <div className="w-full">
-                    <FormLabel className="text-sm text-cardGray ">
+                    <FormLabel className="text-xs  font-thin text-cardGray ">
                       Phone Number <sup className="text-red-500">*</sup>
                     </FormLabel>
 
                     <div className="flex gap-2">
-
                     <FormField
                         control={form.control}
                         name="phone_code"
@@ -237,7 +236,7 @@ export function AddCustomerAddressDialog(props: SelectCustomerInterface) {
                             <FormControl className="rounded-md ">
 
                             <PhoneInput
-                                className="rounded-md w-20 countrycode"
+                                className="rounded-md countrycode"
                                 defaultCountry="ae"
                                 inputProps={{ minLength: 1, maxLength: 4, placeholder:"+971", readOnly: true, ...field }} 
                                 {...field} 
@@ -253,7 +252,7 @@ export function AddCustomerAddressDialog(props: SelectCustomerInterface) {
                               /> */}
                             </FormControl>
 
-                            <div className="relative pb-5">
+                            <div className="relative pb-2 errormsg">
                               <FormMessage />
                             </div>
                           </FormItem>
@@ -277,7 +276,7 @@ export function AddCustomerAddressDialog(props: SelectCustomerInterface) {
                               />
                             </FormControl>
 
-                            <div className="relative pb-5">
+                            <div className="relative pb-2 errormsg">
                               <FormMessage />
                             </div>
                           </FormItem>
@@ -297,7 +296,7 @@ export function AddCustomerAddressDialog(props: SelectCustomerInterface) {
                               />
                             </FormControl>
 
-                            <div className="relative pb-5">
+                            <div className="relative pb-2 errormsg">
                               <FormMessage />
                             </div>
                           </FormItem>
@@ -311,7 +310,7 @@ export function AddCustomerAddressDialog(props: SelectCustomerInterface) {
                     name="country"
                     render={({ field }) => (
                       <FormItem className="w-full ">
-                        <FormLabel className="text-sm text-cardGray">
+                        <FormLabel className="text-xs  font-thin text-cardGray">
                           Country / Region <sup className="text-red-500">*</sup>
                         </FormLabel>
                         <Select
@@ -339,7 +338,7 @@ export function AddCustomerAddressDialog(props: SelectCustomerInterface) {
                           </SelectContent>
                         </Select>
 
-                        <div className="relative pb-5">
+                        <div className="relative pb-2 errormsg">
                           <FormMessage />
                         </div>
                       </FormItem>
@@ -350,7 +349,7 @@ export function AddCustomerAddressDialog(props: SelectCustomerInterface) {
                     name="state"
                     render={({ field }) => (
                       <FormItem className=" w-full ">
-                        <FormLabel className="text-sm text-cardGray">
+                        <FormLabel className="text-xs  font-thin text-cardGray">
                           State <sup className="text-red-500">*</sup>
                         </FormLabel>
                         <FormControl>
@@ -360,7 +359,7 @@ export function AddCustomerAddressDialog(props: SelectCustomerInterface) {
                             {...field}
                           />
                         </FormControl>
-                        <div className="relative pb-5">
+                        <div className="relative pb-2 errormsg">
                           <FormMessage />
                         </div>
                       </FormItem>
@@ -371,7 +370,7 @@ export function AddCustomerAddressDialog(props: SelectCustomerInterface) {
                     name="city"
                     render={({ field }) => (
                       <FormItem className=" w-full ">
-                        <FormLabel className="text-sm text-cardGray">
+                        <FormLabel className="text-xs  font-thin text-cardGray">
                           City <sup className="text-red-500">*</sup>
                         </FormLabel>
                         <FormControl>
@@ -381,7 +380,7 @@ export function AddCustomerAddressDialog(props: SelectCustomerInterface) {
                             {...field}
                           />
                         </FormControl>
-                        <div className="relative pb-5">
+                        <div className="relative pb-2 errormsg">
                           <FormMessage />
                         </div>
                       </FormItem>
@@ -392,7 +391,7 @@ export function AddCustomerAddressDialog(props: SelectCustomerInterface) {
                     name="street_address_1"
                     render={({ field }) => (
                       <FormItem className=" w-full ">
-                        <FormLabel className="text-sm text-cardGray">
+                        <FormLabel className="text-xs  font-thin text-cardGray">
                           Street Address <sup className="text-red-500">*</sup>
                         </FormLabel>
                         <FormControl>
@@ -402,7 +401,7 @@ export function AddCustomerAddressDialog(props: SelectCustomerInterface) {
                             {...field}
                           />
                         </FormControl>
-                        <div className="relative pb-5">
+                        <div className="relative pb-2 errormsg">
                           <FormMessage />
                         </div>
                       </FormItem>
@@ -413,7 +412,7 @@ export function AddCustomerAddressDialog(props: SelectCustomerInterface) {
                     name="street_address_2"
                     render={({ field }) => (
                       <FormItem className=" w-full ">
-                        <FormLabel className="text-sm text-cardGray">
+                        <FormLabel className="text-xs  font-thin text-cardGray">
                         Apartment No.
                         </FormLabel>
                         <FormControl>
@@ -423,13 +422,13 @@ export function AddCustomerAddressDialog(props: SelectCustomerInterface) {
                             {...field}
                           />
                         </FormControl>
-                        <div className="relative pb-2">
+                        <div className="relative pb-2 errormsg">
                           <FormMessage />
                         </div>
                       </FormItem>
                     )}
                   />
-                  <div className="flex items-center justify-end gap-4">
+                  <div className="flex items-center justify-end gap-4 mt-4">
                     <Button
                       variant="secondary"
                       type="button"

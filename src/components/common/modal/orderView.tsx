@@ -50,21 +50,23 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
   return (
     <>
       <Dialog open={props?.isModal} onOpenChange={(e) => props.setIsModal(e)}>
-        <DialogContent className=" my-auto max-h-[800px] h-[calc(100%-100px)] max-w-xl md:max-w-[768px] overflow-y-hidden  ">
-          <DialogFooter className=" sm:justify-start items-start w-full   ">
+        <DialogContent className="max-h-[50vh] h-[calc(100%-200px)] max-w-xl md:max-w-[768px] overflow-y-hidden scroll-hide p-2">
+        <ScrollArea className="h-100 p-4">
+          <ScrollBar orientation="vertical"></ScrollBar>
+          <DialogFooter className=" sm:justify-start items-start w-full mb-2">
             <Link href={orderRoute()} target="_blank">
-              <Button onClick={() => props.setIsModal(false)}>
+              <div className="winbtn winbtnormal smallbtn" onClick={() => props.setIsModal(false)}>
                 Print Invoice
-              </Button>
+              </div>
             </Link>
           </DialogFooter>
-          <DialogDescription className="relative bg-card h-full rounded-lg  overflow-y-scroll   scroll-hide">
+          <DialogDescription className="relative bg-card h-full rounded-lg  overflow-y-scroll scroll-hide">
             {OrderApiData && (
               <div
-                className="bg-card h-full text-gray-400 rounded-lg  px-8 py-10  mx-auto  "
+                className="bg-card h-full text-gray-400 rounded-lg  px-8 py-6  mx-auto  "
                 id="divToPrint"
               >
-                <div className="flex flex-col md:flex-row items-center justify-between mb-8">
+                <div className="flex flex-col md:flex-row items-center justify-between mb-5">
                   <div className="flex items-center">
                     <NextImage
                       className="h-16  object-contain mr-2"
@@ -82,7 +84,7 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
                     </div>
                   </div>
                 </div>
-                <div className="border-b-2 border-gray-300 pb-8 mb-8">
+                <div className="border-b-2 border-gray-300 pb-5 mb-4">
                   <h2 className="text-2xl  font-bold mb-4">Bill To:</h2>
                   <p className=" ">
                     {OrderApiData?.data?.first_name +
@@ -96,8 +98,7 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
                   </p>
                   <p className="mt-2">{OrderApiData?.data?.email}</p>
                 </div>
-                <ScrollArea className="w-full  ">
-                  <ScrollBar orientation="horizontal"></ScrollBar>
+                <div className="w-full">
 
                   <div className="w-full mb-8">
                     <div className="flex justify-between font-bold uppercase py-2">
@@ -114,7 +115,7 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
                             (item: any, index: number) => (
                               <div
                                 key={index}
-                                className="flex gap-2 py-2 sm:py-4"
+                                className="flex gap-2 py-2"
                               >
                                 <div className="flex-[2] text-start">
                                   {item?.Event?.EventDescription[0]?.name}
@@ -137,20 +138,20 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
                       </div>
                     )}
                   </div>
-                </ScrollArea>
+                </div>
 
                 <div className=" flex justify-between items-center">
                   <div></div>
                   <div>
-                    <div className="flex justify-between items-center mb-6">
+                    <div className="flex justify-between items-center mb-2">
                       <div className=" mr-2">Subtotal:</div>
                       <div className="">
                         AED {(OrderApiData?.data?.sub_total_amount).toFixed(2)}
                       </div>
                     </div>
 
-                    <div className="flex justify-between items-center  mb-6">
-                      <div className=" mr-2">Discount:</div>
+                    <div className="flex justify-between items-center mb-3">
+                      <div className="mr-2">Discount:</div>
                       <div className="">
                         AED{' '}
                         {OrderApiData?.data?.discount_amount > 0
@@ -159,7 +160,7 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
                       </div>
                     </div>
 
-                    <div className="flex justify-between items-center border-t-2 border-gray-300 mb-6">
+                    <div className="flex justify-between items-center border-t-2 border-gray-300">
                       <div className=" mr-2">Total:</div>
                       <div className=" font-bold text-lg">
                         AED {(OrderApiData?.data?.total_amount).toFixed(2)}
@@ -170,6 +171,7 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
               </div>
             )}
           </DialogDescription>
+        </ScrollArea>
         </DialogContent>
       </Dialog>
       <LoadingDialog open={isFetching} text={'Loading data...'} />

@@ -611,10 +611,10 @@ function Checkout() {
                     dir="ltr"
                   >
                     <div className="w-full">
-                      <p className="text-sm text-cardGray  mb-2 ">
+                      <p className="text-sm text-cardGray">
                         Phone Number
                       </p>
-                      <div className="flex flex-row gap-2 ">
+                      <div className="flex flex-row gap-2">
                         <FormField
                           control={form.control}
                           name="code"

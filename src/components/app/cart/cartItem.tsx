@@ -175,7 +175,7 @@ export default function CartItem(props: CartItemProp) {
       </div>
 
       <div className="flex items-center justify-between">
-        <div className="relative mr-5 md:mr-10 min-w-[140px] min-h-[90px] mdx:min-w-[176px] mdx:min-h-[112px]">
+        <div className="relative mr-3 md:mr-10 min-w-[140px] min-h-[90px] mdx:min-w-[176px] mdx:min-h-[112px]">
           <NextImage
             src={renderNFTImage({ thumb: cartItem.Event.thumb })}
             fill
@@ -213,9 +213,9 @@ export default function CartItem(props: CartItemProp) {
                   }
                   onClick={() => addToBasketHandler('decrement')}
                 >
-                  <i className="fas fa-minus text-xl xl:text-2xl font-extrabold" />
+                  <i className="fas fa-minus text-base xl:text-2xl font-extrabold" />
                 </Button>
-                <p className="w-16 text-center text-xl">{cartItem?.quantity}</p>
+                <p className="w-16 text-center text-base md:text-lg">{cartItem?.quantity}</p>
 
                 <TooltipProvider>
                   <Tooltip
@@ -238,7 +238,7 @@ export default function CartItem(props: CartItemProp) {
                         }
                         onClick={() => addToBasketHandler('increment')}
                       >
-                        <i className="fas fa-plus text-xl xl:text-2xl font-extrabold" />
+                        <i className="fas fa-plus text-base xl:text-2xl font-extrabold" />
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent>
@@ -247,7 +247,7 @@ export default function CartItem(props: CartItemProp) {
                   </Tooltip>
                 </TooltipProvider>
               </div>
-              <p className="text-base md:text-xl text-white font-bold mt-2 md:mt-0">
+              <p className="text-sm md:text-xl text-white font-bold mt-2 md:mt-0 ml-3 md:ml-0">
                 AED: {(cartItem?.quantity * cartItem?.Event?.price)?.toFixed(2)}{' '}
               </p>
               <div className="space-y-2">

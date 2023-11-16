@@ -1003,6 +1003,7 @@ bottom: -30px;
   top:12px;
 }
 .winbtn {
+  cursor: pointer;
   display: inline-block;
     background: #23d2b3;
     font-weight: 800;
@@ -1022,6 +1023,10 @@ bottom: -30px;
 }
 .winbtn + .winbtn {
   margin-left: 15px;
+}
+.smallbtn {
+  font-size: 12px;
+  padding: 6px 15px;
 }
 .herobanner {
     flex-wrap: wrap;
