@@ -754,7 +754,17 @@ export const orderRouter = router({
               quantity: item.quantity,
               is_subscribe: item.is_subscribe,
             }));
+
             const order = await prisma.order.create({
+              select: {
+                id: true,
+                OrderEvent: {
+                  select: {
+                    id: true,
+                    event_id: true,
+                  },
+                },
+              },
               data: {
                 ...orderPayload,
                 OrderEvent: {
@@ -763,7 +773,6 @@ export const orderRouter = router({
                   },
                 },
               },
-              
             });
             const eventPromises = cart.CartItems.map((item) =>
               prisma.event.update({
@@ -776,6 +785,39 @@ export const orderRouter = router({
             );
 
             await Promise.all(eventPromises);
+
+            // assigning tickets to customer
+            order.OrderEvent.forEach((orderEvent) => {
+              (async () => {
+                const assignedEventTicketCounts =
+                  await prisma.eventTickets.count({
+                    where: {
+                      event_id: orderEvent.event_id,
+                      customer_id: { not: null },
+                    },
+                  });
+
+                const cartItem = cart.CartItems.find(
+                  (cartItem) => cartItem.event_id === orderEvent.event_id,
+                );
+
+                await prisma.eventTickets.updateMany({
+                  where: {
+                    event_id: orderEvent.event_id,
+                    customer_id: null,
+                    ticket_num: {
+                      gt: assignedEventTicketCounts,
+                      lte:
+                        assignedEventTicketCounts + (cartItem?.quantity ?? 0),
+                    },
+                  },
+                  data: {
+                    order_event_id: orderEvent.id,
+                    customer_id: payload?.values?.customer_id,
+                  },
+                });
+              })();
+            });
 
             const emailPayload = cart?.CartItems.map((item) => ({
               name: item?.Event?.EventDescription[0]?.name as string,
@@ -832,13 +874,11 @@ export const orderRouter = router({
             if (useAPIData?.password) delete useAPIData?.password;
             if (useAPIData?.otp) delete useAPIData?.password;
 
-            
-
             return {
               message: paymentRes?.data,
               status: true,
               user: useAPIData,
-              order_id:order.id
+              order_id: order.id,
             };
           }
         }

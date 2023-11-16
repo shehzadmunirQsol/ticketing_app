@@ -4,6 +4,7 @@ import {
   DialogContent,
   DialogDescription,
   DialogFooter,
+  DialogHeader,
 } from '~/components/ui/dialog';
 import { trpc } from '~/utils/trpc';
 import { LoadingDialog } from './loadingModal';
@@ -15,6 +16,7 @@ import { Button } from '~/components/ui/button';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import NextImage from '~/components/ui/img';
+import { useState } from 'react';
 
 interface OrderViewDialogInterface {
   selectedItem: any;
@@ -30,6 +32,7 @@ interface OrderViewDialogInterface {
 export function OrderViewDialog(props: OrderViewDialogInterface) {
   const router = useRouter();
   const { lang } = useSelector((state: RootState) => state.layout);
+  const [selectedOrderEvent, setSelectedOrderEvent] = useState<any>({});
 
   const { data: OrderApiData, isFetching } = trpc.order.getByID.useQuery(
     { order_id: props?.selectedItem?.id, lang_id: lang.lang_id },
@@ -46,6 +49,8 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
       return `/order-view/${props?.selectedItem?.id}`;
     }
   };
+
+  console.log({ selectedOrderEvent });
 
   return (
     <>
@@ -119,7 +124,10 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
                                 <div className="flex-[2] text-start">
                                   {item?.Event?.EventDescription[0]?.name}
                                 </div>
-                                <div className="flex-1 text-center">
+                                <div
+                                  onClick={() => setSelectedOrderEvent(item)}
+                                  className="flex-1 text-center cursor-pointer duration-150 hover:text-primary"
+                                >
                                   {item?.quantity}
                                 </div>
                                 <div className="flex-1 text-center">
@@ -169,6 +177,73 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
                 </div>
               </div>
             )}
+          </DialogDescription>
+        </DialogContent>
+      </Dialog>
+      <ViewTickets
+        selectedOrderEvent={selectedOrderEvent}
+        setSelectedOrderEvent={setSelectedOrderEvent}
+      />
+      <LoadingDialog open={isFetching} text={'Loading data...'} />
+    </>
+  );
+}
+
+type ViewTicketsType = {
+  selectedOrderEvent: any;
+  setSelectedOrderEvent: any;
+};
+
+function ViewTickets(props: ViewTicketsType) {
+  const { data: eventTickets, isFetching } = trpc.eventTicket.get.useQuery(
+    {
+      event_id: props?.selectedOrderEvent?.Event?.id,
+      order_event_id: props?.selectedOrderEvent?.id,
+    },
+    {
+      refetchOnWindowFocus: false,
+      enabled: props?.selectedOrderEvent?.Event?.id ? true : false,
+    },
+  );
+
+  function closeHandler() {
+    props?.setSelectedOrderEvent({});
+  }
+
+  return (
+    <>
+      <Dialog
+        open={!!props?.selectedOrderEvent?.id}
+        onOpenChange={closeHandler}
+      >
+        <DialogContent className="flex flex-col items-start max-h-[800px] h-auto min-h-[400px] overflow-y-hidden  ">
+          {/* <DialogHeader>
+            <Button>Print Invoice</Button>
+          </DialogHeader> */}
+          <DialogDescription className="relative flex-1 w-full bg-card h-full rounded-lg  overflow-y-scroll scroll-hide">
+            <div
+              className="bg-card h-full text-gray-400 rounded-lg p-4"
+              id="divToPrint"
+            >
+              <NextImage
+                className="h-16 self-center block mx-auto object-contain"
+                src={LogoImage}
+                alt="Logo"
+              />
+
+              <div className="space-y-4">
+                <h2 className="text-2xl font-bold">
+                  {props?.selectedOrderEvent?.Event?.EventDescription[0]?.name}
+                </h2>
+                <div className="flex flex-wrap justify-between space-y-2">
+                  {eventTickets?.data?.map((eventTicket, index) => (
+                    <p className={`w-20`} key={eventTicket?.ticket_num}>
+                      #{eventTicket?.ticket_num}
+                    </p>
+                  ))}
+                </div>
+              </div>
+            </div>
           </DialogDescription>
         </DialogContent>
       </Dialog>
