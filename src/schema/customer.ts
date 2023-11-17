@@ -130,6 +130,16 @@ export const getCustomerSchema = z.object({
   rows: z.number(),
   filters: z.any().optional(),
 });
+export const getCustomerDetailSchema = z.object({
+  startDate: z.date().optional(),
+  endDate: z.date().optional(),
+  customer_id: z.number(),
+  first: z.number(),
+  rows: z.number(),
+  lang_id: z.number().optional(),
+  filters: z.any().optional(),
+  status: z.string().optional(),
+});
 export const updateCustomerSchema = z.object({
   id: z.number(),
   is_approved: z.boolean().optional(),

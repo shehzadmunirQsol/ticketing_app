@@ -17,6 +17,7 @@ import {
   logoutSchema,
   updateCustomerAddress,
   passwordChangeSchemaInput,
+  getCustomerDetailSchema,
 } from '~/schema/customer';
 import { hashPass, isSamePass } from '~/utils/hash';
 import { signJWT, verifyJWT } from '~/utils/jwt';
@@ -201,7 +202,53 @@ export const customerRouter = router({
         });
       }
     }),
+  getCustomerDetail: publicProcedure
+    .input(getCustomerDetailSchema)
+    .query(async ({ input }) => {
+      try {
+        const customerPromise = prisma.customer.findFirst({
+          where: { id: input?.customer_id },
+          include: {
+            CustomerAddress: {
+              where: {
+                is_default: true,
+              },
+              select: {
+                street_address_1: true,
+                street_address_2: true,
+                city: true,
+                country: true,
+                address_type: true,
+                postal_code: true,
+                phone_code: true,
+                phone_number: true,
+                state: true,
+              },
+            },
+          },
+        });
 
+        const [customer] = await Promise.all([customerPromise]);
+
+        if (!customer) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Customer not found',
+          });
+        }
+        const { password, otp, ...userApiData } = customer;
+
+        return {
+          message: 'Custoemer found',
+          data: userApiData,
+        };
+      } catch (error: any) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: error?.message,
+        });
+      }
+    }),
   register: publicProcedure
     .input(signupCustomerSchema)
     .mutation(async ({ input }) => {

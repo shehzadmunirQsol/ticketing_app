@@ -59,6 +59,7 @@ import {
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 import { useRouter } from 'next/router';
 import { CSVLink } from 'react-csv';
+import Link from 'next/link';
 
 export type CustomerType = {
   email: string;
@@ -163,9 +164,11 @@ export default function CustomersDataTable() {
       );
     } else {
       return (
-        <p className="text-ellipsis text-left whitespace-nowrap overflow-hidden w-32  text-white">
-          {data.first_name}
-        </p>
+        <Link href={`/admin/customers/detail/${data.id}`}>
+          <p className="text-ellipsis text-left whitespace-nowrap overflow-hidden w-32  text-white">
+            {data.first_name}
+          </p>
+        </Link>
       );
     }
   };
@@ -205,7 +208,11 @@ export default function CustomersDataTable() {
         <div className="capitalize ">
           <TooltipProvider>
             <Tooltip>
-              <TooltipTrigger>{displayFirstName(row?.original)}</TooltipTrigger>
+              <TooltipTrigger>
+                <Link href={`/admin/customers/detail/${row?.original?.id}`}>
+                  {displayFirstName(row?.original)}
+                </Link>
+              </TooltipTrigger>
               <TooltipContent>
                 <p className="text-base font-normal">
                   {row?.original?.first_name}

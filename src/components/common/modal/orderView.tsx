@@ -194,7 +194,7 @@ type ViewTicketsType = {
   setSelectedOrderEvent: any;
 };
 
-function ViewTickets(props: ViewTicketsType) {
+export function ViewTickets(props: ViewTicketsType) {
   const { data: eventTickets, isFetching } = trpc.eventTicket.get.useQuery(
     {
       event_id: props?.selectedOrderEvent?.Event?.id,
