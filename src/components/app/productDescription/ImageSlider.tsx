@@ -19,9 +19,11 @@ const ImageSlider = ({ data, ticketPurchased, higlightmeta }: any) => {
 
   const [upcomingornot, setUpcomingornot] = useState<any>(false);
   useEffect(() => {
-    const currentDate = new Date();
-    if (data.launch_date >= currentDate) {
-      setUpcomingornot(true);
+    if(data){
+      const currentDate = new Date();
+      if (data.launch_date >= currentDate) {
+        setUpcomingornot(true);
+      }
     }
   }, [data]);
 
