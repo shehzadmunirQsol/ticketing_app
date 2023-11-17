@@ -61,10 +61,10 @@ const CarsPage = () => {
             {langContent[lang.lang].Cars.HEADING}
           </p>
 
-          <div>
+          {/* <div>
             <span onClick={() => setCardView('cardview')}>Card View</span>
             <span onClick={() => setCardView('listview')}>List View</span>
-          </div>
+          </div> */}
 
           <Glow className="absolute  top-1/2 -left-16 w-1/5 h-[350px] overflow-hidden " />
           <Glow className="absolute  bottom-0 -right-16 w-1/5 h-[350px] overflow-hidden " />
