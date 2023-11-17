@@ -50,13 +50,11 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
     }
   };
 
-  console.log({ selectedOrderEvent });
-
   return (
     <>
       <Dialog open={props?.isModal} onOpenChange={(e) => props.setIsModal(e)}>
         <DialogContent className=" my-auto max-h-[800px] h-[calc(100%-100px)] max-w-xl md:max-w-[768px] overflow-y-hidden  ">
-          <DialogFooter className=" sm:justify-start items-start w-full   ">
+          <DialogFooter className=" sm:justify-start items-start w-full">
             <Link href={orderRoute()} target="_blank">
               <Button onClick={() => props.setIsModal(false)}>
                 Print Invoice
@@ -83,7 +81,7 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
                       Date: {displayDate(OrderApiData?.data?.created_at)}
                     </div>
                     <div className="text-sm">
-                      Invoice #: INV00{OrderApiData?.data?.id}
+                      Invoice: #INV00{OrderApiData?.data?.id}
                     </div>
                   </div>
                 </div>
@@ -209,6 +207,19 @@ export function ViewTickets(props: ViewTicketsType) {
   function closeHandler() {
     props?.setSelectedOrderEvent({});
   }
+  function printHandler() {
+    const eventTicketPayload = {
+      orderId: props?.selectedOrderEvent?.order_id,
+      createdAt: props?.selectedOrderEvent?.created_at,
+      eventName: props?.selectedOrderEvent?.Event?.EventDescription[0]?.name,
+      tickets: eventTickets?.data?.map(
+        (eventTicket) => eventTicket?.ticket_num,
+      ),
+    };
+
+    localStorage.setItem('event_tickets', JSON.stringify(eventTicketPayload));
+    props?.setSelectedOrderEvent({});
+  }
 
   return (
     <>
@@ -216,29 +227,47 @@ export function ViewTickets(props: ViewTicketsType) {
         open={!!props?.selectedOrderEvent?.id}
         onOpenChange={closeHandler}
       >
-        <DialogContent className="flex flex-col items-start max-h-[800px] h-auto min-h-[400px] overflow-y-hidden  ">
-          {/* <DialogHeader>
-            <Button>Print Invoice</Button>
-          </DialogHeader> */}
-          <DialogDescription className="relative flex-1 w-full bg-card h-full rounded-lg  overflow-y-scroll scroll-hide">
+        <DialogContent className="flex flex-col max-h-[800px] h-[calc(100%-100px)] max-w-xl md:max-w-[768px] overflow-y-hidden">
+          <DialogHeader className="w-full">
+            <Link href={'/tickets-view'} target="_blank">
+              <Button onClick={printHandler}>Print Invoice</Button>
+            </Link>
+          </DialogHeader>
+
+          <DialogDescription className="relative w-full h-full">
             <div
-              className="bg-card h-full text-gray-400 rounded-lg p-4"
+              className="bg-card h-full text-gray-400 rounded-lg p-4 "
               id="divToPrint"
             >
-              <NextImage
-                className="h-16 self-center block mx-auto object-contain"
-                src={LogoImage}
-                alt="Logo"
-              />
-
+              <div className="flex flex-col md:flex-row items-center justify-between mb-8">
+                <div className="flex items-center">
+                  <NextImage
+                    className="h-16  object-contain mr-2"
+                    src={LogoImage}
+                    alt="Logo"
+                  />
+                </div>
+                <div className="text-gray-400 xs:text-center sm:text-left">
+                  <div className="font-bold text-xl mb-2">INVOICE</div>
+                  <div className="text-sm">
+                    Date: {displayDate(props?.selectedOrderEvent?.created_at)}
+                  </div>
+                  <div className="text-sm">
+                    Invoice: #INV00{props?.selectedOrderEvent?.order_id}
+                  </div>
+                </div>
+              </div>
+              <h3 className="text-2xl text-center font-bold">
+                Ticket Number List
+              </h3>
               {eventTickets?.data?.length ? (
                 <div className="space-y-4">
-                  <h2 className="text-2xl font-bold">
+                  <h3 className="text-xl">
                     {
                       props?.selectedOrderEvent?.Event?.EventDescription[0]
                         ?.name
                     }
-                  </h2>
+                  </h3>
                   <div className="flex flex-wrap justify-between gap-y-2">
                     {eventTickets?.data?.map((eventTicket) => (
                       <p className={`w-20`} key={eventTicket?.ticket_num}>
