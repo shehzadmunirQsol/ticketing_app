@@ -11,7 +11,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { ChevronDown, MoreHorizontal } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 
 import { Button } from '@/ui/button';
 import {
@@ -49,6 +49,7 @@ import {
 } from '@radix-ui/react-icons';
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 import { CSVLink } from 'react-csv';
+import Link from 'next/link';
 export type Order = {
   id: number;
   email: string;
@@ -66,6 +67,12 @@ export type Order = {
   city: string;
   postal_code: string;
   dob: Date;
+  Customer: {
+    id: number;
+    email: string;
+    first_name: string | null;
+    last_name: string | null;
+  };
   created_at: Date;
   updated_at: Date;
 };
@@ -136,9 +143,11 @@ export default function OrdersDataTable() {
       accessorKey: 'First Name',
       header: 'First Name',
       cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap  overflow-hidden w-24">
-          {row?.original?.first_name}
-        </div>
+        <Link href={`/admin/customers/detail/${row?.original?.Customer?.id}`}>
+          <div className="capitalize text-ellipsis whitespace-nowrap  overflow-hidden w-24">
+            {row?.original?.first_name}
+          </div>
+        </Link>
       ),
     },
     {
@@ -179,69 +188,7 @@ export default function OrdersDataTable() {
         </div>
       ),
     },
-    // {
-    //   accessorKey: 'Transaction ID',
-    //   header: 'Transaction ID',
-    //   cell: ({ row }) => (
-    //     <div className=" text-ellipsis whitespace-nowrap ">
-    //       {row?.original?.total_payment_id}
-    //     </div>
-    //   ),
-    // },
-    // {
-    //   accessorKey: 'DOB',
-    //   header: 'DOB',
-    //   cell: ({ row }) => (
-    //     <div className="capitalize text-ellipsis whitespace-nowrap ">
-    //       {displayDate(row?.original?.dob)}
-    //     </div>
-    //   ),
-    // },
-    // {
-    //   accessorKey: 'Country',
-    //   header: 'Country',
-    //   cell: ({ row }) => (
-    //     <div className=" text-ellipsis whitespace-nowrap ">
-    //       {row?.original?.country}
-    //     </div>
-    //   ),
-    // },
-    // {
-    //   accessorKey: 'State',
-    //   header: 'State',
-    //   cell: ({ row }) => (
-    //     <div className=" text-ellipsis whitespace-nowrap ">
-    //       {row?.original?.state}
-    //     </div>
-    //   ),
-    // },
-    // {
-    //   accessorKey: 'City',
-    //   header: 'City',
-    //   cell: ({ row }) => (
-    //     <div className=" text-ellipsis whitespace-nowrap ">
-    //       {row?.original?.city}
-    //     </div>
-    //   ),
-    // },
-    // {
-    //   accessorKey: 'Street Address',
-    //   header: 'Street Address',
-    //   cell: ({ row }) => (
-    //     <div className=" text-ellipsis whitespace-nowrap ">
-    //       {row?.original?.street_address}
-    //     </div>
-    //   ),
-    // },
-    // {
-    //   accessorKey: 'Apartment',
-    //   header: 'Apartment',
-    //   cell: ({ row }) => (
-    //     <div className=" text-ellipsis whitespace-nowrap ">
-    //       {row?.original?.apartment ? row?.original?.apartment : 'N/A'}
-    //     </div>
-    //   ),
-    // },
+
     {
       accessorKey: 'Sub Total',
       header: 'Sub Total',
@@ -380,6 +327,8 @@ export default function OrdersDataTable() {
       ],
     ),
   ];
+
+  console.log({ orderData });
 
   return (
     <div className="w-full space-y-4">

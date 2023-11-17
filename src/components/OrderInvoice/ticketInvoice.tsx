@@ -23,6 +23,7 @@ export default function TicketInvoice() {
         localStorage.getItem('event_tickets') as string,
       );
       setEventTickets(eventTicketPayload);
+      localStorage.removeItem('event_tickets');
     }
   }, [eventTickets]);
 
@@ -51,7 +52,7 @@ export default function TicketInvoice() {
 
       <div className="space-y-4">
         <h2 className="text-2xl font-bold">{eventTickets?.eventName}</h2>
-        <div className="flex flex-wrap justify-between gap-y-2">
+        <div className="grid grid-cols-4 gap-2 md:grid-cols-6">
           {eventTickets?.tickets?.map((ticket: number) => (
             <p className={`w-20`} key={ticket}>
               #{ticket}

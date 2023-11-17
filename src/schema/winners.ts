@@ -11,6 +11,7 @@ export const getWinnersSchema = z.object({
 export const selectWinnerSchema = z.object({
   event_id: z.number(),
   customer_id: z.number(),
+  ticket_num: z.number(),
   customer_email: z.string().email(),
   customer_name: z.string(),
   event_name: z.string(),

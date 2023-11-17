@@ -21,9 +21,13 @@ function AdminLayout({ children }: DefaultLayoutProps) {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const routesWithoutNavbarAndFooter = '/admin/order-view';
-  const shouldShowNavbarAndFooter = !router.pathname.startsWith(
-    routesWithoutNavbarAndFooter,
+  const routesWithoutNavbarAndFooter = [
+    '/admin/order-view',
+    '/admin/tickets-view',
+  ];
+
+  const shouldShowNavbarAndFooter = routesWithoutNavbarAndFooter.every(
+    (route) => !router.pathname.startsWith(route),
   );
 
   trpc.admin.me.useQuery(
@@ -39,8 +43,7 @@ function AdminLayout({ children }: DefaultLayoutProps) {
 
   return (
     <div className="relative overflow-y-hidden max-w-[1600px] mx-auto ">
-      {router.asPath === '/admin/login' ||
-      router.pathname.startsWith(routesWithoutNavbarAndFooter) ? (
+      {!shouldShowNavbarAndFooter ? (
         <main className="flex-1 m-auto">{children}</main>
       ) : (
         <>

@@ -193,6 +193,8 @@ type ViewTicketsType = {
 };
 
 export function ViewTickets(props: ViewTicketsType) {
+  const router = useRouter();
+
   const { data: eventTickets, isFetching } = trpc.eventTicket.get.useQuery(
     {
       event_id: props?.selectedOrderEvent?.Event?.id,
@@ -207,6 +209,7 @@ export function ViewTickets(props: ViewTicketsType) {
   function closeHandler() {
     props?.setSelectedOrderEvent({});
   }
+
   function printHandler() {
     const eventTicketPayload = {
       orderId: props?.selectedOrderEvent?.order_id,
@@ -221,6 +224,14 @@ export function ViewTickets(props: ViewTicketsType) {
     props?.setSelectedOrderEvent({});
   }
 
+  const orderRoute = () => {
+    if (router.asPath?.includes('/admin/customers/detail')) {
+      return `/admin/tickets-view`;
+    } else {
+      return `/tickets-view`;
+    }
+  };
+
   return (
     <>
       <Dialog
@@ -228,8 +239,8 @@ export function ViewTickets(props: ViewTicketsType) {
         onOpenChange={closeHandler}
       >
         <DialogContent className="flex flex-col max-h-[800px] h-[calc(100%-100px)] max-w-xl md:max-w-[768px] overflow-y-hidden">
-          <DialogHeader className="w-full">
-            <Link href={'/tickets-view'} target="_blank">
+          <DialogHeader>
+            <Link href={orderRoute()} target="_blank">
               <Button onClick={printHandler}>Print Invoice</Button>
             </Link>
           </DialogHeader>
@@ -268,7 +279,7 @@ export function ViewTickets(props: ViewTicketsType) {
                         ?.name
                     }
                   </h3>
-                  <div className="flex flex-wrap justify-between gap-y-2">
+                  <div className="grid grid-cols-4 gap-2 md:grid-cols-6">
                     {eventTickets?.data?.map((eventTicket) => (
                       <p className={`w-20`} key={eventTicket?.ticket_num}>
                         #{eventTicket?.ticket_num}
