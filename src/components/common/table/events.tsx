@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   ColumnDef,
   // ColumnFiltersState,
@@ -340,29 +340,23 @@ export default function EventsDataTable() {
       accessorKey: 'Ticket Purchased',
       header: 'Ticket Purchased',
       cell: ({ row }) => (
-        <CSVLink
-          filename="purchased_tickets.csv"
-          data={ticketCSVData}
-          ref={csvButton}
-          asyncOnClick={true}
-          onClick={(event, done) => {
-            (async () => {
-              console.log(Date.now());
-              getEventCustomerTicketHandler(row.original);
-
-              for (let i = 0; i < 4000000000; i++) {}
-              console.log(Date.now());
-              done(true);
-            })();
-            // getEventCustomerTicketHandler({ eventData: row.original, done });
-          }}
-        >
-          <p className="w-28 text-center text-ellipsis whitespace-nowrap overflow-hidden">
+        <>
+          <p
+            className="w-28 text-center text-ellipsis whitespace-nowrap overflow-hidden cursor-pointer"
+            onClick={() => getEventCustomerTicketHandler(row.original)}
+          >
             {row?.original?.tickets_sold}
             &nbsp;
             <sub>qty</sub>
           </p>
-        </CSVLink>
+          <CSVLink
+            filename="purchased_tickets.csv"
+            data={ticketCSVData}
+            ref={csvButton}
+            className="hidden"
+            target="_blank"
+          ></CSVLink>
+        </>
       ),
     },
     {
@@ -401,25 +395,24 @@ export default function EventsDataTable() {
       rowSelection,
     },
   });
-
+  useEffect(() => {
+    if (eventTicketCustomers?.length > 0) {
+      csvButton.current.link.click();
+    }
+  }, [eventTicketCustomers]);
   async function getEventCustomerTicketHandler(eventData: EventDataType) {
     try {
-      return getAllEventTicketCustomer
-        .mutateAsync({
-          event_id: eventData?.id,
-        })
-        .then((data) => {
-          const eventTicketCustomers = data.data?.map((ticketData) => ({
-            eventName: eventData?.name,
-            customerName: ticketData?.Customer?.first_name ?? '',
-            purchaseDate: ticketData?.updated_at,
-            ticketNumber: ticketData?.ticket_num,
-          }));
+      const eventTicketData = await getAllEventTicketCustomer.mutateAsync({
+        event_id: eventData?.id,
+      });
 
-          setEventTicketCustomers(eventTicketCustomers);
-          return true;
-        })
-        .catch((err) => false);
+      const eventTicketCustomers = eventTicketData.data?.map((ticketData) => ({
+        eventName: eventData?.name,
+        customerName: ticketData?.Customer?.first_name ?? '',
+        purchaseDate: ticketData?.updated_at,
+        ticketNumber: ticketData?.ticket_num,
+      }));
+      setEventTicketCustomers(eventTicketCustomers);
     } catch (error) {
       setEventTicketCustomers([]);
       console.log('done false');

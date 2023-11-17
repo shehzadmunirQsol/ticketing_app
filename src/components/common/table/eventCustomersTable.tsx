@@ -39,6 +39,7 @@ import { MoreHorizontal } from 'lucide-react';
 import { SelectWinnerDialog } from '../modal/eventModal';
 import { CSVLink } from 'react-csv';
 import NextImage from '~/components/ui/img';
+import Link from 'next/link';
 
 export type EventCustomerType = {
   event_id: number;
@@ -115,9 +116,11 @@ export default function OrdersDataTable() {
       accessorKey: 'Customer Name',
       header: 'Customer Name',
       cell: ({ row }) => (
-        <div className="w-40 capitalize text-ellipsis whitespace-nowrap ">
-          {row?.original?.first_name}
-        </div>
+        <Link href={`/admin/customers/detail/${row?.original?.customer_id}`}>
+          <div className="w-40 capitalize text-ellipsis whitespace-nowrap ">
+            {row?.original?.first_name}
+          </div>
+        </Link>
       ),
     },
     {
@@ -189,31 +192,6 @@ export default function OrdersDataTable() {
           )?.toFixed(2)}
         </p>
       ),
-    },
-    {
-      id: 'actions',
-      enableHiding: false,
-      cell: ({ row }) => {
-        return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onClick={() => setModalPropsHandler(row.original)}
-              >
-                Select Winner
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        );
-      },
     },
   ];
   const table = useReactTable({
