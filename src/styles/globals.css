@@ -1302,6 +1302,16 @@ bottom: -30px;
 form label + * {
   margin-top: 5px !important;
 }
+.soldprod {
+  position: absolute;
+  right: 0;
+  top: 15px;
+  background: #23d2b3;
+  padding: 5px 10px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #000;
+}
 /* Desktop */
 
 

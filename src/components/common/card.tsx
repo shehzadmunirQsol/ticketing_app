@@ -90,7 +90,7 @@ export default function ProductCard(props: CardInterface) {
 
             {
               (Number(props?.data?.tickets_sold) / Number(props?.data?.total_tickets)) * 100 === 100 ?
-                <span>SOLD</span>
+                <span className="soldprod">SOLD OUT</span>
                 :
                 null
             }
