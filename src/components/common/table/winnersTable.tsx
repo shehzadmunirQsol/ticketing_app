@@ -49,6 +49,7 @@ import PlaceholderImage from '~/public/assets/face/male-profile-image-placeholde
 import { WinnersEnableDialog, ImageUploadDialog } from '../modal/winnersModal';
 import { Switch } from '~/components/ui/switch';
 import NextImage from '~/components/ui/img';
+import Link from 'next/link';
 export type WinnerType = {
   Event: {
     id: number;
@@ -166,24 +167,26 @@ export default function WinnersDataTable() {
       accessorKey: 'Customer Name',
       header: 'Customer Name',
       cell: ({ row }) => (
-        <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
-          <div className="h-10 w-16 rounded-lg overflow-hidden relative">
-            <NextImage
-              className="object-cover bg-ac-2 "
-              src={
-                row?.original?.thumb
-                  ? `${process.env.NEXT_PUBLIC_MEDIA_BASE_URL}${row?.original?.thumb}`
-                  : PlaceholderImage
-              }
-              alt={row?.original?.Event.EventDescription[0]?.name ?? ''}
-              fill
-            />
-          </div>
+        <Link href={`/admin/customers/detail/${row?.original?.Customer?.id}`}>
+          <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
+            <div className="h-10 w-16 rounded-lg overflow-hidden relative">
+              <NextImage
+                className="object-cover bg-ac-2 "
+                src={
+                  row?.original?.thumb
+                    ? `${process.env.NEXT_PUBLIC_MEDIA_BASE_URL}${row?.original?.thumb}`
+                    : PlaceholderImage
+                }
+                alt={row?.original?.Event.EventDescription[0]?.name ?? ''}
+                fill
+              />
+            </div>
 
-          <p className="w-32 text-ellipsis whitespace-nowrap overflow-hidden">
-            {row?.original?.Customer?.first_name}
-          </p>
-        </div>
+            <p className="w-32 text-ellipsis whitespace-nowrap overflow-hidden">
+              {row?.original?.Customer?.first_name}
+            </p>
+          </div>
+        </Link>
       ),
     },
     {
