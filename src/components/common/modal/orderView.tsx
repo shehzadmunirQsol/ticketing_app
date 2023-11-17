@@ -268,28 +268,32 @@ export function ViewTickets(props: ViewTicketsType) {
                   </div>
                 </div>
               </div>
-              <h3 className="text-2xl text-center font-bold">
-                Ticket Number List
-              </h3>
-              {eventTickets?.data?.length ? (
-                <div className="space-y-4">
-                  <h3 className="text-xl">
-                    {
-                      props?.selectedOrderEvent?.Event?.EventDescription[0]
-                        ?.name
-                    }
-                  </h3>
-                  <div className="grid grid-cols-4 gap-2 md:grid-cols-6">
-                    {eventTickets?.data?.map((eventTicket) => (
-                      <p className={`w-20`} key={eventTicket?.ticket_num}>
-                        #{eventTicket?.ticket_num}
-                      </p>
-                    ))}
+              <div className="space-y-6">
+                <h3 className="text-2xl text-center font-bold">
+                  Ticket Number List
+                </h3>
+                {eventTickets?.data?.length ? (
+                  <div className="space-y-4">
+                    <h3 className="text-xl">
+                      {
+                        props?.selectedOrderEvent?.Event?.EventDescription[0]
+                          ?.name
+                      }
+                    </h3>
+                    <div className="grid grid-cols-4 gap-2 md:grid-cols-6">
+                      {eventTickets?.data?.map((eventTicket) => (
+                        <p className={`w-20`} key={eventTicket?.ticket_num}>
+                          #{eventTicket?.ticket_num}
+                        </p>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              ) : (
-                <p className="text-lg text-center my-auto">No Tickets Found!</p>
-              )}
+                ) : (
+                  <p className="text-lg text-center my-auto">
+                    No Tickets Found!
+                  </p>
+                )}
+              </div>
             </div>
           </DialogDescription>
         </DialogContent>

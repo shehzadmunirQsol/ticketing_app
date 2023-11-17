@@ -26,8 +26,8 @@ function AdminLayout({ children }: DefaultLayoutProps) {
     '/admin/tickets-view',
   ];
 
-  const shouldShowNavbarAndFooter = routesWithoutNavbarAndFooter.every(
-    (route) => !router.pathname.startsWith(route),
+  const shouldHideNavbarAndFooter = routesWithoutNavbarAndFooter.some((route) =>
+    router.pathname.startsWith(route),
   );
 
   trpc.admin.me.useQuery(
@@ -41,9 +41,11 @@ function AdminLayout({ children }: DefaultLayoutProps) {
     },
   );
 
+  console.log({ shouldHideNavbarAndFooter, router });
+
   return (
     <div className="relative overflow-y-hidden max-w-[1600px] mx-auto ">
-      {!shouldShowNavbarAndFooter ? (
+      {router.asPath === '/admin/login' || shouldHideNavbarAndFooter ? (
         <main className="flex-1 m-auto">{children}</main>
       ) : (
         <>

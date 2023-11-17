@@ -48,16 +48,18 @@ export default function TicketInvoice() {
           <div className="text-sm">Invoice: #INV00{eventTickets?.orderId}</div>
         </div>
       </div>
-      <h3 className="text-2xl text-center font-bold">Ticket Number List</h3>
+      <div className="space-y-6">
+        <h3 className="text-2xl text-center font-bold">Ticket Number List</h3>
 
-      <div className="space-y-4">
-        <h2 className="text-2xl font-bold">{eventTickets?.eventName}</h2>
-        <div className="grid grid-cols-4 gap-2 md:grid-cols-6">
-          {eventTickets?.tickets?.map((ticket: number) => (
-            <p className={`w-20`} key={ticket}>
-              #{ticket}
-            </p>
-          ))}
+        <div className="space-y-4">
+          <h2 className="text-2xl font-bold">{eventTickets?.eventName}</h2>
+          <div className="grid grid-cols-4 gap-2 md:grid-cols-6">
+            {eventTickets?.tickets?.map((ticket: number) => (
+              <p className={`w-20`} key={ticket}>
+                #{ticket}
+              </p>
+            ))}
+          </div>
         </div>
       </div>
     </div>
