@@ -43,7 +43,7 @@ function Footer() {
         <div className="relative z-10">
           <div className="relative p-4 py-6 md:px-14 md:py-14">
             <div className="sm:flex sm:justify-between ">
-              <div className=" mb-6 md:mb-0 flex flex-col gap-8 w-100 sm:w-[300px] lg:w-[360px]">
+              <div className="mb-6 md:mb-0 flex flex-col gap-6 md:gap-8 w-100 sm:w-[300px] lg:w-[360px]">
                 <div>
                   {/* <Button
                     variant="rounded-outline"
@@ -78,7 +78,7 @@ function Footer() {
                     {langContent[lang.lang].Footer.ADDRESS_SUB_TITLE_FOUR}
                   </p> */}
                 </div>
-                <div className=" flex items-center justify-start md:justify-start  text-sm text-white gap-3 sm:gap-4">
+                <div className="flex items-center justify-start md:justify-start text-sm text-white gap-3 sm:gap-4">
                   <NextImage
                     className="h-full object-contain "
                     src={visa}
@@ -105,7 +105,7 @@ function Footer() {
                   /> */}
                 </div>
               </div>
-              <div className=" grid grid-cols-1 gap-8 md:gap-6 md:grid-cols-2 w-full sm:w-[300px] lg:w-[360px]">
+              <div className=" grid grid-cols-1 gap-4 md:gap-6 md:grid-cols-2 w-full sm:w-[300px] lg:w-[360px]">
                 <div className="col-span-2 flex items-start justify-between">
                   <ul className="flex-1 text-grayColor opacity-75  space-y-2 sm:space-y-2">
                     {langContent[lang.lang].Footer.array.map((item, index) => {
