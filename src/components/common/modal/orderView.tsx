@@ -245,12 +245,9 @@ export function ViewTickets(props: ViewTicketsType) {
             </Link>
           </DialogHeader>
 
-          <DialogDescription className="relative w-full h-full">
-            <div
-              className="bg-card h-full text-gray-400 rounded-lg p-4 "
-              id="divToPrint"
-            >
-              <div className="flex flex-col md:flex-row items-center justify-between mb-8">
+          <DialogDescription className="bg-card px-4 py-8 rounded-lg relative w-full h-full overflow-y-scroll scroll-hide">
+            <div className="h-full text-gray-400 " id="divToPrint">
+              <div className="flex flex-col md:flex-row items-center justify-between">
                 <div className="flex items-center">
                   <NextImage
                     className="h-16  object-contain mr-2"
