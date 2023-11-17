@@ -87,6 +87,14 @@ export default function ProductCard(props: CardInterface) {
               quality={100}
               alt="Sunset in the mountains"
             />
+
+            {
+              (Number(props?.data?.tickets_sold) / Number(props?.data?.total_tickets)) * 100 === 100 ?
+                <span>SOLD</span>
+                :
+                null
+            }
+
             <div className="bottlebx prodbottle">
               <NextImage src={BottleImage} alt="Sunset in the mountains" />
             </div>
@@ -96,15 +104,15 @@ export default function ProductCard(props: CardInterface) {
             <div className="flex flex-col gap-1 mb-2">
               <div className="flex justify-between items-center gap-3 mb-2">
                 <span className=" text-xs text-gray-300">
-                {
-                  props?.data?.tickets_sold && props?.data?.total_tickets && (
-                    (() => {
-                      const percentage =
-                        (Number(props.data.tickets_sold) / Number(props.data.total_tickets)) * 100;
-                      return percentage < 1 ? percentage.toFixed(2) : Math.round(percentage);
-                    })()
-                  )
-                }
+                  {
+                    props?.data?.tickets_sold && props?.data?.total_tickets && (
+                      (() => {
+                        const percentage =
+                          (Number(props.data.tickets_sold) / Number(props.data.total_tickets)) * 100;
+                        return percentage < 1 ? percentage.toFixed(2) : Math.round(percentage);
+                      })()
+                    )
+                  }
                   % {langContent[lang.lang].Index.productcard.SOLD_TITLE}
                 </span>
                 <span className="text-xs text-gray-300">
@@ -153,7 +161,13 @@ export default function ProductCard(props: CardInterface) {
                 variant="rounded"
                 className="font-[700] sm:font-[800] tracking-tight text-md text-sm md:text-base xl:text-lg h-8 md:h-10"
               >
-                {langContent[lang.lang].Index.productcard.ENTER_BTN}
+
+                {
+                  (Number(props?.data?.tickets_sold) / Number(props?.data?.total_tickets)) * 100 === 100 ?
+                    langContent[lang.lang].Index.productcard.VIEW_BTN
+                    :
+                    langContent[lang.lang].Index.productcard.ENTER_BTN
+                }
               </Button>
             </div>
           </div>
