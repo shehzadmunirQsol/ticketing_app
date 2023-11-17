@@ -426,10 +426,10 @@
           "BUTTON":" Change Password"
       },
       "OTPSCREEN":{
-          "HEADING":"OTP`",
-          "SUB_HEADING":" VERIFICATION",
-          "TEXT":" We have sent OTP on your email",
-          "OTP":" Didn’t receive an OTP?",
+          "HEADING":"Verify",
+          "SUB_HEADING":" Your Email",
+          "TEXT":" We have sent an OTP to your email",
+          "OTP":" Didn't receive OTP?",
           "RESEND":" Resend OTP",
           "BUTTON":" Enter"
       }
