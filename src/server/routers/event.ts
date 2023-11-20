@@ -252,7 +252,7 @@ export const eventRouter = router({
           where: { event_id: event.id, customer_id: { not: null } },
         });
 
-        if (event.total_tickets > assignedEventTicketCounts) {
+        if (event.total_tickets >= assignedEventTicketCounts) {
           prisma.eventTickets
             .deleteMany({
               where: {

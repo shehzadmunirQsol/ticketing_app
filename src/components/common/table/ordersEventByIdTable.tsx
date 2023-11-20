@@ -21,7 +21,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/ui/table';
-import { LanguageInterface } from '../language_select';
 import { trpc } from '~/utils/trpc';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 import { LoadingDialog } from '../modal/loadingModal';
@@ -49,8 +48,6 @@ import {
   DoubleArrowLeftIcon,
   DoubleArrowRightIcon,
 } from '@radix-ui/react-icons';
-import langContent from '~/locales';
-
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 import NextImage from '~/components/ui/img';
 
@@ -71,7 +68,6 @@ interface OrderTableProps {
 
 export default function OrdersDataEventById(props: OrderTableProps) {
   const { user } = useSelector((state: RootState) => state.auth);
-  const router = useRouter();
 
   const [sorting, setSorting] = useState<SortingState>([]);
   const [selectedItem, setSelectedItem] = useState({});
@@ -147,7 +143,7 @@ export default function OrdersDataEventById(props: OrderTableProps) {
       header: 'Ticket Qty',
       cell: ({ row }) => (
         <div
-          className="capitalize text-ellipsis whitespace-nowrap  cursor-pointer"
+          className="capitalize text-ellipsis whitespace-nowrap  cursor-pointer duration-150 hover:text-primary"
           onClick={() => setSelectedOrderEvent({ ...row?.original })}
         >
           {row?.original?.quantity}

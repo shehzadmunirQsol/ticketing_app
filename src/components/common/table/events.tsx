@@ -342,7 +342,7 @@ export default function EventsDataTable() {
       cell: ({ row }) => (
         <>
           <p
-            className="w-28 text-center text-ellipsis whitespace-nowrap overflow-hidden cursor-pointer"
+            className="w-28 text-center text-ellipsis whitespace-nowrap overflow-hidden cursor-pointer duration-150 hover:text-primary"
             onClick={() => getEventCustomerTicketHandler(row.original)}
           >
             {row?.original?.tickets_sold}

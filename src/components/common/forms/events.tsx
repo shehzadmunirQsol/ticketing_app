@@ -669,11 +669,18 @@ export default function EventForm() {
                         ? form.watch('total_tickets')
                         : Infinity;
 
-                    const min =
+                    let min =
                       item?.name === 'total_tickets' &&
                       eventData?.assignedEventTicketCounts
                         ? eventData?.assignedEventTicketCounts
                         : item?.min;
+
+                    if (
+                      item?.name === 'total_tickets' &&
+                      form.watch('user_ticket_limit') > min
+                    ) {
+                      min = form.watch('user_ticket_limit');
+                    }
 
                     return (
                       <FormField

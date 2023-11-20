@@ -662,6 +662,7 @@ export const orderRouter = router({
         include: {
           Customer: {
             select: {
+              id: true,
               email: true,
               first_name: true,
               last_name: true,
@@ -953,31 +954,32 @@ export const orderRouter = router({
               })();
             });
 
-            const emailPayload = cart?.CartItems.map((item) => ({
-              name: item?.Event?.EventDescription[0]?.name as string,
-              price: item.Event.price,
-              qty: item.quantity,
-              total_price: item.Event.price * item.quantity,
-            }));
+            // const emailPayload = cart?.CartItems.map((item) => ({
+            //   name: item?.Event?.EventDescription[0]?.name as string,
+            //   price: item.Event.price,
+            //   qty: item.quantity,
+            //   total_price: item.Event.price * item.quantity,
+            // }));
 
-            const mailOptions = {
-              template_id: EMAIL_TEMPLATE_IDS.ORDER_SUCCESS,
-              from: EMAILS.contact,
-              to: payload.values.email,
-              subject: 'Your order has been placed 🎉',
-              params: {
-                first_name: payload.values.first_name,
-                status: 'paid',
-                order_number: order?.id,
-                total_price:
-                  'AED ' + (subTotalAmount - discountAmount).toLocaleString(),
-                event_details: emailPayload,
-                discount: 'AED ' + discountAmount.toLocaleString(),
-                sub_total: 'AED ' + subTotalAmount.toLocaleString(),
-              },
-            };
+            // const mailOptions = {
+            //   template_id: EMAIL_TEMPLATE_IDS.ORDER_SUCCESS,
+            //   from: EMAILS.contact,
+            //   to: payload.values.email,
+            //   subject: 'Your order has been placed 🎉',
+            //   params: {
+            //     first_name: payload.values.first_name,
+            //     status: 'paid',
+            //     order_number: order?.id,
+            //     total_price:
+            //       'AED ' + (subTotalAmount - discountAmount).toLocaleString(),
+            //     event_details: emailPayload,
+            //     discount: 'AED ' + discountAmount.toLocaleString(),
+            //     sub_total: 'AED ' + subTotalAmount.toLocaleString(),
+            //   },
+            // };
 
-            await sendEmail(mailOptions);
+            // await sendEmail(mailOptions);
+
             await prisma.cart.update({
               where: { id: cart.id },
 

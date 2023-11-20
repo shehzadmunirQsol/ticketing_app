@@ -168,7 +168,7 @@ export const winnerRouter = router({
         const winnerPayload = {
           ...payloadIds,
           draw_date: drawDate,
-          ticket_num: Math.floor(Math.random() * 99999).toString(),
+          ticket_num: input?.ticket_num?.toString(),
           is_enabled: false,
         };
 

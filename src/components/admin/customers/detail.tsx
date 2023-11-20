@@ -54,32 +54,30 @@ function CustomerDetail() {
   );
 }
 const CustomerDetailView = (props: any) => {
-  console.log({ props });
   const profileFields = [
     { label: 'First Name', key: 'first_name' },
     { label: 'Last Name', key: 'last_name' },
     { label: 'Email', key: 'email' },
     { label: 'Phone No.', key: 'phone_number' },
   ];
-  const addressFields = [
-    { label: 'First Name', key: 'first_name' },
-    { label: 'Last Name', key: 'last_name' },
-    { label: 'Email', key: 'email' },
-    { label: 'Phone No.', key: 'phone_number' },
-  ];
+
   return (
     <div className="w-full px-4  bg-secondary/80 rounded-md text-sm ">
       <div className="grid grid-cols-1   gap-2">
         {profileFields.map((field) => (
           <div
             key={field.key}
+<<<<<<< HEAD
             className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 my-2 items-center gap-2"
+=======
+            className="grid xsm:grid-cols-2 md:grid-cols-3 my-2 items-center gap-2"
+>>>>>>> 52037365750a83435b141c230c5eb5242a626a51
           >
             <div>{field.label}: </div>
             <div>{props?.customerDetail?.[field.key]}</div>
           </div>
         ))}
-        <div className="grid grid-cols-2 md:grid-cols-3 my-2 items-center gap-2">
+        <div className="grid xsm:grid-cols-2 md:grid-cols-3 my-2 items-center gap-2">
           <div>Default Address: </div>
           <div className=" col-span-2  lowercase">
             {`${
