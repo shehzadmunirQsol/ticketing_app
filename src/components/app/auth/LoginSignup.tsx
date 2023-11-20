@@ -41,10 +41,8 @@ import {
 import langContent from '~/locales';
 import { RootState } from '~/store/store';
 
-
 import { PhoneInput } from 'react-international-phone';
 import 'react-international-phone/style.css';
-
 
 import countryJSON from '~/data/countries.json';
 const countries = countryJSON.map((item) => item.country);
@@ -112,6 +110,8 @@ export default function LoginSignup() {
       const payload = { ...values, email: values.email.toLowerCase().trim() };
       formLogin.reset();
       await registerCustomer.mutateAsync(payload);
+      formSignup.reset();
+
       setOtpIsModal(true);
     } catch (e: any) {
       setOtpIsModal(false);
@@ -352,20 +352,17 @@ export default function LoginSignup() {
                         Phone Number <sup className="">*</sup>
                       </FormLabel>
                       <div className="flex flex-row gap-2 mt-2 ">
-                        
-
-                      <FormField
+                        <FormField
                           control={formSignup.control}
                           name="code"
                           render={({ field }) => (
                             <FormItem>
-
                               <PhoneInput
                                 className="rounded-md countrycode"
                                 defaultCountry="ae"
-                                inputProps={{ maxLength: 4, ...field }} 
-                                {...field} 
-                              /> 
+                                inputProps={{ maxLength: 4, ...field }}
+                                {...field}
+                              />
 
                               {/* <PhoneInput
                                 className="rounded-md w-20 "
@@ -389,12 +386,6 @@ export default function LoginSignup() {
                           )}
                         />
 
-                      
-
-
-
-
-
                         {/* <FormField
                           control={formSignup.control}
                           name="code"
@@ -413,7 +404,6 @@ export default function LoginSignup() {
                             </FormItem>
                           )}
                         /> */}
-
 
                         <FormField
                           control={formSignup.control}

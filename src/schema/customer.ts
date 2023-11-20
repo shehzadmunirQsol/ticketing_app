@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { validateEmail } from '~/utils/helper';
 
 export const signupCustomerSchema = z.object({
   email: z
@@ -56,6 +57,13 @@ export const signupCustomerSchemaInput = z.object({
     })
     .refine((val) => (val.includes('*') ? false : true), {
       message: 'Please use a valid email ',
+    })
+
+    .refine((val) => (val.includes('-') ? false : true), {
+      message: 'Please use a valid email ',
+    })
+    .refine((val) => validateEmail(val), {
+      message: 'Invalid email format.',
     }),
   password: z
     .string({ required_error: 'Please enter your password' })
@@ -159,7 +167,15 @@ export const loginCustomerSchema = z.object({
     .email({
       message: 'Please use a valid email',
     })
-    .trim(),
+    .refine((val) => (val.includes('*') ? false : true), {
+      message: 'Please use a valid email ',
+    })
+    .refine((val) => (val.includes('-') ? false : true), {
+      message: 'Please use a valid email ',
+    })
+    .refine((val) => validateEmail(val), {
+      message: 'Invalid email format.',
+    }),
   password: z
     .string({ required_error: 'Please enter your password' })
     .min(6, {
