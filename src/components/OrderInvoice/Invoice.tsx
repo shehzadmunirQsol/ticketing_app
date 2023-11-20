@@ -1,5 +1,4 @@
 import { ScrollArea } from '@radix-ui/react-scroll-area';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';

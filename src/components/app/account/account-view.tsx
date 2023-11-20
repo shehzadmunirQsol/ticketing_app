@@ -132,21 +132,19 @@ function CurrentandPast({ customer_id }: currentandpastprops) {
         {customer_id != undefined ? (
           <OrdersDataByIdTable filters={filters} setFilters={setFilters} />
         ) : (
-          <>
-            <div className="flex flex-col my-auto h-full items-center justify-center">
-              <NextImage src={Current} alt="/" />
-              <p className="text-center text-gray-300 text-md my-2 px-6">
-                {langContent[lang.lang].MyAccount.AccountView.INFO}
-              </p>
-              <Button
-                variant={'rounded'}
-                className="text-center font-black tracking-tighter my-4 w-full h-fit text-xs sm:w-fit md:text-md "
-                onClick={() => router.push('/cars')}
-              >
-                {langContent[lang.lang].MyAccount.AccountView.INFO_HEADING}
-              </Button>
-            </div>
-          </>
+          <div className="flex flex-col my-auto h-full items-center justify-center">
+            <NextImage src={Current} alt="/" />
+            <p className="text-center text-gray-300 text-md my-2 px-6">
+              {langContent[lang.lang].MyAccount.AccountView.INFO}
+            </p>
+            <Button
+              variant={'rounded'}
+              className="text-center font-black tracking-tighter my-4 w-full h-fit text-xs sm:w-fit md:text-md "
+              onClick={() => router.push('/cars')}
+            >
+              {langContent[lang.lang].MyAccount.AccountView.INFO_HEADING}
+            </Button>
+          </div>
         )}
       </div>
     </>

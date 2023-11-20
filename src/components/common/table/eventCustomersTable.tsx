@@ -18,9 +18,6 @@ import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/ui/dropdown-menu';
 import {
@@ -35,10 +32,9 @@ import { trpc } from '~/utils/trpc';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 import { LoadingDialog } from '../modal/loadingModal';
 import { useRouter } from 'next/router';
-import { MoreHorizontal } from 'lucide-react';
-import { SelectWinnerDialog } from '../modal/eventModal';
 import { CSVLink } from 'react-csv';
 import NextImage from '~/components/ui/img';
+import Link from 'next/link';
 
 export type EventCustomerType = {
   event_id: number;
@@ -55,21 +51,10 @@ export type EventCustomerType = {
   quantity: number;
 };
 
-const initialModalProps = {
-  isModal: false,
-  event_id: 0,
-  customer_id: 0,
-  event_name: '',
-  customer_name: '',
-  customer_email: '',
-};
-
 export default function OrdersDataTable() {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
-
-  const [modalProps, setModalProps] = useState(initialModalProps);
 
   const router = useRouter();
   const event_id =
@@ -115,9 +100,11 @@ export default function OrdersDataTable() {
       accessorKey: 'Customer Name',
       header: 'Customer Name',
       cell: ({ row }) => (
-        <div className="w-40 capitalize text-ellipsis whitespace-nowrap ">
-          {row?.original?.first_name}
-        </div>
+        <Link href={`/admin/customers/detail/${row?.original?.customer_id}`}>
+          <div className="w-40 capitalize text-ellipsis whitespace-nowrap ">
+            {row?.original?.first_name}
+          </div>
+        </Link>
       ),
     },
     {
@@ -190,31 +177,6 @@ export default function OrdersDataTable() {
         </p>
       ),
     },
-    {
-      id: 'actions',
-      enableHiding: false,
-      cell: ({ row }) => {
-        return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onClick={() => setModalPropsHandler(row.original)}
-              >
-                Select Winner
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        );
-      },
-    },
   ];
   const table = useReactTable({
     data: eventCustomerData as EventCustomerType[],
@@ -232,24 +194,6 @@ export default function OrdersDataTable() {
       rowSelection,
     },
   });
-
-  function setModalPropsHandler(params: EventCustomerType) {
-    setModalProps({
-      customer_id: params.customer_id,
-      event_id: params.event_id,
-      event_name: params.event_name,
-      customer_name: params.first_name,
-      customer_email: params.email,
-      isModal: true,
-    });
-  }
-
-  function openChangeHandler() {
-    setModalProps((prevState) => ({
-      ...initialModalProps,
-      isModal: !prevState.isModal,
-    }));
-  }
 
   const csvData = [
     [
@@ -389,10 +333,6 @@ export default function OrdersDataTable() {
         </ScrollArea>
       </div>
 
-      <SelectWinnerDialog
-        {...modalProps}
-        openChangeHandler={openChangeHandler}
-      />
       <LoadingDialog open={isLoading} text={'Loading data...'} />
     </div>
   );

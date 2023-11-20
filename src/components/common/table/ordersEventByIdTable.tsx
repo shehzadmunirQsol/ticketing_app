@@ -21,7 +21,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/ui/table';
-import { LanguageInterface } from '../language_select';
 import { trpc } from '~/utils/trpc';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 import { LoadingDialog } from '../modal/loadingModal';
@@ -35,7 +34,7 @@ import {
   DropdownMenuTrigger,
 } from '~/components/ui/dropdown-menu';
 import { MoreHorizontal } from 'lucide-react';
-import { OrderViewDialog } from '../modal/orderView';
+import { OrderViewDialog, ViewTickets } from '../modal/orderView';
 import { RootState } from '~/store/store';
 import { useSelector } from 'react-redux';
 import {
@@ -49,17 +48,17 @@ import {
   DoubleArrowLeftIcon,
   DoubleArrowRightIcon,
 } from '@radix-ui/react-icons';
-import langContent from '~/locales';
-
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 import NextImage from '~/components/ui/img';
 
 export type Category = {
   id: number;
-  total_amount: number;
-  discount_amount: number;
-  sub_total_amount: number;
+  order_id: number;
+  Order: any;
+  Event: any;
   created_at: Date;
+  quantity: number;
+  ticket_price: number;
 };
 
 interface OrderTableProps {
@@ -67,20 +66,20 @@ interface OrderTableProps {
   setFilters: any;
 }
 
-export default function OrdersDataByIdTable(props: OrderTableProps) {
-  const { lang } = useSelector((state: RootState) => state.layout);
+export default function OrdersDataEventById(props: OrderTableProps) {
   const { user } = useSelector((state: RootState) => state.auth);
-  const router = useRouter();
 
   const [sorting, setSorting] = useState<SortingState>([]);
   const [selectedItem, setSelectedItem] = useState({});
+  const [selectedOrderEvent, setSelectedOrderEvent] = useState<any>({});
+
   const [title, setTitle] = useState('');
   const [type, setType] = useState('');
   const [isModal, setIsModal] = useState(false);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
 
-  const { data, isFetching } = trpc.order.getOrders.useQuery(
+  const { data, isFetching } = trpc.order.getOrderEvents.useQuery(
     { ...props.filters },
     {
       refetchOnWindowFocus: false,
@@ -89,11 +88,10 @@ export default function OrdersDataByIdTable(props: OrderTableProps) {
   );
 
   const orderData = React.useMemo(() => {
-    console.log("tabledata", data)
     return Array.isArray(data?.data) ? data?.data : [];
   }, [data]);
   const handleView = (data: any, type: string) => {
-    setSelectedItem(data);
+    setSelectedItem({ id: data?.order_id });
     setTitle('Banner');
     setType(type);
     setIsModal(true);
@@ -111,41 +109,65 @@ export default function OrdersDataByIdTable(props: OrderTableProps) {
       accessorKey: 'ID',
       header: 'Order ID',
       cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap cursor-pointer underline" onClick={() => handleView(row?.original, 'view')}>
-          #{row?.original.id}
+        <div
+          className="capitalize text-ellipsis whitespace-nowrap cursor-pointer "
+          onClick={() => handleView(row?.original, 'view')}
+        >
+          #{row?.original.order_id}
         </div>
       ),
     },
     {
-      accessorKey: 'Sub Total',
-      header: 'Sub Total',
+      accessorKey: 'Product',
+      header: 'Product',
+      cell: ({ row }) => {
+        return (
+          <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
+            <NextImage
+              className="object-cover bg-ac-2 h-10 w-16 rounded-lg"
+              src={`${process.env.NEXT_PUBLIC_MEDIA_BASE_URL}${row?.original?.Event?.thumb}`}
+              alt={row?.original?.Event?.EventDescription[0]?.name ?? ''}
+              width={100}
+              height={100}
+            />
+
+            <p className="w-40 text-ellipsis whitespace-nowrap overflow-hidden">
+              {row?.original?.Event?.EventDescription[0]?.name ?? ''}
+            </p>
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: 'quantity',
+      header: 'Ticket Qty',
       cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap ">
-          AED {(row?.original?.sub_total_amount).toFixed(2)}
+        <div
+          className="capitalize text-ellipsis whitespace-nowrap  cursor-pointer duration-150 hover:text-primary"
+          onClick={() => setSelectedOrderEvent({ ...row?.original })}
+        >
+          {row?.original?.quantity}
         </div>
       ),
     },
     {
-      accessorKey: 'Discount',
-      header: 'Discount',
+      accessorKey: 'Ticket Price',
+      header: 'Ticket Price',
       cell: ({ row }) => (
         <div className="capitalize text-ellipsis whitespace-nowrap ">
-          {' '}
-          {row?.original?.discount_amount > 0
-            ? 'AED ' + (row?.original?.discount_amount).toFixed(2)
-            : 'N/A'}
+          AED {(row?.original?.ticket_price).toFixed(2)}
         </div>
       ),
     },
+
     {
       accessorKey: 'Total Amount',
       header: 'Total Amount',
       cell: ({ row }) => (
         <div className="capitalize text-ellipsis whitespace-nowrap w-28">
           {' '}
-          {row?.original?.total_amount > 0
-            ? 'AED ' + (row?.original?.total_amount).toFixed(2)
-            : 'N/A'}
+          AED{' '}
+          {(row?.original?.ticket_price * row?.original?.quantity)?.toFixed(2)}
         </div>
       ),
     },
@@ -160,33 +182,37 @@ export default function OrdersDataByIdTable(props: OrderTableProps) {
     },
     {
       id: 'actions',
-      header: 'Order Detail',
+      header: 'Actions',
       enableHiding: false,
       cell: ({ row }) => {
         return (
-          // <DropdownMenu>
-          //   <DropdownMenuTrigger asChild>
-          //     <Button variant="ghost" className="h-8 w-8 p-0">
-          //       <span className="sr-only">Open menu</span>
-          //       <MoreHorizontal className="h-4 w-4" />
-          //     </Button>
-          //   </DropdownMenuTrigger>
-          //   <DropdownMenuContent align="end">
-          //     <DropdownMenuItem
-          //       onClick={() => handleView(row?.original, 'view')}
-          //     >
-          //       View Order
-          //     </DropdownMenuItem>
-          //   </DropdownMenuContent>
-          // </DropdownMenu>
-        <div className="winbtn winbtnormal smallbtn font-sans capitalize text-ellipsis whitespace-nowrap" onClick={() => handleView(row?.original, 'view')}>
-        Order Detail
-        </div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem
+                onClick={() => setSelectedOrderEvent(row?.original)}
+                className=" cursor-pointer"
+              >
+                View Tickets
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => handleView(row?.original, 'view')}
+                className=" cursor-pointer"
+              >
+                View Order
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         );
       },
     },
   ];
-
+  console.log(data?.data, 'orderData');
   const table = useReactTable({
     data: orderData as Category[],
     columns,
@@ -210,7 +236,7 @@ export default function OrdersDataByIdTable(props: OrderTableProps) {
   }
 
   return (
-    <div className="w-full p-2">
+    <div className="w-full px-2">
       {table?.getRowModel()?.rows?.length ? (
         <>
           <div className="rounded-md border border-border">
@@ -261,21 +287,8 @@ export default function OrdersDataByIdTable(props: OrderTableProps) {
                         <div className="flex flex-col my-auto h-full items-center justify-center">
                           <NextImage src={Current} alt="/" />
                           <p className="text-center text-gray-300 text-md my-2 px-6">
-                            {
-                              langContent[lang.lang].MyAccount.AccountView
-                                .TABLE_INFO
-                            }
+                            No Data Found
                           </p>
-                          <Button
-                            variant={'rounded'}
-                            className="text-center font-black tracking-tighter my-4 w-36 text-xs md:w-fit md:text-md "
-                            onClick={() => router.push('/cars')}
-                          >
-                            {
-                              langContent[lang.lang].MyAccount.AccountView
-                                .TABLE_BUTTON
-                            }
-                          </Button>
                         </div>
                       </TableCell>
                     </TableRow>
@@ -377,15 +390,8 @@ export default function OrdersDataByIdTable(props: OrderTableProps) {
         <div className="flex flex-col my-auto h-full items-center justify-center">
           <NextImage src={Current} alt="/" />
           <p className="text-center text-gray-300 text-md my-2 px-6">
-            {langContent[lang.lang].MyAccount.AccountView.TABLE_INFO}
+            No Data Found
           </p>
-          <Button
-            variant={'rounded'}
-            className="text-center font-black tracking-tighter my-4 w-full h-fit text-xs sm:w-fit md:text-md "
-            onClick={() => router.push('/cars')}
-          >
-            {langContent[lang.lang].MyAccount.AccountView.TABLE_BUTTON}
-          </Button>
         </div>
       )}
 
@@ -398,6 +404,10 @@ export default function OrdersDataByIdTable(props: OrderTableProps) {
         setIsModal={setIsModal}
         type={type}
         setType={setType}
+      />
+      <ViewTickets
+        selectedOrderEvent={selectedOrderEvent}
+        setSelectedOrderEvent={setSelectedOrderEvent}
       />
       <LoadingDialog open={isFetching} text={'Loading data...'} />
     </div>

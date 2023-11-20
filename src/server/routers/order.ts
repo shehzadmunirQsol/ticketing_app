@@ -453,7 +453,141 @@ export const orderRouter = router({
       });
     }
   }),
+  getOrderEvents: publicProcedure.input(getOrder).query(async ({ input }) => {
+    try {
+      const { filters, ...inputData } = input;
+      const filterPayload: any = { ...filters };
 
+      if (filterPayload?.searchQuery) delete filterPayload.searchQuery;
+      if (filterPayload?.endDate) delete filterPayload.endDate;
+      if (filterPayload?.startDate) delete filterPayload.startDate;
+      const where: any = {
+        customer_id: inputData?.customer_id,
+        is_deleted: false,
+        ...filterPayload,
+      };
+      // if (input?.status == 'current') {
+      //   const startDate = new Date();
+      //   where.OrderEvent = {
+      //     every: {
+      //       Event: {
+      //         end_date: {
+      //           gte: startDate,
+      //         },
+      //       },
+      //     },
+      //   };
+      // }
+      // if (input?.status == 'past') {
+      //   const startDate = new Date();
+      //   where.OrderEvent = {
+      //     every: {
+      //       Event: {
+      //         end_date: {
+      //           lte: startDate,
+      //         },
+      //       },
+      //     },
+      //   };
+      // }
+
+      if (input?.filters?.startDate && !input?.filters?.endDate) {
+        const startDate = new Date(input?.filters?.startDate);
+        where.created_at = { gte: startDate };
+      }
+      if (input?.filters?.endDate && !input?.filters?.startDate) {
+        const endDate = new Date(input?.filters?.endDate);
+        where.created_at = { lte: endDate };
+      }
+      if (input?.filters?.endDate && input?.filters?.startDate) {
+        const startDate = new Date(input?.filters?.startDate);
+        const endDate = new Date(input?.filters?.endDate);
+        where.created_at = { gte: startDate, lte: endDate };
+      }
+      if (input?.filters?.searchQuery) {
+        where.OR = [];
+        where.OR.push({
+          first_name: {
+            contains: input?.filters?.searchQuery,
+            mode: 'insensitive',
+          },
+        });
+        where.OR.push({
+          last_name: {
+            contains: input?.filters?.searchQuery,
+            mode: 'insensitive',
+          },
+        });
+        where.OR.push({
+          email: {
+            contains: input?.filters?.searchQuery,
+            mode: 'insensitive',
+          },
+        });
+      }
+
+      const totalEventPromise = prisma.orderEvent.count({
+        where: where,
+      });
+
+      const eventPromise = prisma.orderEvent.findMany({
+        orderBy: { created_at: 'desc' },
+        skip: input.first * input.rows,
+        take: input.rows,
+        where: where,
+        include: {
+          Customer: {
+            select: {
+              email: true,
+              first_name: true,
+              last_name: true,
+            },
+          },
+          Order: {
+            select: {
+              discount_amount: true,
+              sub_total_amount: true,
+            },
+          },
+          Event: {
+            select: {
+              id: true,
+              thumb: true,
+              EventDescription: {
+                where: { lang_id: 1 },
+                select: {
+                  name: true,
+                },
+              },
+            },
+          },
+        },
+      });
+
+      const [totalEvent, event] = await Promise.all([
+        totalEventPromise,
+        eventPromise,
+      ]);
+
+      if (!event?.length) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Events not found',
+        });
+      }
+
+      return {
+        message: 'events found',
+        count: totalEvent,
+        data: event,
+      };
+    } catch (error: any) {
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: error?.message,
+      });
+    }
+  }),
   get: publicProcedure.input(getOrderSchema).query(async ({ input }) => {
     try {
       const { filters, ...inputData } = input;
@@ -528,6 +662,7 @@ export const orderRouter = router({
         include: {
           Customer: {
             select: {
+              id: true,
               email: true,
               first_name: true,
               last_name: true,
@@ -754,7 +889,17 @@ export const orderRouter = router({
               quantity: item.quantity,
               is_subscribe: item.is_subscribe,
             }));
+
             const order = await prisma.order.create({
+              select: {
+                id: true,
+                OrderEvent: {
+                  select: {
+                    id: true,
+                    event_id: true,
+                  },
+                },
+              },
               data: {
                 ...orderPayload,
                 OrderEvent: {
@@ -763,7 +908,6 @@ export const orderRouter = router({
                   },
                 },
               },
-              
             });
             const eventPromises = cart.CartItems.map((item) =>
               prisma.event.update({
@@ -777,31 +921,65 @@ export const orderRouter = router({
 
             await Promise.all(eventPromises);
 
-            const emailPayload = cart?.CartItems.map((item) => ({
-              name: item?.Event?.EventDescription[0]?.name as string,
-              price: item.Event.price,
-              qty: item.quantity,
-              total_price: item.Event.price * item.quantity,
-            }));
+            // assigning tickets to customer
+            order.OrderEvent.forEach((orderEvent) => {
+              (async () => {
+                const assignedEventTicketCounts =
+                  await prisma.eventTickets.count({
+                    where: {
+                      event_id: orderEvent.event_id,
+                      customer_id: { not: null },
+                    },
+                  });
 
-            const mailOptions = {
-              template_id: EMAIL_TEMPLATE_IDS.ORDER_SUCCESS,
-              from: EMAILS.contact,
-              to: payload.values.email,
-              subject: 'Your order has been placed 🎉',
-              params: {
-                first_name: payload.values.first_name,
-                status: 'paid',
-                order_number: order?.id,
-                total_price:
-                  'AED ' + (subTotalAmount - discountAmount).toLocaleString(),
-                event_details: emailPayload,
-                discount: 'AED ' + discountAmount.toLocaleString(),
-                sub_total: 'AED ' + subTotalAmount.toLocaleString(),
-              },
-            };
+                const cartItem = cart.CartItems.find(
+                  (cartItem) => cartItem.event_id === orderEvent.event_id,
+                );
 
-            await sendEmail(mailOptions);
+                await prisma.eventTickets.updateMany({
+                  where: {
+                    event_id: orderEvent.event_id,
+                    customer_id: null,
+                    ticket_num: {
+                      gt: assignedEventTicketCounts,
+                      lte:
+                        assignedEventTicketCounts + (cartItem?.quantity ?? 0),
+                    },
+                  },
+                  data: {
+                    order_event_id: orderEvent.id,
+                    customer_id: payload?.values?.customer_id,
+                  },
+                });
+              })();
+            });
+
+            // const emailPayload = cart?.CartItems.map((item) => ({
+            //   name: item?.Event?.EventDescription[0]?.name as string,
+            //   price: item.Event.price,
+            //   qty: item.quantity,
+            //   total_price: item.Event.price * item.quantity,
+            // }));
+
+            // const mailOptions = {
+            //   template_id: EMAIL_TEMPLATE_IDS.ORDER_SUCCESS,
+            //   from: EMAILS.contact,
+            //   to: payload.values.email,
+            //   subject: 'Your order has been placed 🎉',
+            //   params: {
+            //     first_name: payload.values.first_name,
+            //     status: 'paid',
+            //     order_number: order?.id,
+            //     total_price:
+            //       'AED ' + (subTotalAmount - discountAmount).toLocaleString(),
+            //     event_details: emailPayload,
+            //     discount: 'AED ' + discountAmount.toLocaleString(),
+            //     sub_total: 'AED ' + subTotalAmount.toLocaleString(),
+            //   },
+            // };
+
+            // await sendEmail(mailOptions);
+
             await prisma.cart.update({
               where: { id: cart.id },
 
@@ -832,13 +1010,11 @@ export const orderRouter = router({
             if (useAPIData?.password) delete useAPIData?.password;
             if (useAPIData?.otp) delete useAPIData?.password;
 
-            
-
             return {
               message: paymentRes?.data,
               status: true,
               user: useAPIData,
-              order_id:order.id
+              order_id: order.id,
             };
           }
         }

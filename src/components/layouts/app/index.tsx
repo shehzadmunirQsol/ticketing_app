@@ -26,10 +26,10 @@ function Index({ children }: DefaultLayoutProps) {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const routesWithoutNavbarAndFooter = '/order-view';
+  const routesWithoutNavbarAndFooter = ['/order-view', '/tickets-view'];
 
-  const shouldShowNavbarAndFooter = !router.pathname.startsWith(
-    routesWithoutNavbarAndFooter,
+  const shouldShowNavbarAndFooter = routesWithoutNavbarAndFooter.every(
+    (route) => !router.pathname.startsWith(route),
   );
 
   trpc.customer.get.useQuery(undefined, {

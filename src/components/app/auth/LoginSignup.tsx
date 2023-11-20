@@ -45,16 +45,13 @@ import {
 import langContent from '~/locales';
 import { RootState } from '~/store/store';
 
-
 import { PhoneInput } from 'react-international-phone';
 import 'react-international-phone/style.css';
-
 
 import countryJSON from '~/data/countries.json';
 const countries = countryJSON.map((item) => item.country);
 
 export default function LoginSignup() {
-
   const [showPassword, setShowPassword] = useState(false);
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -131,6 +128,8 @@ export default function LoginSignup() {
       const payload = { ...values, email: values.email.toLowerCase().trim() };
       formLogin.reset();
       await registerCustomer.mutateAsync(payload);
+      formSignup.reset();
+
       setOtpIsModal(true);
     } catch (e: any) {
       setOtpIsModal(false);
@@ -279,21 +278,21 @@ export default function LoginSignup() {
                         </FormLabel>
                         <FormControl className="relative">
                           <div>
-                          <Input
-                            type={showPassword ? 'text' : 'password'}
-                            {...field}
-                            className="rounded-md"
-                          />
-                          <div
-                            className="eyeicon"
-                            onClick={togglePasswordVisibility}
-                          >
-                            {showPassword ? (
-                              <Image src={EyeOpen} alt="img" />
-                            ) : (
-                              <Image src={EyeClose} alt="img" />
-                            )}
-                          </div>
+                            <Input
+                              type={showPassword ? 'text' : 'password'}
+                              {...field}
+                              className="rounded-md"
+                            />
+                            <div
+                              className="eyeicon"
+                              onClick={togglePasswordVisibility}
+                            >
+                              {showPassword ? (
+                                <Image src={EyeOpen} alt="img" />
+                              ) : (
+                                <Image src={EyeClose} alt="img" />
+                              )}
+                            </div>
                           </div>
                         </FormControl>
                         <div className="relative pb-2 errormsg">
@@ -379,18 +378,22 @@ export default function LoginSignup() {
                         Phone Number <sup className="">*</sup>
                       </FormLabel>
                       <div className="flex flex-row gap-2 mt-2 ">
-                      <FormField
+                        <FormField
                           control={formSignup.control}
                           name="code"
                           render={({ field }) => (
                             <FormItem>
-
                               <PhoneInput
                                 className="rounded-md countrycode"
                                 defaultCountry="ae"
-                                inputProps={{ maxLength: 4, placeholder:"+971", readOnly: true, ...field }} 
-                                {...field} 
-                              /> 
+                                inputProps={{
+                                  maxLength: 4,
+                                  placeholder: '+971',
+                                  readOnly: true,
+                                  ...field,
+                                }}
+                                {...field}
+                              />
 
                               {/* <PhoneInput
                                 className="rounded-md w-20 "
@@ -522,7 +525,7 @@ export default function LoginSignup() {
                       )}
                     />
 
-<FormField
+                    <FormField
                       control={formSignup.control}
                       name="gender"
                       render={({ field }) => (
@@ -555,8 +558,6 @@ export default function LoginSignup() {
                         </FormItem>
                       )}
                     />
-
-                    
                   </div>
                   <FormField
                     control={formSignup.control}
@@ -580,7 +581,6 @@ export default function LoginSignup() {
                     )}
                   />
 
-
                   <FormField
                     control={formSignup.control}
                     name="password"
@@ -591,21 +591,21 @@ export default function LoginSignup() {
                         </FormLabel>
                         <FormControl className="relative">
                           <div>
-                          <Input
-                            type={showPassword ? 'text' : 'password'}
-                            {...field}
-                            className="rounded-md"
-                          />
-                          <div
-                            className="eyeicon"
-                            onClick={togglePasswordVisibility}
-                          >
-                            {showPassword ? (
-                              <Image src={EyeOpen} alt="img" />
-                            ) : (
-                              <Image src={EyeClose} alt="img" />
-                            )}
-                          </div>
+                            <Input
+                              type={showPassword ? 'text' : 'password'}
+                              {...field}
+                              className="rounded-md"
+                            />
+                            <div
+                              className="eyeicon"
+                              onClick={togglePasswordVisibility}
+                            >
+                              {showPassword ? (
+                                <Image src={EyeOpen} alt="img" />
+                              ) : (
+                                <Image src={EyeClose} alt="img" />
+                              )}
+                            </div>
                           </div>
                         </FormControl>
                         <div className="relative pb-2 errormsg">
@@ -614,8 +614,6 @@ export default function LoginSignup() {
                       </FormItem>
                     )}
                   />
-
-
 
                   <FormField
                     control={formSignup.control}
@@ -627,22 +625,22 @@ export default function LoginSignup() {
                         </FormLabel>
                         <FormControl className="relative">
                           <div>
-                          <Input
-                            type={showConfirmPassword ? 'text' : 'password'}
-                            placeholder="Enter Your Password"
-                            {...field}
-                            className="rounded-md"
-                          />
-                          <div
-                            className="eyeicon"
-                            onClick={toggleConfirmPasswordVisibility}
-                          >
-                            {showConfirmPassword ? (
-                              <Image src={EyeOpen} alt="img" />
-                            ) : (
-                              <Image src={EyeClose} alt="img" />
-                            )}
-                          </div>
+                            <Input
+                              type={showConfirmPassword ? 'text' : 'password'}
+                              placeholder="Enter Your Password"
+                              {...field}
+                              className="rounded-md"
+                            />
+                            <div
+                              className="eyeicon"
+                              onClick={toggleConfirmPasswordVisibility}
+                            >
+                              {showConfirmPassword ? (
+                                <Image src={EyeOpen} alt="img" />
+                              ) : (
+                                <Image src={EyeClose} alt="img" />
+                              )}
+                            </div>
                           </div>
                         </FormControl>
                         <div className="relative pb-2 errormsg">
@@ -651,16 +649,16 @@ export default function LoginSignup() {
                       </FormItem>
                     )}
                   />
-
-
-
                 </div>
                 <div className="mt-16 flex flex-col lg:flex-row md:flex-row justify-between items-center gap-6 ">
                   <p className="text-lightColor text-gray-400 font-extralight text-xs w-full lg:w-96  md:w-96  ltr:text-left rtl:text-right">
                     {langContent[lang.lang].Auth.REGISTER_INFO}{' '}
-                    <span onClick={() => setCMSType('privacy-policy')} className="text-white underline ">
+                    <span
+                      onClick={() => setCMSType('privacy-policy')}
+                      className="text-white underline "
+                    >
                       {' '}
-                        {langContent[lang.lang].Auth.REGISTER_SUB_INFO}{' '}
+                      {langContent[lang.lang].Auth.REGISTER_SUB_INFO}{' '}
                     </span>
                   </p>
                   <Button
@@ -688,6 +686,5 @@ export default function LoginSignup() {
       />
       <ViewContentDialog type={CMSType} setType={setCMSType} />
     </section>
-
   );
 }
