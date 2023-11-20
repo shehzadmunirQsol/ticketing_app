@@ -240,61 +240,68 @@ export function ViewTickets(props: ViewTicketsType) {
         open={!!props?.selectedOrderEvent?.id}
         onOpenChange={closeHandler}
       >
-        <DialogContent className="flex flex-col max-h-[800px] h-[calc(100%-100px)] max-w-xl md:max-w-[768px] overflow-y-hidden">
-          <DialogHeader>
-            <Link href={orderRoute()} target="_blank">
-              <Button onClick={printHandler}>Print Invoice</Button>
-            </Link>
-          </DialogHeader>
-
-          <DialogDescription className="bg-card px-4 py-8 rounded-lg relative w-full h-full overflow-y-scroll scroll-hide">
-            <div className="h-full text-gray-400 " id="divToPrint">
-              <div className="flex flex-col md:flex-row items-center justify-between">
-                <div className="flex items-center">
-                  <NextImage
-                    className="h-16  object-contain mr-2"
-                    src={LogoImage}
-                    alt="Logo"
-                  />
-                </div>
-                <div className="text-gray-400 xs:text-center sm:text-left">
-                  <div className="font-bold text-xl mb-2">INVOICE</div>
-                  <div className="text-sm">
-                    Date: {displayDate(props?.selectedOrderEvent?.created_at)}
+        <DialogContent className="max-h-[50vh] h-[calc(100%-200px)] max-w-xl md:max-w-[768px] overflow-y-hidden scroll-hide p-2">
+          <ScrollArea className="h-100 p-4">
+            <ScrollBar orientation="vertical"></ScrollBar>
+            <DialogHeader className=" sm:justify-start items-start w-full mb-2">
+              <Link href={orderRoute()} target="_blank">
+                <Button
+                  className="winbtn winbtnormal smallbtn"
+                  onClick={printHandler}
+                >
+                  Print Invoice
+                </Button>
+              </Link>
+            </DialogHeader>
+            <DialogDescription className="relative  px-8 py-6  bg-card h-full rounded-lg  overflow-y-scroll scroll-hide">
+              <div className="h-full text-gray-400 " id="divToPrint">
+                <div className="flex flex-col md:flex-row items-center justify-between">
+                  <div className="flex items-center">
+                    <NextImage
+                      className="h-16  object-contain mr-2"
+                      src={LogoImage}
+                      alt="Logo"
+                    />
                   </div>
-                  <div className="text-sm">
-                    Invoice: #INV00{props?.selectedOrderEvent?.order_id}
-                  </div>
-                </div>
-              </div>
-              <div className="space-y-6">
-                <h3 className="text-2xl text-center font-bold">
-                  Ticket Number List
-                </h3>
-                {eventTickets?.data?.length ? (
-                  <div className="space-y-4">
-                    <h3 className="text-xl">
-                      {
-                        props?.selectedOrderEvent?.Event?.EventDescription[0]
-                          ?.name
-                      }
-                    </h3>
-                    <div className="grid grid-cols-4 gap-2 md:grid-cols-6">
-                      {eventTickets?.data?.map((eventTicket) => (
-                        <p className={`w-20`} key={eventTicket?.ticket_num}>
-                          #{eventTicket?.ticket_num}
-                        </p>
-                      ))}
+                  <div className="text-gray-400 xs:text-center sm:text-left">
+                    <div className="font-bold text-xl mb-2">INVOICE</div>
+                    <div className="text-sm">
+                      Date: {displayDate(props?.selectedOrderEvent?.created_at)}
+                    </div>
+                    <div className="text-sm">
+                      Invoice: #INV00{props?.selectedOrderEvent?.order_id}
                     </div>
                   </div>
-                ) : (
-                  <p className="text-lg text-center my-auto">
-                    No Tickets Found!
-                  </p>
-                )}
+                </div>
+                <div className="space-y-6">
+                  <h3 className="text-2xl text-center font-bold">
+                    Ticket Number List
+                  </h3>
+                  {eventTickets?.data?.length ? (
+                    <div className="space-y-4">
+                      <h3 className="text-xl">
+                        {
+                          props?.selectedOrderEvent?.Event?.EventDescription[0]
+                            ?.name
+                        }
+                      </h3>
+                      <div className="grid grid-cols-4 gap-2 md:grid-cols-6">
+                        {eventTickets?.data?.map((eventTicket) => (
+                          <p className={`w-20`} key={eventTicket?.ticket_num}>
+                            #{eventTicket?.ticket_num}
+                          </p>
+                        ))}
+                      </div>
+                    </div>
+                  ) : (
+                    <p className="text-lg text-center my-auto">
+                      No Tickets Found!
+                    </p>
+                  )}
+                </div>
               </div>
-            </div>
-          </DialogDescription>
+            </DialogDescription>
+          </ScrollArea>
         </DialogContent>
       </Dialog>
       <LoadingDialog open={isFetching} text={'Loading data...'} />
