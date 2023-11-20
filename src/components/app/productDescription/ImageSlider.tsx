@@ -205,7 +205,7 @@ function DisplayCounter(props: { data: any }) {
   } else {
     element = (
       <div className="w-full sm:p-4 space-y-4 grid items-center">
-        <i className="fas fa-road-lock text-7xl lg:text-9xl text-primary text-center" />
+        <i className="fas fa-road-lock text-7xl text-primary text-center" />
         <h3 className="text-base md:text-xl lg:text-2xl text-center text-white">
           This Competition is Closed
         </h3>
@@ -218,9 +218,9 @@ function DisplayCounter(props: { data: any }) {
 function UpcomingDisplay() { 
   let element: React.ReactNode; 
     element = (
-      <div className="w-full sm:p-4 space-y-4 grid items-center">
-        <i className="fas fa-road-lock text-7xl lg:text-9xl text-primary text-center" />
-        <h3 className="text-base md:text-xl lg:text-2xl text-center text-white">
+      <div className="w-full sm:p-4 space-y-3 grid items-center">
+        <i className="fas fa-road-lock text-7xl text-primary text-center" />
+        <h3 className="text-base md:text-xl text-center text-white">
           Coming Soon
         </h3>
       </div>

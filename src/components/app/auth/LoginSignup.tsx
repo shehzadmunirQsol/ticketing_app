@@ -33,6 +33,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { OtpVerificationDailog } from './otp-verification';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { LoadingDialog } from '~/components/common/modal/loadingModal';
+import { ViewContentDialog } from '~/components/common/modal/cms';
 import {
   Select,
   SelectContent,
@@ -87,6 +88,10 @@ export default function LoginSignup() {
   const [isModal, setIsModal] = React.useState(false);
   const [otpIsModal, setOtpIsModal] = React.useState(false);
   const [defaultValue, setDefaultValue] = React.useState('login');
+
+  const [CMSType, setCMSType] = useState<
+    'terms-condition' | 'privacy-policy' | ''
+  >('');
 
   // register customer
   const registerCustomer = trpc.customer.register.useMutation({
@@ -653,12 +658,9 @@ export default function LoginSignup() {
                 <div className="mt-16 flex flex-col lg:flex-row md:flex-row justify-between items-center gap-6 ">
                   <p className="text-lightColor text-gray-400 font-extralight text-xs w-full lg:w-96  md:w-96  ltr:text-left rtl:text-right">
                     {langContent[lang.lang].Auth.REGISTER_INFO}{' '}
-                    <span className="text-white underline ">
+                    <span onClick={() => setCMSType('privacy-policy')} className="text-white underline ">
                       {' '}
-                      <Link href="/privacy-policy ">
-                        {' '}
                         {langContent[lang.lang].Auth.REGISTER_SUB_INFO}{' '}
-                      </Link>
                     </span>
                   </p>
                   <Button
@@ -684,6 +686,8 @@ export default function LoginSignup() {
         setOtpIsModal={setOtpIsModal}
         emailOrUser={formLogin.getValues('user') || (user ?? '')}
       />
+      <ViewContentDialog type={CMSType} setType={setCMSType} />
     </section>
+
   );
 }

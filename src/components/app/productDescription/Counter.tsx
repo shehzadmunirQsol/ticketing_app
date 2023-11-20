@@ -156,7 +156,7 @@ export default function Counter(props: CounterProps) {
             </p>
             {ticketPurchased ? (
               <p className="text-sm text-white/40 ">
-                Your Previous purchase {' '}
+                Your Previous purchase: {' '}
                 <strong className="text-primary">
                   {ticketPurchased?.toLocaleString()}
                 </strong>{' '}
@@ -177,7 +177,7 @@ export default function Counter(props: CounterProps) {
             max={user_ticket_limit}
           />
           <p className="lg:text-3xl text-xl pl-0 text-primary font-bold pt-2">
-          TOTAL AED {(price ?? 0)?.toLocaleString()}
+          <span className="text-base">TOTAL AED</span> {(price ?? 0)?.toLocaleString()}
           </p>
           <div className="mt-3 mobfixedbtn">
             <Button

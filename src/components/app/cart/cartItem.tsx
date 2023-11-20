@@ -248,7 +248,7 @@ export default function CartItem(props: CartItemProp) {
                 </TooltipProvider>
               </div>
               <p className="text-sm md:text-xl text-white font-bold mt-2 md:mt-0 ml-3 md:ml-0">
-                AED: {(cartItem?.quantity * cartItem?.Event?.price)?.toFixed(2)}{' '}
+                <span className="text-sm md:text-base">AED</span> {(cartItem?.quantity * cartItem?.Event?.price)?.toFixed(2)}{' '}
               </p>
               <div className="space-y-2">
                 {true ? (
