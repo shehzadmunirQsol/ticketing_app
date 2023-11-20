@@ -60,6 +60,15 @@ const CustomerDetailView = (props: any) => {
     { label: 'Email', key: 'email' },
     { label: 'Phone No.', key: 'phone_number' },
   ];
+  const addressParts = [
+    props?.customerDetail?.CustomerAddress[0]?.street_address_1,
+    props?.customerDetail?.CustomerAddress[0]?.street_address_2,
+    props?.customerDetail?.CustomerAddress[0]?.city,
+    props?.customerDetail?.CustomerAddress[0]?.state,
+    props?.customerDetail?.CustomerAddress[0]?.country,
+    props?.customerDetail?.CustomerAddress[0]?.postal_code,
+  ];
+  const formattedAddress = addressParts.filter(Boolean).join(', ');
 
   return (
     <div className="w-full px-4  bg-secondary/80 rounded-md text-sm ">
@@ -75,17 +84,7 @@ const CustomerDetailView = (props: any) => {
         ))}
         <div className="grid xsm:grid-cols-2 md:grid-cols-3 my-2 items-center gap-2">
           <div>Default Address: </div>
-          <div className=" col-span-2  lowercase">
-            {`${
-              props?.customerDetail?.CustomerAddress[0]?.street_address_1 ?? ''
-            }, ${
-              props?.customerDetail?.CustomerAddress[0]?.street_address_2 ?? ''
-            }, ${props?.customerDetail?.CustomerAddress[0]?.city ?? ''}, ${
-              props?.customerDetail?.CustomerAddress[0]?.state ?? ''
-            }, ${props?.customerDetail?.CustomerAddress[0]?.country ?? ''}, ${
-              props?.customerDetail?.CustomerAddress[0]?.postal_code ?? ''
-            }`}
-          </div>
+          <div className=" col-span-2  lowercase">{formattedAddress}</div>
         </div>
       </div>
     </div>
