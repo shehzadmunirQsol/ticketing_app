@@ -24,6 +24,11 @@ export const winnerRouter = router({
           isNaN(Number(input?.filters?.searchQuery?.trim())) === false
             ? Number(input?.filters?.searchQuery?.trim()).toLocaleString()
             : input?.filters?.searchQuery?.trim();
+        console.log(
+          query,
+          input?.filters?.searchQuery,
+          'input?.filters?.searchQuery',
+        );
         where.OR = [];
         where.OR.push({
           Event: {
@@ -40,7 +45,7 @@ export const winnerRouter = router({
         if (query) {
           where.OR.push({
             ticket_num: {
-              contains: query,
+              contains: input?.filters?.searchQuery?.trim(),
               mode: 'insensitive',
             },
           });

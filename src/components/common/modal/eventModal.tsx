@@ -23,7 +23,7 @@ import {
 } from '~/components/ui/table';
 import NextImage from '~/components/ui/img';
 import { renderNFTImage } from '~/utils/helper';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useDebounce } from '~/hooks/useDebounce';
 import { LoadingDialog } from './loadingModal';
 
@@ -119,6 +119,7 @@ export function SearchWinnerDialog(props: SearchWinnerDialog) {
 
   const { toast } = useToast();
   const router = useRouter();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const { data, isFetching } = trpc.eventTicket.getEventTicketCustomer.useQuery(
     {
@@ -150,10 +151,10 @@ export function SearchWinnerDialog(props: SearchWinnerDialog) {
         variant: 'success',
         title: 'Winner Selected successfully!',
       });
-      setTicketNumber(0);
+      closeHandler();
       router.replace('/admin/winners');
     } catch (error: any) {
-      props?.openChangeHandler();
+      closeHandler();
       toast({
         variant: 'destructive',
         title: error?.message ?? 'Something went wrong!',
@@ -163,7 +164,8 @@ export function SearchWinnerDialog(props: SearchWinnerDialog) {
 
   function closeHandler() {
     if (selectWinner?.isLoading) return;
-    props.openChangeHandler();
+    setTicketNumber(0);
+    props?.openChangeHandler();
   }
 
   return (
@@ -173,16 +175,30 @@ export function SearchWinnerDialog(props: SearchWinnerDialog) {
           <DialogHeader>
             <DialogTitle>Select Winner</DialogTitle>
             <DialogDescription className="space-y-4 py-4">
-              <div className="flex">
-                <Input
-                  className="flex-1"
+              <div
+                onClick={() => inputRef?.current && inputRef?.current?.focus()}
+                className="px-4 py-2 gap-4 rounded-sm bg-background-footer border-border flex items-center cursor-pointer"
+              >
+                <i className="fa fa-search text-xl" />
+                <input
+                  ref={inputRef}
                   type="number"
+                  value={ticketNumber > 0 ? ticketNumber : ''}
                   onChange={(e) => setTicketNumber(+e.target.value)}
                   placeholder="Enter ticket number... "
+                  className="flex-1 bg-transparent border-none outline-none"
                 />
-                <Button>Search</Button>
+                {ticketNumber > 0 ? (
+                  <i
+                    onClick={() => setTicketNumber(0)}
+                    className="fa fa-xmark text-xl"
+                  />
+                ) : null}
               </div>
-              {debouncedTicketNumber && data?.data?.Customer?.first_name ? (
+
+              {isFetching ? (
+                <h3 className="text-lg py-4 text-center">Searching...</h3>
+              ) : debouncedTicketNumber && data?.data?.Customer?.first_name ? (
                 <Table>
                   <TableCaption>
                     By pressing the Select button, following customer will be
@@ -259,7 +275,6 @@ export function SearchWinnerDialog(props: SearchWinnerDialog) {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      <LoadingDialog open={isFetching} text={'Fetching data...'} />
       <LoadingDialog
         open={selectWinner?.isLoading}
         text={'Selecting Winner...'}

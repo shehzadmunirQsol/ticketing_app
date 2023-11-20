@@ -98,13 +98,13 @@ export function OtpVerificationDailog(props: OtpVerificationDailogInterface) {
 
   // Handle Forgot Password
   function inputChangeHandler(event: React.ChangeEvent<HTMLInputElement>) {
-    const { name, value } = event.target;
+    const { name } = event.target;
 
     switch (name) {
       case 'otp_1':
         // check if number
-        const pattrenInputOne = isNumber(inputOne?.current?.value);
-        if (pattrenInputOne) {
+        const patternInputOne = isNumber(inputOne?.current?.value);
+        if (patternInputOne) {
           inputTwo.current?.focus();
         } else {
           if (inputOne.current) inputOne.current.value = '';
@@ -113,8 +113,8 @@ export function OtpVerificationDailog(props: OtpVerificationDailogInterface) {
         break;
       case 'otp_2':
         // check if number
-        const pattrenInputTwo = isNumber(inputTwo?.current?.value);
-        if (pattrenInputTwo) {
+        const patternInputTwo = isNumber(inputTwo?.current?.value);
+        if (patternInputTwo) {
           inputThree.current?.focus();
         } else {
           if (inputTwo.current) inputTwo.current.value = '';
@@ -123,8 +123,8 @@ export function OtpVerificationDailog(props: OtpVerificationDailogInterface) {
         break;
       case 'otp_3':
         // check if number
-        const pattrenInputThree = isNumber(inputThree?.current?.value);
-        if (pattrenInputThree) {
+        const patternInputThree = isNumber(inputThree?.current?.value);
+        if (patternInputThree) {
           inputFour.current?.focus();
         } else {
           if (inputThree.current) inputThree.current.value = '';
@@ -133,8 +133,8 @@ export function OtpVerificationDailog(props: OtpVerificationDailogInterface) {
         break;
       case 'otp_4':
         // check if number
-        const pattrenInputFour = isNumber(inputFour?.current?.value);
-        if (pattrenInputFour) {
+        const patternInputFour = isNumber(inputFour?.current?.value);
+        if (patternInputFour) {
           inputFour.current?.focus();
         } else {
           if (inputFour.current) inputFour.current.value = '';
