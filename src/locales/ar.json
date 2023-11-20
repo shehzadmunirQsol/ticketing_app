@@ -60,6 +60,7 @@
     "productcard":{
       "WIN_TITLE":"يفوز",
       "ENTER_BTN":"أدخل الأن",
+      "VIEW_BTN":"عرض الآن",
       "ALTERNATIVE_TITLE":"بديل الجائزة النقدية",
       "SOLD_TITLE":"مُباع"
     },
@@ -258,7 +259,7 @@
     ],
     "arrayTwo":[
       {
-        "name": "معلومات عنا",
+        "name": "فريقنا",
         "link": "/about-us"
       },
       {
@@ -268,10 +269,6 @@
       {
         "name": "البنود و الظروف",
         "link": "/terms-condition"
-      },
-      {
-        "name": "فريقنا",
-        "link": "/about-us"
       },
       {
         "name": "ملفات تعريف الارتباط وسياسة الخصوصية",

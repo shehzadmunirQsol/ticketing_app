@@ -59,6 +59,7 @@
     "productcard":{
       "WIN_TITLE":"WIN",
       "ENTER_BTN":"ENTER NOW",
+      "VIEW_BTN":"VIEW NOW",
       "ALTERNATIVE_TITLE":"Cash Prize Alternative",
       "SOLD_TITLE":"Sold"
     },
@@ -124,9 +125,9 @@
   },
   "ProductDetail":{
     "counter":{
-      "TICKETS":"How many entries?",
+      "TICKETS":"Number of Entries:",
       "NUMBERS_OF_TICKET":"Number of Entries",
-      "BASKET_BUTTON":"ADD ENTRIES TO BASKET"
+      "BASKET_BUTTON":"ADD TO BASKET"
     },
     "entries":{
       "array":[
@@ -201,7 +202,7 @@
   "Header":{
       "title_one":"Cars",
       "title_two":"Cash",
-      "title_three":"Winners",
+      "title_three":"Winnars",
       "title_four":"About Us",
       "title_five":"Contact Us",
       "title_six":"Cart",
@@ -217,7 +218,7 @@
           "link": "/cash"
         },
         {
-          "name": "Winners",
+          "name": "Winnars",
           "link": "/winners"
         },
         {
@@ -249,7 +250,7 @@
         "link": "/cash"
       },
       {
-        "name": "Winners",
+        "name": "Winnars",
         "link": "/winners"
       },
       {
@@ -263,7 +264,7 @@
     ],
     "arrayTwo":[
       {
-        "name": "About Us",
+        "name": "Our Team",
         "link": "/about-us"
       },
       {
@@ -273,10 +274,6 @@
       {
         "name": "Terms & Conditions",
         "link": "/terms-condition"
-      },
-      {
-        "name": "Our Team",
-        "link": "/about-us"
       },
       {
         "name": "Cookie & Privacy Policy",
@@ -292,7 +289,7 @@
     "HEADING":"CASH"
   },
   "Winners":{
-    "HEADING":"WINNERS",
+    "HEADING":"Winnars",
     "WINNER_HEADING":"Won",
     "WINNER_TICKET":"Winning ticket",
     "WINNER_DATE":"Draw date",
@@ -430,10 +427,10 @@
           "BUTTON":" Change Password"
       },
       "OTPSCREEN":{
-          "HEADING":"OTP`",
-          "SUB_HEADING":" VERIFICATION",
-          "TEXT":" We have sent OTP on your email",
-          "OTP":" Didn’t receive an OTP?",
+          "HEADING":"Verify",
+          "SUB_HEADING":" Your Email",
+          "TEXT":" We have sent an OTP to your email",
+          "OTP":" Didn't receive OTP?",
           "RESEND":" Resend OTP",
           "BUTTON":" Enter"
       }

@@ -16,6 +16,19 @@ import {
 } from '~/utils/helper';
 
 const ImageSlider = ({ data, ticketPurchased, higlightmeta }: any) => {
+
+  const [upcomingornot, setUpcomingornot] = useState<any>(false);
+  useEffect(() => {
+    if(data){
+      const currentDate = new Date();
+      if (data.launch_date >= currentDate) {
+        setUpcomingornot(true);
+      }
+    }
+  }, [data]);
+
+
+
   const { cart } = useSelector((state: RootState) => state.cart);
   const { lang } = useSelector((state: RootState) => state.layout);
 
@@ -65,11 +78,7 @@ const ImageSlider = ({ data, ticketPurchased, higlightmeta }: any) => {
               <div className="flex flex-col gap-2">
                 <div className="flex justify-between items-center">
                   <span className=" text-xs text-gray-300 ">
-                    {Math.round(
-                      (Number(data?.tickets_sold) /
-                        Number(data?.total_tickets)) *
-                        100,
-                    )}
+                    {((Number(data?.tickets_sold) / Number(data?.total_tickets)) * 100).toFixed(2)}
                     % {langContent[lang.lang].ProductDetail.description.SOLD}
                   </span>
                   <span className="text-xs text-gray-300">
@@ -107,7 +116,7 @@ const ImageSlider = ({ data, ticketPurchased, higlightmeta }: any) => {
                 {customTruncate(data?.EventDescription[0]?.desc, 100)}
               </p>
             </div>
-            {!data?.draw_date &&
+            {/* {!data?.draw_date &&
             data?.is_enabled &&
             data?.end_date?.getTime() > Date.now() ? (
               <>
@@ -127,7 +136,40 @@ const ImageSlider = ({ data, ticketPurchased, higlightmeta }: any) => {
               </>
             ) : (
               <DisplayCounter data={data} />
+            )} */}
+
+            {!data?.draw_date &&
+              data?.is_enabled &&
+              data?.end_date?.getTime() > Date.now() ? (
+              <>
+
+                {
+                  upcomingornot === false ?
+                    <>
+                      <div className="w-full relative z-10">
+                        <Counter
+                          range={range}
+                          ticketInBasket={ticketInBasket}
+                          setRange={setRange}
+                          perCustomerLimit={data?.user_ticket_limit}
+                          user_ticket_limit={userTicketLimit}
+                          ticketPurchased={ticketPurchased}
+                          event={data}
+                        />
+                      </div>
+                      <CountDown dateString={data?.end_date?.getTime()?.toString()} />
+                    </>
+                    :
+                    <UpcomingDisplay />
+                }
+
+                {higlightmeta ? <Highlights meta={higlightmeta} /> : null}
+              </>
+            ) : (
+              <DisplayCounter data={data} />
             )}
+
+
           </div>
         </div>
       </div>
@@ -144,8 +186,8 @@ function DisplayCounter(props: { data: any }) {
 
   const winnerName = data?.Winner?.length
     ? data?.Winner[0]?.Customer?.first_name +
-      ' ' +
-      data?.Winner[0]?.Customer?.last_name
+    ' ' +
+    data?.Winner[0]?.Customer?.last_name
     : '';
   const ticketNumber = data?.Winner?.length ? data?.Winner[0]?.ticket_num : '';
 
@@ -163,12 +205,25 @@ function DisplayCounter(props: { data: any }) {
   } else {
     element = (
       <div className="w-full sm:p-4 space-y-4 grid items-center">
-        <i className="fas fa-road-lock text-7xl lg:text-9xl text-primary text-center" />
+        <i className="fas fa-road-lock text-7xl text-primary text-center" />
         <h3 className="text-base md:text-xl lg:text-2xl text-center text-white">
           This Competition is Closed
         </h3>
       </div>
     );
   }
+  return element;
+}
+
+function UpcomingDisplay() { 
+  let element: React.ReactNode; 
+    element = (
+      <div className="w-full sm:p-4 space-y-3 grid items-center">
+        <i className="fas fa-road-lock text-7xl text-primary text-center" />
+        <h3 className="text-base md:text-xl text-center text-white">
+          Coming Soon
+        </h3>
+      </div>
+    ); 
   return element;
 }

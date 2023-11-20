@@ -163,32 +163,32 @@ export default function CartItem(props: CartItemProp) {
     tooltipMessage = "Competition closed, can't proceed to checkout!";
 
   return (
-    <div data-name="card" className="py-3 mdx:py-6 border-t border-white/40">
+    <div data-name="card" className="py-2 mdx:py-2 border-t border-white/40">
       <div className="mb-2 flex items-center justify-between mdx:hidden">
         <p className="text-xl font-bold">
           {cartItem?.Event?.EventDescription[0]?.name}
         </p>
         <i
           onClick={() => setIsModal((preModal) => !preModal)}
-          className="fas fa-times cursor-pointer text-white/40 text-sm border min-w-[24px] min-h-[24px] inline-flex items-center justify-center rounded-full"
+          className="fas fa-trash cursor-pointer text-white/60 text-sm min-w-[24px] min-h-[24px]"
         />
       </div>
 
-      <div className="flex items-start justify-between space-y-4">
-        <div className="relative mr-10 min-w-[140px] min-h-[90px] mdx:min-w-[176px] mdx:min-h-[112px]">
+      <div className="flex items-center justify-between">
+        <div className="relative mr-3 md:mr-10 min-w-[140px] min-h-[90px] mdx:min-w-[176px] mdx:min-h-[112px]">
           <NextImage
             src={renderNFTImage({ thumb: cartItem.Event.thumb })}
             fill
             alt={'car image'}
             className="w-full h-full absolute object-contain"
           />
-          <div className="p-1 w-12 h-12 rounded-full overflow-hidden absolute top-[30%] -right-6 bg-gradient-to-b from-primary to-neutral-900">
+          {/* <div className="p-1 w-12 h-12 rounded-full overflow-hidden absolute top-[30%] -right-6 bg-gradient-to-b from-primary to-neutral-900">
             <NextImage
               src={BottleImage}
               alt={'car image'}
               className="w-12 h-12 object-cover  rounded-full bg-white"
             />
-          </div>
+          </div> */}
         </div>
         <div className="flex-1 flex items-center justify-between space-x-4">
           <Link
@@ -196,12 +196,12 @@ export default function CartItem(props: CartItemProp) {
               cartItem?.Event?.EventDescription[0]?.name ?? '',
               cartItem?.event_id,
             )}`}
-            className="hidden flex-1 mdx:block text-xl xl:text-2xl "
+            className="hidden flex-1 mdx:block text-lg md:text-xl "
           >
             {cartItem?.Event?.EventDescription[0]?.name}
           </Link>
-          <div className="flex flex-col space-y-2">
-            <div className="flex justify-between items-center min-w-[450px] w-1/2 max-w-[550px]">
+          <div className="flex flex-wrap flex-col space-y-2">
+            <div className="flex justify-between items-center min-w-[200px] md:min-w-[450px] w-1/2 max-w-[550px]">
               <div className="bg-card flex items-center justify-between overflow-hidden ">
                 <Button
                   className="p-2 bg-primary text-background"
@@ -213,9 +213,9 @@ export default function CartItem(props: CartItemProp) {
                   }
                   onClick={() => addToBasketHandler('decrement')}
                 >
-                  <i className="fas fa-minus text-xl xl:text-2xl font-extrabold" />
+                  <i className="fas fa-minus text-base xl:text-2xl font-extrabold" />
                 </Button>
-                <p className="w-16 text-center text-xl">{cartItem?.quantity}</p>
+                <p className="w-16 text-center text-base md:text-lg">{cartItem?.quantity}</p>
 
                 <TooltipProvider>
                   <Tooltip
@@ -238,7 +238,7 @@ export default function CartItem(props: CartItemProp) {
                         }
                         onClick={() => addToBasketHandler('increment')}
                       >
-                        <i className="fas fa-plus text-xl xl:text-2xl font-extrabold" />
+                        <i className="fas fa-plus text-base xl:text-2xl font-extrabold" />
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent>
@@ -247,8 +247,8 @@ export default function CartItem(props: CartItemProp) {
                   </Tooltip>
                 </TooltipProvider>
               </div>
-              <p className="text-xl text-white font-bold">
-                AED: {(cartItem?.quantity * cartItem?.Event?.price)?.toFixed(2)}{' '}
+              <p className="text-sm md:text-xl text-white font-bold mt-2 md:mt-0 ml-3 md:ml-0">
+                <span className="text-sm md:text-base">AED</span> {(cartItem?.quantity * cartItem?.Event?.price)?.toFixed(2)}{' '}
               </p>
               <div className="space-y-2">
                 {true ? (
@@ -311,7 +311,7 @@ export default function CartItem(props: CartItemProp) {
           </div>
           <i
             onClick={() => setIsModal((preModal) => !preModal)}
-            className="hidden mdx:inline-flex fas fa-times cursor-pointer text-white/40 text-sm border min-w-[24px] min-h-[24px]  items-center justify-center rounded-full"
+            className="hidden mdx:inline-flex fas fa-trash cursor-pointer text-white/60 text-base min-w-[24px] min-h-[24px]"
           />
         </div>
       </div>

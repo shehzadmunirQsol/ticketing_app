@@ -10,7 +10,7 @@ import {
 } from '~/components/ui/dialog';
 import { useToast } from '~/components/ui/use-toast';
 import { trpc } from '~/utils/trpc';
-import OtpImage from '~/public/assets/otp-screen.svg';
+import OtpImage from '~/public/assets/icon-mail.png';
 import { useRef, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { userAuth } from '~/store/reducers/auth';
@@ -180,27 +180,24 @@ export function OtpVerificationDailog(props: OtpVerificationDailogInterface) {
         open={props?.otpIsModal}
         onOpenChange={(e: any): any => props.setOtpIsModal(e)}
       >
-        <DialogContent className="  bg-gradient-to-b from-[#444E5566] via-gray-[#3841471A] to-transparent text-center py-8 ">
+        <DialogContent className="bg-gradient-to-b from-[#444E5566] via-gray-[#3841471A] to-transparent text-center py-8">
           <DialogHeader>
             <DialogTitle className="text-center ">
-              <p className="font-light text-2xl">
-                {langContent[lang.lang].Auth.OTPSCREEN.HEADING}
+              <p className="font-bold text-2xl uppercase">
+                {langContent[lang.lang].Auth.OTPSCREEN.HEADING} {langContent[lang.lang].Auth.OTPSCREEN.SUB_HEADING}
               </p>
-              <p className="font-bold text-2xl">
-                {langContent[lang.lang].Auth.OTPSCREEN.SUB_HEADING}
-              </p>
-              <div className="flex items-center justify-center my-6">
+              <div className="flex items-center justify-center my-2">
                 <NextImage
                   src={OtpImage}
                   alt="otpImage"
-                  className="max-w-full"
+                  className="max-w-full w-20"
                 />
               </div>
             </DialogTitle>
             <DialogDescription>
               <form
                 onSubmit={onSubmit}
-                className="justify-center items-center px-2 lg:px-8 py-4 space-y-4"
+                className="justify-center items-center px-2 lg:px-8 space-y-4"
               >
                 <p className="text-center text-grayColor">
                   {langContent[lang.lang].Auth.OTPSCREEN.TEXT}

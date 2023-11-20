@@ -136,15 +136,15 @@ export default function Counter(props: CounterProps) {
     <div className="relative">
       {event?.tickets_sold >= event?.total_tickets ? (
         <div className="sm:p-4 space-y-4 grid items-center">
-          <i className="fas fa-gauge-high text-7xl lg:text-9xl text-primary text-center" />
-          <h3 className="text-base md:text-xl lg:text-2xl text-center text-white">
+          <i className="fas fa-gauge-high text-7xl text-primary text-center" />
+          <h3 className="text-base md:text-lg text-center text-white">
             SOLD OUT: All Tickets Have Been Purchased!
           </h3>
         </div>
       ) : ticketPurchased >= perCustomerLimit ? (
         <div className="sm:p-4 space-y-4 grid items-center">
           <i className="fas fa-gauge-high text-7xl text-primary text-center" />
-          <h3 className="text-base md:text-xl lg:text-2xl text-center text-white">
+          <h3 className="text-base md:text-lg text-center text-white">
             You have reached your max limit
           </h3>
         </div>
@@ -156,7 +156,7 @@ export default function Counter(props: CounterProps) {
             </p>
             {ticketPurchased ? (
               <p className="text-sm text-white/40 ">
-                {"You've"} purchased{' '}
+                Your Previous purchase: {' '}
                 <strong className="text-primary">
                   {ticketPurchased?.toLocaleString()}
                 </strong>{' '}
@@ -177,7 +177,7 @@ export default function Counter(props: CounterProps) {
             max={user_ticket_limit}
           />
           <p className="lg:text-3xl text-xl pl-0 text-primary font-bold pt-2">
-            AED {(price ?? 0)?.toLocaleString()}
+          <span className="text-base">TOTAL AED</span> {(price ?? 0)?.toLocaleString()}
           </p>
           <div className="mt-3 mobfixedbtn">
             <Button

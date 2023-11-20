@@ -98,16 +98,15 @@ const AccountDetails = () => {
               render={({ field }) => (
                 <FormItem className=" w-full ">
                   <FormLabel className="text-xs font-thin text-grayColor">
-                    Name*
+                    First Name*
                   </FormLabel>
                   <FormControl className="rounded-md bg-inputColor ">
                     <Input
                       type="text"
-                      placeholder="Enter your name"
                       {...field}
                     />
                   </FormControl>
-                  <div className="relative pb-2">
+                  <div className="relative pb-2 errormsg">
                     <FormMessage />
                   </div>
                 </FormItem>
@@ -124,11 +123,10 @@ const AccountDetails = () => {
                   <FormControl className="rounded-md bg-inputColor ">
                     <Input
                       type="text"
-                      placeholder="Enter your last name"
                       {...field}
                     />
                   </FormControl>
-                  <div className="relative pb-2">
+                  <div className="relative pb-2 errormsg">
                     <FormMessage />
                   </div>
                 </FormItem>
@@ -145,10 +143,9 @@ const AccountDetails = () => {
                     type="text"
                     disabled
                     defaultValue={user?.email ?? ''}
-                    placeholder="Enter your email address"
                   />
                 </FormControl>
-                <div className="relative pb-2">
+                <div className="relative pb-2 errormsg">
                   <FormMessage />
                 </div>
               </FormItem>
@@ -164,14 +161,13 @@ const AccountDetails = () => {
                     <FormControl className="rounded-md bg-inputColor">
                       <Input
                         type={'date'}
-                        placeholder={'Start Date'}
                         max={minDateFormatted}
                         {...form.register('dob', {
                           valueAsDate: true,
                         })}
                       />
                     </FormControl>
-                    <div className="relative pb-2">
+                    <div className="relative pb-2 errormsg">
                       <FormMessage />
                     </div>
                   </FormItem>
@@ -276,11 +272,10 @@ function PasswordChange({ email }: any) {
                   <FormControl className="rounded-md bg-inputColor ">
                     <Input
                       type="password"
-                      placeholder="Write your password"
                       {...field}
                     />
                   </FormControl>
-                  <div className="relative pb-2">
+                  <div className="relative pb-2 errormsg">
                     <FormMessage />
                   </div>
                 </FormItem>
@@ -297,11 +292,10 @@ function PasswordChange({ email }: any) {
                   <FormControl className="rounded-md bg-inputColor ">
                     <Input
                       type="password"
-                      placeholder="Enter your new password"
                       {...field}
                     />
                   </FormControl>
-                  <div className="relative pb-2">
+                  <div className="relative pb-2 errormsg">
                     <FormMessage />
                   </div>
                 </FormItem>
@@ -318,11 +312,10 @@ function PasswordChange({ email }: any) {
                   <FormControl className="rounded-md bg-inputColor ">
                     <Input
                       type="password"
-                      placeholder="Reenter your new password"
                       {...field}
                     />
                   </FormControl>
-                  <div className="relative pb-2">
+                  <div className="relative pb-2 errormsg">
                     <FormMessage />
                   </div>
                 </FormItem>
@@ -474,12 +467,11 @@ function DeleteAccount({ email }: any) {
                   </FormLabel>
                   <FormControl className="rounded-md bg-inputColor ">
                     <Textarea
-                      placeholder="Type your message here..."
                       {...field}
                       disabled={user?.is_disabled}
                     />
                   </FormControl>
-                  <div className="relative pb-2">
+                  <div className="relative pb-2 errormsg">
                     <FormMessage />
                   </div>
                 </FormItem>

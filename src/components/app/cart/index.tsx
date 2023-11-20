@@ -78,6 +78,9 @@ export default function CartPage() {
     ? totalAmount * (cart?.discount / 100)
     : cart?.discount;
 
+  const bankLimit = 2500;
+  const isBankLimitExeed = totalAmount - discountAmount > bankLimit;
+
   const isCheckoutDisabled = cart?.cartItems?.some((cartItem) => {
     const userTicketLimit = userTicketLimits?.data?.find(
       (userLimit) => userLimit?.event_id === cartItem?.event_id,
@@ -101,7 +104,9 @@ export default function CartPage() {
       : false;
     const isNotEnabled = !cartItem?.Event?.is_enabled;
 
-    return isTicketLimitExceeded || isDateEnded || isNotEnabled;
+
+
+    return isTicketLimitExceeded || isDateEnded || isNotEnabled || isBankLimitExeed;
   });
 
   return (
@@ -112,9 +117,9 @@ export default function CartPage() {
         </h2>
       ) : (
         <>
-          <div className="relative py-6 px-4 space-y-10 md:py-16 md:px-14 md:space-y-14 -z-30 ">
+          <div className="relative py-6 px-4 space-y-10 md:py-16 md:px-14 md:space-y-10 -z-30">
             <h2 className="text-2xl md:text-4xl lg:text-5xl z-10 font-black uppercase">
-              {langContent[lang.lang].Cart.HEADING}
+              {langContent[lang.lang].Cart.HEADING} <span className="text-xs md:text-base capitalize font-bold block md:inline-block">(Maximum transaction amount is AED 2500)</span>
             </h2>
             <div
               data-name="cards"
@@ -197,6 +202,13 @@ export default function CartPage() {
               >
                 {langContent[lang.lang].Cart.CHECHKOUT_BTN}
               </Button>
+
+              {isBankLimitExeed && (
+                <div className="bg-red-100 border border-red-400 text-red-700 rounded relative px-3 py-2 text-xs md:text-sm" role="alert">
+                  <span className="block sm:inline">Please reduce your cart value, Maximum amount per transaction is <strong className="font-bold">AED {bankLimit}.</strong></span>
+                </div>
+              )}
+
             </div>
             <Glow className="absolute right-0 -z-10 bottom-0 w-1/6 h-40 overflow-hidden" />
           </div>

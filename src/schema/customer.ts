@@ -21,7 +21,9 @@ export const signupCustomerSchema = z.object({
     .max(30, {
       message: 'Password must not exceed 30 characters',
     }),
-
+  confirmpassword: z
+    .string({ required_error: 'Please enter your password' })
+    ,
   first_name: z
     .string({ required_error: 'Please enter your firstname' })
     .min(2, {
@@ -73,6 +75,9 @@ export const signupCustomerSchemaInput = z.object({
     .max(30, {
       message: 'Password must not exceed 30 characters',
     }),
+  confirmpassword: z
+    .string({ required_error: 'Please enter your password' })
+    ,
   first_name: z
     .string({ required_error: 'Please enter your First Name' })
     .min(2, {
@@ -313,13 +318,8 @@ export const addCustomerAddress = z.object({
     })
     .trim(),
   postal_code: z
-    .string({
-      required_error: 'Please enter your postal code',
-      invalid_type_error: 'Please enter your postal code',
-    })
-    .min(1, {
-      message: 'Please enter your postal code',
-    }),
+  .string()
+  .optional(),
 });
 export const updateCustomerAddress = z.object({
   id: z.number().optional(),

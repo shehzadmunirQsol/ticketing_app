@@ -8,6 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '~/components/ui/dialog';
+import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 import { useToast } from '~/components/ui/use-toast';
 import { trpc } from '~/utils/trpc';
 import { LoadingDialog } from './loadingModal';
@@ -90,7 +91,9 @@ export function CmsDailog(props: SettingDialogInterface) {
   return (
     <>
       <Dialog open={props?.isModal} onOpenChange={(e) => props.setIsModal(e)}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="p-0">
+        <ScrollArea className="w-full max-w-[700px] h-[calc(100vh-50px)] max-h-[440px] md:max-h-[530px] scroll-hide">
+          <ScrollBar orientation="vertical"></ScrollBar>
           <DialogHeader>
             <DialogTitle className="text-left">{props?.title}</DialogTitle>
             <DialogDescription>
@@ -115,6 +118,7 @@ export function CmsDailog(props: SettingDialogInterface) {
               Yes
             </Button>
           </DialogFooter>
+          </ScrollArea>
         </DialogContent>
       </Dialog>
       <LoadingDialog open={loading} text={'Saving data...'} />
@@ -141,11 +145,13 @@ export function ViewContentDialog(props: ViewContentDialogTypes) {
         open={props?.type?.length > 0}
         onOpenChange={() => props.setType('')}
       >
-        <DialogContent className="sm:max-w-[625px] h-[90vh] sm:h-[90dvh] overflow-y-scroll">
+        <DialogContent className="max-h-[50vh] h-[calc(100%-200px)] max-w-xl md:max-w-[768px] overflow-y-hidden scroll-hide p-2">
+        <ScrollArea className="h-100">
+          <ScrollBar orientation="vertical"></ScrollBar>
           <DialogHeader>
             <DialogDescription>
               <div
-                className=" cmsStyle p-4 "
+                className=" cmsStyle p-4"
                 dangerouslySetInnerHTML={
                   {
                     __html:
@@ -156,6 +162,7 @@ export function ViewContentDialog(props: ViewContentDialogTypes) {
               />
             </DialogDescription>
           </DialogHeader>
+        </ScrollArea>
         </DialogContent>
       </Dialog>
       <LoadingDialog open={isFetching} text={'loading...'} />

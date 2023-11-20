@@ -5,7 +5,7 @@ import { trpc } from '~/utils/trpc';
 import { renderNFTImage } from '~/utils/helper';
 import Link from 'next/link';
 import Slider from 'react-slick';
-import DubaiETlogo from '~/public/assets/dubai-eq-logo.png';
+import DubaiETlogo from '~/public/assets/ded.png';
 import NextImage from '~/components/ui/img';
 
 function BannerSlider() {
@@ -47,11 +47,11 @@ function BannerSlider() {
   return (
     <div className="herobanner px-2 md:px-12">
       <div className="leftbx">
-        <h1>WIN THIS NISSAN PATROL NISMO</h1>
-        <h3>+ 4000 AED CASH</h3>
-        <p>Get your dream car at a fraction of the price</p>
-        <h4>WIN SUNDAY 8 PM</h4>
-        <Link href="" className="winbtn font-sans desktopbx">
+        <h1 className="uppercase">Are you the next lucky winner?</h1>
+        {/* <h3 className="uppercase">+ 4000 AED CASH</h3> */}
+        <p>Drive home your dream car at a fraction of the price!</p>
+        <h4 className="uppercase">WIN SUNDAY 8 PM</h4>
+        <Link href="/cars" className="winbtn font-sans desktopbx">
           ENTER NOW
         </Link>
         <div className="dblogo desktopbx">
@@ -87,7 +87,7 @@ function BannerSlider() {
       </div>
 
       <div className="leftbx mobilebx">
-        <Link href="" className="winbtn font-sans">
+        <Link href="/cars" className="winbtn font-sans">
           ENTER NOW
         </Link>
         <div className="dblogo">

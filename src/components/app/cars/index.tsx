@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import ProductCard from '~/components/common/card';
+import ProductListCard from '~/components/common/cardlistview';
 import Glow from '~/components/common/glow';
 import { RootState } from '~/store/store';
 import { trpc } from '~/utils/trpc';
@@ -10,6 +11,9 @@ import ProductSection from '../home/product_section';
 
 const CarsPage = () => {
   const { lang } = useSelector((state: RootState) => state.layout);
+
+  const [cardView, setCardView] = useState<any>('cardview');
+
   const [products, setProducts] = useState<Array<any>>([]);
   const eventFilters = {
     lang_id: lang?.lang_id,
@@ -56,24 +60,78 @@ const CarsPage = () => {
           <p className="hidden slg:block pb-6 text-2xl md:text-5xl tracking-tighter font-extrabold text-white ">
             {langContent[lang.lang].Cars.HEADING}
           </p>
+
+          {/* <div>
+            <span onClick={() => setCardView('cardview')}>Card View</span>
+            <span onClick={() => setCardView('listview')}>List View</span>
+          </div> */}
+
           <Glow className="absolute  top-1/2 -left-16 w-1/5 h-[350px] overflow-hidden " />
           <Glow className="absolute  bottom-0 -right-16 w-1/5 h-[350px] overflow-hidden " />
 
-          <div className="grid gap-8 md:gap-6 grid-cols-1 sm:grid-cols-2 z-40 lg:grid-cols-3 justify-between mx-auto ">
+
+          {
+            cardView === "cardview" ?
+              <div className="grid gap-8 md:gap-6 grid-cols-1 sm:grid-cols-2 z-40 lg:grid-cols-3 justify-between mx-auto ">
+                {products?.map((itemList, i) => {
+                  return (
+                    <div className="z-40" key={itemList?.id}>
+                      <ProductCard
+                        isLast={i === products.length - 1}
+                        nextPage={nextPage}
+                        dir={lang.dir}
+                        data={itemList}
+                        class="z-50 "
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+              :
+              <div className="justify-between mx-auto">
+                {products?.map((itemList, i) => {
+                  return (
+                    <div className="z-40" key={itemList?.id}>
+                      <ProductListCard
+                        isLast={i === products.length - 1}
+                        nextPage={nextPage}
+                        dir={lang.dir}
+                        data={itemList}
+                        class="z-50 "
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+          }
+
+          {/* <div className="grid gap-8 md:gap-6 grid-cols-1 sm:grid-cols-2 z-40 lg:grid-cols-3 justify-between mx-auto ">
             {products?.map((itemList, i) => {
               return (
                 <div className="z-40" key={itemList?.id}>
-                  <ProductCard
-                    isLast={i === products.length - 1}
-                    nextPage={nextPage}
-                    dir={lang.dir}
-                    data={itemList}
-                    class="z-50 "
-                  />
+                  {
+                    cardView === "cardview" ?
+                      <ProductCard
+                        isLast={i === products.length - 1}
+                        nextPage={nextPage}
+                        dir={lang.dir}
+                        data={itemList}
+                        class="z-50 "
+                      />
+                    :
+                      <ProductListCard
+                        isLast={i === products.length - 1}
+                        nextPage={nextPage}
+                        dir={lang.dir}
+                        data={itemList}
+                        class="z-50 "
+                      />
+                  }
+                  
                 </div>
               );
             })}
-          </div>
+          </div> */}
 
           {products.length != prductsList?.count ? (
             <div className="w-fit mx-auto">

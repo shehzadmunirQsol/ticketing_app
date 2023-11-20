@@ -89,6 +89,7 @@ export default function OrdersDataByIdTable(props: OrderTableProps) {
   );
 
   const orderData = React.useMemo(() => {
+    console.log("tabledata", data)
     return Array.isArray(data?.data) ? data?.data : [];
   }, [data]);
   const handleView = (data: any, type: string) => {
@@ -110,7 +111,7 @@ export default function OrdersDataByIdTable(props: OrderTableProps) {
       accessorKey: 'ID',
       header: 'Order ID',
       cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap ">
+        <div className="capitalize text-ellipsis whitespace-nowrap cursor-pointer underline" onClick={() => handleView(row?.original, 'view')}>
           #{row?.original.id}
         </div>
       ),
@@ -159,25 +160,28 @@ export default function OrdersDataByIdTable(props: OrderTableProps) {
     },
     {
       id: 'actions',
-      header: 'Actions',
+      header: 'Order Detail',
       enableHiding: false,
       cell: ({ row }) => {
         return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem
-                onClick={() => handleView(row?.original, 'view')}
-              >
-                View Order
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          // <DropdownMenu>
+          //   <DropdownMenuTrigger asChild>
+          //     <Button variant="ghost" className="h-8 w-8 p-0">
+          //       <span className="sr-only">Open menu</span>
+          //       <MoreHorizontal className="h-4 w-4" />
+          //     </Button>
+          //   </DropdownMenuTrigger>
+          //   <DropdownMenuContent align="end">
+          //     <DropdownMenuItem
+          //       onClick={() => handleView(row?.original, 'view')}
+          //     >
+          //       View Order
+          //     </DropdownMenuItem>
+          //   </DropdownMenuContent>
+          // </DropdownMenu>
+        <div className="winbtn winbtnormal smallbtn font-sans capitalize text-ellipsis whitespace-nowrap" onClick={() => handleView(row?.original, 'view')}>
+        Order Detail
+        </div>
         );
       },
     },

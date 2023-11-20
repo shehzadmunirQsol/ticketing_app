@@ -20,7 +20,6 @@ export function NewsLetterDialog(props: newsLetterDialogInterface) {
                 <DialogDescription className='p-0   '>
                     <ScrollArea className="w-full h-[calc(100vh-200px)] max-h-[580px] scroll-hide">
                         <ScrollBar orientation="vertical"></ScrollBar>
-
                         <iframe
                             width="100%"
                             height="580"

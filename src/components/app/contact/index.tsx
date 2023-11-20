@@ -38,6 +38,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import ReCAPTCHA from 'react-google-recaptcha';
 import NextImage from '~/components/ui/img';
 
+import { PhoneInput } from 'react-international-phone';
+import 'react-international-phone/style.css';
+
 export default function Contact() {
   const { toast } = useToast();
   const router = useRouter();
@@ -118,8 +121,8 @@ export default function Contact() {
           />
         </div>
         <div className="pb-6 flex flex-col h-full  w-full    lg:w-3/5  mx-auto lg:mx-0  lg:text-left  rounded-none border-none  bg-card ">
-          <div className="font-black  pt-4 pb-6">
-            <p className="text-xl pl-6 px-4 lg:px-8">Contact Us</p>
+          <div className="font-black  pt-4 pb-4">
+            <p className="text-lg md:text-2xl pl-6 px-4 lg:px-8 font-bold">Contact Us</p>
             <hr className=" opacity-20 mt-4" />
 
             <div className="flex flex-col justify-start align-start pl-6 px-4 lg:px-8 gap-2 py-3">
@@ -132,7 +135,7 @@ export default function Contact() {
                 />
                 <div className="text-grayColor text-lg font-[600]">Address</div>
               </div>
-              <div className="flex flex-col text-grayColor font-thin">
+              <div className="flex flex-col text-grayColor text-sm font-thin">
                 <span>Winnar LLC</span>
                 <span>Office 16, 17th Floor,</span>
                 <span>Centrum Business Lounge</span>
@@ -152,8 +155,8 @@ export default function Contact() {
                   General enquiry
                 </div>
               </div>
-              <div className="flex flex-col text-grayColor font-thin">
-                <span className="mb-2">01386719064</span>
+              <div className="flex flex-col text-grayColor text-sm font-thin">
+                <span className="mb-1">01386719064</span>
                 <span>contact@winnar.com</span>
               </div>
             </div>
@@ -169,7 +172,7 @@ export default function Contact() {
                   Sell your car
                 </div>
               </div>
-              <div className="text-grayColor font-thin">
+              <div className="text-grayColor text-sm font-thin">
                 sellyourcar@winnar.com
               </div>
             </div>
@@ -191,12 +194,11 @@ export default function Contact() {
                       <FormControl className="rounded-md bg-inputColor">
                         <Input
                           type="text"
-                          placeholder="Enter Your name "
                           {...field}
                         />
                       </FormControl>
 
-                      <div className="relative pb-2">
+                      <div className="relative pb-2 errormsg">
                         <FormMessage />
                       </div>
                     </FormItem>
@@ -213,12 +215,11 @@ export default function Contact() {
                       <FormControl className="rounded-md bg-inputColor mb-6">
                         <Input
                           type="text"
-                          placeholder="Enter your email address"
                           {...field}
                         />
                       </FormControl>
 
-                      <div className="relative pb-2">
+                      <div className="relative pb-2 errormsg">
                         <FormMessage />
                       </div>
                     </FormItem>
@@ -229,20 +230,26 @@ export default function Contact() {
                   <FormLabel className="text-xs  font-thin text-grayColor">
                     Phone Number*
                   </FormLabel>
-                  <div className="flex items-start  gap-2 ">
+                  <div className="flex items-start gap-2">
                     <FormField
                       control={form.control}
                       name="code"
                       render={({ field }) => (
                         <FormItem>
-                          <Input
+                          <PhoneInput
+                            className="rounded-md countrycode"
+                            defaultCountry="ae"
+                            inputProps={{ maxLength: 4, placeholder: "+971", readOnly: true, ...field }} 
+                            {...field} 
+                          /> 
+                          {/* <Input
                             type="text"
                             className="rounded-md w-20 bg-inputColor"
                             placeholder="+971"
                             maxLength={4}
                             {...field}
-                          />
-                          <div className="relative">
+                          /> */}
+                          <div className="relative pb-2 errormsg">
                             <FormMessage />
                           </div>
                         </FormItem>
@@ -258,12 +265,11 @@ export default function Contact() {
                             <Input
                               type="text"
                               maxLength={15}
-                              placeholder="Enter your phone number"
                               {...field}
                             />
                           </FormControl>
 
-                          <div className="relative pb-2">
+                          <div className="relative pb-2 errormsg">
                             <FormMessage />
                           </div>
                         </FormItem>
@@ -282,12 +288,11 @@ export default function Contact() {
                       </FormLabel>
                       <FormControl className="rounded-md bg-inputColor">
                         <Textarea
-                          placeholder="Type your message here..."
                           {...field}
                         />
                       </FormControl>
 
-                      <div className="relative pb-2">
+                      <div className="relative pb-2 errormsg">
                         <FormMessage />
                       </div>
                     </FormItem>

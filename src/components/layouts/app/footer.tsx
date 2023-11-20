@@ -29,9 +29,9 @@ function Footer() {
   return (
     <footer className="h-full  bg-background-footer !z-50">
       <div className="relative w-full max-w-screen max-w-[1600px] mx-auto h-full ">
-        <div className=" absolute  p-1 w-1/2 z-20  h-full  ">
-          <Glow className="absolute bottom-0 -left-16 z-20  p-2   w-1/2 h-1/3  " />
-          <div className="absolute top-0   p-2  w-full h-full z-4   ">
+        <div className=" absolute z-0 p-1 w-1/2 h-full  ">
+          <Glow className="absolute z-0 bottom-0 -left-16 p-2 w-1/2 h-1/3" />
+          <div className="absolute z-0 top-0 p-2 w-full h-full">
             <NextImage
               className="w-full h-full object-contain "
               src={Lines}
@@ -40,10 +40,10 @@ function Footer() {
             />
           </div>
         </div>
-        <div className="relative">
+        <div className="relative z-10">
           <div className="relative p-4 py-6 md:px-14 md:py-14">
             <div className="sm:flex sm:justify-between ">
-              <div className=" mb-6 md:mb-0 flex flex-col gap-8 w-100 sm:w-[300px] lg:w-[360px]">
+              <div className="mb-6 md:mb-0 flex flex-col gap-6 md:gap-8 w-100 sm:w-[300px] lg:w-[360px]">
                 <div>
                   {/* <Button
                     variant="rounded-outline"
@@ -78,7 +78,7 @@ function Footer() {
                     {langContent[lang.lang].Footer.ADDRESS_SUB_TITLE_FOUR}
                   </p> */}
                 </div>
-                <div className=" flex items-center justify-start md:justify-start  text-sm text-white gap-3 sm:gap-4">
+                <div className="flex items-center justify-start md:justify-start text-sm text-white gap-3 sm:gap-4">
                   <NextImage
                     className="h-full object-contain "
                     src={visa}
@@ -93,20 +93,20 @@ function Footer() {
                   />
                   <NextImage
                     className="h-full object-contain "
-                    src={Paypal}
-                    quality={100}
-                    alt="Sunset in the mountains"
-                  />
-                  <NextImage
-                    className="h-full object-contain "
                     src={applePay}
                     quality={100}
                     alt="Sunset in the mountains"
                   />
+                  {/* <NextImage
+                    className="h-full object-contain "
+                    src={Paypal}
+                    quality={100}
+                    alt="Sunset in the mountains"
+                  /> */}
                 </div>
               </div>
-              <div className=" grid grid-cols-1 gap-8 md:gap-6 md:grid-cols-2 w-full sm:w-[300px] lg:w-[360px]">
-                <div className="col-span-2 flex items-center justify-between">
+              <div className=" grid grid-cols-1 gap-4 md:gap-6 md:grid-cols-2 w-full sm:w-[300px] lg:w-[360px]">
+                <div className="col-span-2 flex items-start justify-between">
                   <ul className="flex-1 text-grayColor opacity-75  space-y-2 sm:space-y-2">
                     {langContent[lang.lang].Footer.array.map((item, index) => {
                       return (
@@ -228,7 +228,7 @@ export function ItemMenuDemo() {
       icon: 'fa-solid fa-globe',
     },
     {
-      name: 'Winners',
+      name: 'Winnars',
       link: `/#`,
       icon: 'fa-sharp fa-regular fa-images',
     },

@@ -21,7 +21,7 @@ interface CardInterface {
   type?: string;
 }
 
-export default function ProductCard(props: CardInterface) {
+export default function ProductListCard(props: CardInterface) {
   const cardRef = useRef<HTMLDivElement>(null);
   const { lang } = useSelector((state: RootState) => state.layout);
 
@@ -90,7 +90,7 @@ export default function ProductCard(props: CardInterface) {
 
             {
               (Number(props?.data?.tickets_sold) / Number(props?.data?.total_tickets)) * 100 === 100 ?
-                <span className="soldprod">SOLD OUT</span>
+                <span>SOLD</span>
                 :
                 null
             }
