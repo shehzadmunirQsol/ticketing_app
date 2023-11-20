@@ -67,11 +67,7 @@ const CustomerDetailView = (props: any) => {
         {profileFields.map((field) => (
           <div
             key={field.key}
-<<<<<<< HEAD
-            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 my-2 items-center gap-2"
-=======
             className="grid xsm:grid-cols-2 md:grid-cols-3 my-2 items-center gap-2"
->>>>>>> 52037365750a83435b141c230c5eb5242a626a51
           >
             <div>{field.label}: </div>
             <div>{props?.customerDetail?.[field.key]}</div>
