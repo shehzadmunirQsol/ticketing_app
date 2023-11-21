@@ -10,19 +10,18 @@ import {
 import { useToast } from '~/components/ui/use-toast';
 import { trpc } from '~/utils/trpc';
 import { LoadingDialog } from './loadingModal';
-import { toggleSwitchType, EventType } from '../table/events';
+import { toggleSwitchType, EventDataType } from '../table/events';
 
-interface deleteEventDialogInterface {
-  selectedItem: EventType;
+interface EventSwitchDialogInterface {
+  selectedItem: EventDataType;
   setSelectedItem: any;
   isModal: boolean;
   setIsModal: any;
   refetch: any;
   type: toggleSwitchType;
-  setType: any;
 }
 
-export function EventDeleteDialog(props: deleteEventDialogInterface) {
+export function EventSwitchDialog(props: EventSwitchDialogInterface) {
   const { toast } = useToast();
 
   const switchUpdate = trpc.event.switchUpdate.useMutation({

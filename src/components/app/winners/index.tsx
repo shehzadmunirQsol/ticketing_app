@@ -25,7 +25,7 @@ export const Winners = () => {
   });
 
   const inputRef = useRef<HTMLInputElement>(null);
-  const searchQuery = useDebounce(search, 300);
+  const searchQuery = useDebounce<string>(search, 300);
 
   const { data: winnersList, isFetching } = trpc.winner.get.useQuery(filters, {
     refetchOnWindowFocus: false,

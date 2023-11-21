@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { validateEmail } from '~/utils/helper';
 
 export const signupCustomerSchema = z.object({
   email: z
@@ -58,6 +59,13 @@ export const signupCustomerSchemaInput = z.object({
     })
     .refine((val) => (val.includes('*') ? false : true), {
       message: 'Please use a valid email ',
+    })
+
+    .refine((val) => (val.includes('-') ? false : true), {
+      message: 'Please use a valid email ',
+    })
+    .refine((val) => validateEmail(val), {
+      message: 'Invalid email format.',
     }),
   password: z
     .string({ required_error: 'Please enter your password' })
@@ -135,6 +143,16 @@ export const getCustomerSchema = z.object({
   rows: z.number(),
   filters: z.any().optional(),
 });
+export const getCustomerDetailSchema = z.object({
+  startDate: z.date().optional(),
+  endDate: z.date().optional(),
+  customer_id: z.number(),
+  first: z.number(),
+  rows: z.number(),
+  lang_id: z.number().optional(),
+  filters: z.any().optional(),
+  status: z.string().optional(),
+});
 export const updateCustomerSchema = z.object({
   id: z.number(),
   is_approved: z.boolean().optional(),
@@ -154,7 +172,15 @@ export const loginCustomerSchema = z.object({
     .email({
       message: 'Please use a valid email',
     })
-    .trim(),
+    .refine((val) => (val.includes('*') ? false : true), {
+      message: 'Please use a valid email ',
+    })
+    .refine((val) => (val.includes('-') ? false : true), {
+      message: 'Please use a valid email ',
+    })
+    .refine((val) => validateEmail(val), {
+      message: 'Invalid email format.',
+    }),
   password: z
     .string({ required_error: 'Please enter your password' })
     .min(6, {

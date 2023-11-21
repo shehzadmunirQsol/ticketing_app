@@ -17,39 +17,49 @@ export const createCheckoutSchema = z.object({
     .max(24, {
       message: 'Name must not exceed 24 characters',
     }),
-  street_address: z.string({ required_error: "Please enter street address" }).min(1, {
-    message: 'Please enter street address',
-  }),
+  street_address: z
+    .string({ required_error: 'Please enter street address' })
+    .min(1, {
+      message: 'Please enter street address',
+    }),
   apartment: z.string().optional(),
-  country: z.string({ required_error: "Please select country" }).min(1, {
+  country: z.string({ required_error: 'Please select country' }).min(1, {
     message: 'Please select country',
   }),
-  state: z.string({ required_error: "Please enter state" }
-  ).min(1, {
+  state: z.string({ required_error: 'Please enter state' }).min(1, {
     message: 'Please select state',
   }),
-  city: z.string(
-    { required_error: "Please enter city" }
-  ).min(1, {
+  city: z.string({ required_error: 'Please enter city' }).min(1, {
     message: 'Please enter city',
   }),
   postal_code: z
-  .string()
-  .optional(),
-  email: z.string({
-    required_error: "Please enter your email"
-  }).email({ message: "Please enter a valid email" }),
-  code: z.string({ required_error: 'Enter code' })
+    .string({ required_error: 'Please enter postal code' })
+    .min(1, {
+      message: 'Please enter postal code',
+    })
+    .regex(new RegExp(/^[0-9]+$/), 'Please enter a valid postal code'),
+  email: z
+    .string({
+      required_error: 'Please enter your email',
+    })
+    .email({ message: 'Please enter a valid email' }),
+  code: z
+    .string({ required_error: 'Enter code' })
     .regex(new RegExp(/^(\+)?[0-9]+$/), 'Invalid code')
     .min(1, {
       message: 'Enter code',
-    }).max(4, {
+    })
+    .max(4, {
       message: 'Enter code',
     }),
-  phone_number: z.string({ required_error: 'Please enter your number' })
+  phone_number: z
+    .string({ required_error: 'Please enter your number' })
     .regex(new RegExp(/^[0-9]+$/), 'Please enter a valid phone number')
     .min(1, {
       message: 'Please enter your number',
+    })
+    .max(15, {
+      message: 'Please enter a valid phone number',
     }),
   dob: z.date(),
   cart_id: z.number(),

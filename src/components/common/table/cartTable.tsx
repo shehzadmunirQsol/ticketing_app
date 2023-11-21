@@ -49,6 +49,7 @@ import {
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 import { CSVLink } from 'react-csv';
 import NextImage from '~/components/ui/img';
+import Link from 'next/link';
 export type CartType = {
   id: number;
   is_subscribe: boolean;
@@ -116,9 +117,13 @@ export default function OrdersDataTable() {
       accessorKey: 'Customer Name',
       header: 'Customer Name',
       cell: ({ row }) => (
-        <div className="w-28 capitalize text-ellipsis whitespace-nowrap ">
-          {row?.original?.Cart?.Customer.first_name}
-        </div>
+        <Link
+          href={`/admin/customers/detail/${row?.original?.Cart?.Customer?.id}`}
+        >
+          <div className="w-28 capitalize text-ellipsis whitespace-nowrap ">
+            {row?.original?.Cart?.Customer.first_name}
+          </div>
+        </Link>
       ),
     },
     {
