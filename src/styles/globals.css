@@ -1324,11 +1324,11 @@ form label + * {
   height: 10px;
 }
 .prodrow::-webkit-scrollbar-track {
-  background: #252525;
+  background: #17171a;
   border-radius: 7px;
 }
 .prodrow::-webkit-scrollbar-thumb {
-  background: #c2c0c0;
+  background: #20cba8;
   border-radius: 7px;
 }
 .prodrow .col-prod {
