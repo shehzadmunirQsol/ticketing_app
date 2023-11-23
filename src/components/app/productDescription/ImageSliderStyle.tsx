@@ -7,6 +7,10 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import 'photoswipe/dist/photoswipe.css';
 
+import 'photoswipe/dist/photoswipe.css';
+import { Gallery, Item } from 'react-photoswipe-gallery';
+
+
 export default function ImageSliderStyle({ data }: any) {
   let eventImages: any = [];
 
@@ -54,22 +58,38 @@ export default function ImageSliderStyle({ data }: any) {
     <div>
       <div className="relative mobmb-1">
         {data && data.EventImages ? (
-          <Slider {...productslide} className="productslider" ref={slidermain}>
+          <Gallery>
+            <Slider {...productslide} className="productslider" ref={slidermain}>
             {data.EventImages.map((edata: any, key: any) => {
               return (
-                <div key={key} className="item">
-                  <div className="imgbx">
-                    <NextImage
-                      src={renderNFTImage(edata)}
-                      alt="banner image"
-                      width={100}
-                      height={100}
-                    />
-                  </div>
-                </div>
+                <Item
+                    original={renderNFTImage(edata)}
+                    thumbnail={renderNFTImage(edata)}
+                    width="1024"
+                    height="576"
+                    key={key}
+                  >
+                    {({ ref, open }) => (
+                      <div
+                        ref={ref as React.MutableRefObject<HTMLDivElement>}
+                        onClick={open}
+                        className="h-[18rem] lg:h-[28rem] relative"
+                      >
+                        <NextImage
+                          alt="feature"
+                          src={renderNFTImage(edata)}
+                          width={5000}
+                          height={5000}
+                          loading="lazy"
+                          className="object-cover rounded-sm object-center h-full w-full  duration-700 ease-in-out"
+                        />
+                      </div>
+                    )}
+                  </Item>
               );
             })}
           </Slider>
+          </Gallery>
         ) : null}
         <div className="bottlebx">
           <NextImage src={BottleImage} alt="Sunset in the mountains" />
