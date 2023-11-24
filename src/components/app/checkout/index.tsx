@@ -349,7 +349,7 @@ function Checkout() {
                 <h3 className="text-lg md:text-xl lg:text-2xl font-bold ">
                   {langContent[lang.lang].Checkout.BILL_HEADING}
                 </h3>
-                <div className="space-y-6">
+                <div className="space-y-3">
                   <div
                     className="flex flex-col lg:flex-row md:flex-row gap-2  w-full justify-between"
                     dir="ltr"
@@ -614,7 +614,7 @@ function Checkout() {
                       <p className="text-sm text-cardGray">
                         Phone Number
                       </p>
-                      <div className="flex flex-row gap-2">
+                      <div className="flex flex-row gap-2 mt-2">
                         <FormField
                           control={form.control}
                           name="code"
@@ -828,16 +828,16 @@ function Checkout() {
                     />
                     <NextImage
                       className="h-full object-contain w-10"
-                      src={Paypal}
-                      quality={100}
-                      alt="Sunset in the mountains"
-                    />
-                    <NextImage
-                      className="h-full object-contain w-10"
                       src={applePay}
                       quality={100}
                       alt="Sunset in the mountains"
                     />
+                    {/* <NextImage
+                      className="h-full object-contain w-10"
+                      src={Paypal}
+                      quality={100}
+                      alt="Sunset in the mountains"
+                    /> */}
                   </div>
                 </div>
 

@@ -93,9 +93,9 @@ const ImageSlider = ({ data, ticketPurchased, higlightmeta }: any) => {
             </div>
             <div>
               <p className="mt-3 sm:mt-5 text-2xl md:text-3xl font-normal sm:tracking-[-1px] text-white">
-                <span className=" font-bold mr-1">
+                {/* <span className=" font-bold mr-1">
                   {lang.lang_id === 2 ? 'يفوز' : 'WIN '}{' '}
-                </span>
+                </span> */}
                 {data?.EventDescription[0]?.name}
               </p>
             </div>

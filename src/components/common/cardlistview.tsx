@@ -61,12 +61,12 @@ export default function ProductListCard(props: CardInterface) {
       >
         <div
           dir={props?.dir}
-          className={`rounded-sm shadow-lg bg-card ${props?.class}`}
+          className={`rounded-sm shadow-lg bg-card flex ${props?.class}`}
           ref={cardRef}
         >
-          <div className="relative ">
+          <div className="relative col">
             {isLastDay ? (
-              <div className="font-bold absolute top-0 w-fit p-2 z-2 bg-primary text-black text-sm">
+              <div className="font-bold absolute top-0 w-fit px-2 py-1 md:p-2 z-2 bg-primary text-black text-xxs md:text-sm">
                 <span className="">CLOSES TODAY</span>{' '}
                 {props?.data?.end_date?.getHours()?.toString()?.length > 1
                   ? props?.data?.end_date?.getHours()
@@ -82,7 +82,7 @@ export default function ProductListCard(props: CardInterface) {
             <NextImage
               width={550}
               height={450}
-              className="w-full h-[180px] sm:h-[230px] object-cover bg-white"
+              className="w-full h-[170px] sm:h-[230px] object-cover bg-white"
               src={props?.cash ?? renderNFTImage(props?.data) ?? CarImage}
               quality={100}
               alt="Sunset in the mountains"
@@ -100,10 +100,10 @@ export default function ProductListCard(props: CardInterface) {
             </div>
           </div>
 
-          <div className="px-6 py-4 mt-2 md:mt-6">
-            <div className="flex flex-col gap-1 mb-2">
-              <div className="flex justify-between items-center gap-3 mb-2">
-                <span className=" text-xs text-gray-300">
+          <div className="col-60 px-3 py-2 md:py-3">
+            <div className="flex flex-col mb-1">
+              <div className="flex justify-between items-center mb-1">
+                <span className="text-xs text-xxs text-gray-300">
                   {
                     props?.data?.tickets_sold && props?.data?.total_tickets && (
                       (() => {
@@ -115,7 +115,7 @@ export default function ProductListCard(props: CardInterface) {
                   }
                   % {langContent[lang.lang].Index.productcard.SOLD_TITLE}
                 </span>
-                <span className="text-xs text-gray-300">
+                <span className="text-xs text-xxs text-gray-300">
                   {(props?.data?.tickets_sold).toLocaleString()} /{' '}
                   {(props?.data?.total_tickets).toLocaleString()}
                 </span>
@@ -129,41 +129,31 @@ export default function ProductListCard(props: CardInterface) {
                 className="w-full"
               />
             </div>
-            <div className="font-bold overflow-hidden h-14 md:h-16 text-base lg:text-xl line-clamp-1">
-              {langContent[lang.lang].Index.productcard.WIN_TITLE ?? ''}
-              <span className="text-gray-200  font-semibold mx-2 ">
+            <div className="h-5 md:h-auto overflow-hidden line-clamp-1 font-bold text-sm lg:text-xl mb-1">
+              {/* {langContent[lang.lang].Index.productcard.WIN_TITLE ?? ''} */}
+              <span className="text-gray-200  font-semibold">
                 {props?.data?.EventDescription[0]?.name}
               </span>
             </div>
             <div className="relative w-full opacity-75  text-gray-200 text-xs md:text-sm font-light sm:font-normal leading-normal">
-              <p className="h-9 md:h-10 overflow-hidden">
-                {customTruncate(props?.data?.EventDescription[0]?.desc, 100)}
+              <p className="h-14 overflow-hidden line-clamp-3">
+                {customTruncate(props?.data?.EventDescription[0]?.desc, 100)} 
+                {' '} or {' '}
+                {langContent[lang.lang].Index.productcard.ALTERNATIVE_TITLE} 
+                {' '} AED  {(props?.data?.cash_alt ?? 0)?.toLocaleString()}
               </p>
             </div>
-            <hr className="opacity-20 mt-3 md:mt-4" />
-
-            <div className="h-15 md:h-6 overflow-hidden mt-2">
-              <span className="text-gray-200 text-md text-sm xl:text-base font-semibold leading-[18px]">
-                {langContent[lang.lang].Index.productcard.ALTERNATIVE_TITLE}
-              </span>
-              <br className="block md:hidden" />
-              <span className="text-primary text-sm xl:text-lg font-[500] leading-[18px]">
-                {' '}
-                AED {(props?.data?.cash_alt ?? 0)?.toLocaleString()}
-              </span>
-            </div>
-
-            <div className="flex  justify-between items-center mt-3 sm:mt-6 gap-4">
-              <div className="text-primary text-xl md:text-2xl font-[500] leading-[18px]">
+            <hr className="opacity-20 mt-1 md:mt-4" />
+            <div className="flex justify-between items-center mt-2 sm:mt-6 gap-4">
+              <div className="text-primary text-base md:text-2xl font-[500] leading-[18px]">
                 AED {props?.data?.price}
               </div>
               <Button
                 variant="rounded"
-                className="font-[700] sm:font-[800] tracking-tight text-md text-sm md:text-base xl:text-lg h-8 md:h-10"
+                className="font-[700] sm:font-[800] tracking-tight text-xs md:text-base xl:text-lg h-7 md:h-10 px-3"
               >
-
-                {
-                  (Number(props?.data?.tickets_sold) / Number(props?.data?.total_tickets)) * 100 === 100 ?
+                { 
+                  (props && props.data && props.data.draw_date !== null) || ((Number(props?.data?.tickets_sold) / Number(props?.data?.total_tickets)) * 100 === 100) ?
                     langContent[lang.lang].Index.productcard.VIEW_BTN
                     :
                     langContent[lang.lang].Index.productcard.ENTER_BTN

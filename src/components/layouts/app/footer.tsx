@@ -40,7 +40,7 @@ function Footer() {
             />
           </div>
         </div>
-        <div className="relative z-10">
+        <div className="relative">
           <div className="relative p-4 py-6 md:px-14 md:py-14">
             <div className="sm:flex sm:justify-between ">
               <div className="mb-6 md:mb-0 flex flex-col gap-6 md:gap-8 w-100 sm:w-[300px] lg:w-[360px]">

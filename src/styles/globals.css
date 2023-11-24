@@ -1286,6 +1286,10 @@ bottom: -30px;
 .col {
   flex: 1 0 0%;
 }
+.col-60 {
+  flex: 0 0 auto;
+  width: 60%;
+}
 .eyeicon {
   position: absolute;
   right: 0;
@@ -1334,6 +1338,20 @@ form label + * {
 .prodrow .col-prod {
   flex: 0 0 auto;
   width: calc(33.33333333% - 17px);
+}
+.listtabs .tabbtn {
+  font-size: 20px;
+}
+.listtabs .tabbtn.active i {
+  color: #20cba8;
+}
+.listviewbx .bottlebx.prodbottle {
+  padding: 1px;
+  width: 32px;
+  height: 32px;
+  right: 5px !important;
+  bottom: 5px;
+  left: auto;
 }
 /* Desktop */
 
@@ -1480,6 +1498,7 @@ form label + * {
   left: 20px;
   bottom: -15px;
   }
+
 .mobmb-1 {
   margin-bottom: -1px;
 }
@@ -1530,5 +1549,7 @@ input:checked + section.box {
 .prodrow::-webkit-scrollbar {
   height: 6px;
 }
+.text-xxs {
+  font-size: 0.60rem;
 }
-
+}
