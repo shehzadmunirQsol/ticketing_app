@@ -1,7 +1,7 @@
 import BottleImage from '~/public/assets/bottle.png';
 import { Switch } from '~/components/ui/switch';
 import { Button } from '~/components/ui/button';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { trpc } from '~/utils/trpc';
 import { useDispatch, useSelector } from 'react-redux';
 import { useToast } from '~/components/ui/use-toast';
@@ -39,7 +39,7 @@ export default function CartItem(props: CartItemProp) {
   const { isLogin, user } = useSelector((state: RootState) => state.auth);
   const [isSubscribe, setIsSubscribe] = useState(cartItem?.is_subscribe);
   const [isModal, setIsModal] = useState(false);
-  const [cartitemquantity,setcartitemquantity] = useState<number>(cartItem?.quantity);
+  const [cartitemquantity, setcartitemquantity] = useState<number>(cartItem?.quantity);
 
   const [subscriptionType, setSubscriptionType] = useState<SubscriptionType>(
     cartItem?.subscription_type,
@@ -47,6 +47,9 @@ export default function CartItem(props: CartItemProp) {
 
   const { toast } = useToast();
   const dispatch = useDispatch();
+  // useEffect(() => {
+
+  // }, [response])
 
   const addToBasket = trpc.cart.addToCart.useMutation();
 
@@ -58,10 +61,10 @@ export default function CartItem(props: CartItemProp) {
     if (type === 'increment') quantity++;
     if (type === 'decrement') quantity--;
     const isSubscription = type === 'unsubscribe' ? false : isSubscribe;
-    quantityChange(quantity,isSubscription);
+    quantityChange(quantity, isSubscription);
 
   }
-    const quantityChange =async(quantity:any,isSubscription:any)=>{      
+  const quantityChange = async (quantity: any, isSubscription: any) => {
     const payload = {
       subscription_type: isSubscription ? subscriptionType : null,
       cart_id: cart_id,
@@ -77,6 +80,8 @@ export default function CartItem(props: CartItemProp) {
       quantity: event?.quantity,
     }));
 
+
+
     try {
       if (isLogin) {
         const apiPayload = {
@@ -85,6 +90,7 @@ export default function CartItem(props: CartItemProp) {
           customer_id: customer_id,
         };
         const response = await addToBasket.mutateAsync(apiPayload);
+
         dispatch(addToCart(response.data));
       } else {
         const updatedCartItem = {
@@ -119,18 +125,22 @@ export default function CartItem(props: CartItemProp) {
 
         sendinblue?.track(
           'cart_updated' /*mandatory*/,
-          JSON.stringify({ email: user?.email ?? '' }) /*user data optional*/,
-          JSON.stringify({
+          ({ email: user?.email ?? '' }) /*user data optional*/,
+          //  event_data
+          ({
             cart_id: cart.id,
-            data: eventCartData,
-          }) /*optional*/,
+            data: {
+              "items": eventCartData
+            },
+          })
+          /*optional*/,
         ) as any;
       }
     } catch (error: any) {
       console.log({ error });
     }
-  
-    }
+
+  }
 
   function toggleSwitch() {
     if (isSubscribe && subscriptionType) addToBasketHandler('unsubscribe');
@@ -166,7 +176,7 @@ export default function CartItem(props: CartItemProp) {
   else if (isTicketLimit) tooltipMessage = 'Cannot buy more entries';
   else if (isTicketLimitExceeded)
     tooltipMessage = "Competition closed, can't proceed to checkout!";
-    
+
 
   return (
     <div data-name="card" className="py-2 mdx:py-2 border-t border-white/40">
@@ -227,7 +237,7 @@ export default function CartItem(props: CartItemProp) {
                   type="number"
                   value={cartitemquantity}
                   onChange={(event) => setcartitemquantity(parseInt(event.target.value))}
-                  onBlur={()=>{quantityChange(cartitemquantity,isSubscribe)}}
+                  onBlur={() => { quantityChange(cartitemquantity, isSubscribe) }}
                 />
 
                 <TooltipProvider>
@@ -296,8 +306,8 @@ export default function CartItem(props: CartItemProp) {
                     <Button
                       key={frequency}
                       className={`bg-card text-sm rounded-full ${frequency?.toLocaleLowerCase() === subscriptionType
-                          ? 'border border-primary'
-                          : ''
+                        ? 'border border-primary'
+                        : ''
                         }`}
                       disabled={isSubscribable}
                       variant="outline"

@@ -196,7 +196,7 @@ function Checkout() {
 
               sendinblue?.track(
                 'order_completed' /*mandatory*/,
-                JSON.stringify(userProperties) /*user data optional*/,
+                (userProperties) /*user data optional*/,
                 JSON.stringify(data) /*optional*/,
               ) as any;
             }
