@@ -10,6 +10,12 @@ import { prisma } from '~/server/prisma';
 export const eventTicketRouter = router({
   get: publicProcedure.input(getEventTicketsSchema).query(async ({ input }) => {
     try {
+      const totalEventTickets = await prisma.eventTickets.count({
+        where: {
+          event_id: input.event_id,
+          order_event_id: input.order_event_id,
+        },
+      });
       const eventTickets = await prisma.eventTickets.findMany({
         select: {
           ticket_num: true,
@@ -27,7 +33,11 @@ export const eventTicketRouter = router({
         });
       }
 
-      return { message: 'Tickets found', data: eventTickets };
+      return {
+        message: 'Tickets found',
+        data: eventTickets,
+        count: totalEventTickets,
+      };
     } catch (error: any) {
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',

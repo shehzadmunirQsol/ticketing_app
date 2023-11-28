@@ -403,12 +403,10 @@ export default function OrdersDataEventById(props: OrderTableProps) {
         isModal={isModal}
         setIsModal={setIsModal}
         type={type}
-        setType={setType}
-      />
+        setType={setType} setFilters={props?.setFilters} filters={props.filters}      />
       <ViewTickets
         selectedOrderEvent={selectedOrderEvent}
-        setSelectedOrderEvent={setSelectedOrderEvent}
-      />
+        setSelectedOrderEvent={setSelectedOrderEvent} filters={props.filters} setFilters={props?.setFilters}      />
       <LoadingDialog open={isFetching} text={'Loading data...'} />
     </div>
   );

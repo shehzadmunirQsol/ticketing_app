@@ -35,7 +35,7 @@ import {
   DropdownMenuTrigger,
 } from '~/components/ui/dropdown-menu';
 import { MoreHorizontal } from 'lucide-react';
-import { OrderViewDialog } from '../modal/orderView';
+import { OrderViewDialog, ViewTickets } from '../modal/orderView';
 import { RootState } from '~/store/store';
 import { useSelector } from 'react-redux';
 import {
@@ -208,6 +208,7 @@ export default function OrdersDataByIdTable(props: OrderTableProps) {
     if (page < 0) return;
     props?.setFilters((prevFilters: any) => ({ ...prevFilters, first: page }));
   }
+
 
   return (
     <div className="w-full p-2">
@@ -397,8 +398,7 @@ export default function OrdersDataByIdTable(props: OrderTableProps) {
         isModal={isModal}
         setIsModal={setIsModal}
         type={type}
-        setType={setType}
-      />
+        setType={setType} setFilters={undefined} filters={undefined} />
       <LoadingDialog open={isFetching} text={'Loading data...'} />
     </div>
   );
