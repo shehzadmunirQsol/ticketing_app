@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Slider } from '~/components/ui/slider';
+// import { Slider } from '~/components/ui/slider';
 
 interface token {
   range: any;
@@ -14,6 +14,8 @@ const TokenRange = ({ range, setRange, min, max }: token) => {
 
   const handleSliderChange = (event: any) => {
     const newValue = event.target.value;
+    console.log(newValue,'zzzz');
+    setRange(newValue);
     setProgress(newValue);
     updateSliderBackground(newValue);
   };
@@ -29,6 +31,8 @@ const TokenRange = ({ range, setRange, min, max }: token) => {
   useEffect(() => {
     // Set the initial linear gradient background
     updateSliderBackground(progress);
+    console.log(range,'vvvv');
+    
   }, []);
 
   // cons
@@ -41,7 +45,7 @@ const TokenRange = ({ range, setRange, min, max }: token) => {
           type="range"
           min="1"
           max={max}
-          value={progress}
+          step={1}  
           className="custom-range-slider"
           onChange={handleSliderChange}
           id="productrange"
@@ -49,7 +53,7 @@ const TokenRange = ({ range, setRange, min, max }: token) => {
       </div>
 
       <div className="range-slider-container mt-8 cursor-pointer">
-        <Slider
+        {/* <Slider
           defaultValue={range}
           value={range}
           max={max}
@@ -58,7 +62,7 @@ const TokenRange = ({ range, setRange, min, max }: token) => {
           onValueChange={(e: any) => {
             setRange(e);
           }}
-        />
+        /> */}
         <br />
         <div
           className="absolute left-1/2  transform -translate-x-1/2 bottom-3 p-2 pl-6 font-bold bg-opacity-70  text-primary rounded-md text-lg whitespace-nowrap"
