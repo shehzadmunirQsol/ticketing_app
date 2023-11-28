@@ -8,10 +8,14 @@ import { ScrollBar } from '../ui/scroll-area';
 import { displayDate } from '~/utils/helper';
 import LogoImage from '~/public/assets/logo.png';
 import Confetti from 'react-confetti';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { setOrderID } from '~/store/reducers/cart';
+import ProductSection from '../app/home/product_section';
+import Glow from '~/components/common/glow';
 import { Button } from '../ui/button';
 import NextImage from '../ui/img';
+import langContent from '~/locales';
+// import carSound from '~/public/assets/car-sound.mp3';
 
 export default function SuccessInvoice() {
   const { lang } = useSelector((state: RootState) => state.layout);
@@ -20,6 +24,8 @@ export default function SuccessInvoice() {
   const [recycle, setRecycle] = useState(true);
   const router = useRouter();
   const dispatch = useDispatch();
+
+  // const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const { data: OrderApiData, isLoading } = trpc.order.getByID.useQuery(
     { order_id: orderID, lang_id: lang.lang_id },
@@ -30,10 +36,10 @@ export default function SuccessInvoice() {
   );
 
   useEffect(() => {
-    if (orderID <= 0) {
-      router.replace('/');
-      return;
-    }
+    // if (orderID <= 0) {
+    //   router.replace('/');
+    //   return;
+    // }
 
     const timeout = setTimeout(() => {
       setRecycle(false);
@@ -59,30 +65,38 @@ export default function SuccessInvoice() {
         recycle={orderID > 0 && recycle}
       />
 
-      <div className="min-h-screen px-4 md:px-0">
+    {/* <audio ref={audioRef} src={carSound} /> */}
+
+
+      <div className="px-4 md:px-0">
         <div
-          className="bg-card mt-24 md:mt-28 mb-10 h-full text-gray-400 rounded-lg mx-auto w-full px-8 py-10 sm:w-3/4 md:w-2/3"
+          className="mt-24 md:mt-28 mb-10 h-full text-gray-400 rounded-lg mx-auto w-full px-8 py-10 sm:w-3/4 md:w-2/3"
           id="divToPrint"
         >
           <div className="flex flex-col md:flex-row items-center justify-between mb-8">
-            <div className="flex items-center">
+            {/* <div className="flex items-center">
               <NextImage
                 className="h-16  object-contain mr-2"
                 src={LogoImage}
                 alt="Logo"
               />
+            </div> */}
+
+            <div className="xs:text-center md:text-left">
+              <div className="greenText text-xl lg:text-2xl font-bold uppercase">Your Order placed suceessfully</div>
             </div>
-            {isLoading ? null : (
-              <div className=" xs:text-center md:text-left">
-                <div className="font-bold text-xl mb-2">INVOICE</div>
-                <div className="text-sm">
-                  Date: {displayDate(OrderApiData?.data?.created_at)}
-                </div>
-                <div className="text-sm">
-                  Invoice: #INV00{OrderApiData?.data?.id}
-                </div>
+
+            {/* {isLoading ? null : ( */}
+            <div className=" xs:text-center md:text-left">
+              <div className="font-bold text-xl mb-2">INVOICE</div>
+              <div className="text-sm">
+                Date: {displayDate(OrderApiData?.data?.created_at)}
               </div>
-            )}
+              <div className="text-sm">
+                Invoice: #INV00{OrderApiData?.data?.id}
+              </div>
+            </div>
+            {/* )} */}
           </div>
           {isLoading ? null : (
             <div className="border-b-2 border-gray-300 pb-8 mb-8">
@@ -175,6 +189,20 @@ export default function SuccessInvoice() {
           </div>
         </div>
       </div>
+
+      <div className="relative pt-4 pb-12 px-4 md:gap-14 md:px-14 z-10 bg-card-foreground">
+        <ProductSection
+          class="mx-auto w-3/5 md:w-full"
+          slidesToShow={3}
+          center={false}
+          breakpoint={[3, 2, 1.5]}
+          breakpointScreens={[1350, 1050, 800]}
+          title={langContent[lang.lang].Index.products.HEADING}
+          type="closing"
+        />
+        <Glow className="absolute right-0 bottom-0 w-1/6 h-20 overflow-hidden -z-20" />
+      </div>
+
     </>
   );
 }
