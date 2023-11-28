@@ -25,8 +25,6 @@ export default function SuccessInvoice() {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  // const audioRef = useRef<HTMLAudioElement | null>(null);
-
   const { data: OrderApiData, isLoading } = trpc.order.getByID.useQuery(
     { order_id: orderID, lang_id: lang.lang_id },
     {
@@ -55,6 +53,14 @@ export default function SuccessInvoice() {
     router.replace('/');
   }
 
+  // const handleButtonClick = () => {
+  //   const audio = new Audio(carSound);
+  //   audio.play().catch(error => {
+  //     console.error("Error playing audio:", error);
+  //   });
+  // };
+
+
   return (
     <>
       <Confetti
@@ -65,8 +71,6 @@ export default function SuccessInvoice() {
         recycle={orderID > 0 && recycle}
       />
 
-    {/* <audio ref={audioRef} src={carSound} /> */}
-
 
       <div className="px-4 md:px-0">
         <div
@@ -74,16 +78,9 @@ export default function SuccessInvoice() {
           id="divToPrint"
         >
           <div className="flex flex-col md:flex-row items-center justify-between mb-8">
-            {/* <div className="flex items-center">
-              <NextImage
-                className="h-16  object-contain mr-2"
-                src={LogoImage}
-                alt="Logo"
-              />
-            </div> */}
-
             <div className="xs:text-center md:text-left">
-              <div className="greenText text-xl lg:text-2xl font-bold uppercase">Your Order placed suceessfully</div>
+              <div className="greenText text-xl lg:text-2xl font-bold uppercase">Your order has been placed successfully</div>
+            {/* <button onClick={handleButtonClick}>Play Audio</button> */}
             </div>
 
             {/* {isLoading ? null : ( */}
