@@ -12,7 +12,7 @@ import langContent from '~/locales';
 import { useEffect } from 'react';
 
 interface CounterProps {
-  range: number[];
+  range: any;
   setRange: React.Dispatch<React.SetStateAction<number[]>>;
   user_ticket_limit: number;
   ticketInBasket: { current: number };
@@ -51,7 +51,7 @@ export default function Counter(props: CounterProps) {
       cart_id: cart?.id ?? 0,
       event_id: eventId,
       is_subscribe: cartItem?.is_subscribe ?? false,
-      quantity: range[0] ?? 0,
+      quantity: parseInt(range) ?? 0,
     };
 
     const eventCartData = cart?.cartItems?.map((event) => ({
@@ -135,7 +135,7 @@ export default function Counter(props: CounterProps) {
 
 
   useEffect(()=>{
-    console.log(range,price,event?.price,range[0],range,'yyy');
+    console.log(range,'yyy');
   })
 
   return (

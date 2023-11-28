@@ -13,7 +13,7 @@ const TokenRange = ({ range, setRange, min, max }: token) => {
   const [progress, setProgress] = useState(10);
 
   const handleSliderChange = (event: any) => {
-    const newValue = event.target.value;
+    const newValue =  event.target.value;
     setRange(newValue);
     setProgress(newValue);
     updateSliderBackground(newValue);
@@ -43,7 +43,7 @@ const TokenRange = ({ range, setRange, min, max }: token) => {
           min="1"
           max={max}
           step={1}  
-          value={progress}
+          value={range}
           className="custom-range-slider"
           onChange={handleSliderChange}
           id="productrange"
