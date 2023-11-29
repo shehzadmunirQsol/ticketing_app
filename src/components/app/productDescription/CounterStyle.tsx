@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import increment from '../../../public/assets/increment.svg';
 import decrement from '../../../public/assets/decrement.svg';
 import langContent from '~/locales';
@@ -15,8 +15,12 @@ interface token {
 const CounterStyle = ({ range, setRange, min, max }: token) => {
   const { lang } = useSelector((state: RootState) => state.layout);
 
-  const rangeType: any = range && range?.length ? range[0] : 0;
+  const incrementdecrement: any = range && range?.length ? range[0] : 0;
+  const rangeType = parseInt(incrementdecrement);
+  useEffect(() => {
+    console.log(range,rangeType,'jjj');
 
+  })
   const handlerCounter = (type: string) => {
     if (type == 'a' && rangeType <= max - 1) {
       setRange([rangeType + 1]);
@@ -30,9 +34,8 @@ const CounterStyle = ({ range, setRange, min, max }: token) => {
       <div className="flex items-center my-4 text-center" dir="ltr">
         <button
           onClick={() => handlerCounter('b')}
-          className={`bg-primary lg:w-14 md:w-14 w-10 md:h-12 h-10  ${
-            lang.lang === 'en' ? 'rounded-r-sm' : 'rounded-l-sm'
-          }`}
+          className={`bg-primary lg:w-14 md:w-14 w-10 md:h-12 h-10  ${lang.lang === 'en' ? 'rounded-r-sm' : 'rounded-l-sm'
+            }`}
         >
           <NextImage
             src={decrement}
@@ -51,9 +54,8 @@ const CounterStyle = ({ range, setRange, min, max }: token) => {
         </div>
         <button
           onClick={() => handlerCounter('a')}
-          className={`bg-primary lg:w-14 md:w-14 w-10 md:h-12 h-10  ${
-            lang.lang === 'en' ? 'rounded-l-sm' : 'rounded-r-sm'
-          }`}
+          className={`bg-primary lg:w-14 md:w-14 w-10 md:h-12 h-10  ${lang.lang === 'en' ? 'rounded-l-sm' : 'rounded-r-sm'
+            }`}
         >
           <NextImage
             src={increment}

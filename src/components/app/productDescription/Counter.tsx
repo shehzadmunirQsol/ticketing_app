@@ -130,8 +130,8 @@ export default function Counter(props: CounterProps) {
     }
   }
 
-  // const price = +(range[0] as number) * event?.price;
-  const price = +(range) * event?.price;
+  const price = +(range[0] as number) * event?.price;
+  // const price = +(range) * event?.price;
 
 
   useEffect(()=>{

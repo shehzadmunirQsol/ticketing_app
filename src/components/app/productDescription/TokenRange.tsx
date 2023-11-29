@@ -13,8 +13,10 @@ const TokenRange = ({ range, setRange, min, max }: token) => {
   const [progress, setProgress] = useState(10);
 
   const handleSliderChange = (event: any) => {
-    const newValue =  event.target.value;
-    setRange(newValue);
+    const myArray = [];
+    const newValue = event.target.value;
+    myArray.push(newValue);
+    setRange(myArray);
     setProgress(newValue);
     updateSliderBackground(newValue);
   };
@@ -42,7 +44,7 @@ const TokenRange = ({ range, setRange, min, max }: token) => {
           type="range"
           min="1"
           max={max}
-          step={1}  
+          step={1}
           value={range}
           className="custom-range-slider"
           onChange={handleSliderChange}
