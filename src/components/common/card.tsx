@@ -52,6 +52,11 @@ export default function ProductCard(props: CardInterface) {
 
   const categoryRoute = props?.data?.category_id === 1 ? 'cars' : 'cash';
 
+  useEffect(()=>{
+    console.log(props.type,'ddd');
+    
+  })
+
   return (
     props?.data && (
       <Link
@@ -162,8 +167,8 @@ export default function ProductCard(props: CardInterface) {
                 variant="rounded"
                 className="font-[700] sm:font-[800] tracking-tight text-md text-sm md:text-base xl:text-lg h-8 md:h-10"
               >
-                { 
-                  (props && props.data && props.data.draw_date !== null) || ((Number(props?.data?.tickets_sold) / Number(props?.data?.total_tickets)) * 100 === 100) ?
+                {
+                  ( props.type == "drawn" || props.type == "upcoming") ?
                     langContent[lang.lang].Index.productcard.VIEW_BTN
                     :
                     langContent[lang.lang].Index.productcard.ENTER_BTN

@@ -390,6 +390,12 @@ export function ViewTickets(props: ViewTicketsType ) {
       rowSelection,
     },
   });
+
+  function padTicketNum(ticketNum: string | number) {
+    const numDigits = ticketNum.toString().length;
+    const zerosToAdd = Math.max(6 - numDigits, 0);
+    return '0'.repeat(zerosToAdd) + ticketNum;
+  }
   
   return (
     <>
@@ -443,9 +449,9 @@ export function ViewTickets(props: ViewTicketsType ) {
                         }
                       </h3>
                       <div className="grid grid-cols-4 gap-2 md:grid-cols-6">
-                        {eventTickets?.data?.map((eventTicket) => (
+                      {eventTickets?.data?.map((eventTicket) => (
                           <p className={`w-20`} key={eventTicket?.ticket_num}>
-                            #{eventTicket?.ticket_num}
+                            CR-{padTicketNum(eventTicket?.ticket_num)}
                           </p>
                         ))}
                       </div>
