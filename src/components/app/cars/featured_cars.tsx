@@ -64,6 +64,8 @@ const FeaturedCars = () => {
         <div className="flex max-h-[100%]   z-40">
           <div className="w-full flex-1 sm:max-w-[400px]  md:max-w-[550px] lg:max-w-[700px]  xl:max-w-[900px] 2xl:max-w-[950px]   relative">
             {/* buttons */}
+            {
+            productsList?.data[0]?
             <div className="px-4 absolute w-full h-full flex justify-between items-center my-auto z-10">
               <Button
                 variant="rounded"
@@ -80,6 +82,9 @@ const FeaturedCars = () => {
                 <i className="fa-solid fa-chevron-right"></i>
               </Button>
             </div>
+            : null
+            }
+
             {/* slider */}
             <div className="lg:h-[580px]">
               <Slider {...settings} ref={slide}>
@@ -113,7 +118,7 @@ const FeaturedCars = () => {
           </div>
         </div>
 
-        <div className="flex h-full max-h-[100%]  z-40">
+        <div className="flex h-full max-h-[100%] z-40">
           {/* product cards */}
           <div className="w-full max-w-2xl">
             <ProductCard
@@ -125,6 +130,8 @@ const FeaturedCars = () => {
 
           <div className="w-full !h-full max-h-[100%]  sm:max-w-[400px]  md:max-w-[550px] lg:max-w-[700px]  xl:max-w-[900px] 2xl:max-w-[950px]   relative">
             {/* buttons */}
+            {
+            productsList?.data[1]?
             <div className="px-4 absolute w-full h-full flex justify-between items-center my-auto z-10">
               <Button
                 variant="rounded"
@@ -141,6 +148,9 @@ const FeaturedCars = () => {
                 <i className="fa-solid fa-chevron-right"></i>
               </Button>
             </div>
+              : null
+              }
+            
             {/* slider */}
             <div className=" h-full max-h-[580px] overflow-hidden">
               <Slider {...settings} ref={slide2}>

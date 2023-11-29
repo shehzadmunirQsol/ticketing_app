@@ -19,7 +19,7 @@ interface productInterface {
   categoryId?: 1 | 2;
   // slide: React.Ref<null>;
 }
-function ProductSection(props: productInterface) {
+function ProductSectionOld(props: productInterface) {
   const { lang } = useSelector((state: RootState) => state.layout);
   const [products, setProducts] = useState<Array<any>>([]);
 
@@ -70,13 +70,81 @@ function ProductSection(props: productInterface) {
     slide?.current?.slickNext();
   };
 
+  const settings = {
+    className: 'center slider variable-width flex gap-3',
+
+    dots: false,
+    infinite: false,
+    speed: 500,
+    // slidesToShow: props?.slidesToShow && products.length > props?.slidesToShow
+    //     ? props?.slidesToShow
+    //     : products.length,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    arrows: false,
+    centerMode: false,
+    mobileFirst: true,
+    responsive: [
+      {
+        breakpoint:
+          props?.breakpointScreens && props?.breakpointScreens[0] !== undefined
+            ? props?.breakpointScreens[0]
+            : 1024,
+        settings: {
+          slidesToShow:
+            props?.breakpoint?.length &&
+            props?.breakpoint[0] &&
+            products?.length >= props?.breakpoint[0]
+              ? props?.breakpoint[0]
+              : products.length,
+          slidesToScroll: 1,
+          centerMode: false,
+        },
+      },
+      {
+        breakpoint:
+          props?.breakpointScreens && props?.breakpointScreens[1] !== undefined
+            ? props?.breakpointScreens[1]
+            : 800,
+        settings: {
+          slidesToShow:
+            props?.breakpoint && props?.breakpoint[1] !== undefined
+              ? props?.breakpoint[1]
+              : 2,
+          slidesToScroll: 1,
+          centerMode: false,
+        },
+      },
+
+      {
+        breakpoint:
+          props?.breakpointScreens && props?.breakpointScreens[2] !== undefined
+            ? props?.breakpointScreens[2]
+            : 600,
+        settings: {
+          slidesToShow:
+            props?.breakpoint && props?.breakpoint[2] !== undefined
+              ? props?.breakpoint[2]
+              : 1,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1.15,
+          slidesToScroll: 1,
+        },
+      },
+    ],
+  };
   return (
     <div className=" max-w-[1600px]  mx-auto w-full ">
-      <div className="pt-6 relative gap-3 flex-col md:flex-row md:h-auto z-30 sm:items-center items-start w-full md:justify-between mb-3 sm:mb-6 flex h-fit">
+      <div className="pl-3 pr-6 pt-6 relative gap-3 flex-col md:flex-row md:h-auto z-30 sm:items-center items-start w-full md:justify-between mb-3 sm:mb-6 flex h-fit">
         <p className="text-gray-200 !text-xl sm:!text-3xl lg:!text-5xl font-black uppercase ">
           {props?.title}
         </p>
-        {/* <div
+        <div
           className={`${
             lang?.dir == 'rtl' ? ' flex-row-reverse' : 'md:ml-0'
           } gap-2 z-10 items-center justify-center sm:flex hidden`}
@@ -95,7 +163,7 @@ function ProductSection(props: productInterface) {
           >
             <i className="fa-solid fa-chevron-right"></i>
           </Button>
-        </div> */}
+        </div>
       </div>
 
       <div className="z-30 w-full mx-auto">
@@ -108,10 +176,10 @@ function ProductSection(props: productInterface) {
           />
         </div>
 
-        <div className="prodrow">
+        <Slider ref={slide} {...settings}>
           {products.map((item, index) => {
             return (
-              <div key={index} className="col-prod">
+              <div key={index} className={`${props?.class} z-10 `}>
                 <ProductCard
                   isLast={index === products.length - 1}
                   nextPage={nextPage}
@@ -119,7 +187,7 @@ function ProductSection(props: productInterface) {
                   type={props.type}
                   class={
                     products.length != index + 1
-                      ? ''
+                      ? 'rtl:mr-0 rtl:ml-4 ltr:mr-4 ltr:ml-0'
                       : ''
                   }
                   dir={`${lang?.dir}`}
@@ -134,10 +202,10 @@ function ProductSection(props: productInterface) {
           ) : (
             ''
           )}
-      </div>
+        </Slider>
       </div>
     </div>
   );
 }
 
-export default ProductSection;
+export default ProductSectionOld;

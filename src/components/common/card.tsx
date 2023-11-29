@@ -25,6 +25,7 @@ export default function ProductCard(props: CardInterface) {
   const cardRef = useRef<HTMLDivElement>(null);
   const { lang } = useSelector((state: RootState) => state.layout);
 
+
   /**
    * Implement Intersection Observer to check if the last Card in the array is visible on the screen, then set a new limit
    */
@@ -130,8 +131,8 @@ export default function ProductCard(props: CardInterface) {
               />
             </div>
             <div className="font-bold overflow-hidden h-14 md:h-16 text-base lg:text-xl line-clamp-1">
-              {langContent[lang.lang].Index.productcard.WIN_TITLE ?? ''}
-              <span className="text-gray-200  font-semibold mx-2 ">
+              {/* {langContent[lang.lang].Index.productcard.WIN_TITLE ?? ''} */}
+              <span className="text-gray-200  font-semibold">
                 {props?.data?.EventDescription[0]?.name}
               </span>
             </div>
@@ -161,9 +162,8 @@ export default function ProductCard(props: CardInterface) {
                 variant="rounded"
                 className="font-[700] sm:font-[800] tracking-tight text-md text-sm md:text-base xl:text-lg h-8 md:h-10"
               >
-
-                {
-                  (Number(props?.data?.tickets_sold) / Number(props?.data?.total_tickets)) * 100 === 100 ?
+                { 
+                  (props && props.data && props.data.draw_date !== null) || ((Number(props?.data?.tickets_sold) / Number(props?.data?.total_tickets)) * 100 === 100) ?
                     langContent[lang.lang].Index.productcard.VIEW_BTN
                     :
                     langContent[lang.lang].Index.productcard.ENTER_BTN

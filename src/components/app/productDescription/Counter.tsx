@@ -9,9 +9,10 @@ import { useToast } from '~/components/ui/use-toast';
 import { addToCart } from '~/store/reducers/cart';
 import { URIDecoder } from '~/utils/helper';
 import langContent from '~/locales';
+import { useEffect } from 'react';
 
 interface CounterProps {
-  range: number[];
+  range: any;
   setRange: React.Dispatch<React.SetStateAction<number[]>>;
   user_ticket_limit: number;
   ticketInBasket: { current: number };
@@ -30,7 +31,6 @@ export default function Counter(props: CounterProps) {
     event,
     perCustomerLimit,
   } = props;
-
   const { user, isLogin } = useSelector((state: RootState) => state.auth);
   const { lang } = useSelector((state: RootState) => state.layout);
   const { cart } = useSelector((state: RootState) => state.cart);
@@ -51,7 +51,7 @@ export default function Counter(props: CounterProps) {
       cart_id: cart?.id ?? 0,
       event_id: eventId,
       is_subscribe: cartItem?.is_subscribe ?? false,
-      quantity: range[0] ?? 0,
+      quantity: parseInt(range) ?? 0,
     };
 
     const eventCartData = cart?.cartItems?.map((event) => ({
@@ -133,6 +133,12 @@ export default function Counter(props: CounterProps) {
   }
 
   const price = +(range[0] as number) * event?.price;
+  // const price = +(range) * event?.price;
+
+
+  useEffect(()=>{
+    console.log(range,'yyy');
+  })
 
   return (
     <div className="relative">

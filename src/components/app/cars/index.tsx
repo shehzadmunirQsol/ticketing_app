@@ -55,16 +55,18 @@ const CarsPage = () => {
       {/* this div below ↓ it to add spacing to avoid header */}
       <div className="relative pt-24"></div>
       <FeaturedCars />
-      <div className=" h-full px-4 space-y-8 py-14 md:px-14 md:space-y-12 md:py-20">
+      <div className="h-full  space-y-8 py-8 md:py-14 px-4 md:px-14 md:space-y-12 md:py-20">
         <div className="relative">
           <p className="hidden slg:block pb-6 text-2xl md:text-5xl tracking-tighter font-extrabold text-white ">
             {langContent[lang.lang].Cars.HEADING}
           </p>
 
-          {/* <div>
-            <span onClick={() => setCardView('cardview')}>Card View</span>
-            <span onClick={() => setCardView('listview')}>List View</span>
-          </div> */}
+          <div className="block slg:hidden">
+          <div className="flex justify-end listtabs mb-4">
+            <span className={`tabbtn ${cardView === 'cardview' ? 'active' : ''}`} onClick={() => setCardView('cardview')}><i className="fa-regular fa-square-full"></i></span>
+            <span className={`tabbtn ml-3 ${cardView === 'listview' ? 'active' : ''}`} onClick={() => setCardView('listview')}><i className="fa-solid fa-align-justify"></i></span>
+          </div>
+          </div>
 
           <Glow className="absolute  top-1/2 -left-16 w-1/5 h-[350px] overflow-hidden " />
           <Glow className="absolute  bottom-0 -right-16 w-1/5 h-[350px] overflow-hidden " />
@@ -81,14 +83,14 @@ const CarsPage = () => {
                         nextPage={nextPage}
                         dir={lang.dir}
                         data={itemList}
-                        class="z-50 "
+                        class="z-50"
                       />
                     </div>
                   );
                 })}
               </div>
               :
-              <div className="justify-between mx-auto">
+              <div className="listviewbx grid gap-5 md:gap-6 grid-cols-1 sm:grid-cols-2 z-40 justify-between mx-auto">
                 {products?.map((itemList, i) => {
                   return (
                     <div className="z-40" key={itemList?.id}>
@@ -97,7 +99,7 @@ const CarsPage = () => {
                         nextPage={nextPage}
                         dir={lang.dir}
                         data={itemList}
-                        class="z-50 "
+                        class="z-50"
                       />
                     </div>
                   );
@@ -105,33 +107,6 @@ const CarsPage = () => {
               </div>
           }
 
-          {/* <div className="grid gap-8 md:gap-6 grid-cols-1 sm:grid-cols-2 z-40 lg:grid-cols-3 justify-between mx-auto ">
-            {products?.map((itemList, i) => {
-              return (
-                <div className="z-40" key={itemList?.id}>
-                  {
-                    cardView === "cardview" ?
-                      <ProductCard
-                        isLast={i === products.length - 1}
-                        nextPage={nextPage}
-                        dir={lang.dir}
-                        data={itemList}
-                        class="z-50 "
-                      />
-                    :
-                      <ProductListCard
-                        isLast={i === products.length - 1}
-                        nextPage={nextPage}
-                        dir={lang.dir}
-                        data={itemList}
-                        class="z-50 "
-                      />
-                  }
-                  
-                </div>
-              );
-            })}
-          </div> */}
 
           {products.length != prductsList?.count ? (
             <div className="w-fit mx-auto">

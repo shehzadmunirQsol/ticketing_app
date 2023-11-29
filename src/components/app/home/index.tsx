@@ -17,7 +17,7 @@ export default function Home() {
       <BannerSlider />
 
       {/* product section 1 */}
-      <div className="relative flex flex-col gap-6 px-4 py-14 md:gap-14 md:px-14">
+      <div className="relative flex flex-col gap-6 md:gap-14 px-4 md:px-14 py-4 md:py-14">
         {/* 13 cards */}
         <ProductSection
           class="mx-auto w-3/5 md:w-full"
@@ -40,6 +40,7 @@ export default function Home() {
           breakpointScreens={[1350, 1050, 800]}
         />
       </div>
+      
       <CategorySection />
       <HowtoSection />
       <WhyChoose />
