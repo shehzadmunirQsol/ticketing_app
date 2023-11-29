@@ -145,7 +145,7 @@ export function ViewContentDialog(props: ViewContentDialogTypes) {
         open={props?.type?.length > 0}
         onOpenChange={() => props.setType('')}
       >
-        <DialogContent className="max-h-[50vh] h-[calc(100%-200px)] max-w-xl md:max-w-[768px] overflow-y-hidden scroll-hide p-2">
+        <DialogContent className="h-[60vh] max-w-xl md:max-w-[768px] overflow-y-hidden scroll-hide p-2">
         <ScrollArea className="h-100">
           <ScrollBar orientation="vertical"></ScrollBar>
           <DialogHeader>

@@ -1390,6 +1390,21 @@ form label + * {
   margin-bottom: -5px;
   font-size: 16px;
 }
+div[role="dialog"] > button {
+  background-color: #23d1b1;
+  opacity: 1 !important;
+  padding: 4px !important;
+  right: 8px !important;
+  top: 8px !important;
+  z-index: 9;
+}
+div[role="dialog"] > button:hover {
+  opacity: 0.9 !important;
+}
+div[role="dialog"] > button:focus {
+  outline: none !important;
+  --tw-ring-offset-width: 0 !important;
+}
 /* Desktop */
 
 

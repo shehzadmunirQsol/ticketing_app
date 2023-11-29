@@ -166,7 +166,14 @@ export default function CartItem(props: CartItemProp) {
     <div data-name="card" className="py-2 mdx:py-2 border-t border-white/40">
       <div className="mb-2 flex items-center justify-between mdx:hidden">
         <p className="text-xl font-bold">
+          <Link
+            href={`/${categoryRoute}/${URIGenerator(
+              cartItem?.Event?.EventDescription[0]?.name ?? '',
+              cartItem?.event_id,
+            )}`}
+          >
           {cartItem?.Event?.EventDescription[0]?.name}
+          </Link>
         </p>
         <i
           onClick={() => setIsModal((preModal) => !preModal)}
@@ -176,12 +183,19 @@ export default function CartItem(props: CartItemProp) {
 
       <div className="flex items-center justify-between">
         <div className="relative mr-3 md:mr-10 min-w-[140px] min-h-[90px] mdx:min-w-[176px] mdx:min-h-[112px]">
+        <Link
+            href={`/${categoryRoute}/${URIGenerator(
+              cartItem?.Event?.EventDescription[0]?.name ?? '',
+              cartItem?.event_id,
+            )}`}
+          >
           <NextImage
             src={renderNFTImage({ thumb: cartItem.Event.thumb })}
             fill
             alt={'car image'}
             className="w-full h-full absolute object-contain"
           />
+          </Link>
           {/* <div className="p-1 w-12 h-12 rounded-full overflow-hidden absolute top-[30%] -right-6 bg-gradient-to-b from-primary to-neutral-900">
             <NextImage
               src={BottleImage}

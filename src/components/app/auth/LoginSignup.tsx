@@ -655,7 +655,7 @@ export default function LoginSignup() {
                     {langContent[lang.lang].Auth.REGISTER_INFO}{' '}
                     <span
                       onClick={() => setCMSType('privacy-policy')}
-                      className="text-white underline "
+                      className="text-white underline cursor-pointer"
                     >
                       {' '}
                       {langContent[lang.lang].Auth.REGISTER_SUB_INFO}{' '}
@@ -684,7 +684,9 @@ export default function LoginSignup() {
         setOtpIsModal={setOtpIsModal}
         emailOrUser={formLogin.getValues('user') || (user ?? '')}
       />
+
       <ViewContentDialog type={CMSType} setType={setCMSType} />
+      
     </section>
   );
 }

@@ -21,6 +21,11 @@ interface LinkItemProps {
   icon: string;
   disable?: boolean;
 }
+
+const bottlePrice = 0.25;
+const totalSoldTickets = 200000;
+const charityAmount = (totalSoldTickets * bottlePrice).toLocaleString();
+
 function Footer() {
   const { lang } = useSelector((state: RootState) => state.layout);
   const router = useRouter();
@@ -42,20 +47,12 @@ function Footer() {
         </div>
         <div className="relative">
           <div className="relative p-4 py-6 md:px-14 md:py-14">
-            <div className="sm:flex sm:justify-between ">
-              <div className="mb-6 md:mb-0 flex flex-col gap-6 md:gap-8 w-100 sm:w-[300px] lg:w-[360px]">
+            <div className="sm:flex sm:flex-row-reverse sm:justify-between sm:items-center mb-4 md:mb-8">
+              <div className="w-100 sm:w-[300px] lg:w-[360px]">
+                <p className="text-gray-200 text-base md:text-lg font-semibold leading-[18px] mb-4 md:mb-0">Charitable Contribution: <span className="text-primary">AED {charityAmount}</span></p>
+              </div>
+              <div className="flex flex-col gap-6 md:gap-8 w-100 sm:w-[300px] lg:w-[360px]">
                 <div>
-                  {/* <Button
-                    variant="rounded-outline"
-                    className="z-30 font-bold bg-transparent min-w-max "
-                    onClick={() => { router.push("https://bdc4c4ca.sibforms.com/serve/MUIFAM1e-fZfnXl_ZoAGyLbE2vO-dB_qtovXSlb52nP7BXPR5bjPlLtbMAYS3gwKqMo1BAbEAHnopSyyntSfymgYib7FkxJ85zHDX6h_8TKpFb1UjrMFK_Hjm2HFqozFIIf-m_2RfEEKiurCXjBtZkpbK6wL-n48VpeJBjDwQggOQ-UYU7GHx0Nzzu1BAmj0Rg3cswAawX5IfFDn") }}
-                  >
-                    <div>
-                      {langContent[lang.lang].Footer.SUBSCRIBE_BTN}
-                      &nbsp;
-                      <i className="fa-solid fa-arrow-right -rotate-45 "></i>
-                    </div>
-                  </Button> */}
                   <Button
                     variant="rounded-outline"
                     className="z-30 font-bold bg-transparent min-w-max "
@@ -68,6 +65,10 @@ function Footer() {
                     </div>
                   </Button>
                 </div>
+              </div>
+            </div>
+            <div className="sm:flex sm:justify-between ">
+              <div className="mb-6 md:mb-0 flex flex-col gap-6 md:gap-8 w-100 sm:w-[300px] lg:w-[360px]">
                 <div className="w-full opacity-75 text-sm text-colorGray  ">
                   <p>{langContent[lang.lang].Footer.ADDRESS_TITLE}</p>
                   <p>{langContent[lang.lang].Footer.ADDRESS_SUB_TITLE}</p>

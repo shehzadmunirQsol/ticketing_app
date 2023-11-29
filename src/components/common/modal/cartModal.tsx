@@ -103,7 +103,7 @@ export function RemoveItemDialog(props: SettingDialogInterface) {
     <Dialog open={props?.isModal} onOpenChange={props.openChangeHandler}>
       <DialogContent className="">
         <DialogHeader>
-          <DialogTitle>Remove Item</DialogTitle>
+          <DialogTitle>Remove Raffle</DialogTitle>
           <DialogDescription>
             <p className="text-lg">
               Are you sure, you want to remove{' '}
@@ -112,12 +112,13 @@ export function RemoveItemDialog(props: SettingDialogInterface) {
             </p>
           </DialogDescription>
         </DialogHeader>
-        <DialogFooter>
+        <div className="flex justify-end">
           <Button
             variant={'secondary'}
             type="button"
             onClick={props.openChangeHandler}
             disabled={removeCartItem.isLoading}
+            className="text-sm md:text-base h-8 md:h-10"
           >
             Cancel
           </Button>
@@ -125,10 +126,11 @@ export function RemoveItemDialog(props: SettingDialogInterface) {
             type="submit"
             onClick={removeItemHandler}
             disabled={removeCartItem.isLoading}
+            className="mb-3 ml-3 text-sm md:text-base h-8 md:h-10"
           >
             Remove
           </Button>
-        </DialogFooter>
+        </div>
       </DialogContent>
     </Dialog>
   );
