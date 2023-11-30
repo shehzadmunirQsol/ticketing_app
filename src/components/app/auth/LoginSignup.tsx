@@ -203,6 +203,13 @@ export default function LoginSignup() {
     today.getDate(),
   );
 
+  const [showMessage, setShowMessage] = useState(false);
+
+  const handleBlur = (event: { target: { value: any; }; }) => {
+    const inputValue = event.target.value;
+    setShowMessage(inputValue && inputValue.charAt(0) === '0');
+  };
+
   // Format the minimum date as "YYYY-MM-DD" for the input field
   const minDateFormatted = minDate.toISOString().split('T')[0];
   return (
@@ -440,17 +447,18 @@ export default function LoginSignup() {
                           control={formSignup.control}
                           name="phone_number"
                           render={({ field }) => (
-                            <FormItem className=" w-full">
-                              <FormControl className="rounded-md ">
+                            <FormItem className="w-full">
+                              <FormControl className="rounded-md">
                                 <Input
                                   min={0}
                                   type="number"
                                   className="w-full"
                                   {...field}
+                                  onBlur={handleBlur}
                                 />
                               </FormControl>
-
                               <div className="relative pb-2 errormsg">
+                              {showMessage && <span className='font-medium text-destructive text-xs'>Input value starts with zero!</span>}
                                 <FormMessage />
                               </div>
                             </FormItem>
@@ -686,7 +694,7 @@ export default function LoginSignup() {
       />
 
       <ViewContentDialog type={CMSType} setType={setCMSType} />
-      
+
     </section>
   );
 }

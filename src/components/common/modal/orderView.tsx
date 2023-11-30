@@ -76,7 +76,7 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
     lang_id: 1,
   });
 
-  
+
   const { data: OrderApiData, isFetching } = trpc.order.getByID.useQuery(
 
     { order_id: props?.selectedItem?.id, lang_id: lang.lang_id },
@@ -85,7 +85,7 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
       enabled: props?.selectedItem?.id ? true : false,
     },
   );
-    
+
 
   const orderRoute = () => {
     if (router.asPath === '/admin/orders') {
@@ -94,8 +94,9 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
       return `/order-view/${props?.selectedItem?.id}`;
     }
   };
- 
-  
+
+
+
   return (
     <>
       <Dialog open={props?.isModal} onOpenChange={(e) => props.setIsModal(e)}>
@@ -228,7 +229,7 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
       </Dialog>
       <ViewTickets
         selectedOrderEvent={selectedOrderEvent}
-        setSelectedOrderEvent={setSelectedOrderEvent} filters={filters} setFilters={setFilters}  />
+        setSelectedOrderEvent={setSelectedOrderEvent} filters={filters} setFilters={setFilters} />
       <LoadingDialog open={isFetching} text={'Loading data...'} />
     </>
   );
@@ -241,7 +242,7 @@ type ViewTicketsType = {
   setFilters: any;
 };
 
-export function ViewTickets(props: ViewTicketsType ) {
+export function ViewTickets(props: ViewTicketsType) {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -250,10 +251,10 @@ export function ViewTickets(props: ViewTicketsType ) {
   const [type, setType] = useState('');
   const [isModal, setIsModal] = useState(false);
   const { user } = useSelector((state: RootState) => state.auth);
- 
+
   const router = useRouter();
 
-  const {data: eventTickets, isFetching } = trpc.eventTicket.get.useQuery(
+  const { data: eventTickets, isFetching } = trpc.eventTicket.get.useQuery(
     {
       event_id: props?.selectedOrderEvent?.Event?.id,
       order_event_id: props?.selectedOrderEvent?.id,
@@ -263,8 +264,12 @@ export function ViewTickets(props: ViewTicketsType ) {
       enabled: props?.selectedOrderEvent?.Event?.id ? true : false,
     },
   );
- 
-   function closeHandler() {
+
+  useEffect(() => {
+    console.log(props.setSelectedOrderEvent, props.selectedOrderEvent, 'hhhh');
+  })
+
+  function closeHandler() {
     props?.setSelectedOrderEvent({});
   }
 
@@ -360,20 +365,20 @@ export function ViewTickets(props: ViewTicketsType ) {
       enableHiding: false,
       cell: ({ row }) => {
         return (
-         
-        <div className="winbtn winbtnormal smallbtn font-sans capitalize text-ellipsis whitespace-nowrap" onClick={() => handleView(row?.original, 'view')}>
-        Order Detail
-        </div>
+
+          <div className="winbtn winbtnormal smallbtn font-sans capitalize text-ellipsis whitespace-nowrap" onClick={() => handleView(row?.original, 'view')}>
+            Order Detail
+          </div>
         );
       },
     },
   ];
-  
+
   const orderData = React.useMemo(() => {
     console.log("tabledata", eventTickets)
     return Array.isArray(eventTickets?.data) ? eventTickets?.data : [];
   }, [eventTickets]);
-  
+
   const table = useReactTable({
     data: orderData as unknown as Category[],
     columns,
@@ -396,7 +401,12 @@ export function ViewTickets(props: ViewTicketsType ) {
     const zerosToAdd = Math.max(6 - numDigits, 0);
     return '0'.repeat(zerosToAdd) + ticketNum;
   }
-  
+  useEffect(() => {
+    console.log(props?.selectedOrderEvent?.Event?.EventDescription[0]
+      ?.name, 'rrrr');
+
+  })
+
   return (
     <>
       <Dialog
@@ -449,11 +459,26 @@ export function ViewTickets(props: ViewTicketsType ) {
                         }
                       </h3>
                       <div className="grid grid-cols-4 gap-2 md:grid-cols-6">
-                      {eventTickets?.data?.map((eventTicket) => (
-                          <p className={`w-20`} key={eventTicket?.ticket_num}>
-                            CR-{padTicketNum(eventTicket?.ticket_num)}
-                          </p>
-                        ))}
+                        {props?.selectedOrderEvent?.Event?.EventDescription[0]?.name?.Money ? (
+                          eventTickets?.data
+                            ?.slice()
+                            .sort(() => Math.random() - 0.5)
+                            .map((eventTicket) => (
+                              <p className={`w-20`} key={eventTicket?.ticket_num}>
+                                CR-{padTicketNum(eventTicket?.ticket_num)}
+                              </p>
+                            ))
+                        ) : (
+                          eventTickets?.data
+                            ?.slice()
+                            .sort(() => Math.random() - 0.5)
+                            .map((eventTicket) => (
+                              <p className={`w-20`} key={eventTicket?.ticket_num}>
+                                CA-{padTicketNum(eventTicket?.ticket_num)}
+                              </p>
+                            ))
+                        )}
+
                       </div>
                     </div>
                   ) : (
@@ -466,94 +491,94 @@ export function ViewTickets(props: ViewTicketsType ) {
             </DialogDescription>
             {/* {eventTickets?.count && eventTickets.count > 500 && ( */}
             <div className={`flex flex-col md:flex-row gap-2 items-center justify-center md:justify-end md:space-x-2 py-4 }`}>
-            {eventTickets?.count && (
-              <div className="flex-1 flex w-[100px] items-center justify-start text-sm font-medium">
-                Page {props?.filters?.first + 1} of{' '}
-                {Math.ceil(eventTickets?.count / props?.filters?.rows)}
-              </div>
-            )}
-            <div className="flex flex-col md:flex-row items-center justify-center gap-2 md:space-x-6 lg:space-x-8">
-              <div className="flex items-center space-x-2">
-                <p className="text-sm font-medium">Rows per page</p>
-                <Select
-                  value={`${props?.filters?.rows}`}
-                  onValueChange={(value) => {
-                    props?.setFilters((prevFilters: any) => ({
-                      ...prevFilters,
-                      rows: Number(value),
-                      first: 0,
-                    }));
-                    table.setPageSize(Number(value));
-                  }}
-                >
-                  <SelectTrigger className="h-8 w-[70px]">
-                    <SelectValue placeholder={props?.filters?.rows} />
-                  </SelectTrigger>
-                  <SelectContent side="top">
-                    {[5, 10, 20, 30, 40, 50].map((pageSize) => (
-                      <SelectItem key={pageSize} value={`${pageSize}`}>
-                        {pageSize}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+              {eventTickets?.count && (
+                <div className="flex-1 flex w-[100px] items-center justify-start text-sm font-medium">
+                  Page {props?.filters?.first + 1} of{' '}
+                  {Math.ceil(eventTickets?.count / props?.filters?.rows)}
+                </div>
+              )}
+              <div className="flex flex-col md:flex-row items-center justify-center gap-2 md:space-x-6 lg:space-x-8">
+                <div className="flex items-center space-x-2">
+                  <p className="text-sm font-medium">Rows per page</p>
+                  <Select
+                    value={`${props?.filters?.rows}`}
+                    onValueChange={(value) => {
+                      props?.setFilters((prevFilters: any) => ({
+                        ...prevFilters,
+                        rows: Number(value),
+                        first: 0,
+                      }));
+                      table.setPageSize(Number(value));
+                    }}
+                  >
+                    <SelectTrigger className="h-8 w-[70px]">
+                      <SelectValue placeholder={props?.filters?.rows} />
+                    </SelectTrigger>
+                    <SelectContent side="top">
+                      {[5, 10, 20, 30, 40, 50].map((pageSize) => (
+                        <SelectItem key={pageSize} value={`${pageSize}`}>
+                          {pageSize}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
 
-              <div className="flex items-center justify-center gap-2 md:space-x-2">
-                <Button
-                  variant="outline"
-                  className="hidden h-8 w-8 p-0 lg:flex"
-                  onClick={() => handlePagination(0)}
-                  disabled={props?.filters?.first === 0}
-                >
-                  <span className="sr-only">Go to first page</span>
-                  <DoubleArrowLeftIcon className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant="outline"
-                  className="h-8 w-8 p-0"
-                  onClick={() => handlePagination(props?.filters?.first - 1)}
-                  disabled={props?.filters?.first === 0}
-                >
-                  <span className="sr-only">Go to previous page</span>
-                  <ChevronLeftIcon className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant="outline"
-                  className="h-8 w-8 p-0"
-                  onClick={() => handlePagination(props?.filters?.first + 1)}
-                  disabled={
-                    (props?.filters?.first + 1) * props?.filters?.rows >
+                <div className="flex items-center justify-center gap-2 md:space-x-2">
+                  <Button
+                    variant="outline"
+                    className="hidden h-8 w-8 p-0 lg:flex"
+                    onClick={() => handlePagination(0)}
+                    disabled={props?.filters?.first === 0}
+                  >
+                    <span className="sr-only">Go to first page</span>
+                    <DoubleArrowLeftIcon className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="h-8 w-8 p-0"
+                    onClick={() => handlePagination(props?.filters?.first - 1)}
+                    disabled={props?.filters?.first === 0}
+                  >
+                    <span className="sr-only">Go to previous page</span>
+                    <ChevronLeftIcon className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="h-8 w-8 p-0"
+                    onClick={() => handlePagination(props?.filters?.first + 1)}
+                    disabled={
+                      (props?.filters?.first + 1) * props?.filters?.rows >
                       (eventTickets?.count || 0) ||
-                    Math.ceil((eventTickets?.count ?? 0) / props?.filters?.rows) ==
+                      Math.ceil((eventTickets?.count ?? 0) / props?.filters?.rows) ==
                       props?.filters?.first + 1
-                  }
-                >
-                  <span className="sr-only">Go to next page</span>
-                  <ChevronRightIcon className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant="outline"
-                  className="hidden h-8 w-8 p-0 lg:flex"
-                  onClick={() =>
-                    handlePagination(
-                      Math.ceil((eventTickets?.count ?? 0) / props?.filters?.rows) - 1,
-                    )
-                  }
-                  disabled={
-                    (props?.filters?.first + 1) * props?.filters?.rows >
+                    }
+                  >
+                    <span className="sr-only">Go to next page</span>
+                    <ChevronRightIcon className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="hidden h-8 w-8 p-0 lg:flex"
+                    onClick={() =>
+                      handlePagination(
+                        Math.ceil((eventTickets?.count ?? 0) / props?.filters?.rows) - 1,
+                      )
+                    }
+                    disabled={
+                      (props?.filters?.first + 1) * props?.filters?.rows >
                       (eventTickets?.count || 0) ||
-                    Math.ceil((eventTickets?.count ?? 0) / props?.filters?.rows) ==
+                      Math.ceil((eventTickets?.count ?? 0) / props?.filters?.rows) ==
                       props?.filters?.first + 1
-                  }
-                >
-                  <span className="sr-only">Go to last page</span>
-                  <DoubleArrowRightIcon className="h-4 w-4" />
-                </Button>
+                    }
+                  >
+                    <span className="sr-only">Go to last page</span>
+                    <DoubleArrowRightIcon className="h-4 w-4" />
+                  </Button>
+                </div>
               </div>
             </div>
-          </div>
-          {/* )} */}
+            {/* )} */}
           </ScrollArea>
         </DialogContent>
       </Dialog>

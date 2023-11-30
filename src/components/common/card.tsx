@@ -42,6 +42,11 @@ export default function ProductCard(props: CardInterface) {
     observer.observe(cardRef.current);
   }, [props?.isLast]);
 
+  useEffect(() => {
+    console.log(isLastDay, 'aaa');
+
+  })
+
   const spaceElement = props?.isCash ? null : (
     <div className="h-8 xl:h-9 hidden md:block" />
   );
@@ -52,10 +57,7 @@ export default function ProductCard(props: CardInterface) {
 
   const categoryRoute = props?.data?.category_id === 1 ? 'cars' : 'cash';
 
-  useEffect(()=>{
-    console.log(props.type,'ddd');
-    
-  })
+  
 
   return (
     props?.data && (
@@ -168,7 +170,7 @@ export default function ProductCard(props: CardInterface) {
                 className="font-[700] sm:font-[800] tracking-tight text-md text-sm md:text-base xl:text-lg h-8 md:h-10"
               >
                 {
-                  ( props.type == "drawn" || props.type == "upcoming") ?
+                  (props.type == "drawn" || props.type == "upcoming") ?
                     langContent[lang.lang].Index.productcard.VIEW_BTN
                     :
                     langContent[lang.lang].Index.productcard.ENTER_BTN
