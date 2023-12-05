@@ -247,7 +247,7 @@ export default function CartItem(props: CartItemProp) {
                 </Button>
                 {/* <p className="w-16 text-center text-base md:text-lg">{cartitemquantity}</p> */}
                 <input
-                  className="w-16 text-center text-base md:text-lg"
+                  className="w-16 h-10 text-center text-base md:text-lg bg-card qtyinput"
                   type="number"
                   value={cartitemquantity}
                   onChange={(event) => setcartitemquantity(parseInt(event.target.value))}
