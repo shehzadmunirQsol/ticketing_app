@@ -1397,6 +1397,7 @@ div[role="dialog"] > button {
   right: 8px !important;
   top: 8px !important;
   z-index: 9;
+  color: hsl(var(--primary-foreground));
 }
 div[role="dialog"] > button:hover {
   opacity: 0.9 !important;
