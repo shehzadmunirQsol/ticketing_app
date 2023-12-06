@@ -66,7 +66,7 @@ interface OrderViewDialogInterface {
 
 
 
-export function OrderViewDialog(props: any) {
+export function OrderViewDialog(props: OrderViewDialogInterface) {
   const router = useRouter();
   const { lang } = useSelector((state: RootState) => state.layout);
   const [selectedOrderEvent, setSelectedOrderEvent] = useState<any>({});

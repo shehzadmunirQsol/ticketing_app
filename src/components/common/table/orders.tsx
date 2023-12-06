@@ -528,8 +528,7 @@ export default function OrdersDataTable() {
         isModal={isModal}
         setIsModal={setIsModal}
         type={type}
-        setType={setType}
-      />
+        setType={setType} setFilters={setFilters} filters={filters}      />
       <LoadingDialog open={isLoading} text={'Loading data...'} />
     </div>
   );
