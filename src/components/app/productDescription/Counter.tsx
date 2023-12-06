@@ -118,10 +118,12 @@ export default function Counter(props: CounterProps) {
 
         sendinblue?.track(
           'cart_updated' /*mandatory*/,
-          JSON.stringify({ email: user?.email }) /*user data optional*/,
-          JSON.stringify({
+          ({ email: user?.email }) /*user data optional*/,
+          ({
             cart_id: cart.id,
-            data: eventCartData,
+            data: {    
+              "items":eventCartData
+          },
           }) /*optional*/,
         ) as any;
       }

@@ -16,9 +16,44 @@ import { Button } from '~/components/ui/button';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import NextImage from '~/components/ui/img';
-import { useState } from 'react';
+// import { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import {
+  DoubleArrowLeftIcon,
+  DoubleArrowRightIcon,
+} from '@radix-ui/react-icons';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '~/components/ui/select';
+import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
+import {
+  ColumnDef,
+  SortingState,
+  VisibilityState,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
+} from '@tanstack/react-table';
+export type Category = {
+  id: number;
+  total_amount: number;
+  discount_amount: number;
+  sub_total_amount: number;
+  created_at: Date;
+};
+
+
 
 interface OrderViewDialogInterface {
+  setFilters: any;
+  filters: any;
   selectedItem: any;
   isModal: boolean;
   title: string;
@@ -29,18 +64,28 @@ interface OrderViewDialogInterface {
   setType: any;
 }
 
+
+
 export function OrderViewDialog(props: OrderViewDialogInterface) {
   const router = useRouter();
   const { lang } = useSelector((state: RootState) => state.layout);
   const [selectedOrderEvent, setSelectedOrderEvent] = useState<any>({});
+  const [filters, setFilters] = useState({
+    first: 0,
+    rows: 5,
+    lang_id: 1,
+  });
+
 
   const { data: OrderApiData, isFetching } = trpc.order.getByID.useQuery(
+
     { order_id: props?.selectedItem?.id, lang_id: lang.lang_id },
     {
       refetchOnWindowFocus: false,
       enabled: props?.selectedItem?.id ? true : false,
     },
   );
+
 
   const orderRoute = () => {
     if (router.asPath === '/admin/orders') {
@@ -49,6 +94,8 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
       return `/order-view/${props?.selectedItem?.id}`;
     }
   };
+
+
 
   return (
     <>
@@ -182,8 +229,7 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
       </Dialog>
       <ViewTickets
         selectedOrderEvent={selectedOrderEvent}
-        setSelectedOrderEvent={setSelectedOrderEvent}
-      />
+        setSelectedOrderEvent={setSelectedOrderEvent} filters={filters} setFilters={setFilters} />
       <LoadingDialog open={isFetching} text={'Loading data...'} />
     </>
   );
@@ -192,9 +238,20 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
 type ViewTicketsType = {
   selectedOrderEvent: any;
   setSelectedOrderEvent: any;
+  filters: any;
+  setFilters: any;
 };
 
 export function ViewTickets(props: ViewTicketsType) {
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = useState({});
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [selectedItem, setSelectedItem] = useState({});
+  const [title, setTitle] = useState('');
+  const [type, setType] = useState('');
+  const [isModal, setIsModal] = useState(false);
+  const { user } = useSelector((state: RootState) => state.auth);
+
   const router = useRouter();
 
   const { data: eventTickets, isFetching } = trpc.eventTicket.get.useQuery(
@@ -207,6 +264,10 @@ export function ViewTickets(props: ViewTicketsType) {
       enabled: props?.selectedOrderEvent?.Event?.id ? true : false,
     },
   );
+
+  useEffect(() => {
+    console.log(props.setSelectedOrderEvent, props.selectedOrderEvent, 'hhhh');
+  })
 
   function closeHandler() {
     props?.setSelectedOrderEvent({});
@@ -233,6 +294,118 @@ export function ViewTickets(props: ViewTicketsType) {
       return `/tickets-view`;
     }
   };
+
+  function handlePagination(page: number) {
+    if (page < 0) return;
+    props?.setFilters((prevFilters: any) => ({ ...prevFilters, first: page }));
+  }
+
+
+  const handleView = (data: any, type: string) => {
+    setSelectedItem(data);
+    setTitle('Banner');
+    setType(type);
+    setIsModal(true);
+  };
+  const columns: ColumnDef<Category>[] = [
+    {
+      accessorKey: 'ID',
+      header: 'Order ID',
+      cell: ({ row }) => (
+        <div className="capitalize text-ellipsis whitespace-nowrap cursor-pointer underline" onClick={() => handleView(row?.original, 'view')}>
+          #{row?.original.id}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'Sub Total',
+      header: 'Sub Total',
+      cell: ({ row }) => (
+        <div className="capitalize text-ellipsis whitespace-nowrap ">
+          AED {(row?.original?.sub_total_amount).toFixed(2)}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'Discount',
+      header: 'Discount',
+      cell: ({ row }) => (
+        <div className="capitalize text-ellipsis whitespace-nowrap ">
+          {' '}
+          {row?.original?.discount_amount > 0
+            ? 'AED ' + (row?.original?.discount_amount).toFixed(2)
+            : 'N/A'}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'Total Amount',
+      header: 'Total Amount',
+      cell: ({ row }) => (
+        <div className="capitalize text-ellipsis whitespace-nowrap w-28">
+          {' '}
+          {row?.original?.total_amount > 0
+            ? 'AED ' + (row?.original?.total_amount).toFixed(2)
+            : 'N/A'}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'Created At',
+      header: 'Date',
+      cell: ({ row }) => (
+        <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
+          {displayDate(row?.original?.created_at)}
+        </div>
+      ),
+    },
+    {
+      id: 'actions',
+      header: 'Order Detail',
+      enableHiding: false,
+      cell: ({ row }) => {
+        return (
+
+          <div className="winbtn winbtnormal smallbtn font-sans capitalize text-ellipsis whitespace-nowrap" onClick={() => handleView(row?.original, 'view')}>
+            Order Detail
+          </div>
+        );
+      },
+    },
+  ];
+
+  const orderData = React.useMemo(() => {
+    console.log("tabledata", eventTickets)
+    return Array.isArray(eventTickets?.data) ? eventTickets?.data : [];
+  }, [eventTickets]);
+
+  const table = useReactTable({
+    data: orderData as unknown as Category[],
+    columns,
+    onSortingChange: setSorting,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    onColumnVisibilityChange: setColumnVisibility,
+    onRowSelectionChange: setRowSelection,
+    state: {
+      sorting,
+      columnVisibility,
+      rowSelection,
+    },
+  });
+
+  function padTicketNum(ticketNum: string | number) {
+    const numDigits = ticketNum.toString().length;
+    const zerosToAdd = Math.max(6 - numDigits, 0);
+    return '0'.repeat(zerosToAdd) + ticketNum;
+  }
+  useEffect(() => {
+    console.log(props?.selectedOrderEvent?.Event?.EventDescription[0]
+      ?.name, 'rrrr');
+
+  })
 
   return (
     <>
@@ -286,11 +459,26 @@ export function ViewTickets(props: ViewTicketsType) {
                         }
                       </h3>
                       <div className="grid grid-cols-4 gap-2 md:grid-cols-6">
-                        {eventTickets?.data?.map((eventTicket) => (
-                          <p className={`w-20`} key={eventTicket?.ticket_num}>
-                            #{eventTicket?.ticket_num}
-                          </p>
-                        ))}
+                        {props?.selectedOrderEvent?.Event?.EventDescription[0]?.name?.Money ? (
+                          eventTickets?.data
+                            ?.slice()
+                            .sort(() => Math.random() - 0.5)
+                            .map((eventTicket) => (
+                              <p className={`w-20`} key={eventTicket?.ticket_num}>
+                                CR-{padTicketNum(eventTicket?.ticket_num)}
+                              </p>
+                            ))
+                        ) : (
+                          eventTickets?.data
+                            ?.slice()
+                            .sort(() => Math.random() - 0.5)
+                            .map((eventTicket) => (
+                              <p className={`w-20`} key={eventTicket?.ticket_num}>
+                                CA-{padTicketNum(eventTicket?.ticket_num)}
+                              </p>
+                            ))
+                        )}
+
                       </div>
                     </div>
                   ) : (
@@ -301,6 +489,96 @@ export function ViewTickets(props: ViewTicketsType) {
                 </div>
               </div>
             </DialogDescription>
+            {/* {eventTickets?.count && eventTickets.count > 500 && ( */}
+            <div className={`flex flex-col md:flex-row gap-2 items-center justify-center md:justify-end md:space-x-2 py-4 }`}>
+              {eventTickets?.count && (
+                <div className="flex-1 flex w-[100px] items-center justify-start text-sm font-medium">
+                  Page {props?.filters?.first + 1} of{' '}
+                  {Math.ceil(eventTickets?.count / props?.filters?.rows)}
+                </div>
+              )}
+              <div className="flex flex-col md:flex-row items-center justify-center gap-2 md:space-x-6 lg:space-x-8">
+                <div className="flex items-center space-x-2">
+                  <p className="text-sm font-medium">Rows per page</p>
+                  <Select
+                    value={`${props?.filters?.rows}`}
+                    onValueChange={(value) => {
+                      props?.setFilters((prevFilters: any) => ({
+                        ...prevFilters,
+                        rows: Number(value),
+                        first: 0,
+                      }));
+                      table.setPageSize(Number(value));
+                    }}
+                  >
+                    <SelectTrigger className="h-8 w-[70px]">
+                      <SelectValue placeholder={props?.filters?.rows} />
+                    </SelectTrigger>
+                    <SelectContent side="top">
+                      {[5, 10, 20, 30, 40, 50].map((pageSize) => (
+                        <SelectItem key={pageSize} value={`${pageSize}`}>
+                          {pageSize}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="flex items-center justify-center gap-2 md:space-x-2">
+                  <Button
+                    variant="outline"
+                    className="hidden h-8 w-8 p-0 lg:flex"
+                    onClick={() => handlePagination(0)}
+                    disabled={props?.filters?.first === 0}
+                  >
+                    <span className="sr-only">Go to first page</span>
+                    <DoubleArrowLeftIcon className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="h-8 w-8 p-0"
+                    onClick={() => handlePagination(props?.filters?.first - 1)}
+                    disabled={props?.filters?.first === 0}
+                  >
+                    <span className="sr-only">Go to previous page</span>
+                    <ChevronLeftIcon className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="h-8 w-8 p-0"
+                    onClick={() => handlePagination(props?.filters?.first + 1)}
+                    disabled={
+                      (props?.filters?.first + 1) * props?.filters?.rows >
+                      (eventTickets?.count || 0) ||
+                      Math.ceil((eventTickets?.count ?? 0) / props?.filters?.rows) ==
+                      props?.filters?.first + 1
+                    }
+                  >
+                    <span className="sr-only">Go to next page</span>
+                    <ChevronRightIcon className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="hidden h-8 w-8 p-0 lg:flex"
+                    onClick={() =>
+                      handlePagination(
+                        Math.ceil((eventTickets?.count ?? 0) / props?.filters?.rows) - 1,
+                      )
+                    }
+                    disabled={
+                      (props?.filters?.first + 1) * props?.filters?.rows >
+                      (eventTickets?.count || 0) ||
+                      Math.ceil((eventTickets?.count ?? 0) / props?.filters?.rows) ==
+                      props?.filters?.first + 1
+                    }
+                  >
+                    <span className="sr-only">Go to last page</span>
+                    <DoubleArrowRightIcon className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            </div>
+            {/* )} */}
           </ScrollArea>
         </DialogContent>
       </Dialog>

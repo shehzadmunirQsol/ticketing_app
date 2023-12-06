@@ -409,7 +409,7 @@ export const orderRouter = router({
         });
       }
 
-      const totalEventPromise = prisma.order.count({
+      const totalOrderPromise = prisma.order.count({
         where: where,
       });
 
@@ -430,7 +430,7 @@ export const orderRouter = router({
       });
 
       const [totalEvent, event] = await Promise.all([
-        totalEventPromise,
+        totalOrderPromise,
         eventPromise,
       ]);
 

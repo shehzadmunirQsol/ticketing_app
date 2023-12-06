@@ -49,6 +49,7 @@ const CarsPage = () => {
       setFilters({ ...filters, first: ++filters.first });
     }
   }
+  
 
   return (
     <div className="mx-auto  w-full bg-background">
@@ -62,10 +63,10 @@ const CarsPage = () => {
           </p>
 
           <div className="block slg:hidden">
-          <div className="flex justify-end listtabs mb-4">
-            <span className={`tabbtn ${cardView === 'cardview' ? 'active' : ''}`} onClick={() => setCardView('cardview')}><i className="fa-regular fa-square-full"></i></span>
-            <span className={`tabbtn ml-3 ${cardView === 'listview' ? 'active' : ''}`} onClick={() => setCardView('listview')}><i className="fa-solid fa-align-justify"></i></span>
-          </div>
+            <div className="flex justify-end listtabs mb-4">
+              <span className={`tabbtn ${cardView === 'cardview' ? 'active' : ''}`} onClick={() => setCardView('cardview')}><i className="fa-regular fa-square-full"></i></span>
+              <span className={`tabbtn ml-3 ${cardView === 'listview' ? 'active' : ''}`} onClick={() => setCardView('listview')}><i className="fa-solid fa-align-justify"></i></span>
+            </div>
           </div>
 
           <Glow className="absolute  top-1/2 -left-16 w-1/5 h-[350px] overflow-hidden " />
@@ -75,7 +76,7 @@ const CarsPage = () => {
           {
             cardView === "cardview" ?
               <div className="grid gap-8 md:gap-6 grid-cols-1 sm:grid-cols-2 z-40 lg:grid-cols-3 justify-between mx-auto ">
-                {products?.map((itemList, i) => {
+                {/* {products?.map((itemList, i) => {
                   return (
                     <div className="z-40" key={itemList?.id}>
                       <ProductCard
@@ -87,7 +88,33 @@ const CarsPage = () => {
                       />
                     </div>
                   );
-                })}
+                })} */}
+
+                {products
+                  ?.sort((a, b) => {
+                    const isLastDayA =
+                      a?.draw_date === null && a?.end_date
+                        ? a?.end_date?.getTime() <= Date.now() + 24 * 60 * 60 * 1000
+                        : false;
+
+                    const isLastDayB =
+                      b?.draw_date === null && b?.end_date
+                        ? b?.end_date?.getTime() <= Date.now() + 24 * 60 * 60 * 1000
+                        : false;
+
+                    return isLastDayB ? 1 : isLastDayA ? -1 : 0;
+                  })
+                  .map((itemList, i) => (
+                    <div className="z-40" key={itemList?.id}>
+                      <ProductCard
+                        isLast={i === products.length - 1}
+                        nextPage={nextPage}
+                        dir={lang.dir}
+                        data={itemList}
+                        class="z-50"
+                      />
+                    </div>
+                  ))}
               </div>
               :
               <div className="listviewbx grid gap-5 md:gap-6 grid-cols-1 sm:grid-cols-2 z-40 justify-between mx-auto">
