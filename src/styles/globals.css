@@ -1406,7 +1406,7 @@ div[role="dialog"] > button:focus {
   --tw-ring-offset-width: 0 !important;
 }
 .qtyinput {
-  box-shadow: inset 5px 5px 10px #000000;
+  box-shadow: inset 5px 5px 10px #000000; 
 }
 /* Desktop */
 
