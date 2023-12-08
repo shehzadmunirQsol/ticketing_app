@@ -42,7 +42,7 @@ export function WinnersEnableDialog(props: WinnersDialogInterface) {
       console.log(res);
       toast({
         variant: 'success',
-        title: 'Winner Updated Successfully',
+        title: 'Winnar Updated Successfully',
       });
     },
     onError(error: any) {
@@ -120,8 +120,8 @@ export function WinnersEnableDialog(props: WinnersDialogInterface) {
         open={loading}
         text={
           props?.selectedItem?.isEnable
-            ? 'Disabling winner...'
-            : 'Enabling winner...'
+            ? 'Disabling Winnar...'
+            : 'Enabling Winnar...'
         }
       />
     </>

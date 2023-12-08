@@ -47,7 +47,7 @@ function BannerSlider() {
   return (
     <div className="herobanner px-2 md:px-12">
       <div className="leftbx">
-        <h1 className="uppercase">Are you the next lucky winner?</h1>
+        <h1 className="uppercase">Are you the next lucky winnar?</h1>
         {/* <h3 className="uppercase">+ 4000 AED CASH</h3> */}
         <p>Drive home your dream car at a fraction of the price!</p>
         <h4 className="uppercase">WIN SUNDAY 8 PM</h4>

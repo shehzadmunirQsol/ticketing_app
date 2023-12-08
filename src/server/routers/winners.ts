@@ -160,7 +160,7 @@ export const winnerRouter = router({
         data: payload,
       });
 
-      return { data: winner, message: 'Winner Updated successfully!' };
+      return { data: winner, message: 'Winnar Updated successfully!' };
     }),
   selectWinner: publicProcedure
     .input(selectWinnerSchema)
@@ -199,7 +199,7 @@ export const winnerRouter = router({
           template_id: EMAIL_TEMPLATE_IDS.SELECT_WINNER,
           from: EMAILS.contact,
           to: customer_email,
-          subject: 'Winner Selected!',
+          subject: 'Winnar Selected!',
           params: {
             first_name: customer_name,
             event_name: event_name,
@@ -208,7 +208,7 @@ export const winnerRouter = router({
 
         await sendEmail(mailOptions);
 
-        return { message: 'Winner selected successfully!' };
+        return { message: 'Winnar selected successfully!' };
       } catch (error: any) {
         console.log({ error });
         throw new TRPCError({

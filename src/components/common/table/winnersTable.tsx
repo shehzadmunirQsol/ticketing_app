@@ -104,7 +104,7 @@ export default function WinnersDataTable() {
   const columns: ColumnDef<WinnerType>[] = [
     {
       id: 'ID',
-      header: 'Winners ID',
+      header: 'Winnars ID',
       enableHiding: false,
       cell: ({ row }) => {
         return (
@@ -278,7 +278,7 @@ export default function WinnersDataTable() {
 
   const csvData = [
     [
-      'Winner ID',
+      'Winnar ID',
       'Product',
       'Customer Name',
       'Customer Email',
@@ -354,7 +354,7 @@ export default function WinnersDataTable() {
           </DropdownMenu>
           <TableFilters
             inputList={roleOptions1}
-            item_name={'Winners'}
+            item_name={'Winnars'}
             value={filterID}
             setValue={setFilterID}
             setFilters={setFilters}

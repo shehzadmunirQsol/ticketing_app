@@ -78,7 +78,7 @@ export function SelectWinnerDialog(props: SelectCustomerInterface) {
             <p className="text-lg">
               Are you sure, you want to select{' '}
               <strong className="text-primary">{props?.customer_name}</strong>{' '}
-              as a winner for{' '}
+              as a winnar for{' '}
               <strong className="text-primary">{props?.event_name}</strong>{' '}
               event?
             </p>
@@ -149,7 +149,7 @@ export function SearchWinnerDialog(props: SearchWinnerDialog) {
       await selectWinner.mutateAsync(payload);
       toast({
         variant: 'success',
-        title: 'Winner Selected successfully!',
+        title: 'Winnar Selected successfully!',
       });
       closeHandler();
       router.replace('/admin/winners');
@@ -173,7 +173,7 @@ export function SearchWinnerDialog(props: SearchWinnerDialog) {
       <Dialog open={props?.open} onOpenChange={closeHandler}>
         <DialogContent className="max-w-[700px]   overflow-x-scroll no-scrollbar">
           <DialogHeader>
-            <DialogTitle>Select Winner</DialogTitle>
+            <DialogTitle>Select Winnar</DialogTitle>
             <DialogDescription className="space-y-4 py-4">
               <div
                 onClick={() => inputRef?.current && inputRef?.current?.focus()}
@@ -202,7 +202,7 @@ export function SearchWinnerDialog(props: SearchWinnerDialog) {
                 <Table>
                   <TableCaption>
                     By pressing the Select button, following customer will be
-                    selected the Winner.
+                    selected the Winnar.
                   </TableCaption>
                   <TableHeader>
                     <TableRow>
@@ -249,7 +249,7 @@ export function SearchWinnerDialog(props: SearchWinnerDialog) {
                 </h3>
               ) : (
                 <h3 className="text-lg py-4 text-center">
-                  Please Enter Ticket Number to Select Winner!
+                  Please Enter Ticket Number to Select Winnar!
                 </h3>
               )}
             </DialogDescription>
@@ -277,7 +277,7 @@ export function SearchWinnerDialog(props: SearchWinnerDialog) {
       </Dialog>
       <LoadingDialog
         open={selectWinner?.isLoading}
-        text={'Selecting Winner...'}
+        text={'Selecting Winnar...'}
       />
     </>
   );

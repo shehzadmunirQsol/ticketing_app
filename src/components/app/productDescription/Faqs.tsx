@@ -17,7 +17,7 @@ const eventFaqs = `
 
     <input type="radio" name="accordion" id="cb1" />
     <section class="box border-b border-t   border-lightColorBorder hover:border-b-primary shadow-lg hover:shadow-2xl  pr-4 overflow-hidden">
-      <label class="box-title  text-xl py-4 text-xl  font-bold text-white w-full flex items-center justify-between h-full" for="cb1"><p>How is the winner chosen?</p>  <i class="fas fa-chevron-down icon-class"></i></label>
+      <label class="box-title  text-xl py-4 text-xl  font-bold text-white w-full flex items-center justify-between h-full" for="cb1"><p>How is the winnar chosen?</p>  <i class="fas fa-chevron-down icon-class"></i></label>
       <label class="box-close" for="acc-close"></label>
       <div class="box-content text-base mt-4 text-grayColor pb-4">Your ticket number(s) will be shown as soon as your order is confirmed and will be available under <span class="text-primary font-bold">&lsquo;My Account&rsquo;</span> and in your email confirmation.</div>
     </section>
