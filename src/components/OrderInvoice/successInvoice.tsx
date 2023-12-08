@@ -61,6 +61,46 @@ export default function SuccessInvoice() {
   // };
 
 
+  useEffect(() => {
+
+
+    console.log(OrderApiData, "OrderApiData")
+
+    if ('sendinblue' in window && window?.sendinblue) { 
+      const data = OrderApiData?.data?.OrderEvent && OrderApiData?.data?.OrderEvent?.map((event) => ({
+        id: event?.event_id,
+        price: event?.Event?.price,
+        name: event?.Event?.EventDescription[0]?.name,
+        quantity: event?.quantity,
+      }));
+
+
+      const eventData = {
+        email: OrderApiData?.data?.Customer?.email,
+        eventdata: {
+          data: data,
+        },
+      };
+
+
+
+      console.log('API data *******', JSON.stringify(eventData));
+
+      const sendinblue: any = window.sendinblue;
+
+      if(data){
+        console.log('API data - data und');
+        sendinblue?.track(
+          'order_completed',
+          eventData,
+        ) as any;
+      }
+
+    }
+
+  }, [OrderApiData]);
+
+
   return (
     <>
       <Confetti
@@ -80,7 +120,7 @@ export default function SuccessInvoice() {
           <div className="flex flex-col md:flex-row items-center justify-between mb-8">
             <div className="xs:text-center md:text-left">
               <div className="greenText text-xl lg:text-2xl font-bold uppercase">Your order has been placed successfully</div>
-            {/* <button onClick={handleButtonClick}>Play Audio</button> */}
+              {/* <button onClick={handleButtonClick}>Play Audio</button> */}
             </div>
 
             {/* {isLoading ? null : ( */}
