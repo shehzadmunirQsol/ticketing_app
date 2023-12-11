@@ -4,6 +4,7 @@ import HowtoSection from './how_to_play';
 import WhyChoose from './why_choose';
 import Testimonials from './testimonials';
 import BannerSlider from './banner_slider';
+import InstagramFeed from './instagram_feed';
 import VideoSlider from './video_slider';
 import langContent from '~/locales';
 import { RootState } from '~/store/store';
@@ -45,6 +46,8 @@ export default function Home() {
       <HowtoSection />
       <WhyChoose />
       <Testimonials />
+
+      {/* <InstagramFeed /> */}
 
       {/* Video section */}
       <div className="relative bg-background-footer px-4 flex flex-col gap-4 md:gap-14  md:px-14  py-6 md:py-12">
