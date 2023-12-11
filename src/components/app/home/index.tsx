@@ -47,7 +47,7 @@ export default function Home() {
       <WhyChoose />
       <Testimonials />
 
-      <InstagramFeed />
+      {/* <InstagramFeed /> */}
 
       {/* Video section */}
       <div className="relative bg-background-footer px-4 flex flex-col gap-4 md:gap-14  md:px-14  py-6 md:py-12">
