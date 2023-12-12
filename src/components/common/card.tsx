@@ -57,6 +57,20 @@ export default function ProductCard(props: CardInterface) {
 
   const categoryRoute = props?.data?.category_id === 1 ? 'cars' : 'cash';
 
+
+
+  function format12HourTime(date: any) {
+    if (!(date instanceof Date)) {
+      return ''; // handle non-date values
+    }
+  
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    const formattedHours = hours % 12 || 12; // Convert 0 to 12 for 12-hour format
+  
+    return `${formattedHours}:${minutes.toString().padStart(2, '0')} ${ampm}`;
+  }
   
 
   return (
@@ -75,14 +89,18 @@ export default function ProductCard(props: CardInterface) {
           <div className="relative ">
             {isLastDay ? (
               <div className="font-bold absolute top-0 w-fit p-2 z-2 bg-primary text-black text-sm">
-                <span className="">CLOSES TODAY</span>{' '}
-                {props?.data?.end_date?.getHours()?.toString()?.length > 1
+                <span className="">CLOSES TODAY</span>
+                {' '}
+                {format12HourTime(props?.data?.end_date)}
+                {' '}
+
+                {/* {props?.data?.end_date?.getHours()?.toString()?.length > 1
                   ? props?.data?.end_date?.getHours()
                   : '0' + props?.data?.end_date?.getHours()}
                 :
                 {props?.data?.end_date?.getMinutes()?.toString()?.length > 1
                   ? props?.data?.end_date?.getMinutes()
-                  : '0' + props?.data?.end_date?.getMinutes()}{' '}
+                  : '0' + props?.data?.end_date?.getMinutes()}{' '} */}
               </div>
             ) : (
               ''

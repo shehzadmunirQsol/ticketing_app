@@ -176,7 +176,12 @@ export default function LoginSignup() {
         title: 'Login Successfully ',
       });
 
-      if (window.history.length > 2) {
+
+      const { redirect } = router.query; 
+      
+      if(redirect!==""){
+        router.replace('/'+redirect);
+      }else if (window.history.length > 2) {
         router.back();
       } else {
         router.replace('/');
