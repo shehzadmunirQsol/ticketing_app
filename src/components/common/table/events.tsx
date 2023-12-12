@@ -408,8 +408,8 @@ export default function EventsDataTable() {
 
       const eventTicketCustomers = eventTicketData.data?.map((ticketData) => ({
         eventName: eventData?.name,
-        customerName: ticketData?.Customer?.first_name ?? '',
-        purchaseDate: ticketData?.updated_at,
+        customerName: `${ticketData?.Customer?.first_name ?? ''} ${ticketData?.Customer?.last_name ?? ''}`,
+        purchaseDate: new Date(ticketData?.updated_at),
         ticketNumber: ticketData?.ticket_num,
       }));
       setEventTicketCustomers(eventTicketCustomers);
