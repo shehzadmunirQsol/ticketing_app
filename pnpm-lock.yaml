@@ -203,6 +203,9 @@ dependencies:
   react-draft-wysiwyg:
     specifier: ^1.15.0
     version: 1.15.0(draft-js@0.11.7)(immutable@3.7.6)(react-dom@18.2.0)(react@18.2.0)
+  react-elfsight-widget:
+    specifier: ^1.1.1
+    version: 1.1.1(react@18.2.0)
   react-google-recaptcha:
     specifier: ^3.1.0
     version: 3.1.0(react@18.2.0)
@@ -12320,6 +12323,14 @@ packages:
       prop-types: 15.8.1
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
+  /react-elfsight-widget@1.1.1(react@18.2.0):
+    resolution: {integrity: sha512-f6r0gC9266yRcNZak8sKev/UwkAP5RYpcEt5X5eeYqHo8agXCQzdYwA0+8HDz5pSPHb0/C54o6oWv+Ukf2GO9w==}
+    peerDependencies:
+      react: ^17.0.2 || ^18.0.0
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /react-emotion@8.0.12(emotion@8.0.12):
