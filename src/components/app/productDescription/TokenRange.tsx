@@ -10,7 +10,7 @@ interface token {
 const TokenRange = ({ range, setRange, min, max }: token) => {
   const percentage: any = ((range && range.length ? range[0] : 1) / max) * 100;
 
-  const [progress, setProgress] = useState(10);
+  const [progress, setProgress] = useState(1);
 
   const handleSliderChange = (event: any) => {
     const myArray = [];
