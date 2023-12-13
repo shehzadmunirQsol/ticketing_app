@@ -175,7 +175,7 @@ export default function Counter(props: CounterProps) {
           <TokenRange
             range={range}
             setRange={setRange}
-            min={0}
+            min={1}
             max={user_ticket_limit}
           />
           <CounterStyle
