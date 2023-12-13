@@ -123,7 +123,7 @@ export default function SuccessInvoice() {
               "ticket_number": "",
               "invoice_number": "#INV00" + OrderApiData?.data?.id,
               "status": "success",
-              "order_number": "#INV00" + OrderApiData?.data?.id,
+              "order_number": "INV00" + OrderApiData?.data?.id,
               "sub_total": "AED " + OrderApiData?.data?.sub_total_amount?.toFixed(2),
               "discount": discountvalue,
               "total_price": "AED " + OrderApiData?.data?.total_amount?.toFixed(2),
