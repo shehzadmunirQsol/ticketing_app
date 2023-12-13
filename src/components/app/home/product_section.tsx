@@ -71,31 +71,15 @@ function ProductSection(props: productInterface) {
   };
 
   return (
+    products.length !== 0 ? 
+      
+
     <div className=" max-w-[1600px]  mx-auto w-full ">
       <div className="pt-6 relative gap-3 flex-col md:flex-row md:h-auto z-30 sm:items-center items-start w-full md:justify-between mb-3 sm:mb-6 flex h-fit">
         <p className="text-gray-200 !text-xl sm:!text-3xl lg:!text-5xl font-black uppercase ">
           {props?.title}
         </p>
-        {/* <div
-          className={`${
-            lang?.dir == 'rtl' ? ' flex-row-reverse' : 'md:ml-0'
-          } gap-2 z-10 items-center justify-center sm:flex hidden`}
-        >
-          <Button
-            variant="rounded"
-            className="button prev-btn h-10 w-10 md:h-14 md:w-14"
-            onClick={previous}
-          >
-            <i className="fa-solid fa-chevron-left"></i>
-          </Button>
-          <Button
-            variant="rounded"
-            className="button next-btn h-10 w-10 md:h-14 md:w-14"
-            onClick={next}
-          >
-            <i className="fa-solid fa-chevron-right"></i>
-          </Button>
-        </div> */}
+        
       </div>
 
       <div className="z-30 w-full mx-auto">
@@ -127,16 +111,18 @@ function ProductSection(props: productInterface) {
               </div>
             );
           })}
-          {products.length === 0 ? (
+          {/* {products.length === 0 ? (
             <div className="text-center w-full py-10 text-lg">
               Coming Soon...
             </div>
           ) : (
             ''
-          )}
+          )} */}
       </div>
       </div>
     </div>
+    :
+    null
   );
 }
 
