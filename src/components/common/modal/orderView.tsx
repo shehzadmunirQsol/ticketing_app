@@ -171,7 +171,7 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
                                   </div>
                                   <div
                                     onClick={() => setSelectedOrderEvent(item)}
-                                    className="flex-1 text-center cursor-pointer duration-150 hover:text-primary"
+                                    className="flex-1 text-center cursor-pointer duration-150 hover:text-primary underline font-bold"
                                   >
                                     {item?.quantity}
                                   </div>
