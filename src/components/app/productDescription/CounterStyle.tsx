@@ -38,6 +38,11 @@ const CounterStyle = ({ range, setRange, min, max }: token) => {
     if (sliderEl) {
       sliderEl.style.background = `linear-gradient(to right, #20cba8 ${percentage}%, #17171a ${percentage}%)`;
     }
+    
+    const progressValElement = document.getElementById('progressval');
+    if (progressValElement !== null) {
+      progressValElement.textContent = value.toLocaleString();
+    }
   };
 
   return (

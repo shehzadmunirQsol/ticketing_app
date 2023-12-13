@@ -39,7 +39,7 @@ const TokenRange = ({ range, setRange, min, max }: token) => {
     <div>
 
       <div className="rangeslider mt-4 mb-1.5">
-        <span className="slider-value greenText font-bold">{progress}</span>
+        <span className="slider-value greenText font-bold" id="progressval">{progress}</span>
         <input
           type="range"
           min="1"
