@@ -179,9 +179,11 @@ export default function LoginSignup() {
 
       const { redirect } = router.query; 
       
-      if(redirect!==""){
-        router.replace('/'+redirect);
-      }else if (window.history.length > 2) {
+      // if(redirect!==""){
+      //   router.replace('/'+redirect);
+      // } 
+      
+      if (window.history.length > 2) {
         router.back();
       } else {
         router.replace('/');

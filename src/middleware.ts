@@ -47,7 +47,8 @@ export function middleware(request: NextRequest, response: NextResponse) {
       return NextResponse.redirect(new URL('/login', request.url));
     }
     if (isProtectedCheckout && !token){
-      return NextResponse.redirect(new URL('/login?redirect=checkout', request.url));
+      // return NextResponse.redirect(new URL('/login?redirect=checkout', request.url));
+      return NextResponse.redirect(new URL('/login', request.url));
     }
       
     return NextResponse.next();
