@@ -25,6 +25,18 @@ export default function SuccessInvoice() {
   const router = useRouter();
   const dispatch = useDispatch();
 
+//TEST-------DELETE 
+  // const { data: OrderApiData, isLoading } = trpc.order.getByID.useQuery(
+  //   { order_id: 389, lang_id: lang.lang_id },
+  //   {
+  //     refetchOnWindowFocus: false,
+  //     enabled: 389 > 0,
+  //   },
+  // );
+//TEST-------DELETE
+
+
+
   const { data: OrderApiData, isLoading } = trpc.order.getByID.useQuery(
     { order_id: orderID, lang_id: lang.lang_id },
     {
@@ -34,10 +46,6 @@ export default function SuccessInvoice() {
   );
 
   useEffect(() => {
-    // if (orderID <= 0) {
-    //   router.replace('/');
-    //   return;
-    // }
 
     const timeout = setTimeout(() => {
       setRecycle(false);
@@ -61,6 +69,80 @@ export default function SuccessInvoice() {
   // };
 
 
+  useEffect(() => {
+ 
+    console.log(OrderApiData, "OrderApiData")
+
+    if ('sendinblue' in window && window?.sendinblue) {
+
+      const data = OrderApiData?.data?.OrderEvent && OrderApiData?.data?.OrderEvent?.map((event) => ({
+        id: event?.event_id,
+        price: event?.Event?.price,
+        name: event?.Event?.EventDescription[0]?.name,
+        quantity: event?.quantity,
+      }));
+
+       
+      var prizenames = "";
+      var drawdate = "";
+      var drawtime = "";
+      OrderApiData?.data?.OrderEvent?.forEach((event) => {
+        prizenames += event?.Event?.EventDescription[0]?.name + ', ';
+
+        var drwdate = event?.Event?.end_date; 
+        var date = drwdate.toISOString().split('T')[0]; 
+        var time = drwdate.toTimeString().split(' ')[0]; 
+
+        drawdate += date + ', ';
+        drawtime += time + ', ';  
+
+      });
+      prizenames = prizenames.replace(/,\s*$/, "");
+      drawdate = drawdate.replace(/,\s*$/, "");
+      drawtime = drawtime.replace(/,\s*$/, "");
+
+
+
+
+      console.log('API data *******', data);
+
+      const sendinblue: any = window.sendinblue;
+      if (data) { 
+        
+        var discountvalue = "AED " + OrderApiData?.data?.discount_amount ? OrderApiData?.data?.discount_amount?.toFixed(2) : '0.00';
+
+        sendinblue?.track(
+          'order_completed',
+          {
+            "email": OrderApiData?.data?.Customer?.email,
+            "FIRSTNAME": OrderApiData?.data?.Customer?.first_name
+          },
+          {
+            "data": {
+              "prize_name" : prizenames,
+              "ticket_number": "",
+              "invoice_number": "#INV00" + OrderApiData?.data?.id,
+              "status": "success",
+              "order_number": "INV00" + OrderApiData?.data?.id,
+              "sub_total": "AED " + OrderApiData?.data?.sub_total_amount?.toFixed(2),
+              "discount": discountvalue,
+              "total_price": "AED " + OrderApiData?.data?.total_amount?.toFixed(2),
+              "draw_date": drawdate,
+              "draw_time": drawtime,
+              "data" : data,
+            }
+          },
+        ) as any;
+
+
+      }
+
+    }
+
+  }, [OrderApiData]);
+
+
+
   return (
     <>
       <Confetti
@@ -80,7 +162,7 @@ export default function SuccessInvoice() {
           <div className="flex flex-col md:flex-row items-center justify-between mb-8">
             <div className="xs:text-center md:text-left">
               <div className="greenText text-xl lg:text-2xl font-bold uppercase">Your order has been placed successfully</div>
-            {/* <button onClick={handleButtonClick}>Play Audio</button> */}
+              {/* <button onClick={handleButtonClick}>Play Audio</button> */}
             </div>
 
             {/* {isLoading ? null : ( */}

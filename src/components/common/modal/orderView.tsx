@@ -100,7 +100,7 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
   return (
     <>
       <Dialog open={props?.isModal} onOpenChange={(e) => props.setIsModal(e)}>
-        <DialogContent className="max-h-[50vh] h-[calc(100%-200px)] max-w-xl md:max-w-[768px] overflow-y-hidden scroll-hide p-2">
+        <DialogContent className="h-[60vh] max-w-xl md:max-w-[768px] overflow-y-hidden scroll-hide p-2">
           <ScrollArea className="h-100 p-4">
             <ScrollBar orientation="vertical"></ScrollBar>
             <DialogFooter className=" sm:justify-start items-start w-full mb-2">
@@ -413,7 +413,7 @@ export function ViewTickets(props: ViewTicketsType) {
         open={!!props?.selectedOrderEvent?.id}
         onOpenChange={closeHandler}
       >
-        <DialogContent className="max-h-[50vh] h-[calc(100%-200px)] max-w-xl md:max-w-[768px] overflow-y-hidden scroll-hide p-2">
+        <DialogContent className="h-[60vh] max-w-xl md:max-w-[768px] overflow-y-hidden scroll-hide p-2">
           <ScrollArea className="h-100 p-4">
             <ScrollBar orientation="vertical"></ScrollBar>
             <DialogHeader className=" sm:justify-start items-start w-full mb-2">
