@@ -465,7 +465,7 @@ export default function LoginSignup() {
                                 />
                               </FormControl>
                               <div className="relative pb-2 errormsg">
-                              {showMessage && <span className='font-medium text-destructive text-xs'>Input value starts with zero!</span>}
+                              {showMessage && <span className='font-medium text-destructive text-xs'>Adjust your number by removing the initial zero</span>}
                                 <FormMessage />
                               </div>
                             </FormItem>
@@ -642,7 +642,6 @@ export default function LoginSignup() {
                           <div>
                             <Input
                               type={showConfirmPassword ? 'text' : 'password'}
-                              placeholder="Enter Your Password"
                               {...field}
                               className="rounded-md"
                             />

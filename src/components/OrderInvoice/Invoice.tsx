@@ -98,7 +98,7 @@ const Invoice = () => {
                         <div className="flex-[2] text-start">
                           {item?.Event?.EventDescription[0]?.name}
                         </div>
-                        <div className="flex-1 text-center">
+                        <div className="flex-1 text-center underline font-bold">
                           {item?.quantity}
                         </div>
                         <div className="flex-1 text-center">

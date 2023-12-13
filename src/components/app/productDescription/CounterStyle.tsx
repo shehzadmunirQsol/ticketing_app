@@ -24,8 +24,24 @@ const CounterStyle = ({ range, setRange, min, max }: token) => {
   const handlerCounter = (type: string) => {
     if (type == 'a' && rangeType <= max - 1) {
       setRange([rangeType + 1]);
+      handlerProgress(rangeType + 1)
     } else if (type == 'b' && rangeType >= min + 1) {
       setRange([rangeType - 1]);
+      handlerProgress(rangeType - 1)
+    }
+  };
+
+
+  const handlerProgress = (value:number) => {
+    const percentage: any = (value / max) * 100;
+    const sliderEl = document.getElementById('productrange');
+    if (sliderEl) {
+      sliderEl.style.background = `linear-gradient(to right, #20cba8 ${percentage}%, #17171a ${percentage}%)`;
+    }
+    
+    const progressValElement = document.getElementById('progressval');
+    if (progressValElement !== null) {
+      progressValElement.textContent = value.toLocaleString();
     }
   };
 
