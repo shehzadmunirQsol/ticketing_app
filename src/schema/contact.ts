@@ -12,11 +12,11 @@ export const contactUsSchema = z.object({
   code: z.string({
     required_error: 'Please select your code',
   }),
-  number: z
-    .string({
-      required_error: 'Please enter your number',
-    })
-    .length(15),
+  // number: z
+  //   .string({
+  //     required_error: 'Please enter your number',
+  //   })
+  //   .length(15),
   message: z.string({
     required_error: 'Please write your message',
   }),
