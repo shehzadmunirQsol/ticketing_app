@@ -159,7 +159,7 @@
       "title":"Highlights",
       "engine":"Engine",
       "power":"Power",
-      "kms":"Kms",
+      "kms":"Transmission",
       "year":"Year"
     },
     "description":{
@@ -173,7 +173,7 @@
     },
 
     "livedraw":{
-      "HEADING":"LIVE DRAW",
+      "HEADING":"Closing Date",
       "array":[
         {
             "description":"Draw takes place regardless of sell out"
@@ -182,7 +182,7 @@
             "description":"Competition will close sooner if the maximum entries are received"
         },
         {
-            "description":"Interactive live draw on our Facebook and Youtube page"
+            "description":"Interactive Closing Date on our Facebook and Youtube page"
         }
       ]
     },
