@@ -145,15 +145,11 @@ export const eventRouter = router({
         }),
       );
 
-      // prisma.eventTickets
-      //   .createMany({ data: ticketsPayload })
-      //   .then((res) => console.log(res, 'eventTickets created'))
-      //   .catch((err) => console.log(err, 'eventTickets rejected'))
-      //   .finally(() => console.log('resolve done!'));
-
-      const res = await prisma.eventTickets.createMany({ data: ticketsPayload });
-      console.log(ticketsPayload, 'eventTickets created');
-      console.log(res, 'eventTickets created');
+      prisma.eventTickets
+        .createMany({ data: ticketsPayload })
+        .then((res) => console.log(res, 'eventTickets created'))
+        .catch((err) => console.log(err, 'eventTickets rejected'))
+        .finally(() => console.log('resolve done!'));
 
       return { data: event, message: 'Event created' };
     } catch (error: any) {
