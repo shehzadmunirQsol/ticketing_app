@@ -145,11 +145,15 @@ export const eventRouter = router({
         }),
       );
 
-      prisma.eventTickets
-        .createMany({ data: ticketsPayload })
-        .then((res) => console.log(res, 'eventTickets created'))
-        .catch((err) => console.log(err, 'eventTickets rejected'))
-        .finally(() => console.log('resolve done!'));
+      // prisma.eventTickets
+      //   .createMany({ data: ticketsPayload })
+      //   .then((res) => console.log(res, 'eventTickets created'))
+      //   .catch((err) => console.log(err, 'eventTickets rejected'))
+      //   .finally(() => console.log('resolve done!'));
+
+      const res = await prisma.eventTickets.createMany({ data: ticketsPayload });
+      console.log(ticketsPayload, 'eventTickets created');
+      console.log(res, 'eventTickets created');
 
       return { data: event, message: 'Event created' };
     } catch (error: any) {
@@ -438,7 +442,7 @@ export const eventRouter = router({
         };
         const todayDate = new Date();
         const endingDate = new Date();
-        endingDate.setDate(endingDate.getDate() + 21);
+        endingDate.setDate(endingDate.getDate() + 90);
 
         // upcoming means its going to start
         if (input?.type == 'upcoming') where.launch_date = { gte: todayDate };

@@ -71,58 +71,60 @@ function ProductSection(props: productInterface) {
   };
 
   return (
-    products.length !== 0 ? 
-      
+    products.length !== 0 ?
 
-    <div className=" max-w-[1600px]  mx-auto w-full ">
-      <div className="pt-6 relative gap-3 flex-col md:flex-row md:h-auto z-30 sm:items-center items-start w-full md:justify-between mb-3 sm:mb-6 flex h-fit">
-        <p className="text-gray-200 !text-xl sm:!text-3xl lg:!text-5xl font-black uppercase ">
-          {props?.title}
-        </p>
-        
-      </div>
 
-      <div className="z-30 w-full mx-auto">
-        {/* glow */}
-        <div className="relative">
-          <div
-            className={`absolute bottom-10 ${
-              props.type == 'closing' ? 'right-0' : 'left-0'
-            }  z-2  w-1/5 h-3/5  bg-teal-400 bg-opacity-50 rounded-full blur-3xl`}
-          />
+      <div className=" max-w-[1600px]  mx-auto w-full ">
+        <div className="pt-6 relative gap-3 flex-col md:flex-row md:h-auto z-30 sm:items-center items-start w-full md:justify-between mb-3 sm:mb-6 flex h-fit">
+          <p className="text-gray-200 !text-xl sm:!text-3xl lg:!text-5xl font-black uppercase ">
+            {props?.title}
+          </p>
+
         </div>
 
-        <div className="prodrow">
-          {products.map((item, index) => {
-            return (
-              <div key={index} className="col-prod">
-                <ProductCard
-                  isLast={index === products.length - 1}
-                  nextPage={nextPage}
-                  data={item}
-                  type={props.type}
-                  class={
-                    products.length != index + 1
-                      ? ''
-                      : ''
-                  }
-                  dir={`${lang?.dir}`}
-                />
-              </div>
-            );
-          })}
-          {/* {products.length === 0 ? (
-            <div className="text-center w-full py-10 text-lg">
-              Coming Soon...
-            </div>
-          ) : (
-            ''
-          )} */}
+        <div className="z-30 w-full mx-auto">
+          {/* glow */}
+          <div className="relative">
+            <div
+              className={`absolute bottom-10 ${props.type == 'closing' ? 'right-0' : 'left-0'
+                }  z-2  w-1/5 h-3/5  bg-teal-400 bg-opacity-50 rounded-full blur-3xl`}
+            />
+          </div>
+
+          <div className="prodrow">
+            {products
+              ?.sort((a, b) => {
+                const isLastDayA =
+                  a?.draw_date === null && a?.end_date
+                    ? a?.end_date?.getTime() <= Date.now() + 24 * 60 * 60 * 1000
+                    : false;
+                const isLastDayB =
+                  b?.draw_date === null && b?.end_date
+                    ? b?.end_date?.getTime() <= Date.now() + 24 * 60 * 60 * 1000
+                    : false;
+                return isLastDayB ? 1 : isLastDayA ? -1 : 0;
+              })
+              .map((item, index) => (
+                <div key={index} className="col-prod">
+                  <ProductCard
+                    isLast={index === products.length - 1}
+                    nextPage={nextPage}
+                    data={item}
+                    type={props.type}
+                    class={
+                      products.length != index + 1
+                        ? ''
+                        : ''
+                    }
+                    dir={`${lang?.dir}`}
+                  />
+                </div>
+              ))}
+          </div>
+        </div>
       </div>
-      </div>
-    </div>
-    :
-    null
+      :
+      null
   );
 }
 
