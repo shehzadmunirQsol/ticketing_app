@@ -12,11 +12,11 @@ export const contactUsSchema = z.object({
   code: z.string({
     required_error: 'Please select your code',
   }),
-  // number: z
-  //   .string({
-  //     required_error: 'Please enter your number',
-  //   })
-  //   .length(15),
+  number: z
+    .string({
+      required_error: 'Please enter your number',
+    })
+    .length(15),
   message: z.string({
     required_error: 'Please write your message',
   }),
@@ -44,19 +44,19 @@ export const contactSchema = z.object({
       message: 'Invalid code',
     })
     .trim(),
-  // number: z
-  //   .string({
-  //     required_error: 'Please enter your phone no',
-  //     invalid_type_error: 'Please enter your phone no',
-  //   })
-  //   .regex(new RegExp(/^[0-9]+$/), 'Please enter a valid phone no.')
-  //   .min(9, {
-  //     message: 'Should be at more than 9 numbers',
-  //   })
-  //   .max(15, {
-  //     message: 'Should be at less than 15 numbers',
-  //   })
-  //   .trim(),
+  number: z
+    .string({
+      required_error: 'Please enter your phone no',
+      invalid_type_error: 'Please enter your phone no',
+    })
+    .regex(new RegExp(/^[0-9]+$/), 'Please enter a valid phone no.')
+    .min(9, {
+      message: 'Should be at more than 9 numbers',
+    })
+    .max(15, {
+      message: 'Should be at less than 15 numbers',
+    })
+    .trim(),
   message: z
     .string({ required_error: 'Please write your message' })
     .min(1, { message: 'Please write your message' }),

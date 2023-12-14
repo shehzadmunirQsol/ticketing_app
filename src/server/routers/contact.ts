@@ -10,7 +10,7 @@ export const contactRouter = router({
       try {
         const payload: any = {
           ...input,
-          // number: input.code + input.number,
+          number: input.code + input.number,
         };
         if (payload?.code) delete payload.code;
         const mailOptions = {
@@ -21,7 +21,7 @@ export const contactRouter = router({
           params: {
             user_name: payload.name,
             user_email: payload.email,
-            // mobile: payload.number,
+            mobile: payload.number,
             message: payload.message,
           },
         };
