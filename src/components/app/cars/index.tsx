@@ -101,7 +101,6 @@ const CarsPage = () => {
                       b?.draw_date === null && b?.end_date
                         ? b?.end_date?.getTime() <= Date.now() + 24 * 60 * 60 * 1000
                         : false;
-
                     return isLastDayB ? 1 : isLastDayA ? -1 : 0;
                   })
                   .map((itemList, i) => (
