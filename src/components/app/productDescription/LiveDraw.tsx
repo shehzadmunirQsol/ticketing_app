@@ -13,8 +13,8 @@ function LiveDraw(props: any) {
   return (
     <div className="relative  mb-10 max-w-[1600px]  ">
       <div className="bg-primary py-4 lg:py-8  grid grid-cols-1 lg:grid-cols-2 gap-4 items-center md:items-start  px-4 md:px-14">
-        <div className="   flex flex-col justify-center items-center  w-full">
-          <p className="  py-4 md:py-0 ltr:text-left rtl:text-right md:mb-30 text-background font-black tracking-[-3px] !text-6xl   md:!text-6xl lg:!text-8xl uppercase">
+        <div className="flex flex-col justify-center items-center  w-full">
+          <p className="py-4 md:py-0 ltr:text-left rtl:text-right md:mb-30 text-background font-black tracking-[-3px] !text-6xl md:!text-6xl lg:!text-7xl uppercase">
             {langContent[lang.lang].ProductDetail.livedraw.HEADING}
           </p>
           <div className="flex justify-center md:justify-start w-full md:w-auto items-start border-2 border-gray-900 border-l-0 border-r-0 py-2 md:py-4 m-auto mx-10 md:py-0 text-left lg:mt-10  ">

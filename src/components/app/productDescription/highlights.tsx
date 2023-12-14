@@ -3,6 +3,7 @@ import EngineIcon from '~/public/assets/icons/engine.svg';
 import PowerIcon from '~/public/assets/icons/power.svg';
 import KmsIcon from '~/public/assets/icons/kms.svg';
 import YearIcon from '~/public/assets/icons/year.svg';
+import TransmissionIcon from '~/public/assets/icons/transmission.svg';
 import langContent from '~/locales';
 import { RootState } from '~/store/store';
 import { useSelector } from 'react-redux';
@@ -33,7 +34,7 @@ function Highlights(props: any) {
             />
             <div className="">
               <h3 className="text-sm md:text-basic text-white">{meta[highlight.key]}</h3>
-              <p className="text-sm md:text-basic text-[#9D9D9D]">
+              <p className="text-xs md:text-xs text-[#9D9D9D]">
                 {
                   langContent[lang.lang]?.ProductDetail?.highlights[
                     highlight?.key
@@ -62,8 +63,8 @@ const highlights = [
     key: 'power',
   },
   {
-    title: 'Kms',
-    icon: KmsIcon,
+    title: 'Transmission',
+    icon: TransmissionIcon,
     key: 'kms',
   },
   {

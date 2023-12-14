@@ -32,12 +32,7 @@ export const createCheckoutSchema = z.object({
   city: z.string({ required_error: 'Please enter city' }).min(1, {
     message: 'Please enter city',
   }),
-  postal_code: z
-    .string({ required_error: 'Please enter postal code' })
-    .min(1, {
-      message: 'Please enter postal code',
-    })
-    .regex(new RegExp(/^[0-9]+$/), 'Please enter a valid postal code'),
+  postal_code: z.string(),
   email: z
     .string({
       required_error: 'Please enter your email',

@@ -38,8 +38,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import ReCAPTCHA from 'react-google-recaptcha';
 import NextImage from '~/components/ui/img';
 
-import { PhoneInput } from 'react-international-phone';
-import 'react-international-phone/style.css';
+// import { PhoneInput } from 'react-international-phone';
+// import 'react-international-phone/style.css';
 
 export default function Contact() {
   const { toast } = useToast();
@@ -71,8 +71,8 @@ export default function Contact() {
 
       form.setValue('name', '');
       form.setValue('email', '');
-      form.setValue('code', '');
-      form.setValue('number', '');
+      // form.setValue('code', '');
+      // form.setValue('number', '');
       form.setValue('message', '');
       recaptchaRef.current.reset();
       setRecapthaToken('');
@@ -82,10 +82,10 @@ export default function Contact() {
     },
   });
 
-  const validate = (value: string) => {
-    const matches = value.match(/^[0-9]/);
-    return (matches && matches?.length > 0) || 'Please enter a valid number';
-  };
+  // const validate = (value: string) => {
+  //   const matches = value.match(/^[0-9]/);
+  //   return (matches && matches?.length > 0) || 'Please enter a valid number';
+  // };
 
   // Contact
   const onSubmitContact = async (values: any) => {
@@ -226,7 +226,7 @@ export default function Contact() {
                   )}
                 />
 
-                <div className="space-y-2 w-full">
+                {/* <div className="space-y-2 w-full">
                   <FormLabel className="text-xs  font-thin text-grayColor">
                     Phone Number*
                   </FormLabel>
@@ -242,13 +242,6 @@ export default function Contact() {
                             inputProps={{ maxLength: 4, placeholder: "+971", readOnly: true, ...field }} 
                             {...field} 
                           /> 
-                          {/* <Input
-                            type="text"
-                            className="rounded-md w-20 bg-inputColor"
-                            placeholder="+971"
-                            maxLength={4}
-                            {...field}
-                          /> */}
                           <div className="relative pb-2 errormsg">
                             <FormMessage />
                           </div>
@@ -276,7 +269,7 @@ export default function Contact() {
                       )}
                     />
                   </div>
-                </div>
+                </div> */}
 
                 <FormField
                   control={form.control}
