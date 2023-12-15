@@ -80,7 +80,7 @@ export function RemoveItemDialog(props: SettingDialogInterface) {
             }) /*optional*/,
           );
 
-          console.log('pushed cart_updated to brevo');
+          console.log('pushed cart_updated to brevo 2');
         }
       }
 

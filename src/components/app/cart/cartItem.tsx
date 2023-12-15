@@ -50,12 +50,16 @@ export default function CartItem(props: CartItemProp) {
   const addToBasket = trpc.cart.addToCart.useMutation();
 
   async function addToBasketHandler(
-    type: 'increment' | 'decrement' | 'unsubscribe' | 'update_cart',
+    type: 'increment' | 'decrement' | 'manualnumber' | 'unsubscribe' | 'update_cart',
   ) {
     let quantity = cartItem.quantity;
 
     if (type === 'increment') quantity++;
     if (type === 'decrement') quantity--;
+
+    if (type === 'manualnumber'){
+      //quantity = 2;
+    }
 
     const isSubscription = type === 'unsubscribe' ? false : isSubscribe;
 
@@ -73,6 +77,28 @@ export default function CartItem(props: CartItemProp) {
       name: event?.Event?.EventDescription[0]?.name,
       quantity: event?.quantity,
     }));
+
+
+
+
+
+
+    var drawdate = ""; 
+    cart?.cartItems?.forEach((event) => { 
+      var drwdate = event?.Event?.end_date; 
+      if(drwdate){
+        var date = drwdate.toISOString().split('T')[0]; 
+        var time = drwdate.toTimeString().split(' ')[0];  
+
+        drawdate += date + ' '+ time + ', '; 
+      }
+
+    }); 
+    drawdate = drawdate.replace(/,\s*$/, "");  
+
+
+
+
 
     try {
       if (isLogin) {
@@ -112,15 +138,24 @@ export default function CartItem(props: CartItemProp) {
         };
         eventCartData.push(eventData);
         const sendinblue: any = window.sendinblue;
+  
 
         sendinblue?.track(
-          'cart_updated' /*mandatory*/,
-          JSON.stringify({ email: user?.email ?? '' }) /*user data optional*/,
-          JSON.stringify({
-            cart_id: cart.id,
-            data: eventCartData,
-          }) /*optional*/,
-        ) as any;
+            'cart_updated',
+            {
+              "email": user.email,
+              "FIRSTNAME": user.first_name
+            },
+            {
+              "data": {
+                "closing_deadline" : drawdate,
+                "cart_expiration_date" : drawdate,
+              }
+            },
+          ) as any;
+
+        console.log('pushed cart_updated to brevo 3',cart);
+
       }
     } catch (error: any) {
       console.log({ error });
@@ -216,6 +251,14 @@ export default function CartItem(props: CartItemProp) {
                   <i className="fas fa-minus text-base xl:text-2xl font-extrabold" />
                 </Button>
                 <p className="w-16 text-center text-base md:text-lg">{cartItem?.quantity}</p>
+
+                {/* <input
+                  className="w-16 h-10 text-center text-base md:text-lg bg-card qtyinput"
+                  type="number"
+                  value={cartItem?.quantity}
+                  // onChange={(event) => addToBasketHandler("manualnumber")}
+                  // onBlur={() => { addToBasketHandler("manualnumber") }}
+                /> */}
 
                 <TooltipProvider>
                   <Tooltip

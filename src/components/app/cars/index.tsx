@@ -12,9 +12,13 @@ import ProductSection from '../home/product_section';
 const CarsPage = () => {
   const { lang } = useSelector((state: RootState) => state.layout);
 
+  const { isLogin, user } = useSelector((state: RootState) => state.auth);
+  const fullUrl =  typeof window !== 'undefined' ? window.location.href : "";
+
   const [cardView, setCardView] = useState<any>('cardview');
 
   const [products, setProducts] = useState<Array<any>>([]);
+  const [mailtrigger, setMailtrigger] = useState(0);
   const eventFilters = {
     lang_id: lang?.lang_id,
     first: 0,
@@ -50,6 +54,41 @@ const CarsPage = () => {
     }
   }
   
+
+  var car1 = "";
+  var car2 = "";
+
+  useEffect(() => {
+    if(user?.email){ 
+
+      if(products[0]?.EventDescription[0]){
+        car1 = products[0]?.EventDescription[0]?.name;
+      }
+      if(products[1]?.EventDescription[0]){
+        car2 = products[1]?.EventDescription[0]?.name;
+      } 
+      if(car1 && car2 && mailtrigger===0){ 
+        setMailtrigger(mailtrigger+1);
+        if ('sendinblue' in window && window?.sendinblue) {
+          const sendinblue: any = window.sendinblue;
+          sendinblue?.track(
+            'page_visited',
+            {
+              "email": user.email,
+              "FIRSTNAME": user.first_name
+            },
+            {
+              "data": {
+                "car_name_1" : car1,
+                "car_name_2": car2,
+                "url": fullUrl
+              }
+            },
+          ) as any;
+        }
+      }
+    }
+  }, [user,products]);
 
   return (
     <div className="mx-auto  w-full bg-background">

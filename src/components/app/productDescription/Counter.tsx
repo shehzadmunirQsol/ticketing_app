@@ -126,6 +126,7 @@ export default function Counter(props: CounterProps) {
           },
           }) /*optional*/,
         ) as any;
+        console.log('pushed cart_updated to brevo 1');
       }
     } catch (error: any) {
       console.log({ error });

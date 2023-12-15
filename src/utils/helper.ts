@@ -67,6 +67,40 @@ export const sendEmail = async (mailOptions: EmailOptionsType) => {
   }
 };
 
+type SMSOptionsType = {
+  to: string;
+  subject: string;
+};
+export const sendSMS = async (smsOptions: SMSOptionsType) => {
+  try {
+
+    const options = {
+      method: 'POST',
+      headers: {
+        accept: 'application/json', 
+        'content-type': 'application/json',
+        'api-key': process.env.BREVO_EMAIL_API_KEY as string,
+      },
+      body: JSON.stringify({
+        sender: 'Winnar',
+        recipient: smsOptions.to,
+        content: smsOptions.subject,
+        type: 'transactional',
+        unicodeEnabled: true,
+      })
+    };
+    
+    const res = await fetch('https://api.brevo.com/v3/transactionalSMS/sms', options);
+
+    if (!res.ok) {
+      console.log('sms did not send');
+      return;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export async function compressImage(fileImage: File, fileType = 'image/webp') {
   const bitmap = await createImageBitmap(fileImage);
   const canvas = document.createElement('canvas');

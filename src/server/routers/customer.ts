@@ -22,7 +22,7 @@ import {
 import { hashPass, isSamePass } from '~/utils/hash';
 import { signJWT, verifyJWT } from '~/utils/jwt';
 import { setCookie, deleteCookie } from 'cookies-next';
-import { EMAILS, generateOTP, isValidEmail, sendEmail } from '~/utils/helper';
+import { EMAILS, generateOTP, isValidEmail, sendEmail, sendSMS } from '~/utils/helper';
 import {
   AddContactPayloadType,
   addContactsToBrevoList,
@@ -327,6 +327,18 @@ export const customerRouter = router({
           };
 
           await sendEmail(mailOptions);
+
+
+//SMS***********
+          // const smsOptions: any = {
+          //   // to: input.phone_number,
+          //   to: "971544205311",
+          //   subject: 'Enter this code:' +respCode+ ' to validate your account',
+          // };
+          // await sendSMS(smsOptions);
+//SMS***********
+
+
 
           return customer;
         }
