@@ -47,10 +47,13 @@ export default function Home() {
       <WhyChoose />
       <Testimonials />
 
-      <InstagramFeed />
+      <InstagramFeed 
+      title={langContent[lang.lang].Index.wonders.HEADING}
+      subTitle={langContent[lang.lang].Index.wonders.SUB_HEADING}
+      />
 
       {/* Video section */}
-      <div className="relative bg-background-footer px-4 flex flex-col gap-4 md:gap-14  md:px-14  py-6 md:py-12">
+      {/* <div className="relative bg-background-footer px-4 flex flex-col gap-4 md:gap-14  md:px-14  py-6 md:py-12">
         <VideoSlider
           class="mx-auto w-full"
           slidesToShow={4}
@@ -60,7 +63,8 @@ export default function Home() {
           breakpoint={[3, 2, 1]}
           breakpointScreens={[1100, 830, 500]}
         />
-      </div>
+      </div> */}
+      
     </div>
   );
 }
