@@ -490,7 +490,7 @@ export function ViewTickets(props: ViewTicketsType) {
               </div>
             </DialogDescription>
             {/* {eventTickets?.count && eventTickets.count > 500 && ( */}
-            <div className={`flex flex-col md:flex-row gap-2 items-center justify-center md:justify-end md:space-x-2 py-4 }`}>
+            {/* <div className={`flex flex-col md:flex-row gap-2 items-center justify-center md:justify-end md:space-x-2 py-4 }`}>
               {eventTickets?.count && (
                 <div className="flex-1 flex w-[100px] items-center justify-start text-sm font-medium">
                   Page {props?.filters?.first + 1} of{' '}
@@ -577,7 +577,7 @@ export function ViewTickets(props: ViewTicketsType) {
                   </Button>
                 </div>
               </div>
-            </div>
+            </div> */}
             {/* )} */}
           </ScrollArea>
         </DialogContent>

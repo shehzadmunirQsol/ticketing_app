@@ -1,7 +1,7 @@
 import BottleImage from '~/public/assets/bottle.png';
 import { Switch } from '~/components/ui/switch';
 import { Button } from '~/components/ui/button';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { trpc } from '~/utils/trpc';
 import { useDispatch, useSelector } from 'react-redux';
 import { useToast } from '~/components/ui/use-toast';
@@ -39,7 +39,6 @@ export default function CartItem(props: CartItemProp) {
   const { isLogin, user } = useSelector((state: RootState) => state.auth);
   const [isSubscribe, setIsSubscribe] = useState(cartItem?.is_subscribe);
   const [isModal, setIsModal] = useState(false);
-  const [cartitemquantity, setcartitemquantity] = useState<number>(cartItem?.quantity);
 
   const [subscriptionType, setSubscriptionType] = useState<SubscriptionType>(
     cartItem?.subscription_type,
@@ -47,24 +46,19 @@ export default function CartItem(props: CartItemProp) {
 
   const { toast } = useToast();
   const dispatch = useDispatch();
-  // useEffect(() => {
-
-  // }, [response])
 
   const addToBasket = trpc.cart.addToCart.useMutation();
 
   async function addToBasketHandler(
     type: 'increment' | 'decrement' | 'unsubscribe' | 'update_cart',
   ) {
-    let quantity = cartitemquantity;
+    let quantity = cartItem.quantity;
 
     if (type === 'increment') quantity++;
     if (type === 'decrement') quantity--;
-    const isSubscription = type === 'unsubscribe' ? false : isSubscribe;
-    quantityChange(quantity, isSubscription);
 
-  }
-  const quantityChange = async (quantity: any, isSubscription: any) => {
+    const isSubscription = type === 'unsubscribe' ? false : isSubscribe;
+
     const payload = {
       subscription_type: isSubscription ? subscriptionType : null,
       cart_id: cart_id,
@@ -80,8 +74,6 @@ export default function CartItem(props: CartItemProp) {
       quantity: event?.quantity,
     }));
 
-
-
     try {
       if (isLogin) {
         const apiPayload = {
@@ -90,7 +82,6 @@ export default function CartItem(props: CartItemProp) {
           customer_id: customer_id,
         };
         const response = await addToBasket.mutateAsync(apiPayload);
-
         dispatch(addToCart(response.data));
       } else {
         const updatedCartItem = {
@@ -111,7 +102,6 @@ export default function CartItem(props: CartItemProp) {
         variant: 'success',
         title: 'Item updated successfully!',
       });
-      setcartitemquantity(quantity);
 
       if ('sendinblue' in window && window?.sendinblue) {
         const eventData = {
@@ -125,21 +115,16 @@ export default function CartItem(props: CartItemProp) {
 
         sendinblue?.track(
           'cart_updated' /*mandatory*/,
-          ({ email: user?.email ?? '' }) /*user data optional*/,
-          //  event_data
-          ({
+          JSON.stringify({ email: user?.email ?? '' }) /*user data optional*/,
+          JSON.stringify({
             cart_id: cart.id,
-            data: {
-              "items": eventCartData
-            },
-          })
-          /*optional*/,
+            data: eventCartData,
+          }) /*optional*/,
         ) as any;
       }
     } catch (error: any) {
       console.log({ error });
     }
-
   }
 
   function toggleSwitch() {
@@ -156,7 +141,7 @@ export default function CartItem(props: CartItemProp) {
   const { isTicketLimit, isTicketLimitExceeded } = getAvailableTickets({
     event: ticketEventPayload,
     ticketPurchased: props?.ticketPurchased,
-    quantity: cartitemquantity,
+    quantity: cartItem?.quantity,
   });
 
   const categoryRoute = cartItem?.Event?.category_id === 1 ? 'cars' : 'cash';
@@ -177,19 +162,11 @@ export default function CartItem(props: CartItemProp) {
   else if (isTicketLimitExceeded)
     tooltipMessage = "Competition closed, can't proceed to checkout!";
 
-
   return (
     <div data-name="card" className="py-2 mdx:py-2 border-t border-white/40">
       <div className="mb-2 flex items-center justify-between mdx:hidden">
         <p className="text-xl font-bold">
-          <Link
-            href={`/${categoryRoute}/${URIGenerator(
-              cartItem?.Event?.EventDescription[0]?.name ?? '',
-              cartItem?.event_id,
-            )}`}
-          >
           {cartItem?.Event?.EventDescription[0]?.name}
-          </Link>
         </p>
         <i
           onClick={() => setIsModal((preModal) => !preModal)}
@@ -199,19 +176,12 @@ export default function CartItem(props: CartItemProp) {
 
       <div className="flex items-center justify-between">
         <div className="relative mr-3 md:mr-10 min-w-[140px] min-h-[90px] mdx:min-w-[176px] mdx:min-h-[112px]">
-        <Link
-            href={`/${categoryRoute}/${URIGenerator(
-              cartItem?.Event?.EventDescription[0]?.name ?? '',
-              cartItem?.event_id,
-            )}`}
-          >
           <NextImage
             src={renderNFTImage({ thumb: cartItem.Event.thumb })}
             fill
             alt={'car image'}
             className="w-full h-full absolute object-contain"
           />
-          </Link>
           {/* <div className="p-1 w-12 h-12 rounded-full overflow-hidden absolute top-[30%] -right-6 bg-gradient-to-b from-primary to-neutral-900">
             <NextImage
               src={BottleImage}
@@ -238,21 +208,14 @@ export default function CartItem(props: CartItemProp) {
                   disabled={
                     isDateEnded ||
                     isNotEnabled ||
-                    cartitemquantity === 1 ||
+                    cartItem?.quantity === 1 ||
                     addToBasket.isLoading
                   }
                   onClick={() => addToBasketHandler('decrement')}
                 >
                   <i className="fas fa-minus text-base xl:text-2xl font-extrabold" />
                 </Button>
-                {/* <p className="w-16 text-center text-base md:text-lg">{cartitemquantity}</p> */}
-                <input
-                  className="w-16 h-10 text-center text-base md:text-lg bg-card qtyinput"
-                  type="number"
-                  value={cartitemquantity}
-                  onChange={(event) => setcartitemquantity(parseInt(event.target.value))}
-                  onBlur={() => { quantityChange(cartitemquantity, isSubscribe) }}
-                />
+                <p className="w-16 text-center text-base md:text-lg">{cartItem?.quantity}</p>
 
                 <TooltipProvider>
                   <Tooltip
@@ -285,7 +248,7 @@ export default function CartItem(props: CartItemProp) {
                 </TooltipProvider>
               </div>
               <p className="text-sm md:text-xl text-white font-bold mt-2 md:mt-0 ml-3 md:ml-0">
-                <span className="text-sm md:text-base">AED</span> {(cartitemquantity * cartItem?.Event?.price)?.toFixed(2)}{' '}
+                <span className="text-sm md:text-base">AED</span> {(cartItem?.quantity * cartItem?.Event?.price)?.toFixed(2)}{' '}
               </p>
               <div className="space-y-2">
                 {true ? (
@@ -319,10 +282,11 @@ export default function CartItem(props: CartItemProp) {
                   return (
                     <Button
                       key={frequency}
-                      className={`bg-card text-sm rounded-full ${frequency?.toLocaleLowerCase() === subscriptionType
-                        ? 'border border-primary'
-                        : ''
-                        }`}
+                      className={`bg-card text-sm rounded-full ${
+                        frequency?.toLocaleLowerCase() === subscriptionType
+                          ? 'border border-primary'
+                          : ''
+                      }`}
                       disabled={isSubscribable}
                       variant="outline"
                       onClick={() =>
