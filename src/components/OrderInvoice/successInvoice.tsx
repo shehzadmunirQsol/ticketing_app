@@ -79,27 +79,29 @@ export default function SuccessInvoice() {
         id: event?.event_id,
         price: event?.Event?.price,
         name: event?.Event?.EventDescription[0]?.name,
+        draw_date: event?.Event?.end_date?.toISOString().split('T')[0],
+        draw_time: event?.Event?.end_date?.toTimeString().split(' ')[0],
         quantity: event?.quantity,
       }));
 
        
-      var prizenames = "";
-      var drawdate = "";
-      var drawtime = "";
-      OrderApiData?.data?.OrderEvent?.forEach((event) => {
-        prizenames += event?.Event?.EventDescription[0]?.name + ', ';
+      // var prizenames = "";
+      // var drawdate = "";
+      // var drawtime = "";
+      // OrderApiData?.data?.OrderEvent?.forEach((event) => {
+      //   prizenames += event?.Event?.EventDescription[0]?.name + ', ';
 
-        var drwdate = event?.Event?.end_date; 
-        var date = drwdate.toISOString().split('T')[0]; 
-        var time = drwdate.toTimeString().split(' ')[0]; 
+      //   var drwdate = event?.Event?.end_date; 
+      //   var date = drwdate.toISOString().split('T')[0]; 
+      //   var time = drwdate.toTimeString().split(' ')[0]; 
 
-        drawdate += date + ', ';
-        drawtime += time + ', ';  
+      //   drawdate += date + ', ';
+      //   drawtime += time + ', ';  
 
-      });
-      prizenames = prizenames.replace(/,\s*$/, "");
-      drawdate = drawdate.replace(/,\s*$/, "");
-      drawtime = drawtime.replace(/,\s*$/, "");
+      // });
+      // prizenames = prizenames.replace(/,\s*$/, "");
+      // drawdate = drawdate.replace(/,\s*$/, "");
+      // drawtime = drawtime.replace(/,\s*$/, "");
 
 
 
@@ -119,16 +121,15 @@ export default function SuccessInvoice() {
           },
           {
             "data": {
-              "prize_name" : prizenames,
-              "ticket_number": "",
-              "invoice_number": "#INV00" + OrderApiData?.data?.id,
               "status": "success",
               "order_number": "INV00" + OrderApiData?.data?.id,
               "sub_total": "AED " + OrderApiData?.data?.sub_total_amount?.toFixed(2),
               "discount": discountvalue,
               "total_price": "AED " + OrderApiData?.data?.total_amount?.toFixed(2),
-              "draw_date": drawdate,
-              "draw_time": drawtime,
+              // "prize_name" : prizenames,
+              "invoice_number": "#INV00" + OrderApiData?.data?.id,
+              // "draw_date": drawdate,
+              // "draw_time": drawtime,
               "data" : data,
             }
           },
