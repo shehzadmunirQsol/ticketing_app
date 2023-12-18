@@ -39,6 +39,7 @@ export default function CartItem(props: CartItemProp) {
   const { isLogin, user } = useSelector((state: RootState) => state.auth);
   const [isSubscribe, setIsSubscribe] = useState(cartItem?.is_subscribe);
   const [isModal, setIsModal] = useState(false);
+  const [manualCartCount, setManualCartCount] = useState(cartItem?.quantity);
 
   const [subscriptionType, setSubscriptionType] = useState<SubscriptionType>(
     cartItem?.subscription_type,
@@ -51,6 +52,7 @@ export default function CartItem(props: CartItemProp) {
 
   async function addToBasketHandler(
     type: 'increment' | 'decrement' | 'manualnumber' | 'unsubscribe' | 'update_cart',
+    manualCount:any,
   ) {
     let quantity = cartItem.quantity;
 
@@ -58,7 +60,8 @@ export default function CartItem(props: CartItemProp) {
     if (type === 'decrement') quantity--;
 
     if (type === 'manualnumber'){
-      //quantity = 2;
+      const numericValue: number = parseInt(manualCount);
+      quantity = numericValue;
     }
 
     const isSubscription = type === 'unsubscribe' ? false : isSubscribe;
@@ -71,12 +74,12 @@ export default function CartItem(props: CartItemProp) {
       quantity,
     };
 
-    const eventCartData = cart?.cartItems?.map((event) => ({
-      id: event?.event_id,
-      price: event?.Event?.price,
-      name: event?.Event?.EventDescription[0]?.name,
-      quantity: event?.quantity,
-    }));
+    // const eventCartData = cart?.cartItems?.map((event) => ({
+    //   id: event?.event_id,
+    //   price: event?.Event?.price,
+    //   name: event?.Event?.EventDescription[0]?.name,
+    //   quantity: event?.quantity,
+    // }));
 
 
 
@@ -124,19 +127,21 @@ export default function CartItem(props: CartItemProp) {
       setIsSubscribe(isSubscription);
       setSubscriptionType(isSubscription ? subscriptionType : null);
 
+      setManualCartCount(quantity);
+
       toast({
         variant: 'success',
         title: 'Item updated successfully!',
       });
 
       if ('sendinblue' in window && window?.sendinblue) {
-        const eventData = {
-          id: cartItem?.event_id,
-          price: cartItem?.Event?.price,
-          name: cartItem?.Event?.EventDescription[0]?.name,
-          quantity: payload.quantity,
-        };
-        eventCartData.push(eventData);
+        // const eventData = {
+        //   id: cartItem?.event_id,
+        //   price: cartItem?.Event?.price,
+        //   name: cartItem?.Event?.EventDescription[0]?.name,
+        //   quantity: payload.quantity,
+        // };
+        // eventCartData.push(eventData);
         const sendinblue: any = window.sendinblue;
   
 
@@ -162,8 +167,19 @@ export default function CartItem(props: CartItemProp) {
     }
   }
 
+
+  function manualCartNumber(e:any) {
+     var num = e.target.value;
+     setManualCartCount(num);
+  }
+  function manualCartNumberSet(e:any) {
+    var num = e.target.value;
+    setManualCartCount(num);
+    addToBasketHandler("manualnumber",num)
+ }
+
   function toggleSwitch() {
-    if (isSubscribe && subscriptionType) addToBasketHandler('unsubscribe');
+    if (isSubscribe && subscriptionType) addToBasketHandler('unsubscribe',null);
     else setIsSubscribe((prevValue) => !prevValue);
   }
 
@@ -246,19 +262,21 @@ export default function CartItem(props: CartItemProp) {
                     cartItem?.quantity === 1 ||
                     addToBasket.isLoading
                   }
-                  onClick={() => addToBasketHandler('decrement')}
+                  onClick={() => addToBasketHandler('decrement',null)}
                 >
                   <i className="fas fa-minus text-base xl:text-2xl font-extrabold" />
                 </Button>
-                <p className="w-16 text-center text-base md:text-lg">{cartItem?.quantity}</p>
+                {/* <p className="w-16 text-center text-base md:text-lg">{cartItem?.quantity}</p> */}
 
-                {/* <input
+                <input
                   className="w-16 h-10 text-center text-base md:text-lg bg-card qtyinput"
                   type="number"
-                  value={cartItem?.quantity}
-                  // onChange={(event) => addToBasketHandler("manualnumber")}
-                  // onBlur={() => { addToBasketHandler("manualnumber") }}
-                /> */}
+                  // value={cartItem?.quantity}
+                  value={manualCartCount}
+                  onChange={(e) => manualCartNumber(e)}
+                  onBlur={(e) => manualCartNumberSet(e)}
+                  // onBlur={(e) => { addToBasketHandler("manualnumber",e.target.value) }}
+                />
 
                 <TooltipProvider>
                   <Tooltip
@@ -279,7 +297,7 @@ export default function CartItem(props: CartItemProp) {
                           isNotEnabled ||
                           addToBasket.isLoading
                         }
-                        onClick={() => addToBasketHandler('increment')}
+                        onClick={() => addToBasketHandler('increment',null)}
                       >
                         <i className="fas fa-plus text-base xl:text-2xl font-extrabold" />
                       </Button>
@@ -345,7 +363,7 @@ export default function CartItem(props: CartItemProp) {
                 <Button
                   className="rounded-full text-sm font-extrabold "
                   disabled={addToBasket.isLoading || !subscriptionType}
-                  onClick={() => addToBasketHandler('update_cart')}
+                  onClick={() => addToBasketHandler('update_cart',null)}
                 >
                   Update Cart
                 </Button>
