@@ -62,7 +62,7 @@ const ImageSlider = ({ data, ticketPurchased, higlightmeta }: any) => {
       setRange([cartItem.quantity ?? 0]);
     } else {
       // setRange([userTicketLimit > 10 ? 10 : userTicketLimit]);
-      setRange([1]);
+      setRange([5]);
     }
   }, [cartItem, userTicketLimit]);
 
