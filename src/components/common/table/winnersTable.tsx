@@ -108,24 +108,11 @@ export default function WinnersDataTable() {
       enableHiding: false,
       cell: ({ row }) => {
         return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="max-w-fit px-2">
-                <span className="sr-only">Open menu</span>
-                <div className=" hover:text-primary w-14 text-left ">
-                  # {row.original.id}
-                </div>
-                {/* <MoreHorizontal className="h-4 w-4" /> */}
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem
-                onClick={() => handleEnable(row.original, true)}
-              >
-                Add Image
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <Link href={`/admin/customers/detail/${row?.original?.Customer?.id}`}>
+            <div className=" hover:text-primary w-14 text-left ">
+              # {row.original.id}
+            </div>
+          </Link>
         );
       },
     },
@@ -167,26 +154,64 @@ export default function WinnersDataTable() {
       accessorKey: 'Customer Name',
       header: 'Customer Name',
       cell: ({ row }) => (
-        <Link href={`/admin/customers/detail/${row?.original?.Customer?.id}`}>
-          <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
-            <div className="h-10 w-16 rounded-lg overflow-hidden relative">
-              <NextImage
-                className="object-cover bg-ac-2 "
-                src={
-                  row?.original?.thumb
-                    ? `${process.env.NEXT_PUBLIC_MEDIA_BASE_URL}${row?.original?.thumb}`
-                    : PlaceholderImage
-                }
-                alt={row?.original?.Event.EventDescription[0]?.name ?? ''}
-                fill
-              />
-            </div>
 
-            <p className="w-32 text-ellipsis whitespace-nowrap overflow-hidden">
-              {row?.original?.Customer?.first_name}
-            </p>
-          </div>
-        </Link>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="max-w-fit px-2">
+                <span className="sr-only">Open menu</span>
+
+                {/* <div className=" hover:text-primary w-14 text-left ">  */}
+                  <div className="h-10 w-16 rounded-lg overflow-hidden relative">
+                    <NextImage
+                      className="object-cover bg-ac-2 "
+                      src={
+                        row?.original?.thumb
+                          ? `${process.env.NEXT_PUBLIC_MEDIA_BASE_URL}${row?.original?.thumb}`
+                          : PlaceholderImage
+                      }
+                      alt={row?.original?.Event.EventDescription[0]?.name ?? ''}
+                      fill
+                    />
+                  </div>
+
+                  <p className="w-32 text-ellipsis whitespace-nowrap overflow-hidden">
+                    {row?.original?.Customer?.first_name}
+                  </p>  
+                {/* </div>  */}
+
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem
+                onClick={() => handleEnable(row.original, true)}
+              >
+                Add Image
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+
+        // <Link href={`/admin/customers/detail/${row?.original?.Customer?.id}`}>
+        //   <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
+        //     <div className="h-10 w-16 rounded-lg overflow-hidden relative">
+        //       <NextImage
+        //         className="object-cover bg-ac-2 "
+        //         src={
+        //           row?.original?.thumb
+        //             ? `${process.env.NEXT_PUBLIC_MEDIA_BASE_URL}${row?.original?.thumb}`
+        //             : PlaceholderImage
+        //         }
+        //         alt={row?.original?.Event.EventDescription[0]?.name ?? ''}
+        //         fill
+        //       />
+        //     </div>
+
+        //     <p className="w-32 text-ellipsis whitespace-nowrap overflow-hidden">
+        //       {row?.original?.Customer?.first_name}
+        //     </p>
+        //   </div>
+        // </Link>
       ),
     },
     {
