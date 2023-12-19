@@ -79,7 +79,7 @@ export const sendSMS = async (smsOptions: SMSOptionsType) => {
       headers: {
         accept: 'application/json', 
         'content-type': 'application/json',
-        'api-key': process.env.BREVO_EMAIL_API_KEY as string,
+        'api-key': process.env.BREVO_SMS_API_KEY as string,
       },
       body: JSON.stringify({
         sender: 'Winnar',
@@ -91,6 +91,8 @@ export const sendSMS = async (smsOptions: SMSOptionsType) => {
     };
     
     const res = await fetch('https://api.brevo.com/v3/transactionalSMS/sms', options);
+
+    console.log(res)
 
     if (!res.ok) {
       console.log('sms did not send');

@@ -50,6 +50,15 @@ export function middleware(request: NextRequest, response: NextResponse) {
       // return NextResponse.redirect(new URL('/login?redirect=checkout', request.url));
       return NextResponse.redirect(new URL('/login', request.url));
     }
+
+
+    const isProtectedCarPage = request.nextUrl.pathname.includes('/cars/');
+    const isProtectedCashPage = request.nextUrl.pathname.includes('/cash/');
+    if ((isProtectedCarPage || isProtectedCashPage) && !token){
+      return NextResponse.redirect(new URL('/login', request.url));
+    }
+
+
       
     return NextResponse.next();
   }

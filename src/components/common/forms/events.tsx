@@ -331,6 +331,22 @@ export default function EventForm() {
     }
   }
 
+
+
+
+  const formatDate = (inputDate: Date): string => {
+    const formattedDate = `${inputDate.getFullYear()}-${(inputDate.getMonth() + 1)
+      .toString()
+      .padStart(2, '0')}-${inputDate.getDate().toString().padStart(2, '0')}T${inputDate
+      .getHours()
+      .toString()
+      .padStart(2, '0')}:${inputDate.getMinutes().toString().padStart(2, '0')}`;
+    
+    return formattedDate;
+  };
+
+
+
   type EventDataType = typeof eventData;
 
   function setFormData(payload: EventDataType) {
@@ -342,6 +358,11 @@ export default function EventForm() {
         (desc: any) => desc.lang_id === 2,
       );
 
+
+      var enddate = formatDate(payload?.data?.end_date as Date);
+      var launch_date = formatDate(payload?.data?.launch_date as Date);
+
+
       form.setValue('en.name', en?.name as string);
       form.setValue('en.desc', en?.desc as string);
       form.setValue('en.comp_details', en?.comp_details as string);
@@ -352,23 +373,32 @@ export default function EventForm() {
       form.setValue('category_id', payload.data?.category_id);
       form.setValue('faq_id', payload.data?.faq_id as any);
       form.setValue('is_cash_alt', payload.data?.is_cash_alt);
+      // form.setValue(
+      //   'end_date',
+      //   payload?.data?.end_date
+      //     ?.toISOString()
+      //     ?.slice(
+      //       0,
+      //       payload?.data?.end_date?.toISOString()?.lastIndexOf(':'),
+      //     ) as any,
+      // );
+      // form.setValue(
+      //   'launch_date',
+      //   payload.data?.launch_date
+      //     ?.toISOString()
+      //     ?.slice(
+      //       0,
+      //       payload?.data?.launch_date?.toISOString()?.lastIndexOf(':'),
+      //     ) as any,
+      // );
+
       form.setValue(
         'end_date',
-        payload?.data?.end_date
-          ?.toISOString()
-          ?.slice(
-            0,
-            payload?.data?.end_date?.toISOString()?.lastIndexOf(':'),
-          ) as any,
+        enddate as any,
       );
       form.setValue(
         'launch_date',
-        payload.data?.launch_date
-          ?.toISOString()
-          ?.slice(
-            0,
-            payload?.data?.launch_date?.toISOString()?.lastIndexOf(':'),
-          ) as any,
+        launch_date as any,
       );
 
       form.setValue('price', payload.data?.price);
@@ -720,11 +750,14 @@ export default function EventForm() {
                       ? today
                       : form?.watch('launch_date');
 
-                    const minDate = (
-                      item?.name === 'launch_date' ? today : launchDate
-                    )
-                      ?.toISOString()
-                      ?.slice(0, new Date()?.toISOString()?.lastIndexOf(':'));
+                    // const minDate = (
+                    //   item?.name === 'launch_date' ? today : launchDate
+                    // )
+                    //   ?.toISOString()
+                    //   ?.slice(0, new Date()?.toISOString()?.lastIndexOf(':'));
+
+
+                      const minDate = formatDate(item?.name === 'launch_date' ? today as Date : launchDate as Date);
 
                     return (
                       <FormField

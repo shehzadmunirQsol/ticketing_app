@@ -1,5 +1,5 @@
 import { Button } from '~/components/ui/button';
-import { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Input } from '~/components/ui/input';
 import ProductSection from '../home/product_section';
 import Glow from '~/components/common/glow';
@@ -10,9 +10,32 @@ import { useToast } from '~/components/ui/use-toast';
 import CartItem from './cartItem';
 import { addDiscount } from '~/store/reducers/cart';
 import langContent from '~/locales';
-import { getAvailableTickets } from '~/utils/helper';
+import { getAvailableTickets, sendSMS } from '~/utils/helper';
 
 export default function CartPage() {
+
+
+
+//SMS***********
+// useEffect(() => {
+//   console.log('sms part ');
+
+//   const smsOptions: any = {
+//     // to: input.phone_number,
+//     to: "971544205311",
+//     subject: 'Enter this code: 3345 to validate your account',
+//   };
+//   sendSMS(smsOptions);
+
+// }, []);
+//SMS***********
+
+
+
+
+
+
+
   const { cart, totalAmount, count } = useSelector(
     (state: RootState) => state.cart,
   );
