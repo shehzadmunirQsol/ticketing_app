@@ -546,7 +546,15 @@ export default function CmsForm(props: CategoryFormInterface) {
                           </FormLabel>
 
                           <FormControl>
-                            <Editor
+                            <CKEditor
+                            activeClass="p10"
+                            content={contentEn} // Set the initial content
+                            events={{
+                              change: handleEnChange,
+                            }}
+                            config={editorConfig}
+                          />
+                            {/* <Editor
                               id={field.name}
                               value={field.value}
                               className=" bg-black"
@@ -559,7 +567,7 @@ export default function CmsForm(props: CategoryFormInterface) {
                                 height: '320px',
                                 backgroundColor: 'black',
                               }}
-                            />
+                            /> */}
                           </FormControl>
 
                           <div className="relative pb-2 mb-2">

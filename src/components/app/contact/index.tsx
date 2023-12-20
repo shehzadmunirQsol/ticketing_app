@@ -113,13 +113,13 @@ export default function Contact() {
   return (
     <section className="body-font pt-24 space-y-24">
       <div className="px-4 my-10 md:px-14 md:my-24 flex gap-14 w-full ">
-        <div className="w-2/5 mb-5 lg:mb-0 rounded-lg hidden lg:block  ">
+        {/* <div className="w-2/5 mb-5 lg:mb-0 rounded-lg hidden lg:block  ">
           <SideImage
             image={ContactImage}
             text={'Connect with Us for '}
             text2={'Support, Questions'}
           />
-        </div>
+        </div> */}
         <div className="pb-6 flex flex-col h-full  w-full    lg:w-3/5  mx-auto lg:mx-0  lg:text-left  rounded-none border-none  bg-card ">
           <div className="font-black  pt-4 pb-4">
             <p className="text-lg md:text-2xl pl-6 px-4 lg:px-8 font-bold">Contact Us</p>
@@ -156,7 +156,7 @@ export default function Contact() {
                 </div>
               </div>
               <div className="flex flex-col text-grayColor text-sm font-thin">
-                <span className="mb-1">01386719064</span>
+                {/* <span className="mb-1">01386719064</span> */}
                 <span>contact@winnar.com</span>
               </div>
             </div>

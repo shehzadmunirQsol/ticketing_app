@@ -63,7 +63,7 @@ export default function Header() {
             alt="Logo Image"
             width={150}
             height={140}
-            className="h-4 sm:h-6 w-28 sm:w-56 "
+            className="w-36 sm:w-56 h-auto"
           />
         </Link>
         <div className="hidden  mdx:flex gap-8 items-center justify-center">

@@ -92,7 +92,8 @@ export default function AboutUs() {
         pera={`The Passionate Team Behind Winnar`}
         imageCrousel={carouselData}
       />
-      <div className="w-full py-10 lg:py-32 lg:px-14 md:px-14 px-4 z-40 text-center bg-Image mobbg">
+      {/* bg-Image class to add bg iin UVP section */}
+      <div className="w-full py-10 lg:py-32 lg:px-14 md:px-14 px-4 z-40 text-center mobbg">
         <div className=" text-center flex flex-col lg:flex-row gap-x-20 justify-center items-start font-sans lg:mx-auto">
           <p className=" text-white drop-shadow-2xl text-center  font-black text-2xl  lg:text-4xl lg:w-fit sm:mb-5">
             OUR UVP
