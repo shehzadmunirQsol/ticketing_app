@@ -63,6 +63,7 @@ function BannerSlider() {
         {carSliderNew ? (
           <Slider ref={slider} {...mainSlider} className="slidernavdown">
             {carSliderNew.map((data, key) => {
+              console.log("dsfdssdfs", data);
               return (
                 <div key={key} className="item">
                   <Link href={data.link}>
@@ -77,6 +78,10 @@ function BannerSlider() {
                     </div>
                     <div className="bannertext">
                       <p>{data.title}</p>
+                      <div className="ddate" dangerouslySetInnerHTML={{ __html: data.description }} />
+                      {/* <div className="ddate">
+                      <span>Draw Date: 30th Dec, 2023</span> <Link href={data.link}>Register Now <i className="fa-solid fa-arrow-right"></i></Link>
+                      </div> */}
                     </div>
                   </Link>
                 </div>

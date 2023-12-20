@@ -154,14 +154,16 @@ export default function ProductCard(props: CardInterface) {
 
             {
               props.type == "closing" ?
+                <div className='countbx'>
                 <CountDown dateString={props?.data?.end_date?.getTime()?.toString()} />
+                </div>
               :
               null
             } 
 
 
             {/* {
-              props.type == "upcoming" ?
+              props.type == "closing" ?
                 <div className="font-bold absolute top-0 w-fit p-2 z-2 bg-primary text-black text-sm">
                   {' '}
                    {timer}

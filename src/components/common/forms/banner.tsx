@@ -569,7 +569,7 @@ export function BannerForm() {
         </div>
         <div className="flex items-center justify-end">
           <Button type="submit" variant={'clip'} className="w-1/2">
-            {index ? 'Edit Banner' : 'Add Banner'}
+            {index ? 'Save Changes' : 'Add Banner'}
           </Button>
         </div>
       </form>

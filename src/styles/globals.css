@@ -907,6 +907,9 @@ input[type='radio']:not(:checked) + section.box .icon-class {
 .cmsStyle {
   line-height: 1.5;
 }
+.cmsStyle p {
+  margin-bottom: 15px;
+}
 .cmsStyle h1 {
   font-size: 32px;
   text-transform: uppercase;
@@ -1105,11 +1108,37 @@ bottom: -30px;
 .herobanner .imgbx img:hover {
   transform: scale(1.03);
 }
-.herobanner .rightbx p {
-  font-size: 24px;
+.herobanner .rightbx .bannertext {
   line-height: 1.4;
   font-weight: 400;
   width: calc(100% - 150px);
+}
+.herobanner .rightbx p {
+  font-size: 24px;
+}
+.herobanner .rightbx .ddate {
+  font-size: 14px;
+  text-transform: uppercase;
+  margin-top: 10px;
+  color: #ededed;
+}
+.herobanner .rightbx .ddate a {
+  position: relative;
+  color: #20cba8;
+  text-decoration: underline;
+  margin-left: 10px;
+  display: inline-block;
+}
+.herobanner .rightbx .ddate a::after {
+  content: '\f061';
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900; 
+  font-size: 14px; 
+  color: #20cba8; 
+  position: absolute;
+  top: 0;
+  right: -18px;
+  z-index: -1;
 }
 .slick-prev, .slick-next {
   width: 56px !important;
@@ -1425,6 +1454,83 @@ div[role="dialog"] > button:focus {
 .qtyinput {
   box-shadow: inset 5px 5px 10px #000000; 
 }
+.firstol {
+  counter-reset: firstol-counter;
+  list-style-type: none;
+  padding-left: 25px;
+}
+.firstol > li {
+  font-weight: 600;
+  counter-increment: firstol-counter;
+  margin-bottom: 8px;
+}
+.firstol > li:before {
+  content: counter(firstol-counter); 
+  width: 25px;
+  margin-left: -25px;
+  display: inline-block;
+}
+.secondol {
+  counter-reset: secondol-counter;
+  list-style-type: none;
+  padding-left: 35px;
+  margin-top: 5px;
+  margin-bottom: 20px;
+}
+.secondol > li {
+  font-weight: 400;
+  counter-increment: secondol-counter;
+  margin-bottom: 8px;
+}
+.secondol > li:before {
+  content: counter(firstol-counter) "." counter(secondol-counter) " ";  
+  width: 35px;
+  margin-left: -35px;
+  display: inline-block;
+}
+.thirdol {
+  counter-reset: thirdol-counter;
+  list-style-type: none;
+  padding-left: 45px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+.thirdol > li {
+  font-weight: 400;
+  counter-increment: thirdol-counter;
+  margin-bottom: 8px;
+}
+.thirdol > li:before {
+  content: counter(firstol-counter) "." counter(secondol-counter) "." counter(thirdol-counter) " ";  
+  width: 45px;
+  margin-left: -45px;
+  display: inline-block;
+}
+.countbx {
+  background: #252525;
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 10px;
+}
+.countbx .mt-5 {
+  margin-top: 0 !important;
+}
+.countbx .counttitle {
+  display: none;
+}
+.countbx .counterrow {
+  max-width: 140px;
+}
+.countbx .timer-box {
+  padding: 0;
+  font-size: 15px;
+  border: none;
+}
+.countbx .timer-box span {
+  font-size: 9px;
+  margin-top: 1px;
+}
 /* Desktop */
 
 
@@ -1435,6 +1541,9 @@ div[role="dialog"] > button:focus {
 }
 .herobanner .rightbx p {
   font-size: 20px;
+}
+.herobanner .rightbx .ddate a {
+  margin-left: 0;
 }
 }
 
@@ -1510,10 +1619,15 @@ div[role="dialog"] > button:focus {
     -webkit-clip-path: polygon(50% 0,100% 0,100% 35%,100% 70%,100% 100%,50% 100%,0 100%,0 19%,9% 31%,0 0);
     clip-path: polygon(50% 0,100% 0,100% 35%,100% 70%,100% 100%,50% 100%,0 100%,0 19%,9% 31%,0 0);
 }
-.herobanner .rightbx p {
-  font-size: 16px;
+.herobanner .rightbx .bannertext { 
   width: calc(100% - 100px);
   margin: 0;
+}
+.herobanner .rightbx p {
+  font-size: 16px;
+}
+.herobanner .rightbx .ddate {
+  font-size: 12px;
 }
 .herobanner .imgbx {
   margin-bottom: 20px;
@@ -1623,5 +1737,8 @@ input:checked + section.box {
 }
 .text-xxs {
   font-size: 0.60rem;
+}
+.countbx {
+  padding: 6px;
 }
 }

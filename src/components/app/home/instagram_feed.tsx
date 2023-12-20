@@ -21,7 +21,7 @@ function InstagramFeed(props: producctInterface) {
         </p>
       </div>
     </div>
-    <ElfsightWidget widgetId="bd69b607-c562-42c6-9b4a-8ce9b3b410b5" />
+    <ElfsightWidget widgetId="53910f10-505e-4bfb-978b-96a8ff41cc45" />
     </div>
 
   );
