@@ -4,10 +4,14 @@
       "ENTER_BTN":"ENTER NOW"
     },
     "products":{
-      "HEADING":"DRAWING SOON"
+      "HEADING":"CAR DRAWING SOON",
+      "CASHHEADING":"CASH DRAWING SOON"
     },
     "upcoming":{
       "HEADING":"UPCOMING COMPETITIONS"
+    },
+    "upcomingcash":{
+      "HEADING":"UPCOMING CASH COMPETITIONS"
     },
     "wonders":{
       "HEADING":"Winnar Wonders: ",

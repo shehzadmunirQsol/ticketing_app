@@ -52,11 +52,11 @@ export function middleware(request: NextRequest, response: NextResponse) {
     }
 
 
-    const isProtectedCarPage = request.nextUrl.pathname.includes('/cars/');
-    const isProtectedCashPage = request.nextUrl.pathname.includes('/cash/');
-    if ((isProtectedCarPage || isProtectedCashPage) && !token){
-      return NextResponse.redirect(new URL('/login', request.url));
-    }
+    // const isProtectedCarPage = request.nextUrl.pathname.includes('/cars/');
+    // const isProtectedCashPage = request.nextUrl.pathname.includes('/cash/');
+    // if ((isProtectedCarPage || isProtectedCashPage) && !token){
+    //   return NextResponse.redirect(new URL('/login', request.url));
+    // }
 
 
       

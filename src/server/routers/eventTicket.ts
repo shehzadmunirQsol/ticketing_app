@@ -121,4 +121,48 @@ export const eventTicketRouter = router({
         });
       }
     }),
+
+
+
+
+    getTotalTicketSold: publicProcedure
+    .query(async ({ input }) => {
+      try { 
+        const eventPromise = prisma.orderEvent.findMany({
+          orderBy: { created_at: 'desc' },
+          // take: input.rows,
+          // where: where,
+          select: {
+            id: true,
+            order_id: true,
+            quantity: true,
+          },
+        });
+
+
+        const [totalTickets] = await Promise.all([
+          eventPromise,
+        ]);
+
+        if (!totalTickets?.length) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Tickets not found',
+          });
+        }
+
+        return {
+          message: 'Tickets found',
+          data: totalTickets,
+        };
+      } catch (error: any) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: error?.message,
+        });
+      }
+    }),
+
+
+
 });

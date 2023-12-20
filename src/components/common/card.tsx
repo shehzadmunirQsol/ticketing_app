@@ -9,6 +9,7 @@ import { RootState } from '~/store/store';
 import Link from 'next/link';
 import langContent from '~/locales';
 import NextImage from '../ui/img';
+import CountDown from '~/components/app/productDescription/CountDown';
 
 interface CardInterface {
   class?: string;
@@ -86,9 +87,7 @@ export default function ProductCard(props: CardInterface) {
   function launchTimer() { 
     const currentDate = new Date();
 
-    
-    // const targetDateString = "Thu Dec 21 2023 19:45:00 GMT+0400";
-    const targetDateString = props?.data?.launch_date;
+    const targetDateString = props?.data?.end_date;
     const targetDate = new Date(targetDateString);
     
     if (isNaN(targetDate.getTime())) {
@@ -153,9 +152,15 @@ export default function ProductCard(props: CardInterface) {
             )}
 
 
-
-
             {
+              props.type == "closing" ?
+                <CountDown dateString={props?.data?.end_date?.getTime()?.toString()} />
+              :
+              null
+            } 
+
+
+            {/* {
               props.type == "upcoming" ?
                 <div className="font-bold absolute top-0 w-fit p-2 z-2 bg-primary text-black text-sm">
                   {' '}
@@ -164,7 +169,7 @@ export default function ProductCard(props: CardInterface) {
                 </div>
               :
               null
-            }
+            } */}
 
 
             <NextImage

@@ -14,6 +14,7 @@ import { RootState } from '~/store/store';
 import { useRouter } from 'next/router';
 import { NewsLetterDialog } from '~/components/common/modal/newsLetterModal';
 import NextImage from '~/components/ui/img';
+import { trpc } from '~/utils/trpc';
 
 interface LinkItemProps {
   name: string;
@@ -22,14 +23,38 @@ interface LinkItemProps {
   disable?: boolean;
 }
 
-const bottlePrice = 0.25;
-const totalSoldTickets = 200000;
-const charityAmount = (totalSoldTickets * bottlePrice).toLocaleString();
+
+
+
 
 function Footer() {
   const { lang } = useSelector((state: RootState) => state.layout);
   const router = useRouter();
   const [isModal, setIsModal] = useState(false);
+
+
+
+
+//-------TOTAL TICKET COUNT
+const { data: prductsList } = trpc.eventTicket.getTotalTicketSold.useQuery(undefined, {
+  refetchOnWindowFocus: false,
+  onSuccess(data:any) {
+  },
+});
+
+var totalnum = 0;
+if(prductsList.data){ 
+  prductsList.data.forEach((item:any) => {
+    totalnum += item.quantity;
+  });
+}
+
+const bottlePrice = 0.25;
+const totalSoldTickets = totalnum;
+const charityAmount = (totalSoldTickets * bottlePrice).toLocaleString();
+//-------TOTAL TICKET COUNT
+
+
 
   return (
     <footer className="h-full  bg-background-footer !z-50">

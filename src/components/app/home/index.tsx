@@ -26,20 +26,43 @@ export default function Home() {
           center={false}
           title={langContent[lang.lang].Index.products.HEADING}
           type="closing"
+          categoryId={1}
           breakpoint={[3, 2, 1.5]}
           breakpointScreens={[1350, 1050, 800]}
         />
-        {/* product section 2 */}
-        {/* 11 cards */}
+
+        <ProductSection
+          class="mx-auto w-3/5 md:w-full"
+          slidesToShow={3}
+          center={false}
+          title={langContent[lang.lang].Index.products.CASHHEADING}
+          type="closing"
+          categoryId={2}
+          breakpoint={[3, 2, 1.5]}
+          breakpointScreens={[1350, 1050, 800]}
+        />
+        
         <ProductSection
           class="mx-auto w-3/5 md:w-full"
           slidesToShow={3}
           center={false}
           title={langContent[lang.lang].Index.upcoming.HEADING}
           type="upcoming"
+          // categoryId={1}
           breakpoint={[3, 2, 1.5]}
           breakpointScreens={[1350, 1050, 800]}
         />
+
+        {/* <ProductSection
+          class="mx-auto w-3/5 md:w-full"
+          slidesToShow={3}
+          center={false}
+          title={langContent[lang.lang].Index.upcomingcash.HEADING}
+          type="upcoming"
+          categoryId={2}
+          breakpoint={[3, 2, 1.5]}
+          breakpointScreens={[1350, 1050, 800]}
+        /> */}
       </div>
       
       <CategorySection />
