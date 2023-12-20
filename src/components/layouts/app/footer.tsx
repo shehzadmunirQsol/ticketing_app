@@ -50,7 +50,8 @@ if(prductsList && prductsList.data){
 }
 
 const bottlePrice = 0.25;
-const totalSoldTickets = totalnum;
+// const totalSoldTickets = totalnum;
+const totalSoldTickets = 200000; 
 const charityAmount = (totalSoldTickets * bottlePrice).toLocaleString();
 //-------TOTAL TICKET COUNT
 
