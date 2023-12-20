@@ -43,7 +43,7 @@ const { data: prductsList } = trpc.eventTicket.getTotalTicketSold.useQuery(undef
 });
 
 var totalnum = 0;
-if(prductsList.data){ 
+if(prductsList && prductsList.data){ 
   prductsList.data.forEach((item:any) => {
     totalnum += item.quantity;
   });
