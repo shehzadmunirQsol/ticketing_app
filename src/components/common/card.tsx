@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import CarImage from '~/public/assets/card_image.png';
 import BottleImage from '~/public/assets/bottle.png';
 import { Progress } from '../ui/progress';
@@ -71,6 +71,52 @@ export default function ProductCard(props: CardInterface) {
   
     return `${formattedHours}:${minutes.toString().padStart(2, '0')} ${ampm}`;
   }
+
+  // function launchTimer(date: any) {
+  //   if (!(date instanceof Date)) {
+  //     return ''; 
+  //   }
+  
+     
+  
+  //   return `${date}`;
+  // }
+
+  const [timer, setTimer] = useState('');
+  function launchTimer() { 
+    const currentDate = new Date();
+
+    
+    // const targetDateString = "Thu Dec 21 2023 19:45:00 GMT+0400";
+    const targetDateString = props?.data?.launch_date;
+    const targetDate = new Date(targetDateString);
+    
+    if (isNaN(targetDate.getTime())) {
+      console.error(`Invalid target date: ${targetDateString}`);
+      clearInterval(timerInterval); // Stop the timer
+      return;
+    }
+    
+    const timeDifference = targetDate.getTime() - currentDate.getTime();
+
+    if (timeDifference <= 0) {
+      console.log("The target time has already passed.");
+      clearInterval(timerInterval); // Stop the timer
+      return;
+    }
+ 
+    const hours = Math.floor(timeDifference / (1000 * 60 * 60));
+    const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+  
+    setTimer(`Time remaining: ${hours}h, ${minutes}m, ${seconds}s`); 
+
+  }
+  const timerInterval = setInterval(launchTimer, 1000);
+
+
+
+
   
 
   return (
@@ -105,6 +151,22 @@ export default function ProductCard(props: CardInterface) {
             ) : (
               ''
             )}
+
+
+
+
+            {
+              props.type == "upcoming" ?
+                <div className="font-bold absolute top-0 w-fit p-2 z-2 bg-primary text-black text-sm">
+                  {' '}
+                   {timer}
+                  {' '} 
+                </div>
+              :
+              null
+            }
+
+
             <NextImage
               width={550}
               height={450}
