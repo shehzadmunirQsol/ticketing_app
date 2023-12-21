@@ -84,6 +84,7 @@ export type toggleSwitchType = 'is_deleted' | 'is_featured' | 'is_enabled';
 
 export type EventTicketCustomerType = {
   eventName: string;
+  customerID: string;
   customerName: string;
   purchaseDate: Date;
   ticketNumber: number;
@@ -146,10 +147,11 @@ export default function EventsDataTable() {
   }, [data]);
 
   const ticketCSVData = [
-    ['Raffle Name', 'Name of Participant', 'Date of Purchase', 'Ticket Number'],
+    ['Raffle Name', 'Member ID', 'Name of Participant', 'Date of Purchase', 'Ticket Number'],
     ...eventTicketCustomers?.map(
-      ({ eventName, customerName, purchaseDate, ticketNumber }) => [
+      ({ eventName, customerID, customerName, purchaseDate, ticketNumber }) => [
         eventName,
+        customerID,
         customerName,
         purchaseDate?.toLocaleDateString(),
         `#${ticketNumber}`,
@@ -408,6 +410,7 @@ export default function EventsDataTable() {
 
       const eventTicketCustomers = eventTicketData.data?.map((ticketData) => ({
         eventName: eventData?.name,
+        customerID: `${memberPrefix(ticketData?.Customer?.id ?? '')}`,
         customerName: `${ticketData?.Customer?.first_name ?? ''} ${ticketData?.Customer?.last_name ?? ''}`,
         purchaseDate: new Date(ticketData?.updated_at),
         ticketNumber: ticketData?.ticket_num,
@@ -419,6 +422,14 @@ export default function EventsDataTable() {
       console.log({ error });
     }
   }
+
+  const memberPrefix = (id: any) => {
+    const numericPart = id.toString();
+    const zeroCount = Math.max(0, 4 - numericPart.length);
+    const prefixID = "ME-" + "0".repeat(zeroCount) + numericPart;
+
+    return prefixID;
+  };
 
   function languageHandler(params: LanguageInterface) {
     setFilters((prevFilters) => ({ ...prevFilters, lang_id: params.id }));

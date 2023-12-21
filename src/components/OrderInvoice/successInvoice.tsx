@@ -15,9 +15,18 @@ import Glow from '~/components/common/glow';
 import { Button } from '../ui/button';
 import NextImage from '../ui/img';
 import langContent from '~/locales';
+import { URIGenerator, customTruncate, renderNFTImage } from '~/utils/helper';
 // import carSound from '~/public/assets/car-sound.mp3';
 
 export default function SuccessInvoice() {
+
+
+  var fullUrl = "";
+  if(typeof window !== 'undefined'){
+    fullUrl = window.location.protocol + "//" + window.location.host;
+  }
+
+
   const { lang } = useSelector((state: RootState) => state.layout);
   const { orderID } = useSelector((state: RootState) => state.cart);
 
@@ -75,16 +84,28 @@ export default function SuccessInvoice() {
 
     if ('sendinblue' in window && window?.sendinblue) {
 
-      const data = OrderApiData?.data?.OrderEvent && OrderApiData?.data?.OrderEvent?.map((event) => ({
-        id: event?.event_id,
-        price: event?.Event?.price,
-        name: event?.Event?.EventDescription[0]?.name,
-        draw_date: event?.Event?.end_date?.toISOString().split('T')[0],
-        draw_time: event?.Event?.end_date?.toTimeString().split(' ')[0],
-        quantity: event?.quantity,
-      }));
+      const data = OrderApiData?.data?.OrderEvent && OrderApiData?.data?.OrderEvent?.map((event:any) => { 
+        const categoryRoute = event?.Event?.category_id === 1 ? 'cars' : 'cash';
+        var url = `/${categoryRoute}/${URIGenerator(
+          event?.Event?.EventDescription[0]?.name,
+          event?.Event?.id,
+        )}`;
+      
+        return {
+          id: event?.event_id,
+          price: event?.Event?.price,
+          name: event?.Event?.EventDescription[0]?.name,
+          draw_date: event?.Event?.end_date?.toISOString().split('T')[0],
+          draw_time: event?.Event?.end_date?.toTimeString().split(' ')[0],
+          quantity: event?.quantity,
+          url: fullUrl+url,
+          image: renderNFTImage(event?.Event),
+        };
+      });
 
        
+
+
       // var prizenames = "";
       // var drawdate = "";
       // var drawtime = "";
@@ -130,7 +151,7 @@ export default function SuccessInvoice() {
               "invoice_number": "#INV00" + OrderApiData?.data?.id,
               // "draw_date": drawdate,
               // "draw_time": drawtime,
-              "data" : data,
+              "items" : data,
             }
           },
         ) as any;
