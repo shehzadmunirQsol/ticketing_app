@@ -44,6 +44,9 @@ function BannerSlider() {
     }
   }, [BannerApiData?.data]);
 
+  const bannerURL = "/cars";
+  const bannerButtonText = "ENTER NOW";
+
   return (
     <div className="herobanner px-2 md:px-12">
       <div className="leftbx">
@@ -51,8 +54,8 @@ function BannerSlider() {
         {/* <h3 className="uppercase">+ 4000 AED CASH</h3> */}
         <p>Drive home your dream car at a fraction of the price!</p>
         {/* <h4 className="uppercase">WIN SUNDAY 8 PM</h4> */}
-        <Link href="/cars" className="winbtn font-sans desktopbx">
-          ENTER NOW
+        <Link href={bannerURL} className="winbtn font-sans desktopbx">
+          {bannerButtonText}
         </Link>
         <div className="dblogo desktopbx">
           <NextImage src={DubaiETlogo} alt="banner image" />
@@ -92,8 +95,8 @@ function BannerSlider() {
       </div>
 
       <div className="leftbx mobilebx">
-        <Link href="/cars" className="winbtn font-sans">
-          ENTER NOW
+        <Link href={bannerURL} className="winbtn font-sans">
+          {bannerButtonText}
         </Link>
         <div className="dblogo">
           <NextImage src={DubaiETlogo} alt="banner image" />
