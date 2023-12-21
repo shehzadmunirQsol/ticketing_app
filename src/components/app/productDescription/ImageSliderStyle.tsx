@@ -65,8 +65,8 @@ export default function ImageSliderStyle({ data }: any) {
                 <Item
                     original={renderNFTImage(edata)}
                     thumbnail={renderNFTImage(edata)}
-                    width="1024"
-                    height="576"
+                    width="1000"
+                    height="667"
                     key={key}
                   >
                     {({ ref, open }) => (
