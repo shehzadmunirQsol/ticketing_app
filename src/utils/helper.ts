@@ -74,30 +74,40 @@ type SMSOptionsType = {
 export const sendSMS = async (smsOptions: SMSOptionsType) => {
   try {
 
-    const options = {
+    var myHeaders = new Headers();
+    myHeaders.append("api-key", process.env.BREVO_SMS_API_KEY ? process.env.BREVO_SMS_API_KEY as string : "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");
+    // myHeaders.append("api-key", process.env.BREVO_SMS_API_KEY as string);
+    myHeaders.append("Content-Type", "application/json");
+    var raw = JSON.stringify({
+      "sender": "Winnar",
+      "recipient": smsOptions.to,
+      "content": smsOptions.subject,
+      "type": "transactional",
+      "unicodeEnabled": true
+    });
+    
+    var requestOptions = {
       method: 'POST',
-      headers: {
-        accept: 'application/json', 
-        'content-type': 'application/json',
-        'api-key': process.env.BREVO_SMS_API_KEY as string,
-      },
-      body: JSON.stringify({
-        sender: 'Winnar',
-        recipient: smsOptions.to,
-        content: smsOptions.subject,
-        type: 'transactional',
-        unicodeEnabled: true,
-      })
+      headers: myHeaders,
+      body: raw,
     };
     
-    const res = await fetch('https://api.brevo.com/v3/transactionalSMS/sms', options);
+    // fetch("https://api.brevo.com/v3/transactionalSMS/sms", requestOptions)
+    //   .then(response => response.text())
+    //   .then(result => console.log(result))
+    //   .catch(error => console.log('error', error));
 
-    console.log(res)
+      const res = await fetch('https://api.brevo.com/v3/transactionalSMS/sms', requestOptions);
+      const result = await res.text();
+      console.log(result);
+      console.log(res);
+
 
     if (!res.ok) {
       console.log('sms did not send');
-      return;
     }
+
+    return true;
   } catch (error) {
     console.log(error);
   }
