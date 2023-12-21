@@ -151,7 +151,7 @@ export default function SuccessInvoice() {
               "invoice_number": "#INV00" + OrderApiData?.data?.id,
               // "draw_date": drawdate,
               // "draw_time": drawtime,
-              "items" : data,
+              "data" : data,
             }
           },
         ) as any;
