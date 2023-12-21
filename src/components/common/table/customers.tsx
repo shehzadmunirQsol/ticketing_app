@@ -200,7 +200,38 @@ export default function CustomersDataTable() {
   };
   // columns
 
+
+  const memberPrefix = (id: any) => {
+    const numericPart = id.toString();
+    const zeroCount = Math.max(0, 4 - numericPart.length);
+    const prefixID = "ME-" + "0".repeat(zeroCount) + numericPart;
+
+    return prefixID;
+  };
+
   const columns: ColumnDef<CustomerType>[] = [
+    {
+      accessorKey: 'Member ID',
+      header: 'Member ID',
+      cell: ({ row }) => (
+        <div className="capitalize ">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <Link href={`/admin/customers/detail/${row?.original?.id}`}>
+                  {memberPrefix(row?.original?.id)}
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p className="text-base font-normal">
+                  {memberPrefix(row?.original?.id)}
+                </p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
+      ),
+    },
     {
       accessorKey: 'First Name',
       header: 'First Name',
@@ -474,6 +505,7 @@ export default function CustomersDataTable() {
 
   const csvData = [
     [
+      'Member ID',
       'First Name',
       'Last Name',
       'Email',
@@ -484,6 +516,7 @@ export default function CustomersDataTable() {
     ],
     ...customerData?.map(
       ({
+        id,
         first_name,
         last_name,
         email,
@@ -492,6 +525,7 @@ export default function CustomersDataTable() {
         is_verified,
         created_at,
       }) => [
+        memberPrefix(id),
         first_name,
         last_name,
         email,

@@ -12,13 +12,24 @@ import NextImage from '~/components/ui/img';
 const AccountView = ({ control }: any) => {
   const { lang } = useSelector((state: RootState) => state.layout);
   const { user } = useSelector((state: RootState) => state.auth);
+
+
+  const memberPrefix = (id: any) => {
+    const numericPart = id.toString();
+    const zeroCount = Math.max(0, 4 - numericPart.length);
+    const prefixID = "ME-" + "0".repeat(zeroCount) + numericPart;
+
+    return prefixID;
+  };
+
   return (
     <div className="py-4 px-6 text-[#eaeaea]">
       <p className="mb-3">
         {langContent[lang.lang].MyAccount.AccountView.HELLO}
         {}
         <span className="font-bold">
-          {user && `${user?.first_name ?? ''} ${user?.last_name ?? ''}`}
+          {user && `${user?.first_name ?? ''} ${user?.last_name ?? ''} `}
+          {user && `(${memberPrefix(user?.id)})`}
         </span>
       </p>
       <p>
