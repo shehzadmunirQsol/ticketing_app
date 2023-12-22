@@ -10,6 +10,11 @@ import { addToCart } from '~/store/reducers/cart';
 import { URIDecoder } from '~/utils/helper';
 import langContent from '~/locales';
 import { useEffect } from 'react';
+import {
+  URIGenerator,
+  getAvailableTickets,
+  renderNFTImage,
+} from '~/utils/helper';
 
 interface CounterProps {
   range: any;
@@ -22,6 +27,13 @@ interface CounterProps {
 }
 
 export default function Counter(props: CounterProps) {
+
+  var fullUrl = "";
+  if(typeof window !== 'undefined'){
+    // fullUrl = window.location.protocol + "//" + window.location.host;
+    fullUrl = window.location.host;
+  }
+
   const {
     range,
     setRange,
@@ -54,12 +66,18 @@ export default function Counter(props: CounterProps) {
       quantity: parseInt(range) ?? 0,
     };
 
+
+
     const eventCartData = cart?.cartItems?.map((event) => ({
       id: event?.event_id,
       price: event?.Event?.price,
       name: event?.Event?.EventDescription[0]?.name,
       quantity: event?.quantity,
+      image: renderNFTImage(event?.Event),
     }));
+
+    console.log('dsdsdsd',eventCartData);
+
 
     try {
       if (isLogin) {
@@ -112,21 +130,29 @@ export default function Counter(props: CounterProps) {
           price: event.price,
           name: event.EventDescription[0].name,
           quantity: payload.quantity,
+          image: process.env.NEXT_PUBLIC_MEDIA_BASE_URL + event?.thumb
         };
         eventCartData.push(eventData);
-        const sendinblue: any = window.sendinblue;
+        
 
+        const sendinblue: any = window.sendinblue;
         sendinblue?.track(
-          'cart_updated' /*mandatory*/,
-          ({ email: user?.email }) /*user data optional*/,
-          ({
-            cart_id: cart.id,
-            data: {    
-              "items":eventCartData
+          'cart_updated',
+          {
+            "email": user.email,
+            "FIRSTNAME": user.first_name
           },
-          }) /*optional*/,
+          {
+            "data": {
+              "url" : fullUrl+"/cart",
+              "item" : eventCartData,
+            }
+          },
         ) as any;
-        console.log('pushed cart_updated to brevo 1');
+
+
+
+        console.log('pushed cart_updated to brevo 1',eventCartData);
       }
     } catch (error: any) {
       console.log({ error });

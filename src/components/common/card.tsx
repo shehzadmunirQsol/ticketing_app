@@ -73,45 +73,37 @@ export default function ProductCard(props: CardInterface) {
     return `${formattedHours}:${minutes.toString().padStart(2, '0')} ${ampm}`;
   }
 
-  // function launchTimer(date: any) {
-  //   if (!(date instanceof Date)) {
-  //     return ''; 
+
+
+  // const [timer, setTimer] = useState('');
+  // function launchTimer() { 
+  //   const currentDate = new Date();
+
+  //   const targetDateString = props?.data?.end_date;
+  //   const targetDate = new Date(targetDateString);
+    
+  //   if (isNaN(targetDate.getTime())) {
+  //     console.error(`Invalid target date: ${targetDateString}`);
+  //     clearInterval(timerInterval); // Stop the timer
+  //     return;
   //   }
-  
-     
-  
-  //   return `${date}`;
-  // }
-
-  const [timer, setTimer] = useState('');
-  function launchTimer() { 
-    const currentDate = new Date();
-
-    const targetDateString = props?.data?.end_date;
-    const targetDate = new Date(targetDateString);
     
-    if (isNaN(targetDate.getTime())) {
-      console.error(`Invalid target date: ${targetDateString}`);
-      clearInterval(timerInterval); // Stop the timer
-      return;
-    }
-    
-    const timeDifference = targetDate.getTime() - currentDate.getTime();
+  //   const timeDifference = targetDate.getTime() - currentDate.getTime();
 
-    if (timeDifference <= 0) {
-      console.log("The target time has already passed.");
-      clearInterval(timerInterval); // Stop the timer
-      return;
-    }
+  //   if (timeDifference <= 0) {
+  //     console.log("The target time has already passed.");
+  //     clearInterval(timerInterval); // Stop the timer
+  //     return;
+  //   }
  
-    const hours = Math.floor(timeDifference / (1000 * 60 * 60));
-    const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+  //   const hours = Math.floor(timeDifference / (1000 * 60 * 60));
+  //   const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+  //   const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
   
-    setTimer(`Time remaining: ${hours}h, ${minutes}m, ${seconds}s`); 
+  //   setTimer(`Time remaining: ${hours}h, ${minutes}m, ${seconds}s`); 
 
-  }
-  const timerInterval = setInterval(launchTimer, 1000);
+  // }
+  // const timerInterval = setInterval(launchTimer, 1000);
 
 
 
