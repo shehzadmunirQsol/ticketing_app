@@ -5,13 +5,14 @@ const VideoSection = (props: any) => {
     <div className="my-10">
       {props?.data?.video_src && (
         <iframe
-          className="w-full h-[560px]"
+          className="w-full h-[300px] md:h-[560px]"
           src={props?.data?.video_src}
           title=""
           // frameBorder="0"
           allow=" autoplay;"
           allowFullScreen
-        ></iframe>
+        >
+        </iframe>
       )}
     </div>
   );
