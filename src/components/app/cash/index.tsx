@@ -7,11 +7,17 @@ import { RootState } from '~/store/store';
 import ProductCard from '~/components/common/card';
 import { trpc } from '~/utils/trpc';
 import ProductSection from '../home/product_section';
+import { setCookie, getCookie, deleteCookie } from '~/service/api/cookies.service';
 // import Glow from '~/components/common/glow';
 
 const CashPage = () => {
   const { lang } = useSelector((state: RootState) => state.layout);
+
+  const { isLogin, user } = useSelector((state: RootState) => state.auth);
+  const fullUrl =  typeof window !== 'undefined' ? window.location.href : "";
+
   const [products, setProducts] = useState<Array<any>>([]);
+  const [mailtrigger, setMailtrigger] = useState(0);
   const eventFilters = {
     lang_id: lang?.lang_id,
     first: 0,
@@ -46,6 +52,58 @@ const CashPage = () => {
       setFilters({ ...filters, first: ++filters.first });
     }
   }
+
+
+
+  var cash1 = "";
+  var cash2 = "";
+
+  useEffect(() => {
+    if(user?.email){ 
+
+      if(products[0]?.EventDescription[0]){
+        cash1 = products[0]?.EventDescription[0]?.name;
+      }
+      if(products[1]?.EventDescription[0]){
+        cash2 = products[1]?.EventDescription[0]?.name;
+      } 
+      if(cash1 && cash2 && mailtrigger===0){ 
+        setMailtrigger(mailtrigger+1);
+        if ('sendinblue' in window && window?.sendinblue) {
+          const sendinblue: any = window.sendinblue;
+          
+          var counterValue = getCookie('cashCounterValue');
+          console.log("cashCounterValue",counterValue);
+          if(counterValue){
+            setCookie('cashCounterValue', parseInt(counterValue) + 1, 70);
+          }else{
+            setCookie('cashCounterValue', 1, 70);
+          }
+
+          if(counterValue && parseInt(counterValue)===2){
+            sendinblue?.track(
+              'page_visited',
+              {
+                "email": user.email,
+                "FIRSTNAME": user.first_name
+              },
+              {
+                "data": {
+                  "car_name_1" : cash1,
+                  "car_name_2": cash2,
+                  "url": fullUrl
+                }
+              },
+            ) as any;
+          }
+
+
+          //deleteCookie("cashCounterValue");
+          
+        }
+      }
+    }
+  }, [user,products]);
 
   return (
     <>
