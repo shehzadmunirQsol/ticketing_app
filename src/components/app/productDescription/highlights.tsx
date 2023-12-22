@@ -19,7 +19,7 @@ function Highlights(props: any) {
         {langContent[lang.lang].ProductDetail.highlights.title}
       </div>
 
-      <div className="flex items-center space-x-2 md:space-x-4 justify-between no-scrollbar overflow-x-scroll">
+      <div className="flex space-x-2 md:space-x-4 justify-between no-scrollbar overflow-x-scroll">
         {highlights.map((highlight) => (
           <div
             key={highlight.key}
