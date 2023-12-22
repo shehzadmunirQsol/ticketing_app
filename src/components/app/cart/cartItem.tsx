@@ -33,6 +33,11 @@ type CartItemProp = {
 type SubscriptionType = 'weekly' | 'monthly' | 'quarterly' | null;
 
 export default function CartItem(props: CartItemProp) {
+  var fullUrl = "";
+  if(typeof window !== 'undefined'){
+    fullUrl = window.location.protocol + "//" + window.location.host;
+  }
+
   const { cart_id, customer_id, cartItem } = props;
   const { cart } = useSelector((state: RootState) => state.cart);
 
@@ -74,12 +79,7 @@ export default function CartItem(props: CartItemProp) {
       quantity,
     };
 
-    // const eventCartData = cart?.cartItems?.map((event) => ({
-    //   id: event?.event_id,
-    //   price: event?.Event?.price,
-    //   name: event?.Event?.EventDescription[0]?.name,
-    //   quantity: event?.quantity,
-    // }));
+    
 
 
 
@@ -135,16 +135,18 @@ export default function CartItem(props: CartItemProp) {
       });
 
       if ('sendinblue' in window && window?.sendinblue) {
-        // const eventData = {
-        //   id: cartItem?.event_id,
-        //   price: cartItem?.Event?.price,
-        //   name: cartItem?.Event?.EventDescription[0]?.name,
-        //   quantity: payload.quantity,
-        // };
-        // eventCartData.push(eventData);
+
+
+        const eventCartData = cart?.cartItems?.map((event) => ({
+          id: event?.event_id,
+          price: event?.Event?.price,
+          name: event?.Event?.EventDescription[0]?.name,
+          quantity: event?.quantity,
+          image: renderNFTImage(event?.Event),
+        }));
+ 
         const sendinblue: any = window.sendinblue;
   
-
         sendinblue?.track(
             'cart_updated',
             {
@@ -153,13 +155,19 @@ export default function CartItem(props: CartItemProp) {
             },
             {
               "data": {
-                "closing_deadline" : drawdate,
-                "cart_expiration_date" : drawdate,
+                // "closing_deadline" : drawdate,
+                // "cart_expiration_date" : drawdate,
+                "url" : fullUrl+"/cart",
+                "item" : eventCartData,
               }
             },
+            // {
+            //   "data": eventCartData
+            // },
           ) as any;
 
-        console.log('pushed cart_updated to brevo 3',cart);
+        console.log('pushed cart_updated to brevo 3 cart',cart);
+        console.log('pushed cart_updated to brevo 3 eventCartData',eventCartData);
 
       }
     } catch (error: any) {

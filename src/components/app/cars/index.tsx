@@ -8,6 +8,7 @@ import { trpc } from '~/utils/trpc';
 import FeaturedCars from './featured_cars';
 import langContent from '~/locales';
 import ProductSection from '../home/product_section';
+import { setCookie, getCookie, deleteCookie } from '~/service/api/cookies.service';
 
 const CarsPage = () => {
   const { lang } = useSelector((state: RootState) => state.layout);
@@ -71,24 +72,40 @@ const CarsPage = () => {
         setMailtrigger(mailtrigger+1);
         if ('sendinblue' in window && window?.sendinblue) {
           const sendinblue: any = window.sendinblue;
-          sendinblue?.track(
-            'page_visited',
-            {
-              "email": user.email,
-              "FIRSTNAME": user.first_name
-            },
-            {
-              "data": {
-                "car_name_1" : car1,
-                "car_name_2": car2,
-                "url": fullUrl
-              }
-            },
-          ) as any;
+          
+          var counterValue = getCookie('carCounterValue');
+          console.log("carCounterValue",counterValue);
+          if(counterValue){
+            setCookie('carCounterValue', parseInt(counterValue) + 1, 70);
+          }else{
+            setCookie('carCounterValue', 1, 70);
+          }
+
+          if(counterValue && parseInt(counterValue)===2){
+            sendinblue?.track(
+              'page_visited',
+              {
+                "email": user.email,
+                "FIRSTNAME": user.first_name
+              },
+              {
+                "data": {
+                  "car_name_1" : car1,
+                  "car_name_2": car2,
+                  "url": fullUrl
+                }
+              },
+            ) as any;
+          }
+
+
+          //deleteCookie("carCounterValue");
+          
         }
       }
     }
   }, [user,products]);
+
 
   return (
     <div className="mx-auto  w-full bg-background">
