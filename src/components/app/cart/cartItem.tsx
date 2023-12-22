@@ -113,6 +113,11 @@ export default function CartItem(props: CartItemProp) {
         };
         const response = await addToBasket.mutateAsync(apiPayload);
         dispatch(addToCart(response.data));
+
+
+        sendInBlue(quantity);
+
+
       } else {
         const updatedCartItem = {
           ...cartItem,
@@ -135,59 +140,92 @@ export default function CartItem(props: CartItemProp) {
         title: 'Item updated successfully!',
       });
 
-      if ('sendinblue' in window && window?.sendinblue) {
+      // if ('sendinblue' in window && window?.sendinblue) {
 
 
-        const eventCartData = cart?.cartItems?.map((event) => ({
-          id: event?.event_id,
-          price: event?.Event?.price,
-          name: event?.Event?.EventDescription[0]?.name,
-          quantity: quantity,
-          image: process.env.NEXT_PUBLIC_MEDIA_BASE_URL + event?.Event?.thumb,
-        }));
+      //   const eventCartData = cart?.cartItems?.map((event) => ({
+      //     id: event?.event_id,
+      //     price: event?.Event?.price,
+      //     name: event?.Event?.EventDescription[0]?.name,
+      //     quantity: quantity,
+      //     image: process.env.NEXT_PUBLIC_MEDIA_BASE_URL + event?.Event?.thumb,
+      //   }));
 
-        const sendinblue: any = window.sendinblue;
-        sendinblue?.track(
-          'cart_updated',
-          {
-            "email": user.email,
-            "FIRSTNAME": user.first_name
-          },
-          {
-            "data": {
-              "url" : fullUrl+"/cart",
-              "item" : eventCartData,
-            }
-          },
-        ) as any;
+      //   const sendinblue: any = window.sendinblue;
+      //   sendinblue?.track(
+      //     'cart_updated',
+      //     {
+      //       "email": user.email,
+      //       "FIRSTNAME": user.first_name
+      //     },
+      //     {
+      //       "data": {
+      //         "url" : fullUrl+"/cart",
+      //         "item" : eventCartData,
+      //       }
+      //     },
+      //   ) as any;
  
-        // const sendinblue: any = window.sendinblue;
+      //   // const sendinblue: any = window.sendinblue;
   
-        // sendinblue?.track(
-        //     'cart_updated',
-        //     {
-        //       "email": user.email,
-        //       "FIRSTNAME": user.first_name
-        //     },
-        //     {
-        //       "data": {
-        //         // "closing_deadline" : drawdate,
-        //         // "cart_expiration_date" : drawdate,
-        //         "url" : fullUrl+"/cart",
-        //         "item" : eventCartData,
-        //       }
-        //     },
-        //     // {
-        //     //   "data": eventCartData
-        //     // },
-        //   ) as any;
+      //   // sendinblue?.track(
+      //   //     'cart_updated',
+      //   //     {
+      //   //       "email": user.email,
+      //   //       "FIRSTNAME": user.first_name
+      //   //     },
+      //   //     {
+      //   //       "data": {
+      //   //         // "closing_deadline" : drawdate,
+      //   //         // "cart_expiration_date" : drawdate,
+      //   //         "url" : fullUrl+"/cart",
+      //   //         "item" : eventCartData,
+      //   //       }
+      //   //     },
+      //   //     // {
+      //   //     //   "data": eventCartData
+      //   //     // },
+      //   //   ) as any;
 
-        console.log('pushed cart_updated to brevo 3 cart',cart);
-        console.log('pushed cart_updated to brevo 3 eventCartData',eventCartData);
+      //   console.log('pushed cart_updated to brevo 3 cart',cart);
+      //   console.log('pushed cart_updated to brevo 3 eventCartData',eventCartData);
 
-      }
+      // }
     } catch (error: any) {
       console.log({ error });
+    }
+  }
+
+
+
+  function sendInBlue(quantity:any) {
+    if ('sendinblue' in window && window?.sendinblue) {
+      const eventCartData = cart?.cartItems?.map((event) => ({
+        id: event?.event_id,
+        price: event?.Event?.price,
+        name: event?.Event?.EventDescription[0]?.name,
+        quantity: quantity,
+        image: process.env.NEXT_PUBLIC_MEDIA_BASE_URL + event?.Event?.thumb,
+      }));
+
+      const sendinblue: any = window.sendinblue;
+      sendinblue?.track(
+        'cart_updated',
+        {
+          "email": user.email,
+          "FIRSTNAME": user.first_name
+        },
+        {
+          "data": {
+            "url" : fullUrl+"/cart",
+            "item" : eventCartData,
+          }
+        },
+      ) as any; 
+
+      console.log('pushed cart_updated to brevo 3 cart',cart);
+      console.log('pushed cart_updated to brevo 3 eventCartData',eventCartData);
+
     }
   }
 
