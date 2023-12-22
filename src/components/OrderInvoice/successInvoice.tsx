@@ -142,6 +142,7 @@ export default function SuccessInvoice() {
           },
           {
             "data": {
+              "url":fullUrl+"/account/",
               "status": "success",
               "order_number": "INV00" + OrderApiData?.data?.id,
               "sub_total": "AED " + OrderApiData?.data?.sub_total_amount?.toFixed(2),

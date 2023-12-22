@@ -71,24 +71,65 @@ const CarsPage = () => {
         setMailtrigger(mailtrigger+1);
         if ('sendinblue' in window && window?.sendinblue) {
           const sendinblue: any = window.sendinblue;
-          sendinblue?.track(
-            'page_visited',
-            {
-              "email": user.email,
-              "FIRSTNAME": user.first_name
-            },
-            {
-              "data": {
-                "car_name_1" : car1,
-                "car_name_2": car2,
-                "url": fullUrl
-              }
-            },
-          ) as any;
+
+
+
+
+
+          // var counterValue = getCookie('counterValue');
+          // console.log("counterValue",counterValue);
+          // if(counterValue){
+          //   setCookie('counterValue', parseInt(counterValue) + 1, 1);
+          // }else{
+          //   setCookie('counterValue', 1, 1);
+          // }
+
+          // if(counterValue && parseInt(counterValue)===3){
+          //   console.log("counterValue 3 aayi");
+          // }
+
+
+          // sendinblue?.track(
+          //   'page_visited',
+          //   {
+          //     "email": user.email,
+          //     "FIRSTNAME": user.first_name
+          //   },
+          //   {
+          //     "data": {
+          //       "car_name_1" : car1,
+          //       "car_name_2": car2,
+          //       "url": fullUrl
+          //     }
+          //   },
+          // ) as any;
         }
       }
     }
   }, [user,products]);
+
+
+
+  // function setCookie(name:any, value:any, days:any) {
+  //   var expires = "";
+  //   if (days) {
+  //       var date = new Date();
+  //       date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+  //       expires = "; expires=" + date.toUTCString();
+  //   }
+  //   document.cookie = name + "=" + value + expires + "; path=/";
+  // }
+
+  // function getCookie(name:any) {
+  //   var nameEQ = name + "=";
+  //   var ca = document.cookie.split(';');
+  //   for (var i = 0; i < ca.length; i++) {
+  //       var c = ca[i];
+  //       while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+  //       if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+  //   }
+  //   return null;
+  // }
 
   return (
     <div className="mx-auto  w-full bg-background">
