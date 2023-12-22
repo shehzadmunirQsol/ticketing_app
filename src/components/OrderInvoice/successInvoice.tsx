@@ -23,7 +23,8 @@ export default function SuccessInvoice() {
 
   var fullUrl = "";
   if(typeof window !== 'undefined'){
-    fullUrl = window.location.protocol + "//" + window.location.host;
+    // fullUrl = window.location.protocol + "//" + window.location.host;
+    fullUrl = window.location.host;
   }
 
 
