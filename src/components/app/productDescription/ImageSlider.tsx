@@ -1,3 +1,4 @@
+import { Button } from '~/components/ui/button';
 import React, { useEffect, useRef, useState } from 'react';
 import { Progress } from '../../ui/progress';
 import Counter from './Counter';
@@ -20,7 +21,7 @@ const ImageSlider = ({ data, ticketPurchased, higlightmeta }: any) => {
 
   const [upcomingornot, setUpcomingornot] = useState<any>(false);
   useEffect(() => {
-    if(data){
+    if (data) {
       const currentDate = new Date();
       if (data.launch_date >= currentDate) {
         setUpcomingornot(true);
@@ -32,9 +33,11 @@ const ImageSlider = ({ data, ticketPurchased, higlightmeta }: any) => {
 
   const { cart } = useSelector((state: RootState) => state.cart);
   const { lang } = useSelector((state: RootState) => state.layout);
+  const { isLogin, user } = useSelector((state: RootState) => state.auth);
 
   const [range, setRange] = useState<number[]>([10]);
   const { query } = useRouter();
+  const router = useRouter();
 
   const ticketInBasket = useRef<number>(0);
 
@@ -68,6 +71,58 @@ const ImageSlider = ({ data, ticketPurchased, higlightmeta }: any) => {
 
   const percentageSold = (data?.tickets_sold / data?.total_tickets) * 100;
 
+
+
+
+  function UpcomingDisplay() {
+    let element: React.ReactNode;
+    element = (
+      <div className="w-full sm:p-4 space-y-3 grid items-center">
+        <i className="fas fa-road-lock text-7xl text-primary text-center" />
+        <h3 className="text-base md:text-xl text-center text-white">
+          Coming Soon
+        </h3>
+        <Button
+          className="w-full text-black font-sans font-bold h-10 md:h-12 text-base md:text-lg"
+          variant="clip"
+          onClick={registerNowHandler}
+        >
+          Register Now
+        </Button>
+      </div>
+    );
+    return element;
+  }
+
+
+  function registerNowHandler() {
+    if (isLogin) {
+      if ('sendinblue' in window && window?.sendinblue) {
+        const sendinblue: any = window.sendinblue;
+        // sendinblue?.track(
+        //   'upcoming_order',
+        //   {
+        //     "email": user.email,
+        //     "FIRSTNAME": user.first_name
+        //   },
+        //   {
+        //     "data": {
+        //       "name": data?.EventDescription[0]?.name,
+        //       "launchdate": data.launch_date,
+        //       // "url": fullUrl
+        //     }
+        //   },
+        // ) as any;
+
+
+        console.log('upcomingornot', data);
+
+      }
+    } else {
+      router.push('/login');
+    }
+  }
+
   return (
     <section className="text-gray-600 body-font">
       <div className="detailbx">
@@ -94,9 +149,6 @@ const ImageSlider = ({ data, ticketPurchased, higlightmeta }: any) => {
             </div>
             <div>
               <p className="mt-3 sm:mt-5 text-2xl md:text-3xl font-normal sm:tracking-[-1px] text-white">
-                {/* <span className=" font-bold mr-1">
-                  {lang.lang_id === 2 ? 'يفوز' : 'WIN '}{' '}
-                </span> */}
                 {data?.EventDescription[0]?.name}
               </p>
             </div>
@@ -218,15 +270,3 @@ function DisplayCounter(props: { data: any }) {
   return element;
 }
 
-function UpcomingDisplay() { 
-  let element: React.ReactNode; 
-    element = (
-      <div className="w-full sm:p-4 space-y-3 grid items-center">
-        <i className="fas fa-road-lock text-7xl text-primary text-center" />
-        <h3 className="text-base md:text-xl text-center text-white">
-          Coming Soon
-        </h3>
-      </div>
-    ); 
-  return element;
-}
