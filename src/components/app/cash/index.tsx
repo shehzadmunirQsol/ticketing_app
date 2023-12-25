@@ -100,6 +100,23 @@ const CashPage = () => {
 
           //TEST
 
+
+          // sendinblue?.track(
+          //   'page_visited',
+          //   {
+          //     "email": user.email,
+          //     "FIRSTNAME": user.first_name
+          //   },
+          //   {
+          //     "data": {
+          //       "car_name_1" : cash1,
+          //       "car_name_2": cash2,
+          //       "url": fullUrl
+          //     }
+          //   },
+          // ) as any;
+
+
           // sendinblue?.track(
           //   'order_completed',
           //   {

@@ -213,7 +213,8 @@ export default function CartItem(props: CartItemProp) {
         'cart_updated',
         {
           "email": user.email,
-          "FIRSTNAME": user.first_name
+          "FIRSTNAME": user.first_name,
+          // "scenario_id": 10,
         },
         {
           "data": {

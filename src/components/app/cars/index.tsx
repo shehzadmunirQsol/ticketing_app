@@ -99,6 +99,26 @@ const CarsPage = () => {
           }
 
 
+
+
+          //TEST
+
+          // sendinblue?.track(
+          //   'page_visited',
+          //   {
+          //     "email": user.email,
+          //     "FIRSTNAME": user.first_name
+          //   },
+          //   {
+          //     "data": {
+          //       "car_name_1" : car1,
+          //       "car_name_2": car2,
+          //       "url": fullUrl
+          //     }
+          //   },
+          // ) as any;
+          
+
           //deleteCookie("carCounterValue");
           
         }
