@@ -74,20 +74,20 @@ export const dashboardRouter = router({
           cols: true,
           link: '/admin/customers?is_verified=true&is_disabled=false',
         },
-        {
-          title: 'Pending Customers',
-          data: pendingCustomer,
-          symbol: '',
-          icon: 'fa-solid fa-user-clock',
-          cols: true,
-          link: '/admin/customers?is_verified=false&is_disabled=false',
-        },
+        // {
+        //   title: 'Pending Customers',
+        //   data: pendingCustomer,
+        //   symbol: '',
+        //   icon: 'fa-solid fa-user-clock',
+        //   cols: true,
+        //   link: '/admin/customers?is_verified=false&is_disabled=false',
+        // },
         {
           title: 'Active Coupon',
           data: couponExpiry,
           symbol: '',
           icon: 'fa-solid fa-tag',
-          cols: false,
+          cols: true,
           link: '/admin/coupons?is_enabled=true',
         },
         {
@@ -95,7 +95,7 @@ export const dashboardRouter = router({
           data: events,
           symbol: '',
           icon: 'fa-solid fa-calendar-days',
-          cols: false,
+          cols: true,
           link: `/admin/events?status=active`,
         },
         {
@@ -103,7 +103,7 @@ export const dashboardRouter = router({
           data: ordersAmount._sum.total_amount,
           symbol: 'AED',
           icon: 'fa-solid fa-chart-line',
-          cols: false,
+          cols: true,
           link: '/admin/orders',
         },
       ];
