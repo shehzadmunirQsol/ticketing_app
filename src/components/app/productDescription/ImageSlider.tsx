@@ -10,6 +10,7 @@ import { RootState } from '~/store/store';
 import { useRouter } from 'next/router';
 import langContent from '~/locales';
 import Highlights from './highlights';
+import { NewsLetterDialog } from '~/components/common/modal/newsLetterModal';
 
 import {
   URIDecoder,
@@ -18,6 +19,8 @@ import {
 } from '~/utils/helper';
 
 const ImageSlider = ({ data, ticketPurchased, higlightmeta }: any) => {
+
+  const [isModal, setIsModal] = useState(false);
 
   const [upcomingornot, setUpcomingornot] = useState<any>(false);
   useEffect(() => {
@@ -77,51 +80,64 @@ const ImageSlider = ({ data, ticketPurchased, higlightmeta }: any) => {
   function UpcomingDisplay() {
     let element: React.ReactNode;
     element = (
-      <div className="w-full sm:p-4 space-y-3 grid items-center">
+      <div className="w-full sm:p-4 space-y-5 grid items-center">
         <i className="fas fa-road-lock text-7xl text-primary text-center" />
         <h3 className="text-base md:text-xl text-center text-white">
           Coming Soon
         </h3>
+
         <Button
+          variant="clip"
+          className="w-full text-black font-sans font-bold h-10 md:h-12 text-base md:text-lg mt-5"
+          onClick={() => setIsModal(true)}
+        > 
+          Subscribe Now &nbsp; <i className="fa-solid fa-arrow-right -rotate-45 "></i> 
+        </Button>
+
+        <NewsLetterDialog
+          isModal={isModal}
+          setIsModal={setIsModal}
+          title={'Newsletter'}
+        />
+
+
+        {/* <Button
           className="w-full text-black font-sans font-bold h-10 md:h-12 text-base md:text-lg"
           variant="clip"
           onClick={registerNowHandler}
         >
           Register Now
-        </Button>
+        </Button> */}
       </div>
     );
     return element;
   }
 
 
-  function registerNowHandler() {
-    if (isLogin) {
-      if ('sendinblue' in window && window?.sendinblue) {
-        const sendinblue: any = window.sendinblue;
-        // sendinblue?.track(
-        //   'upcoming_order',
-        //   {
-        //     "email": user.email,
-        //     "FIRSTNAME": user.first_name
-        //   },
-        //   {
-        //     "data": {
-        //       "name": data?.EventDescription[0]?.name,
-        //       "launchdate": data.launch_date,
-        //       // "url": fullUrl
-        //     }
-        //   },
-        // ) as any;
+  // function registerNowHandler() {
+  //   if (isLogin) {
+  //     if ('sendinblue' in window && window?.sendinblue) {
+  //       const sendinblue: any = window.sendinblue;
+  //       // sendinblue?.track(
+  //       //   'upcoming_order',
+  //       //   {
+  //       //     "email": user.email,
+  //       //     "FIRSTNAME": user.first_name
+  //       //   },
+  //       //   {
+  //       //     "data": {
+  //       //       "name": data?.EventDescription[0]?.name,
+  //       //       "launchdate": data.launch_date,
+  //       //       // "url": fullUrl
+  //       //     }
+  //       //   },
+  //       // ) as any;
 
-
-        console.log('upcomingornot', data);
-
-      }
-    } else {
-      router.push('/login');
-    }
-  }
+  //     }
+  //   } else {
+  //     router.push('/login');
+  //   }
+  // }
 
   return (
     <section className="text-gray-600 body-font">
