@@ -725,6 +725,7 @@ export const orderRouter = router({
                   },
                 },
               },
+              EventTickets: {},
             },
           },
         },

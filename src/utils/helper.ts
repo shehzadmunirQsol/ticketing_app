@@ -83,8 +83,10 @@ export const sendSMS = async (smsOptions: SMSOptionsType) => {
       "recipient": smsOptions.to,
       "content": smsOptions.subject,
       "type": "transactional",
-      "unicodeEnabled": true
+      "unicodeEnabled": false
     });
+
+    console.log("raw",raw)
     
     var requestOptions = {
       method: 'POST',

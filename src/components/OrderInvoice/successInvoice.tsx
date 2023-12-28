@@ -37,10 +37,10 @@ export default function SuccessInvoice() {
 
 //TEST-------DELETE 
   // const { data: OrderApiData, isLoading } = trpc.order.getByID.useQuery(
-  //   { order_id: 389, lang_id: lang.lang_id },
+  //   { order_id: 463, lang_id: 1 },
   //   {
   //     refetchOnWindowFocus: false,
-  //     enabled: 389 > 0,
+  //     enabled: 463 > 0,
   //   },
   // );
 //TEST-------DELETE
@@ -79,18 +79,31 @@ export default function SuccessInvoice() {
   // };
 
 
+  function padTicketNum(ticketNum: string | number) {
+    const numDigits = ticketNum.toString().length;
+    const zerosToAdd = Math.max(6 - numDigits, 0);
+    return '0'.repeat(zerosToAdd) + ticketNum;
+  }
+
   useEffect(() => {
  
     console.log(OrderApiData, "OrderApiData")
 
     if ('sendinblue' in window && window?.sendinblue) {
 
-      const data = OrderApiData?.data?.OrderEvent && OrderApiData?.data?.OrderEvent?.map((event:any) => { 
+      const data = OrderApiData?.data?.OrderEvent && OrderApiData?.data?.OrderEvent?.map((event:any) => {
         const categoryRoute = event?.Event?.category_id === 1 ? 'cars' : 'cash';
         var url = `/${categoryRoute}/${URIGenerator(
           event?.Event?.EventDescription[0]?.name,
           event?.Event?.id,
         )}`;
+
+        const ticketRoute = event?.Event?.category_id === 1 ? 'CR-' : 'CA-';
+        const ticketdata = event?.EventTickets && event?.EventTickets?.map((ticket:any) => {
+          return {
+            ticketnumber: ticketRoute + padTicketNum(ticket.ticket_num),
+          };
+        });
       
         return {
           id: event?.event_id,
@@ -101,10 +114,10 @@ export default function SuccessInvoice() {
           quantity: event?.quantity,
           url: fullUrl+url,
           image: renderNFTImage(event?.Event),
+          tickets:ticketdata
         };
       });
 
-       
 
 
       // var prizenames = "";
