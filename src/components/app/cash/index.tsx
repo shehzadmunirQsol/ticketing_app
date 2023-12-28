@@ -57,17 +57,23 @@ const CashPage = () => {
 
   var cash1 = "";
   var cash2 = "";
+  var cashprize1 = "";
+  var cashprize2 = "";
 
   useEffect(() => {
     if(user?.email){ 
 
       if(products[0]?.EventDescription[0]){
         cash1 = products[0]?.EventDescription[0]?.name;
+        cashprize1 = products[0]?.price;
       }
       if(products[1]?.EventDescription[0]){
         cash2 = products[1]?.EventDescription[0]?.name;
+        cashprize2 = products[1]?.price;
       } 
-      if(cash1 && cash2 && mailtrigger===0){ 
+
+      if(cash1 && mailtrigger===0){ 
+
         setMailtrigger(mailtrigger+1);
         if ('sendinblue' in window && window?.sendinblue) {
           const sendinblue: any = window.sendinblue;
@@ -91,7 +97,8 @@ const CashPage = () => {
                 "data": {
                   "car_name_1" : cash1,
                   "car_name_2": cash2,
-                  "url": fullUrl
+                  "url": fullUrl,
+                  "ticket_prize": cashprize1+" aed"
                 }
               },
             ) as any;
@@ -99,7 +106,6 @@ const CashPage = () => {
 
 
           //TEST
-
 
           // sendinblue?.track(
           //   'page_visited',
@@ -111,10 +117,12 @@ const CashPage = () => {
           //     "data": {
           //       "car_name_1" : cash1,
           //       "car_name_2": cash2,
-          //       "url": fullUrl
+          //       "url": fullUrl,
+          //       "ticket_prize": cashprize1+" aed"
           //     }
           //   },
           // ) as any;
+ 
 
 
           // sendinblue?.track(
