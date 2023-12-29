@@ -155,10 +155,19 @@ export default function ProductListCard(props: CardInterface) {
             </div>
             <div className="relative w-full opacity-75  text-gray-200 text-xs md:text-sm font-light sm:font-normal leading-normal">
               <p className="h-14 overflow-hidden line-clamp-3">
-                {customTruncate(props?.data?.EventDescription[0]?.desc, 100)} 
-                {' '} or {' '}
-                {langContent[lang.lang].Index.productcard.ALTERNATIVE_TITLE} 
-                {' '} AED  {(props?.data?.cash_alt ?? 0)?.toLocaleString()}
+                {customTruncate(props?.data?.EventDescription[0]?.desc, 100)}
+                
+                {
+                   props?.data?.category_id === 1 ? 
+                    <>
+                      {' '} or {' '}
+                      {langContent[lang.lang].Index.productcard.ALTERNATIVE_TITLE} 
+                      {' '} AED  {(props?.data?.cash_alt ?? 0)?.toLocaleString()}
+                    </>
+                   :
+                   null
+                }
+                
               </p>
             </div>
             <hr className="opacity-20 mt-1 md:mt-4" />

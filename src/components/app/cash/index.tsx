@@ -148,6 +148,7 @@ const CashPage = () => {
     }
   }, [user,products]);
 
+
   return (
     <>
       <div className="relative pt-24"></div>
@@ -173,17 +174,27 @@ const CashPage = () => {
             })}
           </div>
 
+            
           {/* doudt should it load more on action or automatically */}
-          {products.length != prductsList?.count ? (
+          {
+            products.length !== 0?
+              products.length != prductsList?.count ? (
+                <div className="w-fit mx-auto">
+                  <div className="text-center my-4">
+                    <p className="tracking-tight font-bold">Load More</p>
+                    <i className="fas fa-arrow-down  text-teal-400 text-5xl my-2  "></i>
+                  </div>
+                </div>
+              ) : (
+                ''
+              )
+            :
             <div className="w-fit mx-auto">
               <div className="text-center my-4">
-                <p className="tracking-tight font-bold">Load More</p>
-                <i className="fas fa-arrow-down  text-teal-400 text-5xl my-2  "></i>
+                <p className="tracking-tight font-bold">No Products</p>
               </div>
             </div>
-          ) : (
-            ''
-          )}
+          }
         </div>
 
         <ProductSection
