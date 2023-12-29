@@ -101,11 +101,14 @@ export default function SuccessInvoice() {
         )}`;
 
         const ticketRoute = event?.Event?.category_id === 1 ? 'CR-' : 'CA-';
-        const ticketdata = event?.EventTickets && event?.EventTickets?.map((ticket:any) => {
-          return {
-            ticketnumber: ticketRoute + padTicketNum(ticket.ticket_num),
-          };
-        });
+        // const ticketdata = event?.EventTickets && event?.EventTickets?.map((ticket:any) => {
+        //   return {
+        //     ticketnumber: ticketRoute + padTicketNum(ticket.ticket_num),
+        //   };
+        // });
+
+        const ticketdata = event?.EventTickets?.map((ticket:any) => ticketRoute + padTicketNum(ticket.ticket_num));
+
 
         totalticket += event?.quantity;
 
