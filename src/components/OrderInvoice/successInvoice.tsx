@@ -90,7 +90,9 @@ export default function SuccessInvoice() {
     console.log(OrderApiData, "OrderApiData")
 
     if ('sendinblue' in window && window?.sendinblue) {
+      const options: any = {weekday: 'long', day: 'numeric',month: 'long',year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', timeZoneName: 'short',};
 
+      var totalticket = 0;
       const data = OrderApiData?.data?.OrderEvent && OrderApiData?.data?.OrderEvent?.map((event:any) => {
         const categoryRoute = event?.Event?.category_id === 1 ? 'cars' : 'cash';
         var url = `/${categoryRoute}/${URIGenerator(
@@ -104,14 +106,23 @@ export default function SuccessInvoice() {
             ticketnumber: ticketRoute + padTicketNum(ticket.ticket_num),
           };
         });
-      
+
+        totalticket += event?.quantity;
+
+        const actualclosingDate = new Date(event?.Event?.end_date);
+        const formattedClosingDate = actualclosingDate.toLocaleDateString('en-US', options);
+
+        var totalperraffle = event?.Event?.price * event?.quantity;
         return {
           id: event?.event_id,
           price: event?.Event?.price,
-          name: event?.Event?.EventDescription[0]?.name,
-          draw_date: event?.Event?.end_date?.toISOString().split('T')[0],
-          draw_time: event?.Event?.end_date?.toTimeString().split(' ')[0],
           quantity: event?.quantity,
+          total: totalperraffle,
+          name: event?.Event?.EventDescription[0]?.name,
+          closing_date: formattedClosingDate,
+          draw_date: "",
+          // draw_date: event?.Event?.end_date?.toISOString().split('T')[0],
+          // draw_time: event?.Event?.end_date?.toTimeString().split(' ')[0],
           url: fullUrl+url,
           image: renderNFTImage(event?.Event),
           tickets:ticketdata
@@ -143,6 +154,12 @@ export default function SuccessInvoice() {
 
       console.log('API data *******', data);
 
+
+
+      const actualDate = new Date();
+      const formattedDate = actualDate.toLocaleDateString('en-US', options);
+
+
       const sendinblue: any = window.sendinblue;
       if (data) { 
         
@@ -159,13 +176,12 @@ export default function SuccessInvoice() {
               "url":fullUrl+"/account/",
               "status": "success",
               "order_number": "INV00" + OrderApiData?.data?.id,
+              "order_date": formattedDate,
               "sub_total": "AED " + OrderApiData?.data?.sub_total_amount?.toFixed(2),
               "discount": discountvalue,
               "total_price": "AED " + OrderApiData?.data?.total_amount?.toFixed(2),
-              // "prize_name" : prizenames,
               "invoice_number": "#INV00" + OrderApiData?.data?.id,
-              // "draw_date": drawdate,
-              // "draw_time": drawtime,
+              "quantity": totalticket,
               "data" : data,
             }
           },
