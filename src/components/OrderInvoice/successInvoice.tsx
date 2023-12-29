@@ -201,13 +201,13 @@ export default function SuccessInvoice() {
 
   return (
     <>
-      <Confetti
+      {/* <Confetti
         width={1600}
         height={1200}
         numberOfPieces={1200}
         opacity={0.8}
         recycle={orderID > 0 && recycle}
-      />
+      /> */}
 
 
       <div className="px-4 md:px-0">
