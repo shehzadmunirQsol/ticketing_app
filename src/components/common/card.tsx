@@ -228,16 +228,23 @@ export default function ProductCard(props: CardInterface) {
               </p>
             </div>
             <hr className="opacity-20 mt-3 md:mt-4" />
-
+            
             <div className="h-15 md:h-6 overflow-hidden mt-2">
-              <span className="text-gray-200 text-md text-sm xl:text-base font-semibold leading-[18px]">
-                {langContent[lang.lang].Index.productcard.ALTERNATIVE_TITLE}
-              </span>
-              <br className="block md:hidden" />
-              <span className="text-primary text-sm xl:text-lg font-[500] leading-[18px]">
-                {' '}
-                AED {(props?.data?.cash_alt ?? 0)?.toLocaleString()}
-              </span>
+              {
+                props?.data?.category_id === 1 ? 
+                    <>
+                      <span className="text-gray-200 text-md text-sm xl:text-base font-semibold leading-[18px]">
+                        {langContent[lang.lang].Index.productcard.ALTERNATIVE_TITLE}
+                      </span>
+                      <br className="block md:hidden" />
+                      <span className="text-primary text-sm xl:text-lg font-[500] leading-[18px]">
+                        {' '}
+                        AED {(props?.data?.cash_alt ?? 0)?.toLocaleString()}
+                      </span> 
+                    </>
+                :
+                null
+              }
             </div>
 
             <div className="flex  justify-between items-center mt-3 sm:mt-6 gap-4">
