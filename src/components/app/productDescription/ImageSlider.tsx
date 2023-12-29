@@ -91,7 +91,7 @@ const ImageSlider = ({ data, ticketPurchased, higlightmeta }: any) => {
           className="w-full text-black font-sans font-bold h-10 md:h-12 text-base md:text-lg mt-5"
           onClick={() => setIsModal(true)}
         > 
-          Subscribe Now &nbsp; <i className="fa-solid fa-arrow-right -rotate-45 "></i> 
+          Get Notified &nbsp; <i className="fa-solid fa-arrow-right -rotate-45 "></i> 
         </Button>
 
         <NewsLetterDialog

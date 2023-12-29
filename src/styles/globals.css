@@ -1122,6 +1122,9 @@ bottom: -30px;
   margin-top: 10px;
   color: #ededed;
 }
+.herobanner .rightbx .ddate sup {
+  text-transform: capitalize;
+}
 .herobanner .rightbx .ddate a {
   position: relative;
   color: #20cba8;
