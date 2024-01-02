@@ -8,6 +8,7 @@ import ProductCard from '~/components/common/card';
 import { trpc } from '~/utils/trpc';
 import ProductSection from '../home/product_section';
 import { setCookie, getCookie, deleteCookie } from '~/service/api/cookies.service';
+import langContent from '~/locales';
 // import Glow from '~/components/common/glow';
 
 const CashPage = () => {
@@ -191,11 +192,22 @@ const CashPage = () => {
             :
             <div className="w-fit mx-auto">
               <div className="text-center my-4">
-                <p className="tracking-tight font-bold">No Products</p>
+                <p className="tracking-tight font-bold text-2xl">No ongoing raffles</p>
               </div>
             </div>
           }
         </div>
+
+        <ProductSection
+          class="w-3/5 md:w-full"
+          slidesToShow={3}
+          center={false}
+          title={langContent[lang.lang].Index.upcoming.HEADING}
+          type="upcoming"
+          categoryId={2}
+          breakpoint={[3, 2, 1.5]}
+          breakpointScreens={[1350, 1050, 800]}
+        />
 
         <ProductSection
           class="w-3/5 md:w-full"

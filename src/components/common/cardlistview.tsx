@@ -158,7 +158,8 @@ export default function ProductListCard(props: CardInterface) {
                 {customTruncate(props?.data?.EventDescription[0]?.desc, 100)}
                 
                 {
-                   props?.data?.category_id === 1 ? 
+                  //  props?.data?.category_id === 1 ? 
+                  props?.data?.cash_alt ? 
                     <>
                       {' '} or {' '}
                       {langContent[lang.lang].Index.productcard.ALTERNATIVE_TITLE} 

@@ -231,7 +231,8 @@ export default function ProductCard(props: CardInterface) {
             
             <div className="h-15 md:h-6 overflow-hidden mt-2">
               {
-                props?.data?.category_id === 1 ? 
+                // props?.data?.category_id === 1 ? 
+                props?.data?.cash_alt ? 
                     <>
                       <span className="text-gray-200 text-md text-sm xl:text-base font-semibold leading-[18px]">
                         {langContent[lang.lang].Index.productcard.ALTERNATIVE_TITLE}
