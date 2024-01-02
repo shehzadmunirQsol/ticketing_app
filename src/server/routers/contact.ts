@@ -16,7 +16,7 @@ export const contactRouter = router({
         const mailOptions = {
           template_id: 4,
           from: payload.email,
-          to: process.env.ADMIN as string,
+          to: process.env.ADMIN ? process.env.ADMIN as string : "winnar.dev@gmail.com",
           subject: 'Contact Request ',
           params: {
             user_name: payload.name,

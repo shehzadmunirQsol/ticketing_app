@@ -110,6 +110,29 @@ export default function Contact() {
     }
   };
 
+
+  console.log("BREVO_SMS_API_KEY",process.env.BREVO_SMS_API_KEY)
+  console.log("ADMIN",process.env.ADMIN)
+  console.log("NEXT_PUBLIC_SITE_KEY",process.env.NEXT_PUBLIC_SITE_KEY)
+  console.log("NEXT_PUBLIC_SECRET_KEY",process.env.NEXT_PUBLIC_SECRET_KEY)
+  console.log("DATABASE_URL",process.env.DATABASE_URL)
+  console.log("POSTGRES_URL",process.env.POSTGRES_URL)
+  console.log("POSTGRES_URL_NON_POOLING",process.env.POSTGRES_URL_NON_POOLING)
+  console.log("POSTGRES_PRISMA_URL",process.env.POSTGRES_PRISMA_URL)
+  console.log("POSTGRES_USER",process.env.POSTGRES_USER)
+  console.log("POSTGRES_HOST",process.env.POSTGRES_HOST)
+  console.log("POSTGRES_PASSWORD",process.env.POSTGRES_PASSWORD)
+  console.log("POSTGRES_DATABASE",process.env.POSTGRES_DATABASE)
+  console.log("NEXT_PUBLIC_BASE_URL",process.env.NEXT_PUBLIC_BASE_URL)
+  console.log("NEXT_PUBLIC_MEDIA_BASE_URL",process.env.NEXT_PUBLIC_MEDIA_BASE_URL)
+  console.log("ACCESS_KEY",process.env.ACCESS_KEY)
+  console.log("SECRET_KEY",process.env.SECRET_KEY)
+  console.log("REGION",process.env.REGION)
+  console.log("BUCKET_NAME",process.env.BUCKET_NAME)
+  console.log("BREVO_EMAIL_API_KEY",process.env.BREVO_EMAIL_API_KEY)
+  console.log("TOTAL_PROCESSING_BEARER",process.env.TOTAL_PROCESSING_BEARER)
+  console.log("TOTAN_ENTITY_ID",process.env.TOTAN_ENTITY_ID)
+
   return (
     <section className="body-font pt-24 space-y-24">
       <div className="px-4 my-10 md:px-14 md:my-24 flex gap-14 w-full ">
