@@ -68,7 +68,7 @@ export default function Home() {
       <CategorySection />
       <HowtoSection />
       <WhyChoose />
-      <Testimonials />
+      {/* <Testimonials /> */}
 
       <InstagramFeed 
       title={langContent[lang.lang].Index.wonders.HEADING}
