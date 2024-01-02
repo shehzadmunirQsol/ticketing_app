@@ -111,8 +111,8 @@ export default function Contact() {
   };
 
 
-  console.log("BREVO_SMS_API_KEY",process.env.BREVO_SMS_API_KEY)
-  console.log("ADMIN",process.env.ADMIN)
+  console.log("NEXT_PUBLIC_BREVO_SMS_API_KEY",process.env.NEXT_PUBLIC_BREVO_SMS_API_KEY)
+  console.log("NEXT_PUBLIC_ADMIN",process.env.NEXT_PUBLIC_ADMIN)
   console.log("NEXT_PUBLIC_SITE_KEY",process.env.NEXT_PUBLIC_SITE_KEY)
   console.log("NEXT_PUBLIC_SECRET_KEY",process.env.NEXT_PUBLIC_SECRET_KEY)
   console.log("DATABASE_URL",process.env.DATABASE_URL)
@@ -129,7 +129,7 @@ export default function Contact() {
   console.log("SECRET_KEY",process.env.SECRET_KEY)
   console.log("REGION",process.env.REGION)
   console.log("BUCKET_NAME",process.env.BUCKET_NAME)
-  console.log("BREVO_EMAIL_API_KEY",process.env.BREVO_EMAIL_API_KEY)
+  console.log("BREVO_EMAIL_API_KEY",process.env.NEXT_PUBLIC_BREVO_EMAIL_API_KEY)
   console.log("TOTAL_PROCESSING_BEARER",process.env.TOTAL_PROCESSING_BEARER)
   console.log("TOTAN_ENTITY_ID",process.env.TOTAN_ENTITY_ID)
 

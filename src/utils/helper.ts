@@ -45,7 +45,7 @@ export const sendEmail = async (mailOptions: EmailOptionsType) => {
       headers: {
         accept: 'application/json',
         'content-type': 'application/json',
-        'api-key': process.env.BREVO_EMAIL_API_KEY as string,
+        'api-key': process.env.NEXT_PUBLIC_BREVO_EMAIL_API_KEY as string,
       },
       body: JSON.stringify({
         sender: { name: 'Winnar', email: mailOptions.from },
@@ -75,8 +75,8 @@ export const sendSMS = async (smsOptions: SMSOptionsType) => {
   try {
 
     var myHeaders = new Headers();
-    myHeaders.append("api-key", process.env.BREVO_SMS_API_KEY ? process.env.BREVO_SMS_API_KEY as string : "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");
-    // myHeaders.append("api-key", process.env.BREVO_SMS_API_KEY as string);
+    myHeaders.append("api-key", process.env.NEXT_PUBLIC_BREVO_SMS_API_KEY ? process.env.NEXT_PUBLIC_BREVO_SMS_API_KEY as string : "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");
+    // myHeaders.append("api-key", process.env.NEXT_PUBLIC_BREVO_SMS_API_KEY as string);
     myHeaders.append("Content-Type", "application/json");
     var raw = JSON.stringify({
       "sender": "Winnar",

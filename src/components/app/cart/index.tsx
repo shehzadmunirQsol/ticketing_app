@@ -18,7 +18,7 @@ export default function CartPage() {
 
 //SMS***********
 // useEffect(() => {
-//   console.log('sms part ', process.env.BREVO_SMS_API_KEY);
+//   console.log('sms part ', process.env.NEXT_PUBLIC_BREVO_SMS_API_KEY);
 
 //   const smsOptions: any = {
 //     // to: input.phone_number,

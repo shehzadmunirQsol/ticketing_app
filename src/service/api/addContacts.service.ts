@@ -21,7 +21,7 @@ export async function addContactsToBrevoList(payload: AddContactPayloadType) {
       headers: {
         accept: 'application/json',
         'content-type': 'application/json',
-        'api-key': process.env.BREVO_EMAIL_API_KEY as string,
+        'api-key': process.env.NEXT_PUBLIC_BREVO_EMAIL_API_KEY as string,
       },
       body: JSON.stringify({
         attributes: payload.attributes,
