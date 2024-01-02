@@ -109,7 +109,7 @@ const ImageSlider = ({ data, ticketPurchased, higlightmeta }: any) => {
         </Button> */}
       </div>
     );
-    return element;
+    return element; 
   }
 
 
