@@ -231,11 +231,26 @@ const CarsPage = () => {
             :
             <div className="w-fit mx-auto">
               <div className="text-center my-4">
-                <p className="tracking-tight font-bold">No Products</p>
+                <p className="tracking-tight font-bold text-2xl">No ongoing raffles</p>
               </div>
             </div>
           }
         </div>
+
+
+
+
+        <ProductSection
+          class="w-3/5 md:w-full"
+          slidesToShow={3}
+          center={false}
+          title={langContent[lang.lang].Index.upcoming.HEADING}
+          type="upcoming"
+          categoryId={1}
+          breakpoint={[3, 2, 1.5]}
+          breakpointScreens={[1350, 1050, 800]}
+        />
+
 
         <ProductSection
           class="w-3/5 md:w-full"

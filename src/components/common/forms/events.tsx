@@ -834,9 +834,14 @@ export default function EventForm() {
                                 <FormLabel>{item?.label}</FormLabel>
                                 <FormControl>
                                   <Input
+                                    // type={
+                                    //   item?.name == 'meta.year'
+                                    //     ? 'number'
+                                    //     : 'text'
+                                    // }
                                     type={
                                       item?.name == 'meta.year'
-                                        ? 'number'
+                                        ? 'text'
                                         : 'text'
                                     }
                                     placeholder={item?.placeholder}
