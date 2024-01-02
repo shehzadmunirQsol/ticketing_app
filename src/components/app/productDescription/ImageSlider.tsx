@@ -167,17 +167,38 @@ const ImageSlider = ({ data, ticketPurchased, higlightmeta }: any) => {
               </p>
             </div>
             <div className="flex flex-col lg:flex-row  mt-1 lg:items-center  justify-between  w-full">
-              {data?.draw_date === null && data?.category_id == 1 && (
-                <p className="text-white text-lg md:text-xl">
-                  {lang.lang_id === 2
-                    ? 'البديل النقدي'
-                    : 'Cash Prize Alternative '}{' '}
-                  <span color=""></span>{' '}
-                  <span className=" font-bold mr-1 text-primary">
-                    AED {(data?.cash_alt ?? 0)?.toLocaleString()}
-                  </span>
-                </p>
-              )}
+              {/* {
+                data?.draw_date === null && data?.cash_alt && (
+                  <p className="text-white text-lg md:text-xl">
+                    {lang.lang_id === 2
+                      ? 'البديل النقدي'
+                      : 'Cash Prize Alternative '}{' '}
+                    <span color=""></span>{' '}
+                    <span className=" font-bold mr-1 text-primary">
+                      AED {(data?.cash_alt ?? 0)?.toLocaleString()}
+                    </span>
+                  </p>
+                )
+              } */}
+
+              {
+                data?.draw_date === null && data?.cash_alt ?  
+                  <p className="text-white text-lg md:text-xl">
+                      {
+                      lang.lang_id === 2 ? 
+                        'البديل النقدي'
+                        : 
+                        'Cash Prize Alternative '
+                      }
+                      {' '}
+                      <span color=""></span>{' '}
+                      <span className=" font-bold mr-1 text-primary">
+                        AED {(data?.cash_alt ?? 0)?.toLocaleString()}
+                      </span>
+                  </p> 
+                  :
+                  null
+              }
             </div>
 
             <div className="pt-1 md:pt-2 pb-1">
