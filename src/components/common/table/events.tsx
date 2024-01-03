@@ -73,9 +73,11 @@ export type EventDataType = {
   is_enabled: boolean;
   is_deleted: boolean;
   is_featured: boolean;
+  // is_winner_selected: boolean;
   cash_alt: number;
   launch_date: Date;
   end_date: Date;
+  draw_date: Date;
   created_at: Date;
   updated_at: Date;
 };
@@ -118,6 +120,8 @@ export default function EventsDataTable() {
       refetchOnWindowFocus: false,
     },
   );
+
+  console.log('dataaaaa',data);
 
   const { data: categoryData } = trpc.category.getCategory.useQuery(
     {

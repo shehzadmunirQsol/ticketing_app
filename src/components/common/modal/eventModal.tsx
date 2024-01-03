@@ -34,6 +34,7 @@ interface SelectCustomerInterface {
   customer_id: number;
   customer_name: string;
   event_name: string;
+  draw_date: Date;
   customer_email: string;
 }
 
@@ -51,6 +52,7 @@ export function SelectWinnerDialog(props: SelectCustomerInterface) {
         customer_name: props?.customer_name,
         event_name: props?.event_name,
         customer_email: props?.customer_email,
+        draw_date: props?.draw_date,
         ticket_num: Math.floor(Math.random() * 99999),
       };
 
@@ -143,6 +145,7 @@ export function SearchWinnerDialog(props: SearchWinnerDialog) {
         customer_name: data?.data?.Customer?.first_name ?? '',
         event_name: props?.event?.name,
         ticket_num: data?.data?.ticket_num,
+        draw_date: props?.event?.draw_date,
         customer_email: data?.data?.Customer?.email,
       };
 

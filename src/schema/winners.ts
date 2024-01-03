@@ -15,6 +15,8 @@ export const selectWinnerSchema = z.object({
   customer_email: z.string().email(),
   customer_name: z.string(),
   event_name: z.string(),
+  draw_date: z.date().optional(),
+  // is_winner_selected: z.boolean().default(false),
 });
 
 export const updateWinnerSchema = z.object({

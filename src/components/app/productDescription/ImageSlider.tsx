@@ -168,7 +168,7 @@ const ImageSlider = ({ data, ticketPurchased, higlightmeta }: any) => {
             </div>
             <div className="flex flex-col lg:flex-row  mt-1 lg:items-center  justify-between  w-full">
               {/* {
-                data?.draw_date === null && data?.cash_alt && (
+                data?.cash_alt && (
                   <p className="text-white text-lg md:text-xl">
                     {lang.lang_id === 2
                       ? 'البديل النقدي'
@@ -182,7 +182,7 @@ const ImageSlider = ({ data, ticketPurchased, higlightmeta }: any) => {
               } */}
 
               {
-                data?.draw_date === null && data?.cash_alt ?  
+                data?.cash_alt ?  
                   <p className="text-white text-lg md:text-xl">
                       {
                       lang.lang_id === 2 ? 
@@ -206,8 +206,7 @@ const ImageSlider = ({ data, ticketPurchased, higlightmeta }: any) => {
                 {customTruncate(data?.EventDescription[0]?.desc, 100)}
               </p>
             </div>
-            {/* {!data?.draw_date &&
-            data?.is_enabled &&
+            {/* {data?.is_enabled &&
             data?.end_date?.getTime() > Date.now() ? (
               <>
                 <div className="w-full relative z-10">
@@ -228,8 +227,7 @@ const ImageSlider = ({ data, ticketPurchased, higlightmeta }: any) => {
               <DisplayCounter data={data} />
             )} */}
 
-            {!data?.draw_date &&
-              data?.is_enabled &&
+            {data?.is_enabled &&
               data?.end_date?.getTime() > Date.now() ? (
               <>
 
@@ -269,6 +267,7 @@ const ImageSlider = ({ data, ticketPurchased, higlightmeta }: any) => {
 
 export default ImageSlider;
 
+
 function DisplayCounter(props: { data: any }) {
   const { data } = props;
 
@@ -281,7 +280,7 @@ function DisplayCounter(props: { data: any }) {
     : '';
   const ticketNumber = data?.Winner?.length ? data?.Winner[0]?.ticket_num : '';
 
-  if (data?.draw_date) {
+  if (winnerName) {
     element = (
       <div className="w-full space-y-2 grid items-center">
         <p className="text-base text-white/80">
@@ -304,4 +303,40 @@ function DisplayCounter(props: { data: any }) {
   }
   return element;
 }
+
+// function DisplayCounter(props: { data: any }) {
+//   const { data } = props;
+
+//   let element: React.ReactNode;
+
+//   const winnerName = data?.Winner?.length
+//     ? data?.Winner[0]?.Customer?.first_name +
+//     ' ' +
+//     data?.Winner[0]?.Customer?.last_name
+//     : '';
+//   const ticketNumber = data?.Winner?.length ? data?.Winner[0]?.ticket_num : '';
+
+//   if (data?.draw_date) {
+//     element = (
+//       <div className="w-full space-y-2 grid items-center">
+//         <p className="text-base text-white/80">
+//           Drawn on the {data?.draw_date?.toDateString()}
+//         </p>
+//         <h3 className="text-base md:text-2xl text-white">
+//           Congratulations to {winnerName} with number {ticketNumber}
+//         </h3>
+//       </div>
+//     );
+//   } else {
+//     element = (
+//       <div className="w-full sm:p-4 space-y-4 grid items-center">
+//         <i className="fas fa-road-lock text-7xl text-primary text-center" />
+//         <h3 className="text-base md:text-xl lg:text-2xl text-center text-white">
+//           This Competition is Closed
+//         </h3>
+//       </div>
+//     );
+//   }
+//   return element;
+// }
 
