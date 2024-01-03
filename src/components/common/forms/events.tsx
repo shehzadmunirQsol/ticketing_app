@@ -143,6 +143,12 @@ export default function EventForm() {
       placeholder: 'Please Enter Date',
     },
     {
+      type: 'date',
+      name: 'draw_date',
+      label: 'Draw Date',
+      placeholder: 'Please Enter Date',
+    },
+    {
       type: 'text_meta',
       name: 'meta.engine',
       label: 'Engine',
@@ -361,6 +367,7 @@ export default function EventForm() {
 
       var enddate = formatDate(payload?.data?.end_date as Date);
       var launch_date = formatDate(payload?.data?.launch_date as Date);
+      var draw_date = formatDate(payload?.data?.draw_date as Date);
 
 
       form.setValue('en.name', en?.name as string);
@@ -399,6 +406,10 @@ export default function EventForm() {
       form.setValue(
         'launch_date',
         launch_date as any,
+      );
+      form.setValue(
+        'draw_date',
+        draw_date as any,
       );
 
       form.setValue('price', payload.data?.price);

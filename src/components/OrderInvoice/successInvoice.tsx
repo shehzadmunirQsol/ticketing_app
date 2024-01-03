@@ -212,7 +212,7 @@ export default function SuccessInvoice() {
 
       <div className="px-4 md:px-0">
         <div
-          className="mt-24 md:mt-28 mb-10 h-full text-gray-400 rounded-lg mx-auto w-full px-8 py-10 sm:w-3/4 md:w-2/3"
+          className="mt-24 md:mt-28 mb-10 h-full text-white rounded-lg mx-auto w-full px-8 py-10 sm:w-3/4 md:w-2/3"
           id="divToPrint"
         >
           <div className="flex flex-col md:flex-row items-center justify-between mb-8">

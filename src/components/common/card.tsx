@@ -52,7 +52,7 @@ export default function ProductCard(props: CardInterface) {
     <div className="h-8 xl:h-9 hidden md:block" />
   );
   const isLastDay =
-    props?.data?.draw_date === null && props?.data?.end_date
+    props?.data?.end_date
       ? props?.data?.end_date?.getTime() <= Date.now() + 24 * 60 * 60 * 1000
       : false;
 

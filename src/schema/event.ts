@@ -78,11 +78,16 @@ export const EventFormSchema = z.object({
     invalid_type_error: 'Please enter a valid limit',
   }),
   is_cash_alt: z.boolean().default(false),
+  is_winner_selected: z.boolean().default(false),
   launch_date: z.date({
     invalid_type_error: 'Please select a valid date',
     required_error: 'Please select a date',
   }),
   end_date: z.date({
+    invalid_type_error: 'Please select a valid date',
+    required_error: 'Please select a date',
+  }),
+  draw_date: z.date({
     invalid_type_error: 'Please select a valid date',
     required_error: 'Please select a date',
   }),
