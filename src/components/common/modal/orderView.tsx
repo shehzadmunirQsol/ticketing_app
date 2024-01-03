@@ -116,7 +116,7 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
             <DialogDescription className="relative bg-card h-full rounded-lg  overflow-y-scroll scroll-hide">
               {OrderApiData && (
                 <div
-                  className="bg-card h-full text-gray-400 rounded-lg  px-8 py-6  mx-auto  "
+                  className="bg-card h-full text-white rounded-lg  px-8 py-6  mx-auto  "
                   id="divToPrint"
                 >
                   <div className="flex flex-col md:flex-row items-center justify-between mb-5">
@@ -127,7 +127,7 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
                         alt="Logo"
                       />
                     </div>
-                    <div className="text-gray-400 xs:text-center sm:text-left">
+                    <div className="text-white xs:text-center sm:text-left">
                       <div className="font-bold text-xl mb-2">INVOICE</div>
                       <div className="text-sm">
                         Date: {displayDate(OrderApiData?.data?.created_at)}
@@ -171,7 +171,7 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
                                   </div>
                                   <div
                                     onClick={() => setSelectedOrderEvent(item)}
-                                    className="flex-1 text-center cursor-pointer duration-150 hover:text-primary underline font-bold"
+                                    className="flex-1 text-center cursor-pointer duration-150 text-primary hover:text-primary underline font-bold"
                                   >
                                     {item?.quantity}
                                   </div>
@@ -427,7 +427,7 @@ export function ViewTickets(props: ViewTicketsType) {
               </Link>
             </DialogHeader>
             <DialogDescription className="relative  px-8 py-6  bg-card h-full rounded-lg  overflow-y-scroll scroll-hide">
-              <div className="h-full text-gray-400 " id="divToPrint">
+              <div className="h-full text-white " id="divToPrint">
                 <div className="flex flex-col md:flex-row items-center justify-between">
                   <div className="flex items-center">
                     <NextImage
@@ -436,7 +436,7 @@ export function ViewTickets(props: ViewTicketsType) {
                       alt="Logo"
                     />
                   </div>
-                  <div className="text-gray-400 xs:text-center sm:text-left">
+                  <div className="text-white xs:text-center sm:text-left">
                     <div className="font-bold text-xl mb-2">INVOICE</div>
                     <div className="text-sm">
                       Date: {displayDate(props?.selectedOrderEvent?.created_at)}
