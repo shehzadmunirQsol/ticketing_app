@@ -27,7 +27,7 @@ export const eventRouter = router({
         is_deleted: false,
         lang_id: input.lang_id,
         // draw_date: null,
-        // is_winner_selected: false,
+        is_winner_selected: false,
         ...filterPayload,
 
 
