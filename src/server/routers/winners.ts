@@ -176,10 +176,10 @@ export const winnerRouter = router({
           is_enabled: false,
         };
 
-        // const eventPromise = prisma.event.update({
-        //   where: { id: input.event_id },
-        //   data: { is_winner_selected: true },
-        // });
+        const eventPromise = prisma.event.update({
+          where: { id: input.event_id },
+          data: { is_winner_selected: true },
+        });
         const winnerPromise = prisma.winner.create({
           data: winnerPayload,
         });
@@ -192,8 +192,8 @@ export const winnerRouter = router({
           },
         });
 
-        // await Promise.all([eventPromise, winnerPromise, deleteCartEvent]);
-        await Promise.all([winnerPromise, deleteCartEvent]);
+        await Promise.all([eventPromise, winnerPromise, deleteCartEvent]);
+        // await Promise.all([winnerPromise, deleteCartEvent]);
 
         const mailOptions = {
           template_id: EMAIL_TEMPLATE_IDS.SELECT_WINNER,

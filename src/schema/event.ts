@@ -11,6 +11,7 @@ export const getEventSchema = z.object({
   rows: z.number(),
   lang_id: z.number(),
   filters: z.any().optional(),
+  is_winner_selected: z.boolean().optional(),
 });
 export const getUpcoming = z.object({
   startDate: z.date().optional(),

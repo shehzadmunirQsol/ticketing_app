@@ -121,7 +121,7 @@ export default function EventsDataTable() {
     },
   );
 
-  console.log('dataaaaa',data);
+console.log('dataaaaa',data);
 
   const { data: categoryData } = trpc.category.getCategory.useQuery(
     {
