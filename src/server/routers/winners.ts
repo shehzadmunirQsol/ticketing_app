@@ -178,7 +178,7 @@ export const winnerRouter = router({
 
         // const eventPromise = prisma.event.update({
         //   where: { id: input.event_id },
-        //   data: { is_winnar_selected: true },
+        //   data: { is_winner_selected: true },
         // });
         const winnerPromise = prisma.winner.create({
           data: winnerPayload,

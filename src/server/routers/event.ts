@@ -27,7 +27,7 @@ export const eventRouter = router({
         is_deleted: false,
         lang_id: input.lang_id,
         // draw_date: null,
-        // is_winnar_selected: !true,
+        // is_winner_selected: false,
         ...filterPayload,
 
 
@@ -108,7 +108,7 @@ export const eventRouter = router({
         ...eventPayload,
         charity_id: 1,
         user_id: 1,
-        // is_winnar_selected: true,
+        // is_winner_selected: false,
         meta: undefined as string | undefined,
       };
 
@@ -179,7 +179,7 @@ export const eventRouter = router({
         ...eventPayload,
         charity_id: 1,
         user_id: 1,
-        // is_winnar_selected: true,
+        // is_winner_selected: false,
         meta: undefined as string | undefined,
       };
 
