@@ -45,7 +45,7 @@ export default function ProductListCard(props: CardInterface) {
     <div className="h-8 xl:h-9 hidden md:block" />
   );
   const isLastDay =
-    props?.data?.draw_date === null && props?.data?.end_date
+    props?.data?.end_date
       ? props?.data?.end_date?.getTime() <= Date.now() + 24 * 60 * 60 * 1000
       : false;
 
@@ -180,8 +180,14 @@ export default function ProductListCard(props: CardInterface) {
                 variant="rounded"
                 className="font-[700] sm:font-[800] tracking-tight text-xs md:text-base xl:text-lg h-7 md:h-10 px-3"
               >
-                { 
+                {/* { 
                   (props && props.data && props.data.draw_date !== null) || ((Number(props?.data?.tickets_sold) / Number(props?.data?.total_tickets)) * 100 === 100) ?
+                    langContent[lang.lang].Index.productcard.VIEW_BTN
+                    :
+                    langContent[lang.lang].Index.productcard.ENTER_BTN
+                } */}
+                { 
+                  ((Number(props?.data?.tickets_sold) / Number(props?.data?.total_tickets)) * 100 === 100) ?
                     langContent[lang.lang].Index.productcard.VIEW_BTN
                     :
                     langContent[lang.lang].Index.productcard.ENTER_BTN

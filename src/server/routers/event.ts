@@ -26,8 +26,11 @@ export const eventRouter = router({
       const where: any = {
         is_deleted: false,
         lang_id: input.lang_id,
-        draw_date: null,
+        // draw_date: null,
+        // is_winnar_selected: !true,
         ...filterPayload,
+
+
       };
       if (input?.filters?.searchQuery) {
         where.OR = [];
@@ -105,6 +108,7 @@ export const eventRouter = router({
         ...eventPayload,
         charity_id: 1,
         user_id: 1,
+        // is_winnar_selected: true,
         meta: undefined as string | undefined,
       };
 
@@ -175,6 +179,7 @@ export const eventRouter = router({
         ...eventPayload,
         charity_id: 1,
         user_id: 1,
+        // is_winnar_selected: true,
         meta: undefined as string | undefined,
       };
 
@@ -358,7 +363,7 @@ export const eventRouter = router({
           is_enabled: true,
           launch_date: { lte: today },
           end_date: { gte: today },
-          draw_date: null,
+          // draw_date: null,
         };
 
         if (input?.filters?.startDate && !input?.filters?.endDate) {
@@ -434,7 +439,7 @@ export const eventRouter = router({
         const where: any = {
           is_deleted: false,
           is_enabled: true,
-          draw_date: null,
+          // draw_date: null,
         };
         const todayDate = new Date();
         const endingDate = new Date();
@@ -449,7 +454,10 @@ export const eventRouter = router({
             lte: new Date(endingDate),
           };
         }
-        if (input?.type == 'drawn') where.draw_date = { not: null };
+        if (input?.type == 'drawn'){
+          where.draw_date = { lte: new Date(todayDate) };
+          // where.draw_date = { not: null };
+        } 
         if (input?.category_id) where.category_id = input?.category_id;
 
         const totalEventPromise = prisma.event.count({
@@ -508,7 +516,7 @@ export const eventRouter = router({
         is_deleted: false,
         is_enabled: true,
         end_date: { gte: new Date() },
-        draw_date: null,
+        // draw_date: null,
         category_id: 1,
         EventDescription: { some: { lang_id: input?.lang_id } },
       };

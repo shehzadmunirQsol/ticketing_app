@@ -76,6 +76,7 @@ export type EventDataType = {
   cash_alt: number;
   launch_date: Date;
   end_date: Date;
+  draw_date: Date;
   created_at: Date;
   updated_at: Date;
 };

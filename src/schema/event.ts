@@ -86,6 +86,10 @@ export const EventFormSchema = z.object({
     invalid_type_error: 'Please select a valid date',
     required_error: 'Please select a date',
   }),
+  draw_date: z.date({
+    invalid_type_error: 'Please select a valid date',
+    required_error: 'Please select a date',
+  }),
   category_id: z.number({
     required_error: 'Select a category',
   }),

@@ -95,11 +95,11 @@ function ProductSection(props: productInterface) {
             {products
               ?.sort((a, b) => {
                 const isLastDayA =
-                  a?.draw_date === null && a?.end_date
+                  a?.end_date
                     ? a?.end_date?.getTime() <= Date.now() + 24 * 60 * 60 * 1000
                     : false;
                 const isLastDayB =
-                  b?.draw_date === null && b?.end_date
+                  b?.end_date
                     ? b?.end_date?.getTime() <= Date.now() + 24 * 60 * 60 * 1000
                     : false;
                 return isLastDayB ? 1 : isLastDayA ? -1 : 0;

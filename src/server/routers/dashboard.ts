@@ -43,7 +43,7 @@ export const dashboardRouter = router({
           launch_date: { lte: startDate },
           end_date: { gte: startDate },
           is_deleted: false,
-          draw_date: null,
+          // draw_date: null,
         },
       });
       const ordersAmountPromise = await prisma.order.aggregate({
