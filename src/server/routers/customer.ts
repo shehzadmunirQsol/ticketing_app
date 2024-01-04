@@ -591,16 +591,16 @@ export const customerRouter = router({
             },
           });
 
-          const resgistranMailOptions = {
-            template_id: 10,
-            from: EMAILS.contact,
-            subject: 'Thank you for signing up in Winnar',
-            to: user.email,
-            params: {
-              first_name: user?.first_name,
-            },
-          };
-          await sendEmail(resgistranMailOptions);
+          // const resgistranMailOptions = {
+          //   template_id: 10,
+          //   from: EMAILS.contact,
+          //   subject: 'Thank you for signing up in Winnar',
+          //   to: user.email,
+          //   params: {
+          //     first_name: user?.first_name,
+          //   },
+          // };
+          // await sendEmail(resgistranMailOptions);
 
           const customerAddress = await prisma.customerAddress.findFirst({
             where: { customer_id: updateResponse.id },

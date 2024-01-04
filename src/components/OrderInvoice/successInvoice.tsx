@@ -115,6 +115,9 @@ export default function SuccessInvoice() {
         const actualclosingDate = new Date(event?.Event?.end_date);
         const formattedClosingDate = actualclosingDate.toLocaleDateString('en-US', options);
 
+        const actualdrawDate = new Date(event?.Event?.draw_date);
+        const formattedDrawDate = actualdrawDate.toLocaleDateString('en-US', options);
+
         var totalperraffle = event?.Event?.price * event?.quantity;
         return {
           id: event?.event_id,
@@ -123,36 +126,12 @@ export default function SuccessInvoice() {
           total: totalperraffle,
           name: event?.Event?.EventDescription[0]?.name,
           closing_date: formattedClosingDate,
-          draw_date: "",
-          // draw_date: event?.Event?.end_date?.toISOString().split('T')[0],
-          // draw_time: event?.Event?.end_date?.toTimeString().split(' ')[0],
+          draw_date: formattedDrawDate,
           url: fullUrl+url,
           image: renderNFTImage(event?.Event),
           tickets:ticketdata
         };
       });
-
-
-
-      // var prizenames = "";
-      // var drawdate = "";
-      // var drawtime = "";
-      // OrderApiData?.data?.OrderEvent?.forEach((event) => {
-      //   prizenames += event?.Event?.EventDescription[0]?.name + ', ';
-
-      //   var drwdate = event?.Event?.end_date; 
-      //   var date = drwdate.toISOString().split('T')[0]; 
-      //   var time = drwdate.toTimeString().split(' ')[0]; 
-
-      //   drawdate += date + ', ';
-      //   drawtime += time + ', ';  
-
-      // });
-      // prizenames = prizenames.replace(/,\s*$/, "");
-      // drawdate = drawdate.replace(/,\s*$/, "");
-      // drawtime = drawtime.replace(/,\s*$/, "");
-
-
 
 
       console.log('API data *******', data);
