@@ -965,39 +965,74 @@ export const orderRouter = router({
               return array;
             };
 
-            order.OrderEvent.forEach((orderEvent) => {
-              (async () => {
+            // order.OrderEvent.forEach((orderEvent) => {
+            //   (async () => {
 
-                const cartItem = cart.CartItems.find(
-                  (cartItem) => cartItem.event_id === orderEvent.event_id,
-                );
+            //     const cartItem = cart.CartItems.find(
+            //       (cartItem) => cartItem.event_id === orderEvent.event_id,
+            //     );
 
-                const eventTicketsToUpdate = await prisma.eventTickets.findMany({
-                  where: {
-                    event_id: orderEvent.event_id,
-                    customer_id: null,
+            //     const eventTicketsToUpdate = await prisma.eventTickets.findMany({
+            //       where: {
+            //         event_id: orderEvent.event_id,
+            //         customer_id: null,
+            //       },
+            //     });
+
+            //     const randomizedEventTickets = await shuffleArray(eventTicketsToUpdate);
+
+            //     const ticketsToUpdate = randomizedEventTickets.slice(0, cartItem?.quantity ?? 0);
+
+
+            //     await prisma.eventTickets.updateMany({
+            //       where: {
+            //         id: {
+            //           in: ticketsToUpdate.map((ticket:any) => ticket.id),
+            //         },
+            //       },
+            //       data: {
+            //         order_event_id: orderEvent.id,
+            //         customer_id: payload?.values?.customer_id,
+            //       },
+            //     });
+
+            //   })();
+            // });
+
+
+
+
+
+
+
+            await Promise.all(order.OrderEvent.map(async (orderEvent) => {
+              const cartItem = cart.CartItems.find(
+                (cartItem) => cartItem.event_id === orderEvent.event_id,
+              );
+
+              const eventTicketsToUpdate = await prisma.eventTickets.findMany({
+                where: {
+                  event_id: orderEvent.event_id,
+                  customer_id: null,
+                },
+              });
+
+              const randomizedEventTickets = await shuffleArray(eventTicketsToUpdate);
+              const ticketsToUpdate = randomizedEventTickets.slice(0, cartItem?.quantity ?? 0);
+
+              await prisma.eventTickets.updateMany({
+                where: {
+                  id: {
+                    in: ticketsToUpdate.map((ticket:any) => ticket.id),
                   },
-                });
+                },
+                data: {
+                  order_event_id: orderEvent.id,
+                  customer_id: payload?.values?.customer_id,
+                },
+              });
+            }));
 
-                const randomizedEventTickets = shuffleArray(eventTicketsToUpdate);
-
-                const ticketsToUpdate = randomizedEventTickets.slice(0, cartItem?.quantity ?? 0);
-
-
-                await prisma.eventTickets.updateMany({
-                  where: {
-                    id: {
-                      in: ticketsToUpdate.map((ticket:any) => ticket.id),
-                    },
-                  },
-                  data: {
-                    order_event_id: orderEvent.id,
-                    customer_id: payload?.values?.customer_id,
-                  },
-                });
-
-              })();
-            });
             //NEW SHUFFLED DATA---
 
 
