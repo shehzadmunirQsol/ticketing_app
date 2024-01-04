@@ -279,7 +279,7 @@ export function ViewTickets(props: ViewTicketsType) {
       createdAt: props?.selectedOrderEvent?.created_at,
       eventName: props?.selectedOrderEvent?.Event?.EventDescription[0]?.name,
       tickets: eventTickets?.data?.map(
-        (eventTicket) => eventTicket?.ticket_num,
+        (eventTicket) => props?.selectedOrderEvent?.Event?.EventDescription[0]?.name?.Money ? "CA-"+padTicketNum(eventTicket?.ticket_num): "CR-"+padTicketNum(eventTicket?.ticket_num),
       ),
     };
 
@@ -465,7 +465,7 @@ export function ViewTickets(props: ViewTicketsType) {
                             .sort(() => Math.random() - 0.5)
                             .map((eventTicket) => (
                               <p className={`w-20`} key={eventTicket?.ticket_num}>
-                                CR-{padTicketNum(eventTicket?.ticket_num)}
+                                CA-{padTicketNum(eventTicket?.ticket_num)}
                               </p>
                             ))
                         ) : (
@@ -474,7 +474,7 @@ export function ViewTickets(props: ViewTicketsType) {
                             .sort(() => Math.random() - 0.5)
                             .map((eventTicket) => (
                               <p className={`w-20`} key={eventTicket?.ticket_num}>
-                                CA-{padTicketNum(eventTicket?.ticket_num)}
+                                CR-{padTicketNum(eventTicket?.ticket_num)}
                               </p>
                             ))
                         )}
