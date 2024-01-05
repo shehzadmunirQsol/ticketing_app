@@ -985,7 +985,7 @@ export default function EventForm() {
           <div className="flex items-center justify-between">
             <div></div>
             <Button type="submit" variant={'clip'} className="w-1/2">
-              {eventId > 0 ? 'Save Product' : 'Add Product'}
+              {eventId > 0 ? 'Save Raffle' : 'Add Raffle'}
             </Button>
           </div>
         </form>
@@ -993,7 +993,7 @@ export default function EventForm() {
       {eventId > 0 ? (
         <LoadingDialog open={isEventLoading} text={'Loading...'} />
       ) : null}
-      <LoadingDialog open={isSubmitting} text={'Saving product...'} />
+      <LoadingDialog open={isSubmitting} text={'Saving raffle...'} />
     </>
   );
 }

@@ -140,9 +140,16 @@ const CarsPage = () => {
       <FeaturedCars />
       <div className="h-full  space-y-8 py-8 md:py-14 px-4 md:px-14 md:space-y-12 md:py-20">
         <div className="relative">
-          <p className="hidden slg:block pb-6 text-2xl md:text-5xl tracking-tighter font-extrabold text-white ">
-            {langContent[lang.lang].Cars.HEADING}
-          </p>
+
+          {
+            products.length !== 0?
+              <p className="hidden slg:block pb-6 text-2xl md:text-5xl tracking-tighter font-extrabold text-white ">
+                {langContent[lang.lang].Cars.HEADING}
+              </p>
+            :
+            null
+          }
+ 
 
           <div className="block slg:hidden">
             <div className="flex justify-end listtabs mb-4">
@@ -229,11 +236,12 @@ const CarsPage = () => {
                 ''
               )
             :
-            <div className="w-fit mx-auto">
-              <div className="text-center my-4">
-                <p className="tracking-tight font-bold text-2xl">No ongoing raffles</p>
-              </div>
-            </div>
+            null
+            // <div className="w-fit mx-auto">
+            //   <div className="text-center my-4">
+            //     <p className="tracking-tight font-bold text-2xl">No ongoing raffles</p>
+            //   </div>
+            // </div>
           }
         </div>
 
