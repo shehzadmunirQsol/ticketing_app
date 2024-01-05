@@ -190,11 +190,12 @@ const CashPage = () => {
                 ''
               )
             :
-            <div className="w-fit mx-auto">
-              <div className="text-center my-4">
-                <p className="tracking-tight font-bold text-2xl">No ongoing raffles</p>
-              </div>
-            </div>
+            null
+            // <div className="w-fit mx-auto">
+            //   <div className="text-center my-4">
+            //     <p className="tracking-tight font-bold text-2xl">No ongoing raffles</p>
+            //   </div>
+            // </div>
           }
         </div>
 

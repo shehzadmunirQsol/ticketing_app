@@ -157,7 +157,7 @@ const SIDEBAR_DATA = [
   {
     key: '/admin/events',
     icon: <i className="fa-solid fa-calendar-days p-4 rounded-full"></i>,
-    title: 'Products',
+    title: 'Raffles',
   },
   {
     key: '/admin/customers',
