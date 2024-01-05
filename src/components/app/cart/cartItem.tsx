@@ -200,12 +200,13 @@ export default function CartItem(props: CartItemProp) {
 
   function sendInBlue(quantity:any) {
     if ('sendinblue' in window && window?.sendinblue) {
+      const httpBaseUrl = process.env.NEXT_PUBLIC_MEDIA_BASE_URL ? process.env.NEXT_PUBLIC_MEDIA_BASE_URL.replace(/^https:/, 'http:') : "";
       const eventCartData = cart?.cartItems?.map((event) => ({
         id: event?.event_id,
         price: event?.Event?.price,
         name: event?.Event?.EventDescription[0]?.name,
         quantity: quantity,
-        image: process.env.NEXT_PUBLIC_MEDIA_BASE_URL + event?.Event?.thumb,
+        image: httpBaseUrl + event?.Event?.thumb,
       }));
 
       const sendinblue: any = window.sendinblue;

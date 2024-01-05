@@ -125,12 +125,13 @@ export default function Counter(props: CounterProps) {
       });
 
       if ('sendinblue' in window && window?.sendinblue) {
+        const httpBaseUrl = process.env.NEXT_PUBLIC_MEDIA_BASE_URL ? process.env.NEXT_PUBLIC_MEDIA_BASE_URL.replace(/^https:/, 'http:') : "";
         const eventData = {
           id: eventId,
           price: event.price,
           name: event.EventDescription[0].name,
           quantity: payload.quantity,
-          image: process.env.NEXT_PUBLIC_MEDIA_BASE_URL + event?.thumb
+          image: httpBaseUrl + event?.thumb
         };
         eventCartData.push(eventData);
         
