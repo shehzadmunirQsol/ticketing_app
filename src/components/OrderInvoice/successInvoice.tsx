@@ -122,88 +122,14 @@ export default function SuccessInvoice() {
           closing_date: formattedClosingDate,
           draw_date: formattedDrawDate,
           url: fullUrl+url,
-          image: renderNFTImage(event?.Event),
+          image: renderNFTImage(event?.Event).replace(/^https:/, 'http:'),
           tickets:ticketdata
         };
       });
 
 
-      // var totalticket = 0;
-      // const data = OrderApiData?.data?.OrderEvent && OrderApiData?.data?.OrderEvent?.map(async (event: any) => {
-      //   const categoryRoute = event?.Event?.category_id === 1 ? 'cars' : 'cash';
-      //   const url = `/${categoryRoute}/${URIGenerator(
-      //     event?.Event?.EventDescription[0]?.name,
-      //     event?.Event?.id,
-      //   )}`;
-      
-      //   const ticketRoute = event?.Event?.category_id === 1 ? 'CR-' : 'CA-';
-       
-      //   const ticketdataOG = (event?.EventTickets || []).map(async (ticket: any) => ticketRoute + padTicketNum(ticket.ticket_num));
-      //   const ticketdata = await Promise.all(ticketdataOG);
-      
-      //   totalticket += event?.quantity;
-      
-      //   const actualclosingDate = new Date(event?.Event?.end_date);
-      //   const formattedClosingDate = actualclosingDate.toLocaleDateString('en-US', options);
-      
-      //   const actualdrawDate = new Date(event?.Event?.draw_date);
-      //   const formattedDrawDate = actualdrawDate.toLocaleDateString('en-US', options);
-      
-      //   var totalperraffle = event?.Event?.price * event?.quantity;
-      
-      //   return {
-      //     id: event?.event_id,
-      //     price: event?.Event?.price,
-      //     quantity: event?.quantity,
-      //     total: totalperraffle,
-      //     name: event?.Event?.EventDescription[0]?.name,
-      //     closing_date: formattedClosingDate,
-      //     draw_date: formattedDrawDate,
-      //     url: fullUrl + url,
-      //     image: renderNFTImage(event?.Event),
-      //     tickets: ticketdata,
-      //   };
-      // });
-      
-      // const sendinblue: any = window.sendinblue;
-
-      // Promise.all(data || []).then((resolvedData) => {
-      //   console.log('API data *******', data);
-      //   console.log('resolvedData *******', resolvedData);
-  
-      //   const actualDate = new Date();
-      //   const formattedDate = actualDate.toLocaleDateString('en-US', options);
-  
-        
-      //   if (resolvedData) {
-      //     var discountvalue = "AED " + (OrderApiData?.data?.discount_amount ? OrderApiData?.data?.discount_amount?.toFixed(2) : '0.00');
-      //     sendinblue?.track(
-      //       'order_completed',
-      //       {
-      //         "email": OrderApiData?.data?.Customer?.email,
-      //         "FIRSTNAME": OrderApiData?.data?.Customer?.first_name,
-      //       },
-      //       {
-      //         "data": {
-      //           "url": fullUrl + "/account/",
-      //           "status": "success",
-      //           "order_number": "INV00" + OrderApiData?.data?.id,
-      //           "order_date": formattedDate,
-      //           "sub_total": "AED " + (OrderApiData?.data?.sub_total_amount?.toFixed(2) || '0.00'),
-      //           "discount": discountvalue,
-      //           "total_price": "AED " + (OrderApiData?.data?.total_amount?.toFixed(2) || '0.00'),
-      //           "invoice_number": "#INV00" + OrderApiData?.data?.id,
-      //           "quantity": totalticket,
-      //           "data": resolvedData,
-      //         },
-      //       },
-      //     ) as any;
-      //   }
-      // });
-
 
       console.log('API data *******', data);
-      // console.log('resolvedData *******', resolvedData);
 
 
 
