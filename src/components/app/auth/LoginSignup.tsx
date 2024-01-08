@@ -676,7 +676,7 @@ export default function LoginSignup() {
                     </span>
                   </p>
                   <Button
-                    className="  lg:w-52 md:w-52 w-full text-black font-sans font-[900] text-xl tracking-[-1px]"
+                    className="lg:w-52 md:w-52 w-full text-black font-sans font-[900] text-xl tracking-[-1px]"
                     variant="clip"
                   >{langContent[lang.lang].Auth.REGISTER_BUTTON}
                   </Button>
