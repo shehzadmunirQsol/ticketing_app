@@ -332,7 +332,7 @@ export const customerRouter = router({
           //SMS***********
           const smsOptions: any = {
             to: input.code + input.phone_number,
-            subject: 'Enter this code:' +respCode+ ' to validate your account',
+            subject: 'Enter this code:' +respCode+ ' to validate your Winnar account',
           };
           await sendSMS(smsOptions);
           //SMS***********
@@ -704,7 +704,7 @@ export const customerRouter = router({
           //SMS***********
           const smsOptions: any = {
             to: updateResponse.phone_number,
-            subject: 'Enter this code:' +respCode+ ' to validate your account',
+            subject: 'Enter this code:' +respCode+ ' to validate your Winnar account',
           };
           await sendSMS(smsOptions);
           //SMS***********
