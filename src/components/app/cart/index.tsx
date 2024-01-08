@@ -14,28 +14,6 @@ import { getAvailableTickets, sendSMS } from '~/utils/helper';
 
 export default function CartPage() {
 
-
-
-//SMS***********
-// useEffect(() => {
-//   console.log('sms part ', process.env.NEXT_PUBLIC_BREVO_SMS_API_KEY);
-
-//   const smsOptions: any = {
-//     // to: input.phone_number,
-//     to: "971544205311",
-//     subject: 'Enter this code: 3345 to validate your account',
-//   };
-//   sendSMS(smsOptions);
-
-// }, []);
-//SMS***********
-
-
-
-
-
-
-
   const { cart, totalAmount, count } = useSelector(
     (state: RootState) => state.cart,
   );

@@ -329,14 +329,13 @@ export const customerRouter = router({
           await sendEmail(mailOptions);
 
 
-//SMS***********
-          // const smsOptions: any = {
-          //   // to: input.phone_number,
-          //   to: "971544205311",
-          //   subject: 'Enter this code:' +respCode+ ' to validate your account',
-          // };
-          // await sendSMS(smsOptions);
-//SMS***********
+          //SMS***********
+          const smsOptions: any = {
+            to: input.code + input.phone_number,
+            subject: 'Enter this code:' +respCode+ ' to validate your account',
+          };
+          await sendSMS(smsOptions);
+          //SMS***********
 
 
 
