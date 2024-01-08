@@ -700,6 +700,15 @@ export const customerRouter = router({
           };
           const mailResponse = await sendEmail(mailOptions);
           console.log(mailResponse, 'mailResponse');
+
+          //SMS***********
+          const smsOptions: any = {
+            to: updateResponse.phone_number,
+            subject: 'Enter this code:' +respCode+ ' to validate your account',
+          };
+          await sendSMS(smsOptions);
+          //SMS***********
+
         }
 
         return { user: user, status: true };
