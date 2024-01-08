@@ -424,7 +424,7 @@
       },
       "OTPSCREEN":{
           "HEADING":"Verify",
-          "SUB_HEADING":" Your Email/Mobile",
+          "SUB_HEADING":" Your Email / Mobile",
           "TEXT":" We have sent an OTP to your email and sms",
           "OTP":" Didn't receive OTP?",
           "RESEND":" Resend OTP",
