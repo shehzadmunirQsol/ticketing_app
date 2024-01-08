@@ -78,7 +78,7 @@ export function OtpVerificationDailog(props: OtpVerificationDailogInterface) {
     onSuccess: (res: any) => {
       toast({
         variant: 'success',
-        title: 'Please check your email',
+        title: 'Please check your email / sms',
       });
     },
     onError: (err) => {

@@ -105,7 +105,7 @@ export default function LoginSignup() {
       );
       toast({
         variant: 'success',
-        title: 'Registeration Successful, Please Check your Email',
+        title: 'Registeration Successful',
       });
       setDefaultValue('login');
       formSignup.reset();
