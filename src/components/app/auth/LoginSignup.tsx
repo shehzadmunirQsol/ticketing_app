@@ -693,7 +693,7 @@ export default function LoginSignup() {
 
       <ForgotPasswordDailog isModal={isModal} setIsModal={setIsModal} />
       <OtpVerificationDailog
-        otpIsModal={otpIsModal}
+        otpIsModal={true}
         setOtpIsModal={setOtpIsModal}
         emailOrUser={formLogin.getValues('user') || (user ?? '')}
       />
