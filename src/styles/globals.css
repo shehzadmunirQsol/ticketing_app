@@ -1404,6 +1404,9 @@ form label + * {
 .greenText {
   color: #20cba8 !important;
 }
+.greyText {
+  color: #aaaaaa;
+}
 .rangeslider {
   position: relative;
   width: 100%;
