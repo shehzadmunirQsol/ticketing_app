@@ -129,27 +129,27 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
                     </div>
                     <div className="text-white xs:text-center sm:text-left">
                       <div className="font-bold text-xl mb-2">INVOICE</div>
-                      <div className="text-sm">
+                      <div className="text-sm greyText">
                         Date: {displayDate(OrderApiData?.data?.created_at)}
                       </div>
-                      <div className="text-sm">
+                      <div className="text-sm greyText">
                         Invoice: #INV00{OrderApiData?.data?.id}
                       </div>
                     </div>
                   </div>
                   <div className="border-b-2 border-gray-300 pb-5 mb-4">
                     <h2 className="text-2xl  font-bold mb-4">Bill To:</h2>
-                    <p className=" ">
+                    <p className="greyText">
                       {OrderApiData?.data?.first_name +
                         ' ' +
                         OrderApiData?.data?.last_name}
                     </p>
-                    <p className=" ">{OrderApiData?.data?.street_address}</p>
-                    <p className=" ">
+                    <p className="greyText">{OrderApiData?.data?.street_address}</p>
+                    <p className="greyText">
                       {OrderApiData?.data?.city}, {OrderApiData?.data?.country}{' '}
                       {OrderApiData?.data?.postal_code}
                     </p>
-                    <p className="mt-2">{OrderApiData?.data?.email}</p>
+                    <p className="mt-2 greyText">{OrderApiData?.data?.email}</p>
                   </div>
                   <div className="w-full">
                     <div className="w-full mb-8">
@@ -165,7 +165,7 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
                           {OrderApiData?.data?.OrderEvent &&
                             OrderApiData?.data?.OrderEvent?.map(
                               (item: any, index: number) => (
-                                <div key={index} className="flex gap-2 py-2">
+                                <div key={index} className="flex gap-2 py-2 greyText">
                                   <div className="flex-[2] text-start">
                                     {item?.Event?.EventDescription[0]?.name}
                                   </div>
@@ -196,16 +196,16 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
                     <div></div>
                     <div>
                       <div className="flex justify-between items-center mb-2">
-                        <div className=" mr-2">Subtotal:</div>
-                        <div className="">
+                        <div className="font-bold mr-2">Subtotal:</div>
+                        <div className="greyText">
                           AED{' '}
                           {(OrderApiData?.data?.sub_total_amount).toFixed(2)}
                         </div>
                       </div>
 
                       <div className="flex justify-between items-center mb-3">
-                        <div className="mr-2">Discount:</div>
-                        <div className="">
+                        <div className="font-bold mr-2">Discount:</div>
+                        <div className="greyText">
                           AED{' '}
                           {OrderApiData?.data?.discount_amount > 0
                             ? (OrderApiData?.data?.discount_amount).toFixed(2)
