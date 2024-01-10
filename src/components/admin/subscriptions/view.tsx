@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import { trpc } from '~/utils/trpc';
 import LogoImage from '~/public/assets/logo.png';
-import { displayDate } from '~/utils/helper';
+import { displayDate, reduceVATAmount, getVATAmount } from '~/utils/helper';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 import { LoadingDialog } from '~/components/common/modal/loadingModal';
 import NextImage from '~/components/ui/img';
@@ -109,9 +109,10 @@ export default function OrderView() {
               <div className="flex justify-between items-center mb-6">
                 <div className="text-gray-700 mr-2">Subtotal:</div>
                 <div className="text-gray-700">
-                  AED {(OrderApiData?.data?.sub_total_amount).toFixed(2)}
+                  AED {reduceVATAmount(OrderApiData?.data?.sub_total_amount).toFixed(2)}
                 </div>
               </div>
+
               {OrderApiData?.data?.discount_amount > 0 && (
                 <div className="flex justify-between items-center  mb-6">
                   <div className="text-gray-700 mr-2">Discount:</div>
@@ -120,6 +121,13 @@ export default function OrderView() {
                   </div>
                 </div>
               )}
+
+              <div className="flex justify-between items-center mb-2">
+                <div className=" mr-2">VAT:</div>
+                <div className="">
+                  AED {getVATAmount(OrderApiData?.data?.sub_total_amount).toFixed(2)}
+                </div>
+              </div>
 
               <div className="flex justify-between items-center mb-6">
                 <div className="text-gray-700 mr-2">Total:</div>

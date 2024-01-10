@@ -123,24 +123,6 @@ const CashPage = () => {
           //     }
           //   },
           // ) as any;
- 
-
-
-          // sendinblue?.track(
-          //   'order_completed',
-          //   {
-          //     "email": user.email,
-          //     "FIRSTNAME": user.first_name
-          //   },
-          //   {
-          //     "data": {
-          //       "car_name_1" : cash1,
-          //       "car_name_2": cash2,
-          //       "url": fullUrl
-          //     }
-          //   },
-          // ) as any;
-
 
           //deleteCookie("cashCounterValue");
           

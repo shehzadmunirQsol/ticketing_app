@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
 import { trpc } from '~/utils/trpc';
 import { ScrollBar } from '../ui/scroll-area';
-import { displayDate } from '~/utils/helper';
+import { displayDate, reduceVATAmount, getVATAmount } from '~/utils/helper';
 import LogoImage from '~/public/assets/logo.png';
 import NextImage from '../ui/img';
 
@@ -120,7 +120,7 @@ const Invoice = () => {
               <div className="flex justify-between items-center mb-6">
                 <div className=" mr-2">Subtotal:</div>
                 <div className="">
-                  AED {(OrderApiData?.data?.sub_total_amount).toFixed(2)}
+                  AED {reduceVATAmount(OrderApiData?.data?.sub_total_amount).toFixed(2)}
                 </div>
               </div>
 
@@ -131,6 +131,13 @@ const Invoice = () => {
                   {OrderApiData?.data?.discount_amount > 0
                     ? (OrderApiData?.data?.discount_amount).toFixed(2)
                     : '0.00'}
+                </div>
+              </div>
+
+              <div className="flex justify-between items-center mb-2">
+                <div className=" mr-2">VAT:</div>
+                <div className="">
+                  AED {getVATAmount(OrderApiData?.data?.sub_total_amount).toFixed(2)}
                 </div>
               </div>
 

@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
 import { trpc } from '~/utils/trpc';
 import { ScrollBar } from '../ui/scroll-area';
-import { displayDate } from '~/utils/helper';
+import { displayDate, reduceVATAmount, getVATAmount } from '~/utils/helper';
 import LogoImage from '~/public/assets/logo.png';
 import Confetti from 'react-confetti';
 import { useEffect, useState, useRef } from 'react';
@@ -37,10 +37,10 @@ export default function SuccessInvoice() {
 
 //TEST-------DELETE 
   // const { data: OrderApiData, isLoading } = trpc.order.getByID.useQuery(
-  //   { order_id: 463, lang_id: 1 },
+  //   { order_id: 517, lang_id: 1 },
   //   {
   //     refetchOnWindowFocus: false,
-  //     enabled: 463 > 0,
+  //     enabled: 517 > 0,
   //   },
   // );
 //TEST-------DELETE
@@ -267,7 +267,7 @@ export default function SuccessInvoice() {
               <div className="flex justify-between items-center mb-6">
                 <div className=" mr-2">Subtotal:</div>
                 <div className="">
-                  AED {OrderApiData?.data?.sub_total_amount?.toFixed(2)}
+                  AED {reduceVATAmount(OrderApiData?.data?.sub_total_amount).toFixed(2)}
                 </div>
               </div>
 
@@ -278,6 +278,13 @@ export default function SuccessInvoice() {
                   {OrderApiData?.data?.discount_amount
                     ? OrderApiData?.data?.discount_amount?.toFixed(2)
                     : '0.00'}
+                </div>
+              </div>
+
+              <div className="flex justify-between items-center mb-2">
+                <div className=" mr-2">VAT:</div>
+                <div className="">
+                  AED {getVATAmount(OrderApiData?.data?.sub_total_amount).toFixed(2)}
                 </div>
               </div>
 

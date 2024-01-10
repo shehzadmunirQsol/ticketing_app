@@ -8,7 +8,7 @@ import {
 } from '~/components/ui/dialog';
 import { trpc } from '~/utils/trpc';
 import { LoadingDialog } from './loadingModal';
-import { displayDate } from '~/utils/helper';
+import { displayDate, reduceVATAmount, getVATAmount } from '~/utils/helper';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 import LogoImage from '~/public/assets/logo.png';
 import { RootState } from '~/store/store';
@@ -95,8 +95,7 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
     }
   };
 
-
-
+  
   return (
     <>
       <Dialog open={props?.isModal} onOpenChange={(e) => props.setIsModal(e)}>
@@ -199,10 +198,10 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
                         <div className=" mr-2">Subtotal:</div>
                         <div className="">
                           AED{' '}
-                          {(OrderApiData?.data?.sub_total_amount).toFixed(2)}
+                          {reduceVATAmount(OrderApiData?.data?.sub_total_amount).toFixed(2)}
                         </div>
                       </div>
-
+ 
                       <div className="flex justify-between items-center mb-3">
                         <div className="mr-2">Discount:</div>
                         <div className="">
@@ -210,6 +209,13 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
                           {OrderApiData?.data?.discount_amount > 0
                             ? (OrderApiData?.data?.discount_amount).toFixed(2)
                             : '0.00'}
+                        </div>
+                      </div>
+
+                      <div className="flex justify-between items-center mb-2">
+                        <div className=" mr-2">VAT 5%:</div>
+                        <div className="">
+                          AED {getVATAmount(OrderApiData?.data?.sub_total_amount).toFixed(2)}
                         </div>
                       </div>
 

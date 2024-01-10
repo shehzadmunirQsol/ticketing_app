@@ -271,3 +271,19 @@ export const validateRegixEmail = (email: string): boolean => {
   const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$/;
   return regex.test(email);
 };
+
+export function reduceVATAmount(amount: number | undefined) {
+   if(amount){
+    return amount ? amount / (1 + 0.05) : 0;
+   }else{
+    return 0;
+   }  
+}
+export function getVATAmount(amount: number | undefined) {
+  if(amount){
+    const reducedAmount = reduceVATAmount(amount);
+    return reducedAmount * 0.05;
+  }else{
+   return 0;
+  }   
+}
