@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
 import { trpc } from '~/utils/trpc';
 import { ScrollBar } from '../ui/scroll-area';
-import { displayDate, reduceVATAmount, getVATAmount } from '~/utils/helper';
+import { displayDate, reduceVATAmount, getVATAmount, numberToWords } from '~/utils/helper';
 import LogoImage from '~/public/assets/logo.png';
 import Confetti from 'react-confetti';
 import { useEffect, useState, useRef } from 'react';
@@ -271,7 +271,72 @@ export default function SuccessInvoice() {
             </div>
           </ScrollArea>
 
-          <div className=" flex justify-between items-center">
+
+          <div className="w-full border-t-2 border-gray-300 ">
+            <div className="w-full mt-8">
+              <div className="flex justify-between ">
+                <div className="flex-[2] text-start font-bold uppercase py-2">Total Amount</div>
+                <div className="flex-1"></div>
+                <div className="flex-1"></div>
+                <div className="flex-1 text-center greyText">{reduceVATAmount(OrderApiData?.data?.sub_total_amount).toFixed(2)}</div>
+                <div className="flex-1 text-center greyText">{getVATAmount(OrderApiData?.data?.sub_total_amount).toFixed(2)}</div>
+                <div className="flex-1 text-center greyText">{OrderApiData?.data?.total_amount.toFixed(2)}</div>
+              </div>
+
+              <div className="flex justify-between ">
+                <div className="flex-[2] text-start font-bold uppercase py-2">Discount Coupon</div>
+                <div className="flex-1"></div>
+                <div className="flex-1"></div>
+                <div className="flex-1"></div>
+                <div className="flex-1"></div>
+                <div className="flex-1 text-center greyText">
+                  {OrderApiData?.data?.discount_amount?.toFixed(2) ?? '0.00'}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="w-full border-t-2 border-gray-300 ">
+            <div className="w-full mt-8">
+              <div className="flex justify-between ">
+                <div className="flex-[2] text-start font-bold py-2">AED {' '}
+                  <span className='greyText'>
+                    {OrderApiData?.data?.total_amount !== undefined
+                      ? numberToWords(OrderApiData?.data?.total_amount)
+                      : null}
+                  </span>
+                </div>
+                <div className="flex-1"></div>
+                <div className="flex-1"></div>
+                <div className="flex-1 text-center"></div>
+                <div className="flex-1 text-center">VAT Amount <span>(AED)</span></div>
+                <div className="flex-1 text-center">Total Payable <span>(AED)</span></div>
+              </div>
+
+              <div className="flex justify-between ">
+                <div className="flex-[2]"></div>
+                <div className="flex-1"></div>
+                <div className="flex-1"></div>
+                <div className="flex-1 text-center"></div>
+                <div className="flex-1 text-center greyText">{getVATAmount(OrderApiData?.data?.sub_total_amount).toFixed(2)}</div>
+                <div className="flex-1 text-center greyText">{OrderApiData?.data?.total_amount.toFixed(2)}</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex-1 text-right mt-12">
+            <Button
+              onClick={routeHandler}
+              variant="clip"
+              className="font-bold"
+            >
+              Continue Shopping
+            </Button>
+          </div>
+
+
+
+          {/* <div className=" flex justify-between items-center">
             <div></div>
             <div>
               <div className="flex justify-between items-center mb-6">
@@ -312,7 +377,7 @@ export default function SuccessInvoice() {
                 Continue Shopping
               </Button>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
 
