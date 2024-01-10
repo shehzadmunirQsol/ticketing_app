@@ -77,7 +77,10 @@ export default function OrderView() {
                     Price
                   </th>
                   <th className="text-gray-700 font-bold uppercase py-2">
-                    Total
+                    VAT (5%)
+                  </th>
+                  <th className="text-gray-700 font-bold uppercase py-2">
+                    Total Amount
                   </th>
                 </tr>
               </thead>
@@ -91,8 +94,13 @@ export default function OrderView() {
                         </td>
                         <td className="py-4 text-gray-700">{item?.quantity}</td>
                         <td className="py-4 text-gray-700">
-                          AED {item?.ticket_price.toFixed(2)}
+                          AED {reduceVATAmount(item?.ticket_price * item?.quantity).toFixed(2)}
                         </td>
+
+                        <div className="flex-1 text-center">
+                          AED {getVATAmount(item?.ticket_price * item?.quantity).toFixed(2)}
+                        </div>
+
                         <td className="py-4 text-gray-700">
                           AED {(item?.ticket_price * item?.quantity).toFixed(2)}
                         </td>

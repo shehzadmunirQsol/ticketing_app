@@ -156,7 +156,8 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
                         <div className="flex-[2] text-start">Name</div>
                         <div className="flex-1 text-center">Quantity</div>
                         <div className="flex-1 text-center">Price</div>
-                        <div className="flex-1 text-right">Total</div>
+                        <div className="flex-1 text-center">VAT (5%)</div>
+                        <div className="flex-1 text-right">Total Amount</div>
                       </div>
 
                       {isFetching ? null : (
@@ -175,8 +176,13 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
                                     {item?.quantity}
                                   </div>
                                   <div className="flex-1 text-center">
-                                    AED {item?.ticket_price.toFixed(2)}
+                                    AED {reduceVATAmount(item?.ticket_price * item?.quantity).toFixed(2)}
                                   </div>
+
+                                  <div className="flex-1 text-center">
+                                    AED {getVATAmount(item?.ticket_price * item?.quantity).toFixed(2)}
+                                  </div>
+
                                   <div className="flex-1 text-right">
                                     AED{' '}
                                     {(
