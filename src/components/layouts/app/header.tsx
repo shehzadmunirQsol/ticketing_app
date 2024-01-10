@@ -12,6 +12,14 @@ import { userLogout } from '~/store/reducers/auth';
 import { useToast } from '~/components/ui/use-toast';
 import { trpc } from '~/utils/trpc';
 import NextImage from '~/components/ui/img';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '~/components/ui/select';
 
 export default function Header() {
   const router = useRouter();
