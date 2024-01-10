@@ -22,7 +22,7 @@ export default function SuccessInvoice() {
 
 
   var fullUrl = "";
-  if(typeof window !== 'undefined'){
+  if (typeof window !== 'undefined') {
     // fullUrl = window.location.protocol + "//" + window.location.host;
     fullUrl = window.location.host;
   }
@@ -35,7 +35,7 @@ export default function SuccessInvoice() {
   const router = useRouter();
   const dispatch = useDispatch();
 
-//TEST-------DELETE 
+  //TEST-------DELETE 
   // const { data: OrderApiData, isLoading } = trpc.order.getByID.useQuery(
   //   { order_id: 517, lang_id: 1 },
   //   {
@@ -43,7 +43,7 @@ export default function SuccessInvoice() {
   //     enabled: 517 > 0,
   //   },
   // );
-//TEST-------DELETE
+  //TEST-------DELETE
 
 
 
@@ -86,14 +86,14 @@ export default function SuccessInvoice() {
   }
 
   useEffect(() => {
- 
+
     console.log(OrderApiData, "OrderApiData")
 
     if ('sendinblue' in window && window?.sendinblue) {
-      const options: any = {weekday: 'long', day: 'numeric',month: 'long',year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', timeZoneName: 'short',};
+      const options: any = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', timeZoneName: 'short', };
 
       var totalticket = 0;
-      const data = OrderApiData?.data?.OrderEvent && OrderApiData?.data?.OrderEvent?.map((event:any) => {
+      const data = OrderApiData?.data?.OrderEvent && OrderApiData?.data?.OrderEvent?.map((event: any) => {
         const categoryRoute = event?.Event?.category_id === 1 ? 'cars' : 'cash';
         var url = `/${categoryRoute}/${URIGenerator(
           event?.Event?.EventDescription[0]?.name,
@@ -101,7 +101,7 @@ export default function SuccessInvoice() {
         )}`;
 
         const ticketRoute = event?.Event?.category_id === 1 ? 'CR-' : 'CA-';
-        const ticketdata = event?.EventTickets?.map((ticket:any) => ticketRoute + padTicketNum(ticket.ticket_num));
+        const ticketdata = event?.EventTickets?.map((ticket: any) => ticketRoute + padTicketNum(ticket.ticket_num));
 
 
         totalticket += event?.quantity;
@@ -121,9 +121,9 @@ export default function SuccessInvoice() {
           name: event?.Event?.EventDescription[0]?.name,
           closing_date: formattedClosingDate,
           draw_date: formattedDrawDate,
-          url: fullUrl+url,
+          url: fullUrl + url,
           image: renderNFTImage(event?.Event).replace(/^https:/, 'http:'),
-          tickets:ticketdata
+          tickets: ticketdata
         };
       });
 
@@ -138,8 +138,8 @@ export default function SuccessInvoice() {
 
 
       const sendinblue: any = window.sendinblue;
-      if (data) { 
-        
+      if (data) {
+
         var discountvalue = "AED " + OrderApiData?.data?.discount_amount ? OrderApiData?.data?.discount_amount?.toFixed(2) : '0.00';
 
         sendinblue?.track(
@@ -150,7 +150,7 @@ export default function SuccessInvoice() {
           },
           {
             "data": {
-              "url":fullUrl+"/account/",
+              "url": fullUrl + "/account/",
               "status": "success",
               "order_number": "INV00" + OrderApiData?.data?.id,
               "order_date": formattedDate,
@@ -159,7 +159,7 @@ export default function SuccessInvoice() {
               "total_price": "AED " + OrderApiData?.data?.total_amount?.toFixed(2),
               "invoice_number": "#INV00" + OrderApiData?.data?.id,
               "quantity": totalticket,
-              "data" : data,
+              "data": data,
             }
           },
         ) as any;
@@ -230,7 +230,8 @@ export default function SuccessInvoice() {
               <div className="flex justify-between font-bold uppercase py-2">
                 <div className="flex-[2] text-start">Name</div>
                 <div className="flex-1 text-center">Quantity</div>
-                <div className="flex-1 text-center">Price</div>
+                <div className="flex-1 text-center">Unit Price <span>(AED)</span></div>
+                <div className="flex-1 text-center">Sub Total <span>(AED)</span></div>
                 <div className="flex-1 text-center">VAT (5%)</div>
                 <div className="flex-1 text-right">Total Amount</div>
               </div>
@@ -246,6 +247,9 @@ export default function SuccessInvoice() {
                           </div>
                           <div className="flex-1 text-center">
                             {item?.quantity}
+                          </div>
+                          <div className="flex-1 text-center">
+                            AED {reduceVATAmount(item?.ticket_price).toFixed(2)}
                           </div>
                           <div className="flex-1 text-center">
                             AED {reduceVATAmount(item?.ticket_price * item?.quantity).toFixed(2)}

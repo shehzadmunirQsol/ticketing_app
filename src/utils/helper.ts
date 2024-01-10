@@ -287,3 +287,40 @@ export function getVATAmount(amount: number | undefined) {
    return 0;
   }   
 }
+
+export function numberToWords(amount: number): string {
+
+  console.log("amount", amount)
+
+
+  const units: string[] = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+  const teens: string[] = ['', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
+  const tens: string[] = ['', 'ten', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
+
+  const convert = (num: number): string | undefined => {
+      if (num === 0) {
+          return 'zero';
+      } else if (num < 10) {
+          return units[num];
+      } else if (num < 20) {
+          return teens[num - 11];
+      } else if (num < 100) {
+          return tens[Math.floor(num / 10)] + ' ' + units[num % 10];
+      } else if (num < 1000) {
+          return units[Math.floor(num / 100)] + ' hundred ' + convert(num % 100);
+      } else if (num < 1000000) {
+        return convert(Math.floor(num / 1000)) + ' thousand ' + convert(num % 1000);
+      } else {
+          return undefined; // Extend for larger numbers if needed
+      }
+  };
+
+  const result = convert(amount);
+
+  if (result === undefined) {
+      throw new Error('Unable to convert the given number to words.');
+  }
+
+  return result;
+}
+
