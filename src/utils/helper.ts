@@ -289,10 +289,6 @@ export function getVATAmount(amount: number | undefined) {
 }
 
 export function numberToWords(amount: number): string {
-
-  console.log("amount", amount)
-
-
   const units: string[] = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
   const teens: string[] = ['', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
   const tens: string[] = ['', 'ten', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
@@ -314,13 +310,20 @@ export function numberToWords(amount: number): string {
           return undefined; // Extend for larger numbers if needed
       }
   };
-
   const result = convert(amount);
-
   if (result === undefined) {
-      throw new Error('Unable to convert the given number to words.');
+      console.log('Unable to convert the given number to words.');
+      return 'N/A';
   }
-
   return result;
+}
+
+export function getQueryParameter(name:any) {
+  if(typeof window !== 'undefined'){
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(name);
+  }else{
+    return "";
+  }
 }
 

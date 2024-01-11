@@ -18,6 +18,7 @@ import { LoadingDialog } from '~/components/common/modal/loadingModal';
 import langContent from '~/locales';
 import { RootState } from '~/store/store';
 import NextImage from '~/components/ui/img';
+import { setCookieWithoutExpiry, getCookie } from '~/service/api/cookies.service';
 
 interface OtpVerificationDailogInterface {
   otpIsModal: boolean;
@@ -151,12 +152,23 @@ export function OtpVerificationDailog(props: OtpVerificationDailogInterface) {
     try {
       event.preventDefault();
 
+      var utm_source_cookie = getCookie('utm_source');
+      var utm_medium_cookie = getCookie('utm_medium');
+      var utm_term_cookie = getCookie('utm_term');
+      var utm_campaign_cookie = getCookie('utm_campaign');
+      var utm_content_cookie = getCookie('utm_content');
+
       const result: any = {
         emailOrUser: props?.emailOrUser,
         otp_1: +inputOne.current.value,
         otp_2: +inputTwo.current.value,
         otp_3: +inputThree.current.value,
         otp_4: +inputFour.current.value,
+        utm_source_cookie: utm_source_cookie ? utm_source_cookie : "",
+        utm_medium_cookie: utm_medium_cookie ? utm_medium_cookie : "",
+        utm_term_cookie: utm_term_cookie ? utm_term_cookie : "",
+        utm_campaign_cookie: utm_campaign_cookie ? utm_campaign_cookie : "",
+        utm_content_cookie: utm_content_cookie ? utm_content_cookie : "",
       };
 
       await otpVerification.mutateAsync(result);

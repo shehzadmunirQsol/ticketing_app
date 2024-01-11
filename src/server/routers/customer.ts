@@ -610,6 +610,13 @@ export const customerRouter = router({
             attributes: {},
           };
 
+          addContactPayload.attributes.SOURCE = input.utm_source_cookie;
+          addContactPayload.attributes.MEDIUM = input.utm_medium_cookie;
+          addContactPayload.attributes.TERM = input.utm_term_cookie;
+          addContactPayload.attributes.CAMPAIGN = input.utm_campaign_cookie;
+          addContactPayload.attributes.CONTENT = input.utm_content_cookie;
+
+
           if (updateResponse.first_name)
             addContactPayload.attributes.FIRSTNAME = updateResponse.first_name;
           if (updateResponse.last_name)

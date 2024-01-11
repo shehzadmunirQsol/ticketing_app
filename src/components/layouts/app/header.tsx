@@ -12,6 +12,8 @@ import { userLogout } from '~/store/reducers/auth';
 import { useToast } from '~/components/ui/use-toast';
 import { trpc } from '~/utils/trpc';
 import NextImage from '~/components/ui/img';
+import { getQueryParameter } from '~/utils/helper';
+import { setCookieWithoutExpiry, getCookie, deleteCookie } from '~/service/api/cookies.service';
 import {
   Select,
   SelectContent,
@@ -49,6 +51,34 @@ export default function Header() {
 
     dispatch(toggleLang(language));
   }
+
+
+
+  // UTM COOKIE PART START------
+  // https://winnar.com/?utm_source=twitter&utm_medium=cpc&utm_campaign=new_members&utm_content=creepy_creative 
+
+  const utmSource = getQueryParameter('utm_source');
+  const utmMedium = getQueryParameter('utm_medium');
+  const utmTerm = getQueryParameter('utm_term');
+  const utmCampaign = getQueryParameter('utm_campaign');
+  const utmContent = getQueryParameter('utm_content');
+
+  if (utmSource) {
+    setCookieWithoutExpiry('utm_source', utmSource);
+  }
+  if (utmMedium) {
+    setCookieWithoutExpiry('utm_medium', utmMedium);
+  }
+  if (utmTerm) {
+    setCookieWithoutExpiry('utm_term', utmTerm);
+  }
+  if (utmCampaign) {
+    setCookieWithoutExpiry('utm_campaign', utmCampaign);
+  }
+  if (utmContent) {
+    setCookieWithoutExpiry('utm_content', utmContent);
+  }
+  // UTM COOKIE PART END-------
 
   return (
     <div

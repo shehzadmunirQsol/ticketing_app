@@ -235,6 +235,11 @@ export const verificationOtpCustomerSchema = z.object({
   otp_2: z.number(),
   otp_3: z.number(),
   otp_4: z.number(),
+  utm_source_cookie: z.string(),
+  utm_medium_cookie: z.string(),
+  utm_term_cookie: z.string(),
+  utm_campaign_cookie: z.string(),
+  utm_content_cookie: z.string(),
 });
 
 export const resendOtpCustomerSchema = z.object({
