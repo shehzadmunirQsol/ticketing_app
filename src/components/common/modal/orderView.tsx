@@ -8,7 +8,7 @@ import {
 } from '~/components/ui/dialog';
 import { trpc } from '~/utils/trpc';
 import { LoadingDialog } from './loadingModal';
-import { displayDate } from '~/utils/helper';
+import { displayDate, reduceVATAmount, getVATAmount, numberToWords } from '~/utils/helper';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 import LogoImage from '~/public/assets/logo.png';
 import { RootState } from '~/store/store';
@@ -96,6 +96,7 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
   };
 
 
+  console.log("OrderApiData", OrderApiData);
 
   return (
     <>
@@ -156,8 +157,10 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
                       <div className="flex justify-between font-bold uppercase py-2">
                         <div className="flex-[2] text-start">Name</div>
                         <div className="flex-1 text-center">Quantity</div>
-                        <div className="flex-1 text-center">Price</div>
-                        <div className="flex-1 text-right">Total</div>
+                        <div className="flex-1 text-center">Unit Price <span>(AED)</span></div>
+                        <div className="flex-1 text-center">Sub Total <span>(AED)</span></div>
+                        <div className="flex-1 text-center">VAT (5%)</div>
+                        <div className="flex-1 text-right">Total Amount</div>
                       </div>
 
                       {isFetching ? null : (
@@ -176,8 +179,16 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
                                     {item?.quantity}
                                   </div>
                                   <div className="flex-1 text-center">
-                                    AED {item?.ticket_price.toFixed(2)}
+                                    AED {reduceVATAmount(item?.ticket_price).toFixed(2)}
                                   </div>
+                                  <div className="flex-1 text-center">
+                                    AED {reduceVATAmount(item?.ticket_price * item?.quantity).toFixed(2)}
+                                  </div>
+
+                                  <div className="flex-1 text-center">
+                                    AED {getVATAmount(item?.ticket_price * item?.quantity).toFixed(2)}
+                                  </div>
+
                                   <div className="flex-1 text-right">
                                     AED{' '}
                                     {(
@@ -192,17 +203,68 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
                     </div>
                   </div>
 
-                  <div className=" flex justify-between items-center">
+
+
+                  <div className="w-full border-t-2 border-gray-300 ">
+                    <div className="w-full mt-8">
+                      <div className="flex justify-between ">
+                        <div className="flex-[2] text-start font-bold uppercase py-2">Total Amount</div>
+                        <div className="flex-1"></div>
+                        <div className="flex-1"></div>
+                        <div className="flex-1 text-center greyText">{reduceVATAmount(OrderApiData?.data?.sub_total_amount).toFixed(2)}</div>
+                        <div className="flex-1 text-center greyText">{getVATAmount(OrderApiData?.data?.sub_total_amount).toFixed(2)}</div>
+                        <div className="flex-1 text-center greyText">{(OrderApiData?.data?.total_amount).toFixed(2)}</div>
+                      </div>
+
+                      <div className="flex justify-between ">
+                        <div className="flex-[2] text-start font-bold uppercase py-2">Discount Coupon</div>
+                        <div className="flex-1"></div>
+                        <div className="flex-1"></div>
+                        <div className="flex-1"></div>
+                        <div className="flex-1"></div>
+                        <div className="flex-1 text-center greyText">
+                          {OrderApiData?.data?.discount_amount > 0
+                            ? (OrderApiData?.data?.discount_amount).toFixed(2)
+                            : '0.00'}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="w-full border-t-2 border-gray-300 ">
+                    <div className="w-full mt-8">
+                      <div className="flex justify-between ">
+                        <div className="flex-[2] text-start font-bold py-2">AED <span className='greyText'>{numberToWords(OrderApiData?.data?.total_amount)}</span></div>
+                        <div className="flex-1"></div>
+                        <div className="flex-1"></div>
+                        <div className="flex-1 text-center"></div>
+                        <div className="flex-1 text-center">VAT Amount <span>(AED)</span></div>
+                        <div className="flex-1 text-center">Total Payable <span>(AED)</span></div>
+                      </div>
+
+                      <div className="flex justify-between ">
+                        <div className="flex-[2]"></div>
+                        <div className="flex-1"></div>
+                        <div className="flex-1"></div>
+                        <div className="flex-1 text-center"></div>
+                        <div className="flex-1 text-center greyText">{getVATAmount(OrderApiData?.data?.sub_total_amount).toFixed(2)}</div>
+                        <div className="flex-1 text-center greyText">{(OrderApiData?.data?.total_amount).toFixed(2)}</div>
+                      </div>
+                    </div>
+                  </div>
+
+
+                  {/* <div className=" flex justify-between items-center">
                     <div></div>
                     <div>
                       <div className="flex justify-between items-center mb-2">
                         <div className="font-bold mr-2">Subtotal:</div>
                         <div className="greyText">
                           AED{' '}
-                          {(OrderApiData?.data?.sub_total_amount).toFixed(2)}
+                          {reduceVATAmount(OrderApiData?.data?.sub_total_amount).toFixed(2)}
                         </div>
                       </div>
-
+ 
                       <div className="flex justify-between items-center mb-3">
                         <div className="font-bold mr-2">Discount:</div>
                         <div className="greyText">
@@ -213,6 +275,13 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
                         </div>
                       </div>
 
+                      <div className="flex justify-between items-center mb-2">
+                        <div className=" mr-2">VAT 5%:</div>
+                        <div className="">
+                          AED {getVATAmount(OrderApiData?.data?.sub_total_amount).toFixed(2)}
+                        </div>
+                      </div>
+
                       <div className="flex justify-between items-center border-t-2 border-gray-300">
                         <div className=" mr-2">Total:</div>
                         <div className=" font-bold text-lg">
@@ -220,7 +289,7 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               )}
             </DialogDescription>
@@ -279,7 +348,7 @@ export function ViewTickets(props: ViewTicketsType) {
       createdAt: props?.selectedOrderEvent?.created_at,
       eventName: props?.selectedOrderEvent?.Event?.EventDescription[0]?.name,
       tickets: eventTickets?.data?.map(
-        (eventTicket) => props?.selectedOrderEvent?.Event?.EventDescription[0]?.name?.Money ? "CA-"+padTicketNum(eventTicket?.ticket_num): "CR-"+padTicketNum(eventTicket?.ticket_num),
+        (eventTicket) => props?.selectedOrderEvent?.Event?.EventDescription[0]?.name?.Money ? "CA-" + padTicketNum(eventTicket?.ticket_num) : "CR-" + padTicketNum(eventTicket?.ticket_num),
       ),
     };
 

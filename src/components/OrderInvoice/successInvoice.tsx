@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
 import { trpc } from '~/utils/trpc';
 import { ScrollBar } from '../ui/scroll-area';
-import { displayDate } from '~/utils/helper';
+import { displayDate, reduceVATAmount, getVATAmount, numberToWords } from '~/utils/helper';
 import LogoImage from '~/public/assets/logo.png';
 import Confetti from 'react-confetti';
 import { useEffect, useState, useRef } from 'react';
@@ -22,7 +22,7 @@ export default function SuccessInvoice() {
 
 
   var fullUrl = "";
-  if(typeof window !== 'undefined'){
+  if (typeof window !== 'undefined') {
     // fullUrl = window.location.protocol + "//" + window.location.host;
     fullUrl = window.location.host;
   }
@@ -35,15 +35,15 @@ export default function SuccessInvoice() {
   const router = useRouter();
   const dispatch = useDispatch();
 
-//TEST-------DELETE 
+  //TEST-------DELETE 
   // const { data: OrderApiData, isLoading } = trpc.order.getByID.useQuery(
-  //   { order_id: 463, lang_id: 1 },
+  //   { order_id: 517, lang_id: 1 },
   //   {
   //     refetchOnWindowFocus: false,
-  //     enabled: 463 > 0,
+  //     enabled: 517 > 0,
   //   },
   // );
-//TEST-------DELETE
+  //TEST-------DELETE
 
 
 
@@ -86,14 +86,14 @@ export default function SuccessInvoice() {
   }
 
   useEffect(() => {
- 
+
     console.log(OrderApiData, "OrderApiData")
 
     if ('sendinblue' in window && window?.sendinblue) {
-      const options: any = {weekday: 'long', day: 'numeric',month: 'long',year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', timeZoneName: 'short',};
+      const options: any = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', timeZoneName: 'short', };
 
       var totalticket = 0;
-      const data = OrderApiData?.data?.OrderEvent && OrderApiData?.data?.OrderEvent?.map((event:any) => {
+      const data = OrderApiData?.data?.OrderEvent && OrderApiData?.data?.OrderEvent?.map((event: any) => {
         const categoryRoute = event?.Event?.category_id === 1 ? 'cars' : 'cash';
         var url = `/${categoryRoute}/${URIGenerator(
           event?.Event?.EventDescription[0]?.name,
@@ -101,7 +101,7 @@ export default function SuccessInvoice() {
         )}`;
 
         const ticketRoute = event?.Event?.category_id === 1 ? 'CR-' : 'CA-';
-        const ticketdata = event?.EventTickets?.map((ticket:any) => ticketRoute + padTicketNum(ticket.ticket_num));
+        const ticketdata = event?.EventTickets?.map((ticket: any) => ticketRoute + padTicketNum(ticket.ticket_num));
 
 
         totalticket += event?.quantity;
@@ -121,9 +121,9 @@ export default function SuccessInvoice() {
           name: event?.Event?.EventDescription[0]?.name,
           closing_date: formattedClosingDate,
           draw_date: formattedDrawDate,
-          url: fullUrl+url,
+          url: fullUrl + url,
           image: renderNFTImage(event?.Event).replace(/^https:/, 'http:'),
-          tickets:ticketdata
+          tickets: ticketdata
         };
       });
 
@@ -138,8 +138,8 @@ export default function SuccessInvoice() {
 
 
       const sendinblue: any = window.sendinblue;
-      if (data) { 
-        
+      if (data) {
+
         var discountvalue = "AED " + OrderApiData?.data?.discount_amount ? OrderApiData?.data?.discount_amount?.toFixed(2) : '0.00';
 
         sendinblue?.track(
@@ -150,7 +150,7 @@ export default function SuccessInvoice() {
           },
           {
             "data": {
-              "url":fullUrl+"/account/",
+              "url": fullUrl + "/account/",
               "status": "success",
               "order_number": "INV00" + OrderApiData?.data?.id,
               "order_date": formattedDate,
@@ -159,7 +159,7 @@ export default function SuccessInvoice() {
               "total_price": "AED " + OrderApiData?.data?.total_amount?.toFixed(2),
               "invoice_number": "#INV00" + OrderApiData?.data?.id,
               "quantity": totalticket,
-              "data" : data,
+              "data": data,
             }
           },
         ) as any;
@@ -230,8 +230,10 @@ export default function SuccessInvoice() {
               <div className="flex justify-between font-bold uppercase py-2">
                 <div className="flex-[2] text-start">Name</div>
                 <div className="flex-1 text-center">Quantity</div>
-                <div className="flex-1 text-center">Price</div>
-                <div className="flex-1 text-right">Total</div>
+                <div className="flex-1 text-center">Unit Price <span>(AED)</span></div>
+                <div className="flex-1 text-center">Sub Total <span>(AED)</span></div>
+                <div className="flex-1 text-center">VAT (5%)</div>
+                <div className="flex-1 text-right">Total Amount</div>
               </div>
 
               {isLoading ? null : (
@@ -247,8 +249,16 @@ export default function SuccessInvoice() {
                             {item?.quantity}
                           </div>
                           <div className="flex-1 text-center">
-                            AED {item?.ticket_price.toFixed(2)}
+                            AED {reduceVATAmount(item?.ticket_price).toFixed(2)}
                           </div>
+                          <div className="flex-1 text-center">
+                            AED {reduceVATAmount(item?.ticket_price * item?.quantity).toFixed(2)}
+                          </div>
+
+                          <div className="flex-1 text-center">
+                            AED {getVATAmount(item?.ticket_price * item?.quantity).toFixed(2)}
+                          </div>
+
                           <div className="flex-1 text-right">
                             AED{' '}
                             {(item?.ticket_price * item?.quantity).toFixed(2)}
@@ -261,13 +271,78 @@ export default function SuccessInvoice() {
             </div>
           </ScrollArea>
 
-          <div className=" flex justify-between items-center">
+
+          <div className="w-full border-t-2 border-gray-300 ">
+            <div className="w-full mt-8">
+              <div className="flex justify-between ">
+                <div className="flex-[2] text-start font-bold uppercase py-2">Total Amount</div>
+                <div className="flex-1"></div>
+                <div className="flex-1"></div>
+                <div className="flex-1 text-center greyText">{reduceVATAmount(OrderApiData?.data?.sub_total_amount).toFixed(2)}</div>
+                <div className="flex-1 text-center greyText">{getVATAmount(OrderApiData?.data?.sub_total_amount).toFixed(2)}</div>
+                <div className="flex-1 text-center greyText">{OrderApiData?.data?.total_amount.toFixed(2)}</div>
+              </div>
+
+              <div className="flex justify-between ">
+                <div className="flex-[2] text-start font-bold uppercase py-2">Discount Coupon</div>
+                <div className="flex-1"></div>
+                <div className="flex-1"></div>
+                <div className="flex-1"></div>
+                <div className="flex-1"></div>
+                <div className="flex-1 text-center greyText">
+                  {OrderApiData?.data?.discount_amount?.toFixed(2) ?? '0.00'}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="w-full border-t-2 border-gray-300 ">
+            <div className="w-full mt-8">
+              <div className="flex justify-between ">
+                <div className="flex-[2] text-start font-bold py-2">AED {' '}
+                  <span className='greyText'>
+                    {OrderApiData?.data?.total_amount !== undefined
+                      ? numberToWords(OrderApiData?.data?.total_amount)
+                      : null}
+                  </span>
+                </div>
+                <div className="flex-1"></div>
+                <div className="flex-1"></div>
+                <div className="flex-1 text-center"></div>
+                <div className="flex-1 text-center">VAT Amount <span>(AED)</span></div>
+                <div className="flex-1 text-center">Total Payable <span>(AED)</span></div>
+              </div>
+
+              <div className="flex justify-between ">
+                <div className="flex-[2]"></div>
+                <div className="flex-1"></div>
+                <div className="flex-1"></div>
+                <div className="flex-1 text-center"></div>
+                <div className="flex-1 text-center greyText">{getVATAmount(OrderApiData?.data?.sub_total_amount).toFixed(2)}</div>
+                <div className="flex-1 text-center greyText">{OrderApiData?.data?.total_amount.toFixed(2)}</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex-1 text-right mt-12">
+            <Button
+              onClick={routeHandler}
+              variant="clip"
+              className="font-bold"
+            >
+              Continue Shopping
+            </Button>
+          </div>
+
+
+
+          {/* <div className=" flex justify-between items-center">
             <div></div>
             <div>
               <div className="flex justify-between items-center mb-6">
                 <div className="font-bold mr-2">Subtotal:</div>
-                <div className="greyText">
-                  AED {OrderApiData?.data?.sub_total_amount?.toFixed(2)}
+                <div className="">
+                  AED {reduceVATAmount(OrderApiData?.data?.sub_total_amount).toFixed(2)}
                 </div>
               </div>
 
@@ -281,8 +356,15 @@ export default function SuccessInvoice() {
                 </div>
               </div>
 
+              <div className="flex justify-between items-center mb-2">
+                <div className="font-bold mr-2">VAT:</div>
+                <div className="">
+                  AED {getVATAmount(OrderApiData?.data?.sub_total_amount).toFixed(2)}
+                </div>
+              </div>
+
               <div className="flex justify-between items-center border-t-2 border-gray-300 mb-6">
-                <div className=" mr-2">Total:</div>
+                <div className="font-bold mr-2">Total:</div>
                 <div className=" font-bold text-lg">
                   AED {OrderApiData?.data?.total_amount?.toFixed(2)}
                 </div>
@@ -295,7 +377,7 @@ export default function SuccessInvoice() {
                 Continue Shopping
               </Button>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
 
