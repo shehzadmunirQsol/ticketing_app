@@ -11,6 +11,11 @@ export type AddContactPayloadType = {
     STATE?: string;
     CITY?: string;
     ADDRESS?: string;
+    SOURCE?: string;
+    MEDIUM?: string;
+    TERM?: string;
+    CAMPAIGN?: string;
+    CONTENT?: string;
   };
 };
 
