@@ -1407,6 +1407,9 @@ form label + * {
 .greyText {
   color: #aaaaaa;
 }
+.whiteText {
+  color: #fff;
+}
 .rangeslider {
   position: relative;
   width: 100%;
@@ -1536,6 +1539,9 @@ div[role="dialog"] > button:focus {
 .countbx .timer-box span {
   font-size: 9px;
   margin-top: 1px;
+}
+.text-xxs {
+  font-size: 0.65rem;
 }
 /* Desktop */
 
@@ -1694,10 +1700,6 @@ div[role="dialog"] > button:focus {
 .mobmb-1 {
   margin-bottom: -1px;
 }
-.smtext {
-  font-size: 10px;
-  line-height: 12px;
-}
 input:checked + section.box {
   border-bottom-color: #ffffff1a;
 }
@@ -1741,10 +1743,11 @@ input:checked + section.box {
 .prodrow::-webkit-scrollbar {
   height: 6px;
 }
-.text-xxs {
-  font-size: 0.60rem;
-}
 .countbx {
   padding: 6px;
+}
+.smtext {
+  font-size: 10px;
+  line-height: 12px;
 }
 }
