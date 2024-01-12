@@ -1,8 +1,13 @@
 import AboutCarousel from './about_carousel';
 import { Button } from '~/components/ui/button';
 import NextImage from '~/components/ui/img';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '~/store/store';
 
 export default function AboutUs() {
+
+  const { lang } = useSelector((state: RootState) => state.layout);
+
   return (
     <div className="bg-background">
       <div className="w-full relative !h-[450px] md:!h-[550px] text-center">
