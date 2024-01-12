@@ -80,7 +80,7 @@ export default function ProductListCard(props: CardInterface) {
         >
           <div className="relative col">
             {isLastDay ? (
-              <div className="font-bold absolute top-0 w-fit px-2 py-1 md:p-2 z-2 bg-primary text-black text-xxs md:text-sm">
+              <div className="font-bold absolute top-0 w-fit px-2 py-1 md:p-2 z-2 bg-primary text-black smtext md:text-sm">
                 <span className="">CLOSES TODAY</span>
                 {' '}
                 {format12HourTime(props?.data?.end_date)}
@@ -121,7 +121,7 @@ export default function ProductListCard(props: CardInterface) {
           <div className="col-60 px-3 py-2 md:py-3">
             <div className="flex flex-col mb-1">
               <div className="flex justify-between items-center mb-1">
-                <span className="text-xs text-xxs text-gray-300">
+                <span className="text-xs smtext text-gray-300">
                   {
                     props?.data?.tickets_sold && props?.data?.total_tickets && (
                       (() => {
@@ -133,7 +133,7 @@ export default function ProductListCard(props: CardInterface) {
                   }
                   % {langContent[lang.lang].Index.productcard.SOLD_TITLE}
                 </span>
-                <span className="text-xs text-xxs text-gray-300">
+                <span className="text-xs smtext text-gray-300">
                   {(props?.data?.tickets_sold).toLocaleString()} /{' '}
                   {(props?.data?.total_tickets).toLocaleString()}
                 </span>

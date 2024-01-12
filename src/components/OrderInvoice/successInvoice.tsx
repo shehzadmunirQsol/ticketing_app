@@ -36,24 +36,24 @@ export default function SuccessInvoice() {
   const dispatch = useDispatch();
 
   //TEST-------DELETE 
-  // const { data: OrderApiData, isLoading } = trpc.order.getByID.useQuery(
-  //   { order_id: 517, lang_id: 1 },
-  //   {
-  //     refetchOnWindowFocus: false,
-  //     enabled: 517 > 0,
-  //   },
-  // );
+  const { data: OrderApiData, isLoading } = trpc.order.getByID.useQuery(
+    { order_id: 517, lang_id: 1 },
+    {
+      refetchOnWindowFocus: false,
+      enabled: 517 > 0,
+    },
+  );
   //TEST-------DELETE
 
 
 
-  const { data: OrderApiData, isLoading } = trpc.order.getByID.useQuery(
-    { order_id: orderID, lang_id: lang.lang_id },
-    {
-      refetchOnWindowFocus: false,
-      enabled: orderID > 0,
-    },
-  );
+  // const { data: OrderApiData, isLoading } = trpc.order.getByID.useQuery(
+  //   { order_id: orderID, lang_id: lang.lang_id },
+  //   {
+  //     refetchOnWindowFocus: false,
+  //     enabled: orderID > 0,
+  //   },
+  // );
 
   useEffect(() => {
 
@@ -70,13 +70,6 @@ export default function SuccessInvoice() {
   function routeHandler() {
     router.replace('/');
   }
-
-  // const handleButtonClick = () => {
-  //   const audio = new Audio(carSound);
-  //   audio.play().catch(error => {
-  //     console.error("Error playing audio:", error);
-  //   });
-  // };
 
 
   function padTicketNum(ticketNum: string | number) {
@@ -142,27 +135,27 @@ export default function SuccessInvoice() {
 
         var discountvalue = "AED " + OrderApiData?.data?.discount_amount ? OrderApiData?.data?.discount_amount?.toFixed(2) : '0.00';
 
-        sendinblue?.track(
-          'order_completed',
-          {
-            "email": OrderApiData?.data?.Customer?.email,
-            "FIRSTNAME": OrderApiData?.data?.Customer?.first_name
-          },
-          {
-            "data": {
-              "url": fullUrl + "/account/",
-              "status": "success",
-              "order_number": "INV00" + OrderApiData?.data?.id,
-              "order_date": formattedDate,
-              "sub_total": "AED " + OrderApiData?.data?.sub_total_amount?.toFixed(2),
-              "discount": discountvalue,
-              "total_price": "AED " + OrderApiData?.data?.total_amount?.toFixed(2),
-              "invoice_number": "#INV00" + OrderApiData?.data?.id,
-              "quantity": totalticket,
-              "data": data,
-            }
-          },
-        ) as any;
+        // sendinblue?.track(
+        //   'order_completed',
+        //   {
+        //     "email": OrderApiData?.data?.Customer?.email,
+        //     "FIRSTNAME": OrderApiData?.data?.Customer?.first_name
+        //   },
+        //   {
+        //     "data": {
+        //       "url": fullUrl + "/account/",
+        //       "status": "success",
+        //       "order_number": "INV00" + OrderApiData?.data?.id,
+        //       "order_date": formattedDate,
+        //       "sub_total": "AED " + OrderApiData?.data?.sub_total_amount?.toFixed(2),
+        //       "discount": discountvalue,
+        //       "total_price": "AED " + OrderApiData?.data?.total_amount?.toFixed(2),
+        //       "invoice_number": "#INV00" + OrderApiData?.data?.id,
+        //       "quantity": totalticket,
+        //       "data": data,
+        //     }
+        //   },
+        // ) as any;
 
 
       }
@@ -185,31 +178,30 @@ export default function SuccessInvoice() {
 
 
       <div className="px-4 md:px-0">
-        <div
-          className="mt-24 md:mt-28 mb-10 h-full text-white rounded-lg mx-auto w-full px-8 py-10 sm:w-3/4 md:w-2/3"
-          id="divToPrint"
-        >
-          <div className="flex flex-col md:flex-row items-center justify-between mb-8">
-            <div className="xs:text-center md:text-left">
+        <div className="mt-20 md:mt-28 mb-10 whiteText h-full rounded-lg mx-auto w-full p-4 md:p-8 sm:w-3/4 md:w-2/3" id="divToPrint">
+          <div className="flex flex-col md:flex-row justify-between mb-5">
+            <div className="text-left mb-5 md:mb-0">
               <div className="greenText text-xl lg:text-2xl font-bold uppercase">Your order has been placed successfully</div>
-              {/* <button onClick={handleButtonClick}>Play Audio</button> */}
             </div>
 
             {/* {isLoading ? null : ( */}
-            <div className=" xs:text-center md:text-left">
-              <div className="font-bold text-xl mb-2">INVOICE</div>
+            <div className="text-left">
+              <div className="font-bold text-xl mb-1">TAX INVOICE</div>
               <div className="text-sm greyText">
                 Date: {displayDate(OrderApiData?.data?.created_at)}
               </div>
               <div className="text-sm greyText">
                 Invoice: #INV00{OrderApiData?.data?.id}
               </div>
+              <div className="text-sm greyText">
+                TRN: 104151951100003
+              </div>
             </div>
             {/* )} */}
           </div>
           {isLoading ? null : (
-            <div className="border-b-2 border-gray-300 pb-8 mb-8">
-              <h2 className="text-2xl  font-bold mb-4">Bill To:</h2>
+            <div className="border-b-2 border-gray-300 text-sm pb-5">
+              <h2 className="text-2xl font-bold mb-3">Bill To:</h2>
               <p className="greyText">
                 {OrderApiData?.data?.first_name +
                   ' ' +
@@ -220,28 +212,28 @@ export default function SuccessInvoice() {
                 {OrderApiData?.data?.city}, {OrderApiData?.data?.country}{' '}
                 {OrderApiData?.data?.postal_code}
               </p>
-              <p className="mt-2 greyText">{OrderApiData?.data?.email}</p>
+              <p className="greyText">{OrderApiData?.data?.email}</p>
             </div>
           )}
           <ScrollArea className="w-full no-scrollbar overflow-x-scroll">
             <ScrollBar orientation="horizontal"></ScrollBar>
 
-            <div className="min-w-[525px] mb-8">
-              <div className="flex justify-between font-bold uppercase py-2">
+            <div className="w-full text-xs my-3">
+              <div className="flex justify-between font-bold uppercase pb-2 smtext">
                 <div className="flex-[2] text-start">Name</div>
                 <div className="flex-1 text-center">Quantity</div>
-                <div className="flex-1 text-center">Unit Price <span>(AED)</span></div>
-                <div className="flex-1 text-center">Sub Total <span>(AED)</span></div>
-                <div className="flex-1 text-center">VAT (5%)</div>
-                <div className="flex-1 text-right">Total Amount</div>
+                <div className="flex-1 text-center">Unit Price <span className="block text-xxs">(AED)</span></div>
+                <div className="flex-1 text-center">Sub Total <span className="block text-xxs">(AED)</span></div>
+                <div className="flex-1 text-center">VAT (5%) <span className="block text-xxs">(AED)</span></div>
+                <div className="flex-1 text-right">Total Amount <span className="block text-xxs">(AED)</span></div>
               </div>
 
               {isLoading ? null : (
-                <div className="mt-2">
+                <div className="mt-0">
                   {OrderApiData?.data?.OrderEvent &&
                     OrderApiData?.data?.OrderEvent?.map(
                       (item: any, index: number) => (
-                        <div key={index} className="flex gap-2 py-2 sm:py-4 greyText">
+                        <div key={index} className="flex gap-2 py-2 greyText smtext">
                           <div className="flex-[2] text-start">
                             {item?.Event?.EventDescription[0]?.name}
                           </div>
@@ -249,18 +241,17 @@ export default function SuccessInvoice() {
                             {item?.quantity}
                           </div>
                           <div className="flex-1 text-center">
-                            AED {reduceVATAmount(item?.ticket_price).toFixed(2)}
+                            {reduceVATAmount(item?.ticket_price).toFixed(2)}
                           </div>
                           <div className="flex-1 text-center">
-                            AED {reduceVATAmount(item?.ticket_price * item?.quantity).toFixed(2)}
+                            {reduceVATAmount(item?.ticket_price * item?.quantity).toFixed(2)}
                           </div>
 
                           <div className="flex-1 text-center">
-                            AED {getVATAmount(item?.ticket_price * item?.quantity).toFixed(2)}
+                            {getVATAmount(item?.ticket_price * item?.quantity).toFixed(2)}
                           </div>
 
                           <div className="flex-1 text-right">
-                            AED{' '}
                             {(item?.ticket_price * item?.quantity).toFixed(2)}
                           </div>
                         </div>
@@ -272,34 +263,34 @@ export default function SuccessInvoice() {
           </ScrollArea>
 
 
-          <div className="w-full border-t-2 border-gray-300 ">
-            <div className="w-full mt-8">
-              <div className="flex justify-between ">
-                <div className="flex-[2] text-start font-bold uppercase py-2">Total Amount</div>
+          <div className="w-full border-t-2 border-gray-300 text-xs smtext">
+            <div className="w-full my-2">
+              <div className="flex justify-between py-2">
+                <div className="flex-[2] text-start font-bold uppercase">Total Amount</div>
                 <div className="flex-1"></div>
                 <div className="flex-1"></div>
                 <div className="flex-1 text-center greyText">{reduceVATAmount(OrderApiData?.data?.sub_total_amount).toFixed(2)}</div>
                 <div className="flex-1 text-center greyText">{getVATAmount(OrderApiData?.data?.sub_total_amount).toFixed(2)}</div>
-                <div className="flex-1 text-center greyText">{OrderApiData?.data?.total_amount.toFixed(2)}</div>
+                <div className="flex-1 text-right greyText">{OrderApiData?.data?.total_amount.toFixed(2)}</div>
               </div>
 
-              <div className="flex justify-between ">
-                <div className="flex-[2] text-start font-bold uppercase py-2">Discount Coupon</div>
+              <div className="flex justify-between py-2">
+                <div className="flex-[2] text-start font-bold uppercase">Discount Coupon</div>
                 <div className="flex-1"></div>
                 <div className="flex-1"></div>
                 <div className="flex-1"></div>
                 <div className="flex-1"></div>
-                <div className="flex-1 text-center greyText">
+                <div className="flex-1 text-right greyText">
                   {OrderApiData?.data?.discount_amount?.toFixed(2) ?? '0.00'}
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="w-full border-t-2 border-gray-300 ">
-            <div className="w-full mt-8">
-              <div className="flex justify-between ">
-                <div className="flex-[2] text-start font-bold py-2">AED {' '}
+          <div className="w-full border-t-2 border-gray-300 text-xs smtext">
+            <div className="w-full my-3">
+              <div className="flex justify-between font-bold uppercase py-2">
+                <div className="flex-[2] text-start">AED {' '}
                   <span className='greyText'>
                     {OrderApiData?.data?.total_amount !== undefined
                       ? numberToWords(OrderApiData?.data?.total_amount)
@@ -309,22 +300,22 @@ export default function SuccessInvoice() {
                 <div className="flex-1"></div>
                 <div className="flex-1"></div>
                 <div className="flex-1 text-center"></div>
-                <div className="flex-1 text-center">VAT Amount <span>(AED)</span></div>
-                <div className="flex-1 text-center">Total Payable <span>(AED)</span></div>
+                <div className="flex-1 text-center">VAT Amount <span className="block text-xxs">(AED)</span></div>
+                <div className="flex-1 text-right">Total Payable <span className="block text-xxs">(AED)</span></div>
               </div>
 
-              <div className="flex justify-between ">
+              <div className="flex justify-between py-2">
                 <div className="flex-[2]"></div>
                 <div className="flex-1"></div>
                 <div className="flex-1"></div>
                 <div className="flex-1 text-center"></div>
                 <div className="flex-1 text-center greyText">{getVATAmount(OrderApiData?.data?.sub_total_amount).toFixed(2)}</div>
-                <div className="flex-1 text-center greyText">{OrderApiData?.data?.total_amount.toFixed(2)}</div>
+                <div className="flex-1 text-right greyText">{OrderApiData?.data?.total_amount.toFixed(2)}</div>
               </div>
             </div>
           </div>
 
-          <div className="flex-1 text-right mt-12">
+          <div className="flex-1 text-right mt-8">
             <Button
               onClick={routeHandler}
               variant="clip"
