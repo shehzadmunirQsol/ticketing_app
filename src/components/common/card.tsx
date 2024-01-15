@@ -75,39 +75,13 @@ export default function ProductCard(props: CardInterface) {
 
 
 
-  // const [timer, setTimer] = useState('');
-  // function launchTimer() { 
-  //   const currentDate = new Date();
-
-  //   const targetDateString = props?.data?.end_date;
-  //   const targetDate = new Date(targetDateString);
-    
-  //   if (isNaN(targetDate.getTime())) {
-  //     console.error(`Invalid target date: ${targetDateString}`);
-  //     clearInterval(timerInterval); // Stop the timer
-  //     return;
-  //   }
-    
-  //   const timeDifference = targetDate.getTime() - currentDate.getTime();
-
-  //   if (timeDifference <= 0) {
-  //     console.log("The target time has already passed.");
-  //     clearInterval(timerInterval); // Stop the timer
-  //     return;
-  //   }
- 
-  //   const hours = Math.floor(timeDifference / (1000 * 60 * 60));
-  //   const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
-  //   const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
-  
-  //   setTimer(`Time remaining: ${hours}h, ${minutes}m, ${seconds}s`); 
-
+  // var langcode = 1;
+  // if(props.dir === "rtl"){
+  //   langcode = 2;
   // }
-  // const timerInterval = setInterval(launchTimer, 1000);
-
-
-
-
+    
+  // var eventDescriptionLang = props?.data?.EventDescription.filter((desc: { lang_id: number }) => desc.lang_id === langcode);
+  // var eventDescriptionEnglish = props?.data?.EventDescription.filter((desc: { lang_id: number }) => desc.lang_id === 1);
   
 
   return (

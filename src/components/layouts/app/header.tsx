@@ -13,7 +13,7 @@ import { useToast } from '~/components/ui/use-toast';
 import { trpc } from '~/utils/trpc';
 import NextImage from '~/components/ui/img';
 import { getQueryParameter } from '~/utils/helper';
-import { setCookieWithoutExpiry, getCookie, deleteCookie } from '~/service/api/cookies.service';
+import { setCookieWithoutExpiry, setCookie, getCookie, deleteCookie } from '~/service/api/cookies.service';
 import {
   Select,
   SelectContent,
@@ -50,6 +50,9 @@ export default function Header() {
     const language = { lang, dir, lang_id };
 
     dispatch(toggleLang(language));
+
+    setCookie('cookie_lang', lang, 1);
+
   }
 
 
@@ -79,6 +82,9 @@ export default function Header() {
     setCookieWithoutExpiry('utm_content', utmContent);
   }
   // UTM COOKIE PART END-------
+
+  var cookie_lang = getCookie('cookie_lang'); 
+
 
   return (
     <div
@@ -132,9 +138,9 @@ export default function Header() {
               </Button>
             </Link>
 
-            {/* <Select onValueChange={toggleLanguageHandler}>
+            <Select onValueChange={toggleLanguageHandler} value={cookie_lang?cookie_lang:""}>
               <SelectTrigger className="h-9 w-9 rounded-none border-primary text-center  justify-center text-gray-200">
-                <SelectValue placeholder="EN" />
+                <SelectValue>{cookie_lang?cookie_lang.toUpperCase():"EN"}</SelectValue>
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
@@ -142,7 +148,7 @@ export default function Header() {
                   <SelectItem value="ar">AR</SelectItem>
                 </SelectGroup>
               </SelectContent>
-            </Select> */}
+            </Select>
           </div>
         </div>
 
