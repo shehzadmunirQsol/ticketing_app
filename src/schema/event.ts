@@ -66,6 +66,7 @@ export const EventFormSchema = z.object({
     required_error: 'Please enter a price',
   }),
 
+  slug: z.string().trim(),
   video_src: z.string().trim(),
   cash_alt: z
     .number({
