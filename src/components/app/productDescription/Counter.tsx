@@ -93,6 +93,7 @@ export default function Counter(props: CounterProps) {
           ...payload,
           id: 0,
           Event: {
+            slug: event.slug,
             thumb: event.thumb,
             price: event.price,
             end_date: event.end_date,
@@ -105,6 +106,7 @@ export default function Counter(props: CounterProps) {
             EventDescription: [
               {
                 name: event.EventDescription[0].name,
+                lang_id: lang.lang_id,
               },
             ],
           },
