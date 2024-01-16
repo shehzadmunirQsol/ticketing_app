@@ -4,6 +4,10 @@ export const getCartSchema = z.object({
   customer_id: z.number(),
 });
 
+export const getEventDataByCartIDSchema = z.object({
+  event_id: z.number(),
+});
+
 export const getCartItemsSchema = z.object({
   startDate: z.date().optional(),
   endDate: z.date().optional(),
