@@ -202,7 +202,7 @@ dependencies:
     version: 18.2.0(react@18.2.0)
   react-draft-wysiwyg:
     specifier: ^1.15.0
-    version: 1.15.0(draft-js@0.11.7)(immutable@3.7.6)(react-dom@18.2.0)(react@18.2.0)
+    version: 1.15.0(draft-js@0.11.7)(immutable@4.3.4)(react-dom@18.2.0)(react@18.2.0)
   react-elfsight-widget:
     specifier: ^1.1.1
     version: 1.1.1(react@18.2.0)
@@ -6188,14 +6188,14 @@ packages:
       - encoding
     dev: false
 
-  /draftjs-utils@0.10.2(draft-js@0.11.7)(immutable@3.7.6):
+  /draftjs-utils@0.10.2(draft-js@0.11.7)(immutable@4.3.4):
     resolution: {integrity: sha512-EstHqr3R3JVcilJrBaO/A+01GvwwKmC7e4TCjC7S94ZeMh4IVmf60OuQXtHHpwItK8C2JCi3iljgN5KHkJboUg==}
     peerDependencies:
       draft-js: ^0.11.x
       immutable: 3.x.x || 4.x.x
     dependencies:
       draft-js: 0.11.7(react-dom@18.2.0)(react@18.2.0)
-      immutable: 3.7.6
+      immutable: 4.3.4
     dev: false
 
   /duplexer3@0.1.5:
@@ -8294,14 +8294,14 @@ packages:
       style-to-js: 1.1.8
     dev: false
 
-  /html-to-draftjs@1.5.0(draft-js@0.11.7)(immutable@3.7.6):
+  /html-to-draftjs@1.5.0(draft-js@0.11.7)(immutable@4.3.4):
     resolution: {integrity: sha512-kggLXBNciKDwKf+KYsuE+V5gw4dZ7nHyGMX9m0wy7urzWjKGWyNFetmArRLvRV0VrxKN70WylFsJvMTJx02OBQ==}
     peerDependencies:
       draft-js: ^0.10.x || ^0.11.x
       immutable: 3.x.x || 4.x.x
     dependencies:
       draft-js: 0.11.7(react-dom@18.2.0)(react@18.2.0)
-      immutable: 3.7.6
+      immutable: 4.3.4
     dev: false
 
   /html-webpack-plugin@2.29.0(webpack@3.8.1):
@@ -12334,7 +12334,7 @@ packages:
       scheduler: 0.23.0
     dev: false
 
-  /react-draft-wysiwyg@1.15.0(draft-js@0.11.7)(immutable@3.7.6)(react-dom@18.2.0)(react@18.2.0):
+  /react-draft-wysiwyg@1.15.0(draft-js@0.11.7)(immutable@4.3.4)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-p1cYZcWc6/ALFBVksbFoCM3b29fGQDlZLIMrXng0TU/UElxIOF2/AWWo4L5auIYVhmqKTZ0NkNjnXOzGGuxyeA==}
     peerDependencies:
       draft-js: ^0.10.x || ^0.11.x
@@ -12344,9 +12344,9 @@ packages:
     dependencies:
       classnames: 2.3.2
       draft-js: 0.11.7(react-dom@18.2.0)(react@18.2.0)
-      draftjs-utils: 0.10.2(draft-js@0.11.7)(immutable@3.7.6)
-      html-to-draftjs: 1.5.0(draft-js@0.11.7)(immutable@3.7.6)
-      immutable: 3.7.6
+      draftjs-utils: 0.10.2(draft-js@0.11.7)(immutable@4.3.4)
+      html-to-draftjs: 1.5.0(draft-js@0.11.7)(immutable@4.3.4)
+      immutable: 4.3.4
       linkify-it: 2.2.0
       prop-types: 15.8.1
       react: 18.2.0
