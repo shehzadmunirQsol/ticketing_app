@@ -1,7 +1,9 @@
 {
   "Index": {
     "banner":{
-      "ENTER_BTN":"ENTER NOW"
+      "ENTER_BTN":"ENTER NOW",
+      "HEADING":"Are you the next lucky winnar?",
+      "SUBHEADING":"Drive home your dream car at a fraction of the price!"
     },
     "products":{
       "HEADING":"CAR DRAWING SOON",
@@ -127,6 +129,7 @@
       ]
     }
   },
+
   "ProductDetail":{
     "counter":{
       "TICKETS":"Number of Entries:",
@@ -231,6 +234,7 @@
         }
       ]
   },
+
   "Footer":{
     "SUBSCRIBE_BTN":"SUBSCRIBE TO NEWSLETTER",
     "ADDRESS_TITLE":"Winnar LLC",
@@ -240,6 +244,12 @@
     "ADDRESS_SUB_TITLE_THREE":"Dubai, UAE",
     "ADDRESS_SUB_TITLE_FOUR":"© Copyright Winnar Trading LLC Regulated by Dubai Economic Department and Department of Economy and Tourism Trade License No.: 1193751",
     "CONNECT_TITLE":" CONNECT WITH US",
+    "COOKIE_TITLE":"Cookie Policy",
+    "COOKIE_CONTENT":"Should you choose to proceed in accessing this website, non-permanent cookies will be placed on your computer to enhance your experience whilst using the site. If you do not wish to have such non-permanent cookies placed on your computer please exit the site now. Alternatively, please click Accept All Cookies to proceed.",
+    "COOKIE_BTN":"Accept All Cookies",
+    "MISS_OUT":"Don't Miss Out!, Sign-up Today!",
+    "SIGNUP_BTN":"Sign-up",
+    "CLOSE_BTN":"Close",
     "array":[
       {
         "name": "Cars",
@@ -277,13 +287,16 @@
       }
     ]
   },
+
   "Cars":{
     "MAIN_HEADING":"CARS",
     "HEADING":"CARS COMPETITION"
   },
+
   "Cash":{
     "HEADING":"CASH"
   },
+
   "Winners":{
     "HEADING":"Winnars",
     "WINNER_HEADING":"Won",
@@ -293,6 +306,7 @@
     "CONGRATULATIONS":"Congratulation to",
     "CONGRATS_WINNING":"for winning"
   },
+
   "Cart":{
     "HEADING":"BASKET",
     "APPLY_COUPON":"Apply Coupon",
@@ -303,6 +317,7 @@
     "CHECHKOUT_BTN":"Proceed to Checkout",
     "LAST_OFFER":"Last chance offer"
   },
+
   "Checkout":{
     "HEADING":"CHECKOUT",
     "SUB_HEADING":"Payment",
@@ -319,6 +334,7 @@
     "ACCEPT":"We accept",
     "PAY_BTN":"PAY WITH CARD"
   },
+
   "MyAccount":{
     "HEADING":"MY ACCOUNT",
     "COMPETITION_ENTRIES":"Your Competition Entries",
@@ -344,6 +360,7 @@
         "fn": ""
       }
     ],
+
     "AccountView":{
       "HELLO":"Hello ",
       "ACCOUNT":"From your account dashboard you can view your recent orders, manage your",
@@ -361,6 +378,7 @@
       "TABLE_INFO":"No past competition entries to show. Only entries from the last 30 days will be shown.",
       "TABLE_BUTTON":"EXPLORE CURRENT COMPETITIONS"
     },
+
     "AddressView":{
       "INFO_HEADING":"Billing Address",
         "INFO":"The following addresses will be used on the checkout page by default.",
@@ -372,6 +390,7 @@
         "ANOTHER_BTN":"Add Another",
         "DEFAULT":"Set Default"
     },
+
     "AccountDetail":{
       "HEADING":"Personal information",
       "SUB_HEADING":"Password change",
@@ -404,6 +423,7 @@
       ]
     }
   },
+
   "Auth":{
       "TAB_LOGIN":"Login",
       "TAB_REGISTER":"Register",
@@ -432,6 +452,7 @@
       }
 
   },
+
   "About":{
     "HEADING":"Meet Our Driving Force",
     "SUB_HEADING":"The Passionate Team Behind Winnar"
