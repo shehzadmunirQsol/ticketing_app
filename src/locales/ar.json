@@ -211,23 +211,19 @@
     "sub_title_seven":"حسابي",
     "array":[
       {
-        "name": "سيارات",
+        "name": "السيارات",
         "link": "/cars"
       },
       {
-        "name": "نقدي",
+        "name": "نقد",
         "link": "/cash"
       },
       {
-        "name": "الفائزون",
-        "link": "/winners"
-      },
-      {
-        "name": "معلومات عنا",
+        "name": "-من نحن",
         "link": "/about-us"
       },
       {
-        "name": "التعليمات",
+        "name": "الأسئلة الشائعة",
         "link": "/faq"
       }
     ]
