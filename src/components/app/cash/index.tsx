@@ -15,7 +15,7 @@ const CashPage = () => {
   const { lang } = useSelector((state: RootState) => state.layout);
 
   const { isLogin, user } = useSelector((state: RootState) => state.auth);
-  const fullUrl =  typeof window !== 'undefined' ? window.location.href : "";
+  const fullUrl = typeof window !== 'undefined' ? window.location.href : "";
 
   const [products, setProducts] = useState<Array<any>>([]);
   const [mailtrigger, setMailtrigger] = useState(0);
@@ -62,32 +62,32 @@ const CashPage = () => {
   var cashprize2 = "";
 
   useEffect(() => {
-    if(user?.email){ 
+    if (user?.email) {
 
-      if(products[0]?.EventDescription[0]){
+      if (products[0]?.EventDescription[0]) {
         cash1 = products[0]?.EventDescription[0]?.name;
         cashprize1 = products[0]?.price;
       }
-      if(products[1]?.EventDescription[0]){
+      if (products[1]?.EventDescription[0]) {
         cash2 = products[1]?.EventDescription[0]?.name;
         cashprize2 = products[1]?.price;
-      } 
+      }
 
-      if(cash1 && mailtrigger===0){ 
+      if (cash1 && mailtrigger === 0) {
 
-        setMailtrigger(mailtrigger+1);
+        setMailtrigger(mailtrigger + 1);
         if ('sendinblue' in window && window?.sendinblue) {
           const sendinblue: any = window.sendinblue;
-          
+
           var counterValue = getCookie('cashCounterValue');
-          console.log("cashCounterValue",counterValue);
-          if(counterValue){
+          console.log("cashCounterValue", counterValue);
+          if (counterValue) {
             setCookie('cashCounterValue', parseInt(counterValue) + 1, 70);
-          }else{
+          } else {
             setCookie('cashCounterValue', 1, 70);
           }
 
-          if(counterValue && parseInt(counterValue)===2){
+          if (counterValue && parseInt(counterValue) === 2) {
             sendinblue?.track(
               'page_visited',
               {
@@ -96,10 +96,10 @@ const CashPage = () => {
               },
               {
                 "data": {
-                  "car_name_1" : cash1,
+                  "car_name_1": cash1,
                   "car_name_2": cash2,
                   "url": fullUrl,
-                  "ticket_prize": cashprize1+" aed"
+                  "ticket_prize": cashprize1 + " aed"
                 }
               },
             ) as any;
@@ -125,17 +125,23 @@ const CashPage = () => {
           // ) as any;
 
           //deleteCookie("cashCounterValue");
-          
+
         }
       }
     }
-  }, [user,products]);
+  }, [user, products]);
 
 
   return (
     <>
       <div className="relative pt-24"></div>
-      <BannerTitle image={CashBg} text={''} />
+      {
+        lang.lang_id === 2 ?
+          <BannerTitle image={CashBg} text={''} />
+          :
+          <BannerTitle image={CashBg} text={''} />
+      }
+      {/* <BannerTitle image={CashBg} text={''} /> */}
       <div className=" h-full px-4 space-y-8 py-14 md:px-14 md:space-y-12 md:py-20">
         <div className="relative">
           {/* Will look into it later when finalizing */}
@@ -157,10 +163,10 @@ const CashPage = () => {
             })}
           </div>
 
-            
+
           {/* doudt should it load more on action or automatically */}
           {
-            products.length !== 0?
+            products.length !== 0 ?
               products.length != prductsList?.count ? (
                 <div className="w-fit mx-auto">
                   <div className="text-center my-4">
@@ -171,8 +177,8 @@ const CashPage = () => {
               ) : (
                 ''
               )
-            :
-            null
+              :
+              null
             // <div className="w-fit mx-auto">
             //   <div className="text-center my-4">
             //     <p className="tracking-tight font-bold text-2xl">No ongoing raffles</p>
@@ -196,7 +202,7 @@ const CashPage = () => {
           class="w-3/5 md:w-full"
           slidesToShow={3}
           center={false}
-          title={'Closed Competitions'}
+          title={langContent[lang.lang].Index.closed.HEADING}
           type="drawn"
           breakpoint={[3, 2, 1.5]}
           breakpointScreens={[1350, 1050, 800]}
