@@ -264,7 +264,7 @@ const CarsPage = () => {
           class="w-3/5 md:w-full"
           slidesToShow={3}
           center={false}
-          title={'Closed Competitions'}
+          title={langContent[lang.lang].Index.closed.HEADING}
           type="drawn"
           breakpoint={[3, 2, 1.5]}
           breakpointScreens={[1350, 1050, 800]}

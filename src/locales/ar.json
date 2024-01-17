@@ -4,14 +4,17 @@
       "ENTER_BTN":"أدخل الأن"
     },
     "products":{
-      "HEADING":"الرسم قريبا",
-      "CASHHEADING":"CASH DRAWING SOON"
+      "HEADING":"السحب قريبًا",
+      "CASHHEADING":"السحب قريبًا"
     },
     "upcoming":{
       "HEADING":"المسابقات القادمة"
     },
     "upcomingcash":{
-      "HEADING":"UPCOMING CASH COMPETITIONS"
+      "HEADING":"المسابقات القادمة"
+    },
+    "closed":{
+      "HEADING":"المسابقات المغلقة"
     },
     "wonders":{
       "HEADING":"عجائب وينار:",
