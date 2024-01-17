@@ -4,6 +4,7 @@ import { useState, type ReactElement, type ReactNode, useEffect } from 'react';
 import Layout from '~/components/layouts';
 import { trpc } from '~/utils/trpc';
 import '~/styles/globals.css';
+import '~/styles/globals-ar.scss';
 
 
 export type NextPageWithLayout<

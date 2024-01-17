@@ -324,7 +324,7 @@ export default function LoginSignup() {
                     {langContent[lang.lang].Auth.FORGOT}
                   </p>
                   <Button
-                    className=" px-16 lg:w-40 ltr:lg:w-40  rtl:lg:w-56   md:w-40 w-full  text-black font-sans font-[900]   text-xl tracking-[-1px]"
+                    className="px-16 lg:w-40 ltr:lg:w-40  rtl:lg:w-64   md:w-40 w-full  text-black font-sans font-[900]   text-xl tracking-[-1px]"
                     variant="clip"
                   >
                     {langContent[lang.lang].Auth.LOGIN_BUTTON}
@@ -391,7 +391,7 @@ export default function LoginSignup() {
                       <FormLabel className="text-xs font-thin text-grayColor">
                         Phone Number <sup className="">*</sup>
                       </FormLabel>
-                      <div className="flex flex-row gap-2 mt-2 ">
+                      <div className="flex flex-row rtl:flex-row-reverse gap-2 mt-2 ">
                         <FormField
                           control={formSignup.control}
                           name="code"
@@ -478,7 +478,7 @@ export default function LoginSignup() {
                       control={formSignup.control}
                       name="country"
                       render={({ field }) => (
-                        <FormItem className="w-full ">
+                        <FormItem className="w-full selectbx">
                           <FormLabel className="text-xs text-white">
                             Country/ Region <sup className="text-white">*</sup>
                           </FormLabel>
@@ -665,7 +665,7 @@ export default function LoginSignup() {
                   />
                 </div>
                 <div className="mt-16 flex flex-col lg:flex-row md:flex-row justify-between items-center gap-6 ">
-                  <p className="text-lightColor text-gray-400 font-extralight text-xs w-full lg:w-96  md:w-96  ltr:text-left rtl:text-right">
+                  <p className="text-lightColor text-gray-400 font-extralight text-xs w-full lg:w-96  md:w-96 ltr:text-left rtl:text-right">
                     {langContent[lang.lang].Auth.REGISTER_INFO}{' '}
                     <span
                       onClick={() => setCMSType('privacy-policy')}

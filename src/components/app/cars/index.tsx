@@ -154,7 +154,7 @@ const CarsPage = () => {
           <div className="block slg:hidden">
             <div className="flex justify-end listtabs mb-4">
               <span className={`tabbtn ${cardView === 'cardview' ? 'active' : ''}`} onClick={() => setCardView('cardview')}><i className="fa-regular fa-square-full"></i></span>
-              <span className={`tabbtn ml-3 ${cardView === 'listview' ? 'active' : ''}`} onClick={() => setCardView('listview')}><i className="fa-solid fa-align-justify"></i></span>
+              <span className={`tabbtn ltr:ml-3 rtl:mr-3 ${cardView === 'listview' ? 'active' : ''}`} onClick={() => setCardView('listview')}><i className="fa-solid fa-align-justify"></i></span>
             </div>
           </div>
 

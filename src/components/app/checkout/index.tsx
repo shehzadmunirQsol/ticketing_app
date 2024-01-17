@@ -396,7 +396,7 @@ function Checkout() {
                       )}
                     />
                   </div>
-                  <FormItem className="" dir="ltr">
+                  <FormItem className="selectbx" dir="ltr">
                     <FormLabel className="text-sm text-cardGray" dir="ltr">
                       Billing Address
                     </FormLabel>
@@ -481,7 +481,7 @@ function Checkout() {
                         control={form.control}
                         name="country"
                         render={({ field }) => (
-                          <FormItem className="">
+                          <FormItem  className="selectbx">
                             <FormLabel className="text-sm text-cardGray">
                               Country/ Region{' '}
                               <sup className="text-red-500">*</sup>
@@ -615,7 +615,7 @@ function Checkout() {
                       <p className="text-sm text-cardGray">
                         Phone Number
                       </p>
-                      <div className="flex flex-row gap-2 mt-2">
+                      <div className="flex flex-row rtl:flex-row-reverse gap-2 mt-2">
                         <FormField
                           control={form.control}
                           name="code"

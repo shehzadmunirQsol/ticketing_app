@@ -131,8 +131,8 @@ function Index({ children }: DefaultLayoutProps) {
     <div
       dir={lang.dir}
       lang={lang.lang}
-      className="relative mx-auto max-w-[1600px] w-full overflow-x-hidden"
-    >
+      className={`relative mx-auto max-w-[1600px] w-full overflow-x-hidden ${lang.lang}`}
+      >
       <Toaster />
       {shouldShowNavbarAndFooter ? (
         <>

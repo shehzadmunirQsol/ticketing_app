@@ -290,7 +290,7 @@ export default function CartItem(props: CartItemProp) {
       </div>
 
       <div className="flex items-center justify-between">
-        <div className="relative mr-3 md:mr-10 min-w-[140px] min-h-[90px] mdx:min-w-[176px] mdx:min-h-[112px]">
+        <div className="relative ltr:mr-3 rtl:ml-3 ltr:md:mr-10 rtl:md:ml-10 min-w-[140px] min-h-[90px] mdx:min-w-[176px] mdx:min-h-[112px]">
           <NextImage
             src={renderNFTImage({ thumb: cartItem.Event.thumb })}
             fill
@@ -333,7 +333,7 @@ export default function CartItem(props: CartItemProp) {
                 {/* <p className="w-16 text-center text-base md:text-lg">{cartItem?.quantity}</p> */}
 
                 <input
-                  className="w-16 h-10 text-center text-base md:text-lg bg-card qtyinput"
+                  className="w-10 md:w-16 h-10 text-center text-base md:text-lg bg-card qtyinput"
                   type="number"
                   // value={cartItem?.quantity}
                   value={manualCartCount}
@@ -372,7 +372,7 @@ export default function CartItem(props: CartItemProp) {
                   </Tooltip>
                 </TooltipProvider>
               </div>
-              <p className="text-sm md:text-xl text-white font-bold mt-2 md:mt-0 ml-3 md:ml-0">
+              <p className="text-sm md:text-xl text-white font-bold mt-2 md:mt-0 ltr:ml-3 rtl:mr-3 md:ml-0 md:mr-3">
                 <span className="text-sm md:text-base">AED</span> {(cartItem?.quantity * cartItem?.Event?.price)?.toFixed(2)}{' '}
               </p>
               <div className="space-y-2">
