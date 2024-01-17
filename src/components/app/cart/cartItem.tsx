@@ -28,6 +28,7 @@ type CartItemProp = {
   customer_id: number;
   ticketPurchased: number;
   cartItemsLength: number;
+  lang: number;
 };
 
 type SubscriptionType = 'weekly' | 'monthly' | 'quarterly' | null;
@@ -39,7 +40,7 @@ export default function CartItem(props: CartItemProp) {
     fullUrl = window.location.host;
   }
 
-  const { cart_id, customer_id, cartItem } = props;
+  const { cart_id, customer_id, cartItem, lang } = props;
   const { cart } = useSelector((state: RootState) => state.cart);
 
   const { isLogin, user } = useSelector((state: RootState) => state.auth);
@@ -55,6 +56,40 @@ export default function CartItem(props: CartItemProp) {
   const dispatch = useDispatch();
 
   const addToBasket = trpc.cart.addToCart.useMutation();
+
+
+
+
+//GET EVENT ARABIC / ENGLISH DATA ---
+
+console.log('cartItem?.id',props);
+
+  const [eventDataWithoutLang, setEventDataWithoutLang] = useState<any>({});
+  trpc.cart.getEventDataByCartID.useQuery(
+    { event_id: cartItem?.event_id },
+    {
+      // enabled: isLogin,
+      // refetchOnWindowFocus: false,
+
+      onSuccess(data:any) {
+        if (data?.data) {
+          setEventDataWithoutLang(data.data ?? [])
+        } 
+      },
+      onError(error:any) {
+        console.log({ error });
+      },
+    },
+  );
+
+  console.log(eventDataWithoutLang,"eventDataWithoutLang")
+//GET EVENT ARABIC / ENGLISH DATA ---
+
+
+
+
+
+
 
   async function addToBasketHandler(
     type: 'increment' | 'decrement' | 'manualnumber' | 'unsubscribe' | 'update_cart',
@@ -140,57 +175,7 @@ export default function CartItem(props: CartItemProp) {
         title: 'Item updated successfully!',
       });
 
-      // if ('sendinblue' in window && window?.sendinblue) {
-
-
-      //   const eventCartData = cart?.cartItems?.map((event) => ({
-      //     id: event?.event_id,
-      //     price: event?.Event?.price,
-      //     name: event?.Event?.EventDescription[0]?.name,
-      //     quantity: quantity,
-      //     image: process.env.NEXT_PUBLIC_MEDIA_BASE_URL + event?.Event?.thumb,
-      //   }));
-
-      //   const sendinblue: any = window.sendinblue;
-      //   sendinblue?.track(
-      //     'cart_updated',
-      //     {
-      //       "email": user.email,
-      //       "FIRSTNAME": user.first_name
-      //     },
-      //     {
-      //       "data": {
-      //         "url" : fullUrl+"/cart",
-      //         "item" : eventCartData,
-      //       }
-      //     },
-      //   ) as any;
- 
-      //   // const sendinblue: any = window.sendinblue;
-  
-      //   // sendinblue?.track(
-      //   //     'cart_updated',
-      //   //     {
-      //   //       "email": user.email,
-      //   //       "FIRSTNAME": user.first_name
-      //   //     },
-      //   //     {
-      //   //       "data": {
-      //   //         // "closing_deadline" : drawdate,
-      //   //         // "cart_expiration_date" : drawdate,
-      //   //         "url" : fullUrl+"/cart",
-      //   //         "item" : eventCartData,
-      //   //       }
-      //   //     },
-      //   //     // {
-      //   //     //   "data": eventCartData
-      //   //     // },
-      //   //   ) as any;
-
-      //   console.log('pushed cart_updated to brevo 3 cart',cart);
-      //   console.log('pushed cart_updated to brevo 3 eventCartData',eventCartData);
-
-      // }
+     
     } catch (error: any) {
       console.log({ error });
     }
@@ -204,7 +189,8 @@ export default function CartItem(props: CartItemProp) {
       const eventCartData = cart?.cartItems?.map((event) => ({
         id: event?.event_id,
         price: event?.Event?.price,
-        name: event?.Event?.EventDescription[0]?.name,
+        // name: event?.Event?.EventDescription[0]?.name,
+        name: engName,
         quantity: quantity,
         image: httpBaseUrl + event?.Event?.thumb,
       }));
@@ -277,11 +263,18 @@ export default function CartItem(props: CartItemProp) {
   else if (isTicketLimitExceeded)
     tooltipMessage = "Competition closed, can't proceed to checkout!";
 
+
+    
+    var langName =  eventDataWithoutLang ? eventDataWithoutLang?.EventDescription?.find((description: { lang_id: number }) => description.lang_id === lang)?.name : "";
+    var engName =  eventDataWithoutLang ? eventDataWithoutLang?.EventDescription?.find((description: { lang_id: number }) => description.lang_id === 1)?.name : "";
+     
+
   return (
     <div data-name="card" className="py-2 mdx:py-2 border-t border-white/40">
       <div className="mb-2 flex items-center justify-between mdx:hidden">
         <p className="text-xl font-bold">
-          {cartItem?.Event?.EventDescription[0]?.name}
+          {/* {cartItem?.Event?.EventDescription[0]?.name} */}
+          {langName}
         </p>
         <i
           onClick={() => setIsModal((preModal) => !preModal)}
@@ -297,23 +290,18 @@ export default function CartItem(props: CartItemProp) {
             alt={'car image'}
             className="w-full h-full absolute object-contain"
           />
-          {/* <div className="p-1 w-12 h-12 rounded-full overflow-hidden absolute top-[30%] -right-6 bg-gradient-to-b from-primary to-neutral-900">
-            <NextImage
-              src={BottleImage}
-              alt={'car image'}
-              className="w-12 h-12 object-cover  rounded-full bg-white"
-            />
-          </div> */}
         </div>
         <div className="flex-1 flex items-center justify-between space-x-4">
           <Link
             href={`/${categoryRoute}/${URIGenerator(
-              cartItem?.Event?.EventDescription[0]?.name ?? '',
+              cartItem?.Event?.slug ?? '',
               cartItem?.event_id,
             )}`}
             className="hidden flex-1 mdx:block text-lg md:text-xl "
           >
-            {cartItem?.Event?.EventDescription[0]?.name}
+            {langName}
+            
+            {/* {cartItem?.Event?.EventDescription[0]?.name} */}
           </Link>
           <div className="flex flex-wrap flex-col space-y-2">
             <div className="flex justify-between items-center min-w-[200px] md:min-w-[450px] w-1/2 max-w-[550px]">
@@ -446,7 +434,8 @@ export default function CartItem(props: CartItemProp) {
         openChangeHandler={() => setIsModal((preModal) => !preModal)}
         cart_item_id={cartItem.id}
         event_id={cartItem.event_id}
-        item_name={cartItem?.Event?.EventDescription[0]?.name ?? ''}
+        // item_name={cartItem?.Event?.EventDescription[0]?.name ?? ''}
+        item_name={langName}
         isLast={props?.cartItemsLength === 1}
       />
     </div>

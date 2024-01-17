@@ -212,6 +212,7 @@ model Event {
   charity_id        Int
   faq_id            Int?
   thumb             String
+  slug              String    @default("")
   video_src         String
   price             Int
   cash_alt          Int?
@@ -637,6 +638,7 @@ view EventView {
   name              String
   desc              String?
   comp_details      String?
+  slug              String
   video_src         String?
   price             Int
   cash_alt          Int?

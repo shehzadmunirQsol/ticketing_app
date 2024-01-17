@@ -73,22 +73,17 @@ export default function ProductCard(props: CardInterface) {
     return `${formattedHours}:${minutes.toString().padStart(2, '0')} ${ampm}`;
   }
 
-
-
-  // var langcode = 1;
-  // if(props.dir === "rtl"){
-  //   langcode = 2;
-  // }
-    
-  // var eventDescriptionLang = props?.data?.EventDescription.filter((desc: { lang_id: number }) => desc.lang_id === langcode);
-  // var eventDescriptionEnglish = props?.data?.EventDescription.filter((desc: { lang_id: number }) => desc.lang_id === 1);
-  
-
   return (
     props?.data && (
+      // <Link
+      //   href={`/${categoryRoute}/${URIGenerator(
+      //     props?.data?.EventDescription[0]?.name,
+      //     props?.data?.id,
+      //   )}`}
+      // >
       <Link
         href={`/${categoryRoute}/${URIGenerator(
-          props?.data?.EventDescription[0]?.name,
+          props?.data?.slug,
           props?.data?.id,
         )}`}
       >
