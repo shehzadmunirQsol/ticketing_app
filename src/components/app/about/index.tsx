@@ -3,6 +3,7 @@ import { Button } from '~/components/ui/button';
 import NextImage from '~/components/ui/img';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
+import langContent from '~/locales';
 
 export default function AboutUs() {
 
@@ -21,11 +22,9 @@ export default function AboutUs() {
           />
           <div className="absolute h-[35px] w-full text-center top-[50%] flex items-center">
             <div className="w-full text-center ">
-              <p className=" text-white drop-shadow-2xl text-center w-full text-4xl  tracking-wide lg:text-5xl uppercase font-[900]">
-                PRESTIGE CAR
-              </p>
-              <p className="relative h-[35px] -top-[50%]   mt-3 text-white drop-shadow-2xl text-center w-full text-4xl  lg:text-5xl   uppercase font-[900]">
-                RAFFLES
+              <p className=" text-white drop-shadow-2xl text-center w-full text-4xl  tracking-wide lg:text-5xl uppercase font-[900]" dangerouslySetInnerHTML={{
+                __html: langContent[lang.lang].About.BANNER_HEADING,
+              }}>
               </p>
             </div>
           </div>
@@ -34,18 +33,11 @@ export default function AboutUs() {
       <div className="w-full z-50 -mt-24">
         <div className="bg-primary lg:w-[400px] sm:w-[400px]  px-8 py-8 sm:py-16 md:py-20 aboutus-card  mx-4 lg:ml-14 mb-8 sm:mb-14 md:mb-20">
           <h2 className="font-black text-2xl lg:text-5xl md:text-3xl  text-black">
-            Our Mission
+          {langContent[lang.lang].About.MISSION_HEADING}
           </h2>
-          <p className="text-background pt-5 text-sm font-medium">
-            Winnar, the prestige car raffle company that offers car enthusiasts
-            the thrilling opportunity to win their coveted dream car and many
-            other prizes.
-            <br />
-            <br />
-            Through our captivating experiences and philanthropic initiatives,
-            we aim to create memorable moments that extend beyond the thrill of
-            winning! Join Winnar.com today and get ready to drive away in the
-            car of your dreams.
+          <p className="text-background pt-5 text-sm font-medium" dangerouslySetInnerHTML={{
+                __html: langContent[lang.lang].About.MISSION_CONTENT,
+              }}>
           </p>
         </div>
       </div>

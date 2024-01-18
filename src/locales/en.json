@@ -246,7 +246,8 @@
     "ADDRESS_SUB_TITLE_TWO":"Bay Gate Tower, Business Bay,",
     "ADDRESS_SUB_TITLE_THREE":"Dubai, UAE",
     "ADDRESS_SUB_TITLE_FOUR":"© Copyright Winnar Trading LLC Regulated by Dubai Economic Department and Department of Economy and Tourism Trade License No.: 1193751",
-    "CONNECT_TITLE":" CONNECT WITH US",
+    "CONNECT_TITLE":"CONNECT WITH US",
+    "CHARIITY":"Charitable Contribution:",
     "COOKIE_TITLE":"Cookie Policy",
     "COOKIE_CONTENT":"Should you choose to proceed in accessing this website, non-permanent cookies will be placed on your computer to enhance your experience whilst using the site. If you do not wish to have such non-permanent cookies placed on your computer please exit the site now. Alternatively, please click Accept All Cookies to proceed.",
     "COOKIE_BTN":"Accept All Cookies",
@@ -458,7 +459,10 @@
 
   "About":{
     "HEADING":"Meet Our Driving Force",
-    "SUB_HEADING":"The Passionate Team Behind Winnar"
+    "SUB_HEADING":"The Passionate Team Behind Winnar",
+    "BANNER_HEADING":"PRESTIGE CAR <br/> RAFFLES",
+    "MISSION_HEADING":"Our Mission",
+    "MISSION_CONTENT":"Winnar, the prestige car raffle company that offers car enthusiasts the thrilling opportunity to win their coveted dream car and many other prizes. <br /> <br /> Through our captivating experiences and philanthropic initiatives, we aim to create memorable moments that extend beyond the thrill of winning! Join Winnar.com today and get ready to drive away in the car of your dreams."
   }
 
 }
