@@ -334,7 +334,7 @@ export const customerRouter = router({
             to: input.code + input.phone_number,
             subject: 'Welcome to Winnar! To complete your user registration, use the following one-time code:' + respCode,
           };
-          await sendSMS(smsOptions);
+          // await sendSMS(smsOptions);
           //SMS***********
 
 
@@ -713,7 +713,7 @@ export const customerRouter = router({
             to: updateResponse.phone_number,
             subject: 'Welcome to Winnar! To complete your user registration, use the following one-time code:' + respCode,
           };
-          await sendSMS(smsOptions);
+          // await sendSMS(smsOptions);
           //SMS***********
 
         }

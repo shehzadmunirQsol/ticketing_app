@@ -10,7 +10,7 @@ import { useToast } from '~/components/ui/use-toast';
 import CartItem from './cartItem';
 import { addDiscount } from '~/store/reducers/cart';
 import langContent from '~/locales';
-import { getAvailableTickets, sendSMS } from '~/utils/helper';
+import { getAvailableTickets } from '~/utils/helper';
 
 export default function CartPage() {
 
