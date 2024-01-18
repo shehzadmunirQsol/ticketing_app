@@ -1,4 +1,6 @@
 import React, { useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '~/store/store';
 import BottleImage from '~/public/assets/bottle.png';
 import NextImage from '@/ui/img';
 import { renderNFTImage } from '~/utils/helper';
@@ -20,6 +22,12 @@ export default function ImageSliderStyle({ data }: any) {
 
   const slidermain = useRef<any>(null);
   const sliderthumb = useRef<any>(null);
+  const { lang } = useSelector((state: RootState) => state.layout);
+  console.log(lang.lang);
+  var checkRtl = false;
+  if(lang.lang === 'ar') {
+    checkRtl = true;
+  }
 
   const productslide = {
     asNavFor: sliderthumb.current,

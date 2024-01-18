@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
 import Footer from './footer';
 import { trpc } from '~/utils/trpc';
+import langContent from '~/locales';
 import {
   CartItemInterface,
   addCart,
@@ -131,8 +132,8 @@ function Index({ children }: DefaultLayoutProps) {
     <div
       dir={lang.dir}
       lang={lang.lang}
-      className="relative mx-auto max-w-[1600px] w-full overflow-x-hidden"
-    >
+      className={`relative mx-auto max-w-[1600px] w-full overflow-x-hidden ${lang.lang}`}
+      >
       <Toaster />
       {shouldShowNavbarAndFooter ? (
         <>
@@ -153,6 +154,7 @@ function Index({ children }: DefaultLayoutProps) {
 export default Index;
 
 function CookiesLabel() {
+  const { lang } = useSelector((state: RootState) => state.layout);
   const [isAccepted, setIsAccepted] = useState(true);
 
   useEffect(() => {
@@ -173,12 +175,12 @@ function CookiesLabel() {
       <div className="mycontainer px-2 md:px-12">
         <div className="row align-items-center">
           <div className="col">
-            <h3>Cookie Policy</h3>
-            <p>Should you choose to proceed in accessing this website, non-permanent cookies will be placed on your computer to enhance your experience whilst using the site. If you do not wish to have such non-permanent cookies placed on your computer please exit the site now. Alternatively, please click Accept All Cookies to proceed.</p>
+            <h3>{langContent[lang.lang].Footer.COOKIE_TITLE}</h3>
+            <p>{langContent[lang.lang].Footer.COOKIE_CONTENT}</p>
           </div>
           <div className="col-auto mt-3 md:mt-0">
             <div className="winbtn winbtnormal font-sans" onClick={setCookiesHandler} role="button" tabIndex={0}>
-              Accept All Cookies
+            {langContent[lang.lang].Footer.COOKIE_BTN}
             </div>
             {/* <div className="winbtn winbtnormal font-sans" onClick={() => setIsAccepted(true)} role="button" tabIndex={0}>
             Close
@@ -191,9 +193,8 @@ function CookiesLabel() {
 }
 
 
-
-
 function SignUpSticky() {
+  const { lang } = useSelector((state: RootState) => state.layout);
   const [isSignup, setIsSignup] = useState(true);
   const { user } = useSelector((state: RootState) => state.auth);
 
@@ -214,14 +215,14 @@ function SignUpSticky() {
         <div className="mycontainer px-2 md:px-12">
           <div className="row align-items-center justify-content-center">
             <div className="col-auto">
-              <p>Don't Miss Out!, Sign-up Today!</p>
+              <p>{langContent[lang.lang].Footer.MISS_OUT}</p>
             </div>
             <div className="col-auto mt-3 md:mt-0">
               <Link href="/login" className="winbtn winbtnormal font-sans">
-                Sign-up
+              {langContent[lang.lang].Footer.SIGNUP_BTN}
               </Link>
               <div className="winbtn winbtnormal font-sans" onClick={setSignupHandler} role="button" tabIndex={0}>
-                Close
+              {langContent[lang.lang].Footer.CLOSE_BTN}
               </div>
             </div>
           </div>

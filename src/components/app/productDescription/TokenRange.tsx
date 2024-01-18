@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 // import { Slider } from '~/components/ui/slider';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '~/store/store';
 
 interface token {
   range: any;
@@ -11,6 +13,9 @@ const TokenRange = ({ range, setRange, min, max }: token) => {
   const percentage: any = ((range && range.length ? range[0] : 1) / max) * 100;
 
   const [progress, setProgress] = useState(5);
+
+  const { lang } = useSelector((state: RootState) => state.layout);
+  
 
   const handleSliderChange = (event: any) => {
     const myArray = [];
@@ -25,7 +30,11 @@ const TokenRange = ({ range, setRange, min, max }: token) => {
     const percentage: any = (value / max) * 100;
     const sliderEl = document.getElementById('productrange');
     if (sliderEl) {
-      sliderEl.style.background = `linear-gradient(to right, #20cba8 ${percentage}%, #17171a ${percentage}%)`;
+        if(lang.lang === 'en') {
+          sliderEl.style.background = `linear-gradient(to right, #20cba8 ${percentage}%, #17171a ${percentage}%)`;
+        } else {
+          sliderEl.style.background = `linear-gradient(to left, #20cba8 ${percentage}%, #17171a ${percentage}%)`;
+        }
     }
   };
 

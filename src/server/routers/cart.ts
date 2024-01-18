@@ -7,6 +7,7 @@ import {
   removeCartItemSchema,
   getCartItemsSchema,
   createCartSchema,
+  getEventDataByCartIDSchema,
 } from '~/schema/cart';
 import { prisma } from '~/server/prisma';
 import { verifyJWT } from '~/utils/jwt';
@@ -23,6 +24,7 @@ const cartInclude = {
     include: {
       Event: {
         select: {
+          slug:true,
           thumb: true,
           price: true,
           end_date: true,
@@ -344,6 +346,7 @@ export const cartRouter = router({
           include: {
             Event: {
               select: {
+                slug:true,
                 thumb: true,
                 price: true,
                 end_date: true,
@@ -407,4 +410,30 @@ export const cartRouter = router({
         });
       }
     }),
+
+    getEventDataByCartID: publicProcedure.input(getEventDataByCartIDSchema).query(async ({ ctx, input }) => {
+      try {
+        const cart = await prisma.event.findFirst({
+          where: { id: input.event_id, is_deleted: false },
+          include: { 
+            EventDescription: {
+              // where: { lang_id: 1 },
+              select: {
+                name: true,
+                lang_id: true,
+              },
+            }, 
+          },
+        });
+
+        
+        return { message: 'Cart Event Data found', data: cart };
+      } catch (error: any) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: error?.message,
+        });
+      }
+    }),
+
 });

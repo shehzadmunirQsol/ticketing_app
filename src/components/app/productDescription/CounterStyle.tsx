@@ -36,7 +36,11 @@ const CounterStyle = ({ range, setRange, min, max }: token) => {
     const percentage: any = (value / max) * 100;
     const sliderEl = document.getElementById('productrange');
     if (sliderEl) {
-      sliderEl.style.background = `linear-gradient(to right, #20cba8 ${percentage}%, #17171a ${percentage}%)`;
+      if(lang.lang === 'en') {
+        sliderEl.style.background = `linear-gradient(to right, #20cba8 ${percentage}%, #17171a ${percentage}%)`;
+      } else {
+        sliderEl.style.background = `linear-gradient(to left, #20cba8 ${percentage}%, #17171a ${percentage}%)`;
+      }
     }
     
     const progressValElement = document.getElementById('progressval');

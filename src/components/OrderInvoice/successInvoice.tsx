@@ -218,14 +218,14 @@ export default function SuccessInvoice() {
           <ScrollArea className="w-full no-scrollbar overflow-x-scroll">
             <ScrollBar orientation="horizontal"></ScrollBar>
 
-            <div className="w-full text-xs my-3">
+            <div className="w-full text-xs my-3 directionrtl">
               <div className="flex justify-between font-bold uppercase pb-2 smtext">
                 <div className="flex-[2] text-start">Name</div>
                 <div className="flex-1 text-center">Quantity</div>
                 <div className="flex-1 text-center">Unit Price <span className="block text-xxs">(AED)</span></div>
                 <div className="flex-1 text-center">Sub Total <span className="block text-xxs">(AED)</span></div>
                 <div className="flex-1 text-center">VAT (5%) <span className="block text-xxs">(AED)</span></div>
-                <div className="flex-1 text-right">Total Amount <span className="block text-xxs">(AED)</span></div>
+                <div className="flex-1 text-right rtl:text-left">Total Amount <span className="block text-xxs">(AED)</span></div>
               </div>
 
               {isLoading ? null : (
@@ -251,7 +251,7 @@ export default function SuccessInvoice() {
                             {getVATAmount(item?.ticket_price * item?.quantity).toFixed(2)}
                           </div>
 
-                          <div className="flex-1 text-right">
+                          <div className="flex-1 text-right rtl:text-left">
                             {(item?.ticket_price * item?.quantity).toFixed(2)}
                           </div>
                         </div>
@@ -271,7 +271,7 @@ export default function SuccessInvoice() {
                 <div className="flex-1"></div>
                 <div className="flex-1 text-center greyText">{reduceVATAmount(OrderApiData?.data?.sub_total_amount).toFixed(2)}</div>
                 <div className="flex-1 text-center greyText">{getVATAmount(OrderApiData?.data?.sub_total_amount).toFixed(2)}</div>
-                <div className="flex-1 text-right greyText">{OrderApiData?.data?.total_amount.toFixed(2)}</div>
+                <div className="flex-1 text-right rtl:text-left greyText">{OrderApiData?.data?.total_amount.toFixed(2)}</div>
               </div>
 
               <div className="flex justify-between py-2">
@@ -280,7 +280,7 @@ export default function SuccessInvoice() {
                 <div className="flex-1"></div>
                 <div className="flex-1"></div>
                 <div className="flex-1"></div>
-                <div className="flex-1 text-right greyText">
+                <div className="flex-1 text-right rtl:text-left greyText">
                   {OrderApiData?.data?.discount_amount?.toFixed(2) ?? '0.00'}
                 </div>
               </div>
@@ -301,7 +301,7 @@ export default function SuccessInvoice() {
                 <div className="flex-1"></div>
                 <div className="flex-1 text-center"></div>
                 <div className="flex-1 text-center">VAT Amount <span className="block text-xxs">(AED)</span></div>
-                <div className="flex-1 text-right">Total Payable <span className="block text-xxs">(AED)</span></div>
+                <div className="flex-1 text-right rtl:text-left">Total Payable <span className="block text-xxs">(AED)</span></div>
               </div>
 
               <div className="flex justify-between py-2">
@@ -310,12 +310,12 @@ export default function SuccessInvoice() {
                 <div className="flex-1"></div>
                 <div className="flex-1 text-center"></div>
                 <div className="flex-1 text-center greyText">{getVATAmount(OrderApiData?.data?.sub_total_amount).toFixed(2)}</div>
-                <div className="flex-1 text-right greyText">{OrderApiData?.data?.total_amount.toFixed(2)}</div>
+                <div className="flex-1 text-right rtl:text-left greyText">{OrderApiData?.data?.total_amount.toFixed(2)}</div>
               </div>
             </div>
           </div>
 
-          <div className="flex-1 text-right mt-8">
+          <div className="flex-1 text-right rtl:text-left mt-8">
             <Button
               onClick={routeHandler}
               variant="clip"

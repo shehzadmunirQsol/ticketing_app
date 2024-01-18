@@ -75,7 +75,7 @@ const charityAmount = (totalSoldTickets * bottlePrice).toLocaleString();
           <div className="relative p-4 py-6 md:px-14 md:py-14">
             <div className="sm:flex sm:flex-row-reverse sm:justify-between sm:items-center mb-4 md:mb-8">
               <div className="w-100 sm:w-[300px] lg:w-[360px]">
-                <p className="text-gray-200 text-base md:text-lg font-semibold leading-[18px] mb-4 md:mb-0">Charitable Contribution: <span className="text-primary">AED {charityAmount}</span></p>
+                <p className="text-gray-200 text-base md:text-lg font-semibold leading-[18px] mb-4 md:mb-0">{langContent[lang.lang].Footer.CHARIITY} <span className="text-primary">AED {charityAmount}</span></p>
               </div>
               <div className="flex flex-col gap-6 md:gap-8 w-100 sm:w-[300px] lg:w-[360px]">
                 <div>
@@ -101,9 +101,6 @@ const charityAmount = (totalSoldTickets * bottlePrice).toLocaleString();
                   <p>{langContent[lang.lang].Footer.ADDRESS_SUB_TITLE_ONE}</p>
                   <p>{langContent[lang.lang].Footer.ADDRESS_SUB_TITLE_TWO}</p>
                   <p>{langContent[lang.lang].Footer.ADDRESS_SUB_TITLE_THREE}</p>
-                  {/* <p className="text-xs my-2 hidden sm:block">
-                    {langContent[lang.lang].Footer.ADDRESS_SUB_TITLE_FOUR}
-                  </p> */}
                 </div>
                 <div className="flex items-center justify-start md:justify-start text-sm text-white gap-3 sm:gap-4">
                   <NextImage

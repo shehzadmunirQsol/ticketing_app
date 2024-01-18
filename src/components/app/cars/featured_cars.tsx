@@ -66,7 +66,7 @@ const FeaturedCars = () => {
             {/* buttons */}
             {
             productsList?.data[0]?
-            <div className="px-4 absolute w-full h-full flex justify-between items-center my-auto z-10">
+            <div className="px-4 absolute w-full h-full flex justify-between items-center my-auto z-10 sliderarrow">
               <Button
                 variant="rounded"
                 className="button prev-btn h-6 w-6 md:h-10 md:w-10"
@@ -132,7 +132,7 @@ const FeaturedCars = () => {
             {/* buttons */}
             {
             productsList?.data[1]?
-            <div className="px-4 absolute w-full h-full flex justify-between items-center my-auto z-10">
+            <div className="px-4 absolute w-full h-full flex justify-between items-center my-auto z-10 sliderarrow">
               <Button
                 variant="rounded"
                 className="button prev-btn h-6 w-6 md:h-10 md:w-10"

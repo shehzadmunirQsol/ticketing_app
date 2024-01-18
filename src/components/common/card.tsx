@@ -73,48 +73,17 @@ export default function ProductCard(props: CardInterface) {
     return `${formattedHours}:${minutes.toString().padStart(2, '0')} ${ampm}`;
   }
 
-
-
-  // const [timer, setTimer] = useState('');
-  // function launchTimer() { 
-  //   const currentDate = new Date();
-
-  //   const targetDateString = props?.data?.end_date;
-  //   const targetDate = new Date(targetDateString);
-    
-  //   if (isNaN(targetDate.getTime())) {
-  //     console.error(`Invalid target date: ${targetDateString}`);
-  //     clearInterval(timerInterval); // Stop the timer
-  //     return;
-  //   }
-    
-  //   const timeDifference = targetDate.getTime() - currentDate.getTime();
-
-  //   if (timeDifference <= 0) {
-  //     console.log("The target time has already passed.");
-  //     clearInterval(timerInterval); // Stop the timer
-  //     return;
-  //   }
- 
-  //   const hours = Math.floor(timeDifference / (1000 * 60 * 60));
-  //   const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
-  //   const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
-  
-  //   setTimer(`Time remaining: ${hours}h, ${minutes}m, ${seconds}s`); 
-
-  // }
-  // const timerInterval = setInterval(launchTimer, 1000);
-
-
-
-
-  
-
   return (
     props?.data && (
+      // <Link
+      //   href={`/${categoryRoute}/${URIGenerator(
+      //     props?.data?.EventDescription[0]?.name,
+      //     props?.data?.id,
+      //   )}`}
+      // >
       <Link
         href={`/${categoryRoute}/${URIGenerator(
-          props?.data?.EventDescription[0]?.name,
+          props?.data?.slug,
           props?.data?.id,
         )}`}
       >

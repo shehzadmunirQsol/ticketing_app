@@ -1,0 +1,74 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;500;700;800;900&display=swap');
+.ar {
+  
+* {
+  font-family: 'Noto Sans Arabic', sans-serif;
+  line-height: 1.5;
+}
+[class*="fa-"] {
+  font-family: "Font Awesome 6 Free";
+}
+[class*="fa-brands"] {
+  font-family: "Font Awesome 6 Brands";
+}
+.bottlebx.prodbottle {
+  right: 20px !important;
+  left: auto;
+}
+.countbx {
+  left: auto;
+  right: 0;
+}
+.sliderarrow {
+  direction: ltr;
+}
+.slick-slide {
+  float: left !important;
+}
+.thumbslider .slick-prev {
+  left: -10px;
+}
+.thumbslider .slick-next {
+  right: -10px;
+  left: auto !important;
+}
+input[type="text"], input[type="password"] {
+  text-align: right;
+}
+.react-international-phone-input-container {
+  position: relative;
+  left: -15px;
+}
+.eyeicon {
+  right: auto;
+  left: 0;
+}
+form .w-full {
+  text-align: right;
+}
+.directionrtl {
+  direction: rtl;
+}
+.selectbx button {
+  flex-direction: row-reverse;
+}
+.winbtn + .winbtn {
+  margin-left: 0;
+  margin-right: 15px;
+}
+}
+
+@media only screen and (max-width: 767px){
+.ar {
+  
+.productslider .slick-next {
+    right: -10px;
+    left: auto;
+}
+.productslider .slick-prev {
+  right: auto;
+  left: -10px;
+}
+
+}
+}

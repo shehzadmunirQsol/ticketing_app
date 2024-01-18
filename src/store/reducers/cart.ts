@@ -13,6 +13,7 @@ interface Cart {
 export interface CartItemInterface {
   id: number;
   Event: {
+    slug: string;
     thumb: string;
     price: number;
     category_id: number;

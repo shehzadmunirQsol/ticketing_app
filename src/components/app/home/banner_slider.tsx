@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
 import { trpc } from '~/utils/trpc';
+import langContent from '~/locales';
 import { renderNFTImage } from '~/utils/helper';
 import Link from 'next/link';
 import Slider from 'react-slick';
@@ -50,12 +51,12 @@ function BannerSlider() {
   return (
     <div className="herobanner px-2 md:px-12">
       <div className="leftbx">
-        <h1 className="uppercase">Are you the next lucky winnar?</h1>
+        <h1 className="uppercase">{langContent[lang.lang].Index.banner.HEADING}</h1>
         {/* <h3 className="uppercase">+ 4000 AED CASH</h3> */}
-        <p>Drive home your dream car at a fraction of the price!</p>
+        <p>{langContent[lang.lang].Index.banner.SUBHEADING}</p>
         {/* <h4 className="uppercase">WIN SUNDAY 8 PM</h4> */}
         <Link href={bannerURL} className="winbtn font-sans desktopbx">
-          {bannerButtonText}
+          {langContent[lang.lang].Index.banner.ENTER_BTN}
         </Link>
         <div className="dblogo desktopbx">
           <NextImage src={DubaiETlogo} alt="banner image" />

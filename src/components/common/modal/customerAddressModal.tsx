@@ -159,7 +159,7 @@ export function AddCustomerAddressDialog(props: SelectCustomerInterface) {
                     control={form.control}
                     name="address_type"
                     render={({ field }) => (
-                      <FormItem className="w-full ">
+                      <FormItem className="w-full selectbx">
                         <FormLabel className="text-xs  font-thin text-cardGray">
                           Address Type <sup className="text-red-500">*</sup>
                         </FormLabel>
@@ -309,7 +309,7 @@ export function AddCustomerAddressDialog(props: SelectCustomerInterface) {
                     control={form.control}
                     name="country"
                     render={({ field }) => (
-                      <FormItem className="w-full ">
+                      <FormItem className="w-full selectbx">
                         <FormLabel className="text-xs  font-thin text-cardGray">
                           Country / Region <sup className="text-red-500">*</sup>
                         </FormLabel>

@@ -10,7 +10,7 @@ import { useToast } from '~/components/ui/use-toast';
 import CartItem from './cartItem';
 import { addDiscount } from '~/store/reducers/cart';
 import langContent from '~/locales';
-import { getAvailableTickets, sendSMS } from '~/utils/helper';
+import { getAvailableTickets } from '~/utils/helper';
 
 export default function CartPage() {
 
@@ -110,6 +110,8 @@ export default function CartPage() {
     return isTicketLimitExceeded || isDateEnded || isNotEnabled || isBankLimitExeed;
   });
 
+
+
   return (
     <div className="relative mt-24 z-20">
       {count === 0 ? (
@@ -126,6 +128,7 @@ export default function CartPage() {
               data-name="cards"
               className="w-full z-10 border-b border-white/40"
             >
+
               {cart?.cartItems?.map((cartItem) => {
                 const userTicketLimit = userTicketLimits?.data?.find(
                   (userLimit) => userLimit?.event_id === cartItem?.event_id,
@@ -140,6 +143,7 @@ export default function CartPage() {
                     customer_id={cart?.customer_id ?? 0}
                     ticketPurchased={ticketPurchased}
                     cartItemsLength={cart?.cartItems?.length ?? 0}
+                    lang={lang ? lang.lang_id: 1}
                   />
                 );
               })}

@@ -83,6 +83,13 @@ export default function EventForm() {
       placeholder: 'Please Select Image',
     },
     {
+      type: 'text',
+      name: 'slug',
+      label: 'Slug',
+
+      placeholder: 'Automatic Slug',
+    },
+    {
       type: 'number',
       name: 'price',
       label: 'Token Price',
@@ -417,6 +424,7 @@ export default function EventForm() {
       form.setValue('total_tickets', payload.data?.total_tickets);
       form.setValue('user_ticket_limit', payload.data?.user_ticket_limit);
       form.setValue('video_src', payload.data?.video_src);
+      form.setValue('slug', payload.data?.slug);
       const metaDate =
         payload.data?.meta &&
         payload.data?.meta?.includes('{') &&
@@ -430,6 +438,17 @@ export default function EventForm() {
       }
     }
   }
+
+
+   const createSlug = (event:any) => {
+      const newName = event.target.value;
+      const url = `${newName?.toLowerCase().replace(new RegExp(' ', 'g'), '-')}`;
+
+      form.setValue('slug', url);
+   }
+
+
+
   const renderHeader = () => {
     return (
       <>
@@ -542,6 +561,10 @@ export default function EventForm() {
                           type="text"
                           placeholder="Enter Name"
                           {...field}
+                          onChange={(e) => {
+                            field.onChange(e);
+                            createSlug(e);
+                          }}
                         />
                       </FormControl>
 
@@ -678,6 +701,7 @@ export default function EventForm() {
             </Tabs>
             <div>
               <div className=" grid grid-cols-1 lg:grid-cols-2 gap-2  items-center">
+                
                 {formSchema.map((item: any, i: number) => {
                   if (item?.type == 'text') {
                     return (
@@ -693,6 +717,11 @@ export default function EventForm() {
                                 type={'text'}
                                 placeholder={item?.placeholder}
                                 {...form.register(item.name)}
+                                disabled={
+                                  item?.name === 'slug'
+                                    ? true
+                                    : false
+                                }
                               />
                             </FormControl>
 

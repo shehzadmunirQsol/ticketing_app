@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '~/store/store';
+import { setCookieWithoutExpiry, getCookie, deleteCookie } from '~/service/api/cookies.service';
 
 export interface Lang {
   dir: 'rtl' | 'ltr';
@@ -13,10 +14,16 @@ interface LayoutState {
   lang: Lang;
 }
 
+
+var cookie_lang = getCookie('cookie_lang'); 
+
 // Define the initial state using that type
 const initialState: LayoutState = {
   theme: 'dark',
-  lang: { dir: 'ltr', lang: 'en', lang_id: 1 },
+  lang: cookie_lang === 'ar'
+    ? { dir: 'rtl', lang: 'ar', lang_id: 2 }
+    : { dir: 'ltr', lang: 'en', lang_id: 1 },
+  // lang: { dir: 'rtl', lang: 'ar', lang_id: 2 },
 };
 
 export const layoutSlice = createSlice({
