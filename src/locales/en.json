@@ -314,12 +314,15 @@
   "Cart":{
     "HEADING":"BASKET",
     "APPLY_COUPON":"Apply Coupon",
+    "COUPON_CODE":"Coupon Code",
     "COUPON_APPLIED":"Coupon Applied",
     "SUB_TOTAL":"Sub Total",
     "DISCOUNT":"Discount",
     "TOTAL":"Total",
     "CHECHKOUT_BTN":"Proceed to Checkout",
-    "LAST_OFFER":"Last chance offer"
+    "LAST_OFFER":"Last chance offer",
+    "MAXAMOUNT":"Maximum transaction amount is",
+    "MAXAMOUNTMESSAGE":"يرجى تقليل قيمة سلة التسوق، الحد الأقصى لكل عملية هو"
   },
 
   "Checkout":{
@@ -460,6 +463,28 @@
   "About":{
     "HEADING":"Meet Our Driving Force",
     "SUB_HEADING":"The Passionate Team Behind Winnar"
+  },
+
+  "Contact":{
+    "HEADING":"Contact Us",
+    "ADDRESS":{
+        "HEADING":"Address",
+        "ADDRESS_TITLE":"Winnar LLC",
+        "ADDRESS_SUB_TITLE":"Office 16, 17th Floor,",
+        "ADDRESS_SUB_TITLE_ONE":"Centrum Business Lounge",
+        "ADDRESS_SUB_TITLE_TWO":"Bay Gate Tower, Business Bay,",
+        "ADDRESS_SUB_TITLE_THREE":"Dubai, UAE"
+    },
+    "ENQUIRY":"General enquiry",
+    "SELLCAR":"Sell your car",
+    "FORM":{
+        "YOURNAME":"Your Name",
+        "EMAIL":"Email Address",
+        "PHONE":"Phone Number",
+        "MESSAGE":"Message",
+        "BUTTONTEXT":"SEND MESSAGE"
+    }
+    
   }
 
 }

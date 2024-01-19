@@ -1,5 +1,7 @@
 import React, { useRef } from 'react';
 import Slider from 'react-slick';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '~/store/store';
 
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -7,7 +9,7 @@ import { Button } from '../../ui/button';
 import NextImage from '~/components/ui/img';
 
 function AboutCarousel(props: any) {
-  const { lang } = props;
+  const { lang } = useSelector((state: RootState) => state.layout)
 
   const slide = useRef<any>(null);
 
