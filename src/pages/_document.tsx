@@ -2,6 +2,8 @@ import { Html, Head, Main, NextScript } from 'next/document';
 import Script from 'next/script';
 import React from 'react';
 
+const LogoImage = '~/public/assets/og.jpg';
+
 export default function Document() {
   return (
     <Html>
@@ -78,7 +80,9 @@ export default function Document() {
           `,
           }}
         />
-
+        <meta property="og:title" content="Winnar" />
+        <meta property="og:description" content="Drive home your dream car at a fraction of the price!" />
+        <meta property="og:image" content={LogoImage} />
       </Head>
       <body>
         <Main />
