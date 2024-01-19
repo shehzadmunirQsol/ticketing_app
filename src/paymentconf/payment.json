@@ -1,0 +1,14 @@
+{
+  "PAYMENTURL": {
+    "testURL": "eu-test.oppwa.com",
+    "prodURL": "eu-prod.oppwa.com"
+  },
+  "TOTANENTITY": {
+    "testID": "8ac7a4c88922f8a00189249f603701aa",
+    "prodID": "8ac7a4c88922f8a00189249f603701aa"
+  },
+  "TOTALPROCESSINGBEARER": {
+    "testToken": "Bearer OGFjN2E0Yzg4OTIyZjhhMDAxODkyNDlmNWVmOTAxYTh8WDdKQmVkUW5rZQ==",
+    "prodToken": "Bearer OGFjOWE0Y2U4YTQ1YTY2MjAxOGE2NDkzMThjODBmZTZ8U05xc1pIOW0zSw=="
+  }
+}

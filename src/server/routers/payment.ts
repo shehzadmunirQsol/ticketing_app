@@ -2,7 +2,15 @@ import { router, publicProcedure } from '../trpc';
 import { TRPCError } from '@trpc/server';
 import { createPaymentSchema } from '~/schema/payment';
 import { prisma } from '~/server/prisma';
+import paymentConf from '~/paymentconf/payment.json';
 import https from 'https';
+
+var paymenturl = paymentConf.PAYMENTURL.testURL;
+// var TOTANENTITYID = process.env.TOTAN_ENTITY_ID;
+var TOTANENTITYID = paymentConf.TOTANENTITY.testID;
+// var TOTALPROCESSINGBEARERID = process.env.TOTAL_PROCESSING_BEARER;
+var TOTALPROCESSINGBEARERID = paymentConf.TOTALPROCESSINGBEARER.testToken;
+
 export const paymentRouter = router({
   createPayment: publicProcedure
     .input(createPaymentSchema)
@@ -45,7 +53,7 @@ async function CreatePayment(APidata: createPaymentSchema) {
 
     const apiDate: any = APidata?.registrationId
       ? {
-          entityId: process.env.TOTAN_ENTITY_ID,
+          entityId: TOTANENTITYID,
           amount: APidata?.price,
           currency: 'AED',
           paymentType: 'DB',
@@ -60,7 +68,7 @@ async function CreatePayment(APidata: createPaymentSchema) {
           'standingInstruction.type': 'UNSCHEDULED',
         }
       : {
-          entityId: process.env.TOTAN_ENTITY_ID,
+          entityId: TOTANENTITYID,
           amount: APidata?.price,
           currency: 'AED',
           paymentBrand: APidata?.paymentBrand,
@@ -88,13 +96,13 @@ async function CreatePayment(APidata: createPaymentSchema) {
     const data = new URLSearchParams(apiDate).toString();
     const options = {
       port: 443,
-      host: 'eu-test.oppwa.com',
+      host: paymenturl,
       path: path,
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
         'Content-Length': data.length,
-        Authorization: process.env.TOTAL_PROCESSING_BEARER,
+        Authorization: TOTALPROCESSINGBEARERID,
       },
     };
     return new Promise((resolve, reject) => {
