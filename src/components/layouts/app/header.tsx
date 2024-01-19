@@ -138,7 +138,7 @@ export default function Header() {
               </Button>
             </Link>
 
-            <Select onValueChange={toggleLanguageHandler} value={cookie_lang?cookie_lang:""}>
+            {/* <Select onValueChange={toggleLanguageHandler} value={cookie_lang?cookie_lang:""}>
               <SelectTrigger className="h-9 w-9 rounded-none border-primary text-center  justify-center text-gray-200">
                 <SelectValue>{cookie_lang?cookie_lang.toUpperCase():"EN"}</SelectValue>
               </SelectTrigger>
@@ -148,7 +148,7 @@ export default function Header() {
                   <SelectItem value="ar">AR</SelectItem>
                 </SelectGroup>
               </SelectContent>
-            </Select>
+            </Select> */}
           </div>
         </div>
 
