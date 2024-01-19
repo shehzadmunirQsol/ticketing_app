@@ -177,6 +177,9 @@ function Checkout() {
     (async () => {
       try {
         const data = router?.query;
+
+        console.log(data,"datadatadatadata")
+
         if (data?.id) {
           setLoading(true);
           const Resdata = await getStatus.mutateAsync({
@@ -185,24 +188,6 @@ function Checkout() {
 
           if (Resdata?.status) {
             
-            // if ('sendinblue' in window && window?.sendinblue) {
-            //   const userProperties = form.getValues();
-            //   const data = cart?.cartItems?.map((event) => ({
-            //     id: event?.event_id,
-            //     price: event?.Event?.price,
-            //     name: event?.Event?.EventDescription[0]?.name,
-            //     quantity: event?.quantity,
-            //   }));
-
-            //   const sendinblue: any = window.sendinblue;
-
-            //   sendinblue?.track(
-            //     'order_completed' /*mandatory*/,
-            //     (userProperties) /*user data optional*/,
-            //     JSON.stringify(data) /*optional*/,
-            //   ) as any;
-            // }
-
             setTimeout(() => {
               toast({
                 variant: 'success',
