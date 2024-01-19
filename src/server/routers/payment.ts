@@ -5,11 +5,11 @@ import { prisma } from '~/server/prisma';
 import paymentConf from '~/paymentconf/payment.json';
 import https from 'https';
 
-var paymenturl = paymentConf.PAYMENTURL.testURL;
+var paymenturl = paymentConf.PAYMENTURL.prodURL;
 // var TOTANENTITYID = process.env.TOTAN_ENTITY_ID;
-var TOTANENTITYID = paymentConf.TOTANENTITY.testID;
+var TOTANENTITYID = paymentConf.TOTANENTITY.prodID;
 // var TOTALPROCESSINGBEARERID = process.env.TOTAL_PROCESSING_BEARER;
-var TOTALPROCESSINGBEARERID = paymentConf.TOTALPROCESSINGBEARER.testToken;
+var TOTALPROCESSINGBEARERID = paymentConf.TOTALPROCESSINGBEARER.prodToken;
 
 export const paymentRouter = router({
   createPayment: publicProcedure

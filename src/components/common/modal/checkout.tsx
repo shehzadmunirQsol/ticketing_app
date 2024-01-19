@@ -74,7 +74,7 @@ export function CheckoutDialog(props: SettingDialogInterface) {
       <Dialog open={props?.isModal} onOpenChange={(e) => props.setIsModal(e)}>
         <DialogContent className="sm:max-w-[450px]  max-h-[calc(100%-70px)] overflow-y-scroll scroll-hide">
           <Script
-            src={`https://${paymentConf.PAYMENTURL.testURL}/v1/paymentWidgets.js?checkoutId=${props?.selectedItem?.checkoutID}`}
+            src={`https://${paymentConf.PAYMENTURL.prodURL}/v1/paymentWidgets.js?checkoutId=${props?.selectedItem?.checkoutID}`}
             onReady={() => {
               console.log('Script has loaded');
               const wpwlOptions = {

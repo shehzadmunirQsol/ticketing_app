@@ -294,7 +294,7 @@ function Checkout() {
       {totalID ? (
         <>
           <Script
-            src={`https://${paymentConf.PAYMENTURL.testURL}/v1/paymentWidgets.js?checkoutId=${totalID}`}
+            src={`https://${paymentConf.PAYMENTURL.prodURL}/v1/paymentWidgets.js?checkoutId=${totalID}`}
             onReady={() => {
               console.log('Script has loaded');
               const wpwlOptions = {

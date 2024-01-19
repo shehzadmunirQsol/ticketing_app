@@ -16,11 +16,11 @@ import paymentConf from '~/paymentconf/payment.json';
 import { prisma } from '~/server/prisma';
 import { EMAILS, EMAIL_TEMPLATE_IDS, sendEmail } from '~/utils/helper';
 
-var paymenturl = paymentConf.PAYMENTURL.testURL;
+var paymenturl = paymentConf.PAYMENTURL.prodURL;
 // var TOTANENTITYID = process.env.TOTAN_ENTITY_ID;
-var TOTANENTITYID = paymentConf.TOTANENTITY.testID;
+var TOTANENTITYID = paymentConf.TOTANENTITY.prodID;
 // var TOTALPROCESSINGBEARERID = process.env.TOTAL_PROCESSING_BEARER;
-var TOTALPROCESSINGBEARERID = paymentConf.TOTALPROCESSINGBEARER.testToken;
+var TOTALPROCESSINGBEARERID = paymentConf.TOTALPROCESSINGBEARER.prodToken;
 
 export const orderRouter = router({
   checkout: publicProcedure
@@ -1404,7 +1404,7 @@ async function CreatePayment(APidata: any) {
           'customer.browser.timezone': '60',
           'customer.browser.challengeWindow': '4',
           'customer.browser.userAgent': 'Mozilla/4.0 (MSIE 6.0; Windows NT 5.0)',
-          testMode: 'EXTERNAL',
+          // testMode: 'EXTERNAL',
 
           'customParameters[payload]': JSON.stringify({
             ...payload,
