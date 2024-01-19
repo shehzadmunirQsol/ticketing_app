@@ -43,6 +43,7 @@ import 'react-international-phone/style.css';
 import countryJSON from '~/data/countries.json';
 import { ViewContentDialog } from '~/components/common/modal/cms';
 import NextImage from '~/components/ui/img';
+import paymentConf from '~/paymentconf/payment.json';
 const countries = countryJSON.map((item) => item.country);
 
 function Checkout() {
@@ -293,7 +294,7 @@ function Checkout() {
       {totalID ? (
         <>
           <Script
-            src={`https://eu-test.oppwa.com/v1/paymentWidgets.js?checkoutId=${totalID}`}
+            src={`https://${paymentConf.PAYMENTURL.prodURL}/v1/paymentWidgets.js?checkoutId=${totalID}`}
             onReady={() => {
               console.log('Script has loaded');
               const wpwlOptions = {

@@ -11,9 +11,16 @@ import {
 } from '~/schema/order';
 import https from 'https';
 import countryJSON from '~/data/countries.json';
+import paymentConf from '~/paymentconf/payment.json';
 
 import { prisma } from '~/server/prisma';
 import { EMAILS, EMAIL_TEMPLATE_IDS, sendEmail } from '~/utils/helper';
+
+var paymenturl = paymentConf.PAYMENTURL.prodURL;
+// var TOTANENTITYID = process.env.TOTAN_ENTITY_ID;
+var TOTANENTITYID = paymentConf.TOTANENTITY.prodID;
+// var TOTALPROCESSINGBEARERID = process.env.TOTAL_PROCESSING_BEARER;
+var TOTALPROCESSINGBEARERID = paymentConf.TOTALPROCESSINGBEARER.prodToken;
 
 export const orderRouter = router({
   checkout: publicProcedure
@@ -1205,7 +1212,7 @@ async function CreateCheckout(APidata: any) {
     if (payload?.values?.total_id) delete payload?.values?.total_id;
     const tot_amount = APidata?.total_amount.toFixed(2);
     const apiDate: any = {
-      entityId: process.env.TOTAN_ENTITY_ID,
+      entityId: TOTANENTITYID,
       amount: APidata?.total_amount.toFixed(2),
       currency: 'AED',
       paymentType: 'DB',
@@ -1229,13 +1236,13 @@ async function CreateCheckout(APidata: any) {
     const data = new URLSearchParams(apiDate).toString();
     const options = {
       port: 443,
-      host: 'eu-test.oppwa.com',
+      host: paymenturl,
       path: path,
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
         'Content-Length': data.length,
-        Authorization: process.env.TOTAL_PROCESSING_BEARER,
+        Authorization: TOTALPROCESSINGBEARERID,
       },
     };
     return new Promise((resolve, reject) => {
@@ -1265,16 +1272,16 @@ async function CreateCheckout(APidata: any) {
 }
 async function getPaymentStatus(APidata: any) {
   try {
-    const path = `/v1/checkouts/${APidata?.id}/payment?entityId=${process.env.TOTAN_ENTITY_ID}`;
-    // path += '?entityId=${process.env.TOTAN_ENTITY_ID}';
+    const path = `/v1/checkouts/${APidata?.id}/payment?entityId=${TOTANENTITYID}`;
+    // path += '?entityId=${TOTANENTITYID}';
 
     const options = {
       port: 443,
-      host: 'eu-test.oppwa.com',
+      host: paymenturl,
       path: path,
       method: 'GET',
       headers: {
-        Authorization: process.env.TOTAL_PROCESSING_BEARER,
+        Authorization: TOTALPROCESSINGBEARERID,
       },
     };
     return new Promise((resolve, reject) => {
@@ -1303,16 +1310,16 @@ async function getPaymentStatus(APidata: any) {
 }
 async function deleteCard(APidata: any) {
   try {
-    const path = `/v1/registrations/${APidata?.id}?entityId=${process.env.TOTAN_ENTITY_ID}`;
-    // path += '?entityId=${process.env.TOTAN_ENTITY_ID}';
+    const path = `/v1/registrations/${APidata?.id}?entityId=${TOTANENTITYID}`;
+    // path += '?entityId=${TOTANENTITYID}';
 
     const options = {
       port: 443,
-      host: 'eu-test.oppwa.com',
+      host: paymenturl,
       path: path,
       method: 'DELETE',
       headers: {
-        Authorization: process.env.TOTAL_PROCESSING_BEARER,
+        Authorization: TOTALPROCESSINGBEARERID,
       },
     };
     return new Promise((resolve, reject) => {
@@ -1353,7 +1360,7 @@ async function CreatePayment(APidata: any) {
     console.log(tot_amount, 'tot_amount');
     const apiDate: any = APidata?.registrationId
       ? {
-          entityId: process.env.TOTAN_ENTITY_ID,
+          entityId: TOTANENTITYID,
           amount: APidata?.total_amount.toFixed(2),
           currency: 'AED',
           paymentType: 'DB',
@@ -1366,7 +1373,7 @@ async function CreatePayment(APidata: any) {
           'standingInstruction.type': 'UNSCHEDULED',
         }
       : {
-          entityId: process.env.TOTAN_ENTITY_ID,
+          entityId: TOTANENTITYID,
           amount: APidata?.total_amount.toFixed(2),
           currency: 'AED',
           paymentType: 'DB',
@@ -1396,9 +1403,8 @@ async function CreatePayment(APidata: any) {
           'customer.browser.screenWidth': '1600',
           'customer.browser.timezone': '60',
           'customer.browser.challengeWindow': '4',
-          'customer.browser.userAgent':
-            'Mozilla/4.0 (MSIE 6.0; Windows NT 5.0)',
-          testMode: 'EXTERNAL',
+          'customer.browser.userAgent': 'Mozilla/4.0 (MSIE 6.0; Windows NT 5.0)',
+          // testMode: 'EXTERNAL',
 
           'customParameters[payload]': JSON.stringify({
             ...payload,
@@ -1408,13 +1414,13 @@ async function CreatePayment(APidata: any) {
     const data = new URLSearchParams(apiDate).toString();
     const options = {
       port: 443,
-      host: 'eu-test.oppwa.com',
+      host: paymenturl,
       path: path,
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
         'Content-Length': data.length,
-        Authorization: process.env.TOTAL_PROCESSING_BEARER,
+        Authorization: TOTALPROCESSINGBEARERID,
       },
     };
     return new Promise((resolve, reject) => {
@@ -1462,7 +1468,7 @@ async function CreateSubscription(APidata: any) {
     }
     if (APidata?.subscription_type == 'yearly') subType['job.year'] = '*';
     const payloadData: any = {
-      entityId: process.env.TOTAN_ENTITY_ID,
+      entityId: TOTANENTITYID,
       amount: APidata?.total_amount,
       registrationId: APidata?.registrationId,
       currency: 'AED',
@@ -1483,13 +1489,13 @@ async function CreateSubscription(APidata: any) {
     const data = new URLSearchParams(payloadData).toString();
     const options = {
       port: 443,
-      host: 'eu-test.oppwa.com',
+      host: paymenturl,
       path: path,
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
         'Content-Length': data.length,
-        Authorization: process.env.TOTAL_PROCESSING_BEARER,
+        Authorization: TOTALPROCESSINGBEARERID,
       },
     };
     return new Promise((resolve, reject) => {

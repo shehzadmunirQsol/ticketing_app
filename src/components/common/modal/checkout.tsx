@@ -23,6 +23,7 @@ import { RootState } from '~/store/store';
 import { z } from 'zod';
 import { userAuth } from '~/store/reducers/auth';
 import { addCart } from '~/store/reducers/cart';
+import paymentConf from '~/paymentconf/payment.json';
 import { useRouter } from 'next/router';
 import Script from 'next/script';
 interface SettingDialogInterface {
@@ -73,7 +74,7 @@ export function CheckoutDialog(props: SettingDialogInterface) {
       <Dialog open={props?.isModal} onOpenChange={(e) => props.setIsModal(e)}>
         <DialogContent className="sm:max-w-[450px]  max-h-[calc(100%-70px)] overflow-y-scroll scroll-hide">
           <Script
-            src={`https://eu-test.oppwa.com/v1/paymentWidgets.js?checkoutId=${props?.selectedItem?.checkoutID}`}
+            src={`https://${paymentConf.PAYMENTURL.prodURL}/v1/paymentWidgets.js?checkoutId=${props?.selectedItem?.checkoutID}`}
             onReady={() => {
               console.log('Script has loaded');
               const wpwlOptions = {
