@@ -247,7 +247,8 @@ export const validateEmail = (email: string): boolean => {
   const domainParts = domain?.split('.');
   if (
     domainParts &&
-    ['google', 'yahoo', 'outlook'].find((item) => domainParts.includes(item))
+    ['google'].find((item) => domainParts.includes(item))
+    // ['google', 'yahoo', 'outlook'].find((item) => domainParts.includes(item))
   ) {
     // Ensure there's at least one subdomain and a top-level domain
     return false;
