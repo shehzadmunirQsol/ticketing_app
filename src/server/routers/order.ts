@@ -782,7 +782,7 @@ export const orderRouter = router({
           .then((response: any) => {
             console.log(
               response?.result?.parameterErrors,
-              'response?.result?.parameterErrors',
+              'response?.result?.parameterErrorsss',
             );
             if (!response?.result?.parameterErrors) {
               return { data: response, success: true };
@@ -796,14 +796,22 @@ export const orderRouter = router({
             );
             throw new Error(error.message);
           });
+
+          if(paymentRes){
+            console.log("parameterErrorsss",paymentRes)
+          }
+
         if (paymentRes?.data) {
           const statusData = paymentRes?.data;
-          const successStatus =
-            statusData?.result?.description.toLowerCase().includes('success') &&
-            statusData?.resultDetails?.resultMessage
-              .toLowerCase()
-              .includes('success');
-          if (successStatus) {
+          // const successStatus =
+          //   statusData?.result?.description.toLowerCase().includes('success') &&
+          //   statusData?.resultDetails?.resultMessage
+          //     .toLowerCase()
+          //     .includes('success');
+
+           const declinedStatus = statusData?.result?.description.toLowerCase().includes('declined');
+
+          if (!declinedStatus) {
             const payload = JSON.parse(statusData?.customParameters?.payload);
             const customerData = await prisma.customer.findFirst({
               where: {
