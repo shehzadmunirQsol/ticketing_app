@@ -18,6 +18,7 @@ import Link from 'next/link';
 import NextImage from '~/components/ui/img';
 // import { useState } from 'react';
 import React, { useEffect, useState } from 'react';
+import langContent from '~/locales';
 import {
   DoubleArrowLeftIcon,
   DoubleArrowRightIcon,
@@ -98,10 +99,16 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
 
   console.log("OrderApiData", OrderApiData);
 
+  var langclass = "";
+  if(lang.lang_id===2){
+    langclass = "ar";
+  }
+
+
   return (
     <>
       <Dialog open={props?.isModal} onOpenChange={(e) => props.setIsModal(e)}>
-        <DialogContent className="h-[60vh] max-w-xl md:max-w-[900px] overflow-y-hidden scroll-hide p-2">
+        <DialogContent className={`h-[60vh] max-w-xl md:max-w-[900px] overflow-y-hidden scroll-hide p-2 ${langclass}`}>
           <ScrollArea className="h-100 p-4">
             <ScrollBar orientation="vertical"></ScrollBar>
             <DialogFooter className=" sm:justify-start items-start w-full mb-2">
@@ -110,13 +117,13 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
                   className="winbtn winbtnormal smallbtn"
                   onClick={() => props.setIsModal(false)}
                 >
-                  Print Invoice
+                  {langContent[lang.lang].OrderSuccess.PRINT}
                 </div>
               </Link>
             </DialogFooter>
             <DialogDescription className="relative bg-card h-full rounded-lg  overflow-y-scroll scroll-hide">
               {OrderApiData && (
-                <div className="bg-card whiteText h-full rounded-lg  px-4 md:px-8 py-4 md:py-6  mx-auto" id="divToPrint">
+                <div className="bg-card whiteText h-full rounded-lg  px-4 md:px-8 py-4 md:py-6  mx-auto directionrtl" id="divToPrint">
                   <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-5">
                     <div className="flex flex-col mb-5 md:mb-0">
                       <NextImage
@@ -125,27 +132,27 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
                         alt="Logo"
                       />
                       <div className="text-sm">
-                        Winnar Trading LLC
+                      {langContent[lang.lang].OrderSuccess.COMPANY}
                       </div>
                       <div className="text-sm greyText">
-                        Office 1716 - F17, The Bay Gate Tower, Al Mustaqbal Street, <br/> Business Bay, Dubai, 74490
+                      {langContent[lang.lang].OrderSuccess.ADDRESS1} <br/> {langContent[lang.lang].OrderSuccess.ADDRESS2}
                       </div>
                     </div>
                     <div className="text-left">
-                      <div className="font-bold text-xl mb-1">TAX INVOICE</div>
+                      <div className="font-bold text-xl mb-1">{langContent[lang.lang].OrderSuccess.TAXINVOICE}</div>
                       <div className="text-sm greyText">
-                        Date: {displayDate(OrderApiData?.data?.created_at)}
+                      {langContent[lang.lang].OrderSuccess.DATE}: {displayDate(OrderApiData?.data?.created_at)}
                       </div>
                       <div className="text-sm greyText">
-                        Invoice: #INV00{OrderApiData?.data?.id}
+                      {langContent[lang.lang].OrderSuccess.INVOICE}: #INV00{OrderApiData?.data?.id}
                       </div>
                       <div className="text-sm greyText">
-                        TRN: 104151951100003
+                      {langContent[lang.lang].OrderSuccess.TRN}: 104151951100003
                       </div>
                     </div>
                   </div>
                   <div className="border-b-2 border-gray-300 text-sm pb-5">
-                    <h2 className="text-2xl font-bold mb-3">Bill To:</h2>
+                    <h2 className="text-2xl font-bold mb-3">{langContent[lang.lang].OrderSuccess.BILLTO}:</h2>
                     <p className="greyText">
                       {OrderApiData?.data?.first_name +
                         ' ' +
@@ -161,12 +168,12 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
 
                     <div className="w-full text-xs my-3">
                       <div className="flex justify-between font-bold uppercase pb-2 smtext">
-                        <div className="flex-[2] text-start">Name</div>
-                        <div className="flex-1 text-center">Quantity</div>
-                        <div className="flex-1 text-center">Unit Price <span className="block text-xxs">(AED)</span></div>
-                        <div className="flex-1 text-center">Sub Total <span className="block text-xxs">(AED)</span></div>
-                        <div className="flex-1 text-center">VAT (5%) <span className="block text-xxs">(AED)</span></div>
-                        <div className="flex-1 text-right">Total Amount <span className="block text-xxs">(AED)</span></div>
+                        <div className="flex-[2] text-start">{langContent[lang.lang].OrderSuccess.NAME}</div>
+                        <div className="flex-1 text-center">{langContent[lang.lang].OrderSuccess.QUANTITY}</div>
+                        <div className="flex-1 text-center">{langContent[lang.lang].OrderSuccess.UNIT} <span className="block text-xxs">(AED)</span></div>
+                        <div className="flex-1 text-center">{langContent[lang.lang].OrderSuccess.SUBTOTAL} <span className="block text-xxs">(AED)</span></div>
+                        <div className="flex-1 text-center">{langContent[lang.lang].OrderSuccess.VAT} (5%) <span className="block text-xxs">(AED)</span></div>
+                        <div className="flex-1 text-right">{langContent[lang.lang].OrderSuccess.TOTALAMOUNT} <span className="block text-xxs">(AED)</span></div>
                       </div>
 
                       {isFetching ? null : (
@@ -210,7 +217,7 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
                   <div className="w-full border-t-2 border-gray-300 text-xs smtext">
                     <div className="w-full my-2">
                       <div className="flex justify-between py-2">
-                        <div className="flex-[2] text-start font-bold uppercase">Total Amount</div>
+                        <div className="flex-[2] text-start font-bold uppercase">{langContent[lang.lang].OrderSuccess.TOTALAMOUNT}</div>
                         <div className="flex-1"></div>
                         <div className="flex-1"></div>
                         <div className="flex-1 text-center greyText">{reduceVATAmount(OrderApiData?.data?.sub_total_amount).toFixed(2)}</div>
@@ -219,7 +226,7 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
                       </div>
 
                       <div className="flex justify-between py-2">
-                        <div className="flex-[2] text-start font-bold uppercase">Discount Coupon</div>
+                        <div className="flex-[2] text-start font-bold uppercase">{langContent[lang.lang].OrderSuccess.DISCOUNT}</div>
                         <div className="flex-1"></div>
                         <div className="flex-1"></div>
                         <div className="flex-1"></div>
@@ -240,8 +247,8 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
                         <div className="flex-1"></div>
                         <div className="flex-1"></div>
                         <div className="flex-1 text-center"></div>
-                        <div className="flex-1 text-center">VAT Amount <span className="block text-xxs">(AED)</span></div>
-                        <div className="flex-1 text-right">Total Payable <span className="block text-xxs">(AED)</span></div>
+                        <div className="flex-1 text-center">{langContent[lang.lang].OrderSuccess.VATAMOUNT} <span className="block text-xxs">(AED)</span></div>
+                        <div className="flex-1 text-right">{langContent[lang.lang].OrderSuccess.TOTALPAYBLE} <span className="block text-xxs">(AED)</span></div>
                       </div>
 
                       <div className="flex justify-between py-2">

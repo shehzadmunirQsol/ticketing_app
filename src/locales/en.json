@@ -396,20 +396,20 @@
       "TOTALAMOUNT":"Total Amount",
       "DATE":"Date",
       "ORDERDETAIL":"Order Detail",
-      "ROWPERPAGE":"",
-      "PAGE":""
+      "ROWPERPAGE":"Rows per page",
+      "PAGE":"Page"
     },
 
     "AddressView":{
       "INFO_HEADING":"Billing Address",
-        "INFO":"The following addresses will be used on the checkout page by default.",
-        "SUB_INFO":"You have not set up this type of address yet.",
-        "BOX":"P.O Box",
-        "ADD_BUTTON":"ADD",
-        "SAVE_BUTTON":"SAVE",
-        "EDIT_BUTTON":"EDIT",
-        "ANOTHER_BTN":"Add Another",
-        "DEFAULT":"Set Default"
+      "INFO":"The following addresses will be used on the checkout page by default.",
+      "SUB_INFO":"You have not set up this type of address yet.",
+      "BOX":"P.O Box",
+      "ADD_BUTTON":"ADD",
+      "SAVE_BUTTON":"SAVE",
+      "EDIT_BUTTON":"EDIT",
+      "ANOTHER_BTN":"Add Another",
+      "DEFAULT":"Set Default"
     },
 
     "AccountDetail":{
@@ -421,7 +421,11 @@
       "OPTIONAL":"Why are you deleting your account? (optional)",
       "BUTTON":"SAVE CHANGES",
       "BUTTON_CONTENT":"DELETE MY ACCOUNT",
-
+      "PASSWORDCHANGE":"Password Change",
+      "ADDCOMMENTS":"Add your comment:",
+      "CURRENTPWD":"Current password (leave blank to leave unchanged)",
+      "NEWPWD":"New password (leave blank to leave unchanged)",
+      "CONFIRMPWD":"Password Confirmation (leave blank to leave unchanged)",
       "accountArgumentsOptions":[
         {
           "text": "I'm not interested in competitions anymore"
@@ -516,7 +520,27 @@
   },
 
   "OrderSuccess":{
-    "HEADING":"Your order has been placed successfully"
+    "HEADING":"Your order has been placed successfully",
+    "PRINT":"Print Invoice",
+    "TAXINVOICE":"TAX INVOICE",
+    "DATE":"Date",
+    "INVOICE":"Invoice",
+    "TRN":"TRN",
+    "COMPANY":"Winnar Trading LLC",
+    "ADDRESS1":"Office 1716 - F17, The Bay Gate Tower, Al Mustaqbal Street,",
+    "ADDRESS2":"Business Bay, Dubai, 74490",
+    "BILLTO":"Bill To",
+    "NAME":"Name",
+    "QUANTITY":"Quantity",
+    "UNIT":"Unit Price",
+    "SUBTOTAL":"Sub Total",
+    "VAT":"VAT",
+    "VATAMOUNT":"VAT AMOUNT",
+    "TOTALAMOUNT":"Total Amount",
+    "DISCOUNT":"DISCOUNT COUPON",
+    "TOTALPAYBLE":"TOTAL PAYABLE",
+    "CONTINUE":"Continue Shopping"
+    
   },
 
   "FlashMessages":{

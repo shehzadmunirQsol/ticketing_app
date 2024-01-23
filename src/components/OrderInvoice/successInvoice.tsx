@@ -36,24 +36,24 @@ export default function SuccessInvoice() {
   const dispatch = useDispatch();
 
   //TEST-------DELETE 
-  // const { data: OrderApiData, isLoading } = trpc.order.getByID.useQuery(
-  //   { order_id: 517, lang_id: 1 },
-  //   {
-  //     refetchOnWindowFocus: false,
-  //     enabled: 517 > 0,
-  //   },
-  // );
+  const { data: OrderApiData, isLoading } = trpc.order.getByID.useQuery(
+    { order_id: 517, lang_id: 1 },
+    {
+      refetchOnWindowFocus: false,
+      enabled: 517 > 0,
+    },
+  );
   //TEST-------DELETE
 
 
 
-  const { data: OrderApiData, isLoading } = trpc.order.getByID.useQuery(
-    { order_id: orderID, lang_id: lang.lang_id },
-    {
-      refetchOnWindowFocus: false,
-      enabled: orderID > 0,
-    },
-  );
+  // const { data: OrderApiData, isLoading } = trpc.order.getByID.useQuery(
+  //   { order_id: orderID, lang_id: lang.lang_id },
+  //   {
+  //     refetchOnWindowFocus: false,
+  //     enabled: orderID > 0,
+  //   },
+  // );
 
   useEffect(() => {
 
@@ -135,27 +135,27 @@ export default function SuccessInvoice() {
 
         var discountvalue = "AED " + OrderApiData?.data?.discount_amount ? OrderApiData?.data?.discount_amount?.toFixed(2) : '0.00';
 
-        sendinblue?.track(
-          'order_completed',
-          {
-            "email": OrderApiData?.data?.Customer?.email,
-            "FIRSTNAME": OrderApiData?.data?.Customer?.first_name
-          },
-          {
-            "data": {
-              "url": fullUrl + "/account/",
-              "status": "success",
-              "order_number": "INV00" + OrderApiData?.data?.id,
-              "order_date": formattedDate,
-              "sub_total": "AED " + OrderApiData?.data?.sub_total_amount?.toFixed(2),
-              "discount": discountvalue,
-              "total_price": "AED " + OrderApiData?.data?.total_amount?.toFixed(2),
-              "invoice_number": "#INV00" + OrderApiData?.data?.id,
-              "quantity": totalticket,
-              "data": data,
-            }
-          },
-        ) as any;
+        // sendinblue?.track(
+        //   'order_completed',
+        //   {
+        //     "email": OrderApiData?.data?.Customer?.email,
+        //     "FIRSTNAME": OrderApiData?.data?.Customer?.first_name
+        //   },
+        //   {
+        //     "data": {
+        //       "url": fullUrl + "/account/",
+        //       "status": "success",
+        //       "order_number": "INV00" + OrderApiData?.data?.id,
+        //       "order_date": formattedDate,
+        //       "sub_total": "AED " + OrderApiData?.data?.sub_total_amount?.toFixed(2),
+        //       "discount": discountvalue,
+        //       "total_price": "AED " + OrderApiData?.data?.total_amount?.toFixed(2),
+        //       "invoice_number": "#INV00" + OrderApiData?.data?.id,
+        //       "quantity": totalticket,
+        //       "data": data,
+        //     }
+        //   },
+        // ) as any;
 
 
       }
@@ -186,22 +186,22 @@ export default function SuccessInvoice() {
 
             {/* {isLoading ? null : ( */}
             <div className="text-left">
-              <div className="font-bold text-xl mb-1">TAX INVOICE</div>
+              <div className="font-bold text-xl mb-1">{langContent[lang.lang].OrderSuccess.TAXINVOICE}</div>
               <div className="text-sm greyText">
-                Date: {displayDate(OrderApiData?.data?.created_at)}
+              {langContent[lang.lang].OrderSuccess.DATE}: {displayDate(OrderApiData?.data?.created_at)}
               </div>
               <div className="text-sm greyText">
-                Invoice: #INV00{OrderApiData?.data?.id}
+              {langContent[lang.lang].OrderSuccess.INVOICE}: #INV00{OrderApiData?.data?.id}
               </div>
               <div className="text-sm greyText">
-                TRN: 104151951100003
+              {langContent[lang.lang].OrderSuccess.TRN}: 104151951100003
               </div>
             </div>
             {/* )} */}
           </div>
           {isLoading ? null : (
             <div className="border-b-2 border-gray-300 text-sm pb-5">
-              <h2 className="text-2xl font-bold mb-3">Bill To:</h2>
+              <h2 className="text-2xl font-bold mb-3">{langContent[lang.lang].OrderSuccess.TAXINVOICE}:</h2>
               <p className="greyText">
                 {OrderApiData?.data?.first_name +
                   ' ' +
@@ -220,12 +220,12 @@ export default function SuccessInvoice() {
 
             <div className="w-full text-xs my-3 directionrtl">
               <div className="flex justify-between font-bold uppercase pb-2 smtext">
-                <div className="flex-[2] text-start">Name</div>
-                <div className="flex-1 text-center">Quantity</div>
-                <div className="flex-1 text-center">Unit Price <span className="block text-xxs">(AED)</span></div>
-                <div className="flex-1 text-center">Sub Total <span className="block text-xxs">(AED)</span></div>
-                <div className="flex-1 text-center">VAT (5%) <span className="block text-xxs">(AED)</span></div>
-                <div className="flex-1 text-right rtl:text-left">Total Amount <span className="block text-xxs">(AED)</span></div>
+                <div className="flex-[2] text-start">{langContent[lang.lang].OrderSuccess.NAME}</div>
+                <div className="flex-1 text-center">{langContent[lang.lang].OrderSuccess.QUANTITY}</div>
+                <div className="flex-1 text-center">{langContent[lang.lang].OrderSuccess.UNIT} <span className="block text-xxs">(AED)</span></div>
+                <div className="flex-1 text-center">{langContent[lang.lang].OrderSuccess.SUBTOTAL} <span className="block text-xxs">(AED)</span></div>
+                <div className="flex-1 text-center">{langContent[lang.lang].OrderSuccess.VAT} (5%) <span className="block text-xxs">(AED)</span></div>
+                <div className="flex-1 text-right rtl:text-left">{langContent[lang.lang].OrderSuccess.TOTALAMOUNT} <span className="block text-xxs">(AED)</span></div>
               </div>
 
               {isLoading ? null : (
@@ -266,7 +266,7 @@ export default function SuccessInvoice() {
           <div className="w-full border-t-2 border-gray-300 text-xs smtext">
             <div className="w-full my-2">
               <div className="flex justify-between py-2">
-                <div className="flex-[2] text-start font-bold uppercase">Total Amount</div>
+                <div className="flex-[2] text-start font-bold uppercase">{langContent[lang.lang].OrderSuccess.TOTALAMOUNT}</div>
                 <div className="flex-1"></div>
                 <div className="flex-1"></div>
                 <div className="flex-1 text-center greyText">{reduceVATAmount(OrderApiData?.data?.sub_total_amount).toFixed(2)}</div>
@@ -275,7 +275,7 @@ export default function SuccessInvoice() {
               </div>
 
               <div className="flex justify-between py-2">
-                <div className="flex-[2] text-start font-bold uppercase">Discount Coupon</div>
+                <div className="flex-[2] text-start font-bold uppercase">{langContent[lang.lang].OrderSuccess.DISCOUNT}</div>
                 <div className="flex-1"></div>
                 <div className="flex-1"></div>
                 <div className="flex-1"></div>
@@ -300,8 +300,8 @@ export default function SuccessInvoice() {
                 <div className="flex-1"></div>
                 <div className="flex-1"></div>
                 <div className="flex-1 text-center"></div>
-                <div className="flex-1 text-center">VAT Amount <span className="block text-xxs">(AED)</span></div>
-                <div className="flex-1 text-right rtl:text-left">Total Payable <span className="block text-xxs">(AED)</span></div>
+                <div className="flex-1 text-center">{langContent[lang.lang].OrderSuccess.VATAMOUNT} <span className="block text-xxs">(AED)</span></div>
+                <div className="flex-1 text-right rtl:text-left">{langContent[lang.lang].OrderSuccess.TOTALPAYBLE} <span className="block text-xxs">(AED)</span></div>
               </div>
 
               <div className="flex justify-between py-2">
@@ -321,7 +321,7 @@ export default function SuccessInvoice() {
               variant="clip"
               className="font-bold"
             >
-              Continue Shopping
+              {langContent[lang.lang].OrderSuccess.CONTINUE}
             </Button>
           </div>
 

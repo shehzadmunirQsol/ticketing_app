@@ -49,12 +49,18 @@ form .w-full {
 .directionrtl {
   direction: rtl;
 }
+.directionltr {
+  direction: ltr;
+}
 .selectbx button {
   flex-direction: row-reverse;
 }
 .winbtn + .winbtn {
   margin-left: 0;
   margin-right: 15px;
+}
+#divToPrint .text-right {
+  text-align: left;
 }
 }
 

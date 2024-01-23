@@ -6,7 +6,7 @@ import paymentConf from '~/paymentconf/payment.json';
 import https from 'https';
 
 
-var paymentmode = "prod";
+var paymentmode = "test";
 var paymenturl = "";
 var TOTANENTITYID = "";
 var TOTALPROCESSINGBEARERID = "";
