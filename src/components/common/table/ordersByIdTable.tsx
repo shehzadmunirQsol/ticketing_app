@@ -284,16 +284,16 @@ export default function OrdersDataByIdTable(props: OrderTableProps) {
               </Table>
             </ScrollArea>
           </div>
-          <div className="flex flex-col md:flex-row gap-2 items-center justify-center md:justify-end md:space-x-2 py-4">
+          <div className="flex flex-col md:flex-row gap-2 items-center justify-center md:justify-end md:space-x-2 py-4 directionltr">
             {data?.count && (
               <div className="flex-1 flex w-[100px] items-center justify-start text-sm font-medium">
-                Page {props.filters.first + 1} of{' '}
+                {langContent[lang.lang].MyAccount.AccountView.PAGE} {props.filters.first + 1} of{' '}
                 {Math.ceil(data?.count / props.filters.rows)}
               </div>
             )}
             <div className="flex flex-col md:flex-row items-center justify-center gap-2 md:space-x-6 lg:space-x-8">
               <div className="flex items-center space-x-2">
-                <p className="text-sm font-medium">Rows per page</p>
+                <p className="text-sm font-medium">{langContent[lang.lang].MyAccount.AccountView.ROWPERPAGE}</p>
                 <Select
                   value={`${props.filters.rows}`}
                   onValueChange={(value) => {

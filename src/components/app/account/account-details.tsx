@@ -98,7 +98,7 @@ const AccountDetails = () => {
               render={({ field }) => (
                 <FormItem className=" w-full ">
                   <FormLabel className="text-xs font-thin text-grayColor">
-                    First Name*
+                  {langContent[lang.lang].Auth.FORM.FIIRSTNAME} *
                   </FormLabel>
                   <FormControl className="rounded-md bg-inputColor ">
                     <Input
@@ -118,7 +118,7 @@ const AccountDetails = () => {
               render={({ field }) => (
                 <FormItem className=" w-full ">
                   <FormLabel className="text-xs font-thin text-grayColor">
-                    Last Name *
+                  {langContent[lang.lang].Auth.FORM.LASTNAME} *
                   </FormLabel>
                   <FormControl className="rounded-md bg-inputColor ">
                     <Input
@@ -136,7 +136,7 @@ const AccountDetails = () => {
             <div className="flex flex-col sm:flex-row justify-center items-center gap-2">
               <FormItem className=" w-full ">
                 <FormLabel className="text-xs font-thin text-grayColor">
-                  Email Address *
+                {langContent[lang.lang].Auth.FORM.EMAIL} *
                 </FormLabel>
                 <FormControl className="rounded-md bg-inputColor ">
                   <Input
@@ -156,7 +156,7 @@ const AccountDetails = () => {
                 render={() => (
                   <FormItem className=" flex flex-col w-full">
                     <FormLabel className="text-xs font-thin text-grayColor">
-                      Date of Birth *
+                    {langContent[lang.lang].Auth.FORM.DOB} *
                     </FormLabel>
                     <FormControl className="rounded-md bg-inputColor">
                       <Input
@@ -267,7 +267,7 @@ function PasswordChange({ email }: any) {
               render={({ field }) => (
                 <FormItem className=" w-full ">
                   <FormLabel className="text-xs font-thin text-grayColor">
-                    Current password (leave blank to leave unchanged) *
+                  {langContent[lang.lang].MyAccount.AccountDetail.CURRENTPWD} *
                   </FormLabel>
                   <FormControl className="rounded-md bg-inputColor ">
                     <Input
@@ -287,7 +287,7 @@ function PasswordChange({ email }: any) {
               render={({ field }) => (
                 <FormItem className=" w-full ">
                   <FormLabel className="text-xs font-thin text-grayColor">
-                    New password (leave blank to leave unchanged) *
+                  {langContent[lang.lang].MyAccount.AccountDetail.NEWPWD} *
                   </FormLabel>
                   <FormControl className="rounded-md bg-inputColor ">
                     <Input
@@ -307,7 +307,7 @@ function PasswordChange({ email }: any) {
               render={({ field }) => (
                 <FormItem className=" w-full ">
                   <FormLabel className="text-xs font-thin text-grayColor">
-                    Password Confirmation (leave blank to leave unchanged) *
+                  {langContent[lang.lang].MyAccount.AccountDetail.CONFIRMPWD} *
                   </FormLabel>
                   <FormControl className="rounded-md bg-inputColor ">
                     <Input
@@ -461,9 +461,9 @@ function DeleteAccount({ email }: any) {
               control={form.control}
               name="message"
               render={({ field }) => (
-                <FormItem className="mb-6 lg:mb-10 md:mb-10 " dir="ltr">
+                <FormItem className="mb-6 lg:mb-10 md:mb-10 w-full" dir="ltr">
                   <FormLabel className="text-xs  font-thin text-grayColor">
-                    Add your comment:
+                  {langContent[lang.lang].MyAccount.AccountDetail.ADDCOMMENTS}
                   </FormLabel>
                   <FormControl className="rounded-md bg-inputColor ">
                     <Textarea
