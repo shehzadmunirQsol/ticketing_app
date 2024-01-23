@@ -71,7 +71,7 @@ export function CheckoutDialog(props: SettingDialogInterface) {
   }, []);
 
 
-  var paymentmode = "prod";
+  var paymentmode = "test";
   var paymenturl = "";
   if(paymentmode==="prod"){
     paymenturl = paymentConf.PAYMENTURL.prodURL;

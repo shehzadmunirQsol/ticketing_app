@@ -19,6 +19,7 @@ import { Input } from '@/ui/input';
 import { useForm } from 'react-hook-form';
 import Glow from '~/components/common/glow';
 import { CouponModal } from './Coupon';
+import  EventDesc  from './eventDesc';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
@@ -178,7 +179,7 @@ function Checkout() {
       try {
         const data = router?.query;
 
-        console.log(data,"datadatadatadata")
+        console.log(data, "datadatadatadata")
 
         if (data?.id) {
           setLoading(true);
@@ -187,7 +188,7 @@ function Checkout() {
           });
 
           if (Resdata?.status) {
-            
+
             setTimeout(() => {
               toast({
                 variant: 'success',
@@ -275,11 +276,11 @@ function Checkout() {
   const minDateFormatted = minDate.toISOString().split('T')[0];
 
 
-  var paymentmode = "prod";
+  var paymentmode = "test";
   var paymenturl = "";
-  if(paymentmode==="prod"){
+  if (paymentmode === "prod") {
     paymenturl = paymentConf.PAYMENTURL.prodURL;
-  }else{
+  } else {
     paymenturl = paymentConf.PAYMENTURL.testURL;
   }
 
@@ -356,7 +357,7 @@ function Checkout() {
                       render={({ field }) => (
                         <FormItem className=" w-full ">
                           <FormLabel className="text-sm text-cardGray">
-                          {langContent[lang.lang].Auth.FORM.FIIRSTNAME} <sup className="text-red-500">*</sup>
+                            {langContent[lang.lang].Auth.FORM.FIIRSTNAME} <sup className="text-red-500">*</sup>
                           </FormLabel>
                           <FormControl className="rounded-md bg-inputColor">
                             <Input
@@ -376,7 +377,7 @@ function Checkout() {
                       render={({ field }) => (
                         <FormItem className=" w-full ">
                           <FormLabel className="text-sm text-cardGray">
-                          {langContent[lang.lang].Auth.FORM.LASTNAME} <sup className="text-red-500">*</sup>
+                            {langContent[lang.lang].Auth.FORM.LASTNAME} <sup className="text-red-500">*</sup>
                           </FormLabel>
                           <FormControl className="rounded-md bg-inputColor">
                             <Input
@@ -393,7 +394,7 @@ function Checkout() {
                   </div>
                   <FormItem className="selectbx" dir="ltr">
                     <FormLabel className="text-sm text-cardGray" dir="ltr">
-                    {langContent[lang.lang].Auth.FORM.BILLING}
+                      {langContent[lang.lang].Auth.FORM.BILLING}
                     </FormLabel>
                     <Select
                       value={addressType}
@@ -432,7 +433,7 @@ function Checkout() {
                       render={({ field }) => (
                         <FormItem className="w-full ">
                           <FormLabel className="text-sm text-cardGray">
-                          {langContent[lang.lang].Auth.FORM.STREET} <sup className="text-red-500">*</sup>
+                            {langContent[lang.lang].Auth.FORM.STREET} <sup className="text-red-500">*</sup>
                           </FormLabel>
                           <FormControl className="rounded-md bg-inputColor">
                             <Input
@@ -476,9 +477,9 @@ function Checkout() {
                         control={form.control}
                         name="country"
                         render={({ field }) => (
-                          <FormItem  className="selectbx">
+                          <FormItem className="selectbx">
                             <FormLabel className="text-sm text-cardGray">
-                            {langContent[lang.lang].Auth.FORM.COUNTRY}{' '}
+                              {langContent[lang.lang].Auth.FORM.COUNTRY}{' '}
                               <sup className="text-red-500">*</sup>
                             </FormLabel>
                             <Select
@@ -488,7 +489,7 @@ function Checkout() {
                             >
                               <FormControl>
                                 <SelectTrigger className="h-10 rounded-md  bg-inputColor">
-                                  <SelectValue  />
+                                  <SelectValue />
                                 </SelectTrigger>
                               </FormControl>
                               <SelectContent className="max-h-[300px] overflow-y-auto">
@@ -518,7 +519,7 @@ function Checkout() {
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel className="text-sm text-cardGray">
-                            {langContent[lang.lang].Auth.FORM.STATE} <sup className="text-red-500">*</sup>
+                              {langContent[lang.lang].Auth.FORM.STATE} <sup className="text-red-500">*</sup>
                             </FormLabel>
                             <FormControl className="rounded-md bg-inputColor">
                               <Input
@@ -545,7 +546,7 @@ function Checkout() {
                       render={({ field }) => (
                         <FormItem className=" w-full ">
                           <FormLabel className="text-sm text-cardGray">
-                          {langContent[lang.lang].Auth.FORM.CITY} <sup className="text-red-500">*</sup>
+                            {langContent[lang.lang].Auth.FORM.CITY} <sup className="text-red-500">*</sup>
                           </FormLabel>
                           <FormControl className="rounded-md bg-inputColor">
                             <Input
@@ -565,7 +566,7 @@ function Checkout() {
                       render={({ field }) => (
                         <FormItem className=" w-full ">
                           <FormLabel className="text-sm text-cardGray">
-                          {langContent[lang.lang].Auth.FORM.POBOX}
+                            {langContent[lang.lang].Auth.FORM.POBOX}
                           </FormLabel>
                           <FormControl className="rounded-md bg-inputColor">
                             <Input
@@ -586,7 +587,7 @@ function Checkout() {
                     render={({ field }) => (
                       <FormItem className=" w-full" dir="ltr">
                         <FormLabel className="text-sm text-cardGray">
-                        {langContent[lang.lang].Auth.FORM.EMAIL} <sup className="text-red-500">*</sup>
+                          {langContent[lang.lang].Auth.FORM.EMAIL} <sup className="text-red-500">*</sup>
                         </FormLabel>
                         <FormControl className="rounded-md bg-inputColor">
                           <Input
@@ -608,7 +609,7 @@ function Checkout() {
                   >
                     <div className="w-full">
                       <p className="text-sm text-cardGray">
-                      {langContent[lang.lang].Auth.FORM.PHONE}
+                        {langContent[lang.lang].Auth.FORM.PHONE}
                       </p>
                       <div className="flex flex-row rtl:flex-row-reverse gap-2 mt-2">
                         <FormField
@@ -682,7 +683,7 @@ function Checkout() {
                         render={() => (
                           <FormItem>
                             <FormLabel className="text-sm text-cardGray">
-                            {langContent[lang.lang].Auth.FORM.DOB}{' '}
+                              {langContent[lang.lang].Auth.FORM.DOB}{' '}
                               <sup className="text-red-500">*</sup>
                             </FormLabel>
                             <FormControl className="rounded-md bg-inputColor">
@@ -722,23 +723,13 @@ function Checkout() {
                   <div className=" max-h-60 overflow-x-auto space-y-8">
                     {cart?.cartItems?.length
                       ? cart?.cartItems?.map((item: any) => {
-                          return (
-                            <div
-                              className="flex flex-row justify-between "
-                              key={item.id}
-                            >
-                              <p className="lg:text-2xl md:lg:text-xl   w-[60%]">
-                                {item?.Event?.EventDescription[0]?.name}
-                              </p>
-                              <p className="font-black text-lg lg:text-xl ">
-                                AED{' '}
-                                {(item?.Event?.price * item?.quantity)?.toFixed(
-                                  2,
-                                )}
-                              </p>
-                            </div>
-                          );
-                        })
+                        return (
+                          <EventDesc 
+                            item={item}
+                            lang={lang.lang_id}
+                          />
+                        );
+                      })
                       : null}
                   </div>
                   {cart?.isDiscount ? (
