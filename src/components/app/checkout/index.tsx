@@ -274,12 +274,21 @@ function Checkout() {
   // Format the minimum date as "YYYY-MM-DD" for the input field
   const minDateFormatted = minDate.toISOString().split('T')[0];
 
+
+  var paymentmode = "prod";
+  var paymenturl = "";
+  if(paymentmode==="prod"){
+    paymenturl = paymentConf.PAYMENTURL.prodURL;
+  }else{
+    paymenturl = paymentConf.PAYMENTURL.testURL;
+  }
+
   return (
     <div className="relative mt-20 bg-background py-6 px-4 space-y-10 md:py-16 md:px-14 md:space-y-14">
       {totalID ? (
         <>
           <Script
-            src={`https://${paymentConf.PAYMENTURL.prodURL}/v1/paymentWidgets.js?checkoutId=${totalID}`}
+            src={`https://${paymenturl}/v1/paymentWidgets.js?checkoutId=${totalID}`}
             onReady={() => {
               console.log('Script has loaded');
               const wpwlOptions = {
