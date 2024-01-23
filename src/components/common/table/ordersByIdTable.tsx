@@ -109,7 +109,7 @@ export default function OrdersDataByIdTable(props: OrderTableProps) {
   const columns: ColumnDef<Category>[] = [
     {
       accessorKey: 'ID',
-      header: 'Order ID',
+      header: langContent[lang.lang].MyAccount.AccountView.ORDERID,
       cell: ({ row }) => (
         <div className="capitalize text-ellipsis whitespace-nowrap cursor-pointer underline" onClick={() => handleView(row?.original, 'view')}>
           #{row?.original.id}
@@ -118,7 +118,7 @@ export default function OrdersDataByIdTable(props: OrderTableProps) {
     },
     {
       accessorKey: 'Sub Total',
-      header: 'Sub Total',
+      header: langContent[lang.lang].MyAccount.AccountView.SUTOTAL,
       cell: ({ row }) => (
         <div className="capitalize text-ellipsis whitespace-nowrap ">
           AED {(row?.original?.sub_total_amount).toFixed(2)}
@@ -127,7 +127,7 @@ export default function OrdersDataByIdTable(props: OrderTableProps) {
     },
     {
       accessorKey: 'Discount',
-      header: 'Discount',
+      header: langContent[lang.lang].MyAccount.AccountView.DISCOUNT,
       cell: ({ row }) => (
         <div className="capitalize text-ellipsis whitespace-nowrap ">
           {' '}
@@ -139,7 +139,7 @@ export default function OrdersDataByIdTable(props: OrderTableProps) {
     },
     {
       accessorKey: 'Total Amount',
-      header: 'Total Amount',
+      header: langContent[lang.lang].MyAccount.AccountView.TOTALAMOUNT,
       cell: ({ row }) => (
         <div className="capitalize text-ellipsis whitespace-nowrap w-28">
           {' '}
@@ -151,7 +151,7 @@ export default function OrdersDataByIdTable(props: OrderTableProps) {
     },
     {
       accessorKey: 'Created At',
-      header: 'Date',
+      header: langContent[lang.lang].MyAccount.AccountView.DATE,
       cell: ({ row }) => (
         <div className="capitalize text-ellipsis whitespace-nowrap overflow-hidden ">
           {displayDate(row?.original?.created_at)}
@@ -160,7 +160,7 @@ export default function OrdersDataByIdTable(props: OrderTableProps) {
     },
     {
       id: 'actions',
-      header: 'Order Detail',
+      header: langContent[lang.lang].MyAccount.AccountView.ORDERDETAIL,
       enableHiding: false,
       cell: ({ row }) => {
         return (
@@ -180,7 +180,7 @@ export default function OrdersDataByIdTable(props: OrderTableProps) {
           //   </DropdownMenuContent>
           // </DropdownMenu>
         <div className="winbtn winbtnormal smallbtn font-sans capitalize text-ellipsis whitespace-nowrap" onClick={() => handleView(row?.original, 'view')}>
-        Order Detail
+        {langContent[lang.lang].MyAccount.AccountView.ORDERDETAIL}
         </div>
         );
       },
@@ -273,8 +273,7 @@ export default function OrdersDataByIdTable(props: OrderTableProps) {
                             onClick={() => router.push('/cars')}
                           >
                             {
-                              langContent[lang.lang].MyAccount.AccountView
-                                .TABLE_BUTTON
+                              langContent[lang.lang].MyAccount.AccountView.TABLE_BUTTON
                             }
                           </Button>
                         </div>

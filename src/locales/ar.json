@@ -6,8 +6,8 @@
       "SUBHEADING":"حقق حلمك في امتلاك سيارتك بتكلفة بسيطة جداً"
     },
     "products":{
-      "HEADING":"السحب قريبًا",
-      "CASHHEADING":"السحب قريبًا"
+      "HEADING":"السحب القادم",
+      "CASHHEADING":"السحب القادم"
     },
     "upcoming":{
       "HEADING":"المسابقات القادمة"
@@ -136,69 +136,80 @@
 
   "ProductDetail":{
     "counter":{
-      "TICKETS":"كم عدد التذاكر",
-      "NUMBERS_OF_TICKET":"عدد التذاكر",
-      "BASKET_BUTTON":"أضف التذاكر إلى السلة"
+      "TICKETS":"عدد المشاركات:",
+      "NUMBERS_OF_TICKET":"عدد المشاركات",
+      "CASHPRIZE":"بديل الجائزة النقدية",
+      "BASKET_BUTTON":"أضف إلى السلة",
+      "TOTAL":"الإجمالي"
     },
     "entries":{
       "array":[
         {
-          "data":1,
-            "HEADING":"إدخالات",
-            "SUB_HEADING":"فقط"
+            "data":1,
+            "HEADING":"المشاركات",
+            "SUB_HEADING":"فقط بقيمة "
         },
         {
           "data":2,
-            "HEADING":"الأعلى",
-            "SUB_HEADING":"إدخالات"
+            "HEADING":"الحد الأقصى",
+            "SUB_HEADING":"لعدد المشاركات هو "
         },
         {
           "data":3,
-            "HEADING":"الأعلى",
-            "SUB_HEADING":"للشخص الواحد فقط"
+            "HEADING":"الحد الأقصى",
+            "SUB_HEADING":" للشخص الواحد فقط."
         },
         {
           "data":4,
-            "HEADING":"في جميع أنحاء العالم",
-            "SUB_HEADING":"شحن",
-            "LINK":"تطبق الشروط والأحكام"
+            "HEADING":"شحن",
+            "SUB_HEADING":"دولية",
+            "LINK":"T & C's Apply"
         }
       ]
     },
+    "countdown":{
+      "title":"ينتهي المسابقة في",
+      "days":"أيام",
+      "hours":"ساعات",
+      "mins":"دقائق",
+      "secs":"ثواني"
+    },
     "highlights":{
-      "title":"يسلط الضوء",
-      "engine":"محرك",
-      "power":"قوة",
-      "kms":"كم",
-      "year":"سنة"
+      "title":"أبرز الميزات",
+      "engine":"المحرك",
+      "power":"القوة",
+      "kms":"نظام نقل الحركة في السيارة",
+      "year":"السنة"
+    },
+    "description":{
+      "HEADING":"الوصف",
+      "SOLD":"تم البيع"
     },
 
-    "description":{
-      "HEADING":"وصف",
-      "SOLD":"مُباع"
-    },
     "faqs":{
       "HEADING":"الأسئلة الشائعة"
     },
+
     "livedraw":{
-      "HEADING":"السحب المباشر",
+      "HEADING":"تاريخ الإغلاق",
+      "GST":"PM GST",
       "array":[
         {
-            "description":"يتم السحب بغض النظر عن البيع"
+            "description":"سيتم إجراء السحب بغض النظر عن نفاد الكمية المباعة"
         },
         {
-            "description":"سيتم إغلاق المنافسة قريبًا إذا تم استلام الحد الأقصى من المشاركات"
+            "description":"ستُغلق المسابقة في وقت أقرب إذا تم استقبال الحد الأقصى لعدد المشاركات"
         },
         {
-            "description":"السحب المباشر التفاعلي على صفحتنا على الفيسبوك واليوتيوب"
+            "description":"سيتم الإعلان عن تاريخ الإغلاق على قنواتنا الاجتماعية"
         }
       ]
     },
     "tabs":{
-      "HEADING_ONE":"اشتري تذاكر",
-      "HEADING_TWO":"تفاصيل ",
-      "SUB_HEADING_TWO":"المسابقات",
-      "HEADING_THREE":"الأسئلة الشائعة"
+      "HEADING_ONE":"BUY TICKETS",
+      "HEADING_TWO":"COMPETITIONS",
+      "SUB_HEADING_TWO":"DETAILS",
+      "HEADING_THREE":"FAQs"
     },
     "range":{
       "HEADING":"SOLD"
@@ -244,7 +255,7 @@
     "ADDRESS_SUB_TITLE_FOUR":"© حقوق النشر محفوظة لشركة وينار للتجارة ذ.م.م تحت إشراف دائرة الاقتصاد في دبي ودائرة الاقتصاد والسياحة. رقم الترخيص التجاري: 1193751",
     "CONNECT_TITLE":"تواصل معنا",
     "CHARIITY":"مساهمة خيرية:",
-    "COOKIE_TITLE":"Cookie Policy",
+    "COOKIE_TITLE":"سياسة ملفات تعريف الارتباط",
     "COOKIE_CONTENT":"إذا قررت الاستمرار في استخدام هذا الموقع، سيتم وضع ملفات تعريف الارتباط غير الدائمة على جهاز الكمبيوتر الخاص بك لتحسين تجربتك أثناء التصفح. إذا كنت لا ترغب في وضع ملفات تعريف الارتباط هذه على جهاز الكمبيوتر الخاص بك، يرجى الخروج من الموقع الآن. بدلاً من ذلك، يرجى النقر على قبول جميع ملفات تعريف الارتباط للمتابعة",
     "COOKIE_BTN":"قبول جميع ملفات تعريف الارتباط",
     "MISS_OUT":"لا تفوت الفرصة! سجّل اليوم!",
@@ -318,23 +329,23 @@
     "CHECHKOUT_BTN":"المتابعة لإتمام عملية الشراء",
     "LAST_OFFER":"عرض الفرصة الأخيرة",
     "MAXAMOUNT":"الحد الأقصى لمبلغ المعاملة هو",
-    "MAXAMOUNTMESSAGE":"Please reduce your cart value, Maximum amount per transaction is"
+    "MAXAMOUNTMESSAGE":"يرجى تقليل قيمة سلة التسوق، الحد الأقصى لكل عملية هو"
   },
 
   "Checkout":{
-    "HEADING":"الدفع",
-    "SUB_HEADING":"قسط",
-    "BILL_HEADING":"تفاصيل الفاتورة",
+    "HEADING":"إتمام عملية الشراء",
+    "SUB_HEADING":"الدفع",
+    "BILL_HEADING":"تفاصيل الفواتير",
     "SUMMARY_HEADING":"ملخص الطلب",
-    "HAVE_COUPON":"هل لديك رمز القسيمة؟",
-    "SUB_TOTAL":"المجموع الفرعي",
-    "DISCOUNT":"تخفيض",
-    "TOTAL":"المجموع",
-    "INFO":"سيتم استخدام بياناتك الشخصية لمعالجة طلبك، ودعم تجربتك عبر هذا الموقع، ولأغراض أخرى موضحة في موقعنا",
-    "SUB_INFO":"عمري 18 عامًا أو أكثر وقد قرأت الموقع ووافقت عليه.",
-    "POLICY":"سياسة الخصوصية",
-    "TERMS_CONDITION":"البنود و الظروف",
-    "ACCEPT":"نحن نقبل",
+    "HAVE_COUPON":"هل لديك رمز قسيمة؟",
+    "SUB_TOTAL":"Sub Total",
+    "DISCOUNT":"Discount",
+    "TOTAL":"الإجمالي",
+    "INFO":"سيتم استخدام بياناتك الشخصية لمعالجة طلبك، ودعم تجربتك على مدار استخدام هذا الموقع، ولأغراض أخرى موضحة في سياسة  بنا",
+    "SUB_INFO":"أنا أبلغ 18 عاماً أو أكثر ولقد قرأت ووافقت على شروط وأحكام الموقع الإلكتروني",
+    "POLICY":"الخصوصية الخاصة",
+    "TERMS_CONDITION":"على شروط",
+    "ACCEPT":"قبول",
     "PAY_BTN":"الدفع بالبطاقة"
   },
 
@@ -344,42 +355,50 @@
     "array":[
       {
         "tab_count":1,
-        "tab": "لوحة القيادة",
-        "title": "حسابي"
+        "tab": "لوحة التحكم",
+        "title": "MY ACCOUNT"
       },
       {
         "tab_count":2,
-        "tab": "عناوين",
-        "title": "عناوين"
+        "tab": "العناوين",
+        "title": "ADDRESSES"
       },
       {
         "tab_count":3,
         "tab": "تفاصيل الحساب",
-        "title": "تفاصيل الحساب"
+        "title": "ACCOUNT DETAILS"
       },
       {
         "tab_count":4,
-        "tab": "تسجيل خروج",
+        "tab": "تسجيل الخروج",
         "fn": ""
       }
     ],
 
     "AccountView":{
-      "HELLO":"مرحبًا ",
-      "ACCOUNT":"من لوحة التحكم في حسابك، يمكنك عرض طلباتك الأخيرة وإدارة طلباتك",
-      "ADDRESS":"عناوين الشحن والفواتير",
-      "AND":"و",
-      "EDIT":"تعديل كلمة المرور وتفاصيل الحساب.",
-      "ENTRIES":"إدخالات المنافسة الخاصة بك",
-      "DAYS":"عرض الإدخالات لآخر 30 يومًا",
-      "COMPETITION":"بمجرد دخولك في المسابقة، ستظهر مشاركتك هنا.",
-      "LUCK":"حظ سعيد!",
-      "CURRENT":"حاضِر",
-      "PAST":"ماضي",
-      "INFO_HEADING":"اكتشف المسابقات الحالية",
-      "INFO":"لا توجد إدخالات المنافسة الماضية لإظهارها. سيتم عرض الإدخالات من آخر 30 يومًا فقط.",
-      "TABLE_INFO":"لا توجد إدخالات المنافسة الماضية لإظهارها. سيتم عرض الإدخالات من آخر 30 يومًا فقط.",
-      "TABLE_BUTTON":"اكتشف المسابقات الحالية"
+      "HELLO":"Hello ",
+      "ACCOUNT":"من لوحة التحكم في حسابك، يمكنك مشاهدة طلباتك الأخيرة، وإدارة",
+      "ADDRESS":"عناوين الشحن والفواتير الخاصَّة بك",
+      "AND":"وتعديل",
+      "EDIT":"كلمة المرور وتفاصيل الحساب الخاصَّة بك.",
+      "ENTRIES":"مشاركاتك في المسابقات",
+      "DAYS":"عرض المشاركات لآخر 30 يوماً",
+      "COMPETITION":"عندما تشارك في المسابقة، ستظهر مشاركتك هنا.",
+      "LUCK":"حظاً موفقاً!",
+      "CURRENT":"الحالية",
+      "PAST":"السابقة",
+      "INFO_HEADING":"EXPLORE CURRENT COMPETITIONS",
+      "INFO":"No past competition entries to show. Only entries from the last 30 days will be shown.",
+      "TABLE_INFO":"No past competition entries to show. Only entries from the last 30 days will be shown.",
+      "TABLE_BUTTON":"EXPLORE CURRENT COMPETITIONS",
+      "ORDERID":"معرف الطلب",
+      "SUTOTAL":"المجموع الفرعي",
+      "DISCOUNT":"الخصم",
+      "TOTALAMOUNT":"المبلغ الإجمالي",
+      "DATE":"التاريخ",
+      "ORDERDETAIL":"تفاصيل الطلب",
+      "ROWPERPAGE":"عدد الصفوف في الصفحة",
+      "PAGE":"الصفحة"
     },
 
     "AddressView":{
@@ -429,31 +448,47 @@
   },
 
   "Auth":{
-      "TAB_LOGIN":"تسجيل الدخول",
-      "TAB_REGISTER":"يسجل",
-      "FORGOT":" هل نسيت كلمة السر؟",
-      "LOGIN_BUTTON":"تسجيل الدخول",
-      "REGISTER_INFO":"سيتم استخدام بياناتك الشخصية لمعالجة طلبك، ودعم تجربتك عبر هذا الموقع، ولأغراض أخرى موضحة في موقعنا",
-      "REGISTER_SUB_INFO":"سياسة الخصوصية.",
-      "REGISTER_BUTTON":"يسجل      ",
-      "SIDE_CONTENT":"افتح تسجيل دخول رحلتك أو قم بالتسجيل في",
-      "SIDE_SUB_CONTENT":"وصول حصري",
-      "FORGOTPASSWORD":{
-          "HEADING":"هل نسيت كلمة السر",
-          "BUTTON":" يُقدِّم"
-      },
-      "RESETPASSWORD":{
-          "HEADING":"إعادة تعيين كلمة المرور",
-          "BUTTON":" تغيير كلمة المرور"
-      },
-      "OTPSCREEN":{
-          "HEADING":"مكتب المدعي العام`",
-          "SUB_HEADING":" تَحَقّق",
-          "TEXT":"لقد أرسلنا OTP على بريدك الإلكتروني",
-          "OTP":" لم تتلق كلمة مرور لمرة واحدة (OTP)؟",
-          "RESEND":" إعادة إرسال كلمة المرور لمرة واحدة",
-          "BUTTON":" يدخل"
-      }
+    "TAB_LOGIN":"تسجيل الدخول",
+    "TAB_REGISTER":"التسجيل",
+    "FORGOT":"هل نسيت كلمة المرور؟",
+    "LOGIN_BUTTON":"تسجيل الدخول",
+    "REGISTER_INFO":"سيتم استخدام بياناتك الشخصية لمعالجة طلبك، وتحسين تجربتك عبر هذا الموقع الالكتروني، ولأغراض أخرى موضّحة في",
+    "REGISTER_SUB_INFO":"سياسة الخصوصية لدينا.",
+    "REGISTER_BUTTON":"التسجيل",
+    "SIDE_CONTENT":"ابدأ رحلتك - قم بتسجيل الدخول أو التسجيل من أجل",
+    "SIDE_SUB_CONTENT":"الوصول الحصري",
+    "FORGOTPASSWORD":{
+        "HEADING":"هل نسيت كلمة المرور؟",
+        "BUTTON":"يُقدِّم"
+    },
+    "RESETPASSWORD":{
+        "HEADING":"Reset Password",
+        "BUTTON":"Change Password"
+    },
+    "OTPSCREEN":{
+        "HEADING":"Verify",
+        "SUB_HEADING":" Your Email / Mobile",
+        "TEXT":" We have sent an OTP to your email and sms",
+        "OTP":" Didn't receive OTP?",
+        "RESEND":" Resend OTP",
+        "BUTTON":" Enter"
+    },
+    "FORM":{
+        "FIIRSTNAME":"الاسم الأول",
+        "LASTNAME":"الاسم الأخير",
+        "BILLING":"عنوان الفواتير",
+        "STREET":"عنوان الشارع",
+        "STATE":"الولاية",
+        "COUNTRY":"البلد/المنطقة",
+        "POBOX":"صندوق البريد",
+        "CITY":"المدينة/البلدة",
+        "EMAIL":"البريد الإلكتروني",
+        "DOB":"تاريخ الميلاد",
+        "PHONE":"رقم الهاتف",
+        "GENDER":"الجنس",
+        "PASSWORD":"كلمة المرور",
+        "CONFIRMPASSWORD":"تأكيد كلمة المرور"
+    }
   },
 
   "About":{
@@ -480,6 +515,17 @@
         "MESSAGE":"الرسالة",
         "BUTTONTEXT":"أرسل الرسالة"
     }
+  },
+
+  "OrderSuccess":{
+    "HEADING":"تم تأكيد طلبك بنجاح"
+  },
+
+  "FlashMessages":{
+    "LOGINSUCCESSFUL":"Login Successfully!",
+    "LOGOUTSUCCESSFUL":"تم تسجيل الخروج بنجاح",
+    "ADDEDSUCCESSFUL":"تم إضافة العنصر بنجاح",
+    "ORDERSUCCESSFUL":"تم الطلب بنجاح"
   }
     
 

@@ -173,7 +173,7 @@ export default function LoginSignup() {
       dispatch(userAuth(loginResult?.user));
       toast({
         variant: 'success',
-        title: 'Login Successfully ',
+        title: langContent[lang.lang].FlashMessages.LOGINSUCCESSFUL,
       });
 
 
@@ -260,7 +260,7 @@ export default function LoginSignup() {
                     render={({ field }) => (
                       <FormItem className="">
                         <FormLabel className="text-xs font-thin text-grayColor">
-                          Email address <sup className="">*</sup>
+                        {langContent[lang.lang].Auth.FORM.EMAIL} <sup className="">*</sup>
                         </FormLabel>
                         <FormControl>
                           <Input
@@ -288,7 +288,7 @@ export default function LoginSignup() {
                     render={({ field }) => (
                       <FormItem className="">
                         <FormLabel className="text-xs font-thin text-grayColor">
-                          Password <sup className="">*</sup>
+                        {langContent[lang.lang].Auth.FORM.PASSWORD} <sup className="">*</sup>
                         </FormLabel>
                         <FormControl className="relative">
                           <div>
@@ -341,14 +341,14 @@ export default function LoginSignup() {
                 className=" justify-center items-center px-2 lg:px-8 py-4 space-y-2 w-full h-full"
               >
                 <div className="">
-                  <div className="flex flex-col sm:flex-row justify-center items-center md:gap-4">
+                  <div className="flex rtl:flex-row-reverse flex-col sm:flex-row justify-center items-center md:gap-4">
                     <FormField
                       control={formSignup.control}
                       name="first_name"
                       render={({ field }) => (
                         <FormItem className="w-full">
                           <FormLabel className="text-xs font-thin text-grayColor">
-                            First Name <sup className="">*</sup>
+                          {langContent[lang.lang].Auth.FORM.FIIRSTNAME} <sup className="">*</sup>
                           </FormLabel>
                           <FormControl>
                             <Input
@@ -369,7 +369,7 @@ export default function LoginSignup() {
                       render={({ field }) => (
                         <FormItem className=" w-full">
                           <FormLabel className="text-xs font-thin text-grayColor">
-                            Last Name <sup className="">*</sup>
+                          {langContent[lang.lang].Auth.FORM.LASTNAME} <sup className="">*</sup>
                           </FormLabel>
                           <FormControl>
                             <Input
@@ -386,10 +386,10 @@ export default function LoginSignup() {
                     />
                   </div>
 
-                  <div className="flex flex-col sm:flex-row justify-center items-start md:gap-4">
+                  <div className="flex rtl:flex-row-reverse flex-col sm:flex-row justify-center items-start md:gap-4">
                     <div className="w-full">
                       <FormLabel className="text-xs font-thin text-grayColor">
-                        Phone Number <sup className="">*</sup>
+                      {langContent[lang.lang].Auth.FORM.PHONE} <sup className="">*</sup>
                       </FormLabel>
                       <div className="flex flex-row rtl:flex-row-reverse gap-2 mt-2 ">
                         <FormField
@@ -480,7 +480,7 @@ export default function LoginSignup() {
                       render={({ field }) => (
                         <FormItem className="w-full selectbx">
                           <FormLabel className="text-xs text-white">
-                            Country/ Region <sup className="text-white">*</sup>
+                          {langContent[lang.lang].Auth.FORM.COUNTRY} <sup className="text-white">*</sup>
                           </FormLabel>
                           <Select
                             onValueChange={field.onChange}
@@ -514,14 +514,14 @@ export default function LoginSignup() {
                     />
                   </div>
 
-                  <div className="flex flex-col sm:flex-row justify-center items-center md:gap-4">
+                  <div className="flex rtl:flex-row-reverse flex-col sm:flex-row justify-center items-center md:gap-4">
                     <FormField
                       control={formSignup.control}
                       name="dob"
                       render={({ field }) => (
                         <FormItem className="w-full">
                           <FormLabel className="text-xs font-thin text-grayColor">
-                            Date of Birth <sup className="">*</sup>
+                          {langContent[lang.lang].Auth.FORM.DOB} <sup className="">*</sup>
                           </FormLabel>
                           <FormControl>
                             <Input
@@ -544,9 +544,9 @@ export default function LoginSignup() {
                       control={formSignup.control}
                       name="gender"
                       render={({ field }) => (
-                        <FormItem className="w-full">
+                        <FormItem className="w-full selectbx">
                           <FormLabel className="text-xs font-thin text-grayColor">
-                            Gender <sup className="">*</sup>
+                          {langContent[lang.lang].Auth.FORM.GENDER} <sup className="">*</sup>
                           </FormLabel>
                           <Select
                             onValueChange={field.onChange}
@@ -578,9 +578,9 @@ export default function LoginSignup() {
                     control={formSignup.control}
                     name="email"
                     render={({ field }) => (
-                      <FormItem className="">
+                      <FormItem className="w-full">
                         <FormLabel className="text-xs  font-thin text-grayColor">
-                          Email Address <sup className="">*</sup>
+                        {langContent[lang.lang].Auth.FORM.EMAIL} <sup className="">*</sup>
                         </FormLabel>
                         <FormControl>
                           <Input
@@ -600,9 +600,9 @@ export default function LoginSignup() {
                     control={formSignup.control}
                     name="password"
                     render={({ field }) => (
-                      <FormItem className="">
+                      <FormItem className="w-full">
                         <FormLabel className="text-xs font-thin text-grayColor">
-                          Password <sup className="">*</sup>
+                        {langContent[lang.lang].Auth.FORM.PASSWORD} <sup className="">*</sup>
                         </FormLabel>
                         <FormControl className="relative">
                           <div>
@@ -634,9 +634,9 @@ export default function LoginSignup() {
                     control={formSignup.control}
                     name="confirmpassword"
                     render={({ field }) => (
-                      <FormItem className="">
+                      <FormItem className="w-full">
                         <FormLabel className="text-xs font-thin text-grayColor">
-                          Confirm Password <sup className="">*</sup>
+                        {langContent[lang.lang].Auth.FORM.CONFIRMPASSWORD} <sup className="">*</sup>
                         </FormLabel>
                         <FormControl className="relative">
                           <div>

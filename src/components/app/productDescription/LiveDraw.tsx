@@ -50,7 +50,7 @@ function LiveDraw(props: any) {
                 {props?.data?.end_date?.getMinutes()?.toString()?.length > 1
                   ? props?.data?.end_date?.getMinutes()
                   : '0' + props?.data?.end_date?.getMinutes()}{' '}
-                PM GST
+                {langContent[lang.lang].ProductDetail.livedraw.GST}
               </p>
             </div>
           </div>

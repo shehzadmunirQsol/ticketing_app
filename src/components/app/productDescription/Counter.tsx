@@ -123,7 +123,7 @@ export default function Counter(props: CounterProps) {
 
       toast({
         variant: 'success',
-        title: 'Item added successfully!',
+        title: langContent[lang.lang].FlashMessages.ADDEDSUCCESSFUL,
       });
 
       if ('sendinblue' in window && window?.sendinblue) {
@@ -215,7 +215,7 @@ export default function Counter(props: CounterProps) {
             max={user_ticket_limit}
           />
           <p className="lg:text-3xl text-xl pl-0 text-primary font-bold pt-2">
-          <span className="text-base">TOTAL AED</span> {(price ?? 0)?.toLocaleString()}
+          <span className="text-base">{langContent[lang.lang].ProductDetail.counter.TOTAL} AED</span> {(price ?? 0)?.toLocaleString()}
           </p>
           <div className="mt-3 mobfixedbtn">
             <Button

@@ -181,7 +181,7 @@ export default function SuccessInvoice() {
         <div className="mt-20 md:mt-28 mb-10 whiteText h-full rounded-lg mx-auto w-full p-4 md:p-8 sm:w-3/4 md:w-2/3" id="divToPrint">
           <div className="flex flex-col md:flex-row justify-between mb-5">
             <div className="text-left mb-5 md:mb-0">
-              <div className="greenText text-xl lg:text-2xl font-bold uppercase">Your order has been placed successfully</div>
+              <div className="greenText text-xl lg:text-2xl font-bold uppercase">{langContent[lang.lang].OrderSuccess.HEADING}</div>
             </div>
 
             {/* {isLoading ? null : ( */}

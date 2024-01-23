@@ -184,12 +184,7 @@ const ImageSlider = ({ data, ticketPurchased, higlightmeta }: any) => {
               {
                 data?.cash_alt ?  
                   <p className="text-white text-lg md:text-xl">
-                      {
-                      lang.lang_id === 2 ? 
-                        'البديل النقدي'
-                        : 
-                        'Cash Prize Alternative '
-                      }
+                    {langContent[lang.lang].ProductDetail.counter.CASHPRIZE}
                       {' '}
                       <span color=""></span>{' '}
                       <span className=" font-bold mr-1 text-primary">

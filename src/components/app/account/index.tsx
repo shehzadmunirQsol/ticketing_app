@@ -34,7 +34,7 @@ const Account = () => {
       await logout.mutateAsync({});
       toast({
         variant: 'success',
-        title: 'Logout successfully! ',
+        title: langContent[lang.lang].FlashMessages.LOGOUTSUCCESSFUL,
       });
       localStorage.removeItem('winnar-token');
       localStorage.removeItem('customer');
@@ -84,7 +84,7 @@ const Account = () => {
                     : 'border-l-transparent'
                 } `}
                 onClick={() =>
-                  item.tab === 'Logout' || item.tab === 'تسجيل خروج'
+                  item.tab === 'Logout' || item.tab === 'تسجيل الخروج'
                     ? handleLogout()
                     : setCounter(i)
                 }

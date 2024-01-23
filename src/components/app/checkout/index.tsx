@@ -206,7 +206,7 @@ function Checkout() {
             setTimeout(() => {
               toast({
                 variant: 'success',
-                title: 'Order Successful! 🎉',
+                title: langContent[lang.lang].FlashMessages.ORDERSUCCESSFUL + ' 🎉',
               });
               dispatch(
                 addCart({
@@ -353,7 +353,7 @@ function Checkout() {
                 </h3>
                 <div className="space-y-3">
                   <div
-                    className="flex flex-col lg:flex-row md:flex-row gap-2  w-full justify-between"
+                    className="flex rtl:flex-row-reverse flex-col lg:flex-row md:flex-row gap-2  w-full justify-between"
                     dir="ltr"
                   >
                     <FormField
@@ -361,8 +361,8 @@ function Checkout() {
                       name="first_name"
                       render={({ field }) => (
                         <FormItem className=" w-full ">
-                          <FormLabel className="text-sm text-cardGray ">
-                            First Name <sup className="text-red-500">*</sup>
+                          <FormLabel className="text-sm text-cardGray">
+                          {langContent[lang.lang].Auth.FORM.FIIRSTNAME} <sup className="text-red-500">*</sup>
                           </FormLabel>
                           <FormControl className="rounded-md bg-inputColor">
                             <Input
@@ -382,7 +382,7 @@ function Checkout() {
                       render={({ field }) => (
                         <FormItem className=" w-full ">
                           <FormLabel className="text-sm text-cardGray">
-                            Last Name <sup className="text-red-500">*</sup>
+                          {langContent[lang.lang].Auth.FORM.LASTNAME} <sup className="text-red-500">*</sup>
                           </FormLabel>
                           <FormControl className="rounded-md bg-inputColor">
                             <Input
@@ -399,7 +399,7 @@ function Checkout() {
                   </div>
                   <FormItem className="selectbx" dir="ltr">
                     <FormLabel className="text-sm text-cardGray" dir="ltr">
-                      Billing Address
+                    {langContent[lang.lang].Auth.FORM.BILLING}
                     </FormLabel>
                     <Select
                       value={addressType}
@@ -438,7 +438,7 @@ function Checkout() {
                       render={({ field }) => (
                         <FormItem className="w-full ">
                           <FormLabel className="text-sm text-cardGray">
-                            Street Address <sup className="text-red-500">*</sup>
+                          {langContent[lang.lang].Auth.FORM.STREET} <sup className="text-red-500">*</sup>
                           </FormLabel>
                           <FormControl className="rounded-md bg-inputColor">
                             <Input
@@ -474,7 +474,7 @@ function Checkout() {
                   </div>
 
                   <div
-                    className="flex flex-col lg:flex-row md:flex-row gap-2  w-full justify-between"
+                    className="flex rtl:flex-row-reverse flex-col lg:flex-row md:flex-row gap-2  w-full justify-between"
                     dir="ltr"
                   >
                     <div className="w-full ">
@@ -484,7 +484,7 @@ function Checkout() {
                         render={({ field }) => (
                           <FormItem  className="selectbx">
                             <FormLabel className="text-sm text-cardGray">
-                              Country/ Region{' '}
+                            {langContent[lang.lang].Auth.FORM.COUNTRY}{' '}
                               <sup className="text-red-500">*</sup>
                             </FormLabel>
                             <Select
@@ -524,7 +524,7 @@ function Checkout() {
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel className="text-sm text-cardGray">
-                              State <sup className="text-red-500">*</sup>
+                            {langContent[lang.lang].Auth.FORM.STATE} <sup className="text-red-500">*</sup>
                             </FormLabel>
                             <FormControl className="rounded-md bg-inputColor">
                               <Input
@@ -542,7 +542,7 @@ function Checkout() {
                     </div>
                   </div>
                   <div
-                    className="flex flex-col lg:flex-row md:flex-row gap-2  w-full justify-between"
+                    className="flex rtl:flex-row-reverse flex-col lg:flex-row md:flex-row gap-2  w-full justify-between"
                     dir="ltr"
                   >
                     <FormField
@@ -551,7 +551,7 @@ function Checkout() {
                       render={({ field }) => (
                         <FormItem className=" w-full ">
                           <FormLabel className="text-sm text-cardGray">
-                            Town/City <sup className="text-red-500">*</sup>
+                          {langContent[lang.lang].Auth.FORM.CITY} <sup className="text-red-500">*</sup>
                           </FormLabel>
                           <FormControl className="rounded-md bg-inputColor">
                             <Input
@@ -571,7 +571,7 @@ function Checkout() {
                       render={({ field }) => (
                         <FormItem className=" w-full ">
                           <FormLabel className="text-sm text-cardGray">
-                          P.O. Box
+                          {langContent[lang.lang].Auth.FORM.POBOX}
                           </FormLabel>
                           <FormControl className="rounded-md bg-inputColor">
                             <Input
@@ -592,7 +592,7 @@ function Checkout() {
                     render={({ field }) => (
                       <FormItem className=" w-full" dir="ltr">
                         <FormLabel className="text-sm text-cardGray">
-                          Email <sup className="text-red-500">*</sup>
+                        {langContent[lang.lang].Auth.FORM.EMAIL} <sup className="text-red-500">*</sup>
                         </FormLabel>
                         <FormControl className="rounded-md bg-inputColor">
                           <Input
@@ -609,12 +609,12 @@ function Checkout() {
                   />
 
                   <div
-                    className="flex items-start flex-col lg:flex-row gap-2 w-full justify-between"
+                    className="flex rtl:flex-row-reverse items-start flex-col lg:flex-row gap-2 w-full justify-between"
                     dir="ltr"
                   >
                     <div className="w-full">
                       <p className="text-sm text-cardGray">
-                        Phone Number
+                      {langContent[lang.lang].Auth.FORM.PHONE}
                       </p>
                       <div className="flex flex-row rtl:flex-row-reverse gap-2 mt-2">
                         <FormField
@@ -688,7 +688,7 @@ function Checkout() {
                         render={() => (
                           <FormItem>
                             <FormLabel className="text-sm text-cardGray">
-                              Date of Birth{' '}
+                            {langContent[lang.lang].Auth.FORM.DOB}{' '}
                               <sup className="text-red-500">*</sup>
                             </FormLabel>
                             <FormControl className="rounded-md bg-inputColor">
