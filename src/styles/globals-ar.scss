@@ -62,6 +62,15 @@ form .w-full {
 #divToPrint .text-right {
   text-align: left;
 }
+.herobanner .rightbx .ddate a {
+  margin-right: 10px;
+  margin-left: 0;
+}
+.herobanner .rightbx .ddate a::after {
+  right: auto;
+  left: -18px;
+  transform: rotate(180deg);
+}
 }
 
 @media only screen and (max-width: 767px){
