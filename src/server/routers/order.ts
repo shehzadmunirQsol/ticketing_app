@@ -1284,6 +1284,11 @@ async function getPaymentStatus(APidata: any) {
         Authorization: TOTALPROCESSINGBEARERID,
       },
     };
+
+
+    console.log("options",options);
+    console.log("options",path);
+
     return new Promise((resolve, reject) => {
       const postRequest = https.request(options, function (res) {
         const buf: any = [];
@@ -1294,6 +1299,9 @@ async function getPaymentStatus(APidata: any) {
           const jsonString = Buffer.concat(buf).toString('utf8');
           try {
             resolve(JSON.parse(jsonString));
+
+            console.log("options",JSON.parse(jsonString));
+
           } catch (error) {
             console.log(error, 'error error error error');
             reject(error);
