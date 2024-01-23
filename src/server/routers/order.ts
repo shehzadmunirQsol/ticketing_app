@@ -16,11 +16,23 @@ import paymentConf from '~/paymentconf/payment.json';
 import { prisma } from '~/server/prisma';
 import { EMAILS, EMAIL_TEMPLATE_IDS, sendEmail } from '~/utils/helper';
 
-var paymenturl = paymentConf.PAYMENTURL.prodURL;
+
+var paymentmode = "prod";
+var paymenturl = "";
+var TOTANENTITYID = "";
+var TOTALPROCESSINGBEARERID = "";
+if(paymentmode==="prod"){
+  paymenturl = paymentConf.PAYMENTURL.prodURL;
+  TOTANENTITYID = paymentConf.TOTANENTITY.prodID;
+  TOTALPROCESSINGBEARERID = paymentConf.TOTALPROCESSINGBEARER.prodToken;
+}else{
+  paymenturl = paymentConf.PAYMENTURL.testURL;
+  TOTANENTITYID = paymentConf.TOTANENTITY.testID;
+  TOTALPROCESSINGBEARERID = paymentConf.TOTALPROCESSINGBEARER.testToken;
+}
+
 // var TOTANENTITYID = process.env.TOTAN_ENTITY_ID;
-var TOTANENTITYID = paymentConf.TOTANENTITY.prodID;
 // var TOTALPROCESSINGBEARERID = process.env.TOTAL_PROCESSING_BEARER;
-var TOTALPROCESSINGBEARERID = paymentConf.TOTALPROCESSINGBEARER.prodToken;
 
 export const orderRouter = router({
   checkout: publicProcedure
@@ -770,7 +782,7 @@ export const orderRouter = router({
           .then((response: any) => {
             console.log(
               response?.result?.parameterErrors,
-              'response?.result?.parameterErrors',
+              'response?.result?.parameterErrorsss',
             );
             if (!response?.result?.parameterErrors) {
               return { data: response, success: true };
@@ -784,14 +796,22 @@ export const orderRouter = router({
             );
             throw new Error(error.message);
           });
+
+          if(paymentRes){
+            console.log("parameterErrorsss",paymentRes)
+          }
+
         if (paymentRes?.data) {
           const statusData = paymentRes?.data;
-          const successStatus =
-            statusData?.result?.description.toLowerCase().includes('success') &&
-            statusData?.resultDetails?.resultMessage
-              .toLowerCase()
-              .includes('success');
-          if (successStatus) {
+          // const successStatus =
+          //   statusData?.result?.description.toLowerCase().includes('success') &&
+          //   statusData?.resultDetails?.resultMessage
+          //     .toLowerCase()
+          //     .includes('success');
+
+           const declinedStatus = statusData?.result?.description.toLowerCase().includes('declined');
+
+          if (!declinedStatus) {
             const payload = JSON.parse(statusData?.customParameters?.payload);
             const customerData = await prisma.customer.findFirst({
               where: {
@@ -1284,6 +1304,11 @@ async function getPaymentStatus(APidata: any) {
         Authorization: TOTALPROCESSINGBEARERID,
       },
     };
+
+
+    console.log("options",options);
+    console.log("options",path);
+
     return new Promise((resolve, reject) => {
       const postRequest = https.request(options, function (res) {
         const buf: any = [];
@@ -1294,6 +1319,9 @@ async function getPaymentStatus(APidata: any) {
           const jsonString = Buffer.concat(buf).toString('utf8');
           try {
             resolve(JSON.parse(jsonString));
+
+            console.log("options",JSON.parse(jsonString));
+
           } catch (error) {
             console.log(error, 'error error error error');
             reject(error);

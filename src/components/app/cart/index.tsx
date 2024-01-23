@@ -122,7 +122,7 @@ export default function CartPage() {
         <>
           <div className="relative py-6 px-4 space-y-10 md:py-16 md:px-14 md:space-y-10 -z-30">
             <h2 className="text-2xl md:text-4xl lg:text-5xl z-10 font-black uppercase">
-              {langContent[lang.lang].Cart.HEADING} <span className="text-xs md:text-base capitalize font-bold block md:inline-block">(Maximum transaction amount is AED 2500)</span>
+              {langContent[lang.lang].Cart.HEADING} <span className="text-xs md:text-base capitalize font-bold block md:inline-block">({langContent[lang.lang].Cart.MAXAMOUNT} AED {bankLimit}.)</span>
             </h2>
             <div
               data-name="cards"
@@ -154,7 +154,7 @@ export default function CartPage() {
                 dir="ltr"
               >
                 <Input
-                  placeholder="Coupon code"
+                  placeholder={langContent[lang.lang].Cart.COUPON_CODE}
                   type="text"
                   onChange={(e: any) => setCode(e.target.value)}
                   disabled={cart.isDiscount || couponApply.isLoading}
@@ -210,7 +210,7 @@ export default function CartPage() {
 
               {isBankLimitExeed && (
                 <div className="bg-red-100 border border-red-400 text-red-700 rounded relative px-3 py-2 text-xs md:text-sm" role="alert">
-                  <span className="block sm:inline">Please reduce your cart value, Maximum amount per transaction is <strong className="font-bold">AED {bankLimit}.</strong></span>
+                  <span className="block sm:inline">{langContent[lang.lang].Cart.MAXAMOUNTMESSAGE} <strong className="font-bold">AED {bankLimit}.</strong></span>
                 </div>
               )}
 

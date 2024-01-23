@@ -69,12 +69,23 @@ export function CheckoutDialog(props: SettingDialogInterface) {
     // Delay the execution of addCustomElement by 1000 milliseconds (1 second)
     setTimeout(addCustomElement, 15000);
   }, []);
+
+
+  var paymentmode = "prod";
+  var paymenturl = "";
+  if(paymentmode==="prod"){
+    paymenturl = paymentConf.PAYMENTURL.prodURL;
+  }else{
+    paymenturl = paymentConf.PAYMENTURL.testURL;
+  }
+
+
   return (
     <>
       <Dialog open={props?.isModal} onOpenChange={(e) => props.setIsModal(e)}>
         <DialogContent className="sm:max-w-[450px]  max-h-[calc(100%-70px)] overflow-y-scroll scroll-hide">
           <Script
-            src={`https://${paymentConf.PAYMENTURL.prodURL}/v1/paymentWidgets.js?checkoutId=${props?.selectedItem?.checkoutID}`}
+            src={`https://${paymenturl}/v1/paymentWidgets.js?checkoutId=${props?.selectedItem?.checkoutID}`}
             onReady={() => {
               console.log('Script has loaded');
               const wpwlOptions = {

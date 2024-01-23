@@ -1,7 +1,11 @@
 import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '~/store/store';
+import langContent from '~/locales';
 
 const CountDown = ({ dateString }: any) => {
 
+  const { lang } = useSelector((state: RootState) => state.layout);
   const counterRef = React.useRef<any>(null);
 
   useEffect(() => {
@@ -37,22 +41,22 @@ const CountDown = ({ dateString }: any) => {
           '<div class="counterrow"><p class="timer-box">' +
           days +
           '<span>' +
-          'Days' +
+          langContent[lang.lang].ProductDetail.countdown.days +
           '</span></p> ' +
           '<p class="timer-box">' +
           hours +
           '<span>' +
-          'Hours' +
+          langContent[lang.lang].ProductDetail.countdown.hours +
           '</span></p> ' +
           '<p class="timer-box">' +
           minutes +
           '<span>' +
-          'Mins' +
+          langContent[lang.lang].ProductDetail.countdown.mins +
           '</span></p> ' +
           '<p class="timer-box">' +
           seconds +
           '<span>' +
-          'Secs' +
+          langContent[lang.lang].ProductDetail.countdown.secs +
           '</span></p></div>';
       }
     }, 1000);
@@ -60,7 +64,7 @@ const CountDown = ({ dateString }: any) => {
 
   return (
         <div className="w-full relative counterbx mt-5">
-        <div className="counttitle text-basic md:text-lg mb-2 text-white">Competition closes in</div>
+        <div className="counttitle text-basic md:text-lg mb-2 text-white">{langContent[lang.lang].ProductDetail.countdown.title}</div>
         <div ref={counterRef}></div> 
         </div>
   );

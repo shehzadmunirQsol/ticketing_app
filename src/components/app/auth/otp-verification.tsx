@@ -57,7 +57,7 @@ export function OtpVerificationDailog(props: OtpVerificationDailogInterface) {
     onSuccess: (res) => {
       toast({
         variant: 'success',
-        title: 'Login successfully',
+        title: langContent[lang.lang].FlashMessages.LOGINSUCCESSFUL,
       });
 
       dispatch(userAuth(res?.user));

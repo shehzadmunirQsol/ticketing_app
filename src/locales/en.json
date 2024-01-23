@@ -137,12 +137,13 @@
     "counter":{
       "TICKETS":"Number of Entries:",
       "NUMBERS_OF_TICKET":"Number of Entries",
-      "BASKET_BUTTON":"ADD TO BASKET"
+      "CASHPRIZE":"Cash Prize Alternative",
+      "BASKET_BUTTON":"ADD TO BASKET",
+      "TOTAL":"TOTAL"
     },
     "entries":{
       "array":[
         {
-
             "data":1,
             "HEADING":"Entries",
             "SUB_HEADING":"only"
@@ -165,6 +166,13 @@
         }
       ]
     },
+    "countdown":{
+      "title":"Competition closes in",
+      "days":"Days",
+      "hours":"Hours",
+      "mins":"Mins",
+      "secs":"Secs"
+    },
     "highlights":{
       "title":"Highlights",
       "engine":"Engine",
@@ -173,7 +181,6 @@
       "year":"Year"
     },
     "description":{
-
       "HEADING":"DESCRIPTION",
       "SOLD":"Sold"
     },
@@ -184,6 +191,7 @@
 
     "livedraw":{
       "HEADING":"Closing Date",
+      "GST":"PM GST",
       "array":[
         {
             "description":"Draw takes place regardless of sell out"
@@ -205,8 +213,6 @@
     "range":{
       "HEADING":"SOLD"
     }
-
-    
   },
 
   "Header":{
@@ -314,12 +320,15 @@
   "Cart":{
     "HEADING":"BASKET",
     "APPLY_COUPON":"Apply Coupon",
+    "COUPON_CODE":"Coupon Code",
     "COUPON_APPLIED":"Coupon Applied",
     "SUB_TOTAL":"Sub Total",
     "DISCOUNT":"Discount",
     "TOTAL":"Total",
     "CHECHKOUT_BTN":"Proceed to Checkout",
-    "LAST_OFFER":"Last chance offer"
+    "LAST_OFFER":"Last chance offer",
+    "MAXAMOUNT":"Maximum transaction amount is",
+    "MAXAMOUNTMESSAGE":"Please reduce your cart value, Maximum amount per transaction is"
   },
 
   "Checkout":{
@@ -380,7 +389,15 @@
       "INFO_HEADING":"EXPLORE CURRENT COMPETITIONS",
       "INFO":"No past competition entries to show. Only entries from the last 30 days will be shown.",
       "TABLE_INFO":"No past competition entries to show. Only entries from the last 30 days will be shown.",
-      "TABLE_BUTTON":"EXPLORE CURRENT COMPETITIONS"
+      "TABLE_BUTTON":"EXPLORE CURRENT COMPETITIONS",
+      "ORDERID":"Order ID",
+      "SUTOTAL":"Sub Total",
+      "DISCOUNT":"Discount",
+      "TOTALAMOUNT":"Total Amount",
+      "DATE":"Date",
+      "ORDERDETAIL":"Order Detail",
+      "ROWPERPAGE":"",
+      "PAGE":""
     },
 
     "AddressView":{
@@ -407,7 +424,7 @@
 
       "accountArgumentsOptions":[
         {
-          "text": "I’m not interested in competitions anymore"
+          "text": "I'm not interested in competitions anymore"
         },
         {
           "text": "Uninteresting prizes"
@@ -453,13 +470,60 @@
           "OTP":" Didn't receive OTP?",
           "RESEND":" Resend OTP",
           "BUTTON":" Enter"
+      },
+      "FORM":{
+          "FIIRSTNAME":"First Name",
+          "LASTNAME":"Last Name",
+          "BILLING":"Billing Address",
+          "STREET":"Street Address",
+          "STATE":"State",
+          "COUNTRY":"Country/ Region",
+          "POBOX":"P.O. Box",
+          "CITY":"Town/City",
+          "EMAIL":"Email Address",
+          "DOB":"Date of Birth",
+          "PHONE":"Phone Number",
+          "GENDER":"Gender",
+          "PASSWORD":"Password",
+          "CONFIRMPASSWORD":"Confirm Password"
       }
-
   },
 
   "About":{
     "HEADING":"Meet Our Driving Force",
     "SUB_HEADING":"The Passionate Team Behind Winnar"
+  },
+
+  "Contact":{
+    "HEADING":"Contact Us",
+    "ADDRESS":{
+        "HEADING":"Address",
+        "ADDRESS_TITLE":"Winnar LLC",
+        "ADDRESS_SUB_TITLE":"Office 16, 17th Floor,",
+        "ADDRESS_SUB_TITLE_ONE":"Centrum Business Lounge",
+        "ADDRESS_SUB_TITLE_TWO":"Bay Gate Tower, Business Bay,",
+        "ADDRESS_SUB_TITLE_THREE":"Dubai, UAE"
+    },
+    "ENQUIRY":"General enquiry",
+    "SELLCAR":"Sell your car",
+    "FORM":{
+        "YOURNAME":"Your Name",
+        "EMAIL":"Email Address",
+        "PHONE":"Phone Number",
+        "MESSAGE":"Message",
+        "BUTTONTEXT":"SEND MESSAGE"
+    }
+  },
+
+  "OrderSuccess":{
+    "HEADING":"Your order has been placed successfully"
+  },
+
+  "FlashMessages":{
+    "LOGINSUCCESSFUL":"Login Successfully!",
+    "LOGOUTSUCCESSFUL":"Logout successfully!",
+    "ADDEDSUCCESSFUL":"Item added successfully",
+    "ORDERSUCCESSFUL":"Order Successful!"
   }
 
 }

@@ -1,5 +1,8 @@
 import React, { createRef, useRef, useState } from 'react';
 import { Button } from '@/ui/button';
+import langContent from '~/locales';
+import { RootState } from '~/store/store';
+import { useSelector } from 'react-redux';
 import {
   Form,
   FormControl,
@@ -42,6 +45,7 @@ import { PhoneInput } from 'react-international-phone';
 import 'react-international-phone/style.css';
 
 export default function Contact() {
+  const { lang } = useSelector((state: RootState) => state.layout);
   const { toast } = useToast();
   const router = useRouter();
   const recaptchaRef: any = useRef({});
@@ -121,9 +125,9 @@ export default function Contact() {
             text2={'Support, Questions'}
           />
         </div> */}
-        <div className="pb-6 flex flex-col h-full  w-full    lg:w-3/5  mx-auto lg:mx-0  lg:text-left  rounded-none border-none  bg-card ">
+        <div className="pb-6 flex flex-col h-full  w-full    lg:w-3/5  mx-auto lg:mx-0  ltr:lg:text-left rtl:lg:text-right  rounded-none border-none  bg-card ">
           <div className="font-black  pt-4 pb-4">
-            <p className="text-lg md:text-2xl pl-6 px-4 lg:px-8 font-bold">Contact Us</p>
+            <p className="text-lg md:text-2xl pl-6 px-4 lg:px-8 font-bold">{langContent[lang.lang].Contact.HEADING}</p>
             <hr className=" opacity-20 mt-4" />
 
             <div className="flex flex-col justify-start align-start pl-6 px-4 lg:px-8 gap-2 py-3">
@@ -134,14 +138,14 @@ export default function Contact() {
                   quality={100}
                   alt="Location"
                 />
-                <div className="text-grayColor text-lg font-[600]">Address</div>
+                <div className="text-grayColor text-lg font-[600]">{langContent[lang.lang].Contact.ADDRESS.HEADING}</div>
               </div>
               <div className="flex flex-col text-grayColor text-sm font-thin">
-                <span>Winnar LLC</span>
-                <span>Office 16, 17th Floor,</span>
-                <span>Centrum Business Lounge</span>
-                <span>Bay Gate Tower, Business Bay,</span>
-                <span>Dubai, UAE</span>
+                <span>{langContent[lang.lang].Contact.ADDRESS.ADDRESS_TITLE}</span>
+                <span>{langContent[lang.lang].Contact.ADDRESS.ADDRESS_SUB_TITLE}</span>
+                <span>{langContent[lang.lang].Contact.ADDRESS.ADDRESS_SUB_TITLE_ONE}</span>
+                <span>{langContent[lang.lang].Contact.ADDRESS.ADDRESS_SUB_TITLE_TWO}</span>
+                <span>{langContent[lang.lang].Contact.ADDRESS.ADDRESS_SUB_TITLE_THREE}</span>
               </div>
             </div>
             <div className="flex flex-col justify-start align-start pl-6 px-4 lg:px-8 gap-2 py-3">
@@ -153,7 +157,7 @@ export default function Contact() {
                   alt="Location"
                 />
                 <div className="text-grayColor text-lg font-[600]">
-                  General enquiry
+                {langContent[lang.lang].Contact.ENQUIRY} 
                 </div>
               </div>
               <div className="flex flex-col text-grayColor text-sm font-thin">
@@ -170,7 +174,7 @@ export default function Contact() {
                   alt="Location"
                 />
                 <div className="text-grayColor text-lg font-[600]">
-                  Sell your car
+                {langContent[lang.lang].Contact.SELLCAR} 
                 </div>
               </div>
               <div className="text-grayColor text-sm font-thin">
@@ -190,7 +194,7 @@ export default function Contact() {
                   render={({ field }) => (
                     <FormItem className="">
                       <FormLabel className="text-xs font-thin  text-grayColor">
-                        Your Name*
+                      {langContent[lang.lang].Contact.FORM.YOURNAME}*
                       </FormLabel>
                       <FormControl className="rounded-md bg-inputColor">
                         <Input
@@ -211,7 +215,7 @@ export default function Contact() {
                   render={({ field }) => (
                     <FormItem className="">
                       <FormLabel className="text-xs  font-thin text-grayColor">
-                        Email Address*
+                      {langContent[lang.lang].Contact.FORM.EMAIL}*
                       </FormLabel>
                       <FormControl className="rounded-md bg-inputColor mb-6">
                         <Input
@@ -229,7 +233,7 @@ export default function Contact() {
 
                 <div className="space-y-2 w-full">
                   <FormLabel className="text-xs  font-thin text-grayColor">
-                    Phone Number*
+                  {langContent[lang.lang].Contact.FORM.PHONE}*
                   </FormLabel>
                   <div className="flex items-start gap-2">
                     <FormField
@@ -278,7 +282,7 @@ export default function Contact() {
                   render={({ field }) => (
                     <FormItem className="mb-4 ">
                       <FormLabel className="text-xs  font-thin text-grayColor">
-                        Message*
+                      {langContent[lang.lang].Contact.FORM.MESSAGE}*
                       </FormLabel>
                       <FormControl className="rounded-md bg-inputColor">
                         <Textarea
@@ -310,7 +314,7 @@ export default function Contact() {
                   variant="clip"
                   disabled={contactUs.isLoading}
                 >
-                  SEND MESSAGE
+                  {langContent[lang.lang].Contact.FORM.BUTTONTEXT}
                 </Button>
               </div>
             </form>
