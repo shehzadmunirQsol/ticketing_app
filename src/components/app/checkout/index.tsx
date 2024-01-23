@@ -177,6 +177,9 @@ function Checkout() {
     (async () => {
       try {
         const data = router?.query;
+
+        console.log(data,"datadatadatadata")
+
         if (data?.id) {
           setLoading(true);
           const Resdata = await getStatus.mutateAsync({
@@ -185,24 +188,6 @@ function Checkout() {
 
           if (Resdata?.status) {
             
-            // if ('sendinblue' in window && window?.sendinblue) {
-            //   const userProperties = form.getValues();
-            //   const data = cart?.cartItems?.map((event) => ({
-            //     id: event?.event_id,
-            //     price: event?.Event?.price,
-            //     name: event?.Event?.EventDescription[0]?.name,
-            //     quantity: event?.quantity,
-            //   }));
-
-            //   const sendinblue: any = window.sendinblue;
-
-            //   sendinblue?.track(
-            //     'order_completed' /*mandatory*/,
-            //     (userProperties) /*user data optional*/,
-            //     JSON.stringify(data) /*optional*/,
-            //   ) as any;
-            // }
-
             setTimeout(() => {
               toast({
                 variant: 'success',
@@ -289,12 +274,21 @@ function Checkout() {
   // Format the minimum date as "YYYY-MM-DD" for the input field
   const minDateFormatted = minDate.toISOString().split('T')[0];
 
+
+  var paymentmode = "prod";
+  var paymenturl = "";
+  if(paymentmode==="prod"){
+    paymenturl = paymentConf.PAYMENTURL.prodURL;
+  }else{
+    paymenturl = paymentConf.PAYMENTURL.testURL;
+  }
+
   return (
     <div className="relative mt-20 bg-background py-6 px-4 space-y-10 md:py-16 md:px-14 md:space-y-14">
       {totalID ? (
         <>
           <Script
-            src={`https://${paymentConf.PAYMENTURL.prodURL}/v1/paymentWidgets.js?checkoutId=${totalID}`}
+            src={`https://${paymenturl}/v1/paymentWidgets.js?checkoutId=${totalID}`}
             onReady={() => {
               console.log('Script has loaded');
               const wpwlOptions = {
