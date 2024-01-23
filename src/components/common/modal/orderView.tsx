@@ -99,10 +99,16 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
 
   console.log("OrderApiData", OrderApiData);
 
+  var langclass = "";
+  if(lang.lang_id===2){
+    langclass = "ar";
+  }
+
+
   return (
     <>
       <Dialog open={props?.isModal} onOpenChange={(e) => props.setIsModal(e)}>
-        <DialogContent className="h-[60vh] max-w-xl md:max-w-[900px] overflow-y-hidden scroll-hide p-2">
+        <DialogContent className={`h-[60vh] max-w-xl md:max-w-[900px] overflow-y-hidden scroll-hide p-2 ${langclass}`}>
           <ScrollArea className="h-100 p-4">
             <ScrollBar orientation="vertical"></ScrollBar>
             <DialogFooter className=" sm:justify-start items-start w-full mb-2">
@@ -117,7 +123,7 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
             </DialogFooter>
             <DialogDescription className="relative bg-card h-full rounded-lg  overflow-y-scroll scroll-hide">
               {OrderApiData && (
-                <div className="bg-card whiteText h-full rounded-lg  px-4 md:px-8 py-4 md:py-6  mx-auto" id="divToPrint">
+                <div className="bg-card whiteText h-full rounded-lg  px-4 md:px-8 py-4 md:py-6  mx-auto directionrtl" id="divToPrint">
                   <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-5">
                     <div className="flex flex-col mb-5 md:mb-0">
                       <NextImage

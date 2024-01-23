@@ -540,7 +540,8 @@
     "VATAMOUNT":"مبلغ الضريبة المضافة",
     "TOTALAMOUNT":"المبلغ الإجمالي",
     "DISCOUNT":"كوبون الخصم",
-    "TOTALPAYBLE":"المبلغ الإجمالي المستحق"
+    "TOTALPAYBLE":"المبلغ الإجمالي المستحق",
+    "CONTINUE":"Continue Shopping"
   },
 
   "FlashMessages":{
