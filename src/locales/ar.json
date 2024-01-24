@@ -338,8 +338,8 @@
     "BILL_HEADING":"تفاصيل الفواتير",
     "SUMMARY_HEADING":"ملخص الطلب",
     "HAVE_COUPON":"هل لديك رمز قسيمة؟",
-    "SUB_TOTAL":"Sub Total",
-    "DISCOUNT":"Discount",
+    "SUB_TOTAL":"المجموع الفرعي",
+    "DISCOUNT":"تخفيض",
     "TOTAL":"الإجمالي",
     "INFO":"سيتم استخدام بياناتك الشخصية لمعالجة طلبك، ودعم تجربتك على مدار استخدام هذا الموقع، ولأغراض أخرى موضحة في سياسة  بنا",
     "SUB_INFO":"أنا أبلغ 18 عاماً أو أكثر ولقد قرأت ووافقت على شروط وأحكام الموقع الإلكتروني",
@@ -472,7 +472,7 @@
     "OTPSCREEN":{
         "HEADING":"Verify",
         "SUB_HEADING":" Your Email / Mobile",
-        "TEXT":" We have sent an OTP to your email and sms",
+        "TEXT":" We have sent an OTP to your email",
         "OTP":" Didn't receive OTP?",
         "RESEND":" Resend OTP",
         "BUTTON":" Enter"
