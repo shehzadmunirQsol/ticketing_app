@@ -17,11 +17,10 @@ import { prisma } from '~/server/prisma';
 import { EMAILS, EMAIL_TEMPLATE_IDS, sendEmail } from '~/utils/helper';
 
 
-var paymentmode = "prod";
 var paymenturl = "";
 var TOTANENTITYID = "";
 var TOTALPROCESSINGBEARERID = "";
-if(paymentmode==="prod"){
+if(process.env.NODE_ENV === "production") { //production or development
   paymenturl = paymentConf.PAYMENTURL.prodURL;
   TOTANENTITYID = paymentConf.TOTANENTITY.prodID;
   TOTALPROCESSINGBEARERID = paymentConf.TOTALPROCESSINGBEARER.prodToken;

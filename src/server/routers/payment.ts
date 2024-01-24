@@ -6,11 +6,10 @@ import paymentConf from '~/paymentconf/payment.json';
 import https from 'https';
 
 
-var paymentmode = "prod";
 var paymenturl = "";
 var TOTANENTITYID = "";
 var TOTALPROCESSINGBEARERID = "";
-if(paymentmode==="prod"){
+if(process.env.NODE_ENV === "production") { //production or development
   paymenturl = paymentConf.PAYMENTURL.prodURL;
   TOTANENTITYID = paymentConf.TOTANENTITY.prodID;
   TOTALPROCESSINGBEARERID = paymentConf.TOTALPROCESSINGBEARER.prodToken;
