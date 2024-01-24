@@ -4,6 +4,9 @@ import NextImage from '~/components/ui/img';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
 import langContent from '~/locales';
+import arthur from '~/public/assets/founder-arthur.jpg';
+import murray from '~/public/assets/founder-murray.jpg';
+import ryan from '~/public/assets/founder-ryan.jpg';
 
 export default function AboutUs() {
 
@@ -283,115 +286,43 @@ export default function AboutUs() {
 
 const carouselData = [
   {
-    img: 'https://media.winnar.com/upload/founder.png',
-    heading: 'Scott L. Hughes',
+    img: arthur,
+    heading: 'Arthur',
     text: 'Co-Founder',
-    hoverhead: 'Scott L. Hughes',
-    hoverpera: 'Co-Founder',
-    hoverdesc:
-      'Aenean vulputate eleifend tellus Aenean leo ligula porttitor eu consequat vitae eleifend ac enim. Aliquam lorem ante dapibus in viverra quis feugiat a tellus Phasellus viverra nulla ut metus varius laoreet Quisque rutrum',
+    hoverdesc: 'Lorem Ipus is dummt text.',
   },
   {
-    img: 'https://media.winnar.com/upload/founder-1.png',
-    heading: 'Scott L. Hughes',
-    text: 'Founder',
-    hoverhead: 'Scott L. Hughes',
-    hoverpera: 'Founder',
-    hoverdesc:
-      'Aenean vulputate eleifend tellus Aenean leo ligula porttitor eu consequat vitae eleifend ac enim. Aliquam lorem ante dapibus in viverra quis feugiat a tellus Phasellus viverra nulla ut metus varius laoreet Quisque rutrum',
+    img: murray,
+    heading: 'Murray',
+    text: 'Co-Founder',
+    hoverdesc: 'Lorem Ipus is dummt text.',
   },
   {
-    img: 'https://media.winnar.com/upload/founder-2.png',
-    heading: 'Eric M. Carroll',
-    text: 'Founder',
-    hoverhead: 'Scott L. Hughes',
-    hoverpera: 'Founder',
-    hoverdesc:
-      'Aenean vulputate eleifend tellus Aenean leo ligula porttitor eu consequat vitae eleifend ac enim. Aliquam lorem ante dapibus in viverra quis feugiat a tellus Phasellus viverra nulla ut metus varius laoreet Quisque rutrum',
-  },
-  {
-    img: 'https://media.winnar.com/upload/founder-3.png',
-    heading: 'Ronnie D. Blake',
-    text: 'Founder',
-    hoverhead: 'Scott L. Hughes',
-    hoverpera: 'Founder',
-    hoverdesc:
-      'Aenean vulputate eleifend tellus Aenean leo ligula porttitor eu consequat vitae eleifend ac enim. Aliquam lorem ante dapibus in viverra quis feugiat a tellus Phasellus viverra nulla ut metus varius laoreet Quisque rutrum',
-  },
-  {
-    img: 'https://media.winnar.com/upload/founder.png',
-    heading: 'Marvin L. Orr',
-    text: 'Founder',
-    hoverhead: 'Scott L. Hughes',
-    hoverpera: 'Founder',
-    hoverdesc:
-      'Aenean vulputate eleifend tellus Aenean leo ligula porttitor eu consequat vitae eleifend ac enim. Aliquam lorem ante dapibus in viverra quis feugiat a tellus Phasellus viverra nulla ut metus varius laoreet Quisque rutrum',
-  },
-  {
-    img: 'https://media.winnar.com/upload/founder.png',
-    heading: 'Ronnie D. Blake',
-    text: 'Founder',
-    hoverhead: 'Scott L. Hughes',
-    hoverpera: 'Founder',
-    hoverdesc:
-      'Aenean vulputate eleifend tellus Aenean leo ligula porttitor eu consequat vitae eleifend ac enim. Aliquam lorem ante dapibus in viverra quis feugiat a tellus Phasellus viverra nulla ut metus varius laoreet Quisque rutrum',
+    img: ryan,
+    heading: 'Ryan',
+    text: 'Co-Founder',
+    hoverdesc: 'Lorem Ipus is dummt text.',
   },
 ];
 
 
 const carouselDataAR = [
   {
-    img: 'https://media.winnar.com/upload/founder.png',
-    heading: 'Scott L. Hughes',
+    img: arthur,
+    heading: 'Arthur',
     text: 'Co-Founder',
-    hoverhead: 'Scott L. Hughes',
-    hoverpera: 'Co-Founder',
-    hoverdesc:
-      'Aenean vulputate eleifend tellus Aenean leo ligula porttitor eu consequat vitae eleifend ac enim. Aliquam lorem ante dapibus in viverra quis feugiat a tellus Phasellus viverra nulla ut metus varius laoreet Quisque rutrum',
+    hoverdesc: 'Lorem Ipus is dummt text.',
   },
   {
-    img: 'https://media.winnar.com/upload/founder-1.png',
-    heading: 'Scott L. Hughes',
-    text: 'Founder',
-    hoverhead: 'Scott L. Hughes',
-    hoverpera: 'Founder',
-    hoverdesc:
-      'Aenean vulputate eleifend tellus Aenean leo ligula porttitor eu consequat vitae eleifend ac enim. Aliquam lorem ante dapibus in viverra quis feugiat a tellus Phasellus viverra nulla ut metus varius laoreet Quisque rutrum',
+    img: murray,
+    heading: 'Murray',
+    text: 'Co-Founder',
+    hoverdesc: 'Lorem Ipus is dummt text.',
   },
   {
-    img: 'https://media.winnar.com/upload/founder-2.png',
-    heading: 'Eric M. Carroll',
-    text: 'Founder',
-    hoverhead: 'Scott L. Hughes',
-    hoverpera: 'Founder',
-    hoverdesc:
-      'Aenean vulputate eleifend tellus Aenean leo ligula porttitor eu consequat vitae eleifend ac enim. Aliquam lorem ante dapibus in viverra quis feugiat a tellus Phasellus viverra nulla ut metus varius laoreet Quisque rutrum',
-  },
-  {
-    img: 'https://media.winnar.com/upload/founder-3.png',
-    heading: 'Ronnie D. Blake',
-    text: 'Founder',
-    hoverhead: 'Scott L. Hughes',
-    hoverpera: 'Founder',
-    hoverdesc:
-      'Aenean vulputate eleifend tellus Aenean leo ligula porttitor eu consequat vitae eleifend ac enim. Aliquam lorem ante dapibus in viverra quis feugiat a tellus Phasellus viverra nulla ut metus varius laoreet Quisque rutrum',
-  },
-  {
-    img: 'https://media.winnar.com/upload/founder.png',
-    heading: 'Marvin L. Orr',
-    text: 'Founder',
-    hoverhead: 'Scott L. Hughes',
-    hoverpera: 'Founder',
-    hoverdesc:
-      'Aenean vulputate eleifend tellus Aenean leo ligula porttitor eu consequat vitae eleifend ac enim. Aliquam lorem ante dapibus in viverra quis feugiat a tellus Phasellus viverra nulla ut metus varius laoreet Quisque rutrum',
-  },
-  {
-    img: 'https://media.winnar.com/upload/founder.png',
-    heading: 'Ronnie D. Blake',
-    text: 'Founder',
-    hoverhead: 'Scott L. Hughes',
-    hoverpera: 'Founder',
-    hoverdesc:
-      'Aenean vulputate eleifend tellus Aenean leo ligula porttitor eu consequat vitae eleifend ac enim. Aliquam lorem ante dapibus in viverra quis feugiat a tellus Phasellus viverra nulla ut metus varius laoreet Quisque rutrum',
+    img: ryan,
+    heading: 'Ryan',
+    text: 'Co-Founder',
+    hoverdesc: 'Lorem Ipus is dummt text.',
   },
 ];

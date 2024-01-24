@@ -145,12 +145,12 @@ function AboutCarousel(props: any) {
                   </div>
                   <div className="content-details  text-start fadeIn-bottom fadeIn-left items-start">
                     <h2 className="text-3xl text-start font-bold">
-                      {item.hoverhead}
+                      {item.heading}
                     </h2>
-                    <h4 className="text-xl pb-3 ">{item.hoverpera}</h4>
-                    <h5 className="text-hover  text-start font-semibold text-black">
+                    <h4 className="text-xl pb-3 ">{item.text}</h4>
+                    {/* <h5 className="text-hover text-start font-bold">
                       {item.hoverdesc}
-                    </h5>
+                    </h5> */}
                   </div>
                 </div>
               </div>
