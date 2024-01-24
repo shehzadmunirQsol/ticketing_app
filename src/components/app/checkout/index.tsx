@@ -276,7 +276,7 @@ function Checkout() {
   const minDateFormatted = minDate.toISOString().split('T')[0];
 
 
-  var paymentmode = "test";
+  var paymentmode = "prod";
   var paymenturl = "";
   if (paymentmode === "prod") {
     paymenturl = paymentConf.PAYMENTURL.prodURL;
