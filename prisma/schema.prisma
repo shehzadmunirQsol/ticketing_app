@@ -3,9 +3,9 @@
 
 datasource db {
   provider = "postgresql"
-  // url       = env("DATABASE_URL")
+  url       = env("DATABASE_URL")
   // url      = "postgres://default:Akym1JnOVP9z@ep-soft-mode-76400388.us-east-1.postgres.vercel-storage.com:5432/verceldbstaging"  //Staging
-  url      = "postgres://default:Akym1JnOVP9z@ep-soft-mode-76400388.us-east-1.postgres.vercel-storage.com:5432/verceldb"      //Live
+  // url      = "postgres://default:Akym1JnOVP9z@ep-soft-mode-76400388.us-east-1.postgres.vercel-storage.com:5432/verceldb"      //Live
   
 }
 
