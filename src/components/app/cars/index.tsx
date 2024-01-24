@@ -18,6 +18,13 @@ const CarsPage = () => {
 
   const [cardView, setCardView] = useState<any>('cardview');
 
+
+
+  console.log(process.env.NODE_ENV,"process.env.NODE_ENV");
+
+
+  
+
   const [products, setProducts] = useState<Array<any>>([]);
   const [mailtrigger, setMailtrigger] = useState(0);
   const eventFilters = {

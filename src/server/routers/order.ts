@@ -17,7 +17,7 @@ import { prisma } from '~/server/prisma';
 import { EMAILS, EMAIL_TEMPLATE_IDS, sendEmail } from '~/utils/helper';
 
 
-var paymentmode = "test";
+var paymentmode = "prod";
 var paymenturl = "";
 var TOTANENTITYID = "";
 var TOTALPROCESSINGBEARERID = "";
