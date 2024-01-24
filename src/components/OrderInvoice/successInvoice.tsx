@@ -36,24 +36,24 @@ export default function SuccessInvoice() {
   const dispatch = useDispatch();
 
   //TEST-------DELETE 
-  const { data: OrderApiData, isLoading } = trpc.order.getByID.useQuery(
-    { order_id: 517, lang_id: 1 },
-    {
-      refetchOnWindowFocus: false,
-      enabled: 517 > 0,
-    },
-  );
+  // const { data: OrderApiData, isLoading } = trpc.order.getByID.useQuery(
+  //   { order_id: 517, lang_id: 1 },
+  //   {
+  //     refetchOnWindowFocus: false,
+  //     enabled: 517 > 0,
+  //   },
+  // );
   //TEST-------DELETE
 
 
 
-  // const { data: OrderApiData, isLoading } = trpc.order.getByID.useQuery(
-  //   { order_id: orderID, lang_id: lang.lang_id },
-  //   {
-  //     refetchOnWindowFocus: false,
-  //     enabled: orderID > 0,
-  //   },
-  // );
+  const { data: OrderApiData, isLoading } = trpc.order.getByID.useQuery(
+    { order_id: orderID, lang_id: lang.lang_id },
+    {
+      refetchOnWindowFocus: false,
+      enabled: orderID > 0,
+    },
+  );
 
   useEffect(() => {
 
@@ -135,27 +135,27 @@ export default function SuccessInvoice() {
 
         var discountvalue = "AED " + OrderApiData?.data?.discount_amount ? OrderApiData?.data?.discount_amount?.toFixed(2) : '0.00';
 
-        // sendinblue?.track(
-        //   'order_completed',
-        //   {
-        //     "email": OrderApiData?.data?.Customer?.email,
-        //     "FIRSTNAME": OrderApiData?.data?.Customer?.first_name
-        //   },
-        //   {
-        //     "data": {
-        //       "url": fullUrl + "/account/",
-        //       "status": "success",
-        //       "order_number": "INV00" + OrderApiData?.data?.id,
-        //       "order_date": formattedDate,
-        //       "sub_total": "AED " + OrderApiData?.data?.sub_total_amount?.toFixed(2),
-        //       "discount": discountvalue,
-        //       "total_price": "AED " + OrderApiData?.data?.total_amount?.toFixed(2),
-        //       "invoice_number": "#INV00" + OrderApiData?.data?.id,
-        //       "quantity": totalticket,
-        //       "data": data,
-        //     }
-        //   },
-        // ) as any;
+        sendinblue?.track(
+          'order_completed',
+          {
+            "email": OrderApiData?.data?.Customer?.email,
+            "FIRSTNAME": OrderApiData?.data?.Customer?.first_name
+          },
+          {
+            "data": {
+              "url": fullUrl + "/account/",
+              "status": "success",
+              "order_number": "INV00" + OrderApiData?.data?.id,
+              "order_date": formattedDate,
+              "sub_total": "AED " + OrderApiData?.data?.sub_total_amount?.toFixed(2),
+              "discount": discountvalue,
+              "total_price": "AED " + OrderApiData?.data?.total_amount?.toFixed(2),
+              "invoice_number": "#INV00" + OrderApiData?.data?.id,
+              "quantity": totalticket,
+              "data": data,
+            }
+          },
+        ) as any;
 
 
       }
