@@ -276,9 +276,9 @@ function Checkout() {
   const minDateFormatted = minDate.toISOString().split('T')[0];
 
 
-  var paymentmode = "prod";
+
   var paymenturl = "";
-  if (paymentmode === "prod") {
+  if(process.env.NODE_ENV === "production") { //production or development
     paymenturl = paymentConf.PAYMENTURL.prodURL;
   } else {
     paymenturl = paymentConf.PAYMENTURL.testURL;
