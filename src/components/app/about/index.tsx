@@ -305,7 +305,7 @@ const carouselData = [
   },
 ];
 
-
+ 
 const carouselDataAR = [
   {
     img: arthur,
