@@ -96,7 +96,7 @@ function AboutCarousel(props: any) {
         <div
           className={`${
             lang?.dir == 'rtl' ? ' flex-row-reverse' : ''
-          }  flex gap-2 z-10 items-center justify-center `}
+          }  flex gap-2 z-10 items-center justify-center md:hidden`}
         >
           <Button
             variant="rounded"
