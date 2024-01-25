@@ -808,16 +808,13 @@ export const orderRouter = router({
           //     .toLowerCase()
           //     .includes('success');
 
+          //  const declinedStatus = statusData?.result?.description.toLowerCase().includes('declined');
 
-          // const declinedStatus = statusData?.result?.description.toLowerCase().includes('declined');
+           console.log(statusData?.result?.code,"statusData?.result?.code")
+
+           if (statusData?.result?.code==="000.000.000" || statusData?.result?.code==="000.100.110") {
+
           // if (!declinedStatus) {
-          // }
-
-          
-          // const regexPattern = /^(000\.000\.|000\.100\.1|000\.[36]|000\.400\.[1][12]0)/;
-          // if (regexPattern.test(statusData?.result?.code)===true)
-
-          if (statusData?.result?.code==="000.000.000" || statusData?.result?.code==="000.100.110") {
             const payload = JSON.parse(statusData?.customParameters?.payload);
             const customerData = await prisma.customer.findFirst({
               where: {
