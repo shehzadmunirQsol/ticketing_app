@@ -316,7 +316,7 @@ const carouselDataAR = [
   {
     img: murray,
     heading: 'Murray',
-    text: 'Co-Founder',
+    text: 'Co-Founder', 
     hoverdesc: 'Lorem Ipus is dummt text.',
   },
   {
