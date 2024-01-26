@@ -1547,6 +1547,7 @@ div[role="dialog"] > button:focus {
   background: url(../public/assets/gradient.jpg) no-repeat;
   background-size: auto 100%;
   background-position: right center;
+  z-index: -1;
 }
 .circlebx.rotate {
   transform: rotate(180deg);;
