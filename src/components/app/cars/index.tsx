@@ -158,8 +158,8 @@ const CarsPage = () => {
             </div>
           </div>
 
-          <Glow className="absolute  top-1/2 -left-16 w-1/5 h-[350px] overflow-hidden rotate" />
-          <Glow className="absolute  bottom-0 -right-16 w-1/5 h-[350px] overflow-hidden " />
+          <Glow className="absolute  top-1/2 -left-16 w-1/3 h-[600px] overflow-hidden rotate" />
+          <Glow className="absolute  bottom-0 -right-16 w-1/3 h-[600px] overflow-hidden " />
 
 
           {

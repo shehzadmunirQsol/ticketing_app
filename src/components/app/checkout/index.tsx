@@ -836,7 +836,7 @@ function Checkout() {
                   {langContent[lang.lang].Checkout.PAY_BTN}
                 </Button>
 
-                <Glow className=" absolute bottom-4   -right-16  w-2/6 h-72 -z-2  " />
+                <Glow className=" absolute bottom-4 -right-16  w-2/4 h-[400px] -z-10 overflow-hidden" />
               </div>
             </div>
           </form>

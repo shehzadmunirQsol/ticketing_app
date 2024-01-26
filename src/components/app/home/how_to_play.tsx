@@ -56,7 +56,7 @@ function HowtoSection() {
         </div>
       </div>
 
-      <Glow className="absolute   -bottom-32 right-0      w-1/5 h-[350px] overflow-hidden " />
+      {/* <Glow className="absolute -bottom-32 right-0 w-1/3 h-[600px] overflow-hidden" /> */}
     </div>
   );
 }

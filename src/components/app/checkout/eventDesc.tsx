@@ -2,7 +2,6 @@ import React from 'react';
 import Frame11 from '~/public/assets/icons/Frame11.svg';
 import Frame12 from '~/public/assets/icons/Frame12.svg';
 import Frame13 from '~/public/assets/icons/Frame13.svg';
-import Glow from '~/components/common/glow';
 import langContent from '~/locales';
 import { useSelector } from 'react-redux';
 import { RootState } from '~/store/store';
