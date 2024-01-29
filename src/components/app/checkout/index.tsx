@@ -720,7 +720,7 @@ function Checkout() {
                   ) : null}
                 </div>
                 <div className="relative space-y-8">
-                  <div className=" max-h-60 overflow-x-auto space-y-8">
+                  <div className="space-y-8">
                     {cart?.cartItems?.length
                       ? cart?.cartItems?.map((item: any) => {
                         return (
