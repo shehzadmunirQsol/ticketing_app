@@ -64,7 +64,7 @@ const ProductDetail = () => {
             <AccordianFaqs data={data?.data} />
           ) : null}
         </div>
-        <Glow className="absolute bottom-0 -right-16   p-2   w-1/5 h-[80px]   " />
+        <Glow className="absolute bottom-0 -right-16 p-2 w-1/3 h-[600px] overflow-hidden" />
       </div>
       <LoadingDialog open={isLoading} text={'Loading data...'} />
     </div>

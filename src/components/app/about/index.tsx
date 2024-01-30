@@ -286,12 +286,6 @@ export default function AboutUs() {
 
 const carouselData = [
   {
-    img: arthur,
-    heading: 'Arthur',
-    text: 'Co-Founder',
-    hoverdesc: 'Lorem Ipus is dummt text.',
-  },
-  {
     img: murray,
     heading: 'Murray',
     text: 'Co-Founder',
@@ -303,16 +297,16 @@ const carouselData = [
     text: 'Co-Founder',
     hoverdesc: 'Lorem Ipus is dummt text.',
   },
-];
-
- 
-const carouselDataAR = [
   {
     img: arthur,
     heading: 'Arthur',
     text: 'Co-Founder',
     hoverdesc: 'Lorem Ipus is dummt text.',
   },
+];
+
+ 
+const carouselDataAR = [ 
   {
     img: murray,
     heading: 'Murray',
@@ -322,6 +316,12 @@ const carouselDataAR = [
   {
     img: ryan,
     heading: 'Ryan',
+    text: 'Co-Founder',
+    hoverdesc: 'Lorem Ipus is dummt text.',
+  },
+  {
+    img: arthur,
+    heading: 'Arthur',
     text: 'Co-Founder',
     hoverdesc: 'Lorem Ipus is dummt text.',
   },

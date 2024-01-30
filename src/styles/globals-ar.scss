@@ -71,6 +71,9 @@ form .w-full {
   left: -18px;
   transform: rotate(180deg);
 }
+.circlebx.rotatertl {
+  transform: rotate(0deg);;
+}
 }
 
 @media only screen and (max-width: 767px){

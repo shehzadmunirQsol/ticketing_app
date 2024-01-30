@@ -215,7 +215,7 @@ export default function CartPage() {
               )}
 
             </div>
-            <Glow className="absolute right-0 -z-10 bottom-0 w-1/6 h-40 overflow-hidden" />
+            <Glow className="absolute right-0 -z-10 bottom-0 w-1/3 h-[400px] overflow-hidden" />
           </div>
 
           <div className="relative py-4 px-4 md:gap-14 md:px-14 z-10 bg-card-foreground">
@@ -228,7 +228,7 @@ export default function CartPage() {
               title={langContent[lang.lang].Cart.LAST_OFFER}
               type="closing"
             />
-            <Glow className="absolute right-0 bottom-0 w-1/6 h-20 overflow-hidden -z-20" />
+            <Glow className="absolute right-0 -z-10 bottom-0 w-1/3 h-[300px] overflow-hidden" />
           </div>
         </>
       )}

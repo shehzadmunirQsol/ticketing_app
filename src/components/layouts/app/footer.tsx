@@ -83,7 +83,7 @@ function Footer() {
     <footer className="h-full  bg-background-footer !z-50">
       <div className="relative w-full max-w-screen max-w-[1600px] mx-auto h-full ">
         <div className=" absolute z-0 p-1 w-1/2 h-full  ">
-          <Glow className="absolute z-0 bottom-0 -left-16 p-2 w-1/2 h-1/3" />
+          <Glow className="absolute z-0 bottom-0 ltr:-left-16 rtl:-right-16 p-2 w-1/3 h-1/2 rotate rotatertl" />
           <div className="absolute z-0 top-0 p-2 w-full h-full">
             <NextImage
               className="w-full h-full object-contain "

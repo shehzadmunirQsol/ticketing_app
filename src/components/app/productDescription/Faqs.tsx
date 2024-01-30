@@ -1,5 +1,4 @@
 import React from 'react';
-import Glow from '~/components/common/glow';
 import {
   Accordion,
   AccordionContent,

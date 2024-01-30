@@ -1543,6 +1543,15 @@ div[role="dialog"] > button:focus {
 .text-xxs {
   font-size: 0.65rem;
 }
+.circlebx {
+  background: url(../public/assets/gradient.png) no-repeat;
+  background-size: auto 100%;
+  background-position: right center;
+  /* z-index: 0; */
+}
+.circlebx.rotate {
+  transform: rotate(180deg);;
+}
 /* Desktop */
 
 
@@ -1577,6 +1586,9 @@ div[role="dialog"] > button:focus {
     width: 100%;
     padding: 15px;
     margin-top: 0;
+}
+.circlebx {
+  display: none !important;
 }
 }
 

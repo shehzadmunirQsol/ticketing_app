@@ -382,7 +382,7 @@ export default function SuccessInvoice() {
           title={langContent[lang.lang].Index.products.HEADING}
           type="closing"
         />
-        <Glow className="absolute right-0 bottom-0 w-1/6 h-20 overflow-hidden -z-20" />
+        <Glow className="absolute right-0 bottom-0 w-1/3 h-[300px] overflow-hidden -z-20" />
       </div>
 
     </>

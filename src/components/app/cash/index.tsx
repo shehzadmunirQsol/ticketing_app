@@ -9,7 +9,6 @@ import { trpc } from '~/utils/trpc';
 import ProductSection from '../home/product_section';
 import { setCookie, getCookie, deleteCookie } from '~/service/api/cookies.service';
 import langContent from '~/locales';
-// import Glow from '~/components/common/glow';
 
 const CashPage = () => {
   const { lang } = useSelector((state: RootState) => state.layout);
@@ -146,8 +145,6 @@ const CashPage = () => {
         <div className="relative">
           {/* Will look into it later when finalizing */}
 
-          {/* <Glow className=" absolute  top-1/4 -right-16  p-2   w-1/6 h-[150px]  " />
-          <Glow className=" absolute  bottom-14 -right-16  w-1/6 h-[150px] " /> */}
           <div className=" grid gap-6 grid-cols-1 sm:grid-cols-2  z-40  lg:grid-cols-3">
             {products?.map((itemList, i) => {
               return (

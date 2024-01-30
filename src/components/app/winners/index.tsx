@@ -71,8 +71,8 @@ export const Winners = () => {
         text={langContent[lang.lang].Winners.HEADING}
       />
       <div className="relative h-full px-4 py-8 md:px-14 md:py-20">
-        <Glow className=" absolute  -top-10 -left-16  p-2   w-1/6 h-[150px]" />
-        <Glow className=" absolute -bottom-10 -right-16  w-1/6 h-[150px] -z-10 " />
+        <Glow className=" absolute  -top-10 -left-16  p-2 w-1/3 h-[300px] overflow-hidden" />
+        <Glow className=" absolute -bottom-10 -right-16   w-1/3 h-[300px] overflow-hidden -z-10 " />
         <div className="mb-6 grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 ">
           <div className="hidden lg:block" />
           <div className="hidden md:block" />
