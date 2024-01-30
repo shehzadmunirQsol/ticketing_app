@@ -727,7 +727,7 @@ function Checkout() {
                           <EventDesc 
                             item={item}
                             lang={lang.lang_id}
-                          />
+                          /> 
                         );
                       })
                       : null}
