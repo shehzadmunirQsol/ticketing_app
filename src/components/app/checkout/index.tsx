@@ -718,7 +718,7 @@ function Checkout() {
                       {langContent[lang.lang].Checkout.HAVE_COUPON}
                     </p>
                   ) : null}
-                </div>
+                </div> 
                 <div className="relative space-y-8">
                   <div className="space-y-8">
                     {cart?.cartItems?.length
