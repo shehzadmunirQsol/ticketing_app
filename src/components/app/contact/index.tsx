@@ -46,6 +46,7 @@ import 'react-international-phone/style.css';
 
 export default function Contact() {
   const { lang } = useSelector((state: RootState) => state.layout);
+  const { isLogin, user } = useSelector((state: RootState) => state.auth);
   const { toast } = useToast();
   const router = useRouter();
   const recaptchaRef: any = useRef({});
@@ -104,6 +105,24 @@ export default function Contact() {
     try {
       const contact = await contactUs.mutateAsync(values);
       if (contact) {
+
+        if(user?.email){
+          if ('sendinblue' in window && window?.sendinblue) {
+            const sendinblue: any = window.sendinblue;
+            sendinblue?.track(
+              'contactform_submission',
+              {
+                "email": user?.email,
+              },
+              {
+                "data": {}
+              },
+            ) as any;
+          }
+        }
+
+
+
         toast({
           variant: 'success',
           title: 'Email Sent successfully!',

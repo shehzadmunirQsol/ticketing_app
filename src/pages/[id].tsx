@@ -449,6 +449,29 @@ const findElementsWithAttribute = (node: any, lang: Lang) => {
 
 export default function CmsPage({ storeBlogsData }: any) {
   const { lang } = useSelector((state: RootState) => state.layout);
+  const { isLogin, user } = useSelector((state: RootState) => state.auth);
+
+
+
+  if(storeBlogsData?.slug === 'faq'){
+    if(user?.email){
+      if ('sendinblue' in window && window?.sendinblue) {
+        const sendinblue: any = window.sendinblue;
+        sendinblue?.track(
+          'faq_page',
+          {
+            "email": user?.email,
+          },
+          {
+            "data": {}
+          },
+        ) as any;
+      }
+    }
+  }
+
+
+  
 
   const reactElements = parse(
     storeBlogsData?.CMSDescription[lang.lang_id == 1 ? 0 : 1]?.content || '',
@@ -499,7 +522,7 @@ export default function CmsPage({ storeBlogsData }: any) {
               {
                 __html:
                   storeBlogsData?.CMSDescription[1]?.content?.toString() ??
-                  'HTML CONTENT NOT FOUND',
+                  'لم يتم العثور على المحتوى',
               } as any
             }
           />

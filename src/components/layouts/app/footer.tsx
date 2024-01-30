@@ -29,31 +29,53 @@ interface LinkItemProps {
 
 function Footer() {
   const { lang } = useSelector((state: RootState) => state.layout);
+  const { isLogin, user } = useSelector((state: RootState) => state.auth);
   const router = useRouter();
   const [isModal, setIsModal] = useState(false);
 
 
+  // Brevo Track
+  const trackBrevo = (value: string) => {
+    if(user?.email){
+      if ('sendinblue' in window && window?.sendinblue) {
+        const sendinblue: any = window.sendinblue;
+        sendinblue?.track(
+          'socialmediachannel_click',
+          {
+            "email": user?.email,
+          },
+          {
+            "data": {
+              "channel": value
+            }
+          },
+        ) as any;
+      }
+    }
+  };
+  // Brevo Track
 
 
-//-------TOTAL TICKET COUNT
-const { data: prductsList } = trpc.eventTicket.getTotalTicketSold.useQuery(undefined, {
-  refetchOnWindowFocus: false,
-  onSuccess(data:any) {
-  },
-});
 
-var totalnum = 0;
-if(prductsList && prductsList.data){ 
-  prductsList.data.forEach((item:any) => {
-    totalnum += item.quantity;
+
+  //-------TOTAL TICKET COUNT
+  const { data: prductsList } = trpc.eventTicket.getTotalTicketSold.useQuery(undefined, {
+    refetchOnWindowFocus: false,
+    onSuccess(data: any) {
+    },
   });
-}
 
-const bottlePrice = 0.25;
-const totalSoldTickets = totalnum;
-// const totalSoldTickets = 200000; 
-const charityAmount = (totalSoldTickets * bottlePrice).toLocaleString();
-//-------TOTAL TICKET COUNT
+  var totalnum = 0;
+  if (prductsList && prductsList.data) {
+    prductsList.data.forEach((item: any) => {
+      totalnum += item.quantity;
+    });
+  }
+
+  const bottlePrice = 0.25;
+  const totalSoldTickets = totalnum;
+  const charityAmount = (totalSoldTickets * bottlePrice).toLocaleString();
+  //-------TOTAL TICKET COUNT
 
 
 
@@ -172,6 +194,7 @@ const charityAmount = (totalSoldTickets * bottlePrice).toLocaleString();
                           variant="outline"
                           size="icon_square"
                           className="p-1 rounded-md"
+                          onClick={() => trackBrevo('Facebook')}
                         >
                           <i className="fa-brands fa-facebook-f text-xl"></i>
                         </Button>
@@ -184,6 +207,7 @@ const charityAmount = (totalSoldTickets * bottlePrice).toLocaleString();
                           variant="outline"
                           size="icon_square"
                           className=" rounded-md"
+                          onClick={() => trackBrevo('Instagram')}
                         >
                           <i className="fa-brands fa-instagram text-xl"></i>
                         </Button>
@@ -196,6 +220,7 @@ const charityAmount = (totalSoldTickets * bottlePrice).toLocaleString();
                           variant="outline"
                           size="icon_square"
                           className=" rounded-md"
+                          onClick={() => trackBrevo('LinkedIn')}
                         >
                           <i className="fa-brands fa-linkedin text-xl"></i>
                         </Button>
@@ -208,6 +233,7 @@ const charityAmount = (totalSoldTickets * bottlePrice).toLocaleString();
                           variant="outline"
                           size="icon_square"
                           className="p-1 rounded-md"
+                          onClick={() => trackBrevo('YouTube')}
                         >
                           <i className="fa-brands fa-youtube text-xl"></i>
                         </Button>
