@@ -25,7 +25,7 @@ export function NewsLetterDialog(props: newsLetterDialogInterface) {
                             height="580"
                             className=' p-0 w-full  rounded-lg !no-scrollbar '
                             scrolling="no"
-                            src="https://bdc4c4ca.sibforms.com/serve/MUIFAGku8FXiREi3fiNZGNeONgr0JM4YQYbK0JobEZDw-k80OJK6gA69wBS_OPzA8HR4C_x064hwo9iRzWUWxfVOg7OQdiQzjMUocJ8lOB5u3FG8qs_jQhnkXV2aEFrqkhIFD5kzOeFMrGlFa0vff2hqtpEToUmfMQ-4EPDs50FRcWhe6qJfYTzswRMfMLQ3sCL26BUQ1Nch6ETa"
+                            src="https://bdc4c4ca.sibforms.com/serve/MUIFAGBEegi0HlZt3IQV9DbGoI8k7xMP-BfEJ4Q-abFsDpfHHqwuT_RY7KI3azEZuho24cfWJKp1duMRkAmFAWL1DFnM8XTGNqguQN_w0Kzq5JSwpN3EHQ_qZHguEBkGqxSXl-Dz6kNjnACr58CEinQ58NRXWyBcIQWTBOGF4bD7ho5LKQN7m6MWU4Qubuv_N4IyUzr_LKZ3bT0F"
                         ></iframe>
                     </ScrollArea>
                 </DialogDescription>
