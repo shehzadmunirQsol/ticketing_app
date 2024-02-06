@@ -25,41 +25,6 @@ model Role {
   @@map("role")
 }
 
-model Setting {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-
-  lang_id    String       @db.ObjectId
-  group      SettingEnums @default(BANNER)
-  key        String
-  value      String
-  is_deleted Boolean      @default(false)
-  is_enabled Boolean      @default(false)
-
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now())
-
-  SettingDescription SettingDescription[]
-
-  @@index([lang_id])
-  @@map("setting")
-}
-
-model SettingDescription {
-  id         String       @id @default(auto()) @map("_id") @db.ObjectId
-  setting_id String       @db.ObjectId
-  group      SettingEnums @default(BANNER)
-  key        String
-  value      String
-  lang_id    String       @db.ObjectId
-  is_deleted Boolean      @default(false)
-  created_at DateTime     @default(now())
-  updated_at DateTime     @default(now())
-  Setting    Setting      @relation(fields: [setting_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-
-  @@index([setting_id, lang_id])
-  @@map("setting_desc")
-}
-
 model AdminUser {
   id         String  @id @default(auto()) @map("_id") @db.ObjectId
   name       String
@@ -73,29 +38,10 @@ model AdminUser {
 
   Role Role @relation(fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
-  Post     Category[]
-  Projects Projects[]
+  Post Category[]
 
   @@index([role_id])
   @@map("admin_user")
-}
-
-model CouponApply {
-  id            String   @id @default(auto()) @map("_id") @db.ObjectId
-  customer_id   String   @db.ObjectId
-  cart_id       String   @db.ObjectId
-  coupon_id     String   @db.ObjectId
-  discount      String   @db.ObjectId
-  is_used       Boolean  @default(false)
-  is_percentage Boolean  @default(false)
-  is_deleted    Boolean  @default(false)
-  created_at    DateTime @default(now())
-  updated_at    DateTime @default(now())
-  Customer      Customer @relation(fields: [customer_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  Cart          Cart     @relation(fields: [cart_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-
-  @@index([customer_id, cart_id, coupon_id])
-  @@map("coupon_apply")
 }
 
 model Category {
@@ -114,33 +60,37 @@ model Category {
 }
 
 model Projects {
-  id                 String       @id @default(auto()) @map("_id") @db.ObjectId
-  name               String
-  desc               String
-  thumb              String?
-  material_type      MaterialType @default(dump)
-  price              Int
-  total_rounds       Int
-  meta               String?
-  is_cash_alt        Boolean      @default(false)
-  is_enabled         Boolean      @default(false)
-  is_featured        Boolean      @default(false)
-  user_id            String       @db.ObjectId
-  launch_date        DateTime     @default(now())
-  end_date           DateTime     @default(now())
-  draw_date          DateTime?
-  created_at         DateTime     @default(now())
-  updated_at         DateTime     @default(now())
-  is_deleted         Boolean      @default(false)
-  is_winner_selected Boolean      @default(false)
+  id            String       @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  desc          String
+  thumb         String?
+  material_type MaterialType @default(dump)
+  price         Int?
+  total_rounds  Int?
+  meta          String?
+  is_enabled    Boolean      @default(false)
+  is_featured   Boolean      @default(false)
+  client_id     String?      @db.ObjectId
+  trucker_id    String[]     @db.ObjectId
+  user_id       String       @db.ObjectId
+  launch_date   DateTime     @default(now())
+  end_date      DateTime     @default(now())
+  draw_date     DateTime?
+  created_at    DateTime     @default(now())
+  updated_at    DateTime     @default(now())
+  is_deleted    Boolean      @default(false)
+  created_by    String       @db.ObjectId
 
-  User AdminUser @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Client   Customer? @relation(name: "client", fields: [client_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Truckers Customer? @relation(name: "trucker", fields: [trucker_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
-  CartItem     CartItem[]
-  EventImages  EventImage[]
-  EventTickets EventTickets[]
-  Category     Category?      @relation(fields: [categoryId], references: [id])
-  categoryId   String?        @db.ObjectId
+  CartItem       CartItem[]
+  EventImages    EventImage[]
+  ProjectTickets ProjectTickets[]
+  Category       Category?        @relation(fields: [categoryId], references: [id])
+  categoryId     String?          @db.ObjectId
+  ProjectAddress ProjectAddress[]
+  Customer       Customer?        @relation(fields: [created_by], references: [id])
 
   @@index([user_id])
   @@map("Project")
@@ -162,33 +112,35 @@ model EventImage {
 }
 
 model Customer {
-  id              String            @id @default(auto()) @map("_id") @db.ObjectId
-  email           String
-  username        String?           @default("")
-  password        String
-  is_approved     Boolean           @default(false)
-  otp             String            @default("")
-  first_name      String?
-  profile_pic     String?
-  last_name       String?
-  phone_number    String?
-  country         String?
-  gender          GenderEnums       @default(male)
-  dob             DateTime?
-  is_deleted      Boolean           @default(false)
-  is_blocked      Boolean           @default(false)
-  is_verified     Boolean           @default(false)
-  is_disabled     Boolean           @default(false)
-  created_at      DateTime          @default(now())
-  updated_at      DateTime          @default(now())
-  Order           Order[]
-  CustomerAddress CustomerAddress[]
+  id           String            @id @default(auto()) @map("_id") @db.ObjectId
+  email        String            @unique
+  username     String?           @default("")
+  password     String
+  is_approved  Boolean           @default(false)
+  otp          String            @default("")
+  first_name   String?
+  profile_pic  String?
+  last_name    String?
+  phone_number String?
+  country      String?
+  gender       GenderEnums       @default(male)
+  role         CustomerTypeEnums @default(seller)
+  dob          DateTime?
+  is_deleted   Boolean           @default(false)
+  is_blocked   Boolean           @default(false)
+  is_verified  Boolean           @default(false)
+  is_disabled  Boolean           @default(false)
+  created_at   DateTime          @default(now())
+  updated_at   DateTime          @default(now())
+  Order        Order[]
 
   Cart          Cart[]
-  CouponApply   CouponApply[]
   DeleteRequest DeleteRequest[]
 
-  EventTickets EventTickets[]
+  ClientProjects  Projects[]       @relation(name: "client")
+  TtuckerProjects Projects[]       @relation(name: "trucker")
+  ProjectTickets  ProjectTickets[]
+  Projects        Projects[]
 
   @@map("customer")
 }
@@ -207,9 +159,9 @@ model DeleteRequest {
   @@map("delete_request")
 }
 
-model CustomerAddress {
+model ProjectAddress {
   id               String      @id @default(auto()) @map("_id") @db.ObjectId
-  customer_id      String      @db.ObjectId
+  project_id       String      @db.ObjectId
   street_address_1 String?
   street_address_2 String?
   country          String?
@@ -217,7 +169,7 @@ model CustomerAddress {
   city             String?
   phone_number     String?
   phone_code       String?     @default("+971")
-  address_type     AddressType @default(home)
+  address_type     AddressType @default(pick)
   postal_code      String?     @default("")
   is_default       Boolean     @default(false)
   is_deleted       Boolean     @default(false)
@@ -225,10 +177,10 @@ model CustomerAddress {
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
 
-  Customer Customer @relation(fields: [customer_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Projects Projects @relation(fields: [project_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
-  @@index([customer_id])
-  @@map("customer_address")
+  @@index([project_id])
+  @@map("project_address")
 }
 
 model Cart {
@@ -239,22 +191,20 @@ model Cart {
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
 
-  Customer    Customer      @relation(fields: [customer_id], references: [id])
-  CartItems   CartItem[]
-  CouponApply CouponApply[]
+  Customer  Customer   @relation(fields: [customer_id], references: [id])
+  CartItems CartItem[]
 
   @@index([customer_id])
   @@map("cart")
 }
 
 model CartItem {
-  id                String             @id @default(auto()) @map("_id") @db.ObjectId
-  cart_id           String             @db.ObjectId
-  project_id        String             @db.ObjectId
-  quantity          String             @db.ObjectId
-  is_subscribe      Boolean            @default(false)
-  subscription_type SubscriptionEnums?
-  is_deleted        Boolean            @default(false)
+  id           String  @id @default(auto()) @map("_id") @db.ObjectId
+  cart_id      String  @db.ObjectId
+  project_id   String  @db.ObjectId
+  quantity     String  @db.ObjectId
+  is_subscribe Boolean @default(false)
+  is_deleted   Boolean @default(false)
 
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
@@ -300,13 +250,16 @@ model Order {
   @@map("order")
 }
 
-model EventTickets {
+model ProjectTickets {
   id          String  @id @default(auto()) @map("_id") @db.ObjectId
   ticket_num  Int
   project_id  String  @db.ObjectId
   customer_id String? @db.ObjectId
-  is_winner   Boolean @default(false)
-  is_deleted  Boolean @default(false)
+  load        String
+
+  status TicketEnums @default(pending)
+
+  is_deleted Boolean @default(false)
 
   Projects Projects  @relation(fields: [project_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   Customer Customer? @relation(fields: [customer_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
@@ -315,7 +268,7 @@ model EventTickets {
   updated_at DateTime @default(now())
 
   @@index([customer_id, project_id])
-  @@map("event_ticket")
+  @@map("project_ticket")
 }
 
 enum MaterialType {
@@ -323,46 +276,33 @@ enum MaterialType {
   sand
 }
 
-enum SettingEnums {
-  BANNER
-  WONDER
-  PAYMENT
-  IMAGE_GALLERY
-  CONFIG
-}
-
-enum LanguageEnums {
-  rtl
-  ltr
-}
-
-enum SubscriptionEnums {
-  weekly
-  monthly
-  quarterly
-}
-
 enum GenderEnums {
   male
   female
 }
 
-enum CMSEnums {
-  EventFAQs
-  faqs
-  static
-  event_faqs
+enum CustomerTypeEnums {
+  seller
+  buyer
+  trucker
+  client
 }
 
 enum AddressType {
-  home
-  work
-  hotel
-  other
+  pick
+  drop
+}
+
+enum TicketEnums {
+  pending
+  hold
+  paid
+  rejected
 }
 
 enum OrderEnums {
   pending
+  hold
   paid
   rejected
 }
