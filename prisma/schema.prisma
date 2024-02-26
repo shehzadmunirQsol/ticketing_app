@@ -71,7 +71,6 @@ model Projects {
   is_enabled    Boolean      @default(false)
   is_featured   Boolean      @default(false)
   client_id     String?      @db.ObjectId
-  trucker_id    String[]     @db.ObjectId
   user_id       String       @db.ObjectId
   launch_date   DateTime     @default(now())
   end_date      DateTime     @default(now())
@@ -81,16 +80,15 @@ model Projects {
   is_deleted    Boolean      @default(false)
   created_by    String       @db.ObjectId
 
-  Client   Customer? @relation(name: "client", fields: [client_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  Truckers Customer? @relation(name: "trucker", fields: [trucker_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Client Customer? @relation(name: "client", fields: [client_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
-  CartItem       CartItem[]
-  EventImages    EventImage[]
-  ProjectTickets ProjectTickets[]
-  Category       Category?        @relation(fields: [categoryId], references: [id])
-  categoryId     String?          @db.ObjectId
-  ProjectAddress ProjectAddress[]
-  Customer       Customer?        @relation(fields: [created_by], references: [id])
+  ProjectTickets  ProjectTickets[]
+  Category        Category?         @relation(fields: [categoryId], references: [id])
+  categoryId      String?           @db.ObjectId
+  ProjectAddress  ProjectAddress[]
+  Customer        Customer?         @relation(fields: [created_by], references: [id])
+  ProjectTruckers ProjectTruckers[]
+  EventImage      EventImage[]
 
   @@index([user_id])
   @@map("Project")
@@ -126,6 +124,7 @@ model Customer {
   gender       GenderEnums       @default(male)
   role         CustomerTypeEnums @default(seller)
   dob          DateTime?
+  is_registerd Boolean           @default(false)
   is_deleted   Boolean           @default(false)
   is_blocked   Boolean           @default(false)
   is_verified  Boolean           @default(false)
@@ -137,10 +136,9 @@ model Customer {
   Cart          Cart[]
   DeleteRequest DeleteRequest[]
 
-  ClientProjects  Projects[]       @relation(name: "client")
-  TtuckerProjects Projects[]       @relation(name: "trucker")
-  ProjectTickets  ProjectTickets[]
-  Projects        Projects[]
+  ClientProjects Projects[]       @relation(name: "client")
+  ProjectTickets ProjectTickets[]
+  Projects       Projects[]
 
   @@map("customer")
 }
@@ -159,11 +157,31 @@ model DeleteRequest {
   @@map("delete_request")
 }
 
+model ProjectTruckers {
+  id         String  @id @default(auto()) @map("_id") @db.ObjectId
+  project_id String  @db.ObjectId
+  trucker_id String?
+
+  is_invited    Boolean @default(false)
+  is_registered Boolean @default(false)
+  is_deleted    Boolean @default(false)
+
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+
+  Projects Projects @relation(fields: [project_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([project_id])
+  @@map("project_trucker")
+}
+
 model ProjectAddress {
   id               String      @id @default(auto()) @map("_id") @db.ObjectId
   project_id       String      @db.ObjectId
   street_address_1 String?
   street_address_2 String?
+  longitude        String?
+  latitude         String?
   country          String?
   state            String?
   city             String?
@@ -209,8 +227,7 @@ model CartItem {
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
 
-  Cart     Cart     @relation(fields: [cart_id], references: [id])
-  Projects Projects @relation(fields: [project_id], references: [id])
+  Cart Cart @relation(fields: [cart_id], references: [id])
 
   @@index([cart_id, project_id])
   @@map("cart_item")

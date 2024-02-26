@@ -6,15 +6,14 @@ import { validateEmail } from '~/utils/helper';
 // });
 
 export const projectGetAllSchema = z.object({
-  jwt: z.string({
-    required_error: 'JWT token required',
-    invalid_type_error: 'JWT token required',
-  }),
   orderBy: z.string().default('desc'),
   // is_detail: z.string().optional(),
 
   first: z.string().optional(),
   rows: z.string().optional(),
+  role: z.enum(['seller', 'buyer', 'trucker', 'client'], {
+    required_error: 'Please enter your please select type',
+  }),
   filters: z
     .object({
       searchQuery: z.string().optional().nullable(),
@@ -37,10 +36,26 @@ export const projectCreateSchema = z.object({
     required_error: 'name required',
     invalid_type_error: 'name required',
   }),
+  client_id: z.string({
+    required_error: 'Client is  required',
+    invalid_type_error: 'Client required',
+  }),
   desc: z.string({
     required_error: 'description required',
     invalid_type_error: 'description required',
   }),
+  price: z.number({
+    required_error: 'price required',
+    invalid_type_error: 'price required',
+  }),
+  total_rounds: z.number({
+    required_error: 'Total rounds required',
+    invalid_type_error: 'Total rounds required',
+  }),
+  material_type: z.enum(['dump', 'sand'], {
+    required_error: 'Please enter your please select material type',
+  }),
+  address: z.array(z.object({})),
 });
 // register schema for api
 export const registerCustomerSchema = z.object({

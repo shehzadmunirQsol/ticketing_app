@@ -4,22 +4,6 @@ import { loginCustomerSchema, registerCustomerSchema } from '~/schema/auth';
 import bcrypt from 'bcryptjs';
 import { projectCreateSchema, projectGetAllSchema } from '~/schema/project';
 
-function findUserByEmail(email: string) {
-  return prisma.customer.findUnique({
-    where: {
-      email,
-    },
-  });
-}
-function createUserByEmailAndPassword(user: {
-  email: string;
-  password: string;
-}) {
-  user.password = bcrypt.hashSync(user.password, 12);
-  return prisma.customer.create({
-    data: user,
-  });
-}
 /* 
  ---- input ----
  email
@@ -29,11 +13,17 @@ export async function getProjectAll(req: any, res: any) {
   // const input = req.body;
 
   try {
-    console.log(req, 'req.body');
     if (!req.query)
       return res.status(400).send({ message: 'payload not found' });
     const input = { ...req.query };
     delete input.routes;
+
+    const jwtToken = req.headers['x-api-key'];
+
+    // Check if the authorization scheme is Bearer and if the token exists
+    if (!jwtToken) {
+      return res.status(401).json({ error: 'Invalid authorization format' });
+    }
 
     // const input = JSON.parse(req.body as any);
     const validate = projectGetAllSchema.safeParse(input);
@@ -45,22 +35,22 @@ export async function getProjectAll(req: any, res: any) {
             ? validate?.error?.errors[0]?.message
             : 'Bad Request',
       });
-    const { jwt, ...data } = validate.data;
+    // const { jwt, ...data } = validate.data;
     let userData: any;
-    if (jwt) {
-      userData = verifyJWT(jwt);
+    if (jwtToken) {
+      userData = verifyJWT(jwtToken);
     } else {
       return res.status(400).send({
         message: 'You are not authorized to access!',
       });
     }
-    const { filters } = data;
+    const { filters } = validate.data;
     const filterPayload: any = { ...filters };
     delete filterPayload.searchQuery;
     delete filterPayload.endDate;
     delete filterPayload.startDate;
     const options: any = {
-      orderBy: { created_at: data?.orderBy },
+      orderBy: { created_at: validate.data?.orderBy },
       skip: input.first,
       take: input.rows,
       where: {
@@ -69,7 +59,22 @@ export async function getProjectAll(req: any, res: any) {
         ...filterPayload,
       },
     };
-
+    if (validate.data?.role == 'trucker') {
+      options.where = {
+        trucker_id: {
+          hasEvery: [userData?.id],
+        },
+        is_deleted: false,
+        ...filterPayload,
+      };
+    }
+    if (validate.data?.role == 'client') {
+      options.where = {
+        client_id: userData?.id,
+        is_deleted: false,
+        ...filterPayload,
+      };
+    }
     if (filters && filters.searchQuery) {
       options.where.OR = [];
       options.where.OR.push({
@@ -103,6 +108,9 @@ export async function getProjectAll(req: any, res: any) {
 
     const projectPromise = prisma.projects.findMany({
       ...options,
+      include: {
+        ProjectAddress: true,
+      },
     });
 
     const [projectsTotalData, projectData] = await Promise.all([
@@ -152,15 +160,26 @@ export async function createProject(req: any, res: any) {
       data: {
         created_by: userData?.id,
         user_id: userData?.id,
-        price: 10,
-        total_rounds: 10,
-        trucker_id: '65c1efbc2a6b5fa14385aa2e',
-        material_type: 'dump',
+
         ...data,
+        ProjectAddress: {
+          createMany: {
+            data: [
+              {
+                address_type: 'pick',
+                city: 'address1',
+              },
+              {
+                address_type: 'drop',
+                city: 'address2',
+              },
+            ],
+          },
+        },
       },
     });
 
-    return res.status(200).send({ customer: result, jwt });
+    return res.status(200).send({ project: result });
   } catch (err: any) {
     console.log({ err });
     res.status(500).send({ message: err.message as string });

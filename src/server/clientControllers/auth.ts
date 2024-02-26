@@ -34,15 +34,18 @@ export async function loginCustomer(req: any, res: any) {
 
     if (!customer)
       return res.status(404).send({ customer, message: 'Not found' });
+    if (!validate.data?.is_google) {
+      // Compare the provided password with the hashed password stored in the database
+      if (!validate.data?.password)
+        return res.status(401).json({ error: 'Password is reuired.' });
+      const passwordMatch = await bcrypt.compare(
+        validate.data?.password,
+        customer.password,
+      );
 
-    // Compare the provided password with the hashed password stored in the database
-    const passwordMatch = await bcrypt.compare(
-      validate.data?.password,
-      customer.password,
-    );
-
-    if (!passwordMatch) {
-      return res.status(401).json({ error: 'Invalid credentials.' });
+      if (!passwordMatch) {
+        return res.status(401).json({ error: 'Invalid credentials.' });
+      }
     }
     const jwt = signJWT({
       email: customer.email,
