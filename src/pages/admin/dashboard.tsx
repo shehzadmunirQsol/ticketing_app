@@ -1,6 +1,5 @@
 import { NextPageWithLayout } from '~/pages/_app';
-import Dashboard from '~/components/admin/dashboard/dashboard';
 
-const IndexPage: NextPageWithLayout = () => <Dashboard />;
+const IndexPage: NextPageWithLayout = () => <></>;
 
 export default IndexPage;
