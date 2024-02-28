@@ -43,7 +43,7 @@ export async function loginCustomer(req: any, res: any) {
 
       return res.status(201).send({ customer, is_registered: false });
     }
-    if (!customer?.is_registered || !customer?.role) {
+    if (!customer?.is_registered && !customer?.role) {
       return res.status(201).send({ customer, is_registered: false });
     }
     const jwt = signJWT({

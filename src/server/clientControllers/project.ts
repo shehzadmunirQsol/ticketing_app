@@ -1,7 +1,4 @@
-import { signJWT, verifyJWT } from '~/utils/jwt';
 import { prisma } from '../prisma';
-import { loginCustomerSchema, registerCustomerSchema } from '~/schema/auth';
-import bcrypt from 'bcryptjs';
 import { projectCreateSchema, projectGetAllSchema } from '~/schema/project';
 import { getUserData } from '~/utils/helper';
 
@@ -112,6 +109,7 @@ export async function getProjectAll(req: any, res: any) {
       ...options,
       include: {
         ProjectAddress: true,
+        Client: true,
       },
     });
 
