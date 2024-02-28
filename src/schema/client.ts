@@ -5,24 +5,13 @@ import { validateEmail } from '~/utils/helper';
 //   jwt: z.string(),
 // });
 
-export const projectGetAllSchema = z.object({
-  orderBy: z.string().default('desc'),
+export const clientGetSearchSchema = z.object({
   // is_detail: z.string().optional(),
 
-  first: z.string().optional(),
-  rows: z.string().optional(),
-
-  filters: z
-    .object({
-      searchQuery: z.string().optional().nullable(),
-      startDate: z.string().optional().nullable(),
-      endDate: z.string().optional().nullable(),
-      is_listed: z.boolean().optional().nullable(),
-      sell_type: z.string().optional().nullable(),
-      is_lazy: z.boolean().optional().nullable(),
-    })
-    .optional()
-    .nullable(),
+  searchQuery: z.string({
+    required_error: 'search query is required',
+    invalid_type_error: 'search query is required',
+  }),
 });
 
 export const projectCreateSchema = z.object({

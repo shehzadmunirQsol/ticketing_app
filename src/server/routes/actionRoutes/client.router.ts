@@ -1,10 +1,11 @@
+import { getSearchedClient } from '~/server/clientControllers/client';
 import {
   createProject,
   getProjectAll,
 } from '~/server/clientControllers/project';
 import { verifyJWT } from '~/utils/jwt';
 
-export default async function projectRoutes(req: any, res: any) {
+export default async function clientRoutes(req: any, res: any) {
   if (!req.headers.authorization) {
     return res.status(401).json({ error: 'Authorization header missing' });
   }
@@ -23,8 +24,8 @@ export default async function projectRoutes(req: any, res: any) {
   const extendedAction = `${method}-${query.routes.join('/')}`;
 
   switch (extendedAction) {
-    case 'GET-project/getAll':
-      return getProjectAll(req, res);
+    case 'GET-client/search':
+      return getSearchedClient(req, res);
     case 'POST-project/create':
       return createProject(req, res);
 

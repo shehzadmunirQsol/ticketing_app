@@ -1,3 +1,5 @@
+import { verifyJWT } from './jwt';
+
 export function generateOTP(otp_length = 0) {
   const digits = '0123456789';
   let OTP = '';
@@ -70,49 +72,6 @@ export const sendEmail = async (mailOptions: EmailOptionsType) => {
 type SMSOptionsType = {
   to: string;
   subject: string;
-};
-export const sendSMS = async (smsOptions: SMSOptionsType) => {
-  try {
-
-    var myHeaders = new Headers();
-    myHeaders.append("api-key", process.env.NEXT_PUBLIC_BREVO_SMS_API_KEY ? process.env.NEXT_PUBLIC_BREVO_SMS_API_KEY as string : "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");
-    // myHeaders.append("api-key", process.env.NEXT_PUBLIC_BREVO_SMS_API_KEY as string);
-    myHeaders.append("Content-Type", "application/json");
-    var raw = JSON.stringify({
-      "sender": "Winnar",
-      "recipient": smsOptions.to,
-      "content": smsOptions.subject,
-      "type": "transactional",
-      "unicodeEnabled": false
-    });
-
-    console.log("raw",raw)
-    
-    var requestOptions = {
-      method: 'POST',
-      headers: myHeaders,
-      body: raw,
-    };
-    
-    // fetch("https://api.brevo.com/v3/transactionalSMS/sms", requestOptions)
-    //   .then(response => response.text())
-    //   .then(result => console.log(result))
-    //   .catch(error => console.log('error', error));
-
-      const res = await fetch('https://api.brevo.com/v3/transactionalSMS/sms', requestOptions);
-      const result = await res.text();
-      console.log(result);
-      console.log(res);
-
-
-    if (!res.ok) {
-      console.log('sms did not send');
-    }
-
-    return true;
-  } catch (error) {
-    console.log(error);
-  }
 };
 
 export async function compressImage(fileImage: File, fileType = 'image/webp') {
@@ -274,57 +233,104 @@ export const validateRegixEmail = (email: string): boolean => {
 };
 
 export function reduceVATAmount(amount: number | undefined) {
-   if(amount){
+  if (amount) {
     return amount ? amount / (1 + 0.05) : 0;
-   }else{
+  } else {
     return 0;
-   }  
+  }
 }
 export function getVATAmount(amount: number | undefined) {
-  if(amount){
+  if (amount) {
     const reducedAmount = reduceVATAmount(amount);
     return reducedAmount * 0.05;
-  }else{
-   return 0;
-  }   
+  } else {
+    return 0;
+  }
 }
 
 export function numberToWords(amount: number): string {
-  const units: string[] = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
-  const teens: string[] = ['', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
-  const tens: string[] = ['', 'ten', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
+  const units: string[] = [
+    '',
+    'one',
+    'two',
+    'three',
+    'four',
+    'five',
+    'six',
+    'seven',
+    'eight',
+    'nine',
+  ];
+  const teens: string[] = [
+    '',
+    'eleven',
+    'twelve',
+    'thirteen',
+    'fourteen',
+    'fifteen',
+    'sixteen',
+    'seventeen',
+    'eighteen',
+    'nineteen',
+  ];
+  const tens: string[] = [
+    '',
+    'ten',
+    'twenty',
+    'thirty',
+    'forty',
+    'fifty',
+    'sixty',
+    'seventy',
+    'eighty',
+    'ninety',
+  ];
 
   const convert = (num: number): string | undefined => {
-      if (num === 0) {
-          return 'zero';
-      } else if (num < 10) {
-          return units[num];
-      } else if (num < 20) {
-          return teens[num - 11];
-      } else if (num < 100) {
-          return tens[Math.floor(num / 10)] + ' ' + units[num % 10];
-      } else if (num < 1000) {
-          return units[Math.floor(num / 100)] + ' hundred ' + convert(num % 100);
-      } else if (num < 1000000) {
-        return convert(Math.floor(num / 1000)) + ' thousand ' + convert(num % 1000);
-      } else {
-          return undefined; // Extend for larger numbers if needed
-      }
+    if (num === 0) {
+      return 'zero';
+    } else if (num < 10) {
+      return units[num];
+    } else if (num < 20) {
+      return teens[num - 11];
+    } else if (num < 100) {
+      return tens[Math.floor(num / 10)] + ' ' + units[num % 10];
+    } else if (num < 1000) {
+      return units[Math.floor(num / 100)] + ' hundred ' + convert(num % 100);
+    } else if (num < 1000000) {
+      return (
+        convert(Math.floor(num / 1000)) + ' thousand ' + convert(num % 1000)
+      );
+    } else {
+      return undefined; // Extend for larger numbers if needed
+    }
   };
   const result = convert(amount);
   if (result === undefined) {
-      console.log('Unable to convert the given number to words.');
-      return 'N/A';
+    console.log('Unable to convert the given number to words.');
+    return 'N/A';
   }
   return result;
 }
 
-export function getQueryParameter(name:any) {
-  if(typeof window !== 'undefined'){
+export function getQueryParameter(name: any) {
+  if (typeof window !== 'undefined') {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get(name);
-  }else{
-    return "";
+  } else {
+    return '';
   }
 }
+export async function getUserData(req: any, res: any) {
+  if (!req.headers.authorization) {
+    return res.status(401).json({ error: 'Authorization header missing' });
+  }
+  const [bearer, token] = req.headers.authorization.split(' ');
 
+  // Check if the authorization scheme is Bearer and if the token exists
+  if (bearer !== 'Bearer' || !token) {
+    return res.status(401).json({ error: 'Invalid authorization format' });
+  }
+  const userData = await verifyJWT(token);
+  return userData;
+}

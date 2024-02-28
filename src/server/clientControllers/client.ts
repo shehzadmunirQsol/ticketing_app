@@ -1,7 +1,5 @@
-import { signJWT, verifyJWT } from '~/utils/jwt';
+import { clientGetSearchSchema } from '~/schema/client';
 import { prisma } from '../prisma';
-import { loginCustomerSchema, registerCustomerSchema } from '~/schema/auth';
-import bcrypt from 'bcryptjs';
 import { projectCreateSchema, projectGetAllSchema } from '~/schema/project';
 import { getUserData } from '~/utils/helper';
 
@@ -10,7 +8,7 @@ import { getUserData } from '~/utils/helper';
  email
  password 
 */
-export async function getProjectAll(req: any, res: any) {
+export async function getSearchedClient(req: any, res: any) {
   // const input = req.body;
 
   try {
@@ -22,7 +20,7 @@ export async function getProjectAll(req: any, res: any) {
     // Check if the authorization scheme is Bearer and if the token exists
 
     // const input = JSON.parse(req.body as any);
-    const validate = projectGetAllSchema.safeParse(input);
+    const validate = clientGetSearchSchema.safeParse(input);
 
     if (!validate.success)
       return res.status(400).send({
@@ -38,91 +36,38 @@ export async function getProjectAll(req: any, res: any) {
         message: 'You are not authorized to access!',
       });
     }
-    const { filters } = validate.data;
-    const filterPayload: any = { ...filters };
-    delete filterPayload.searchQuery;
-    delete filterPayload.endDate;
-    delete filterPayload.startDate;
+
     const options: any = {
-      orderBy: { created_at: validate.data?.orderBy },
-      skip: input.first,
-      take: input.rows,
       where: {
-        created_by: userData?.id,
         is_deleted: false,
-        ...filterPayload,
+        role: 'client',
       },
     };
     console.log({ userData });
-    if (userData?.role == 'trucker') {
-      options.where = {
-        trucker_id: {
-          hasEvery: [userData?.id],
-        },
-        is_deleted: false,
-        ...filterPayload,
-      };
-    }
-    if (userData?.role == 'client') {
-      options.where = {
-        client_id: userData?.id,
-        is_deleted: false,
-        ...filterPayload,
-      };
-    }
-    if (userData?.role == 'seller') {
-      options.where = {
-        user_id: userData?.id,
-        is_deleted: false,
-        ...filterPayload,
-      };
-    }
-    if (filters && filters.searchQuery) {
+
+    if (validate?.data?.searchQuery) {
       options.where.OR = [];
       options.where.OR.push({
-        name: { contains: filters.searchQuery, mode: 'insensitive' },
+        email: { contains: validate?.data?.searchQuery, mode: 'insensitive' },
       });
       options.where.OR.push({
-        description: { contains: filters.searchQuery, mode: 'insensitive' },
+        username: {
+          contains: validate?.data?.searchQuery,
+          mode: 'insensitive',
+        },
       });
       // options.where.OR.push({
       //   price: { contains: input.searchQuery, mode: 'insensitive' },
       // });
     }
 
-    if (filters && filters?.startDate) {
-      const startDate = new Date(filters?.startDate);
-      startDate.setDate(startDate.getDate());
-
-      options.where.AND = [];
-      options.where.AND.push({ created_at: { gte: startDate } });
-    }
-    if (filters && filters?.endDate) {
-      const endDate = new Date(filters?.endDate);
-      endDate.setDate(endDate.getDate() + 1);
-
-      options.where.AND = options?.AND ?? [];
-      options.where.AND.push({ created_at: { lte: endDate } });
-    }
-    const totalProjectsPromise = prisma.projects.count({
-      where: options.where,
-    });
-
-    const projectPromise = prisma.projects.findMany({
+    const projectPromise = prisma.customer.findMany({
       ...options,
-      include: {
-        ProjectAddress: true,
-      },
     });
 
-    const [projectsTotalData, projectData] = await Promise.all([
-      totalProjectsPromise,
-      projectPromise,
-    ]);
+    const [projectData] = await Promise.all([projectPromise]);
 
-    return res
-      .status(200)
-      .send({ count: projectsTotalData, data: projectData });
+    return res.status(200).send({ data: projectData });
   } catch (err: any) {
     res.status(500).send({ message: err.message as string });
   }

@@ -2,6 +2,7 @@ import { signJWT } from '~/utils/jwt';
 import { prisma } from '../prisma';
 import { loginCustomerSchema, registerCustomerSchema } from '~/schema/auth';
 import bcrypt from 'bcryptjs';
+import { Prisma } from '@prisma/client';
 
 /* 
  ---- input ----
@@ -25,27 +26,25 @@ export async function loginCustomer(req: any, res: any) {
             ? validate?.error?.errors[0]?.message
             : 'Bad Request',
       });
-
-    const customer = await prisma.customer.findFirst({
+    let customer: any;
+    customer = await prisma.customer.findFirst({
       where: {
         email: validate.data?.email,
       },
     });
 
-    if (!customer)
-      return res.status(404).send({ customer, message: 'Not found' });
-    if (!validate.data?.is_google) {
-      // Compare the provided password with the hashed password stored in the database
-      if (!validate.data?.password)
-        return res.status(401).json({ error: 'Password is reuired.' });
-      const passwordMatch = await bcrypt.compare(
-        validate.data?.password,
-        customer.password,
-      );
+    if (!customer) {
+      customer = await prisma.customer.create({
+        data: {
+          username: 'umair',
+          email: validate.data?.email,
+        },
+      });
 
-      if (!passwordMatch) {
-        return res.status(401).json({ error: 'Invalid credentials.' });
-      }
+      return res.status(201).send({ customer, is_registered: false });
+    }
+    if (!customer?.is_registered || !customer?.role) {
+      return res.status(201).send({ customer, is_registered: false });
     }
     const jwt = signJWT({
       email: customer.email,
@@ -81,20 +80,24 @@ export async function registerCustomer(req: any, res: any) {
       where: { email: validate.data?.email },
     });
 
-    if (existingUser) {
+    if (existingUser?.is_registerd || existingUser?.role) {
       return res.status(400).json({
         error: 'Email already exists. Please use a different email.',
       });
     }
 
     // Hash the password
-    const hashedPassword = await bcrypt.hash(validate.data?.password, 10); // 10 is the salt rounds
 
     // Create a new User instance with the hashed password
-    const result = await prisma.customer.create({
-      data: {
+    const result = await prisma.customer.upsert({
+      where: {
+        email: validate.data?.email,
+      },
+      update: {
         ...validate.data,
-        password: hashedPassword,
+      },
+      create: {
+        ...validate.data,
       },
     });
     const jwt = signJWT({

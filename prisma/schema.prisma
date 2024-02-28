@@ -43,27 +43,25 @@ model AdminUser {
 }
 
 model Customer {
-  id           Int               @id @default(autoincrement())
-  email        String            @unique
-  username     String?           @default("")
-  password     String
-  is_approved  Boolean           @default(false)
-  otp          String            @default("")
+  id           Int                @id @default(autoincrement())
+  email        String             @unique
+  username     String?            @default("")
+  password     String?
   first_name   String?
   profile_pic  String?
   last_name    String?
   phone_number String?
   country      String?
-  gender       GenderEnums       @default(male)
-  role         CustomerTypeEnums @default(seller)
+  gender       GenderEnums?
+  role         CustomerTypeEnums?
   dob          DateTime?
-  is_registerd Boolean           @default(false)
-  is_deleted   Boolean           @default(false)
-  is_blocked   Boolean           @default(false)
-  is_verified  Boolean           @default(false)
-  is_disabled  Boolean           @default(false)
-  created_at   DateTime          @default(now())
-  updated_at   DateTime          @default(now())
+  is_registerd Boolean            @default(false)
+  is_deleted   Boolean            @default(false)
+  is_blocked   Boolean            @default(false)
+  is_verified  Boolean            @default(false)
+  is_disabled  Boolean            @default(false)
+  created_at   DateTime           @default(now())
+  updated_at   DateTime           @default(now())
   Order        Order[]
 
   ClientProjects    Projects[]          @relation(name: "client")

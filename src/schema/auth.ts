@@ -69,15 +69,6 @@ export const registerCustomerSchema = z.object({
   role: z.enum(['seller', 'buyer', 'trucker', 'client'], {
     required_error: 'Please enter your please select type',
   }),
-
-  password: z
-    .string({ required_error: 'Please enter your password' })
-    .min(6, {
-      message: 'Password must be at least 6 characters',
-    })
-    .max(30, {
-      message: 'Password must not exceed 30 characters',
-    }),
 });
 
 // send request trucker
