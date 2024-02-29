@@ -61,7 +61,13 @@ function Header() {
         </Button>
       </div>
 
-      <NextImage src={LogoImage} alt="Logoimage" width={150} height={140} />
+      <NextImage
+        src={LogoImage}
+        alt="Logoimage"
+        className=" h-16 w-28"
+        width={150}
+        height={80}
+      />
       <DropdownMenuDemo />
     </div>
   );

@@ -16,7 +16,8 @@ export async function loginCustomer(req: any, res: any) {
     if (!req.body)
       return res.status(400).send({ message: 'payload not found' });
 
-    const input = JSON.parse(req.body as any);
+    const input = req.body;
+    // const input = JSON.parse(req.body as any);
     const validate = loginCustomerSchema.safeParse(input);
 
     if (!validate.success)
@@ -27,21 +28,30 @@ export async function loginCustomer(req: any, res: any) {
             : 'Bad Request',
       });
     let customer: any;
-    customer = await prisma.customer.findFirst({
+    customer = await prisma.user.findFirst({
       where: {
         email: validate.data?.email,
       },
     });
 
     if (!customer) {
-      customer = await prisma.customer.create({
+      customer = await prisma.user.create({
         data: {
-          username: 'umair',
-          email: validate.data?.email,
+          ...validate.data,
         },
       });
 
       return res.status(201).send({ customer, is_registered: false });
+    }
+    if (!customer?.wallet_address && validate.data?.wallet_address) {
+      customer = await prisma.user.update({
+        where: {
+          id: customer.id,
+        },
+        data: {
+          wallet_address: validate.data?.wallet_address,
+        },
+      });
     }
     if (!customer?.is_registered && !customer?.role) {
       return res.status(201).send({ customer, is_registered: false });
@@ -64,7 +74,7 @@ export async function registerCustomer(req: any, res: any) {
     if (!req.body)
       return res.status(400).send({ message: 'payload not found' });
 
-    const input = JSON.parse(req.body);
+    const input = req.body;
     const validate = registerCustomerSchema.safeParse(input);
 
     if (!validate.success)
@@ -76,7 +86,7 @@ export async function registerCustomer(req: any, res: any) {
       });
 
     // const existingUser = await User.findOne({ email });
-    const existingUser = await prisma.customer.findFirst({
+    const existingUser = await prisma.user.findFirst({
       where: { email: validate.data?.email },
     });
 
@@ -89,7 +99,7 @@ export async function registerCustomer(req: any, res: any) {
     // Hash the password
 
     // Create a new User instance with the hashed password
-    const result = await prisma.customer.upsert({
+    const result = await prisma.user.upsert({
       where: {
         email: validate.data?.email,
       },

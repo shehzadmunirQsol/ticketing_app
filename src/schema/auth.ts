@@ -20,16 +20,9 @@ export const loginCustomerSchema = z.object({
     .refine((val) => validateEmail(val), {
       message: 'Invalid email format.',
     }),
-  password: z
-    .string({ required_error: 'Please enter your password' })
-    .min(6, {
-      message: 'Password must be at least 6 characters',
-    })
-    .max(30, {
-      message: 'Password must not exceed 30 characters',
-    })
-    .optional(),
-  is_google: z.boolean().default(false),
+
+  wallet_address: z.string({ required_error: 'Please provide wallet address' }),
+  first_name: z.string({ required_error: 'Please provide name' }),
 });
 
 // register schema for api
@@ -59,16 +52,17 @@ export const registerCustomerSchema = z.object({
       message: 'Please enter your number',
     }),
   username: z
-    .string({ required_error: 'Please enter your password' })
+    .string({ required_error: 'Please enter your username' })
     .min(1, {
-      message: 'Password must be at least 6 characters',
+      message: 'username must be at least 6 characters',
     })
     .max(30, {
-      message: 'Password must not exceed 30 characters',
+      message: 'username must not exceed 30 characters',
     }),
   role: z.enum(['seller', 'buyer', 'trucker', 'client'], {
-    required_error: 'Please enter your please select type',
+    required_error: 'Please enter select role',
   }),
+  wallet_address: z.string({ required_error: 'Please provide wallet address' }),
 });
 
 // send request trucker

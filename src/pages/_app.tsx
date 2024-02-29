@@ -6,7 +6,6 @@ import { trpc } from '~/utils/trpc';
 import '~/styles/globals.css';
 import '~/styles/globals-ar.scss';
 
-
 export type NextPageWithLayout<
   TProps = Record<string, unknown>,
   TInitialProps = TProps,
@@ -28,7 +27,7 @@ const MyApp = (({ Component, pageProps }: AppPropsWithLayout) => {
     ));
 
   return getLayout(
-    <main className={'font-sans'}>
+    <main>
       <Component {...pageProps} />
     </main>,
   );

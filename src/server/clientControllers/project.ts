@@ -42,8 +42,8 @@ export async function getProjectAll(req: any, res: any) {
     delete filterPayload.startDate;
     const options: any = {
       orderBy: { created_at: validate.data?.orderBy },
-      skip: input.first,
-      take: input.rows,
+      skip: input.first ? +input.first : 0,
+      take: input.rows ? +input.rows : 50,
       where: {
         created_by: userData?.id,
         is_deleted: false,
@@ -69,7 +69,7 @@ export async function getProjectAll(req: any, res: any) {
     }
     if (userData?.role == 'seller') {
       options.where = {
-        user_id: userData?.id,
+        created_by: userData?.id,
         is_deleted: false,
         ...filterPayload,
       };
@@ -132,7 +132,7 @@ export async function createProject(req: any, res: any) {
     if (!req.body)
       return res.status(400).send({ message: 'payload not found' });
 
-    const input = JSON.parse(req.body);
+    const input = req.body;
     const validate = projectCreateSchema.safeParse(input);
 
     if (!validate.success)
@@ -142,7 +142,7 @@ export async function createProject(req: any, res: any) {
             ? validate?.error?.errors[0]?.message
             : 'Bad Request',
       });
-    const { ...data } = validate.data;
+
     const userData: any = await getUserData(req, res);
     if (!userData) {
       return res.status(400).send({
@@ -153,13 +153,28 @@ export async function createProject(req: any, res: any) {
     if (unAuthRole.includes(userData?.role)) {
       return res.status(400).send({ message: "You're not authorized" });
     }
+    const { address, client, ...data } = validate.data;
+    const clientData = await prisma.user.upsert({
+      where: {
+        email: client.email,
+      },
+      update: {},
+      create: {
+        ...client,
+      },
+    });
     // Create a new User instance with the hashed password
     const result = await prisma.projects.create({
       data: {
         created_by: userData?.id,
-        user_id: userData?.id,
 
         ...data,
+        client_id: clientData?.id,
+        ProjectAddress: {
+          createMany: {
+            data: address,
+          },
+        },
       },
     });
 

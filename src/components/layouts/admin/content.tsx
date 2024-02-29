@@ -56,10 +56,11 @@ export default function Content() {
             <Collapsible.Trigger asChild>
               <div
                 className={`
-                     ${active === item.key
-                    ? 'text-primary bg-secondary/80 font-semibold '
-                    : ''
-                  }
+                     ${
+                       active === item.key
+                         ? 'text-primary bg-secondary/80 font-semibold '
+                         : ''
+                     }
                         flex items-center mb-2 pr-4 rounded-full hover:bg-secondary/80 hover:text-primary align-middle justify-between cursor-pointer`}
                 onClick={() =>
                   routeHandler({ key: item.key, child: item.child?.length })
@@ -107,10 +108,11 @@ export default function Content() {
                     onClick={() => handleClickChild(`${item.key}-${index}`)}
                     key={childItem.title}
                     className={`
-                        ${active === `${item.key}-${index}`
-                        ? 'text-primary bg-secondary/80 font-semibold '
-                        : ''
-                      }
+                        ${
+                          active === `${item.key}-${index}`
+                            ? 'text-primary bg-secondary/80 font-semibold '
+                            : ''
+                        }
                           flex items-center gap-5 cursor-pointer rounded-full hover:bg-secondary/80 hover:text-primary
                         `}
                   >
@@ -149,16 +151,7 @@ const SIDEBAR_DATA = [
     icon: <i className="fa-solid fa-home p-4 rounded-full " />,
     title: 'Dashboard',
   },
-  {
-    key: '/admin/category',
-    icon: <i className="fa-solid fa-images p-4 rounded-full"></i>,
-    title: 'Category',
-  },
-  {
-    key: '/admin/events',
-    icon: <i className="fa-solid fa-calendar-days p-4 rounded-full"></i>,
-    title: 'Raffles',
-  },
+
   {
     key: '/admin/customers',
     icon: (
@@ -169,46 +162,26 @@ const SIDEBAR_DATA = [
   {
     key: '/admin/coupons',
     icon: <i className="fa-solid fa-tag p-4 rounded-full" />,
-    title: 'Coupon',
-  },
-  {
-    key: '/admin/cart',
-    icon: <i className="fa-solid fa-cart-shopping p-4 rounded-full"></i>,
-    title: 'Abandoned Cart',
-  },
-  {
-    key: '/admin/cms',
-    icon: <i className="fas fa-folder-open p-4 rounded-full"></i>,
-    title: 'CMS',
-  },
-  {
-    key: '/admin/orders',
-    icon: <i className="fa-solid fa-chart-line p-4 rounded-full"></i>,
-    title: 'Orders',
-  },
-  {
-    key: '/admin/winners',
-    icon: <i className="fa-solid fa-trophy p-4 rounded-full"></i>,
-    title: 'Winners',
+    title: 'Projects',
   },
 
-  {
-    key: '/settings',
-    icon: <i className="fa-solid fa-gear p-4 rounded-full" />,
-    title: 'Settings',
-    child: [
-      {
-        key: '/admin/settings/banners',
+  // {
+  //   key: '/settings',
+  //   icon: <i className="fa-solid fa-gear p-4 rounded-full" />,
+  //   title: 'Settings',
+  //   child: [
+  //     {
+  //       key: '/admin/settings/banners',
 
-        icon: <i className={` fa-solid fa-image p-4 rounded-full`} />,
-        title: 'Banner',
-      },
-      {
-        key: '/admin/settings/spotlight',
+  //       icon: <i className={` fa-solid fa-image p-4 rounded-full`} />,
+  //       title: 'Banner',
+  //     },
+  //     {
+  //       key: '/admin/settings/spotlight',
 
-        icon: <i className=" fa-solid fa-image p-4 rounded-full" />,
-        title: 'Winnar Wonders',
-      },
-    ],
-  },
+  //       icon: <i className=" fa-solid fa-image p-4 rounded-full" />,
+  //       title: 'Winnar Wonders',
+  //     },
+  //   ],
+  // },
 ];

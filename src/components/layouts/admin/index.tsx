@@ -44,23 +44,27 @@ function AdminLayout({ children }: DefaultLayoutProps) {
   console.log({ shouldHideNavbarAndFooter, router });
 
   return (
-    <div className="relative overflow-y-hidden max-w-[1600px] mx-auto ">
+    <div className="relative  max-w-[1600px] mx-auto  ">
       {router.asPath === '/admin/login' || shouldHideNavbarAndFooter ? (
         <main className="flex-1 m-auto">{children}</main>
       ) : (
-        <>
-          <Header />
-          <div className="flex max-h-[calc(100vh-70px)] overflow-y-hidden">
-            <Sidebar />
+        <div className="relative">
+          <div className=" sticky top-0">
+            <Header />
+          </div>
+          <div className="relative flex ">
+            <div className=" sticky top-0">
+              <Sidebar />
+            </div>
             <main
-              className={`flex-1 w-full ${
+              className={`relative flex-1 w-full ${
                 isSidebarOpen ? 'w-[calc(100vw-15%)]' : 'w-[calc(100vw-80px)]'
-              }  min-h-[calc(100vh-100px)] overflow-y-scroll`}
+              }   `}
             >
               {children}
             </main>
           </div>
-        </>
+        </div>
       )}
       <Toaster />
     </div>
