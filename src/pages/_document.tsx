@@ -15,9 +15,16 @@ export default function Document() {
           crossOrigin="anonymous"
           referrerPolicy="no-referrer"
         />
-        <link rel="preconnect" href="https://fonts.googleapis.com"/>
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;500;700;800;900&display=swap" rel="stylesheet"/>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;500;700;800;900&display=swap"
+          rel="stylesheet"
+        />
 
         <script
           id="brevo-tracking"
@@ -83,9 +90,15 @@ export default function Document() {
           `,
           }}
         />
-        <meta property="og:title" content="Winnar" />
-        <meta property="og:description" content="Drive home your dream car at a fraction of the price!" />
-        <meta property="og:image" content={process.env.NEXT_PUBLIC_BASE_URL + LogoImage} />
+        <meta property="og:title" content="Tickeing" />
+        <meta
+          property="og:description"
+          content="Drive home your dream car at a fraction of the price!"
+        />
+        <meta
+          property="og:image"
+          content={process.env.NEXT_PUBLIC_BASE_URL + LogoImage}
+        />
       </Head>
       <body>
         <Main />
