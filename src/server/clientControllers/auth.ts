@@ -3,7 +3,8 @@ import { prisma } from '../prisma';
 import { loginCustomerSchema, registerCustomerSchema } from '~/schema/auth';
 import bcrypt from 'bcryptjs';
 import { Prisma } from '@prisma/client';
-
+import { createSmartAccount } from './web3-controller/createAccount';
+// import createSmartAccount fro
 /* 
  ---- input ----
  email
@@ -17,6 +18,9 @@ export async function loginCustomer(req: any, res: any) {
       return res.status(400).send({ message: 'payload not found' });
 
     const input = req.body;
+    const smartAccount = await createSmartAccount();
+    const smartAccountAddress = await smartAccount.getAccountAddress();
+    console.log('address : ', smartAccountAddress);
     // const input = JSON.parse(req.body as any);
     const validate = loginCustomerSchema.safeParse(input);
 
