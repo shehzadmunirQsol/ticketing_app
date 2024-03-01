@@ -1,5 +1,3 @@
-import s3UrlRoutes from '../actionRoutes/s3Url.routes';
-import totalRoutes from '../actionRoutes/totalProcessing.routes';
 import authRoutes from '../actionRoutes/user-auth.router';
 import projectRoutes from '../actionRoutes/project.router';
 import clientRoutes from '../actionRoutes/client.router';
