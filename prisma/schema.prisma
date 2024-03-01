@@ -13,16 +13,47 @@ generator client {
   previewFeatures = ["views"]
 }
 
-model Role {
+model Resources {
   id         Int     @id @default(autoincrement())
   name       String
+  code       String
+  parent     Int?
   is_deleted Boolean @default(false)
 
-  created_at DateTime    @default(now()) @db.Timestamp(6)
-  updated_at DateTime    @default(now()) @db.Timestamp(6)
-  User       AdminUser[]
+  created_at     DateTime         @default(now()) @db.Timestamp(6)
+  updated_at     DateTime         @default(now()) @db.Timestamp(6)
+  RolePermission RolePermission[]
+
+  @@map("resources")
+}
+
+model Role {
+  id         Int               @id @default(autoincrement())
+  name       CustomerTypeEnums
+  is_deleted Boolean           @default(false)
+
+  created_at    DateTime         @default(now()) @db.Timestamp(6)
+  updated_at    DateTime         @default(now()) @db.Timestamp(6)
+  AdminUser     AdminUser[]
+  User          User[]
+  RolePermsions RolePermission[]
 
   @@map("role")
+}
+
+model RolePermission {
+  id          Int        @id @default(autoincrement())
+  access      roleAccess @default(N)
+  resource_id Int
+  role_id     Int
+  is_deleted  Boolean    @default(false)
+
+  created_at DateTime   @default(now()) @db.Timestamp(6)
+  updated_at DateTime   @default(now()) @db.Timestamp(6)
+  Role       Role       @relation(fields: [role_id], references: [id])
+  Resources  Resources? @relation(fields: [resource_id], references: [id])
+
+  @@map("role_permission")
 }
 
 model AdminUser {
@@ -43,27 +74,28 @@ model AdminUser {
 }
 
 model User {
-  id             Int                @id @default(autoincrement())
-  email          String             @unique
-  username       String?            @default("")
+  id             Int         @id @default(autoincrement())
+  email          String      @unique
+  username       String?     @default("")
   password       String?
   first_name     String?
   profile_pic    String?
   last_name      String?
   phone_number   String?
-  gender         GenderEnums        @default(male)
-  role           CustomerTypeEnums? // seller,buyer, turcker or client
+  gender         GenderEnums @default(male)
+  role_id        Int?
   wallet_address String?
-  is_registerd   Boolean            @default(false)
-  is_deleted     Boolean            @default(false)
-  created_at     DateTime           @default(now())
-  updated_at     DateTime           @default(now())
+  is_registerd   Boolean     @default(false)
+  is_deleted     Boolean     @default(false)
+  created_at     DateTime    @default(now())
+  updated_at     DateTime    @default(now())
 
   ClientProjects  Projects[]        @relation(name: "client")
   ProjectTickets  ProjectTickets[]
   Projects        Projects[]
   ProjectTruckers ProjectTruckers[] @relation(name: "truckers")
   UserTruckers    ProjectTruckers[]
+  Role            Role?             @relation(fields: [role_id], references: [id])
 
   @@map("user")
 }
@@ -175,6 +207,7 @@ enum MaterialType {
 }
 
 enum CustomerTypeEnums {
+  admin
   seller
   buyer
   trucker
@@ -191,4 +224,10 @@ enum TicketEnums {
   hold
   completed
   rejected
+}
+
+enum roleAccess {
+  W
+  R
+  N
 }
