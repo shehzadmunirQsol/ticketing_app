@@ -8,7 +8,12 @@ import {
 } from '~/components/ui/dialog';
 import { trpc } from '~/utils/trpc';
 import { LoadingDialog } from './loadingModal';
-import { displayDate, reduceVATAmount, getVATAmount, numberToWords } from '~/utils/helper';
+import {
+  displayDate,
+  reduceVATAmount,
+  getVATAmount,
+  numberToWords,
+} from '~/utils/helper';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 import LogoImage from '~/public/assets/logo.png';
 import { RootState } from '~/store/store';
@@ -50,8 +55,6 @@ export type Category = {
   created_at: Date;
 };
 
-
-
 interface OrderViewDialogInterface {
   setFilters: any;
   filters: any;
@@ -65,8 +68,6 @@ interface OrderViewDialogInterface {
   setType: any;
 }
 
-
-
 export function OrderViewDialog(props: OrderViewDialogInterface) {
   const router = useRouter();
   const { lang } = useSelector((state: RootState) => state.layout);
@@ -77,16 +78,13 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
     lang_id: 1,
   });
 
-
   const { data: OrderApiData, isFetching } = trpc.order.getByID.useQuery(
-
     { order_id: props?.selectedItem?.id, lang_id: lang.lang_id },
     {
       refetchOnWindowFocus: false,
       enabled: props?.selectedItem?.id ? true : false,
     },
   );
-
 
   const orderRoute = () => {
     if (router.asPath === '/admin/orders') {
@@ -96,19 +94,19 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
     }
   };
 
+  console.log('OrderApiData', OrderApiData);
 
-  console.log("OrderApiData", OrderApiData);
-
-  var langclass = "";
-  if(lang.lang_id===2){
-    langclass = "ar";
+  let langclass = '';
+  if (lang.lang_id === 2) {
+    langclass = 'ar';
   }
-
 
   return (
     <>
       <Dialog open={props?.isModal} onOpenChange={(e) => props.setIsModal(e)}>
-        <DialogContent className={`h-[60vh] max-w-xl md:max-w-[900px] overflow-y-hidden scroll-hide p-2 ${langclass}`}>
+        <DialogContent
+          className={`h-[60vh] max-w-xl md:max-w-[900px] overflow-y-hidden scroll-hide p-2 ${langclass}`}
+        >
           <ScrollArea className="h-100 p-4">
             <ScrollBar orientation="vertical"></ScrollBar>
             <DialogFooter className=" sm:justify-start items-start w-full mb-2">
@@ -123,7 +121,10 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
             </DialogFooter>
             <DialogDescription className="relative bg-card h-full rounded-lg  overflow-y-scroll scroll-hide">
               {OrderApiData && (
-                <div className="bg-card whiteText h-full rounded-lg  px-4 md:px-8 py-4 md:py-6  mx-auto directionrtl" id="divToPrint">
+                <div
+                  className="bg-card whiteText h-full rounded-lg  px-4 md:px-8 py-4 md:py-6  mx-auto directionrtl"
+                  id="divToPrint"
+                >
                   <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-5">
                     <div className="flex flex-col mb-5 md:mb-0">
                       <NextImage
@@ -132,33 +133,43 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
                         alt="Logo"
                       />
                       <div className="text-sm">
-                      {langContent[lang.lang].OrderSuccess.COMPANY}
+                        {langContent[lang.lang].OrderSuccess.COMPANY}
                       </div>
                       <div className="text-sm greyText">
-                      {langContent[lang.lang].OrderSuccess.ADDRESS1} <br/> {langContent[lang.lang].OrderSuccess.ADDRESS2}
+                        {langContent[lang.lang].OrderSuccess.ADDRESS1} <br />{' '}
+                        {langContent[lang.lang].OrderSuccess.ADDRESS2}
                       </div>
                     </div>
                     <div className="text-left">
-                      <div className="font-bold text-xl mb-1">{langContent[lang.lang].OrderSuccess.TAXINVOICE}</div>
-                      <div className="text-sm greyText">
-                      {langContent[lang.lang].OrderSuccess.DATE}: {displayDate(OrderApiData?.data?.created_at)}
+                      <div className="font-bold text-xl mb-1">
+                        {langContent[lang.lang].OrderSuccess.TAXINVOICE}
                       </div>
                       <div className="text-sm greyText">
-                      {langContent[lang.lang].OrderSuccess.INVOICE}: #INV00{OrderApiData?.data?.id}
+                        {langContent[lang.lang].OrderSuccess.DATE}:{' '}
+                        {displayDate(OrderApiData?.data?.created_at)}
                       </div>
                       <div className="text-sm greyText">
-                      {langContent[lang.lang].OrderSuccess.TRN}: 104151951100003
+                        {langContent[lang.lang].OrderSuccess.INVOICE}: #INV00
+                        {OrderApiData?.data?.id}
+                      </div>
+                      <div className="text-sm greyText">
+                        {langContent[lang.lang].OrderSuccess.TRN}:
+                        104151951100003
                       </div>
                     </div>
                   </div>
                   <div className="border-b-2 border-gray-300 text-sm pb-5">
-                    <h2 className="text-2xl font-bold mb-3">{langContent[lang.lang].OrderSuccess.BILLTO}:</h2>
+                    <h2 className="text-2xl font-bold mb-3">
+                      {langContent[lang.lang].OrderSuccess.BILLTO}:
+                    </h2>
                     <p className="greyText">
                       {OrderApiData?.data?.first_name +
                         ' ' +
                         OrderApiData?.data?.last_name}
                     </p>
-                    <p className="greyText">{OrderApiData?.data?.street_address}</p>
+                    <p className="greyText">
+                      {OrderApiData?.data?.street_address}
+                    </p>
                     <p className="greyText">
                       {OrderApiData?.data?.city}, {OrderApiData?.data?.country}{' '}
                       {OrderApiData?.data?.postal_code}
@@ -166,67 +177,106 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
                     <p className="greyText">{OrderApiData?.data?.email}</p>
                   </div>
 
-                    <div className="w-full text-xs my-3">
-                      <div className="flex justify-between font-bold uppercase pb-2 smtext">
-                        <div className="flex-[2] text-start">{langContent[lang.lang].OrderSuccess.NAME}</div>
-                        <div className="flex-1 text-center">{langContent[lang.lang].OrderSuccess.QUANTITY}</div>
-                        <div className="flex-1 text-center">{langContent[lang.lang].OrderSuccess.UNIT} <span className="block text-xxs">(AED)</span></div>
-                        <div className="flex-1 text-center">{langContent[lang.lang].OrderSuccess.SUBTOTAL} <span className="block text-xxs">(AED)</span></div>
-                        <div className="flex-1 text-center">{langContent[lang.lang].OrderSuccess.VAT} (5%) <span className="block text-xxs">(AED)</span></div>
-                        <div className="flex-1 text-right">{langContent[lang.lang].OrderSuccess.TOTALAMOUNT} <span className="block text-xxs">(AED)</span></div>
+                  <div className="w-full text-xs my-3">
+                    <div className="flex justify-between font-bold uppercase pb-2 smtext">
+                      <div className="flex-[2] text-start">
+                        {langContent[lang.lang].OrderSuccess.NAME}
                       </div>
-
-                      {isFetching ? null : (
-                        <div className="mt-0">
-                          {OrderApiData?.data?.OrderEvent &&
-                            OrderApiData?.data?.OrderEvent?.map(
-                              (item: any, index: number) => (
-                                <div key={index} className="flex gap-2 py-2 greyText smtext">
-                                  <div className="flex-[2] text-start">
-                                    {item?.Event?.EventDescription[0]?.name}
-                                  </div>
-                                  <div
-                                    onClick={() => setSelectedOrderEvent(item)}
-                                    className="flex-1 text-center cursor-pointer duration-150 text-primary hover:text-primary underline font-bold"
-                                  >
-                                    {item?.quantity}
-                                  </div>
-                                  <div className="flex-1 text-center">
-                                    {reduceVATAmount(item?.ticket_price).toFixed(2)}
-                                  </div>
-                                  <div className="flex-1 text-center">
-                                    {reduceVATAmount(item?.ticket_price * item?.quantity).toFixed(2)}
-                                  </div>
-
-                                  <div className="flex-1 text-center">
-                                    {getVATAmount(item?.ticket_price * item?.quantity).toFixed(2)}
-                                  </div>
-
-                                  <div className="flex-1 text-right">
-                                    {(
-                                      item?.ticket_price * item?.quantity
-                                    ).toFixed(2)}
-                                  </div>
-                                </div>
-                              ),
-                            )}
-                        </div>
-                      )}
+                      <div className="flex-1 text-center">
+                        {langContent[lang.lang].OrderSuccess.QUANTITY}
+                      </div>
+                      <div className="flex-1 text-center">
+                        {langContent[lang.lang].OrderSuccess.UNIT}{' '}
+                        <span className="block text-xxs">(AED)</span>
+                      </div>
+                      <div className="flex-1 text-center">
+                        {langContent[lang.lang].OrderSuccess.SUBTOTAL}{' '}
+                        <span className="block text-xxs">(AED)</span>
+                      </div>
+                      <div className="flex-1 text-center">
+                        {langContent[lang.lang].OrderSuccess.VAT} (5%){' '}
+                        <span className="block text-xxs">(AED)</span>
+                      </div>
+                      <div className="flex-1 text-right">
+                        {langContent[lang.lang].OrderSuccess.TOTALAMOUNT}{' '}
+                        <span className="block text-xxs">(AED)</span>
+                      </div>
                     </div>
+
+                    {isFetching ? null : (
+                      <div className="mt-0">
+                        {OrderApiData?.data?.OrderEvent &&
+                          OrderApiData?.data?.OrderEvent?.map(
+                            (item: any, index: number) => (
+                              <div
+                                key={index}
+                                className="flex gap-2 py-2 greyText smtext"
+                              >
+                                <div className="flex-[2] text-start">
+                                  {item?.Event?.EventDescription[0]?.name}
+                                </div>
+                                <div
+                                  onClick={() => setSelectedOrderEvent(item)}
+                                  className="flex-1 text-center cursor-pointer duration-150 text-primary hover:text-primary underline font-bold"
+                                >
+                                  {item?.quantity}
+                                </div>
+                                <div className="flex-1 text-center">
+                                  {reduceVATAmount(item?.ticket_price).toFixed(
+                                    2,
+                                  )}
+                                </div>
+                                <div className="flex-1 text-center">
+                                  {reduceVATAmount(
+                                    item?.ticket_price * item?.quantity,
+                                  ).toFixed(2)}
+                                </div>
+
+                                <div className="flex-1 text-center">
+                                  {getVATAmount(
+                                    item?.ticket_price * item?.quantity,
+                                  ).toFixed(2)}
+                                </div>
+
+                                <div className="flex-1 text-right">
+                                  {(
+                                    item?.ticket_price * item?.quantity
+                                  ).toFixed(2)}
+                                </div>
+                              </div>
+                            ),
+                          )}
+                      </div>
+                    )}
+                  </div>
 
                   <div className="w-full border-t-2 border-gray-300 text-xs smtext">
                     <div className="w-full my-2">
                       <div className="flex justify-between py-2">
-                        <div className="flex-[2] text-start font-bold uppercase">{langContent[lang.lang].OrderSuccess.TOTALAMOUNT}</div>
+                        <div className="flex-[2] text-start font-bold uppercase">
+                          {langContent[lang.lang].OrderSuccess.TOTALAMOUNT}
+                        </div>
                         <div className="flex-1"></div>
                         <div className="flex-1"></div>
-                        <div className="flex-1 text-center greyText">{reduceVATAmount(OrderApiData?.data?.sub_total_amount).toFixed(2)}</div>
-                        <div className="flex-1 text-center greyText">{getVATAmount(OrderApiData?.data?.sub_total_amount).toFixed(2)}</div>
-                        <div className="flex-1 text-right greyText">{(OrderApiData?.data?.total_amount).toFixed(2)}</div>
+                        <div className="flex-1 text-center greyText">
+                          {reduceVATAmount(
+                            OrderApiData?.data?.sub_total_amount,
+                          ).toFixed(2)}
+                        </div>
+                        <div className="flex-1 text-center greyText">
+                          {getVATAmount(
+                            OrderApiData?.data?.sub_total_amount,
+                          ).toFixed(2)}
+                        </div>
+                        <div className="flex-1 text-right greyText">
+                          {(OrderApiData?.data?.total_amount).toFixed(2)}
+                        </div>
                       </div>
 
                       <div className="flex justify-between py-2">
-                        <div className="flex-[2] text-start font-bold uppercase">{langContent[lang.lang].OrderSuccess.DISCOUNT}</div>
+                        <div className="flex-[2] text-start font-bold uppercase">
+                          {langContent[lang.lang].OrderSuccess.DISCOUNT}
+                        </div>
                         <div className="flex-1"></div>
                         <div className="flex-1"></div>
                         <div className="flex-1"></div>
@@ -243,12 +293,23 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
                   <div className="w-full border-t-2 border-gray-300 text-xs smtext">
                     <div className="w-full my-3">
                       <div className="flex justify-between font-bold uppercase py-2">
-                        <div className="flex-[2] text-start">AED <span className='greyText'>{numberToWords(OrderApiData?.data?.total_amount)}</span></div>
+                        <div className="flex-[2] text-start">
+                          AED{' '}
+                          <span className="greyText">
+                            {numberToWords(OrderApiData?.data?.total_amount)}
+                          </span>
+                        </div>
                         <div className="flex-1"></div>
                         <div className="flex-1"></div>
                         <div className="flex-1 text-center"></div>
-                        <div className="flex-1 text-center">{langContent[lang.lang].OrderSuccess.VATAMOUNT} <span className="block text-xxs">(AED)</span></div>
-                        <div className="flex-1 text-right">{langContent[lang.lang].OrderSuccess.TOTALPAYBLE} <span className="block text-xxs">(AED)</span></div>
+                        <div className="flex-1 text-center">
+                          {langContent[lang.lang].OrderSuccess.VATAMOUNT}{' '}
+                          <span className="block text-xxs">(AED)</span>
+                        </div>
+                        <div className="flex-1 text-right">
+                          {langContent[lang.lang].OrderSuccess.TOTALPAYBLE}{' '}
+                          <span className="block text-xxs">(AED)</span>
+                        </div>
                       </div>
 
                       <div className="flex justify-between py-2">
@@ -256,12 +317,17 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
                         <div className="flex-1"></div>
                         <div className="flex-1"></div>
                         <div className="flex-1 text-center"></div>
-                        <div className="flex-1 text-center greyText">{getVATAmount(OrderApiData?.data?.sub_total_amount).toFixed(2)}</div>
-                        <div className="flex-1 text-right greyText">{(OrderApiData?.data?.total_amount).toFixed(2)}</div>
+                        <div className="flex-1 text-center greyText">
+                          {getVATAmount(
+                            OrderApiData?.data?.sub_total_amount,
+                          ).toFixed(2)}
+                        </div>
+                        <div className="flex-1 text-right greyText">
+                          {(OrderApiData?.data?.total_amount).toFixed(2)}
+                        </div>
                       </div>
                     </div>
                   </div>
-
 
                   {/* <div className=" flex justify-between items-center">
                     <div></div>
@@ -307,7 +373,10 @@ export function OrderViewDialog(props: OrderViewDialogInterface) {
       </Dialog>
       <ViewTickets
         selectedOrderEvent={selectedOrderEvent}
-        setSelectedOrderEvent={setSelectedOrderEvent} filters={filters} setFilters={setFilters} />
+        setSelectedOrderEvent={setSelectedOrderEvent}
+        filters={filters}
+        setFilters={setFilters}
+      />
       <LoadingDialog open={isFetching} text={'Loading data...'} />
     </>
   );
@@ -345,7 +414,7 @@ export function ViewTickets(props: ViewTicketsType) {
 
   useEffect(() => {
     console.log(props.setSelectedOrderEvent, props.selectedOrderEvent, 'hhhh');
-  })
+  });
 
   function closeHandler() {
     props?.setSelectedOrderEvent({});
@@ -356,8 +425,10 @@ export function ViewTickets(props: ViewTicketsType) {
       orderId: props?.selectedOrderEvent?.order_id,
       createdAt: props?.selectedOrderEvent?.created_at,
       eventName: props?.selectedOrderEvent?.Event?.EventDescription[0]?.name,
-      tickets: eventTickets?.data?.map(
-        (eventTicket) => props?.selectedOrderEvent?.Event?.EventDescription[0]?.name?.Money ? "CA-" + padTicketNum(eventTicket?.ticket_num) : "CR-" + padTicketNum(eventTicket?.ticket_num),
+      tickets: eventTickets?.data?.map((eventTicket) =>
+        props?.selectedOrderEvent?.Event?.EventDescription[0]?.name?.Money
+          ? 'CA-' + padTicketNum(eventTicket?.ticket_num)
+          : 'CR-' + padTicketNum(eventTicket?.ticket_num),
       ),
     };
 
@@ -378,7 +449,6 @@ export function ViewTickets(props: ViewTicketsType) {
     props?.setFilters((prevFilters: any) => ({ ...prevFilters, first: page }));
   }
 
-
   const handleView = (data: any, type: string) => {
     setSelectedItem(data);
     setTitle('Banner');
@@ -390,7 +460,10 @@ export function ViewTickets(props: ViewTicketsType) {
       accessorKey: 'ID',
       header: 'Order ID',
       cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap cursor-pointer underline" onClick={() => handleView(row?.original, 'view')}>
+        <div
+          className="capitalize text-ellipsis whitespace-nowrap cursor-pointer underline"
+          onClick={() => handleView(row?.original, 'view')}
+        >
           #{row?.original.id}
         </div>
       ),
@@ -443,8 +516,10 @@ export function ViewTickets(props: ViewTicketsType) {
       enableHiding: false,
       cell: ({ row }) => {
         return (
-
-          <div className="winbtn winbtnormal smallbtn font-sans capitalize text-ellipsis whitespace-nowrap" onClick={() => handleView(row?.original, 'view')}>
+          <div
+            className="winbtn winbtnormal smallbtn font-sans capitalize text-ellipsis whitespace-nowrap"
+            onClick={() => handleView(row?.original, 'view')}
+          >
             Order Detail
           </div>
         );
@@ -453,7 +528,7 @@ export function ViewTickets(props: ViewTicketsType) {
   ];
 
   const orderData = React.useMemo(() => {
-    console.log("tabledata", eventTickets)
+    console.log('tabledata', eventTickets);
     return Array.isArray(eventTickets?.data) ? eventTickets?.data : [];
   }, [eventTickets]);
 
@@ -480,10 +555,11 @@ export function ViewTickets(props: ViewTicketsType) {
     return '0'.repeat(zerosToAdd) + ticketNum;
   }
   useEffect(() => {
-    console.log(props?.selectedOrderEvent?.Event?.EventDescription[0]
-      ?.name, 'rrrr');
-
-  })
+    console.log(
+      props?.selectedOrderEvent?.Event?.EventDescription[0]?.name,
+      'rrrr',
+    );
+  });
 
   return (
     <>
@@ -537,26 +613,30 @@ export function ViewTickets(props: ViewTicketsType) {
                         }
                       </h3>
                       <div className="grid grid-cols-4 gap-2 md:grid-cols-6">
-                        {props?.selectedOrderEvent?.Event?.EventDescription[0]?.name?.Money ? (
-                          eventTickets?.data
-                            ?.slice()
-                            .sort(() => Math.random() - 0.5)
-                            .map((eventTicket) => (
-                              <p className={`w-20`} key={eventTicket?.ticket_num}>
-                                CA-{padTicketNum(eventTicket?.ticket_num)}
-                              </p>
-                            ))
-                        ) : (
-                          eventTickets?.data
-                            ?.slice()
-                            .sort(() => Math.random() - 0.5)
-                            .map((eventTicket) => (
-                              <p className={`w-20`} key={eventTicket?.ticket_num}>
-                                CR-{padTicketNum(eventTicket?.ticket_num)}
-                              </p>
-                            ))
-                        )}
-
+                        {props?.selectedOrderEvent?.Event?.EventDescription[0]
+                          ?.name?.Money
+                          ? eventTickets?.data
+                              ?.slice()
+                              .sort(() => Math.random() - 0.5)
+                              .map((eventTicket) => (
+                                <p
+                                  className={`w-20`}
+                                  key={eventTicket?.ticket_num}
+                                >
+                                  CA-{padTicketNum(eventTicket?.ticket_num)}
+                                </p>
+                              ))
+                          : eventTickets?.data
+                              ?.slice()
+                              .sort(() => Math.random() - 0.5)
+                              .map((eventTicket) => (
+                                <p
+                                  className={`w-20`}
+                                  key={eventTicket?.ticket_num}
+                                >
+                                  CR-{padTicketNum(eventTicket?.ticket_num)}
+                                </p>
+                              ))}
                       </div>
                     </div>
                   ) : (

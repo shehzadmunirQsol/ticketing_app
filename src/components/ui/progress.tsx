@@ -8,12 +8,11 @@ const Progress = React.forwardRef<
   React.ElementRef<typeof ProgressPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root>
 >(({ className, value, ...props }, ref) => {
-  
   const { lang } = useSelector((state: RootState) => state.layout);
-  
-  var sign = "-";
-  if(lang.lang_id===2){
-    sign = "+";
+
+  let sign = '-';
+  if (lang.lang_id === 2) {
+    sign = '+';
   }
 
   return (
