@@ -59,7 +59,7 @@ export const registerCustomerSchema = z.object({
     .max(30, {
       message: 'username must not exceed 30 characters',
     }),
-  role: z.enum(['seller', 'buyer', 'trucker', 'client'], {
+  role_id: z.number({
     required_error: 'Please enter select role',
   }),
   wallet_address: z.string({ required_error: 'Please provide wallet address' }),

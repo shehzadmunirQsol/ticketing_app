@@ -90,7 +90,7 @@ export async function registerCustomer(req: any, res: any) {
       where: { email: validate.data?.email },
     });
 
-    if (existingUser?.is_registerd || existingUser?.role) {
+    if (existingUser?.is_registerd || existingUser?.role_id) {
       return res.status(400).json({
         error: 'Email already exists. Please use a different email.',
       });
@@ -109,10 +109,21 @@ export async function registerCustomer(req: any, res: any) {
       create: {
         ...validate.data,
       },
+      include: {
+        Role: {
+          include: {
+            RolePermsions: {
+              include: {
+                Resources: true,
+              },
+            },
+          },
+        },
+      },
     });
     const jwt = signJWT({
       email: result.email,
-      role: result.role,
+      role: result.role_id,
       id: result.id,
     });
     return res.status(200).send({ customer: result, jwt });
