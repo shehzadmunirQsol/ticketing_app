@@ -177,7 +177,7 @@ const SIDEBAR_DATA = [
         title: 'Roles',
       },
       {
-        key: '/admin/settings/spotlight',
+        key: '/admin/settings/resources',
 
         icon: <i className=" fa-solid fa-folder-tree p-4 rounded-full" />,
         title: 'Resources',
