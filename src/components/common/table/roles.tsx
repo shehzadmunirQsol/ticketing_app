@@ -171,7 +171,7 @@ export default function RolesDataTable() {
             <DropdownMenuContent align="end">
               {/* <DropdownMenuLabel>Actions</DropdownMenuLabel> */}
               {/* <DropdownMenuSeparator /> */}
-              <Link href={`/admin/coupons/edit/${row?.original?.id}`}>
+              <Link href={`/admin/settings/roles/edit/${row?.original?.id}`}>
                 <DropdownMenuItem className=" cursor-pointer">
                   Edit Permisions
                 </DropdownMenuItem>

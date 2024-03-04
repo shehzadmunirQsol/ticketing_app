@@ -9,6 +9,16 @@ export const getRolesSchema = z.object({
   filters: z.any().optional(),
   is_enabled: z.boolean().optional(),
 });
+export const getRolesPermisionSchema = z.object({
+  startDate: z.date().optional(),
+  endDate: z.date().optional(),
+  id: z.number().optional().nullable(),
+  searchQuery: z.string().optional(),
+  first: z.number(),
+  rows: z.number(),
+  filters: z.any().optional(),
+  is_enabled: z.boolean().optional(),
+});
 export const addResourcesSchema = z.object({
   id: z.number().optional().nullable(),
 
