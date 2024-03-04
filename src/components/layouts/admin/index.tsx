@@ -53,13 +53,13 @@ function AdminLayout({ children }: DefaultLayoutProps) {
             <Header />
           </div>
           <div className="relative flex ">
-            <div className=" sticky top-0">
+            <div className=" sticky top-20 h-[calc(100vh-82px)]">
               <Sidebar />
             </div>
             <main
               className={`relative flex-1 w-full ${
-                isSidebarOpen ? 'w-[calc(100vw-15%)]' : 'w-[calc(100vw-80px)]'
-              }   `}
+                isSidebarOpen ? 'ml-2' : 'ml-4'
+              }  overflow-y-scroll  `}
             >
               {children}
             </main>

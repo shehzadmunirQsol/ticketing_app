@@ -1,6 +1,6 @@
 import { customTruncateHandler } from './helper';
 
-export const clientEmailLayout = (data) => {
+export const clientEmailLayout = (data: any) => {
   console.log(data, 'inside email');
   const transaction = customTruncateHandler(data?.transaction_id, 15);
   if (data.type === 'newsletter') {

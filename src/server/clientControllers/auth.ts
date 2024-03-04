@@ -1,9 +1,10 @@
-import { signJWT } from '~/utils/jwt';
+import { signJWT, verifyJWT } from '~/utils/jwt';
 import { prisma } from '../prisma';
 import { loginCustomerSchema, registerCustomerSchema } from '~/schema/auth';
 import bcrypt from 'bcryptjs';
 import { Prisma } from '@prisma/client';
-
+import { createSmartAccount } from './web3-controller/createAccount';
+// import createSmartAccount fro
 /* 
  ---- input ----
  email
@@ -17,6 +18,7 @@ export async function loginCustomer(req: any, res: any) {
       return res.status(400).send({ message: 'payload not found' });
 
     const input = req.body;
+
     // const input = JSON.parse(req.body as any);
     const validate = loginCustomerSchema.safeParse(input);
 
@@ -33,23 +35,31 @@ export async function loginCustomer(req: any, res: any) {
         email: validate.data?.email,
       },
     });
-
+    const { private_address, ...inputData } = validate.data;
+    const decodePrivateAddress: any = await verifyJWT(private_address);
+    const smartAccount = await createSmartAccount({
+      private_address: decodePrivateAddress.address,
+    });
+    const smartAccountAddress = await smartAccount.getAccountAddress();
     if (!customer) {
       customer = await prisma.user.create({
         data: {
-          ...validate.data,
+          ...inputData,
+          wallet_address: smartAccountAddress,
         },
       });
 
       return res.status(201).send({ customer, is_registered: false });
     }
-    if (!customer?.wallet_address && validate.data?.wallet_address) {
+
+    //  console.log('address : ', smartAccountAddress);
+    if (!customer?.wallet_address && smartAccountAddress) {
       customer = await prisma.user.update({
         where: {
           id: customer.id,
         },
         data: {
-          wallet_address: validate.data?.wallet_address,
+          wallet_address: smartAccountAddress,
         },
       });
     }
@@ -90,7 +100,7 @@ export async function registerCustomer(req: any, res: any) {
       where: { email: validate.data?.email },
     });
 
-    if (existingUser?.is_registerd || existingUser?.role) {
+    if (existingUser?.is_registerd || existingUser?.role_id) {
       return res.status(400).json({
         error: 'Email already exists. Please use a different email.',
       });
@@ -109,10 +119,21 @@ export async function registerCustomer(req: any, res: any) {
       create: {
         ...validate.data,
       },
+      include: {
+        Role: {
+          include: {
+            RolePermsions: {
+              include: {
+                Resources: true,
+              },
+            },
+          },
+        },
+      },
     });
     const jwt = signJWT({
       email: result.email,
-      role: result.role,
+      role: result.role_id,
       id: result.id,
     });
     return res.status(200).send({ customer: result, jwt });

@@ -160,28 +160,28 @@ const SIDEBAR_DATA = [
     title: 'Customers',
   },
   {
-    key: '/admin/coupons',
+    key: '/admin/projects',
     icon: <i className="fa-solid fa-tag p-4 rounded-full" />,
     title: 'Projects',
   },
 
-  // {
-  //   key: '/settings',
-  //   icon: <i className="fa-solid fa-gear p-4 rounded-full" />,
-  //   title: 'Settings',
-  //   child: [
-  //     {
-  //       key: '/admin/settings/banners',
+  {
+    key: '/settings',
+    icon: <i className="fa-solid fa-gear p-4 rounded-full" />,
+    title: 'Settings',
+    child: [
+      {
+        key: '/admin/settings/roles',
 
-  //       icon: <i className={` fa-solid fa-image p-4 rounded-full`} />,
-  //       title: 'Banner',
-  //     },
-  //     {
-  //       key: '/admin/settings/spotlight',
+        icon: <i className={` fa-solid fa-users  p-4 rounded-full`} />,
+        title: 'Roles',
+      },
+      {
+        key: '/admin/settings/spotlight',
 
-  //       icon: <i className=" fa-solid fa-image p-4 rounded-full" />,
-  //       title: 'Winnar Wonders',
-  //     },
-  //   ],
-  // },
+        icon: <i className=" fa-solid fa-folder-tree p-4 rounded-full" />,
+        title: 'Resources',
+      },
+    ],
+  },
 ];

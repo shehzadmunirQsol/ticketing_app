@@ -18,12 +18,10 @@ export default function DefaultLayout({ children }: DefaultLayoutProps) {
       <Toaster position="top-right" reverseOrder={false} />
       <ThemeProvider attribute="class" defaultTheme="dark">
         <Head>
-          <title>Winnar</title>
+          <title>Ticketing</title>
           <link rel="icon" href={Icon.src} />
         </Head>
         {router.asPath.startsWith('/admin') ? (
-          // <AdminAuth>
-          // </AdminAuth>
           <AdminLayout>{children}</AdminLayout>
         ) : (
           <>{children}</>
