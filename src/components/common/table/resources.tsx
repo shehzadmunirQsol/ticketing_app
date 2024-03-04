@@ -196,11 +196,6 @@ export default function ResourcesDataTable() {
               >
                 Edit
               </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => deleteCoupon(row?.original, 'delete')}
-              >
-                Delete
-              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         );
