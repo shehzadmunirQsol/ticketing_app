@@ -1,12 +1,16 @@
 import { ethers } from 'ethers';
 import { createSmartAccountClient } from '@biconomy/account';
 
-export const createSmartAccount = async () => {
+type createSmartAccountType = {
+  private_address: string;
+};
+export const createSmartAccount = async (props: createSmartAccountType) => {
   const provider = new ethers.providers.JsonRpcProvider(
     process.env.RPC_URL, // RPCURL
   );
   const signer = new ethers.Wallet(
-    '1a9060d87234f853cad12f07c98c903ff8138f467a795f9faf0b7cfd48f52510', // Private key
+    props?.private_address ??
+      '1a9060d87234f853cad12f07c98c903ff8138f467a795f9faf0b7cfd48f52510', // Private key
     provider,
   );
   const biconomySmartAccountConfig: any = {

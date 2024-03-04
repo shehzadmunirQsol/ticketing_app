@@ -21,7 +21,9 @@ export const loginCustomerSchema = z.object({
       message: 'Invalid email format.',
     }),
 
-  wallet_address: z.string({ required_error: 'Please provide wallet address' }),
+  private_address: z.string({
+    required_error: 'Please provide wallet address',
+  }),
   first_name: z.string({ required_error: 'Please provide name' }),
 });
 
