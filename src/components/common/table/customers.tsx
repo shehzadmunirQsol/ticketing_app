@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ColumnDef,
   // ColumnFiltersState,
@@ -33,7 +33,7 @@ import {
 
 import { trpc } from '~/utils/trpc';
 import { customEmailTruncateHandler, displayDate } from '~/utils/helper';
-import { getCustomerSchema } from '~/schema/customer';
+import { getCustomerFilterSchema, getCustomerSchema } from '~/schema/customer';
 import {
   Tooltip,
   TooltipContent,
@@ -60,10 +60,11 @@ import {
 } from '@radix-ui/react-icons';
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 import { useRouter } from 'next/router';
-import { getRolesFilterSchema } from '~/schema/roles';
-export type Roles = {
+import { ResourceUploadDialog } from '../modal/resourceModal';
+export type Resources = {
   id: number;
-  name: string;
+  first_name: string;
+  email: string;
 
   is_deleted: boolean;
   created_at: Date;
@@ -73,15 +74,20 @@ const initialFilters: any = {
   first: 0,
   rows: 10,
 };
+type customerDataTableType = {
+  type: string;
+};
 
-export default function RolesDataTable() {
+export default function CustomersDataTable(props: customerDataTableType) {
+  console.log({ props });
   // use toast
   const { toast } = useToast();
   const router = useRouter();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [filterID, setFilterID] = useState({});
 
-  const [filters, setFilters] = useState<getRolesFilterSchema>(initialFilters);
+  const [filters, setFilters] =
+    useState<getCustomerFilterSchema>(initialFilters);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
   const [selectedItem, setSelectedItem] = React.useState({});
@@ -91,8 +97,20 @@ export default function RolesDataTable() {
   const [isModalDelete, setIsModalDelete] = React.useState(false);
 
   // APi
-  const { data, refetch, isLoading } = trpc.roles.get.useQuery(
-    { ...filters, filters: { ...filterID } },
+  const { data, refetch, isLoading } = trpc.customer.get.useQuery(
+    {
+      ...filters,
+      role_id: props?.type
+        ? props?.type === 'seller'
+          ? 2
+          : props?.type === 'client'
+          ? 4
+          : props?.type === 'trucker'
+          ? 5
+          : 2
+        : 2,
+      filters: { ...filterID },
+    },
     {
       refetchOnWindowFocus: false,
     },
@@ -102,30 +120,21 @@ export default function RolesDataTable() {
     return Array.isArray(data?.data) ? data?.data : [];
   }, [data]);
 
-  // delete product
-  const deleteCoupon = (data: any, type: string) => {
-    setSelectedItem(data);
-    setTitle('Coupon');
-    setType(type);
-    setIsModalDelete(true);
-  };
-
-  // handle modal
-  const handleEnbled = (data: any, type: string) => {
-    if (!data?.is_approved) {
-      setSelectedItem(data);
-      setTitle('Coupon');
-      setType(type);
-      setIsModal(true);
+  function openChangeHandler(data: any) {
+    setIsModal((prevState) => !prevState);
+    if (data) {
+      setSelectedItem({ id: data?.id, name: data?.name, code: data?.code });
     } else {
-      toast({
-        variant: 'disable',
-        title: `Customer is Already Approved!`,
-      });
+      setSelectedItem({});
     }
-  };
+  }
+  // handle modal
+  // const handleEnbled = (data: any) => {
+  //   setSelectedItem({ id: data?.id, name: data?.name, code: data?.code });
+  //   openChangeHandler();
+  // };
   // columns
-  const columns: ColumnDef<Roles>[] = [
+  const columns: ColumnDef<Resources>[] = [
     {
       accessorKey: 'name',
       header: 'Name',
@@ -134,16 +143,32 @@ export default function RolesDataTable() {
           <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
             <TooltipProvider>
               <Tooltip>
+                <TooltipTrigger>{row?.original?.first_name}</TooltipTrigger>
+                <TooltipContent>
+                  <p className="text-base font-normal">
+                    {row?.original?.first_name}
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: 'email',
+      header: 'Code',
+      cell: ({ row }) => {
+        return (
+          <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
+            <TooltipProvider>
+              <Tooltip>
                 <TooltipTrigger>
-                  {row?.original?.name === 'seller'
-                    ? 'seller/buyer'
-                    : row?.original?.name}
+                  {customEmailTruncateHandler(row?.original?.email)}
                 </TooltipTrigger>
                 <TooltipContent>
                   <p className="text-base font-normal">
-                    {row?.original?.name === 'seller'
-                      ? 'seller/buyer'
-                      : row?.original?.name}
+                    {row?.original?.email}
                   </p>
                 </TooltipContent>
               </Tooltip>
@@ -178,11 +203,11 @@ export default function RolesDataTable() {
             <DropdownMenuContent align="end">
               {/* <DropdownMenuLabel>Actions</DropdownMenuLabel> */}
               {/* <DropdownMenuSeparator /> */}
-              <Link href={`/admin/settings/roles/edit/${row?.original?.id}`}>
-                <DropdownMenuItem className=" cursor-pointer">
-                  Edit Permisions
-                </DropdownMenuItem>
-              </Link>
+              <DropdownMenuItem
+                onClick={() => openChangeHandler(row?.original)}
+              >
+                Edit
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         );
@@ -191,7 +216,7 @@ export default function RolesDataTable() {
   ];
 
   const table = useReactTable({
-    data: rolesData as Roles[],
+    data: rolesData as Resources[],
     columns,
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
@@ -290,9 +315,26 @@ export default function RolesDataTable() {
       filtername: 'Clear',
     },
   ];
+  useEffect(() => {
+    refetch();
+  }, [props?.type]);
 
   return (
     <div className="w-full space-y-4">
+      <div className="flex items-center justify-between mb-4">
+        <div className=" text-4xl font-semibold capitalize">
+          {props?.type ?? 'Customers'}
+        </div>
+
+        <Button
+          type="submit"
+          variant={'clip'}
+          onClick={() => openChangeHandler({ data: null })}
+          className="w-28"
+        >
+          Add
+        </Button>
+      </div>
       <div className="flex items-center justify-end gap-2">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -462,6 +504,12 @@ export default function RolesDataTable() {
           </div>
         </div>
       </div>
+      <ResourceUploadDialog
+        setIsModal={setIsModal}
+        isModal={isModal}
+        refetch={refetch}
+        {...selectedItem}
+      />
 
       <LoadingDialog open={isLoading} text={'Loading data...'} />
     </div>

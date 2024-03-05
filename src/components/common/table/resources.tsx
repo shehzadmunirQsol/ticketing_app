@@ -61,6 +61,7 @@ import {
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 import { useRouter } from 'next/router';
 import { ResourceUploadDialog } from '../modal/resourceModal';
+import { getRolesFilterSchema } from '~/schema/roles';
 export type Resources = {
   id: number;
   name: string;
@@ -82,7 +83,7 @@ export default function ResourcesDataTable() {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [filterID, setFilterID] = useState({});
 
-  const [filters, setFilters] = useState<getCustomerSchema>(initialFilters);
+  const [filters, setFilters] = useState<getRolesFilterSchema>(initialFilters);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
   const [selectedItem, setSelectedItem] = React.useState({});
@@ -126,9 +127,7 @@ export default function ResourcesDataTable() {
           <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
             <TooltipProvider>
               <Tooltip>
-                <TooltipTrigger>
-                  {customEmailTruncateHandler(row?.original?.name)}
-                </TooltipTrigger>
+                <TooltipTrigger>{row?.original?.name}</TooltipTrigger>
                 <TooltipContent>
                   <p className="text-base font-normal">{row?.original?.name}</p>
                 </TooltipContent>

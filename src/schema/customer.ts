@@ -21,9 +21,7 @@ export const signupCustomerSchema = z.object({
     .max(30, {
       message: 'Password must not exceed 30 characters',
     }),
-  confirmpassword: z
-    .string({ required_error: 'Please enter your password' })
-    ,
+  confirmpassword: z.string({ required_error: 'Please enter your password' }),
   first_name: z
     .string({ required_error: 'Please enter your firstname' })
     .min(2, {
@@ -75,9 +73,7 @@ export const signupCustomerSchemaInput = z.object({
     .max(30, {
       message: 'Password must not exceed 30 characters',
     }),
-  confirmpassword: z
-    .string({ required_error: 'Please enter your password' })
-    ,
+  confirmpassword: z.string({ required_error: 'Please enter your password' }),
   first_name: z
     .string({ required_error: 'Please enter your First Name' })
     .min(2, {
@@ -138,7 +134,7 @@ export const getCustomerSchema = z.object({
   startDate: z.date().optional(),
   endDate: z.date().optional(),
   searchQuery: z.string().optional(),
-  is_verified: z.boolean().optional(),
+  role_id: z.number(),
   first: z.number(),
   rows: z.number(),
   filters: z.any().optional(),
@@ -161,7 +157,7 @@ export const updateCustomerSchema = z.object({
   is_blocked: z.boolean().optional(),
   type: z.string().optional(),
 });
-export type getCustomerSchema = z.TypeOf<typeof getCustomerSchema>;
+export type getCustomerFilterSchema = z.TypeOf<typeof getCustomerSchema>;
 
 export const loginCustomerSchema = z.object({
   user: z
@@ -322,9 +318,7 @@ export const addCustomerAddress = z.object({
       message: 'Invalid code',
     })
     .trim(),
-  postal_code: z
-  .string()
-  .optional(),
+  postal_code: z.string().optional(),
 });
 export const updateCustomerAddress = z.object({
   id: z.number().optional(),

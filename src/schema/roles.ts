@@ -19,6 +19,11 @@ export const getRolesPermisionSchema = z.object({
   filters: z.any().optional(),
   is_enabled: z.boolean().optional(),
 });
+export type getRolesFilterSchema = z.TypeOf<typeof getRolesSchema>;
+export type getRolesPermisionFilterSchema = z.TypeOf<
+  typeof getRolesPermisionSchema
+>;
+
 export const addResourcesSchema = z.object({
   id: z.number().optional().nullable(),
 

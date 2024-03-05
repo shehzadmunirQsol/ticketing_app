@@ -38,6 +38,7 @@ import { LoadingDialog } from '../modal/loadingModal';
 
 import { useRouter } from 'next/router';
 import { Button } from '~/components/ui/button';
+import { getRolesFilterSchema } from '~/schema/roles';
 export type Roles = {
   id: number;
   name: string;
@@ -58,7 +59,7 @@ export default function RolesPermisionDataTable() {
   const router = useRouter();
   const [sorting, setSorting] = useState<SortingState>([]);
 
-  const [filters, setFilters] = useState<getCustomerSchema>(initialFilters);
+  const [filters, setFilters] = useState<getRolesFilterSchema>(initialFilters);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
   const [permissions, setPermissions] = useState<any>({});
@@ -107,9 +108,7 @@ export default function RolesPermisionDataTable() {
           <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
             <TooltipProvider>
               <Tooltip>
-                <TooltipTrigger>
-                  {customEmailTruncateHandler(row?.original?.name)}
-                </TooltipTrigger>
+                <TooltipTrigger>{row?.original?.name}</TooltipTrigger>
                 <TooltipContent>
                   <p className="text-base font-normal">{row?.original?.name}</p>
                 </TooltipContent>
