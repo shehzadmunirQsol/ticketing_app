@@ -181,10 +181,12 @@ export const createUserSchema = z.object({
     .refine((val) => validateEmail(val), {
       message: 'Invalid email format.',
     }),
-  role_id: z
-    .number({
-      required_error: 'Please select role',
-      invalid_type_error: 'Please select role',
+  type: z
+    .string({
+      required_error: 'Please enter your type',
+      invalid_type_error: 'Please enter your type',
     })
-    .default(2),
+    .min(1, {
+      message: 'Invalid type',
+    }),
 });

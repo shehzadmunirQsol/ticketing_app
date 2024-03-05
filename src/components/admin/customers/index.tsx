@@ -1,7 +1,6 @@
 import React from 'react';
 
 import CustomersDataTable from '~/components/common/table/customers';
-import RolesDataTable from '~/components/common/table/roles';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
 
 function Customers() {
@@ -12,7 +11,7 @@ function Customers() {
       </div>
       <div>
         <Tabs defaultValue="seller" className="w-full">
-          <TabsList className=" px-2 w-1/2">
+          <TabsList className=" px-2 w-full md:w-1/2">
             <TabsTrigger value="seller" className="w-full">
               Seller/Buyer
             </TabsTrigger>

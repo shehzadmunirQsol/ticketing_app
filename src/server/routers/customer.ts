@@ -215,10 +215,18 @@ export const customerUserRouter = router({
     .input(createUserSchema)
     .mutation(async ({ ctx, input }) => {
       try {
-        const paylaod: any = { ...input };
-
+        const { type, ...paylaod }: any = { ...input };
+        const role_id = type
+          ? type === 'seller'
+            ? 2
+            : type === 'client'
+            ? 4
+            : type === 'trucker'
+            ? 5
+            : 2
+          : 2;
         const user = await prisma.user.create({
-          data: paylaod,
+          data: { ...paylaod, role_id },
         });
 
         if (!user) {
@@ -227,18 +235,8 @@ export const customerUserRouter = router({
             message: 'User not registered!',
           });
         }
-        const jwt = signJWT({ email: user.email, id: user.id });
 
-        const serialized = serialize('ticketing-admin-token', jwt, {
-          httpOnly: true,
-          path: '/',
-          sameSite: 'strict',
-          // secure: process.env.NODE_ENV !== "development",
-        });
-
-        ctx.res?.setHeader('Set-Cookie', serialized);
-
-        return { user, jwt };
+        return { user };
       } catch (error: any) {
         console.log('data error', error);
 

@@ -161,7 +161,7 @@ const SIDEBAR_DATA = [
   },
   {
     key: '/admin/projects',
-    icon: <i className="fa-solid fa-tag p-4 rounded-full" />,
+    icon: <i className="fa-solid fa-diagram-project p-4 rounded-full" />,
     title: 'Projects',
   },
 
@@ -173,7 +173,7 @@ const SIDEBAR_DATA = [
       {
         key: '/admin/settings/roles',
 
-        icon: <i className={` fa-solid fa-users  p-4 rounded-full`} />,
+        icon: <i className={` fa-solid fa-users-gear  p-4 rounded-full`} />,
         title: 'Roles',
       },
       {
