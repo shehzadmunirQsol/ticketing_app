@@ -1,5 +1,6 @@
 import { prisma } from '../prisma';
 import { projectCreateSchema, projectGetAllSchema } from '~/schema/project';
+import { sendInvitation } from '~/utils/clientMailer';
 import { getUserData } from '~/utils/helper';
 
 /* 
@@ -177,6 +178,16 @@ export async function createProject(req: any, res: any) {
         },
       },
     });
+    if (clientData)
+      await sendInvitation({
+        email: clientData?.email,
+        from: userData?.first_name ?? 'Owner',
+        subject: `Project Invitation - ${validate?.data?.name}`,
+        type: 'project-invitation',
+        raw: `<p> ${userData?.first_name ?? 'Owner'} invited you as client in ${
+          validate?.data?.name
+        } project. </p>`,
+      });
 
     return res.status(200).send({ project: result });
   } catch (err: any) {

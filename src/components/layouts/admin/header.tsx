@@ -92,7 +92,7 @@ export function DropdownMenuDemo() {
     try {
       await logout.mutateAsync({});
       toast.success('Logout successfully!');
-      localStorage.removeItem('winnar-admin-token');
+      localStorage.removeItem('ticketing-admin-token');
       dispatch(userAdminAuth(null));
       dispatch(userAdminIsLogin(false));
       router.replace('/admin/login');

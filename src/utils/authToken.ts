@@ -1,10 +1,10 @@
-const AdminSessionName = 'winnar-admin-token';
+const AdminSessionName = 'ticketing-admin-token';
 export function getAdminToken(headers: Headers | null) {
   const cookieStore = headers?.get('cookie');
   const ls = cookieStore?.split('; ');
-  const token = ls?.find((x) => x.startsWith('winnar-admin-token='));
+  const token = ls?.find((x) => x.startsWith('ticketing-admin-token='));
   if (!token) return null;
-  return token?.replace('winnar-admin-token=', '');
+  return token?.replace('ticketing-admin-token=', '');
 }
 
 export function getToken(headers: Headers | null) {

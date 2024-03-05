@@ -28,16 +28,17 @@ import { useEffect } from 'react';
 import 'react-international-phone/style.css';
 import { addResourceInput, addResourcesSchema } from '~/schema/roles';
 
-interface ResourcesInterface {
+interface CustomerInterface {
   isModal: boolean;
   setIsModal: (data: boolean) => void;
   refetch: () => void;
+  type: string;
   id?: number;
   name?: string | null;
   code?: string | null;
 }
 
-export function ResourceUploadDialog(props: ResourcesInterface) {
+export function CustomerUploadDialog(props: CustomerInterface) {
   const { toast } = useToast();
 
   useEffect(() => {
@@ -120,7 +121,9 @@ export function ResourceUploadDialog(props: ResourcesInterface) {
     <Dialog open={props?.isModal} onOpenChange={() => props.setIsModal(false)}>
       <DialogContent className="max-h-[40vh] h-[calc(100%-200px)] max-w-xl md:max-w-[500px] overflow-y-hidden scroll-hide py-4 px-6">
         <DialogHeader>
-          <DialogTitle>{props?.id ? 'Update' : 'Add'} Resource</DialogTitle>
+          <DialogTitle className=" capitalize">
+            {props?.id ? 'Update' : 'Add'} {props?.type}
+          </DialogTitle>
           <DialogDescription>
             <Form {...form}>
               <form
@@ -154,7 +157,7 @@ export function ResourceUploadDialog(props: ResourcesInterface) {
                   render={() => (
                     <FormItem className="w-full">
                       <FormLabel className="text-xs  font-thin text-cardGray ">
-                        Code
+                        Email
                       </FormLabel>
                       <FormControl>
                         <Input

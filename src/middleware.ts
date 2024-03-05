@@ -1,15 +1,14 @@
 import { getCookie } from 'cookies-next';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-// import { getAdminToken, getToken } from '~/utils/authToken'; 
+// import { getAdminToken, getToken } from '~/utils/authToken';
 
 export function middleware(request: NextRequest, response: NextResponse) {
-  
   if (request.nextUrl.pathname.startsWith('/admin')) {
     // const storeRequestHeaders = new Headers(request.headers);
     // const token = getAdminToken(storeRequestHeaders);
 
-    const token = getCookie('winnar-admin-token', {
+    const token = getCookie('ticketing-admin-token', {
       req: request,
       res: response,
     });
@@ -32,9 +31,7 @@ export function middleware(request: NextRequest, response: NextResponse) {
     // const isProtectedRoutes = ['/checkout', '/account'].includes(
     //   request.nextUrl.pathname,
     // );
-    const isProtectedRoutes = ['/account'].includes(
-      request.nextUrl.pathname,
-    );
+    const isProtectedRoutes = ['/account'].includes(request.nextUrl.pathname);
     const isProtectedCheckout = ['/checkout'].includes(
       request.nextUrl.pathname,
     );
@@ -43,14 +40,13 @@ export function middleware(request: NextRequest, response: NextResponse) {
       return NextResponse.redirect(new URL('/', request.url));
     if (request.nextUrl.pathname.includes('/reset-password') && token)
       return NextResponse.redirect(new URL('/', request.url));
-    if (isProtectedRoutes && !token){
+    if (isProtectedRoutes && !token) {
       return NextResponse.redirect(new URL('/login', request.url));
     }
-    if (isProtectedCheckout && !token){
+    if (isProtectedCheckout && !token) {
       // return NextResponse.redirect(new URL('/login?redirect=checkout', request.url));
       return NextResponse.redirect(new URL('/login', request.url));
     }
-
 
     // const isProtectedCarPage = request.nextUrl.pathname.includes('/cars/');
     // const isProtectedCashPage = request.nextUrl.pathname.includes('/cash/');
@@ -58,8 +54,6 @@ export function middleware(request: NextRequest, response: NextResponse) {
     //   return NextResponse.redirect(new URL('/login', request.url));
     // }
 
-
-      
     return NextResponse.next();
   }
   return NextResponse.next();

@@ -12,11 +12,11 @@ import { prisma } from '~/server/prisma';
 import { hashPass, isSamePass } from '~/utils/hash';
 import { serialize } from 'cookie';
 import { signJWT, verifyJWT } from '~/utils/jwt';
-import { getCustomerSchema } from '~/schema/customer';
+import { createUserSchema, getCustomerSchema } from '~/schema/customer';
 
 export const customerUserRouter = router({
   me: publicProcedure.input(getAdminSchema).query(async ({ ctx }) => {
-    const token = ctx?.req?.cookies['winnar-admin-token'];
+    const token = ctx?.req?.cookies['ticketing-admin-token'];
     console.log({ token });
 
     let userData;
@@ -70,7 +70,7 @@ export const customerUserRouter = router({
         });
       }
       const jwt = signJWT({ email: user.email, id: user.id });
-      const serialized = serialize('winnar-admin-token', jwt, {
+      const serialized = serialize('ticketing-admin-token', jwt, {
         httpOnly: true,
         path: '/',
         sameSite: 'strict',
@@ -128,7 +128,7 @@ export const customerUserRouter = router({
 
   logout: publicProcedure.input(logoutSchema).mutation(async ({ ctx }) => {
     try {
-      const serialized = serialize('winnar-admin-token', '', {
+      const serialized = serialize('ticketing-admin-token', '', {
         httpOnly: true,
         path: '/',
         sameSite: 'strict',
@@ -165,7 +165,7 @@ export const customerUserRouter = router({
         }
         const jwt = signJWT({ email: user.email, id: user.id });
 
-        const serialized = serialize('winnar-admin-token', jwt, {
+        const serialized = serialize('ticketing-admin-token', jwt, {
           httpOnly: true,
           path: '/',
           sameSite: 'strict',
@@ -202,6 +202,43 @@ export const customerUserRouter = router({
           });
         }
         return { user };
+      } catch (error: any) {
+        console.log('data error', error);
+
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: error?.message,
+        });
+      }
+    }),
+  createUser: publicProcedure
+    .input(createUserSchema)
+    .mutation(async ({ ctx, input }) => {
+      try {
+        const paylaod: any = { ...input };
+
+        const user = await prisma.user.create({
+          data: paylaod,
+        });
+
+        if (!user) {
+          throw new TRPCError({
+            code: 'FORBIDDEN',
+            message: 'User not registered!',
+          });
+        }
+        const jwt = signJWT({ email: user.email, id: user.id });
+
+        const serialized = serialize('ticketing-admin-token', jwt, {
+          httpOnly: true,
+          path: '/',
+          sameSite: 'strict',
+          // secure: process.env.NODE_ENV !== "development",
+        });
+
+        ctx.res?.setHeader('Set-Cookie', serialized);
+
+        return { user, jwt };
       } catch (error: any) {
         console.log('data error', error);
 

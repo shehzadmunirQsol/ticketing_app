@@ -15,7 +15,7 @@ import { signJWT, verifyJWT } from '~/utils/jwt';
 
 export const adminUserRouter = router({
   me: publicProcedure.input(getAdminSchema).query(async ({ ctx }) => {
-    const token = ctx?.req?.cookies['winnar-admin-token'];
+    const token = ctx?.req?.cookies['ticketing-admin-token'];
     console.log({ token });
 
     let userData;
@@ -69,7 +69,7 @@ export const adminUserRouter = router({
         });
       }
       const jwt = signJWT({ email: user.email, id: user.id });
-      const serialized = serialize('winnar-admin-token', jwt, {
+      const serialized = serialize('ticketing-admin-token', jwt, {
         httpOnly: true,
         path: '/',
         sameSite: 'strict',
@@ -127,7 +127,7 @@ export const adminUserRouter = router({
 
   logout: publicProcedure.input(logoutSchema).mutation(async ({ ctx }) => {
     try {
-      const serialized = serialize('winnar-admin-token', '', {
+      const serialized = serialize('ticketing-admin-token', '', {
         httpOnly: true,
         path: '/',
         sameSite: 'strict',
@@ -164,7 +164,7 @@ export const adminUserRouter = router({
         }
         const jwt = signJWT({ email: user.email, id: user.id });
 
-        const serialized = serialize('winnar-admin-token', jwt, {
+        const serialized = serialize('ticketing-admin-token', jwt, {
           httpOnly: true,
           path: '/',
           sameSite: 'strict',

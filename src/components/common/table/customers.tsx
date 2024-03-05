@@ -32,21 +32,23 @@ import {
 } from '@/ui/table';
 
 import { trpc } from '~/utils/trpc';
-import { customEmailTruncateHandler, displayDate } from '~/utils/helper';
-import { getCustomerFilterSchema, getCustomerSchema } from '~/schema/customer';
+import {
+  customEmailTruncateHandler,
+  customTruncateHandler,
+  displayDate,
+} from '~/utils/helper';
+import { getCustomerFilterSchema } from '~/schema/customer';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from '~/components/ui/tooltip';
-import { Switch } from '~/components/ui/switch';
 import { useToast } from '~/components/ui/use-toast';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 
 import { LoadingDialog } from '../modal/loadingModal';
 import { MoreHorizontal } from 'lucide-react';
-import Link from 'next/link';
 import {
   Select,
   SelectContent,
@@ -61,10 +63,12 @@ import {
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 import { useRouter } from 'next/router';
 import { ResourceUploadDialog } from '../modal/resourceModal';
+import { CustomerUploadDialog } from '../modal/customerModal';
 export type Resources = {
   id: number;
   first_name: string;
   email: string;
+  wallet_address: string;
 
   is_deleted: boolean;
   created_at: Date;
@@ -178,6 +182,28 @@ export default function CustomersDataTable(props: customerDataTableType) {
       },
     },
     {
+      accessorKey: 'wallet',
+      header: 'Wallet Address',
+      cell: ({ row }) => {
+        return (
+          <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  {customTruncateHandler(row?.original?.wallet_address)}
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="text-base font-normal">
+                    {row?.original?.wallet_address}
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
+        );
+      },
+    },
+    {
       accessorKey: 'Created Date',
       header: 'Created Date',
       cell: ({ row }) => (
@@ -187,32 +213,32 @@ export default function CustomersDataTable(props: customerDataTableType) {
       ),
     },
 
-    {
-      id: 'actions',
-      enableHiding: false,
-      header: 'Actions',
-      cell: ({ row }) => {
-        return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              {/* <DropdownMenuLabel>Actions</DropdownMenuLabel> */}
-              {/* <DropdownMenuSeparator /> */}
-              <DropdownMenuItem
-                onClick={() => openChangeHandler(row?.original)}
-              >
-                Edit
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        );
-      },
-    },
+    // {
+    //   id: 'actions',
+    //   enableHiding: false,
+    //   header: 'Actions',
+    //   cell: ({ row }) => {
+    //     return (
+    //       <DropdownMenu>
+    //         <DropdownMenuTrigger asChild>
+    //           <Button variant="ghost" className="h-8 w-8 p-0">
+    //             <span className="sr-only">Open menu</span>
+    //             <MoreHorizontal className="h-4 w-4" />
+    //           </Button>
+    //         </DropdownMenuTrigger>
+    //         <DropdownMenuContent align="end">
+    //           {/* <DropdownMenuLabel>Actions</DropdownMenuLabel> */}
+    //           {/* <DropdownMenuSeparator /> */}
+    //           <DropdownMenuItem
+    //             onClick={() => openChangeHandler(row?.original)}
+    //           >
+    //             Edit
+    //           </DropdownMenuItem>
+    //         </DropdownMenuContent>
+    //       </DropdownMenu>
+    //     );
+    //   },
+    // },
   ];
 
   const table = useReactTable({
@@ -503,10 +529,11 @@ export default function CustomersDataTable(props: customerDataTableType) {
           </div>
         </div>
       </div>
-      <ResourceUploadDialog
+      <CustomerUploadDialog
         setIsModal={setIsModal}
         isModal={isModal}
         refetch={refetch}
+        type={props?.type}
         {...selectedItem}
       />
 

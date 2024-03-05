@@ -27,8 +27,20 @@ export type getRolesPermisionFilterSchema = z.TypeOf<
 export const addResourcesSchema = z.object({
   id: z.number().optional().nullable(),
 
-  name: z.string(),
-  code: z.string(),
+  name: z
+    .string({
+      required_error: ' please Enter type',
+    })
+    .min(1, {
+      message: 'please Enter type',
+    }),
+  code: z
+    .string({
+      required_error: ' please Enter code',
+    })
+    .min(1, {
+      message: 'please Enter code',
+    }),
 });
 export const addPermisionSchema = z.array(
   z.object({
