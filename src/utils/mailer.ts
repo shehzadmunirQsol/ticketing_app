@@ -95,7 +95,8 @@ export const clientEmailLayout = (data: any) => {
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    /* padding: 0.25rem;    */
+                    text-align: center;
+                    padding: 0.25rem;   
                     margin: auto 60px;
                 }
                 .msg-code-container {
@@ -200,15 +201,15 @@ export const clientEmailLayout = (data: any) => {
                 <!-- logo -->
                     <div class="logo">
                         ${
-                          data.otp && data.type == 'otp'
-                            ? ` <img src="${process.env.MEDIA_URL}/login.png" alt="/" />`
+                          data.type == 'project-invitation'
+                            ? ` <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF8XQKqETBF1ZdlluuFajPNtiL05NucyGnuN-87OmwPYnTyEcRnwRCrb4p9sZakJZkKFA&usqp=CAU" alt="/" />`
                             : data?.offer || data?.buy
                             ? `<img src=${
                                 process.env.NEXT_PUBLIC_CLOUD_FRONT_BASE_URL +
                                 '/' +
                                 data?.nftUpdate?.thumb
                               }  width="300" height="300" class='nft-img' alt='/'/>`
-                            : `<img src="${process.env.MEDIA_URL}/newuser.png" alt="/" />`
+                            : `<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF8XQKqETBF1ZdlluuFajPNtiL05NucyGnuN-87OmwPYnTyEcRnwRCrb4p9sZakJZkKFA&usqp=CAU" alt="/" />`
                         }
                     </div>
                 </div>
@@ -225,16 +226,15 @@ export const clientEmailLayout = (data: any) => {
                 <!-- verification -->
                 <div class="verfy-container">
                     ${
-                      data.otp && data.type === 'otp'
-                        ? `<p class="verfy-msg" style="text-align:center;">YOUR VERIFICATION CODE</p>`
+                      data.type === 'project-invitation'
+                        ? `<p class="verfy-msg" style="text-align:center;">Project Invitation</p>`
                         : ''
                     }
                     
                     <!-- code -->
                     ${
-                      data.otp && data.type === 'otp'
-                        ? `<div class="verfy-code-container">
-                            <p class="verfy-code" style="width:100%; margin:auto; padding: 16px 0; text-align:center;">${data.otp}</p>
+                      data.type === 'project-invitation'
+                        ? `<div class="verfy-code-container">${data.raw}
                         </div>`
                         : data?.offer && data.type === 'offer'
                         ? `<div class="msg-code-container add_gap " style='color:#fff !important; '>

@@ -323,17 +323,8 @@ export default function CustomersDataTable(props: customerDataTableType) {
     <div className="w-full space-y-4">
       <div className="flex items-center justify-between mb-4">
         <div className=" text-4xl font-semibold capitalize">
-          {props?.type ?? 'Customers'}
+          {/* {props?.type ?? 'Customers'} */}
         </div>
-
-        <Button
-          type="submit"
-          variant={'clip'}
-          onClick={() => openChangeHandler({ data: null })}
-          className="w-28"
-        >
-          Add
-        </Button>
       </div>
       <div className="flex items-center justify-end gap-2">
         <DropdownMenu>
@@ -362,6 +353,14 @@ export default function CustomersDataTable(props: customerDataTableType) {
               })}
           </DropdownMenuContent>
         </DropdownMenu>
+        <Button
+          type="submit"
+          variant={'clip'}
+          onClick={() => openChangeHandler({ data: null })}
+          className="w-28"
+        >
+          Add
+        </Button>
       </div>
       <div className="rounded-md border border-border ">
         <ScrollArea className="w-full ">

@@ -64,7 +64,10 @@ export const registerCustomerSchema = z.object({
   role_id: z.number({
     required_error: 'Please enter select role',
   }),
-  wallet_address: z.string({ required_error: 'Please provide wallet address' }),
+  wallet_address: z
+    .string({ required_error: 'Please provide wallet address' })
+    .optional()
+    .nullable(),
 });
 
 // send request trucker

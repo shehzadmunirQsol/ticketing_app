@@ -69,6 +69,8 @@ export async function loginCustomer(req: any, res: any) {
     const jwt = signJWT({
       email: customer.email,
       role: customer.role,
+      first_name: customer.first_name,
+
       id: customer.id,
     });
     const { password, ...data } = customer;
@@ -133,6 +135,7 @@ export async function registerCustomer(req: any, res: any) {
     });
     const jwt = signJWT({
       email: result.email,
+      first_name: result.first_name,
       role: result.role_id,
       id: result.id,
     });
