@@ -50,7 +50,7 @@ export function ResourceUploadDialog(props: ResourcesInterface) {
     form.setValue('code', props.code ?? '');
   }, [props.isModal]);
 
-  const addAddress = trpc.roles.uploadResources.useMutation({
+  const addResource = trpc.roles.uploadResources.useMutation({
     onSuccess: (res) => {
       console.log(res);
       toast({
@@ -60,7 +60,7 @@ export function ResourceUploadDialog(props: ResourcesInterface) {
     },
   });
 
-  const updateAddress = trpc.roles.uploadResources.useMutation({
+  const updateResource = trpc.roles.uploadResources.useMutation({
     onSuccess: (res) => {
       console.log(res);
       toast({
@@ -90,9 +90,9 @@ export function ResourceUploadDialog(props: ResourcesInterface) {
     try {
       const payload = { ...values };
       if (props?.id) {
-        await updateAddress.mutateAsync({ ...payload, id: props?.id });
+        await updateResource.mutateAsync({ ...payload, id: props?.id });
       } else {
-        await addAddress.mutateAsync(payload);
+        await addResource.mutateAsync(payload);
       }
 
       toast({
@@ -109,6 +109,15 @@ export function ResourceUploadDialog(props: ResourcesInterface) {
       });
     }
   }
+  useEffect(() => {
+    const title = form?.watch('code');
+    const altText = title
+      ?.toLowerCase()
+      .replaceAll(' ', '.')
+      ?.replace(/[^a-zA-Z0-9._-]/g, '')
+      .toLowerCase();
+    form.setValue('code', altText);
+  }, [form?.watch('code')]);
 
   console.log({ props });
 
@@ -170,14 +179,14 @@ export function ResourceUploadDialog(props: ResourcesInterface) {
                   <Button
                     variant="secondary"
                     type="button"
-                    disabled={addAddress.isLoading || updateAddress.isLoading}
+                    disabled={addResource.isLoading || updateResource.isLoading}
                     onClick={() => props.setIsModal(false)}
                   >
                     Cancel
                   </Button>
                   <Button
                     type="submit"
-                    disabled={addAddress.isLoading || updateAddress.isLoading}
+                    disabled={addResource.isLoading || updateResource.isLoading}
                   >
                     {props?.id ? 'Update' : 'Add'}
                   </Button>
@@ -188,7 +197,7 @@ export function ResourceUploadDialog(props: ResourcesInterface) {
         </DialogHeader>
       </DialogContent>
       <LoadingDialog
-        open={addAddress.isLoading || updateAddress.isLoading}
+        open={addResource.isLoading || updateResource.isLoading}
         text={`${props?.id ? 'Updating' : 'Adding'} Resource...`}
       />
     </Dialog>

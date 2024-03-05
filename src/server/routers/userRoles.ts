@@ -2,6 +2,7 @@ import { router, publicProcedure } from '../trpc';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import {
+  addPermisionSchema,
   addResourcesSchema,
   getRolesPermisionSchema,
   getRolesSchema,
@@ -325,6 +326,56 @@ export const rolesRouter = router({
           data: resources,
           switch: frequencyCounter,
           access,
+        };
+      } catch (error: any) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: error?.message,
+        });
+      }
+    }),
+  uploadPermisions: publicProcedure
+    .input(addPermisionSchema)
+    .mutation(async ({ input }) => {
+      try {
+        const { ...payload } = input;
+        if (input) {
+          await input?.map(async (item, index) => {
+            console.log(item, index);
+            if (item?.resource_id === 0 || item?.role_id === 0) {
+              throw new TRPCError({
+                code: 'NOT_FOUND',
+                message: 'Something Went Wrong!',
+              });
+            }
+            const findData = await prisma.rolePermission.findFirst({
+              where: {
+                resource_id: item?.resource_id ? item?.resource_id : 0,
+                role_id: item?.role_id ? item?.role_id : 0,
+              },
+            });
+            if (findData) {
+              await prisma.rolePermission.update({
+                where: {
+                  id: findData?.id,
+                },
+                data: {
+                  access: item?.access,
+                },
+              });
+            } else {
+              await prisma.rolePermission.create({
+                data: {
+                  ...item,
+                },
+              });
+            }
+          });
+        }
+
+        return {
+          message: 'resource add successfully',
+          // data: resources,
         };
       } catch (error: any) {
         throw new TRPCError({

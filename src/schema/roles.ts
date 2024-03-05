@@ -25,7 +25,17 @@ export const addResourcesSchema = z.object({
   name: z.string(),
   code: z.string(),
 });
-
+export const addPermisionSchema = z.array(
+  z.object({
+    access: z
+      .enum(['W', 'R', 'N'], {
+        required_error: ' please select access type',
+      })
+      .default('N'),
+    resource_id: z.number().default(0),
+    role_id: z.number().default(0),
+  }),
+);
 export const deleteCouponSchema = z.object({
   id: z.number(),
 });

@@ -72,12 +72,15 @@ export default function RolesPermisionDataTable() {
         refetchOnWindowFocus: false,
       },
     );
+  const uploadPermisions = trpc.roles.uploadPermisions.useMutation({
+    onSuccess: (res) => {
+      console.log(res);
+    },
+  });
   const rolesData = React.useMemo(() => {
     return Array.isArray(data?.data) ? data?.data : [];
   }, [data]);
-  const switchData = React.useMemo(() => {
-    return typeof data?.switch === 'object' ? data?.switch : {};
-  }, [data]);
+
   console.log({ permissions }, 'data to get');
   useEffect(() => {
     setPermissions(typeof data?.switch === 'object' ? data?.switch : {});
@@ -170,13 +173,33 @@ export default function RolesPermisionDataTable() {
       rowSelection,
     },
   });
-  const onSubmit = () => {
-    const arrayOfObj = Object.entries(permissions).map((e) => ({
-      resource_id: +e[0],
-      access: e[1],
-      role_id: index ? +index : 0,
-    }));
-    console.log('permissions', arrayOfObj);
+  const onSubmit = async () => {
+    try {
+      const arrayOfObj: any = Object.entries(permissions).map((e) => ({
+        resource_id: e[0] ? +e[0] : 0,
+        access: e[1] ?? 'N',
+        role_id: index ? +index : 0,
+      })) ?? [
+        {
+          resource_id: 0,
+          role_id: 0,
+          access: 'N',
+        },
+      ];
+      const data = await uploadPermisions.mutateAsync([...arrayOfObj]);
+
+      console.log('permissions', data);
+      toast({
+        variant: 'success',
+        title: 'Address Updated Successfully',
+      });
+      // refetch();
+    } catch (e: any) {
+      toast({
+        variant: 'success',
+        title: e?.message ?? 'Something Went Wrong!',
+      });
+    }
   };
 
   return (

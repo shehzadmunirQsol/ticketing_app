@@ -103,13 +103,6 @@ export default function ResourcesDataTable() {
     return Array.isArray(data?.data) ? data?.data : [];
   }, [data]);
 
-  // delete product
-  const deleteCoupon = (data: any, type: string) => {
-    setSelectedItem(data);
-    setTitle('Coupon');
-    setType(type);
-    setIsModalDelete(true);
-  };
   function openChangeHandler(data: any) {
     setIsModal((prevState) => !prevState);
     if (data) {
