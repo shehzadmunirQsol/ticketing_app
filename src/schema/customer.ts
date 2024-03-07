@@ -188,5 +188,14 @@ export const createUserSchema = z.object({
     })
     .min(1, {
       message: 'Invalid type',
+    })
+    .optional()
+    .nullable(),
+  phone_number: z
+    .string()
+    .regex(new RegExp(/^[0-9]+$/), 'Please enter a valid phone number')
+    .min(1, {
+      message: 'Please enter your number',
     }),
 });
+export type createInputUserSchema = z.TypeOf<typeof createUserSchema>;

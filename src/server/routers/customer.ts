@@ -216,6 +216,17 @@ export const customerUserRouter = router({
     .mutation(async ({ ctx, input }) => {
       try {
         const { type, ...paylaod }: any = { ...input };
+
+        const exists: any = await prisma.user.findFirst({
+          where: { email: input.email },
+        });
+
+        if (exists) {
+          throw new TRPCError({
+            code: 'FORBIDDEN',
+            message: 'User already exists.',
+          });
+        }
         const role_id = type
           ? type === 'seller'
             ? 2
@@ -226,7 +237,7 @@ export const customerUserRouter = router({
             : 2
           : 2;
         const user = await prisma.user.create({
-          data: { ...paylaod, role_id },
+          data: { ...paylaod, role_id, is_registered: true },
         });
 
         if (!user) {

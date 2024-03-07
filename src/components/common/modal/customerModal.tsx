@@ -27,6 +27,7 @@ import { useEffect } from 'react';
 
 import 'react-international-phone/style.css';
 import { addResourceInput, addResourcesSchema } from '~/schema/roles';
+import { createInputUserSchema, createUserSchema } from '~/schema/customer';
 
 interface CustomerInterface {
   isModal: boolean;
@@ -42,11 +43,11 @@ export function CustomerUploadDialog(props: CustomerInterface) {
   const { toast } = useToast();
 
   useEffect(() => {
-    form.setValue('name', props.name ?? '');
-    form.setValue('code', props.code ?? '');
+    form.setValue('first_name', props.name ?? '');
+    form.setValue('email', props.code ?? '');
   }, [props.isModal]);
 
-  const addResource = trpc.roles.uploadResources.useMutation({
+  const addCustomer = trpc.customer.createUser.useMutation({
     onSuccess: (res) => {
       console.log(res);
       toast({
@@ -56,7 +57,7 @@ export function CustomerUploadDialog(props: CustomerInterface) {
     },
   });
 
-  const updateResource = trpc.roles.uploadResources.useMutation({
+  const updateCustomer = trpc.customer.createUser.useMutation({
     onSuccess: (res) => {
       console.log(res);
       toast({
@@ -74,21 +75,21 @@ export function CustomerUploadDialog(props: CustomerInterface) {
     },
   });
 
-  const form = useForm<addResourceInput>({
-    resolver: zodResolver(addResourcesSchema),
+  const form = useForm<createInputUserSchema>({
+    resolver: zodResolver(createUserSchema),
     defaultValues: {
-      name: props.name ?? '',
-      code: props.code ?? '',
+      first_name: props.name ?? '',
+      // code: props.code ?? '',
     },
   });
 
-  async function onSubmit(values: addResourceInput) {
+  async function onSubmit(values: createInputUserSchema) {
     try {
       const payload = { ...values };
       if (props?.id) {
-        await updateResource.mutateAsync({ ...payload, id: props?.id });
+        await updateCustomer.mutateAsync({ ...payload, type: props?.type });
       } else {
-        await addResource.mutateAsync(payload);
+        await addCustomer.mutateAsync({ ...payload, type: props?.type });
       }
 
       toast({
@@ -106,20 +107,20 @@ export function CustomerUploadDialog(props: CustomerInterface) {
     }
   }
   useEffect(() => {
-    const title = form?.watch('code');
+    const title = form?.watch('phone_number');
     const altText = title
       ?.toLowerCase()
       .replaceAll(' ', '.')
-      ?.replace(/[^a-zA-Z0-9._-]/g, '')
+      ?.replace(/[^0-9._-]/g, '')
       .toLowerCase();
-    form.setValue('code', altText);
-  }, [form?.watch('code')]);
+    form.setValue('phone_number', altText);
+  }, [form?.watch('phone_number')]);
 
   console.log({ props });
 
   return (
     <Dialog open={props?.isModal} onOpenChange={() => props.setIsModal(false)}>
-      <DialogContent className="max-h-[40vh] h-[calc(100%-200px)] max-w-xl md:max-w-[500px] overflow-y-hidden scroll-hide py-4 px-6">
+      <DialogContent className="h-fit max-h-screen   max-w-xl md:max-w-[500px] overflow-y-hidden scroll-hide py-4 px-6">
         <DialogHeader>
           <DialogTitle className=" capitalize">
             {props?.id ? 'Update' : 'Add'} {props?.type}
@@ -132,7 +133,7 @@ export function CustomerUploadDialog(props: CustomerInterface) {
               >
                 <FormField
                   control={form.control}
-                  name="name"
+                  name="first_name"
                   render={() => (
                     <FormItem className="w-full">
                       <FormLabel className="text-xs  font-thin text-cardGray ">
@@ -142,7 +143,7 @@ export function CustomerUploadDialog(props: CustomerInterface) {
                         <Input
                           type="text"
                           className="rounded-md"
-                          {...form.register('name')}
+                          {...form.register('first_name')}
                         />
                       </FormControl>
                       <div className="relative pb-2 errormsg">
@@ -153,7 +154,7 @@ export function CustomerUploadDialog(props: CustomerInterface) {
                 />
                 <FormField
                   control={form.control}
-                  name="code"
+                  name="email"
                   render={() => (
                     <FormItem className="w-full">
                       <FormLabel className="text-xs  font-thin text-cardGray ">
@@ -163,7 +164,28 @@ export function CustomerUploadDialog(props: CustomerInterface) {
                         <Input
                           type="text"
                           className="rounded-md"
-                          {...form.register('code')}
+                          {...form.register('email')}
+                        />
+                      </FormControl>
+                      <div className="relative pb-2 errormsg">
+                        <FormMessage />
+                      </div>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="phone_number"
+                  render={() => (
+                    <FormItem className="w-full">
+                      <FormLabel className="text-xs  font-thin text-cardGray ">
+                        Phone Number
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          type="text"
+                          className="rounded-md"
+                          {...form.register('phone_number')}
                         />
                       </FormControl>
                       <div className="relative pb-2 errormsg">
@@ -177,14 +199,14 @@ export function CustomerUploadDialog(props: CustomerInterface) {
                   <Button
                     variant="secondary"
                     type="button"
-                    disabled={addResource.isLoading || updateResource.isLoading}
+                    disabled={addCustomer.isLoading || updateCustomer.isLoading}
                     onClick={() => props.setIsModal(false)}
                   >
                     Cancel
                   </Button>
                   <Button
                     type="submit"
-                    disabled={addResource.isLoading || updateResource.isLoading}
+                    disabled={addCustomer.isLoading || updateCustomer.isLoading}
                   >
                     {props?.id ? 'Update' : 'Add'}
                   </Button>
@@ -195,7 +217,7 @@ export function CustomerUploadDialog(props: CustomerInterface) {
         </DialogHeader>
       </DialogContent>
       <LoadingDialog
-        open={addResource.isLoading || updateResource.isLoading}
+        open={addCustomer.isLoading || updateCustomer.isLoading}
         text={`${props?.id ? 'Updating' : 'Adding'} Resource...`}
       />
     </Dialog>
