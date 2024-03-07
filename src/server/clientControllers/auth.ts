@@ -49,9 +49,7 @@ export async function loginCustomer(req: any, res: any) {
         },
       });
 
-      return res
-        .status(201)
-        .send({ customer, is_registered: customer?.is_registered });
+      return res.status(201).send({ customer, is_registered: false });
     }
 
     //  console.log('address : ', smartAccountAddress);
