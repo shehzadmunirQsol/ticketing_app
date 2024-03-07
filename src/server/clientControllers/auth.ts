@@ -117,9 +117,11 @@ export async function registerCustomer(req: any, res: any) {
       },
       update: {
         ...validate.data,
+        is_registerd: true,
       },
       create: {
         ...validate.data,
+        is_registerd: true,
       },
       include: {
         Role: {
