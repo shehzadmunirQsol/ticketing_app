@@ -41,6 +41,9 @@ export const projectCreateSchema = z.object({
     required_error: 'Total rounds required',
     invalid_type_error: 'Total rounds required',
   }),
+  private_address: z.string({
+    required_error: 'Please provide wallet address',
+  }),
   material_type: z.enum(['dump', 'sand'], {
     required_error: 'please select material type',
   }),
@@ -102,6 +105,17 @@ export const projectCreateSchema = z.object({
         .nullable(),
     }),
   ),
+  truckers: z
+    .array(
+      z.object({
+        trucker_id: z.number({
+          required_error: 'please select address type',
+        }),
+      }),
+    )
+    .min(1, {
+      message: 'Please select atleast one trucker',
+    }),
 });
 
 export const inviteTruckerSchema = z.object({

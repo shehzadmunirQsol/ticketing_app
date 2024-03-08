@@ -101,23 +101,24 @@ model User {
 }
 
 model Projects {
-  id            Int          @id @default(autoincrement())
+  id            Int           @id @default(autoincrement())
   name          String
   desc          String?
   thumb         String?
-  material_type MaterialType @default(dump)
+  material_type MaterialType  @default(dump)
+  truck_cap     TruckCapEnums @default(half)
   price         Int?
   total_rounds  Int?
   client_id     Int?
   created_by    Int
-  is_invoiced   Boolean      @default(false)
-  start_date    DateTime     @default(now())
-  start_time    DateTime?    @default(now())
-  delivery_date DateTime     @default(now())
-  delivery_time DateTime?    @default(now())
-  created_at    DateTime     @default(now())
-  updated_at    DateTime     @default(now())
-  is_deleted    Boolean      @default(false)
+  is_invoiced   Boolean       @default(false)
+  start_date    DateTime      @default(now())
+  start_time    DateTime?     @default(now())
+  delivery_date DateTime      @default(now())
+  delivery_time DateTime?     @default(now())
+  created_at    DateTime      @default(now())
+  updated_at    DateTime      @default(now())
+  is_deleted    Boolean       @default(false)
 
   Client User? @relation(name: "client", fields: [client_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   User   User? @relation(fields: [created_by], references: [id])
@@ -199,6 +200,11 @@ model ProjectTickets {
 enum GenderEnums {
   male
   female
+}
+
+enum TruckCapEnums {
+  half
+  full
 }
 
 enum MaterialType {

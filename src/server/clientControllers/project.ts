@@ -156,7 +156,13 @@ export async function createProject(req: any, res: any) {
     if (unAuthRole.includes(userData?.role)) {
       return res.status(400).send({ message: "You're not authorized" });
     }
-    const { address, client, ...data } = validate.data;
+    const { truckers, address, private_address, client, ...data } =
+      validate.data;
+    if (truckers.length > data?.total_rounds)
+      return res.status(400).send({
+        message: `The assign truckers length should be less than or equal to  ${data?.total_rounds}`,
+      });
+
     const clientData = await prisma.user.upsert({
       where: {
         email: client.email,
