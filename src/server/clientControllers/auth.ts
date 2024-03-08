@@ -49,7 +49,7 @@ export async function loginCustomer(req: any, res: any) {
         },
       });
 
-      return res.status(201).send({ customer, is_registered: false });
+      return res.status(201).send({ customer, is_registerd: false });
     }
 
     //  console.log('address : ', smartAccountAddress);
@@ -63,10 +63,10 @@ export async function loginCustomer(req: any, res: any) {
         },
       });
     }
-    if (!customer?.is_registered && !customer?.role_id) {
+    if (!customer?.is_registerd && !customer?.role_id) {
       return res
         .status(201)
-        .send({ customer, is_registered: customer?.is_registered });
+        .send({ customer, is_registerd: customer?.is_registerd });
     }
     const jwt = signJWT({
       email: customer.email,

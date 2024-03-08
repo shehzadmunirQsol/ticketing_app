@@ -190,7 +190,7 @@ export default function RolesPermisionDataTable() {
       console.log('permissions', data);
       toast({
         variant: 'success',
-        title: 'Address Updated Successfully',
+        title: 'Permisions Updated Successfully',
       });
       // refetch();
     } catch (e: any) {
@@ -270,7 +270,10 @@ export default function RolesPermisionDataTable() {
         </ScrollArea>
       </div>
 
-      <LoadingDialog open={isLoading} text={'Loading data...'} />
+      <LoadingDialog
+        open={isLoading || uploadPermisions?.isLoading}
+        text={'Loading data...'}
+      />
     </div>
   );
 }

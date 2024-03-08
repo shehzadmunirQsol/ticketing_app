@@ -2,6 +2,7 @@ import {
   createProject,
   getProjectAll,
 } from '~/server/clientControllers/project';
+import { getTruckersAll, inviteUser } from '~/server/clientControllers/trucker';
 import { verifyJWT } from '~/utils/jwt';
 
 export default async function projectRoutes(req: any, res: any) {
@@ -25,6 +26,10 @@ export default async function projectRoutes(req: any, res: any) {
   switch (extendedAction) {
     case 'GET-project/getAll':
       return getProjectAll(req, res);
+    case 'GET-project/getTruckers':
+      return getTruckersAll(req, res);
+    case 'POST-project/inviteUser':
+      return inviteUser(req, res);
     case 'POST-project/create':
       return createProject(req, res);
 

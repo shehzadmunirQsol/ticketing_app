@@ -1,5 +1,9 @@
 import { prisma } from '../prisma';
-import { projectCreateSchema, projectGetAllSchema } from '~/schema/project';
+import {
+  inviteTruckerSchema,
+  projectCreateSchema,
+  projectGetAllSchema,
+} from '~/schema/project';
 import { sendInvitation } from '~/utils/clientMailer';
 import { getUserData } from '~/utils/helper';
 
@@ -8,7 +12,7 @@ import { getUserData } from '~/utils/helper';
  email
  password 
 */
-export async function getProjectAll(req: any, res: any) {
+export async function getTruckersAll(req: any, res: any) {
   // const input = req.body;
 
   try {
@@ -45,35 +49,17 @@ export async function getProjectAll(req: any, res: any) {
       skip: input.first ? +input.first : 0,
       take: input.rows ? +input.rows : 50,
       where: {
-        created_by: userData?.id,
         is_deleted: false,
         ...filterPayload,
+        Role: {
+          name: {
+            equals: 'trucker',
+          },
+        },
       },
     };
     console.log({ userData });
-    if (userData?.role == 'trucker') {
-      options.where = {
-        trucker_id: {
-          hasEvery: [userData?.id],
-        },
-        is_deleted: false,
-        ...filterPayload,
-      };
-    }
-    if (userData?.role == 'client') {
-      options.where = {
-        client_id: userData?.id,
-        is_deleted: false,
-        ...filterPayload,
-      };
-    }
-    if (userData?.role == 'seller') {
-      options.where = {
-        created_by: userData?.id,
-        is_deleted: false,
-        ...filterPayload,
-      };
-    }
+
     if (validate.data.searchQuery) {
       options.where.OR = [];
       options.where.OR.push({
@@ -104,15 +90,15 @@ export async function getProjectAll(req: any, res: any) {
       options.where.AND = options?.AND ?? [];
       options.where.AND.push({ created_at: { lte: endDate } });
     }
-    const totalProjectsPromise = prisma.projects.count({
+    const totalProjectsPromise = prisma.user.count({
       where: options.where,
     });
 
-    const projectPromise = prisma.projects.findMany({
+    const projectPromise = prisma.user.findMany({
       ...options,
+
       include: {
-        ProjectAddress: true,
-        Client: true,
+        Role: true,
       },
     });
 
@@ -128,7 +114,7 @@ export async function getProjectAll(req: any, res: any) {
     res.status(500).send({ message: err.message as string });
   }
 }
-export async function createProject(req: any, res: any) {
+export async function inviteUser(req: any, res: any) {
   // const input = req.body;
 
   try {
@@ -136,7 +122,7 @@ export async function createProject(req: any, res: any) {
       return res.status(400).send({ message: 'payload not found' });
 
     const input = req.body;
-    const validate = projectCreateSchema.safeParse(input);
+    const validate = inviteTruckerSchema.safeParse(input);
 
     if (!validate.success)
       return res.status(400).send({
@@ -145,6 +131,7 @@ export async function createProject(req: any, res: any) {
             ? validate?.error?.errors[0]?.message
             : 'Bad Request',
       });
+    // const existingUser = await User.findOne({ email });
 
     const userData: any = await getUserData(req, res);
     if (!userData) {
@@ -152,46 +139,51 @@ export async function createProject(req: any, res: any) {
         message: 'You are not authorized to access!',
       });
     }
+    const findRole = await prisma.role.findFirst({
+      where: {
+        id: userData.role_id,
+      },
+    });
     const unAuthRole = ['trucker', 'client'];
-    if (unAuthRole.includes(userData?.role)) {
+    if (findRole && unAuthRole.includes(findRole?.name)) {
       return res.status(400).send({ message: "You're not authorized" });
     }
-    const { address, client, ...data } = validate.data;
-    const clientData = await prisma.user.upsert({
+    const existingUser = await prisma.user.findFirst({
+      where: { email: validate.data?.email },
+    });
+
+    if (existingUser) {
+      return res.status(400).json({
+        error: 'Email already exists. Please use a different email.',
+      });
+    }
+    const { type, ...data } = validate.data;
+    const role = await prisma.role.findFirst({
+      where: { name: type },
+    });
+    const truckerData = await prisma.user.upsert({
       where: {
-        email: client.email,
+        email: data.email,
       },
       update: {},
       create: {
-        ...client,
-      },
-    });
-    // Create a new User instance with the hashed password
-    const result = await prisma.projects.create({
-      data: {
-        created_by: userData?.id,
-
         ...data,
-        client_id: clientData?.id,
-        ProjectAddress: {
-          createMany: {
-            data: address,
-          },
-        },
+        role_id: role?.id,
       },
     });
-    if (clientData)
+    if (truckerData)
       await sendInvitation({
-        email: clientData?.email,
+        email: truckerData?.email,
         from: userData?.first_name ?? 'Owner',
-        subject: `Project Invitation - ${validate?.data?.name}`,
+        subject: `Platform Invitation`,
         type: 'project-invitation',
-        raw: `<p> ${userData?.first_name ?? 'Owner'} invited you as client in ${
-          validate?.data?.name
-        } project. </p>`,
+        raw: `<p> ${
+          userData?.first_name ?? 'Seller/Buyer'
+        } invited you as client in ticketing platform. </p>`,
       });
+    // Create a new User instance with the hashed password
 
-    return res.status(200).send({ project: result });
+    return res.status(200).send({ trucker: truckerData, success: true });
   } catch (err: any) {
     console.log({ err });
     res.status(500).send({ message: err.message as string });

@@ -12,17 +12,12 @@ export const projectGetAllSchema = z.object({
   first: z.string().optional(),
   rows: z.string().optional(),
 
-  filters: z
-    .object({
-      searchQuery: z.string().optional().nullable(),
-      startDate: z.string().optional().nullable(),
-      endDate: z.string().optional().nullable(),
-      is_listed: z.boolean().optional().nullable(),
-      sell_type: z.string().optional().nullable(),
-      is_lazy: z.boolean().optional().nullable(),
-    })
-    .optional()
-    .nullable(),
+  searchQuery: z.string().optional().nullable(),
+  startDate: z.string().optional().nullable(),
+  endDate: z.string().optional().nullable(),
+  is_listed: z.boolean().optional().nullable(),
+  sell_type: z.string().optional().nullable(),
+  is_lazy: z.boolean().optional().nullable(),
 });
 
 export const projectCreateSchema = z.object({
@@ -107,6 +102,42 @@ export const projectCreateSchema = z.object({
         .nullable(),
     }),
   ),
+});
+
+export const inviteTruckerSchema = z.object({
+  first_name: z.string({
+    required_error: 'client name required',
+    invalid_type_error: 'client name required',
+  }),
+  email: z
+    .string({
+      required_error: 'client email required',
+      invalid_type_error: 'client email required',
+    })
+    .email({
+      message: 'client email required',
+    })
+    .refine((val) => (val.includes('*') ? false : true), {
+      message: 'Please use a valid email ',
+    })
+    .refine((val) => (val.includes('-') ? false : true), {
+      message: 'Please use a valid email ',
+    })
+    .refine((val) => validateEmail(val), {
+      message: 'Invalid email format.',
+    }),
+  phone_number: z
+    .string()
+    .regex(new RegExp(/^[0-9]+$/), 'Please enter a valid phone number')
+    .min(1, {
+      message: 'Please enter your number',
+    }),
+  type: z
+    .enum(['seller', 'buyer', 'client', 'trucker'], {
+      required_error: 'Please enter your type',
+      invalid_type_error: 'Please enter your type',
+    })
+    .default('seller'),
 });
 // register schema for api
 

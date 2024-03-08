@@ -49,7 +49,7 @@ function AdminLayout({ children }: DefaultLayoutProps) {
         <main className="flex-1 m-auto">{children}</main>
       ) : (
         <div className="relative">
-          <div className=" sticky top-0">
+          <div className=" sticky top-0 z-40">
             <Header />
           </div>
           <div className="relative flex ">
@@ -59,7 +59,7 @@ function AdminLayout({ children }: DefaultLayoutProps) {
             <main
               className={`relative flex-1 w-full ${
                 isSidebarOpen ? 'ml-2' : 'ml-4'
-              }  overflow-y-scroll  `}
+              }    `}
             >
               {children}
             </main>

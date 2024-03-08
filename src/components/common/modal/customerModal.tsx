@@ -94,7 +94,7 @@ export function CustomerUploadDialog(props: CustomerInterface) {
 
       toast({
         variant: 'success',
-        title: `Address ${props?.id ? 'Update' : 'Add'} successfully!`,
+        title: `Customer ${props?.id ? 'Update' : 'Add'} successfully!`,
       });
       props?.refetch();
       props?.setIsModal(false);

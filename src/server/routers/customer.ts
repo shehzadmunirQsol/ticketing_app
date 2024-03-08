@@ -13,6 +13,8 @@ import { hashPass, isSamePass } from '~/utils/hash';
 import { serialize } from 'cookie';
 import { signJWT, verifyJWT } from '~/utils/jwt';
 import { createUserSchema, getCustomerSchema } from '~/schema/customer';
+import { sendInvitation } from '~/utils/clientMailer';
+import { formatTrpcError } from '~/utils/helper';
 
 export const customerUserRouter = router({
   me: publicProcedure.input(getAdminSchema).query(async ({ ctx }) => {
@@ -237,7 +239,7 @@ export const customerUserRouter = router({
             : 2
           : 2;
         const user = await prisma.user.create({
-          data: { ...paylaod, role_id, is_registered: true },
+          data: { ...paylaod, role_id, is_registerd: true },
         });
 
         if (!user) {
@@ -246,14 +248,24 @@ export const customerUserRouter = router({
             message: 'User not registered!',
           });
         }
+        await sendInvitation({
+          from: 'admin',
+          email: input?.email,
+          type: 'project-invitation',
+          subject: 'Platform Invitation',
+          raw: `<p> Admin Wants you to join the ticketing platform as an ${input?.type}</p>`,
+        });
 
         return { user };
       } catch (error: any) {
         console.log('data error', error);
+        const errorMessage = formatTrpcError(
+          error?.shape?.message || error?.message,
+        );
 
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
-          message: error?.message,
+          message: errorMessage,
         });
       }
     }),

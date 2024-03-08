@@ -50,7 +50,7 @@ export function ResourceUploadDialog(props: ResourcesInterface) {
       console.log(res);
       toast({
         variant: 'success',
-        title: 'Address added successfully',
+        title: 'Resource added successfully',
       });
     },
   });
@@ -60,7 +60,7 @@ export function ResourceUploadDialog(props: ResourcesInterface) {
       console.log(res);
       toast({
         variant: 'success',
-        title: 'Address Updated Successfully',
+        title: 'Resource Updated Successfully',
       });
     },
     onError(error) {
@@ -92,7 +92,7 @@ export function ResourceUploadDialog(props: ResourcesInterface) {
 
       toast({
         variant: 'success',
-        title: `Address ${props?.id ? 'Update' : 'Add'} successfully!`,
+        title: `Customer ${props?.id ? 'Update' : 'Add'} successfully!`,
       });
       props?.refetch();
       props?.setIsModal(false);
