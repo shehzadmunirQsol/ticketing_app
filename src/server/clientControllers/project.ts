@@ -147,22 +147,67 @@ export async function createProject(req: any, res: any) {
       });
 
     const userData: any = await getUserData(req, res);
-    if (!userData) {
+
+    const unAuthRole = ['trucker', 'client'];
+
+    const {
+      truckers,
+      start_date,
+      delivery_date,
+      address,
+      private_address,
+      client,
+      ...data
+    } = validate.data;
+
+    // check access
+    if (!userData || unAuthRole.includes(userData?.role)) {
       return res.status(400).send({
         message: 'You are not authorized to access!',
       });
     }
-    const unAuthRole = ['trucker', 'client'];
-    if (unAuthRole.includes(userData?.role)) {
-      return res.status(400).send({ message: "You're not authorized" });
-    }
-    const { truckers, address, private_address, client, ...data } =
-      validate.data;
-    if (truckers.length > data?.total_rounds)
+    //  address length should be less than or equal to 2
+    if (address?.length > 2)
       return res.status(400).send({
-        message: `The assign truckers length should be less than or equal to  ${data?.total_rounds}`,
+        message: `The assign truckers length should be less than or equal to  ${data?.total_rounds}.`,
       });
-
+    // The assign truckers length should be less than or equal to number of rounds
+    if (truckers.length > data?.total_rounds)
+      // check if user is authorizer
+      return res.status(400).send({
+        message: `The assign truckers length should be less than or equal to  ${data?.total_rounds}.`,
+      });
+    const uniqueAddress = new Set(address.map((v: any) => v.address_type));
+    const uniqueTrucker = new Set(truckers.map((v: any) => v.trucker_id));
+    // check duplicate address
+    if (uniqueAddress.size < address.length) {
+      return res.status(400).send({
+        message: `Duplicate Address Found.`,
+      });
+    }
+    // check duplicate truckers
+    if (uniqueTrucker.size < truckers.length) {
+      return res.status(400).send({
+        message: `Duplicate Trucker Found.`,
+      });
+    }
+    // check if truckers have trucker role
+    const truckerArray = truckers.map(function (obj) {
+      return obj.trucker_id;
+    });
+    const findTruckerRole = await prisma.user.findMany({
+      where: {
+        id: { in: truckerArray },
+        Role: {
+          name: { not: 'trucker' },
+        },
+      },
+    });
+    if (findTruckerRole.length > 0)
+      return res.status(400).send({
+        message: `User Role Conflict.`,
+        findTruckerRole,
+      });
     const clientData = await prisma.user.upsert({
       where: {
         email: client.email,
@@ -170,18 +215,26 @@ export async function createProject(req: any, res: any) {
       update: {},
       create: {
         ...client,
+        role_id: 5,
       },
     });
     // Create a new User instance with the hashed password
     const result = await prisma.projects.create({
       data: {
         created_by: userData?.id,
+        start_date: new Date(start_date),
+        delivery_date: new Date(delivery_date),
 
         ...data,
         client_id: clientData?.id,
         ProjectAddress: {
           createMany: {
             data: address,
+          },
+        },
+        ProjectTruckers: {
+          createMany: {
+            data: truckers,
           },
         },
       },

@@ -37,16 +37,39 @@ export const projectCreateSchema = z.object({
     required_error: 'price required',
     invalid_type_error: 'price required',
   }),
-  total_rounds: z.number({
-    required_error: 'Total rounds required',
-    invalid_type_error: 'Total rounds required',
-  }),
+  total_rounds: z
+    .number({
+      required_error: 'Total rounds required',
+      invalid_type_error: 'Total rounds required',
+    })
+    .min(1, {
+      message: 'Total rounds must be greater than zero.',
+    }),
   private_address: z.string({
     required_error: 'Please provide wallet address',
   }),
   material_type: z.enum(['dump', 'sand'], {
     required_error: 'please select material type',
   }),
+  truck_cap: z.enum(['half', 'full'], {
+    required_error: 'please select truck capacity',
+  }),
+  start_date: z
+    .string({
+      invalid_type_error: 'Please select a start date',
+      required_error: 'Please select a start date',
+    })
+    .min(1, {
+      message: 'Please select a start date',
+    }),
+  delivery_date: z
+    .string({
+      invalid_type_error: 'Please select a delivery date',
+      required_error: 'Please select a delivery date',
+    })
+    .min(1, {
+      message: 'Please select a delivery date',
+    }),
   client: z.object({
     first_name: z.string({
       required_error: 'client name required',
