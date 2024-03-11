@@ -4,6 +4,7 @@ import { sendInvitation } from '~/utils/clientMailer';
 import { getUserData } from '~/utils/helper';
 import { createSmartAccount } from './web3-controller/createAccount';
 import { createWeb3Project } from './web3-controller/createWeb3Project';
+import { verifyJWT } from '~/utils/jwt';
 
 /* 
  ---- input ----
@@ -178,11 +179,13 @@ export async function createProject(req: any, res: any) {
       ...data
     } = validate.data;
     // for web3 project creation
-    // const smartAccount = await createSmartAccount({
-    //   private_address,
-    // });
-    // const smartAccountAddress = await smartAccount.getAccountAddress();
-    // await createWeb3Project(smartAccount, 'abcd', data.total_rounds);
+    const decodePrivateAddress: any = await verifyJWT(private_address);
+
+    const smartAccount = await createSmartAccount({
+      private_address: decodePrivateAddress.address,
+    });
+    const smartAccountAddress = await smartAccount.getAccountAddress();
+    await createWeb3Project(smartAccount, 'abcd', data.total_rounds);
 
     // check access
     if (!userData || unAuthRole.includes(userData?.role)) {
