@@ -30,42 +30,105 @@ export async function getAnalytics(req: any, res: any) {
         Role: true,
       },
     });
-    console.log({ userData });
     const AnalyticObject: any = {};
     if (userPromise) {
       const options: any = {
         where: {
-          created_by: userData?.id,
+          created_by: userPromise?.id,
           is_deleted: false,
         },
       };
-      if (userData?.Role?.name == 'trucker') {
+      if (userPromise?.Role?.name == 'trucker') {
         options.where = {
           trucker_id: {
-            hasEvery: [userData?.id],
+            hasEvery: [userPromise?.id],
           },
           is_deleted: false,
         };
       }
-      if (userData?.Role?.name == 'client') {
+      if (userPromise?.Role?.name == 'client') {
         options.where = {
-          client_id: userData?.id,
+          client_id: userPromise?.id,
           is_deleted: false,
         };
       }
-      if (userData?.Role?.name == 'seller') {
+      if (userPromise?.Role?.name == 'seller') {
         options.where = {
-          created_by: userData?.id,
+          created_by: userPromise?.id,
           is_deleted: false,
         };
       }
+      // for user assigned and created project
       const totalProjects = await prisma.projects.count({
         where: options.where,
       });
+
+      const totalTruckers = await prisma.projects.findMany({
+        where: options.where,
+        select: {
+          _count: {
+            select: {
+              ProjectTruckers: true,
+            },
+          },
+        },
+      });
+      // if user is seller
+      if (userPromise?.Role?.name == 'seller') {
+        const pendingTicketsPromise = await prisma.projects.findMany({
+          where: {
+            ...options.where,
+            ProjectTickets: {
+              every: {
+                status: 'pending',
+              },
+            },
+          },
+          select: {
+            _count: {
+              select: {
+                ProjectTickets: true,
+              },
+            },
+          },
+        });
+        const completedTicketsPromise = await prisma.projects.findMany({
+          where: {
+            ...options.where,
+            ProjectTickets: {
+              every: {
+                status: 'completed',
+              },
+            },
+          },
+          select: {
+            _count: {
+              select: {
+                ProjectTickets: true,
+              },
+            },
+          },
+        });
+        let TrcukerSum = 0;
+        let PendingTicket = 0;
+        let CompletedTicket = 0;
+        pendingTicketsPromise.forEach((tickets) => {
+          PendingTicket += tickets._count.ProjectTickets;
+        });
+        completedTicketsPromise.forEach((tickets) => {
+          CompletedTicket += tickets._count.ProjectTickets;
+        });
+        totalTruckers.forEach((trucker) => {
+          TrcukerSum += trucker._count.ProjectTruckers;
+        });
+        AnalyticObject.truckers = TrcukerSum ?? 0;
+        AnalyticObject.pendingTickets = PendingTicket ?? 0;
+        AnalyticObject.completedTickets = CompletedTicket ?? 0;
+      }
       AnalyticObject.projects = totalProjects ?? 0;
       return res.status(200).send({
-        data: { projects: totalProjects ?? 0 },
-        message: 'project found!',
+        data: { ...AnalyticObject },
+        message: 'data found!',
       });
     }
 
