@@ -6,6 +6,7 @@ import {
 } from '~/schema/project';
 import { sendInvitation } from '~/utils/clientMailer';
 import { getUserData } from '~/utils/helper';
+import { clientEmailLayout } from '~/utils/mailer';
 
 /* 
  ---- input ----
@@ -171,15 +172,18 @@ export async function inviteUser(req: any, res: any) {
         role_id: role?.id,
       },
     });
+    const emaildata = {
+      type: 'project-invitation',
+      userData: userData?.first_name ?? 'Owner',
+    };
+    let clientEmailHTML: string = clientEmailLayout(emaildata);
     if (truckerData)
       await sendInvitation({
         email: truckerData?.email,
         from: userData?.first_name ?? 'Owner',
         subject: `Platform Invitation`,
-        type: 'project-invitation',
-        raw: `<p> ${
-          userData?.first_name ?? 'Seller/Buyer'
-        } invited you as client in ticketing platform. </p>`,
+        type: 'platfrom-invitation',
+        html: clientEmailHTML,
       });
     // Create a new User instance with the hashed password
 

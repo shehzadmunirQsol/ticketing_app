@@ -1,21 +1,7 @@
 import { customTruncateHandler } from './helper';
-
+import ticketlogo from 'src/public/assets/ticketlogo.svg';
 export const clientEmailLayout = (data: any) => {
   console.log(data, 'inside email');
-  const transaction = customTruncateHandler(data?.transaction_id, 15);
-  if (data.type === 'newsletter') {
-    return `
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        </head>
-        <body>
-        <p>Thank you for subscribing to the Xoltan Marketplace!</p>
-        </body>    
-        `;
-  }
 
   return `
         <!DOCTYPE html>
@@ -138,27 +124,43 @@ export const clientEmailLayout = (data: any) => {
         </div>
 
         <!-- Project invitation -->
-        <h1 style="color: #fff; text-align: center; margin-bottom: 2rem;">Project Invitation</h1>
+        <h1 style="color: #fff; text-align: center; margin-bottom: 2rem;">
+        
+        ${data.type == 'project-invitation' ? 'Project Invitation' : ''}
+        ${data.type == 'platfrom-invitation' ? 'Project Invitation' : ''}
+        </h1>
 
         <!-- verification container -->
         <div class="verfy-container">
-            <div class="verfy-code-container">
-                <!-- Your OTP code or verification information goes here -->
-               <p class="text-main">Welcome! Verify your account with our OTP</p> 
+            <div class="verfy-code-container"></div>
+               <p class="text-main">
+               ${
+                 data.type == 'project-invitation'
+                   ? `<p> ${data.userData} invited you as client in ${data.validate} project. </p>`
+                   : ''
+               }
+        ${
+          data.type == 'platfrom-invitation'
+            ? `<p> ${
+                data.userData?.first_name ?? 'Seller/Buyer'
+              } invited you as client in ticketing platform. </p>`
+            : ''
+        }
+               </p> 
             </div>
         </div>
 
         <!-- footer logo -->
         <div class='pos'>
-            <div class="footer-container " >
-                <img src="" width='20'  alt="/" class='logo'/>
-            </div>
+    <div class="footer-container">
+        <img src="${ticketlogo}" width='20' alt="Ticket Logo" class='logo'/>
+    </div>
 
-            <div class="footer-msg">
-                <p style="text-align:center;font-size: 16px;">If you need help with anything, kindly contact out </p>
-                <a href="mailto:" class="customer-support">customer support.</a>
-            </div>
-        </div>
+    <div class="footer-msg">
+        <p style="text-align:center;font-size: 16px;">If you need help with anything, kindly contact our </p>
+        <a href="mailto:" class="customer-support">customer support.</a>
+    </div>
+</div>
 
         <p class="last-msg">This is an auto-generated email. Please don't reply to it.</p>
     </div>

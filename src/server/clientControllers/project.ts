@@ -4,6 +4,7 @@ import { sendInvitation } from '~/utils/clientMailer';
 import { getUserData } from '~/utils/helper';
 import { createSmartAccount } from './web3-controller/createAccount';
 import { createWeb3Project } from './web3-controller/createWeb3Project';
+import { clientEmailLayout } from '~/utils/mailer';
 
 /* 
  ---- input ----
@@ -263,15 +264,22 @@ export async function createProject(req: any, res: any) {
         },
       },
     });
+    const emaildata = {
+      type: 'project-invitation',
+      userData: userData?.first_name ?? 'Owner',
+      validate: validate?.data?.name,
+    };
+    let clientEmailHTML: string = clientEmailLayout(emaildata);
     if (clientData)
       await sendInvitation({
         email: clientData?.email,
         from: userData?.first_name ?? 'Owner',
         subject: `Project Invitation - ${validate?.data?.name}`,
         type: 'project-invitation',
-        raw: `<p> ${userData?.first_name ?? 'Owner'} invited you as client in ${
-          validate?.data?.name
-        } project. </p>`,
+        // raw: `<p> ${userData?.first_name ?? 'Owner'} invited you as client in ${
+        //   validate?.data?.name
+        // } project. </p>`,
+        html: clientEmailHTML, // Pass HTML content
       });
 
     return res.status(200).send({ project: result });
