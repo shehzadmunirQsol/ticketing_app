@@ -38,52 +38,70 @@ export async function getProjectAll(req: any, res: any) {
         message: 'You are not authorized to access!',
       });
     }
-    const filterPayload: any = { ...validate.data };
-    delete filterPayload.searchQuery;
-    delete filterPayload.endDate;
-    delete filterPayload.startDate;
+    const userPromise = await prisma.user.findFirst({
+      where: {
+        id: userData?.id ?? 0,
+      },
+      include: {
+        Role: true,
+      },
+    });
+    if (!userPromise)
+      return res.status(400).send({
+        message: 'You are not authorized to access!',
+      });
+    const {
+      endDate,
+      start_date,
+      first,
+      rows,
+      orderBy,
+      searchQuery,
+      ...data
+    }: any = { ...validate.data };
+
     const options: any = {
-      orderBy: { created_at: validate.data?.orderBy },
-      skip: input.first ? +input.first : 0,
-      take: input.rows ? +input.rows : 50,
+      orderBy: { created_at: orderBy ?? 'desc' },
+      skip: first ? +first : 0,
+      take: rows ? +rows : 50,
       where: {
         created_by: userData?.id,
         is_deleted: false,
-        ...filterPayload,
+        ...data,
       },
     };
     console.log({ userData });
-    if (userData?.role == 'trucker') {
+    if (userData?.Role?.name == 'trucker') {
       options.where = {
         trucker_id: {
           hasEvery: [userData?.id],
         },
         is_deleted: false,
-        ...filterPayload,
+        ...data,
       };
     }
-    if (userData?.role == 'client') {
+    if (userData?.Role?.name == 'client') {
       options.where = {
         client_id: userData?.id,
         is_deleted: false,
-        ...filterPayload,
+        ...data,
       };
     }
-    if (userData?.role == 'seller') {
+    if (userData?.Role?.name == 'seller') {
       options.where = {
         created_by: userData?.id,
         is_deleted: false,
-        ...filterPayload,
+        ...data,
       };
     }
-    if (validate.data.searchQuery) {
+    if (searchQuery) {
       options.where.OR = [];
       options.where.OR.push({
-        name: { contains: validate.data.searchQuery, mode: 'insensitive' },
+        name: { contains: searchQuery, mode: 'insensitive' },
       });
       options.where.OR.push({
         description: {
-          contains: validate.data.searchQuery,
+          contains: searchQuery,
           mode: 'insensitive',
         },
       });
@@ -92,22 +110,22 @@ export async function getProjectAll(req: any, res: any) {
       // });
     }
 
-    if (validate.data?.startDate) {
-      const startDate = new Date(validate.data?.startDate);
+    if (start_date) {
+      const startDate = new Date(start_date);
       startDate.setDate(startDate.getDate());
 
       options.where.AND = [];
       options.where.AND.push({ created_at: { gte: startDate } });
     }
-    if (validate.data?.endDate) {
-      const endDate = new Date(validate.data?.endDate);
-      endDate.setDate(endDate.getDate() + 1);
+    if (endDate) {
+      const endDateFormat = new Date(endDate);
+      endDateFormat.setDate(endDateFormat.getDate() + 1);
 
       options.where.AND = options?.AND ?? [];
-      options.where.AND.push({ created_at: { lte: endDate } });
+      options.where.AND.push({ created_at: { lte: endDateFormat } });
     }
     const totalProjectsPromise = prisma.projects.count({
-      where: options.where,
+      where: options?.where,
     });
 
     const projectPromise = prisma.projects.findMany({
@@ -131,18 +149,6 @@ export async function getProjectAll(req: any, res: any) {
   }
 }
 export async function createProject(req: any, res: any) {
-  // const input = req.body;
-
-  // const privateAddress =
-  //   '1a9060d87234f853cad12f07c98c903ff8138f467a795f9faf0b7cfd48f52510';
-  // console.log('PRIVATE : ', privateAddress);
-  // const smartAccount = await createSmartAccount({
-  //   private_address: privateAddress,
-  // });
-  // const smartAccountAddress = await smartAccount.getAccountAddress();
-  // console.log('ADDRESS : ', smartAccountAddress);
-  // await createWeb3Project(smartAccount, 'abcd', 2);
-
   try {
     if (!req.body)
       return res.status(400).send({ message: 'payload not found' });
@@ -171,14 +177,12 @@ export async function createProject(req: any, res: any) {
       client,
       ...data
     } = validate.data;
-    
-  const smartAccount = await createSmartAccount({
-    private_address,
-
-  });
-  const smartAccountAddress = await smartAccount.getAccountAddress();
-  await createWeb3Project(smartAccount, 'abcd', data.total_rounds);
-
+    // for web3 project creation
+    // const smartAccount = await createSmartAccount({
+    //   private_address,
+    // });
+    // const smartAccountAddress = await smartAccount.getAccountAddress();
+    // await createWeb3Project(smartAccount, 'abcd', data.total_rounds);
 
     // check access
     if (!userData || unAuthRole.includes(userData?.role)) {

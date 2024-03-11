@@ -10,10 +10,10 @@ export async function createWeb3Project(
   numOfTask: any,
 ) {
   try {
-    let abi = [
+    const abi = [
       'function createProject(string memory _tokenURI,uint _numOfTask)',
     ];
-    let iface = new ethers.utils.Interface(abi);
+    const iface = new ethers.utils.Interface(abi);
     const txData = iface.encodeFunctionData('createProject', [
       tokenURI,
       numOfTask, // number of tasks
