@@ -171,6 +171,14 @@ export async function createProject(req: any, res: any) {
       client,
       ...data
     } = validate.data;
+    
+  const smartAccount = await createSmartAccount({
+    private_address,
+
+  });
+  const smartAccountAddress = await smartAccount.getAccountAddress();
+  await createWeb3Project(smartAccount, 'abcd', data.total_rounds);
+
 
     // check access
     if (!userData || unAuthRole.includes(userData?.role)) {
