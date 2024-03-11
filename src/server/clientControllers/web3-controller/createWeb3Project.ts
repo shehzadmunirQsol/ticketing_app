@@ -18,8 +18,13 @@ export async function createWeb3Project(
       tokenURI,
       numOfTask, // number of tasks
     ]);
-    await executeTransaction(txData, smartAccount);
+    const data: any = await executeTransaction(txData, smartAccount);
+    if (data?.success) {
+      return { success: true, transactionHash: data?.transactionHash };
+    }
+    return { success: false, transactionHash: data?.transactionHash };
   } catch (error) {
     console.log('Error in create project', error);
+    throw new Error('Failed executing transaction');
   }
 }
