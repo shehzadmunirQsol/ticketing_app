@@ -40,7 +40,9 @@ export async function getTruckersAll(req: any, res: any) {
         message: 'You are not authorized to access!',
       });
     }
-    const filterPayload: any = { ...validate.data };
+    const { orderBy, first, rows, ...filterPayload }: any = {
+      ...validate.data,
+    };
     delete filterPayload.searchQuery;
     delete filterPayload.endDate;
     delete filterPayload.startDate;

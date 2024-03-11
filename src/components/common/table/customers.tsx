@@ -107,9 +107,9 @@ export default function CustomersDataTable(props: customerDataTableType) {
       role_id: props?.type
         ? props?.type === 'seller'
           ? 2
-          : props?.type === 'client'
-          ? 4
           : props?.type === 'trucker'
+          ? 4
+          : props?.type === 'client'
           ? 5
           : 2
         : 2,
