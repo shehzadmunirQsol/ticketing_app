@@ -2,6 +2,8 @@ import { prisma } from '../prisma';
 import { projectCreateSchema, projectGetAllSchema } from '~/schema/project';
 import { sendInvitation } from '~/utils/clientMailer';
 import { getUserData } from '~/utils/helper';
+import { createSmartAccount } from './web3-controller/createAccount';
+import { createWeb3Project } from './web3-controller/createWeb3Project';
 
 /* 
  ---- input ----
@@ -130,6 +132,16 @@ export async function getProjectAll(req: any, res: any) {
 }
 export async function createProject(req: any, res: any) {
   // const input = req.body;
+
+  // const privateAddress =
+  //   '1a9060d87234f853cad12f07c98c903ff8138f467a795f9faf0b7cfd48f52510';
+  // console.log('PRIVATE : ', privateAddress);
+  // const smartAccount = await createSmartAccount({
+  //   private_address: privateAddress,
+  // });
+  // const smartAccountAddress = await smartAccount.getAccountAddress();
+  // console.log('ADDRESS : ', smartAccountAddress);
+  // await createWeb3Project(smartAccount, 'abcd', 2);
 
   try {
     if (!req.body)
