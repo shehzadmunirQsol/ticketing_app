@@ -16,7 +16,7 @@ export const createSmartAccount = async (props: createSmartAccountType) => {
   const biconomySmartAccountConfig: any = {
     signer: signer,
     bundlerUrl: process.env.BUNDLER_URL, // <-- Read about this at https://docs.biconomy.io/dashboard#bundler-url
-    biconomyPaymasterApiKey: process.env.PAYMASTER_URL, // <-- Read about at https://docs.biconomy.io/dashboard/paymaster
+    biconomyPaymasterApiKey: 'XiAgATBnh.d7c89c8b-e593-49ff-bc73-1654be157449', // <-- Read about at https://docs.biconomy.io/dashboard/paymaster
   };
 
   const smartAccount = await createSmartAccountClient(
