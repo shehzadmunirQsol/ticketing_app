@@ -4,7 +4,7 @@ type sendEmailType = {
   email: string;
   type: string;
   subject: string;
-  raw?: string;
+  html?: string;
 };
 export async function sendInvitation(props: sendEmailType) {
   const res = await fetch(
