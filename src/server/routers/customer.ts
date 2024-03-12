@@ -234,9 +234,9 @@ export const customerUserRouter = router({
           ? type === 'seller'
             ? 2
             : type === 'client'
-            ? 4
-            : type === 'trucker'
             ? 5
+            : type === 'trucker'
+            ? 4
             : 2
           : 2;
         const user = await prisma.user.create({
@@ -257,7 +257,7 @@ export const customerUserRouter = router({
         //   raw: `<p> Admin Wants you to join the ticketing platform as an ${input?.type}</p>`,
         // });
         const emaildata = {
-          type: 'platform-invitation',
+          type: 'project-invitation',
           userData: 'Ticketing Admin',
           validate: 'Ticketing Admin',
         };
