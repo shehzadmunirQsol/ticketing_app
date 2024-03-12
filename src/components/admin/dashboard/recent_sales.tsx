@@ -2,6 +2,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/ui/avatar';
 import {
   customEmailTruncateHandler,
   customTruncateHandler,
+  displayDate,
 } from '~/utils/helper';
 import { trpc } from '~/utils/trpc';
 
@@ -25,20 +26,22 @@ export function RecentSales() {
                 <AvatarImage src="/avatars/05.png" alt="Avatar" />
                 <AvatarFallback>SD</AvatarFallback>
               </Avatar>
-              <div className="ml-4 space-y-1 ">
-                <p className="text-sm font-medium leading-none">
-                  {customTruncateHandler(
-                    item?.Customer?.first_name +
-                      ' ' +
-                      item?.Customer?.last_name,
-                  )}
+              <div className="ml-4 space-y-1   ">
+                <div className="flex items-center gap-4">
+                  <p className="text-sm font-medium leading-none">
+                    {customTruncateHandler(item?.name)}
+                  </p>
+                  <span className="text-xs rounded-md border w-fit px-2 text-muted-foreground">
+                    {customTruncateHandler(item?.material_type)}
+                  </span>
+                </div>
+                <p className="text-xs  w-fit text-muted-foreground">
+                  Created At: {displayDate(item?.created_at)}
                 </p>
-                <p className="text-sm text-muted-foreground">
-                  {customEmailTruncateHandler(item?.Customer?.email, 10)}
-                </p>
+                {/* {customEmailTruncateHandler(item?.User?.email, 10)} */}
               </div>
               <div className="ml-auto font-medium">
-                +AED {(item?.total_amount).toFixed(2)}
+                +${(item?.price).toFixed(2)}
               </div>
             </div>
           );

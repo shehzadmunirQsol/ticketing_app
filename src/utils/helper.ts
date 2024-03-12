@@ -21,10 +21,14 @@ export function formatTrpcError(trpcError = 'Something went wrong!' as string) {
     return trpcError;
   }
 }
-export function renderNFTImage(nft: any) {
-  return nft?.media_type === 'audio/mp3' || nft?.thumb === ''
-    ? ''
-    : `${process.env.NEXT_PUBLIC_MEDIA_BASE_URL}${nft?.thumb}`;
+export function renderImage(data: any) {
+  console.log({ data });
+  return data?.media_type === 'audio/mp3' ||
+    data?.thumb === '' ||
+    data?.profile_pic === '' ||
+    !data?.profile_pic
+    ? 'https://www.vhv.rs/dpng/d/15-155087_dummy-image-of-user-hd-png-download.png'
+    : `${data?.profile_pic}`;
 }
 
 export function isValidImageType(type: any) {

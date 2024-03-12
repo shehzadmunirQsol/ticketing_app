@@ -178,7 +178,7 @@ export async function inviteUser(req: any, res: any) {
       type: 'project-invitation',
       userData: userData?.first_name ?? 'Owner',
     };
-    let clientEmailHTML: string = clientEmailLayout(emaildata);
+    const clientEmailHTML: string = clientEmailLayout(emaildata);
     if (truckerData)
       await sendInvitation({
         email: truckerData?.email,

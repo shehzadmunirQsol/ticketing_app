@@ -91,7 +91,7 @@ export const dashboardRouter = router({
           symbol: '',
           icon: 'fa-solid fa-diagram-project',
           cols: false,
-          link: `/admin/events?status=active`,
+          link: `/admin/projects?type=active`,
         },
         {
           title: 'Closed Projects',
@@ -99,7 +99,7 @@ export const dashboardRouter = router({
           symbol: '',
           icon: 'fa-solid fa-diagram-project',
           cols: false,
-          link: `/admin/events?status=active`,
+          link: `/admin/projects?type=closed`,
         },
         {
           title: 'Active Tickets',
@@ -107,7 +107,7 @@ export const dashboardRouter = router({
           symbol: '',
           icon: 'fa-solid fa-ticket',
           cols: false,
-          link: `/admin/events?status=active`,
+          link: `/admin/tickets?status=active`,
         },
         {
           title: 'Closed Tickets',
@@ -115,7 +115,7 @@ export const dashboardRouter = router({
           symbol: '',
           icon: 'fa-solid fa-ticket-simple',
           cols: false,
-          link: `/admin/events?status=active`,
+          link: `/admin/tickets?status=closed`,
         },
         // {
         //   title: 'Sales Volume',
@@ -137,7 +137,7 @@ export const dashboardRouter = router({
   }),
   chart: publicProcedure.query(async ({ ctx }) => {
     try {
-      const token = ctx?.req?.cookies['winnar-admin-token'];
+      const token = ctx?.req?.cookies['ticketing-admin-token'];
 
       let userData;
       if (token) {
@@ -162,7 +162,7 @@ export const dashboardRouter = router({
   }),
   recent: publicProcedure.query(async ({ ctx }) => {
     try {
-      const token = ctx?.req?.cookies['winnar-admin-token'];
+      const token = ctx?.req?.cookies['ticketing-admin-token'];
 
       let userData;
       if (token) {
@@ -182,6 +182,8 @@ export const dashboardRouter = router({
           User: {
             select: {
               first_name: true,
+              profile_pic: true,
+              username: true,
               email: true,
             },
           },

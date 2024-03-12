@@ -3,6 +3,7 @@ import { router } from '../trpc';
 import { adminUserRouter } from './adminUser';
 import { customerUserRouter } from './customer';
 import { dashboardRouter } from './dashboard';
+import { projectRouter } from './project';
 import { rolesRouter } from './userRoles';
 
 export const appRouter = router({
@@ -11,6 +12,7 @@ export const appRouter = router({
 
   roles: rolesRouter,
   customer: customerUserRouter,
+  project: projectRouter,
 });
 
 export type AppRouter = typeof appRouter;

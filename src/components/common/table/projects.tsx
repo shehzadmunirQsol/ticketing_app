@@ -36,7 +36,6 @@ import {
   customEmailTruncateHandler,
   customTruncateHandler,
   displayDate,
-  renderImage,
 } from '~/utils/helper';
 import { getCustomerFilterSchema } from '~/schema/customer';
 import {
@@ -65,17 +64,18 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 import { useRouter } from 'next/router';
 import { ResourceUploadDialog } from '../modal/resourceModal';
 import { CustomerUploadDialog } from '../modal/customerModal';
-import NextImage from '~/components/ui/img';
 export type Resources = {
   id: number;
-  first_name: string;
-  username: string;
-  email: string;
-  wallet_address: string;
-  profile_pic: string;
+  name: string;
+  material_type: string;
+  truck_cap: string;
+  total_rounds: number;
+  price: number;
 
   is_deleted: boolean;
   created_at: Date;
+  start_date: Date;
+  delivery_date: Date;
 };
 
 const initialFilters: any = {
@@ -86,7 +86,7 @@ type customerDataTableType = {
   type: string;
 };
 
-export default function CustomersDataTable(props: customerDataTableType) {
+export default function ProjectsDataTable(props: customerDataTableType) {
   console.log({ props });
   // use toast
   const { toast } = useToast();
@@ -105,24 +105,17 @@ export default function CustomersDataTable(props: customerDataTableType) {
   const [isModalDelete, setIsModalDelete] = React.useState(false);
 
   // APi
-  const { data, refetch, isLoading } = trpc.customer.get.useQuery(
+  const { data, refetch, isLoading } = trpc.project.get.useQuery(
     {
       ...filters,
-      role_id: props?.type
-        ? props?.type === 'seller'
-          ? 2
-          : props?.type === 'trucker'
-          ? 4
-          : props?.type === 'client'
-          ? 5
-          : 2
-        : 2,
+
       filters: { ...filterID },
     },
     {
       refetchOnWindowFocus: false,
     },
   );
+  console.log({ data });
 
   const rolesData = React.useMemo(() => {
     return Array.isArray(data?.data) ? data?.data : [];
@@ -149,48 +142,35 @@ export default function CustomersDataTable(props: customerDataTableType) {
       cell: ({ row }) => {
         return (
           <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
-            <NextImage
-              className="object-cover bg-ac-2 h-10 w-14 rounded-lg"
-              src={renderImage(row.original)}
-              alt={row?.original?.first_name ?? row?.original?.username}
-              width={100}
-              height={100}
-            />
-
-            <p className="w-14 text-ellipsis whitespace-nowrap overflow-hidden">
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger>
-                    {customTruncateHandler(
-                      row?.original?.first_name ?? row?.original?.username,
-                    )}
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p className="text-base font-normal">
-                      {row?.original?.first_name ?? row?.original?.username}
-                    </p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            </p>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <p className="capitalize">{row?.original?.name}</p>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="text-base font-normal">{row?.original?.name}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </div>
         );
       },
     },
     {
-      accessorKey: 'email',
-      header: 'Code',
+      accessorKey: 'material',
+      header: 'Material Type',
       cell: ({ row }) => {
         return (
-          <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
+          <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden capitalize">
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger>
-                  {customEmailTruncateHandler(row?.original?.email)}
+                  <p className="capitalize">{row?.original?.material_type}</p>
+                  {/* {customEmailTruncateHandler(row?.original?.email)} */}
                 </TooltipTrigger>
                 <TooltipContent>
                   <p className="text-base font-normal">
-                    {row?.original?.email}
+                    {row?.original?.material_type}
                   </p>
                 </TooltipContent>
               </Tooltip>
@@ -200,26 +180,55 @@ export default function CustomersDataTable(props: customerDataTableType) {
       },
     },
     {
-      accessorKey: 'wallet',
-      header: 'Wallet Address',
+      accessorKey: 'capacity',
+      header: 'Truck Capacity',
       cell: ({ row }) => {
         return (
-          <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger>
-                  {customTruncateHandler(row?.original?.wallet_address)}
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p className="text-base font-normal">
-                    {row?.original?.wallet_address}
-                  </p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+          <div className="flex items-center gap-4 capitalize text-ellipsis whitespace-nowrap overflow-hidden">
+            {row?.original?.truck_cap}
           </div>
         );
       },
+    },
+    {
+      accessorKey: 'rounds',
+      header: 'Total Rounds',
+      cell: ({ row }) => {
+        return (
+          <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
+            {row?.original?.total_rounds}
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: 'price',
+      header: 'Project Price',
+      cell: ({ row }) => {
+        return (
+          <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
+            $ {row?.original?.price}
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: 'Start Date',
+      header: 'Start Date',
+      cell: ({ row }) => (
+        <div className="capitalize text-ellipsis whitespace-nowrap ">
+          {displayDate(row?.original?.start_date)}
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'Delivery Date',
+      header: 'Delivery Date',
+      cell: ({ row }) => (
+        <div className="capitalize text-ellipsis whitespace-nowrap ">
+          {displayDate(row?.original?.delivery_date)}
+        </div>
+      ),
     },
     {
       accessorKey: 'Created Date',
@@ -397,14 +406,6 @@ export default function CustomersDataTable(props: customerDataTableType) {
               })}
           </DropdownMenuContent>
         </DropdownMenu>
-        <Button
-          type="submit"
-          variant={'clip'}
-          onClick={() => openChangeHandler({ data: null })}
-          className="w-28"
-        >
-          Add
-        </Button>
       </div>
       <div className="rounded-md border border-border ">
         <ScrollArea className="w-full ">

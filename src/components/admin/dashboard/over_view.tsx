@@ -37,7 +37,7 @@ export default function DashboardPage() {
                 </Card>
                 <Card className="w-full lg:col-span-3">
                   <CardHeader className="text-muted-foreground ">
-                    <CardTitle>Recent Sales</CardTitle>
+                    <CardTitle>Recent Projects</CardTitle>
                     <CardDescription></CardDescription>
                   </CardHeader>
                   <CardContent>

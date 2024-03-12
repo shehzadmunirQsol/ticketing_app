@@ -1,17 +1,12 @@
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import CustomersDataTable from '~/components/common/table/customers';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
 
 function Customers() {
-  // const [tabState, setTabState] = useState('seller');
   const router = useRouter();
-  // useEffect(() => {
-  //   if (router.query?.type) {
-  //     setTabState(router.query?.type as string);
-  //   }
-  // }, [router.query]);
+
   const tabState = React.useMemo(() => {
     return router.query?.type ? router.query?.type : 'seller';
   }, [router.query?.type]);

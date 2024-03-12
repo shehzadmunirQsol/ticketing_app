@@ -16,7 +16,14 @@ export const projectGetAllSchema = z.object({
   startDate: z.string().optional().nullable(),
   endDate: z.string().optional().nullable(),
 });
-
+export const projectGetAdminchema = z.object({
+  startDate: z.date().optional(),
+  endDate: z.date().optional(),
+  searchQuery: z.string().optional(),
+  first: z.number(),
+  rows: z.number(),
+  filters: z.any().optional(),
+});
 export const projectCreateSchema = z.object({
   name: z.string({
     required_error: 'name required',
