@@ -257,14 +257,13 @@ export const customerUserRouter = router({
         //   raw: `<p> Admin Wants you to join the ticketing platform as an ${input?.type}</p>`,
         // });
         const emaildata = {
-          type: 'project-invitation',
-          userData: 'Ticketing Admin',
-          validate: 'Ticketing Admin',
+          type: 'platform-seller',
+          usercontent:`<p style="color: #FFFFFF; font-size: 13px;">Admin Wants you to join the ticketing platform as a ${input?.type}</p>`,
         };
         const clientEmailHTML: string = clientEmailLayout(emaildata);
         await sendInvitation({
           email: input?.email,
-          from: emaildata?.userData ?? 'Owner',
+          from: "admin",
           subject: `Platoform Invitation`,
           type: 'platform-invitation',
           // raw: `<p> ${userData?.first_name ?? 'Owner'} invited you as client in ${
