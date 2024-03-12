@@ -108,7 +108,7 @@ export default function ProjectsDataTable(props: customerDataTableType) {
   const { data, refetch, isLoading } = trpc.project.get.useQuery(
     {
       ...filters,
-
+      type: props?.type,
       filters: { ...filterID },
     },
     {
@@ -240,32 +240,33 @@ export default function ProjectsDataTable(props: customerDataTableType) {
       ),
     },
 
-    // {
-    //   id: 'actions',
-    //   enableHiding: false,
-    //   header: 'Actions',
-    //   cell: ({ row }) => {
-    //     return (
-    //       <DropdownMenu>
-    //         <DropdownMenuTrigger asChild>
-    //           <Button variant="ghost" className="h-8 w-8 p-0">
-    //             <span className="sr-only">Open menu</span>
-    //             <MoreHorizontal className="h-4 w-4" />
-    //           </Button>
-    //         </DropdownMenuTrigger>
-    //         <DropdownMenuContent align="end">
-    //           {/* <DropdownMenuLabel>Actions</DropdownMenuLabel> */}
-    //           {/* <DropdownMenuSeparator /> */}
-    //           <DropdownMenuItem
-    //             onClick={() => openChangeHandler(row?.original)}
-    //           >
-    //             Edit
-    //           </DropdownMenuItem>
-    //         </DropdownMenuContent>
-    //       </DropdownMenu>
-    //     );
-    //   },
-    // },
+    {
+      id: 'actions',
+      enableHiding: false,
+      header: 'Actions',
+      cell: ({ row }) => {
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {/* <DropdownMenuLabel>Actions</DropdownMenuLabel> */}
+              {/* <DropdownMenuSeparator /> */}
+              <DropdownMenuItem
+                className=" cursor-pointer"
+                onClick={() => openChangeHandler(row?.original)}
+              >
+                View Project
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        );
+      },
+    },
   ];
 
   const table = useReactTable({

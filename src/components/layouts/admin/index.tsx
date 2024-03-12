@@ -53,7 +53,7 @@ function AdminLayout({ children }: DefaultLayoutProps) {
             <Header />
           </div>
           <div className="relative flex ">
-            <div className=" sticky top-20 h-[calc(100vh-82px)]">
+            <div className=" sticky top-[5.1rem] h-[calc(100vh-82px)]">
               <Sidebar />
             </div>
             <main

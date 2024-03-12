@@ -15,6 +15,7 @@ export const projectRouter = router({
       if (filterPayload?.startDate) delete filterPayload.startDate;
       const where: any = {
         is_deleted: false,
+        is_invoiced: input?.type === 'active' ? false : true,
         ...filterPayload,
       };
 
