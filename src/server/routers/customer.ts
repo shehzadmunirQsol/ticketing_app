@@ -15,6 +15,7 @@ import { signJWT, verifyJWT } from '~/utils/jwt';
 import { createUserSchema, getCustomerSchema } from '~/schema/customer';
 import { sendInvitation } from '~/utils/clientMailer';
 import { formatTrpcError } from '~/utils/helper';
+import { clientEmailLayout } from '~/utils/mailer';
 
 export const customerUserRouter = router({
   me: publicProcedure.input(getAdminSchema).query(async ({ ctx }) => {
@@ -248,12 +249,28 @@ export const customerUserRouter = router({
             message: 'User not registered!',
           });
         }
+        // await sendInvitation({
+        //   from: 'admin',
+        //   email: input?.email,
+        //   type: 'project-invitation',
+        //   subject: 'Platform Invitation',
+        //   raw: `<p> Admin Wants you to join the ticketing platform as an ${input?.type}</p>`,
+        // });
+        const emaildata = {
+          type: 'platform-invitation',
+          userData: 'Ticketing Admin',
+          validate: 'Ticketing Admin',
+        };
+        const clientEmailHTML: string = clientEmailLayout(emaildata);
         await sendInvitation({
-          from: 'admin',
           email: input?.email,
-          type: 'project-invitation',
-          subject: 'Platform Invitation',
-          raw: `<p> Admin Wants you to join the ticketing platform as an ${input?.type}</p>`,
+          from: emaildata?.userData ?? 'Owner',
+          subject: `Platoform Invitation`,
+          type: 'platform-invitation',
+          // raw: `<p> ${userData?.first_name ?? 'Owner'} invited you as client in ${
+          //   validate?.data?.name
+          // } project. </p>`,
+          html: clientEmailHTML, // Pass HTML content
         });
 
         return { user };
