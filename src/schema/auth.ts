@@ -25,6 +25,10 @@ export const loginCustomerSchema = z.object({
     required_error: 'Please provide wallet address',
   }),
   first_name: z.string({ required_error: 'Please provide name' }),
+  profile_pic: z
+    .string({ required_error: 'Please provide name' })
+    .optional()
+    .nullable(),
 });
 
 // register schema for api
