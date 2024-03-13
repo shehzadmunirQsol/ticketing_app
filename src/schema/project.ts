@@ -20,10 +20,14 @@ export const projectGetAdminchema = z.object({
   startDate: z.date().optional(),
   endDate: z.date().optional(),
   searchQuery: z.string().optional(),
-  type: z.string().optional(),
+  type: z.string().optional().nullable(),
+  id: z.number().optional().nullable(),
   first: z.number(),
   rows: z.number(),
   filters: z.any().optional(),
+});
+export const projectGetDetailSchema = z.object({
+  id: z.number(),
 });
 export const projectCreateSchema = z.object({
   name: z.string({

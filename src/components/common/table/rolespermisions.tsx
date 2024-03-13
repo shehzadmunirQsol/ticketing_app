@@ -39,6 +39,7 @@ import { LoadingDialog } from '../modal/loadingModal';
 import { useRouter } from 'next/router';
 import { Button } from '~/components/ui/button';
 import { getRolesFilterSchema } from '~/schema/roles';
+import { Input } from '~/components/ui/input';
 export type Roles = {
   id: number;
   name: string;
@@ -212,9 +213,24 @@ export default function RolesPermisionDataTable() {
           onClick={() => onSubmit()}
           className="w-fit"
         >
-          Save Permisions
+          Role
         </Button>
       </div>
+      <Input
+        placeholder="Enter Role"
+        type="text"
+        value={
+          index
+            ? +index === 2
+              ? 'Seller/Buyer'
+              : +index === 4
+              ? 'Trucker'
+              : 'Client'
+            : 'Seller/Buyer'
+        }
+        className=" mb-4"
+        disabled={true}
+      />
       <div className="rounded-md border border-border ">
         <ScrollArea className="w-full ">
           <ScrollBar orientation="horizontal"></ScrollBar>

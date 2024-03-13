@@ -186,7 +186,11 @@ export async function createProject(req: any, res: any) {
       private_address: decodePrivateAddress.address,
     });
     const smartAccountAddress = await smartAccount.getAccountAddress();
-    await createWeb3Project(smartAccount, 'abcd', data.total_rounds);
+    const txHash = await createWeb3Project(
+      smartAccount,
+      data?.name,
+      data.total_rounds,
+    );
 
     // check access
     if (!userData || unAuthRole.includes(userData?.role)) {
@@ -252,6 +256,7 @@ export async function createProject(req: any, res: any) {
         created_by: userData?.id,
         start_date: new Date(start_date),
         delivery_date: new Date(delivery_date),
+        transaction_hash: txHash?.transactionHash ?? '',
 
         ...data,
         client_id: clientData?.id,

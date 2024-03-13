@@ -18,7 +18,6 @@ import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/ui/dropdown-menu';
 
@@ -49,7 +48,6 @@ import { useToast } from '~/components/ui/use-toast';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 
 import { LoadingDialog } from '../modal/loadingModal';
-import { MoreHorizontal } from 'lucide-react';
 import {
   Select,
   SelectContent,
@@ -63,16 +61,12 @@ import {
 } from '@radix-ui/react-icons';
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 import { useRouter } from 'next/router';
-import { ResourceUploadDialog } from '../modal/resourceModal';
-import { CustomerUploadDialog } from '../modal/customerModal';
+
 import NextImage from '~/components/ui/img';
 export type Resources = {
   id: number;
-  first_name: string;
-  username: string;
-  email: string;
-  wallet_address: string;
-  profile_pic: string;
+
+  Trucker: any;
 
   is_deleted: boolean;
   created_at: Date;
@@ -83,11 +77,13 @@ const initialFilters: any = {
   rows: 10,
 };
 type customerDataTableType = {
-  type: string;
-  disable?: boolean;
+  type?: string;
+  id?: number;
 };
 
-export default function CustomersDataTable(props: customerDataTableType) {
+export default function ProjectsTruckersDataTable(
+  props: customerDataTableType,
+) {
   console.log({ props });
   // use toast
   const { toast } = useToast();
@@ -106,29 +102,22 @@ export default function CustomersDataTable(props: customerDataTableType) {
   const [isModalDelete, setIsModalDelete] = React.useState(false);
 
   // APi
-  const { data, refetch, isLoading } = trpc.customer.get.useQuery(
+  const { data, refetch, isLoading } = trpc.project.getProjectTruckers.useQuery(
     {
       ...filters,
-      role_id: props?.type
-        ? props?.type === 'seller'
-          ? 2
-          : props?.type === 'trucker'
-          ? 4
-          : props?.type === 'client'
-          ? 5
-          : 2
-        : 2,
+      id: props?.id ?? 0,
       filters: { ...filterID },
     },
     {
       refetchOnWindowFocus: false,
     },
   );
+  console.log({ data });
 
-  const rolesData = React.useMemo(() => {
+  const projectTruckerData = React.useMemo(() => {
     return Array.isArray(data?.data) ? data?.data : [];
   }, [data]);
-
+  console.log({ projectTruckerData });
   function openChangeHandler(data: any) {
     setIsModal((prevState) => !prevState);
     if (data) {
@@ -152,8 +141,11 @@ export default function CustomersDataTable(props: customerDataTableType) {
           <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
             <NextImage
               className="object-cover bg-ac-2 h-10 w-14 rounded-lg"
-              src={renderImage(row.original)}
-              alt={row?.original?.first_name ?? row?.original?.username}
+              src={renderImage(row.original?.Trucker)}
+              alt={
+                row?.original?.Trucker?.first_name ??
+                row?.original?.Trucker?.username
+              }
               width={100}
               height={100}
             />
@@ -163,12 +155,14 @@ export default function CustomersDataTable(props: customerDataTableType) {
                 <Tooltip>
                   <TooltipTrigger>
                     {customTruncateHandler(
-                      row?.original?.first_name ?? row?.original?.username,
+                      row?.original?.Trucker?.first_name ??
+                        row?.original?.Trucker?.username,
                     )}
                   </TooltipTrigger>
                   <TooltipContent>
                     <p className="text-base font-normal">
-                      {row?.original?.first_name ?? row?.original?.username}
+                      {row?.original?.Trucker?.first_name ??
+                        row?.original?.Trucker?.username}
                     </p>
                   </TooltipContent>
                 </Tooltip>
@@ -187,11 +181,11 @@ export default function CustomersDataTable(props: customerDataTableType) {
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger>
-                  {customEmailTruncateHandler(row?.original?.email)}
+                  {customEmailTruncateHandler(row?.original?.Trucker?.email)}
                 </TooltipTrigger>
                 <TooltipContent>
                   <p className="text-base font-normal">
-                    {row?.original?.email}
+                    {row?.original?.Trucker?.email}
                   </p>
                 </TooltipContent>
               </Tooltip>
@@ -209,11 +203,13 @@ export default function CustomersDataTable(props: customerDataTableType) {
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger>
-                  {customTruncateHandler(row?.original?.wallet_address)}
+                  {customTruncateHandler(
+                    row?.original?.Trucker?.wallet_address,
+                  )}
                 </TooltipTrigger>
                 <TooltipContent>
                   <p className="text-base font-normal">
-                    {row?.original?.wallet_address}
+                    {row?.original?.Trucker?.wallet_address}
                   </p>
                 </TooltipContent>
               </Tooltip>
@@ -261,7 +257,7 @@ export default function CustomersDataTable(props: customerDataTableType) {
   ];
 
   const table = useReactTable({
-    data: rolesData as Resources[],
+    data: projectTruckerData as Resources[],
     columns,
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
@@ -398,16 +394,6 @@ export default function CustomersDataTable(props: customerDataTableType) {
               })}
           </DropdownMenuContent>
         </DropdownMenu>
-        {!props?.disable && (
-          <Button
-            type="submit"
-            variant={'clip'}
-            onClick={() => openChangeHandler({ data: null })}
-            className="w-28"
-          >
-            Add
-          </Button>
-        )}
       </div>
       <div className="rounded-md border border-border ">
         <ScrollArea className="w-full ">
@@ -550,13 +536,6 @@ export default function CustomersDataTable(props: customerDataTableType) {
           </div>
         </div>
       </div>
-      <CustomerUploadDialog
-        setIsModal={setIsModal}
-        isModal={isModal}
-        refetch={refetch}
-        type={props?.type}
-        {...selectedItem}
-      />
 
       <LoadingDialog open={isLoading} text={'Loading data...'} />
     </div>
