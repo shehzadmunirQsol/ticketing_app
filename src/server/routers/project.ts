@@ -171,6 +171,7 @@ export const projectRouter = router({
         const where: any = {
           is_deleted: false,
           project_id: input?.id,
+
           ...filterPayload,
         };
 
@@ -226,11 +227,16 @@ export const projectRouter = router({
           where: where,
           include: {
             Projects: true,
+
             Trucker: {
               include: {
                 _count: {
                   select: {
-                    ProjectTickets: true,
+                    ProjectTickets: {
+                      where: {
+                        project_id: input?.id,
+                      },
+                    },
                   },
                 },
               },
