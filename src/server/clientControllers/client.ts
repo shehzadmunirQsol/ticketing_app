@@ -40,7 +40,11 @@ export async function getSearchedClient(req: any, res: any) {
     const options: any = {
       where: {
         is_deleted: false,
-        role: 'client',
+        Role: {
+          name: {
+            in: 'client',
+          },
+        },
       },
     };
     console.log({ userData });
@@ -56,6 +60,12 @@ export async function getSearchedClient(req: any, res: any) {
           mode: 'insensitive',
         },
       });
+      options.where.OR.push({
+        first_name: {
+          contains: validate?.data?.searchQuery,
+          mode: 'insensitive',
+        },
+      });
     }
 
     const projectPromise = prisma.user.findMany({
@@ -64,7 +74,9 @@ export async function getSearchedClient(req: any, res: any) {
         id: true,
         email: true,
         first_name: true,
+        username: true,
         phone_number: true,
+        role_id: true,
       },
     });
 
