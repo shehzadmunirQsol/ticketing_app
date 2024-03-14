@@ -179,11 +179,11 @@ export const inviteTruckerSchema = z.object({
       message: 'Please enter your number',
     }),
   type: z
-    .enum(['seller', 'buyer', 'client', 'trucker'], {
+    .enum(['seller_buyer', 'seller_trucker', 'client', 'trucker'], {
       required_error: 'Please enter your type',
       invalid_type_error: 'Please enter your type',
     })
-    .default('seller'),
+    .default('seller_buyer'),
 });
 // register schema for api
 

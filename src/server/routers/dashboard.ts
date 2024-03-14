@@ -20,7 +20,7 @@ export const dashboardRouter = router({
           is_deleted: false,
           Role: {
             name: {
-              in: 'seller',
+              in: ['seller_buyer', 'seller_trucker'],
             },
           },
         },
@@ -30,7 +30,7 @@ export const dashboardRouter = router({
           is_deleted: false,
           Role: {
             name: {
-              in: 'trucker',
+              in: ['trucker', 'seller_trucker'],
             },
           },
         },

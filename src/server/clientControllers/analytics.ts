@@ -52,7 +52,10 @@ export async function getAnalytics(req: any, res: any) {
           is_deleted: false,
         };
       }
-      if (userPromise?.Role?.name == 'seller') {
+      if (
+        userPromise?.Role?.name == 'seller_buyer' ||
+        userPromise?.Role?.name == 'seller_trucker'
+      ) {
         options.where = {
           created_by: userPromise?.id,
           is_deleted: false,
@@ -74,7 +77,10 @@ export async function getAnalytics(req: any, res: any) {
         },
       });
       // if user is seller
-      if (userPromise?.Role?.name == 'seller') {
+      if (
+        userPromise?.Role?.name == 'seller_buyer' ||
+        userPromise?.Role?.name == 'seller_trucker'
+      ) {
         const pendingTicketsPromise = await prisma.projects.findMany({
           where: {
             ...options.where,
