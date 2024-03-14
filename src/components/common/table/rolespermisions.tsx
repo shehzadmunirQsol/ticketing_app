@@ -223,6 +223,8 @@ export default function RolesPermisionDataTable() {
           index
             ? +index === 2
               ? 'Seller/Buyer'
+              : +index === 3
+              ? 'Trucker/Seller'
               : +index === 4
               ? 'Trucker'
               : 'Client'

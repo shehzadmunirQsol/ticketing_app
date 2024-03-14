@@ -134,10 +134,8 @@ export default function RolesDataTable() {
           <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
             <TooltipProvider>
               <Tooltip>
-                <TooltipTrigger>
-                  {row?.original?.name === 'seller'
-                    ? 'seller/buyer'
-                    : row?.original?.name}
+                <TooltipTrigger className=" capitalize">
+                  {row?.original?.name?.replace('_', '/')}
                 </TooltipTrigger>
                 <TooltipContent>
                   <p className="text-base font-normal">

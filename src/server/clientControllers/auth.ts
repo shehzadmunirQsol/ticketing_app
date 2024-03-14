@@ -109,8 +109,14 @@ export async function registerCustomer(req: any, res: any) {
         error: 'Email already exists. Please use a different email.',
       });
     }
+    const { role, ...data } = { ...validate?.data };
 
     // Hash the password
+    const findRole = await prisma.role.findFirst({
+      where: {
+        name: role,
+      },
+    });
 
     // Create a new User instance with the hashed password
     const result = await prisma.user.upsert({
@@ -118,12 +124,14 @@ export async function registerCustomer(req: any, res: any) {
         email: validate.data?.email,
       },
       update: {
-        ...validate.data,
+        ...data,
+        role_id: findRole?.id,
         is_registerd: true,
       },
       create: {
-        ...validate.data,
+        ...data,
         is_registerd: true,
+        role_id: findRole?.id,
       },
       include: {
         Role: {

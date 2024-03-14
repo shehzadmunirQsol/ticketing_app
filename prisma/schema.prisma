@@ -217,8 +217,8 @@ enum MaterialType {
 
 enum CustomerTypeEnums {
   admin
-  seller
-  buyer
+  seller_buyer
+  seller_trucker
   trucker
   client
 }

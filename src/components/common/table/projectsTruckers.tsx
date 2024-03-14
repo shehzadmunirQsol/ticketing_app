@@ -84,10 +84,8 @@ type customerDataTableType = {
 export default function ProjectsTruckersDataTable(
   props: customerDataTableType,
 ) {
-  console.log({ props });
   // use toast
-  const { toast } = useToast();
-  const router = useRouter();
+
   const [sorting, setSorting] = useState<SortingState>([]);
   const [filterID, setFilterID] = useState({});
 
@@ -95,11 +93,6 @@ export default function ProjectsTruckersDataTable(
     useState<getCustomerFilterSchema>(initialFilters);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
-  const [selectedItem, setSelectedItem] = React.useState({});
-  const [title, setTitle] = React.useState('');
-  const [type, setType] = React.useState('');
-  const [isModal, setIsModal] = React.useState(false);
-  const [isModalDelete, setIsModalDelete] = React.useState(false);
 
   // APi
   const { data, refetch, isLoading } = trpc.project.getProjectTruckers.useQuery(
@@ -118,14 +111,7 @@ export default function ProjectsTruckersDataTable(
     return Array.isArray(data?.data) ? data?.data : [];
   }, [data]);
   console.log({ projectTruckerData });
-  function openChangeHandler(data: any) {
-    setIsModal((prevState) => !prevState);
-    if (data) {
-      setSelectedItem({ id: data?.id, name: data?.name, code: data?.code });
-    } else {
-      setSelectedItem({});
-    }
-  }
+
   // handle modal
   // const handleEnbled = (data: any) => {
   //   setSelectedItem({ id: data?.id, name: data?.name, code: data?.code });
@@ -227,33 +213,6 @@ export default function ProjectsTruckersDataTable(
         </div>
       ),
     },
-
-    // {
-    //   id: 'actions',
-    //   enableHiding: false,
-    //   header: 'Actions',
-    //   cell: ({ row }) => {
-    //     return (
-    //       <DropdownMenu>
-    //         <DropdownMenuTrigger asChild>
-    //           <Button variant="ghost" className="h-8 w-8 p-0">
-    //             <span className="sr-only">Open menu</span>
-    //             <MoreHorizontal className="h-4 w-4" />
-    //           </Button>
-    //         </DropdownMenuTrigger>
-    //         <DropdownMenuContent align="end">
-    //           {/* <DropdownMenuLabel>Actions</DropdownMenuLabel> */}
-    //           {/* <DropdownMenuSeparator /> */}
-    //           <DropdownMenuItem
-    //             onClick={() => openChangeHandler(row?.original)}
-    //           >
-    //             Edit
-    //           </DropdownMenuItem>
-    //         </DropdownMenuContent>
-    //       </DropdownMenu>
-    //     );
-    //   },
-    // },
   ];
 
   const table = useReactTable({
@@ -279,86 +238,6 @@ export default function ProjectsTruckersDataTable(
   }
 
   // FILTER OPTIONS
-  const roleOptions1 = [
-    {
-      Icon: 'fal fa-chevron-down',
-      text: 'Search',
-      filtername: 'searchQuery',
-      type: 'text',
-    },
-
-    {
-      Icon: 'fal fa-chevron-down',
-      text: 'Enabled',
-      filtername: 'is_enabled',
-      type: 'select',
-
-      filter: [
-        {
-          name: 'Yes',
-          value: true,
-        },
-        {
-          name: 'No',
-          value: false,
-        },
-      ],
-    },
-    {
-      Icon: 'fal fa-chevron-down',
-      text: 'Type',
-      filtername: 'is_percentage',
-      type: 'select',
-
-      filter: [
-        {
-          name: 'Fixed',
-          value: false,
-        },
-        {
-          name: 'Percentage',
-          value: true,
-        },
-      ],
-    },
-    {
-      Icon: 'fal fa-chevron-down',
-      text: 'Limit',
-      filtername: 'is_limited',
-      type: 'select',
-
-      filter: [
-        {
-          name: 'Limit',
-          value: true,
-        },
-        {
-          name: 'Unlimited',
-          value: false,
-        },
-      ],
-    },
-    {
-      Icon: 'fal fa-chevron-down',
-      text: 'Start Date',
-      filtername: 'startDate',
-      type: 'date',
-    },
-    {
-      Icon: 'fal fa-chevron-down',
-      text: 'End Date',
-      filtername: 'endDate',
-      type: 'date',
-    },
-    {
-      Icon: 'fal fa-chevron-down',
-      text: 'Clear Filter',
-      filtername: 'Clear',
-    },
-  ];
-  useEffect(() => {
-    refetch();
-  }, [props?.type]);
 
   return (
     <div className="w-full space-y-4">
