@@ -34,6 +34,9 @@ export async function loginCustomer(req: any, res: any) {
       where: {
         email: validate.data?.email,
       },
+      include: {
+        Role: true,
+      },
     });
     const { private_address, ...inputData } = validate.data;
     const decodePrivateAddress: any = await verifyJWT(private_address);
@@ -46,6 +49,9 @@ export async function loginCustomer(req: any, res: any) {
         data: {
           ...inputData,
           wallet_address: smartAccountAddress,
+        },
+        include: {
+          Role: true,
         },
       });
 
@@ -60,6 +66,9 @@ export async function loginCustomer(req: any, res: any) {
         },
         data: {
           wallet_address: smartAccountAddress,
+        },
+        include: {
+          Role: true,
         },
       });
     }
