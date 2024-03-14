@@ -549,13 +549,6 @@ export default function ProjectsDataTable(props: customerDataTableType) {
           </div>
         </div>
       </div>
-      <CustomerUploadDialog
-        setIsModal={setIsModal}
-        isModal={isModal}
-        refetch={refetch}
-        type={props?.type}
-        {...selectedItem}
-      />
 
       <LoadingDialog open={isLoading} text={'Loading data...'} />
     </div>
