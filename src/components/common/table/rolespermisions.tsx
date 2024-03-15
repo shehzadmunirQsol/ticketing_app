@@ -213,7 +213,7 @@ export default function RolesPermisionDataTable() {
           onClick={() => onSubmit()}
           className="w-fit"
         >
-          Role
+          Update Permisions
         </Button>
       </div>
       <Input
