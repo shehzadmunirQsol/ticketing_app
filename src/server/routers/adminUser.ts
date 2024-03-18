@@ -7,6 +7,8 @@ import {
   updateUserSchema,
   deleteUserSchema,
   getAdminSchema,
+  passwordChangeSchema,
+  emailChangeSchema,
 } from '~/schema/adminUser';
 import { prisma } from '~/server/prisma';
 import { hashPass, isSamePass } from '~/utils/hash';
@@ -207,6 +209,90 @@ export const adminUserRouter = router({
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: error?.message,
+        });
+      }
+    }),
+  updateCustomerPassword: publicProcedure
+    .input(passwordChangeSchema)
+    .mutation(async ({ ctx, input }) => {
+      try {
+        console.log(input, 'input');
+        const user: any = await prisma.adminUser.findFirst({
+          where: { email: input.email },
+        });
+
+        const checkPass = await isSamePass(
+          input.currentPassword,
+          user?.password,
+        );
+        const checknewPassPass = await isSamePass(
+          input.newPassword,
+          user?.password,
+        );
+        if (checknewPassPass) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Old Password is incorrect',
+          });
+        }
+        if (!checkPass) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Old Password is incorrect',
+          });
+        }
+
+        if (input.newPassword !== input.confirmPassword) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Password are not Matching',
+          });
+        }
+
+        const hashPassword = await hashPass(input.newPassword);
+        console.log('HASH Pass : ', hashPassword);
+        const updatePasswordResult = await prisma.adminUser?.update({
+          where: {
+            id: user.id,
+          },
+          data: {
+            password: hashPassword,
+          },
+        });
+        console.log(updatePasswordResult, 'userCode');
+        return { user: user, status: true };
+      } catch (error: any) {
+        console.log({ error });
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: error.message,
+        });
+      }
+    }),
+  updateCustomerEmail: publicProcedure
+    .input(emailChangeSchema)
+    .mutation(async ({ ctx, input }) => {
+      try {
+        console.log(input, 'input');
+        const user: any = await prisma.adminUser.findFirst({
+          where: { id: input.id ?? 0 },
+        });
+
+        const updatePasswordResult = await prisma.adminUser?.update({
+          where: {
+            id: user.id,
+          },
+          data: {
+            email: input?.email,
+          },
+        });
+        console.log(updatePasswordResult, 'userCode');
+        return { user: user, status: true };
+      } catch (error: any) {
+        console.log({ error });
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: error.message,
         });
       }
     }),

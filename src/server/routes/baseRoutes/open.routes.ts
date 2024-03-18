@@ -3,6 +3,7 @@ import projectRoutes from '../actionRoutes/project.router';
 import clientRoutes from '../actionRoutes/client.router';
 import userRoutes from '../actionRoutes/user.router';
 import analyticsRoutes from '../actionRoutes/analytics.router';
+import pdfRoutes from '../actionRoutes/pdf.router';
 
 export default async function openRoutes(req: any, res: any) {
   const { query } = req;
@@ -20,6 +21,8 @@ export default async function openRoutes(req: any, res: any) {
       return projectRoutes(req, res);
     case 'client':
       return clientRoutes(req, res);
+    case 'generate-pdf':
+      return pdfRoutes(req, res);
 
     default:
       return res.status(405).send({ message: 'This request is not allowed' });

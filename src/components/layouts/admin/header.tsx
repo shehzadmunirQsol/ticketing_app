@@ -35,6 +35,7 @@ import {
   userAdminIsLogin,
 } from '~/store/reducers/adminAuthSlice';
 import NextImage from '~/components/ui/img';
+import Link from 'next/link';
 function Header() {
   const dispatch = useDispatch();
 
@@ -111,7 +112,9 @@ export function DropdownMenuDemo() {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56">
-          <DropdownMenuLabel>My Account</DropdownMenuLabel>
+          <Link href={'/admin/profile'}>
+            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+          </Link>
           <DropdownMenuSeparator />
           <DropdownMenuItem className="cursor-pointer" onClick={handleLogout}>
             <LogOut className="mr-2 h-4 w-4" />

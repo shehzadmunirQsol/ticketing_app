@@ -176,12 +176,12 @@ const SIDEBAR_DATA = [
         icon: <i className={` fa-solid fa-users-gear  p-4 rounded-full`} />,
         title: 'Roles',
       },
-      {
-        key: '/admin/settings/resources',
+      // {
+      //   key: '/admin/settings/resources',
 
-        icon: <i className=" fa-solid fa-folder-tree p-4 rounded-full" />,
-        title: 'Resources',
-      },
+      //   icon: <i className=" fa-solid fa-folder-tree p-4 rounded-full" />,
+      //   title: 'Resources',
+      // },
     ],
   },
 ];
