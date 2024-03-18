@@ -1,7 +1,5 @@
-import {
-  loginCustomer,
-  registerCustomer,
-} from '~/server/clientControllers/auth';
+import { loginCustomer } from '~/server/clientControllers/auth/login';
+import { registerCustomer } from '~/server/clientControllers/auth/register';
 
 export default async function authRoutes(req: any, res: any) {
   const { method, query } = req;

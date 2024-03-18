@@ -43,12 +43,7 @@ export async function createProject(req: any, res: any) {
       return res.status(400).send({
         message: `The assign truckers length should be less than or equal to  ${data?.total_rounds}.`,
       });
-    // The assign truckers length should be less than or equal to number of rounds
-    if (truckers.length > data?.total_rounds)
-      // check if user is authorizer
-      return res.status(400).send({
-        message: `The assign truckers length should be less than or equal to  ${data?.total_rounds}.`,
-      });
+
     const uniqueAddress = new Set(address.map((v: any) => v.address_type));
     const uniqueTrucker = new Set(truckers.map((v: any) => v.trucker_id));
     // check duplicate address

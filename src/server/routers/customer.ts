@@ -274,7 +274,7 @@ export const customerUserRouter = router({
         await sendInvitation({
           email: input?.email,
           from: 'admin',
-          subject: `Platoform Invitation`,
+          subject: `Platform Invitation`,
           type: 'platform-invitation',
           // raw: `<p> ${userData?.first_name ?? 'Owner'} invited you as client in ${
           //   validate?.data?.name
