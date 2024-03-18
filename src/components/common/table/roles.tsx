@@ -160,32 +160,32 @@ export default function RolesDataTable() {
       ),
     },
 
-    // {
-    //   id: 'actions',
-    //   enableHiding: false,
-    //   header: 'Actions',
-    //   cell: ({ row }) => {
-    //     return (
-    //       <DropdownMenu>
-    //         <DropdownMenuTrigger asChild>
-    //           <Button variant="ghost" className="h-8 w-8 p-0">
-    //             <span className="sr-only">Open menu</span>
-    //             <MoreHorizontal className="h-4 w-4" />
-    //           </Button>
-    //         </DropdownMenuTrigger>
-    //         <DropdownMenuContent align="end">
-    //           {/* <DropdownMenuLabel>Actions</DropdownMenuLabel> */}
-    //           {/* <DropdownMenuSeparator /> */}
-    //           <Link href={`/admin/settings/roles/edit/${row?.original?.id}`}>
-    //             <DropdownMenuItem className=" cursor-pointer">
-    //               Edit Permisions
-    //             </DropdownMenuItem>
-    //           </Link>
-    //         </DropdownMenuContent>
-    //       </DropdownMenu>
-    //     );
-    //   },
-    // },
+    {
+      id: 'actions',
+      enableHiding: false,
+      header: 'Actions',
+      cell: ({ row }) => {
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {/* <DropdownMenuLabel>Actions</DropdownMenuLabel> */}
+              {/* <DropdownMenuSeparator /> */}
+              <Link href={`/admin/settings/roles/edit/${row?.original?.id}`}>
+                <DropdownMenuItem className=" cursor-pointer">
+                  Edit Permisions
+                </DropdownMenuItem>
+              </Link>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        );
+      },
+    },
   ];
 
   const table = useReactTable({
