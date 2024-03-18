@@ -35,27 +35,19 @@ interface CustomerInterface {
   refetch: () => void;
   type: string;
   id?: number;
-  name?: string | null;
-  code?: string | null;
+  first_name?: string | null;
+  email?: string | null;
+  phone_number?: string | null;
 }
 
 export function CustomerUploadDialog(props: CustomerInterface) {
   const { toast } = useToast();
 
   useEffect(() => {
-    form.setValue('first_name', props.name ?? '');
-    form.setValue('email', props.code ?? '');
+    form.setValue('first_name', props.first_name ?? '');
+    form.setValue('email', props.email ?? '');
+    form.setValue('phone_number', props.phone_number ?? '');
   }, [props.isModal]);
-
-  const addCustomer = trpc.customer.createUser.useMutation({
-    onSuccess: (res) => {
-      console.log(res);
-      toast({
-        variant: 'success',
-        title: 'Address added successfully',
-      });
-    },
-  });
 
   const updateCustomer = trpc.customer.createUser.useMutation({
     onSuccess: (res) => {
@@ -78,7 +70,7 @@ export function CustomerUploadDialog(props: CustomerInterface) {
   const form = useForm<createInputUserSchema>({
     resolver: zodResolver(createUserSchema),
     defaultValues: {
-      first_name: props.name ?? '',
+      first_name: props.first_name ?? '',
       // code: props.code ?? '',
     },
   });
@@ -86,11 +78,11 @@ export function CustomerUploadDialog(props: CustomerInterface) {
   async function onSubmit(values: createInputUserSchema) {
     try {
       const payload = { ...values };
-      if (props?.id) {
-        await updateCustomer.mutateAsync({ ...payload, type: props?.type });
-      } else {
-        await addCustomer.mutateAsync({ ...payload, type: props?.type });
-      }
+      await updateCustomer.mutateAsync({
+        ...payload,
+        type: props?.type,
+        id: props?.id,
+      });
 
       toast({
         variant: 'success',
@@ -163,6 +155,7 @@ export function CustomerUploadDialog(props: CustomerInterface) {
                       <FormControl>
                         <Input
                           type="text"
+                          disabled={props?.id ? true : false}
                           className="rounded-md"
                           {...form.register('email')}
                         />
@@ -199,15 +192,12 @@ export function CustomerUploadDialog(props: CustomerInterface) {
                   <Button
                     variant="secondary"
                     type="button"
-                    disabled={addCustomer.isLoading || updateCustomer.isLoading}
+                    disabled={updateCustomer.isLoading}
                     onClick={() => props.setIsModal(false)}
                   >
                     Cancel
                   </Button>
-                  <Button
-                    type="submit"
-                    disabled={addCustomer.isLoading || updateCustomer.isLoading}
-                  >
+                  <Button type="submit" disabled={updateCustomer.isLoading}>
                     {props?.id ? 'Update' : 'Add'}
                   </Button>
                 </div>
@@ -217,8 +207,8 @@ export function CustomerUploadDialog(props: CustomerInterface) {
         </DialogHeader>
       </DialogContent>
       <LoadingDialog
-        open={addCustomer.isLoading || updateCustomer.isLoading}
-        text={`${props?.id ? 'Updating' : 'Adding'} Resource...`}
+        open={updateCustomer.isLoading}
+        text={`${props?.id ? 'Updating' : 'Adding'} ${props?.type}...`}
       />
     </Dialog>
   );

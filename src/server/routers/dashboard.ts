@@ -57,18 +57,38 @@ export const dashboardRouter = router({
           is_invoiced: true,
         },
       });
+      const activeTicketPromise = await prisma.projectTickets.count({
+        where: {
+          is_deleted: false,
+          status: {
+            in: 'pending',
+          },
+        },
+      });
+      const closedTicketPromise = await prisma.projectTickets.count({
+        where: {
+          is_deleted: false,
+          status: {
+            in: 'completed',
+          },
+        },
+      });
       const [
         totalSeller,
         totalTrucker,
         totalClient,
         activeProject,
         closedProject,
+        activeTicket,
+        closedTicket,
       ] = await Promise.all([
         totalSellerPromise,
         totalTruckerPromise,
         totalClientPromise,
         activeProjectPromise,
         closedProjectPromise,
+        activeTicketPromise,
+        closedTicketPromise,
       ]);
       const date = new Date().toISOString().split('T')[0];
       const analyticsData: any = [
@@ -122,7 +142,7 @@ export const dashboardRouter = router({
         },
         {
           title: 'Active Tickets',
-          data: totalClient,
+          data: activeTicket,
           symbol: '',
           icon: 'fa-solid fa-ticket',
           cols: false,
@@ -130,7 +150,7 @@ export const dashboardRouter = router({
         },
         {
           title: 'Closed Tickets',
-          data: totalClient,
+          data: closedTicket,
           symbol: '',
           icon: 'fa-solid fa-ticket-simple',
           cols: false,

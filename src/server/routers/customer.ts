@@ -218,17 +218,19 @@ export const customerUserRouter = router({
     .input(createUserSchema)
     .mutation(async ({ ctx, input }) => {
       try {
-        const { type, ...paylaod }: any = { ...input };
+        let is_exists = false;
+        const { type, id, ...paylaod }: any = { ...input };
 
         const exists: any = await prisma.user.findFirst({
           where: { email: input.email },
         });
 
         if (exists) {
-          throw new TRPCError({
-            code: 'FORBIDDEN',
-            message: 'User already exists.',
-          });
+          is_exists = true;
+          // throw new TRPCError({
+          //   code: 'FORBIDDEN',
+          //   message: 'User already exists.',
+          // });
         }
         const role_id = type
           ? type === 'seller'
@@ -239,8 +241,16 @@ export const customerUserRouter = router({
             ? 4
             : 2
           : 2;
-        const user = await prisma.user.create({
-          data: { ...paylaod, role_id, is_registerd: true },
+        const user = await prisma.user.upsert({
+          where: {
+            email: input?.email,
+          },
+          create: {
+            ...paylaod,
+            role_id,
+            is_registerd: true,
+          },
+          update: { ...paylaod, role_id, is_registerd: true },
         });
 
         if (!user) {
@@ -261,17 +271,19 @@ export const customerUserRouter = router({
           userData: 'Ticketing Admin',
           validate: 'Ticketing Admin',
         };
-        const clientEmailHTML: string = clientEmailLayout(emaildata);
-        await sendInvitation({
-          email: input?.email,
-          from: emaildata?.userData ?? 'Owner',
-          subject: `Platoform Invitation`,
-          type: 'platform-invitation',
-          // raw: `<p> ${userData?.first_name ?? 'Owner'} invited you as client in ${
-          //   validate?.data?.name
-          // } project. </p>`,
-          html: clientEmailHTML, // Pass HTML content
-        });
+        if (!is_exists) {
+          const clientEmailHTML: string = clientEmailLayout(emaildata);
+          await sendInvitation({
+            email: input?.email,
+            from: emaildata?.userData ?? 'Owner',
+            subject: `Platoform Invitation`,
+            type: 'platform-invitation',
+            // raw: `<p> ${userData?.first_name ?? 'Owner'} invited you as client in ${
+            //   validate?.data?.name
+            // } project. </p>`,
+            html: clientEmailHTML, // Pass HTML content
+          });
+        }
 
         return { user };
       } catch (error: any) {
