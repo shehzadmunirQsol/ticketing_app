@@ -3,7 +3,7 @@ import { projectCreateSchema, projectGetAllSchema } from '~/schema/project';
 import { sendInvitation } from '~/utils/clientMailer';
 import { getUserData } from '~/utils/helper';
 import { createSmartAccount } from './web3-controller/createAccount';
-import { createWeb3Project } from './web3-controller/createWeb3Project';
+import { createWeb3Ticket } from './web3-controller/createWeb3Ticket';
 import { verifyJWT } from '~/utils/jwt';
 import { clientEmailLayout } from '~/utils/mailer';
 
@@ -150,6 +150,7 @@ export async function getProjectAll(req: any, res: any) {
     res.status(500).send({ message: err.message as string });
   }
 }
+
 export async function createProject(req: any, res: any) {
   try {
     if (!req.body)
@@ -182,16 +183,14 @@ export async function createProject(req: any, res: any) {
     // for web3 project creation
     const decodePrivateAddress: any = await verifyJWT(private_address);
 
+    // Load SmartAccount
     const smartAccount = await createSmartAccount({
-      private_address: decodePrivateAddress.address,
+      private_address: decodePrivateAddress?.address,
     });
-    const smartAccountAddress = await smartAccount.getAccountAddress();
-    const txHash = await createWeb3Project(
-      smartAccount,
-      data?.name,
-      data.total_rounds,
-    );
 
+    const txHash = await createWeb3Ticket(smartAccount);
+
+    console.log('TX HASH : ', txHash);
     // check access
     if (!userData || unAuthRole.includes(userData?.role)) {
       return res.status(400).send({
