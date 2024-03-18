@@ -54,9 +54,9 @@ export const projectCreateSchema = z.object({
     .min(1, {
       message: 'Total rounds must be greater than zero.',
     }),
-  private_address: z.string({
-    required_error: 'Please provide wallet address',
-  }),
+  // private_address: z.string({
+  //   required_error: 'Please provide wallet address',
+  // }),
   material_type: z.enum(['dump', 'sand'], {
     required_error: 'please select material type',
   }),

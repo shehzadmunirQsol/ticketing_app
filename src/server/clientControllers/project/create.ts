@@ -28,26 +28,10 @@ export async function createProject(req: any, res: any) {
 
     const unAuthRole = ['trucker', 'client'];
 
-    const {
-      truckers,
-      start_date,
-      delivery_date,
-      address,
-      private_address,
-      client,
-      ...data
-    } = validate.data;
+    const { truckers, start_date, delivery_date, address, client, ...data } =
+      validate.data;
     // for web3 project creation
-    const decodePrivateAddress: any = await verifyJWT(private_address);
 
-    // Load SmartAccount
-    const smartAccount = await createSmartAccount({
-      private_address: decodePrivateAddress?.address,
-    });
-
-    const txHash = await createWeb3Ticket(smartAccount);
-
-    console.log('TX HASH : ', txHash);
     // check access
     if (!userData || unAuthRole.includes(userData?.role)) {
       return res.status(400).send({
@@ -112,7 +96,6 @@ export async function createProject(req: any, res: any) {
         created_by: userData?.id,
         start_date: new Date(start_date),
         delivery_date: new Date(delivery_date),
-        transaction_hash: txHash?.transactionHash ?? '',
 
         ...data,
         client_id: clientData?.id,

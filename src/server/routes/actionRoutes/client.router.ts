@@ -1,8 +1,5 @@
 import { getSearchedClient } from '~/server/clientControllers/client';
-import {
-  createProject,
-  getProjectAll,
-} from '~/server/clientControllers/project';
+
 import { verifyJWT } from '~/utils/jwt';
 
 export default async function clientRoutes(req: any, res: any) {
@@ -26,8 +23,8 @@ export default async function clientRoutes(req: any, res: any) {
   switch (extendedAction) {
     case 'GET-client/search':
       return getSearchedClient(req, res);
-    case 'POST-project/create':
-      return createProject(req, res);
+    case 'POST-client/create':
+      return getSearchedClient(req, res);
 
     default:
       return res.status(405).send({ message: 'This request is not allowed' });
