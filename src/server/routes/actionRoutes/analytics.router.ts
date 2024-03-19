@@ -1,5 +1,4 @@
-import { getAnalytics } from '~/server/clientControllers/analytics';
-
+import { getAnalytics } from '~/server/clientControllers/analytics/get';
 import { verifyJWT } from '~/utils/jwt';
 
 export default async function analyticsRoutes(req: any, res: any) {

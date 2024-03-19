@@ -228,11 +228,7 @@ export async function generatePdf(req: any, res: any) {
     const pdfBuffer = await page.pdf();
     await browser.close();
     // Send the PDF buffer as response
-    res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader(
-      'Content-Disposition',
-      'attachment; filename="generated.pdf"',
-    );
+
     let base64String;
 
     // If in Node.js environment

@@ -1,8 +1,6 @@
-import {
-  getUser,
-  getUserPermision,
-  getUserRole,
-} from '~/server/clientControllers/user';
+import { getUser } from '~/server/clientControllers/user/get';
+import { getUserPermision } from '~/server/clientControllers/user/permision';
+import { getUserRole } from '~/server/clientControllers/user/role';
 import { verifyJWT } from '~/utils/jwt';
 
 export default async function userRoutes(req: any, res: any) {

@@ -1,5 +1,4 @@
-import { getSearchedClient } from '~/server/clientControllers/client';
-
+import { getSearchedClient } from '~/server/clientControllers/client/get';
 import { verifyJWT } from '~/utils/jwt';
 
 export default async function clientRoutes(req: any, res: any) {

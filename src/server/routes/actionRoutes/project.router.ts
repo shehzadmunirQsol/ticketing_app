@@ -1,7 +1,8 @@
 import { createProject } from '~/server/clientControllers/project/create';
 import { getProjectAll } from '~/server/clientControllers/project/get';
 import { generateProjectInvoice } from '~/server/clientControllers/project/invoice';
-import { getTruckersAll, inviteUser } from '~/server/clientControllers/trucker';
+import { getTruckersAll } from '~/server/clientControllers/trucker/get';
+import { inviteUser } from '~/server/clientControllers/user/invite';
 import { verifyJWT } from '~/utils/jwt';
 
 export default async function projectRoutes(req: any, res: any) {
