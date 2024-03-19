@@ -110,6 +110,9 @@ export async function createProject(req: any, res: any) {
       type: 'project-invitation',
       userData: userData?.first_name ?? 'Owner',
       validate: validate?.data?.name,
+      usercontent: `<p style="color: #FFFFFF; font-size: 13px;">${
+        userData?.first_name ?? 'Owner'
+      } invited you as client in ${validate?.data?.name} project.</p>`,
     };
     const clientEmailHTML: string = clientEmailLayout(emaildata);
     if (clientData)

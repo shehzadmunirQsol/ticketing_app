@@ -30,18 +30,7 @@ export async function getProjectAll(req: any, res: any) {
         message: 'You are not authorized to access!',
       });
     }
-    const userPromise = await prisma.user.findFirst({
-      where: {
-        id: userData?.id ?? 0,
-      },
-      include: {
-        Role: true,
-      },
-    });
-    if (!userPromise)
-      return res.status(400).send({
-        message: 'You are not authorized to access!',
-      });
+
     const {
       endDate,
       start_date,
@@ -63,7 +52,7 @@ export async function getProjectAll(req: any, res: any) {
       },
     };
     console.log({ userData });
-    if (userData?.Role?.name == 'trucker') {
+    if (userData?.role == 'trucker' || userData?.role == 'seller_trucker') {
       options.where = {
         trucker_id: {
           hasEvery: [userData?.id],
@@ -72,14 +61,17 @@ export async function getProjectAll(req: any, res: any) {
         ...data,
       };
     }
-    if (userData?.Role?.name == 'client') {
+    if (userData?.role == 'client') {
       options.where = {
         client_id: userData?.id,
         is_deleted: false,
         ...data,
       };
     }
-    if (userData?.Role?.name == 'seller') {
+    if (
+      userData?.role == 'seller_buyer' ||
+      userData?.role == 'seller_trucker'
+    ) {
       options.where = {
         created_by: userData?.id,
         is_deleted: false,

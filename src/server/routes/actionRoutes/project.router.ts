@@ -1,5 +1,6 @@
 import { createProject } from '~/server/clientControllers/project/create';
 import { getProjectAll } from '~/server/clientControllers/project/get';
+import { generateProjectInvoice } from '~/server/clientControllers/project/invoice';
 import { getTruckersAll, inviteUser } from '~/server/clientControllers/trucker';
 import { verifyJWT } from '~/utils/jwt';
 
@@ -26,6 +27,8 @@ export default async function projectRoutes(req: any, res: any) {
       return getProjectAll(req, res);
     case 'POST-project/create':
       return createProject(req, res);
+    case 'POST-project/invoice':
+      return generateProjectInvoice(req, res);
     case 'GET-project/getTruckers':
       return getTruckersAll(req, res);
     case 'POST-project/inviteUser':

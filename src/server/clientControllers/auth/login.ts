@@ -79,6 +79,7 @@ export async function loginCustomer(req: any, res: any) {
       email: customer.email,
       role_id: customer.role_id,
       first_name: customer.first_name,
+      role: customer?.Role?.name,
 
       id: customer.id,
     });
