@@ -1,5 +1,6 @@
 import puppeteer from 'puppeteer';
-
+import PDFDocument from 'pdfkit';
+import fs from 'fs';
 /* 
  ---- input ----
  email
@@ -222,22 +223,25 @@ export async function generatePdf(req: any, res: any) {
 
   try {
     const htmlContent = await getHtmlContent({ id: 0 });
-    const browser = await puppeteer.launch();
-    const page = await browser.newPage();
-    await page.setContent(htmlContent);
-    const pdfBuffer = await page.pdf();
-    await browser.close();
-    // Send the PDF buffer as response
+    // const browser = await puppeteer.launch();
+    // const page = await browser.newPage();
+    // await page.setContent(htmlContent);
+    // const pdfBuffer = await page.pdf();
+    // await browser.close();
+    const doc = new PDFDocument();
+    doc.html(htmlContent);
+    doc.pipe(fs.createWriteStream('output.pdf'));
 
+    // Send the PDF buffer as response
     let base64String;
 
     // If in Node.js environment
     if (typeof window === 'undefined') {
       const Buffer = require('buffer').Buffer;
-      base64String = Buffer.from(pdfBuffer).toString('base64');
+      base64String = Buffer.from(doc).toString('base64');
     } else {
       // For browser environment
-      base64String = btoa(String.fromCharCode(...new Uint8Array(pdfBuffer)));
+      base64String = btoa(String.fromCharCode(...new Uint8Array(doc)));
     }
     res.status(200).send({ data: base64String });
   } catch (err: any) {
