@@ -1,5 +1,6 @@
-import { createTicket, getAllTicket } from '~/server/clientControllers/ticket';
-import { getTruckersAll, inviteUser } from '~/server/clientControllers/trucker';
+import { createTicket } from '~/server/clientControllers/ticket/create';
+import { getAllTicket } from '~/server/clientControllers/ticket/get';
+import { updateTicket } from '~/server/clientControllers/ticket/update';
 import { verifyJWT } from '~/utils/jwt';
 
 export default async function ticketRoutes(req: any, res: any) {
@@ -29,6 +30,8 @@ export default async function ticketRoutes(req: any, res: any) {
     //     return inviteUser(req, res);
     case 'POST-ticket/create':
       return createTicket(req, res);
+    case 'POST-ticket/update':
+      return updateTicket(req, res);
 
     default:
       return res.status(405).send({ message: 'This request is not allowed' });
