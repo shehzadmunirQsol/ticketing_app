@@ -27,7 +27,10 @@ export const projectGetAdminchema = z.object({
   filters: z.any().optional(),
 });
 export const projectGetDetailSchema = z.object({
-  id: z.number(),
+  id: z.number({
+    required_error: 'id is required',
+    invalid_type_error: 'id is required',
+  }),
 });
 export const projectCreateSchema = z.object({
   name: z.string({
