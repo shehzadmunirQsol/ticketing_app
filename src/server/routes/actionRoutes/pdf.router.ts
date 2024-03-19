@@ -1,4 +1,3 @@
-import { getSearchedClient } from '~/server/clientControllers/client';
 import { generatePdf } from '~/server/clientControllers/pdf';
 
 import { verifyJWT } from '~/utils/jwt';

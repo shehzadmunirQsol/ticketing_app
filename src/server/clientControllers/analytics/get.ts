@@ -1,5 +1,4 @@
-import { prisma } from '../prisma';
-
+import { prisma } from '~/server/prisma';
 import { getUserData } from '~/utils/helper';
 
 /* 
@@ -38,24 +37,33 @@ export async function getAnalytics(req: any, res: any) {
           is_deleted: false,
         },
       };
-      if (userPromise?.Role?.name == 'trucker') {
+      if (userPromise?.Role?.name == 'seller_trucker') {
+        options.where = {
+          OR: [
+            {
+              trucker_id: {
+                hasEvery: [userPromise?.id],
+              },
+            },
+            {
+              created_by: userPromise?.id,
+            },
+          ],
+          is_deleted: false,
+        };
+      } else if (userPromise?.Role?.name == 'trucker') {
         options.where = {
           trucker_id: {
             hasEvery: [userPromise?.id],
           },
           is_deleted: false,
         };
-      }
-      if (userPromise?.Role?.name == 'client') {
+      } else if (userPromise?.Role?.name == 'client') {
         options.where = {
           client_id: userPromise?.id,
           is_deleted: false,
         };
-      }
-      if (
-        userPromise?.Role?.name == 'seller_buyer' ||
-        userPromise?.Role?.name == 'seller_trucker'
-      ) {
+      } else if (userPromise?.Role?.name == 'seller_buyer') {
         options.where = {
           created_by: userPromise?.id,
           is_deleted: false,

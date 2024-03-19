@@ -1,6 +1,6 @@
 import { clientGetSearchSchema } from '~/schema/client';
-import { prisma } from '../prisma';
 import { projectCreateSchema, projectGetAllSchema } from '~/schema/project';
+import { prisma } from '~/server/prisma';
 import { getUserData } from '~/utils/helper';
 
 /* 

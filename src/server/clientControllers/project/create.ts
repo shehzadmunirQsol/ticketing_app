@@ -66,14 +66,17 @@ export async function createProject(req: any, res: any) {
       where: {
         id: { in: truckerArray },
         Role: {
-          name: { not: 'trucker' },
+          name: {
+            not: {
+              in: ['trucker', 'seller_trucker'],
+            },
+          },
         },
       },
     });
     if (findTruckerRole.length > 0)
       return res.status(400).send({
         message: `User Role Conflict.`,
-        findTruckerRole,
       });
     const clientData = await prisma.user.upsert({
       where: {
