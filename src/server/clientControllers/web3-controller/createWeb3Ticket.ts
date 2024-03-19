@@ -1,19 +1,17 @@
 import { ethers } from 'ethers';
 import { executeTransaction } from './functions/transactionExecution';
 
-interface Web3TicketCreationData {
-  success: boolean;
-  transactionHash: string | null;
-}
+// interface Web3TicketCreationData {
+//   success: boolean;
+//   transactionHash: string | null;
+// }
 
 /**
  * Creates a web3 ticket by minting a token using the provided smart account.
  * @param smartAccount The smart account used to execute the transaction.
  * @returns An object indicating the success status and transaction hash of the created ticket.
  */
-export async function createWeb3Ticket(
-  smartAccount: any,
-): Promise<Web3TicketCreationData> {
+export async function createWeb3Ticket(smartAccount: any) {
   try {
     // Define ABI for mintToken function
     const mintTokenABI = ['function mintToken(address to)'];
@@ -25,6 +23,7 @@ export async function createWeb3Ticket(
     // Execute transaction and get transaction data
     const transactionData = await executeTransaction(txData, smartAccount);
 
+    console.log('Transaction Data : ', transactionData);
     // Return success status and transaction hash
     if (transactionData?.success) {
       return {

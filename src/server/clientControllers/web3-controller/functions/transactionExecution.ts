@@ -23,9 +23,9 @@ export async function executeTransaction(txData: any, smartAccount: any) {
     console.log('Transaction Hash', transactionHash);
 
     // Wait for the transaction to be mined and get the receipt
-    const userOpReceipt = await userOpResponse.wait(3);
+    const userOpReceipt = await userOpResponse.wait(5);
     if (userOpReceipt.success == 'true') {
-      return { success: true, transactionHash: userOpReceipt.receipt };
+      return { success: true, transactionHash };
     }
     // Return failure if the transaction was not successful
     return { success: false, transactionHash: '' };
