@@ -159,6 +159,8 @@ export const updateCustomerSchema = z.object({
 });
 export type getCustomerFilterSchema = z.TypeOf<typeof getCustomerSchema>;
 export const createUserSchema = z.object({
+  id: z.number().optional().nullable(),
+
   first_name: z
     .string()
     .min(2, 'User name should be equal to or greater than 3 characters.')

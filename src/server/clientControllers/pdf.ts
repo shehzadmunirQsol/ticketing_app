@@ -1,28 +1,12 @@
-import { clientGetSearchSchema } from '~/schema/client';
-import { prisma } from '../prisma';
-import { projectCreateSchema, projectGetAllSchema } from '~/schema/project';
-import { getUserData } from '~/utils/helper';
-import fs from 'fs';
-import path from 'path';
-import { promisify } from 'util';
-import { NextApiRequest, NextApiResponse } from 'next';
 import puppeteer from 'puppeteer';
-import ReactPDF from '@react-pdf/renderer';
-import { Document, Page, Text, PDFViewer } from '@react-pdf/renderer';
-import postcss from 'postcss';
-import tailwindcss from 'tailwindcss';
-const writeFileAsync = promisify(fs.writeFile);
+
 /* 
  ---- input ----
  email
  password 
 */
-
-export async function generatePdf(req: any, res: any) {
-  // const input = req.body;
-
-  try {
-    const htmlContent = ` <!DOCTYPE html>
+async function getHtmlContent(data: any) {
+  const htmlContent = ` <!DOCTYPE html>
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
@@ -151,7 +135,7 @@ export async function generatePdf(req: any, res: any) {
 						<table>
 							<tr>
 								<td class="title">
-									<img src="./images/logo.png" alt="Company logo" style="width: 100%; max-width: 300px" />
+									<img src="https://img.freepik.com/free-vector/bird-colorful-logo-gradient-vector_343694-1365.jpg?size=338&ext=jpg&ga=GA1.1.735520172.1710720000&semt=sph" alt="Company logo" style="width: 100%; max-width: 300px" />
 								</td>
 
 								<td>
@@ -229,6 +213,15 @@ export async function generatePdf(req: any, res: any) {
 		</div>
 	</body>
 </html>`;
+
+  return htmlContent;
+}
+
+export async function generatePdf(req: any, res: any) {
+  // const input = req.body;
+
+  try {
+    const htmlContent = await getHtmlContent({ id: 0 });
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
     await page.setContent(htmlContent);
@@ -240,8 +233,17 @@ export async function generatePdf(req: any, res: any) {
       'Content-Disposition',
       'attachment; filename="generated.pdf"',
     );
-    console.log({ pdfBuffer });
-    res.send(pdfBuffer);
+    let base64String;
+
+    // If in Node.js environment
+    if (typeof window === 'undefined') {
+      const Buffer = require('buffer').Buffer;
+      base64String = Buffer.from(pdfBuffer).toString('base64');
+    } else {
+      // For browser environment
+      base64String = btoa(String.fromCharCode(...new Uint8Array(pdfBuffer)));
+    }
+    res.status(200).send({ data: base64String });
   } catch (err: any) {
     res.status(500).send({ message: err.message as string });
   }

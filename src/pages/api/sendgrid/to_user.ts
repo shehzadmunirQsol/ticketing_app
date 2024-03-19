@@ -10,13 +10,13 @@ export default async function handler(
   console.log(req.body, 'req.body');
 
   try {
-    const html: string = clientEmailLayout(req.body);
-    // console.log("REQ.BODY", req.body);
+  //  console.log("sent");
+    console.log("REQ.BODY", req.body);
     await sgMail.send({
       to: req.body.email, // Your email where you'll receive emails
       from: process.env.NEXT_PUBLIC_ADMIN_EMAIL ?? process.env.ADMIN_EMAIL,
       subject: req.body.subject ?? `Ticketing Test`,
-      html: `${html}`,
+      html: req.body.html,
     });
     console.log('email to', req.body.email);
     return res.status(200).json({ message: 'Email sent successfully' });
