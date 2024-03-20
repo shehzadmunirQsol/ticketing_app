@@ -1,15 +1,14 @@
-import { promisify } from 'util';
-import pdf from 'html-pdf';
-import fs from 'fs';
-
+// import { promisify } from 'util';
+// import pdf from 'html-pdf';
+// import fs from 'fs';
+const html_to_pdf = require('html-pdf-node');
 /* 
  ---- input ----
  email
  password 
 */
-const pdfAsync = promisify(pdf.create);
-const writeFileAsync = promisify(fs.writeFile);
-const readFileAsync = promisify(fs.readFile);
+// const pdfAsync = promisify(pdf.create);
+// const readFileAsync = promisify(fs.readFile);
 async function getHtmlContent(data: any) {
   const htmlContent = ` <!DOCTYPE html>
 <html lang="en">
@@ -221,19 +220,19 @@ async function getHtmlContent(data: any) {
 
   return htmlContent;
 }
-async function convertToPdf(html: any) {
-  const options: any = { format: 'A4' };
+// async function convertToPdf(html: any) {
+//   const options: any = { format: 'A4' };
 
-  const fileName: any = await pdfAsync(html, options);
+//   const fileName: any = await pdfAsync(html, options);
 
-  const pdfBuffer = await readFileAsync(fileName?.filename);
-  console.log(fileName?.filename, 'filename');
-  // Remove the temporary file
+//   const pdfBuffer = await readFileAsync(fileName?.filename);
+//   console.log(fileName?.filename, 'filename');
+//   // Remove the temporary file
 
-  fs.unlinkSync(fileName?.filename);
+//   fs.unlinkSync(fileName?.filename);
 
-  return pdfBuffer;
-}
+//   return pdfBuffer;
+// }
 
 async function bufferToBase64(buffer: any) {
   return Buffer.from(buffer).toString('base64');
@@ -244,10 +243,20 @@ export async function generatePdf(req: any, res: any) {
   try {
     const htmlContent = await getHtmlContent({ id: 0 });
 
-    const pdfBuffer = await convertToPdf(htmlContent);
-    const pdfBase64 = await bufferToBase64(pdfBuffer);
+    // const pdfBuffer = await convertToPdf(htmlContent);
+    // const pdfBase64 = await bufferToBase64(pdfBuffer);
+    const file = { content: '<h1>Welcome to html-pdf-node</h1>' };
+    const options = { format: 'A4' };
 
-    res.status(200).json({ data: pdfBase64 });
+    await html_to_pdf
+      .generatePdf(file, options)
+      .then(async (pdfBuffer: any) => {
+        console.log('PDF Buffer:-', pdfBuffer);
+        const pdfBase64 = await bufferToBase64(pdfBuffer);
+        res.status(200).json({ data: pdfBase64 });
+      });
+
+    res.status(401).json({ message: 'no data found' });
     // const pdfBuffer = await pdfAsync(htmlContent, { format: 'A4' });
 
     // let base64String;
