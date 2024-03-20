@@ -4,6 +4,7 @@ import clientRoutes from '../actionRoutes/client.router';
 import userRoutes from '../actionRoutes/user.router';
 import analyticsRoutes from '../actionRoutes/analytics.router';
 import pdfRoutes from '../actionRoutes/pdf.router';
+import ticketRoutes from '../actionRoutes/ticket.router';
 
 export default async function openRoutes(req: any, res: any) {
   const { query } = req;
@@ -19,6 +20,8 @@ export default async function openRoutes(req: any, res: any) {
       return analyticsRoutes(req, res);
     case 'project':
       return projectRoutes(req, res);
+    case 'ticket':
+      return ticketRoutes(req, res);
     case 'client':
       return clientRoutes(req, res);
     case 'generate-pdf':
