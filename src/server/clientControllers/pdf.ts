@@ -1,11 +1,15 @@
-import puppeteer from 'puppeteer';
-import PDFDocument from 'pdfkit';
+import { promisify } from 'util';
+import pdf from 'html-pdf';
 import fs from 'fs';
+
 /* 
  ---- input ----
  email
  password 
 */
+const pdfAsync = promisify(pdf.create);
+const writeFileAsync = promisify(fs.writeFile);
+const readFileAsync = promisify(fs.readFile);
 async function getHtmlContent(data: any) {
   const htmlContent = ` <!DOCTYPE html>
 <html lang="en">
@@ -217,33 +221,48 @@ async function getHtmlContent(data: any) {
 
   return htmlContent;
 }
+async function convertToPdf(html: any) {
+  const options: any = { format: 'A4' };
 
+  const fileName: any = await pdfAsync(html, options);
+
+  const pdfBuffer = await readFileAsync(fileName?.filename);
+  console.log(fileName?.filename, 'filename');
+  // Remove the temporary file
+
+  fs.unlinkSync(fileName?.filename);
+
+  return pdfBuffer;
+}
+
+async function bufferToBase64(buffer: any) {
+  return Buffer.from(buffer).toString('base64');
+}
 export async function generatePdf(req: any, res: any) {
   // const input = req.body;
 
   try {
     const htmlContent = await getHtmlContent({ id: 0 });
-    // const browser = await puppeteer.launch();
-    // const page = await browser.newPage();
-    // await page.setContent(htmlContent);
-    // const pdfBuffer = await page.pdf();
-    // await browser.close();
-    const doc = new PDFDocument();
-    doc.html(htmlContent);
-    doc.pipe(fs.createWriteStream('output.pdf'));
 
-    // Send the PDF buffer as response
-    let base64String;
+    const pdfBuffer = await convertToPdf(htmlContent);
+    const pdfBase64 = await bufferToBase64(pdfBuffer);
 
-    // If in Node.js environment
-    if (typeof window === 'undefined') {
-      const Buffer = require('buffer').Buffer;
-      base64String = Buffer.from(doc).toString('base64');
-    } else {
-      // For browser environment
-      base64String = btoa(String.fromCharCode(...new Uint8Array(doc)));
-    }
-    res.status(200).send({ data: base64String });
+    res.status(200).json({ data: pdfBase64 });
+    // const pdfBuffer = await pdfAsync(htmlContent, { format: 'A4' });
+
+    // let base64String;
+    // console.log({ pdfBuffer });
+    // // If in Node.js environment
+    // if (typeof window === 'undefined') {
+    //   const Buffer = require('buffer').Buffer;
+    //   base64String = Buffer.from(pdfBuffer).toString('base64');
+    // } else {
+    //   // For browser environment
+    //   base64String = btoa(String.fromCharCode(...new Uint8Array(pdfBuffer)));
+    // }
+    // // const pdfBase64 = pdfBuffer.toString('base64');
+    // // res.status(200).json({ pdfBase64 });
+    // console.log({ base64String });
   } catch (err: any) {
     res.status(500).send({ message: err.message as string });
   }
