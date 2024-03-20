@@ -3,10 +3,7 @@ import { prisma } from '~/server/prisma';
 import { sendInvitation } from '~/utils/clientMailer';
 import { getUserData } from '~/utils/helper';
 
-import { verifyJWT } from '~/utils/jwt';
 import { clientEmailLayout } from '~/utils/mailer';
-import { createSmartAccount } from '../web3-controller/createAccount';
-import { createWeb3Ticket } from '../web3-controller/createWeb3Ticket';
 
 export async function createProject(req: any, res: any) {
   try {

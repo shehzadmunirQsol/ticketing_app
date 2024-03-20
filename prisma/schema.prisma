@@ -97,6 +97,7 @@ model User {
   ProjectTruckers ProjectTruckers[] @relation(name: "truckers")
   UserTruckers    ProjectTruckers[]
   Role            Role?             @relation(fields: [role_id], references: [id])
+  Orders          Orders[]
 
   @@map("user")
 }
@@ -129,6 +130,7 @@ model Projects {
   ProjectTickets  ProjectTickets[]
   ProjectAddress  ProjectAddress[]
   ProjectTruckers ProjectTruckers[]
+  Orders          Orders[]
 
   @@index([client_id, created_by])
   @@map("project")
@@ -179,12 +181,13 @@ model ProjectTruckers {
 }
 
 model ProjectTickets {
-  id         Int     @id @default(autoincrement())
-  project_id Int
-  trucker_id Int?
-  comments   String?
-  signature  String?
-  tx_hash    String
+  id             Int     @id @default(autoincrement())
+  project_id     Int
+  trucker_id     Int?
+  comments       String?
+  signature      String?
+  drop_signature String?
+  tx_hash        String
 
   status TicketEnums @default(pending)
 
@@ -198,6 +201,24 @@ model ProjectTickets {
 
   @@index([trucker_id, project_id])
   @@map("project_ticket")
+}
+
+model Orders {
+  id           Int @id @default(autoincrement())
+  project_id   Int
+  price        Int
+  total_rounds Int
+
+  created_by Int?
+  is_deleted Boolean  @default(false)
+  User       User?    @relation(fields: [created_by], references: [id])
+  Projects   Projects @relation(fields: [project_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+
+  @@index([project_id, created_by])
+  @@map("order")
 }
 
 enum GenderEnums {

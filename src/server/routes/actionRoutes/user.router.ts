@@ -1,6 +1,7 @@
 import { getUser } from '~/server/clientControllers/user/get';
 import { getUserPermision } from '~/server/clientControllers/user/permision';
 import { getUserRole } from '~/server/clientControllers/user/role';
+import { updateUser } from '~/server/clientControllers/user/update';
 import { verifyJWT } from '~/utils/jwt';
 
 export default async function userRoutes(req: any, res: any) {
@@ -28,6 +29,8 @@ export default async function userRoutes(req: any, res: any) {
       return getUser(req, res);
     case 'GET-user/role':
       return getUserRole(req, res);
+    case 'POST-user/update':
+      return updateUser(req, res);
     case 'GET-user/permisions':
       return getUserPermision(req, res);
 
