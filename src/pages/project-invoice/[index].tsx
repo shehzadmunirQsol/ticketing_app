@@ -1,12 +1,5 @@
-import { Document, Page, Text } from '@react-pdf/renderer';
 import { NextPageWithLayout } from '~/pages/_app';
-export const MyDocument = () => (
-  <Document>
-    <Page>
-      <Text>{'React-pdf'}</Text>
-    </Page>
-  </Document>
-);
+
 const IndexPage: NextPageWithLayout = () => (
   <>
     <div className="relative   flex min-h-screen max-w-4xl mx-auto bg-white items-center  justify-center ">
