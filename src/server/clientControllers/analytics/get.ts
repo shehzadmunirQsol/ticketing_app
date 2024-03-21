@@ -37,13 +37,16 @@ export async function getAnalytics(req: any, res: any) {
           is_deleted: false,
         },
       };
-      if (userPromise?.Role?.name == 'seller_trucker') {
+      console.log({ userData });
+      if (userData?.role == 'seller_trucker') {
         options.where = {
           OR: [
             {
               ProjectTruckers: {
-                every: {
-                  trucker_id: userData?.id,
+                some: {
+                  trucker_id: {
+                    in: [userData?.id],
+                  },
                 },
               },
             },
@@ -53,21 +56,21 @@ export async function getAnalytics(req: any, res: any) {
           ],
           is_deleted: false,
         };
-      } else if (userPromise?.Role?.name == 'trucker') {
+      } else if (userData?.role == 'trucker') {
         options.where = {
           ProjectTruckers: {
-            every: {
+            some: {
               trucker_id: userData?.id,
             },
           },
           is_deleted: false,
         };
-      } else if (userPromise?.Role?.name == 'client') {
+      } else if (userData?.role == 'client') {
         options.where = {
           client_id: userData?.id,
           is_deleted: false,
         };
-      } else if (userPromise?.Role?.name == 'seller_buyer') {
+      } else if (userData?.role == 'seller_buyer') {
         options.where = {
           created_by: userData?.id,
           is_deleted: false,
@@ -90,8 +93,8 @@ export async function getAnalytics(req: any, res: any) {
       });
       // if user is seller
       if (
-        userPromise?.Role?.name == 'seller_buyer' ||
-        userPromise?.Role?.name == 'seller_trucker'
+        userData?.role == 'seller_buyer' ||
+        userData?.role == 'seller_trucker'
       ) {
         const pendingTicketsPromise = await prisma.projects.findMany({
           where: {
