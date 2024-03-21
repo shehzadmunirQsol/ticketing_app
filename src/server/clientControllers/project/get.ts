@@ -52,7 +52,26 @@ export async function getProjectAll(req: any, res: any) {
       },
     };
     console.log({ userData });
-    if (userData?.role == 'trucker' || userData?.role == 'seller_trucker') {
+    if (userData?.role == 'seller_trucker') {
+      options.where = {
+        OR: [
+          {
+            ProjectTruckers: {
+              some: {
+                trucker_id: userData?.id,
+              },
+            },
+          },
+          {
+            created_by: userData?.id,
+          },
+        ],
+
+        is_deleted: false,
+        ...data,
+      };
+    }
+    if (userData?.role == 'trucker') {
       options.where = {
         trucker_id: {
           hasEvery: [userData?.id],
@@ -68,10 +87,7 @@ export async function getProjectAll(req: any, res: any) {
         ...data,
       };
     }
-    if (
-      userData?.role == 'seller_buyer' ||
-      userData?.role == 'seller_trucker'
-    ) {
+    if (userData?.role == 'seller_buyer') {
       options.where = {
         created_by: userData?.id,
         is_deleted: false,

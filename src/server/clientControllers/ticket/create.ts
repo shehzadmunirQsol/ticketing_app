@@ -43,7 +43,7 @@ export async function createTicket(req: any, res: any) {
         message: 'You are not authorized to access!',
       });
     }
-
+    console.log({ userData });
     // Extract private address from input data
     const { private_address, ...data } = validate.data;
 
