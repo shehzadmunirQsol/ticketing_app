@@ -100,14 +100,7 @@ export const dashboardRouter = router({
           cols: false,
           link: '/admin/customers?type=seller',
         },
-        // {
-        //   title: 'Pending Customers',
-        //   data: pendingCustomer,
-        //   symbol: '',
-        //   icon: 'fa-solid fa-user-clock',
-        //   cols: true,
-        //   link: '/admin/customers?is_verified=false&is_disabled=false',
-        // },
+
         {
           title: 'Active Truckers',
           data: totalTrucker,

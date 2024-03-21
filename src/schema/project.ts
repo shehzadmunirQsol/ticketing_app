@@ -189,6 +189,21 @@ export const inviteTruckerSchema = z.object({
     })
     .default('seller_buyer'),
 });
+export const updateProjectTrcuker = z.object({
+  project_id: z.number({ required_error: 'Project ID is Missing' }),
+  truckers: z
+    .array(
+      z.object({
+        trucker_id: z.number({
+          required_error: 'trucker id is missing',
+          invalid_type_error: 'Street Address 2 is required',
+        }),
+      }),
+    )
+    .min(1, {
+      message: 'Please select atleast one trucker',
+    }),
+});
 // register schema for api
 
 // send request trucker

@@ -30,10 +30,10 @@ export async function getAnalytics(req: any, res: any) {
       },
     });
     const AnalyticObject: any = {};
-    if (userPromise) {
+    if (userData) {
       const options: any = {
         where: {
-          created_by: userPromise?.id,
+          created_by: userData?.id,
           is_deleted: false,
         },
       };
@@ -41,31 +41,35 @@ export async function getAnalytics(req: any, res: any) {
         options.where = {
           OR: [
             {
-              trucker_id: {
-                hasEvery: [userPromise?.id],
+              ProjectTruckers: {
+                every: {
+                  trucker_id: userData?.id,
+                },
               },
             },
             {
-              created_by: userPromise?.id,
+              created_by: userData?.id,
             },
           ],
           is_deleted: false,
         };
       } else if (userPromise?.Role?.name == 'trucker') {
         options.where = {
-          trucker_id: {
-            hasEvery: [userPromise?.id],
+          ProjectTruckers: {
+            every: {
+              trucker_id: userData?.id,
+            },
           },
           is_deleted: false,
         };
       } else if (userPromise?.Role?.name == 'client') {
         options.where = {
-          client_id: userPromise?.id,
+          client_id: userData?.id,
           is_deleted: false,
         };
       } else if (userPromise?.Role?.name == 'seller_buyer') {
         options.where = {
-          created_by: userPromise?.id,
+          created_by: userData?.id,
           is_deleted: false,
         };
       }

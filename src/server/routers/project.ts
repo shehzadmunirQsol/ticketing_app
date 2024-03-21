@@ -272,26 +272,21 @@ export const projectRouter = router({
     .input(projectGetAdminchema)
     .query(async ({ input }) => {
       try {
-        const { filters, ...payload } = input;
+        const { filters, id, ...payload } = input;
         const filterPayload: any = { ...filters };
 
         if (filterPayload?.searchQuery) delete filterPayload.searchQuery;
         if (filterPayload?.endDate) delete filterPayload.endDate;
         if (filterPayload?.startDate) delete filterPayload.startDate;
 
-        if (!input?.id) {
-          throw new TRPCError({
-            code: 'NOT_FOUND',
-            message: 'Id was not found in payload',
-          });
-        }
         const where: any = {
           is_deleted: false,
-          project_id: input?.id,
 
           ...filterPayload,
         };
-
+        if (!id) {
+          where.project_id = id;
+        }
         if (input?.filters?.searchQuery) {
           where.OR = [];
           where.OR.push({
@@ -333,11 +328,11 @@ export const projectRouter = router({
           };
         }
 
-        const totalProjectsPromise = prisma.projectTruckers.count({
+        const totalProjectsPromise = prisma.projectTickets.count({
           where: where,
         });
 
-        const projectPromise = prisma.projectTruckers.findMany({
+        const projectPromise = prisma.projectTickets.findMany({
           orderBy: { created_at: 'asc' },
           skip: input.first * input.rows,
           take: input.rows,
@@ -351,7 +346,7 @@ export const projectRouter = router({
                   select: {
                     ProjectTickets: {
                       where: {
-                        project_id: input?.id,
+                        project_id: id as number,
                       },
                     },
                   },

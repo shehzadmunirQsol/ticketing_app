@@ -164,7 +164,11 @@ const SIDEBAR_DATA = [
     icon: <i className="fa-solid fa-diagram-project p-4 rounded-full" />,
     title: 'Projects',
   },
-
+  {
+    key: '/admin/tickets',
+    icon: <i className="fa-solid fa-ticket p-4 rounded-full" />,
+    title: 'Tickets',
+  },
   {
     key: '/settings',
     icon: <i className="fa-solid fa-gear p-4 rounded-full" />,
