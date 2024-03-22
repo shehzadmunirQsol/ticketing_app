@@ -75,6 +75,19 @@ export async function loginCustomer(req: any, res: any) {
         .status(201)
         .send({ customer, is_registerd: customer?.is_registerd });
     }
+    if (!customer?.device_id || customer?.device_id !== inputData?.device_id) {
+      customer = await prisma.user.update({
+        where: {
+          id: customer.id,
+        },
+        data: {
+          device_id: inputData?.device_id,
+        },
+        include: {
+          Role: true,
+        },
+      });
+    }
     const jwt = signJWT({
       email: customer.email,
       role_id: customer.role_id,

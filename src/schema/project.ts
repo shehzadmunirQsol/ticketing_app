@@ -16,7 +16,18 @@ export const projectGetAllSchema = z.object({
   startDate: z.string().optional().nullable(),
   endDate: z.string().optional().nullable(),
 });
+export const projectGetSchema = z.object({
+  orderBy: z.string().default('desc'),
+  // is_detail: z.string().optional(),
+  is_archive: z.string().default('false'),
 
+  first: z.string().optional(),
+  rows: z.string().optional(),
+
+  searchQuery: z.string().optional().nullable(),
+  startDate: z.string().optional().nullable(),
+  endDate: z.string().optional().nullable(),
+});
 export const projectGetAdminchema = z.object({
   startDate: z.date().optional(),
   endDate: z.date().optional(),
@@ -27,6 +38,7 @@ export const projectGetAdminchema = z.object({
   rows: z.number(),
   filters: z.any().optional(),
 });
+
 export const projectGetDetailSchema = z.object({
   id: z.number({
     required_error: 'id is required',

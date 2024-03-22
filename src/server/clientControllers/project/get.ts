@@ -1,7 +1,10 @@
-import { projectGetAllSchema } from '~/schema/project';
+import { projectGetAllSchema, projectGetSchema } from '~/schema/project';
 import { prisma } from '~/server/prisma';
 import { getUserData } from '~/utils/helper';
-
+function stringToBoolean(str: string) {
+  // Convert string to lowercase and check if it's 'true'
+  return str.toLowerCase() === 'true';
+}
 export async function getProjectAll(req: any, res: any) {
   // const input = req.body;
 
@@ -14,7 +17,7 @@ export async function getProjectAll(req: any, res: any) {
     // Check if the authorization scheme is Bearer and if the token exists
 
     // const input = JSON.parse(req.body as any);
-    const validate = projectGetAllSchema.safeParse(input);
+    const validate = projectGetSchema.safeParse(input);
 
     if (!validate.success)
       return res.status(400).send({
@@ -37,6 +40,7 @@ export async function getProjectAll(req: any, res: any) {
       first,
       rows,
       orderBy,
+      is_archive,
       searchQuery,
       ...data
     }: any = { ...validate.data };
@@ -66,6 +70,12 @@ export async function getProjectAll(req: any, res: any) {
             created_by: userData?.id,
           },
         ],
+        ProjectStatus: {
+          none: {
+            created_by: userData?.id,
+            is_archive: !stringToBoolean(is_archive),
+          },
+        },
 
         is_deleted: false,
         ...data,
@@ -73,9 +83,18 @@ export async function getProjectAll(req: any, res: any) {
     }
     if (userData?.role == 'trucker') {
       options.where = {
-        trucker_id: {
-          hasEvery: [userData?.id],
+        ProjectTruckers: {
+          some: {
+            trucker_id: userData?.id,
+          },
         },
+        ProjectStatus: {
+          none: {
+            created_by: userData?.id,
+            is_archive: !stringToBoolean(is_archive),
+          },
+        },
+
         is_deleted: false,
         ...data,
       };
@@ -84,6 +103,13 @@ export async function getProjectAll(req: any, res: any) {
       options.where = {
         client_id: userData?.id,
         is_deleted: false,
+        ProjectStatus: {
+          none: {
+            created_by: userData?.id,
+            is_archive: !stringToBoolean(is_archive),
+          },
+        },
+
         ...data,
       };
     }
@@ -91,6 +117,13 @@ export async function getProjectAll(req: any, res: any) {
       options.where = {
         created_by: userData?.id,
         is_deleted: false,
+        ProjectStatus: {
+          none: {
+            created_by: userData?.id,
+            is_archive: !stringToBoolean(is_archive),
+          },
+        },
+
         ...data,
       };
     }
@@ -124,12 +157,23 @@ export async function getProjectAll(req: any, res: any) {
       options.where.AND = options?.AND ?? [];
       options.where.AND.push({ created_at: { lte: endDateFormat } });
     }
+    // if (is_archive) {
+    //   options.where = {
+    //     ...options.where,
+    //     ProjectStatus: {
+    //       some: {
+    //         AND: [{ created_by: userData?.id }, { is_archive }],
+    //       },
+    //     },
+    //   };
+    // }
     const totalProjectsPromise = prisma.projects.count({
       where: options?.where,
     });
 
     const projectPromise = prisma.projects.findMany({
       ...options,
+
       include: {
         ProjectAddress: true,
         Client: true,
