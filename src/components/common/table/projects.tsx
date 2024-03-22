@@ -88,7 +88,7 @@ type customerDataTableType = {
 };
 
 export default function ProjectsDataTable(props: customerDataTableType) {
-  console.log({ props });
+  console.log("check",{ props });
   // use toast
   const { toast } = useToast();
   const router = useRouter();
@@ -262,6 +262,11 @@ export default function ProjectsDataTable(props: customerDataTableType) {
                   View Project
                 </Link>
               </DropdownMenuItem>
+              {props.type==="closed" && <DropdownMenuItem className=" cursor-pointer">
+                <Link href={"#"}>
+                  View Invoice
+                </Link>
+              </DropdownMenuItem>}
             </DropdownMenuContent>
           </DropdownMenu>
         );
