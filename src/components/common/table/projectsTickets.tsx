@@ -245,7 +245,9 @@ export default function ProjectsTicketsDataTable(props: customerDataTableType) {
               {/* <DropdownMenuLabel>Actions</DropdownMenuLabel> */}
               {/* <DropdownMenuSeparator /> */}
               <DropdownMenuItem className=" cursor-pointer">
-                <Link href={`/admin/projects/detail/${row?.original?.id}`}>
+                <Link
+                  href={`/admin/projects/detail/${row?.original?.Projects?.id}`}
+                >
                   View Project
                 </Link>
               </DropdownMenuItem>
