@@ -52,14 +52,16 @@ export async function createTicket(req: any, res: any) {
       where: {
         id: data?.project_id,
         is_invoiced: false,
-        ProjectTruckers: { some: { trucker_id: userData?.id } },
+        ProjectTruckers: {
+          some: { AND: [{ trucker_id: userData?.id }, { status: 'accepted' }] },
+        },
       },
     });
 
     // If project is not found, send back an error response
     if (!findProject) {
       return res.status(400).json({
-        error: 'Project Id not found',
+        error: 'Project data not found',
       });
     }
 

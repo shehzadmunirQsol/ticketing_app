@@ -181,10 +181,11 @@ model ProjectAddress {
 }
 
 model ProjectTruckers {
-  id         Int  @id @default(autoincrement())
+  id         Int          @id @default(autoincrement())
   project_id Int
   trucker_id Int? // tuckers address form user table
   created_by Int? // project turcker created by user
+  status     TruckerEnums @default(pending)
 
   is_deleted Boolean @default(false)
 
@@ -272,6 +273,12 @@ enum TicketEnums {
   pending
   hold
   completed
+  rejected
+}
+
+enum TruckerEnums {
+  pending
+  accepted
   rejected
 }
 

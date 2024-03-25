@@ -1,6 +1,8 @@
+import { updateProjectClient } from '~/server/clientControllers/client/update';
 import { createProject } from '~/server/clientControllers/project/create';
 import { getProjectAll } from '~/server/clientControllers/project/get';
 import { generateProjectInvoice } from '~/server/clientControllers/project/invoice';
+import { getProjectView } from '~/server/clientControllers/project/view';
 import { getTruckersAll } from '~/server/clientControllers/trucker/get';
 import { updateProjectTrucker } from '~/server/clientControllers/trucker/update';
 import { inviteUser } from '~/server/clientControllers/user/invite';
@@ -27,6 +29,8 @@ export default async function projectRoutes(req: any, res: any) {
   switch (extendedAction) {
     case 'GET-project/getAll':
       return getProjectAll(req, res);
+    case 'GET-project/view':
+      return getProjectView(req, res);
     case 'GET-project/getTruckers':
       return getTruckersAll(req, res);
     case 'POST-project/create':
@@ -37,6 +41,8 @@ export default async function projectRoutes(req: any, res: any) {
       return inviteUser(req, res);
     case 'POST-project/updateTruckers':
       return updateProjectTrucker(req, res);
+    case 'POST-project/updateClient':
+      return updateProjectClient(req, res);
 
     default:
       return res.status(405).send({ message: 'This request is not allowed' });

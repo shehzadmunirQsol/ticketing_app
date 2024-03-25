@@ -325,6 +325,10 @@ export function getQueryParameter(name: any) {
     return '';
   }
 }
+export function stringToBoolean(str: string) {
+  // Convert string to lowercase and check if it's 'true'
+  return str.toLowerCase() === 'true';
+}
 export async function getUserData(req: any, res: any) {
   if (!req.headers.authorization) {
     return res.status(401).json({ error: 'Authorization header missing' });

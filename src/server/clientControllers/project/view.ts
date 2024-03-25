@@ -1,6 +1,10 @@
-import { projectGetAllSchema, projectGetSchema } from '~/schema/project';
+import {
+  projectGetAllSchema,
+  projectGetSchema,
+  projectViewSchema,
+} from '~/schema/project';
 import { prisma } from '~/server/prisma';
-import { getUserData, stringToBoolean } from '~/utils/helper';
+import { getUserData } from '~/utils/helper';
 
 /**
  * This function retrieves all tickets based on the user's role and provided query parameters.
@@ -9,7 +13,7 @@ import { getUserData, stringToBoolean } from '~/utils/helper';
  * @param res - The response object to send back to the client.
  * @returns A response containing ticket data based on the user's role and query parameters.
  */
-export async function getProjectAll(req: any, res: any) {
+export async function getProjectView(req: any, res: any) {
   // const input = req.body;
 
   try {
@@ -21,7 +25,7 @@ export async function getProjectAll(req: any, res: any) {
     // Check if the authorization scheme is Bearer and if the token exists
 
     // const input = JSON.parse(req.body as any);
-    const validate = projectGetSchema.safeParse(input);
+    const validate = projectViewSchema.safeParse(input);
 
     if (!validate.success)
       return res.status(400).send({
@@ -38,28 +42,16 @@ export async function getProjectAll(req: any, res: any) {
       });
     }
 
-    const {
-      endDate,
-      start_date,
-      first,
-      rows,
-      orderBy,
-      is_archive,
-      searchQuery,
-      ...data
-    }: any = { ...validate.data };
+    const { ...data }: any = { ...validate.data };
 
     const options: any = {
-      orderBy: { created_at: orderBy ?? 'desc' },
-      skip: first ? +first : 0,
-      take: rows ? +rows : 50,
       where: {
         created_by: userData?.id,
         is_deleted: false,
-        ...data,
+        id: +validate.data?.project_id,
+        // ...data,
       },
     };
-    console.log({ userData });
     if (userData?.role == 'seller_trucker') {
       options.where = {
         OR: [
@@ -81,15 +73,8 @@ export async function getProjectAll(req: any, res: any) {
             created_by: userData?.id,
           },
         ],
-        ProjectStatus: {
-          none: {
-            created_by: userData?.id,
-            is_archive: !stringToBoolean(is_archive),
-          },
-        },
 
         is_deleted: false,
-        ...data,
       };
     }
     if (userData?.role == 'trucker') {
@@ -106,101 +91,47 @@ export async function getProjectAll(req: any, res: any) {
             ],
           },
         },
-        ProjectStatus: {
-          none: {
-            created_by: userData?.id,
-            is_archive: !stringToBoolean(is_archive),
-          },
-        },
 
         is_deleted: false,
-        ...data,
       };
     }
     if (userData?.role == 'client') {
       options.where = {
         client_id: userData?.id,
         is_deleted: false,
-        ProjectStatus: {
-          none: {
-            created_by: userData?.id,
-            is_archive: !stringToBoolean(is_archive),
-          },
-        },
-
-        ...data,
       };
     }
     if (userData?.role == 'seller_buyer') {
       options.where = {
         created_by: userData?.id,
         is_deleted: false,
-        ProjectStatus: {
-          none: {
-            created_by: userData?.id,
-            is_archive: !stringToBoolean(is_archive),
-          },
-        },
-
-        ...data,
       };
     }
-    if (searchQuery) {
-      options.where.OR = options.where.OR ?? [];
-      options.where.OR.push({
-        name: { contains: searchQuery, mode: 'insensitive' },
-      });
 
-      // options.where.OR.push({
-      //   price: { contains: input.searchQuery, mode: 'insensitive' },
-      // });
-    }
-
-    if (start_date) {
-      const startDate = new Date(start_date);
-      startDate.setDate(startDate.getDate());
-
-      options.where.AND = [];
-      options.where.AND.push({ created_at: { gte: startDate } });
-    }
-    if (endDate) {
-      const endDateFormat = new Date(endDate);
-      endDateFormat.setDate(endDateFormat.getDate() + 1);
-
-      options.where.AND = options?.AND ?? [];
-      options.where.AND.push({ created_at: { lte: endDateFormat } });
-    }
-    // if (is_archive) {
-    //   options.where = {
-    //     ...options.where,
-    //     ProjectStatus: {
-    //       some: {
-    //         AND: [{ created_by: userData?.id }, { is_archive }],
-    //       },
-    //     },
-    //   };
-    // }
-    const totalProjectsPromise = prisma.projects.count({
-      where: options?.where,
-    });
-
-    const projectPromise = prisma.projects.findMany({
+    const projectPromise = prisma.projects.findFirst({
       ...options,
 
       include: {
         ProjectAddress: true,
         Client: true,
+        ProjectTruckers: {
+          include: {
+            Trucker: {
+              select: {
+                id: true,
+                first_name: true,
+                username: true,
+                email: true,
+              },
+            },
+          },
+        },
       },
     });
 
-    const [projectsTotalData, projectData] = await Promise.all([
-      totalProjectsPromise,
-      projectPromise,
-    ]);
+    const [projectData] = await Promise.all([projectPromise]);
 
-    return res
-      .status(200)
-      .send({ count: projectsTotalData, data: projectData });
+    return res.status(200).send({ data: projectData });
   } catch (err: any) {
     console.log({ msg: err.message });
     res.status(500).send({ message: err.message as string });
