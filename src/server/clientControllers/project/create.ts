@@ -115,6 +115,12 @@ export async function createProject(req: any, res: any) {
       } invited you as client in ${validate?.data?.name} project.</p>`,
     };
     const clientEmailHTML: string = clientEmailLayout(emaildata);
+    const truckerEmail = await sendTruckerEmail({
+      truckers: findTruckerRole,
+      userData,
+      clientData,
+      validate,
+    });
     if (clientData)
       await sendInvitation({
         email: clientData?.email,
@@ -133,3 +139,34 @@ export async function createProject(req: any, res: any) {
     res.status(500).send({ message: err.message as string });
   }
 }
+const sendTruckerEmail = async ({
+  userData,
+  clientData,
+  validate,
+  truckers,
+}: any) => {
+  const emaildata = {
+    type: 'project-invitation',
+    userData: userData?.first_name ?? 'Owner',
+    validate: validate?.data?.name,
+    usercontent: `<p style="color: #FFFFFF; font-size: 13px;">${
+      userData?.first_name ?? 'Owner'
+    } invited you as trucker in ${validate?.data?.name} project.</p>`,
+  };
+  const clientEmailHTML: string = clientEmailLayout(emaildata);
+
+  truckers?.map(async (turcker: any) => {
+    await sendInvitation({
+      email: clientData?.email,
+      from:
+        (userData?.first_name ? userData?.first_name : userData?.username) ??
+        'Owner',
+      subject: `Project Invitation - ${validate?.data?.name}`,
+      type: 'project-invitation',
+      // raw: `<p> ${userData?.first_name ?? 'Owner'} invited you as client in ${
+      //   validate?.data?.name
+      // } project. </p>`,
+      html: clientEmailHTML, // Pass HTML content
+    });
+  });
+};

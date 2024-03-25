@@ -30,6 +30,7 @@ export const loginCustomerSchema = z.object({
     .string({ required_error: 'Please provide name' })
     .optional()
     .nullable(),
+  device_id: z.string({ required_error: 'Device ID Not Found!' }),
 });
 
 // register schema for client api

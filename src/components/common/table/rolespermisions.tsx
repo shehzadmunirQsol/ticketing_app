@@ -40,6 +40,13 @@ import { useRouter } from 'next/router';
 import { Button } from '~/components/ui/button';
 import { getRolesFilterSchema } from '~/schema/roles';
 import { Input } from '~/components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '~/components/ui/select';
 export type Roles = {
   id: number;
   name: string;
@@ -86,6 +93,7 @@ export default function RolesPermisionDataTable() {
   console.log({ permissions }, 'data to get');
   useEffect(() => {
     setPermissions(typeof data?.switch === 'object' ? data?.switch : {});
+    table.setPageSize(Number(filters?.rows));
   }, [data]);
 
   // delete product
@@ -167,6 +175,7 @@ export default function RolesPermisionDataTable() {
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
+
     state: {
       sorting,
       columnVisibility,

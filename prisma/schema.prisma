@@ -98,6 +98,7 @@ model User {
   UserTruckers    ProjectTruckers[]
   Role            Role?             @relation(fields: [role_id], references: [id])
   Orders          Orders[]
+  ProjectStatus   ProjectStatus[]
 
   @@map("user")
 }
@@ -131,9 +132,27 @@ model Projects {
   ProjectAddress  ProjectAddress[]
   ProjectTruckers ProjectTruckers[]
   Orders          Orders[]
+  ProjectStatus   ProjectStatus[]
 
   @@index([client_id, created_by])
   @@map("project")
+}
+
+model ProjectStatus {
+  id Int @id @default(autoincrement())
+
+  created_by  Int?
+  projects_id Int?
+  is_archive  Boolean  @default(false)
+  created_at  DateTime @default(now())
+  updated_at  DateTime @default(now())
+  is_deleted  Boolean  @default(false)
+
+  User     User?     @relation(fields: [created_by], references: [id])
+  Projects Projects? @relation(fields: [projects_id], references: [id])
+
+  @@index([created_by])
+  @@map("project_status")
 }
 
 model ProjectAddress {
