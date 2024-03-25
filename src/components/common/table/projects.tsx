@@ -62,6 +62,8 @@ import {
 } from '@radix-ui/react-icons';
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 import { useRouter } from 'next/router';
+import {InvoiceDialog} from "../modal/invoiceModal";
+import { getHtmlContent } from '~/server/clientControllers/pdf';
 import { ResourceUploadDialog } from '../modal/resourceModal';
 import { CustomerUploadDialog } from '../modal/customerModal';
 import Link from 'next/link';
@@ -98,13 +100,20 @@ export default function ProjectsDataTable(props: customerDataTableType) {
   const [filters, setFilters] =
     useState<getCustomerFilterSchema>(initialFilters);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [openInvoice,setIsInvoice]=React.useState(false);
   const [rowSelection, setRowSelection] = useState({});
   const [selectedItem, setSelectedItem] = React.useState({});
   const [title, setTitle] = React.useState('');
   const [type, setType] = React.useState('');
   const [isModal, setIsModal] = React.useState(false);
   const [isModalDelete, setIsModalDelete] = React.useState(false);
+  const [modalContent, setModalContent] = useState('');
 
+
+ async function getInvoiceContent(){
+    const invoicedata= await getHtmlContent("empty");
+    setIsInvoice(true);
+  }
   // APi
   const { data, refetch, isLoading } = trpc.project.get.useQuery(
     {
@@ -263,9 +272,7 @@ export default function ProjectsDataTable(props: customerDataTableType) {
                 </Link>
               </DropdownMenuItem>
               {props.type==="closed" && <DropdownMenuItem className=" cursor-pointer">
-                <Link href={"#"}>
-                  View Invoice
-                </Link>
+                <button>View Invoice</button>
               </DropdownMenuItem>}
             </DropdownMenuContent>
           </DropdownMenu>
@@ -554,7 +561,7 @@ export default function ProjectsDataTable(props: customerDataTableType) {
           </div>
         </div>
       </div>
-
+      <InvoiceDialog open={openInvoice} text='check' setIsModal={setIsInvoice}/>
       <LoadingDialog open={isLoading} text={'Loading data...'} />
     </div>
   );

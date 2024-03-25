@@ -1,8 +1,10 @@
-import { AlertDialog, AlertDialogContent } from '@/ui/alert-dialog';
+import { AlertDialog, AlertDialogContent, AlertDialogFooter } from '@/ui/alert-dialog';
+import { Button } from '~/components/ui/button';
 
 interface InvoiceModalInterface {
   open: boolean;
   text?: string;
+  setIsModal: (data: boolean) => void;
 }
 
 export function InvoiceDialog(props: InvoiceModalInterface) {
@@ -10,9 +12,21 @@ export function InvoiceDialog(props: InvoiceModalInterface) {
     <AlertDialog open={props.open}>
       <AlertDialogContent>
         <div className="flex flex-col items-center justify-center">
-          <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12 mb-4" />
           <h2 className="text-white text-xl font-semibold">{props?.text}</h2>
         </div>
+        <AlertDialogFooter>
+        <div className="flex items-center justify-end gap-4 mt-4">
+          <Button
+            variant="secondary"
+            type="button"
+            onClick={() => props.setIsModal(false)}>
+                    Cancel
+            </Button>
+            <Button type="submit">
+                  Print
+             </Button>
+            </div>
+      </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
   );
