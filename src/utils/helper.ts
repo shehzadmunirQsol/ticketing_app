@@ -339,72 +339,87 @@ export async function getUserData(req: any, res: any) {
   return userData;
 }
 
-
 export async function getHtmlContent(data: any) {
-  console.log("date",data?.data?.updated_at);
-  console.log("data real",data?.data);
+  if (data?.data === 'No data') {
+    return;
+  }
+
+  console.log('date', data?.data?.updated_at);
+  console.log('data real', data?.data);
   const date = new Date(data?.data?.updated_at);
 
-    const formattedDate = date.toLocaleDateString('en-US', {
-      month: 'short',
-      day: '2-digit',
-      year: 'numeric',
-    });
-    let pickAddressString = "";
-    let dropAddressString = "";
-    const projectAddresses = data?.data?.ProjectAddress;
+  const formattedDate = date.toLocaleDateString('en-US', {
+    month: 'short',
+    day: '2-digit',
+    year: 'numeric',
+  });
+  let pickAddressString = '';
+  let dropAddressString = '';
+  const projectAddresses = data?.data?.ProjectAddress;
 
-    // Iterate through the project addresses
-    for (const address of projectAddresses) {
-        // Check if the address type is "pick"
-        if (address.address_type === "pick") {
-            pickAddressString = `${address.street_address_1} ${address.street_address_2}`;
-        }
-        // Check if the address type is "drop"
-        else if (address.address_type === "drop") {
-            dropAddressString = `${address.street_address_1} ${address.street_address_2}`;
-        }
+  // Iterate through the project addresses
+  for (const address of projectAddresses) {
+    // Check if the address type is "pick"
+    if (address.address_type === 'pick') {
+      pickAddressString = `${address.street_address_1} ${address.street_address_2}`;
     }
-    console.log("Pick Address:", pickAddressString);
-    console.log("Drop Address:", dropAddressString);
-
-    const clientData = data?.data?.Client;
-    const userData = data?.data?.User;
-    // Extract usernames or fallback to first names if usernames are not available
-    const clientUsername = clientData.username || clientData.first_name || "N/A";
-    const userUsername = userData.username || userData.first_name || "N/A";
-    let FinalizedData={
-      date:formattedDate,
-      invoiceid:data.data?.id,
-      from:data.data?.Client.email,
-      to:data.data?.User.email,
-      fromusername:clientUsername,
-      tousername:userUsername,
-      fromAddress:pickAddressString,
-      toAddress:dropAddressString,
+    // Check if the address type is "drop"
+    else if (address.address_type === 'drop') {
+      dropAddressString = `${address.street_address_1} ${address.street_address_2}`;
     }
+  }
+  console.log('Pick Address:', pickAddressString);
+  console.log('Drop Address:', dropAddressString);
 
-    const projectData =data?.data;
-    function generateTicketRows() {
-      const tickets = projectData.ProjectTickets || [];
-      let rows = '';
-  
-      tickets.forEach((ticket: { Trucker: {username:any,first_name:any}; trucker_id: any; tx_hash: any; status: any; }) => {
-          const trucker = ticket.Trucker || {};
-          const truckerName = trucker.username || trucker.first_name || 'N/A';
-  
-          rows += `
+  const clientData = data?.data?.Client;
+  const userData = data?.data?.User;
+  // Extract usernames or fallback to first names if usernames are not available
+  const clientUsername = clientData.username || clientData.first_name || 'N/A';
+  const userUsername = userData.username || userData.first_name || 'N/A';
+  const FinalizedData = {
+    date: formattedDate,
+    invoiceid: data.data?.id,
+    from: data.data?.Client.email,
+    to: data.data?.User.email,
+    fromusername: clientUsername,
+    tousername: userUsername,
+    fromAddress: pickAddressString,
+    toAddress: dropAddressString,
+  };
+
+  const projectData = data?.data;
+  function generateTicketRows() {
+    const tickets = projectData.ProjectTickets || [];
+    let rows = '';
+
+    tickets.forEach(
+      (ticket: {
+        Trucker: { username: any; first_name: any };
+        trucker_id: any;
+        tx_hash: any;
+        status: any;
+      }) => {
+        const trucker = ticket.Trucker || {};
+        const truckerName = trucker.username || trucker.first_name || 'N/A';
+
+        rows += `
               <tr class="item">
                   <td>${ticket.trucker_id}</td>
-                  <td><a href="https://mumbai.polygonscan.com/tx/${ticket.tx_hash}" target="_blank">${customTruncateHandler(ticket.tx_hash,15)}</a></td>
+                  <td><a href="https://mumbai.polygonscan.com/tx/${
+                    ticket.tx_hash
+                  }" target="_blank">${customTruncateHandler(
+          ticket.tx_hash,
+          15,
+        )}</a></td>
                   <td>${truckerName}</td>
                   <td>${ticket.status}</td>
               </tr>
           `;
-      });
-      return rows;
+      },
+    );
+    return rows;
   }
-    console.log(formattedDate);
+  console.log(formattedDate);
   const htmlContent = ` 
   <!DOCTYPE html>
 <html lang="en">

@@ -62,7 +62,7 @@ import {
 } from '@radix-ui/react-icons';
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 import { useRouter } from 'next/router';
-import {InvoiceDialog} from "../modal/invoiceModal";
+import { InvoiceDialog } from '../modal/invoiceModal';
 // import { getHtmlContent } from '~/server/clientControllers/pdf';
 import { getHtmlContent } from '~/utils/helper';
 import { ResourceUploadDialog } from '../modal/resourceModal';
@@ -92,7 +92,7 @@ type customerDataTableType = {
 };
 
 export default function ProjectsDataTable(props: customerDataTableType) {
-  console.log("check",{ props });
+  console.log('check', { props });
   // use toast
   const { toast } = useToast();
   const router = useRouter();
@@ -102,32 +102,37 @@ export default function ProjectsDataTable(props: customerDataTableType) {
   const [filters, setFilters] =
     useState<getCustomerFilterSchema>(initialFilters);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
-  const [openInvoice,setIsInvoice]=React.useState(false);
+  const [openInvoice, setIsInvoice] = React.useState(false);
   const [rowSelection, setRowSelection] = useState({});
   const [selectedItem, setSelectedItem] = React.useState({});
-  const [invoiceId,setInvoiceId]=React.useState<number>(0);
+  const [invoiceId, setInvoiceId] = React.useState<number>(0);
+  const [invoiceLoader, setInvoiceLoader] = React.useState(false);
   const [isModal, setIsModal] = React.useState(false);
   const [modalContent, setModalContent] = useState('');
-  
-    // APi
-    const { data:projectInvoiceData,isLoading:fetchingInvoiceData } = trpc.project.getInvoiceTickets.useQuery(
+
+  // APi
+  const { data: projectInvoiceData, isLoading: fetchingInvoiceData } =
+    trpc.project.getInvoiceTickets.useQuery(
       {
-        id:invoiceId
+        id: invoiceId,
       },
       {
         refetchOnWindowFocus: false,
       },
     );
 
-
-  async function getInvoiceContent(id:number){
-    await setInvoiceId(id);
-    console.log("id invoice of data",projectInvoiceData);
-    const invoicedata= await getHtmlContent(projectInvoiceData);
-    setModalContent(invoicedata);
-    setIsInvoice(true);
+  async function getInvoiceContent(id: number) {
+    setInvoiceId(id);
+    setInvoiceLoader(true);
+    console.log('Id of data', id); // Use id from closure
+    console.log('id invoice of data', projectInvoiceData);
+    if (projectInvoiceData) {
+      const invoicedata = await getHtmlContent(projectInvoiceData);
+      setModalContent(invoicedata || '');
+      setIsInvoice(true);
+      setInvoiceLoader(false);
+    }
   }
-
 
   // APi
   const { data, refetch, isLoading } = trpc.project.get.useQuery(
@@ -286,9 +291,19 @@ export default function ProjectsDataTable(props: customerDataTableType) {
                   View Project
                 </Link>
               </DropdownMenuItem>
-              {props.type==="closed" && <DropdownMenuItem className=" cursor-pointer">
-                <button onClick={()=>getInvoiceContent(row?.original?.id)}>View Invoice</button>
-              </DropdownMenuItem>}
+              {props.type === 'closed' && (
+                <DropdownMenuItem className=" cursor-pointer">
+                  <button
+                    onClick={() => {
+                      setIsInvoice(false); // Reset invoice state
+                      setInvoiceLoader(true); // Show loading state
+                      getInvoiceContent(row?.original?.id); // Call function to fetch invoice
+                    }}
+                  >
+                    View Invoice
+                  </button>
+                </DropdownMenuItem>
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
         );
@@ -576,7 +591,14 @@ export default function ProjectsDataTable(props: customerDataTableType) {
           </div>
         </div>
       </div>
-      <InvoiceDialog open={openInvoice} text={modalContent} setIsModal={setIsInvoice}/>
+      <InvoiceDialog
+        open={openInvoice}
+        text={modalContent}
+        setIsModal={setIsInvoice}
+        invoiceId={invoiceId}
+        setInvoiceId={setInvoiceId}
+        loader={invoiceLoader}
+      />
       <LoadingDialog open={isLoading} text={'Loading data...'} />
     </div>
   );

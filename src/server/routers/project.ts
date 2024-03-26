@@ -1,6 +1,10 @@
 import { router, publicProcedure } from '../trpc';
 import { TRPCError } from '@trpc/server';
-import { projectGetAdminchema, projectGetDetailSchema, projectGetTicketDetailSchema } from '~/schema/project';
+import {
+  projectGetAdminchema,
+  projectGetDetailSchema,
+  projectGetTicketDetailSchema,
+} from '~/schema/project';
 
 import { prisma } from '~/server/prisma';
 
@@ -9,11 +13,11 @@ export const projectRouter = router({
     .input(projectGetTicketDetailSchema)
     .query(async ({ input }) => {
       try {
-        console.log("first")
-        console.log(input?.id,"input?.id")
+        console.log('first');
+        console.log(input?.id, 'input?.id');
         const where: any = {
           is_deleted: false,
-          is_invoiced:true,
+          is_invoiced: true,
         };
 
         const projectPromise = prisma.projects.findFirst({
@@ -21,36 +25,43 @@ export const projectRouter = router({
 
           where: { ...where, id: input?.id },
           include: {
-            Client:{
-              select:{
-                first_name:true,
-                username:true,
-                email:true,
-                phone_number:true
-              }
+            Client: {
+              select: {
+                first_name: true,
+                username: true,
+                email: true,
+                phone_number: true,
+              },
             },
-            User:{
-              select:{
-                first_name:true,
-                username:true,
-                email:true,
-                phone_number:true
-              }
+            User: {
+              select: {
+                first_name: true,
+                username: true,
+                email: true,
+                phone_number: true,
+              },
             },
-            ProjectTickets:{
-              select:{
-                trucker_id:true,
-                tx_hash:true,
-                Trucker:true,
-                status:true,
-              }
+            ProjectTickets: {
+              select: {
+                trucker_id: true,
+                tx_hash: true,
+                Trucker: true,
+                status: true,
+              },
             },
-            ProjectAddress:true
+            ProjectAddress: true,
           },
         });
 
         const [projectDetail] = await Promise.all([projectPromise]);
 
+        if (!projectDetail) {
+          // Handle the case where projectDetail is null
+          return {
+            message: 'Detail not found',
+            data: 'No data', // or any default data you want to return
+          };
+        }
         return {
           message: 'Detail found',
           data: projectDetail,
