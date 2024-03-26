@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
   ColumnDef,
-  // ColumnFiltersState,
   SortingState,
   VisibilityState,
   flexRender,
@@ -32,11 +31,7 @@ import {
 } from '@/ui/table';
 
 import { trpc } from '~/utils/trpc';
-import {
-  customEmailTruncateHandler,
-  customTruncateHandler,
-  displayDate,
-} from '~/utils/helper';
+import { displayDate } from '~/utils/helper';
 import { getCustomerFilterSchema } from '~/schema/customer';
 import {
   Tooltip,
@@ -62,21 +57,15 @@ import {
 } from '@radix-ui/react-icons';
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 import { useRouter } from 'next/router';
-import { ResourceUploadDialog } from '../modal/resourceModal';
 import { CustomerUploadDialog } from '../modal/customerModal';
 import Link from 'next/link';
 export type Resources = {
   id: number;
-  name: string;
-  material_type: string;
-  truck_cap: string;
-  total_rounds: number;
-  price: number;
-
+  Projects: any;
+  status: string;
+  Trucker: any;
   is_deleted: boolean;
   created_at: Date;
-  start_date: Date;
-  delivery_date: Date;
 };
 
 const initialFilters: any = {
@@ -84,10 +73,10 @@ const initialFilters: any = {
   rows: 10,
 };
 type customerDataTableType = {
-  type: string;
+  type?: string;
 };
 
-export default function ProjectsDataTable(props: customerDataTableType) {
+export default function ProjectsTicketsDataTable(props: customerDataTableType) {
   console.log({ props });
   // use toast
   const { toast } = useToast();
@@ -100,13 +89,10 @@ export default function ProjectsDataTable(props: customerDataTableType) {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
   const [selectedItem, setSelectedItem] = React.useState({});
-  const [title, setTitle] = React.useState('');
-  const [type, setType] = React.useState('');
   const [isModal, setIsModal] = React.useState(false);
-  const [isModalDelete, setIsModalDelete] = React.useState(false);
 
   // APi
-  const { data, refetch, isLoading } = trpc.project.get.useQuery(
+  const { data, refetch, isLoading } = trpc.project.getProjectTickets.useQuery(
     {
       ...filters,
       type: props?.type,
@@ -122,34 +108,72 @@ export default function ProjectsDataTable(props: customerDataTableType) {
     return Array.isArray(data?.data) ? data?.data : [];
   }, [data]);
 
-  function openChangeHandler(data: any) {
-    setIsModal((prevState) => !prevState);
-    if (data) {
-      setSelectedItem({ id: data?.id, name: data?.name, code: data?.code });
-    } else {
-      setSelectedItem({});
-    }
-  }
-  // handle modal
-  // const handleEnbled = (data: any) => {
-  //   setSelectedItem({ id: data?.id, name: data?.name, code: data?.code });
-  //   openChangeHandler();
-  // };
-  // columns
   const columns: ColumnDef<Resources>[] = [
     {
+      accessorKey: 'no',
+      header: 'Ticket No',
+      cell: ({ row }) => {
+        return (
+          <div className="flex items-center gap-4 capitalize text-ellipsis whitespace-nowrap overflow-hidden">
+            {row?.original?.id}
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: 'status',
+      header: 'Ticket Status',
+      cell: ({ row }) => {
+        return (
+          <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
+            {row?.original?.status}
+          </div>
+        );
+      },
+    },
+    {
       accessorKey: 'name',
-      header: 'Name',
+      header: 'Trucker Name',
       cell: ({ row }) => {
         return (
           <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger>
-                  <p className="capitalize">{row?.original?.name}</p>
+                  <p className="capitalize">
+                    {row?.original?.Trucker?.username ??
+                      row?.original?.Trucker?.first_name}
+                  </p>
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p className="text-base font-normal">{row?.original?.name}</p>
+                  <p className="text-base font-normal">
+                    {row?.original?.Trucker?.username ??
+                      row?.original?.Trucker?.first_name}
+                    <br />
+                    {row?.original?.Trucker?.email}
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: 'name',
+      header: 'Project Name',
+      cell: ({ row }) => {
+        return (
+          <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <p className="capitalize">{row?.original?.Projects?.name}</p>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="text-base font-normal">
+                    {row?.original?.Projects?.name}
+                  </p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
@@ -166,12 +190,14 @@ export default function ProjectsDataTable(props: customerDataTableType) {
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger>
-                  <p className="capitalize">{row?.original?.material_type}</p>
+                  <p className="capitalize">
+                    {row?.original?.Projects?.material_type}
+                  </p>
                   {/* {customEmailTruncateHandler(row?.original?.email)} */}
                 </TooltipTrigger>
                 <TooltipContent>
                   <p className="text-base font-normal">
-                    {row?.original?.material_type}
+                    {row?.original?.Projects?.material_type}
                   </p>
                 </TooltipContent>
               </Tooltip>
@@ -186,51 +212,12 @@ export default function ProjectsDataTable(props: customerDataTableType) {
       cell: ({ row }) => {
         return (
           <div className="flex items-center gap-4 capitalize text-ellipsis whitespace-nowrap overflow-hidden">
-            {row?.original?.truck_cap}
+            {row?.original?.Projects?.truck_cap}
           </div>
         );
       },
     },
-    {
-      accessorKey: 'rounds',
-      header: 'Total Rounds',
-      cell: ({ row }) => {
-        return (
-          <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
-            {row?.original?.total_rounds}
-          </div>
-        );
-      },
-    },
-    {
-      accessorKey: 'price',
-      header: 'Project Price',
-      cell: ({ row }) => {
-        return (
-          <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
-            $ {row?.original?.price}
-          </div>
-        );
-      },
-    },
-    {
-      accessorKey: 'Start Date',
-      header: 'Start Date',
-      cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap ">
-          {displayDate(row?.original?.start_date)}
-        </div>
-      ),
-    },
-    {
-      accessorKey: 'Delivery Date',
-      header: 'Delivery Date',
-      cell: ({ row }) => (
-        <div className="capitalize text-ellipsis whitespace-nowrap ">
-          {displayDate(row?.original?.delivery_date)}
-        </div>
-      ),
-    },
+
     {
       accessorKey: 'Created Date',
       header: 'Created Date',
@@ -258,7 +245,9 @@ export default function ProjectsDataTable(props: customerDataTableType) {
               {/* <DropdownMenuLabel>Actions</DropdownMenuLabel> */}
               {/* <DropdownMenuSeparator /> */}
               <DropdownMenuItem className=" cursor-pointer">
-                <Link href={`/admin/projects/detail/${row?.original?.id}`}>
+                <Link
+                  href={`/admin/projects/detail/${row?.original?.Projects?.id}`}
+                >
                   View Project
                 </Link>
               </DropdownMenuItem>
@@ -549,13 +538,6 @@ export default function ProjectsDataTable(props: customerDataTableType) {
           </div>
         </div>
       </div>
-      <CustomerUploadDialog
-        setIsModal={setIsModal}
-        isModal={isModal}
-        refetch={refetch}
-        type={props?.type}
-        {...selectedItem}
-      />
 
       <LoadingDialog open={isLoading} text={'Loading data...'} />
     </div>

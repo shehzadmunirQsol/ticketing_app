@@ -145,9 +145,7 @@ export default function ResourcesDataTable() {
           <div className="flex items-center gap-4 text-ellipsis whitespace-nowrap overflow-hidden">
             <TooltipProvider>
               <Tooltip>
-                <TooltipTrigger>
-                  {customEmailTruncateHandler(row?.original?.code)}
-                </TooltipTrigger>
+                <TooltipTrigger>{row?.original?.code}</TooltipTrigger>
                 <TooltipContent>
                   <p className="text-base font-normal">{row?.original?.code}</p>
                 </TooltipContent>

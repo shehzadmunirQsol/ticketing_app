@@ -16,7 +16,18 @@ export const projectGetAllSchema = z.object({
   startDate: z.string().optional().nullable(),
   endDate: z.string().optional().nullable(),
 });
+export const projectGetSchema = z.object({
+  orderBy: z.string().default('desc'),
+  // is_detail: z.string().optional(),
+  is_archive: z.string().default('false'),
 
+  first: z.string().optional(),
+  rows: z.string().optional(),
+
+  searchQuery: z.string().optional().nullable(),
+  startDate: z.string().optional().nullable(),
+  endDate: z.string().optional().nullable(),
+});
 export const projectGetAdminchema = z.object({
   startDate: z.date().optional(),
   endDate: z.date().optional(),
@@ -27,6 +38,7 @@ export const projectGetAdminchema = z.object({
   rows: z.number(),
   filters: z.any().optional(),
 });
+
 export const projectGetDetailSchema = z.object({
   id: z.number({
     required_error: 'id is required',
@@ -188,6 +200,21 @@ export const inviteTruckerSchema = z.object({
       invalid_type_error: 'Please enter your type',
     })
     .default('seller_buyer'),
+});
+export const updateProjectTrcuker = z.object({
+  project_id: z.number({ required_error: 'Project ID is Missing' }),
+  truckers: z
+    .array(
+      z.object({
+        trucker_id: z.number({
+          required_error: 'trucker id is missing',
+          invalid_type_error: 'Street Address 2 is required',
+        }),
+      }),
+    )
+    .min(1, {
+      message: 'Please select atleast one trucker',
+    }),
 });
 // register schema for api
 

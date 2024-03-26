@@ -1,28 +1,26 @@
-import { inviteTruckerSchema, projectGetAllSchema } from '~/schema/project';
+import { projectGetAllSchema } from '~/schema/project';
 import { prisma } from '~/server/prisma';
-import { sendInvitation } from '~/utils/clientMailer';
 import { getUserData } from '~/utils/helper';
-import { clientEmailLayout } from '~/utils/mailer';
 
-/* 
- ---- input ----
- email
- password 
-*/
+/**
+ * This function retrieves all Truckers based on the user's role and provided query parameters.
+ 
+ * @param req - The request object containing query parameters.
+ * @param res - The response object to send back to the client.
+ * @returns A response containing ticket data based on the user's role and query parameters.
+ */
 export async function getTruckersAll(req: any, res: any) {
-  // const input = req.body;
-
   try {
+    // Check if request body is present
     if (!req.query)
       return res.status(400).send({ message: 'payload not found' });
+
+    // Validate the input payload using a schema
     const input = { ...req.query };
     delete input.routes;
-
-    // Check if the authorization scheme is Bearer and if the token exists
-
-    // const input = JSON.parse(req.body as any);
     const validate = projectGetAllSchema.safeParse(input);
 
+    // If validation fails, send back an error response
     if (!validate.success)
       return res.status(400).send({
         message:
@@ -30,7 +28,7 @@ export async function getTruckersAll(req: any, res: any) {
             ? validate?.error?.errors[0]?.message
             : 'Bad Request',
       });
-    // const { jwt, ...data } = validate.data;
+    // Fetch user data from the request and authorization bearer
     const userData: any = await getUserData(req, res);
     if (!userData) {
       return res.status(400).send({

@@ -30,42 +30,49 @@ export async function getAnalytics(req: any, res: any) {
       },
     });
     const AnalyticObject: any = {};
-    if (userPromise) {
+    if (userData) {
       const options: any = {
         where: {
-          created_by: userPromise?.id,
+          created_by: userData?.id,
           is_deleted: false,
         },
       };
-      if (userPromise?.Role?.name == 'seller_trucker') {
+      console.log({ userData });
+      if (userData?.role == 'seller_trucker') {
         options.where = {
           OR: [
             {
-              trucker_id: {
-                hasEvery: [userPromise?.id],
+              ProjectTruckers: {
+                some: {
+                  trucker_id: {
+                    in: [userData?.id],
+                  },
+                },
               },
             },
             {
-              created_by: userPromise?.id,
+              created_by: userData?.id,
             },
           ],
           is_deleted: false,
         };
-      } else if (userPromise?.Role?.name == 'trucker') {
+      } else if (userData?.role == 'trucker') {
         options.where = {
-          trucker_id: {
-            hasEvery: [userPromise?.id],
+          ProjectTruckers: {
+            some: {
+              trucker_id: userData?.id,
+            },
           },
           is_deleted: false,
         };
-      } else if (userPromise?.Role?.name == 'client') {
+      } else if (userData?.role == 'client') {
         options.where = {
-          client_id: userPromise?.id,
+          client_id: userData?.id,
           is_deleted: false,
         };
-      } else if (userPromise?.Role?.name == 'seller_buyer') {
+      } else if (userData?.role == 'seller_buyer') {
         options.where = {
-          created_by: userPromise?.id,
+          created_by: userData?.id,
           is_deleted: false,
         };
       }
@@ -86,8 +93,8 @@ export async function getAnalytics(req: any, res: any) {
       });
       // if user is seller
       if (
-        userPromise?.Role?.name == 'seller_buyer' ||
-        userPromise?.Role?.name == 'seller_trucker'
+        userData?.role == 'seller_buyer' ||
+        userData?.role == 'seller_trucker'
       ) {
         const pendingTicketsPromise = await prisma.projects.findMany({
           where: {
