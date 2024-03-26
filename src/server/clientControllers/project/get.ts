@@ -40,7 +40,7 @@ export async function getProjectAll(req: any, res: any) {
 
     const {
       endDate,
-      start_date,
+      startDate,
       first,
       rows,
       orderBy,
@@ -146,22 +146,42 @@ export async function getProjectAll(req: any, res: any) {
       };
     }
     if (searchQuery) {
-      options.where.OR = options.where.OR ?? [];
+      options.where.OR = [];
       options.where.OR.push({
         name: { contains: searchQuery, mode: 'insensitive' },
       });
+      if (userData?.role == 'seller_trucker') {
+        options.where.AND = [];
+        options.where.AND.push({
+          ProjectTruckers: {
+            some: {
+              AND: [
+                {
+                  status: { in: ['accepted', 'pending'] },
+                },
+                {
+                  trucker_id: userData?.id,
+                },
+              ],
+            },
+          },
+        });
+        options.where.AND.push({
+          created_by: userData?.id,
+        });
+      }
 
       // options.where.OR.push({
       //   price: { contains: input.searchQuery, mode: 'insensitive' },
       // });
     }
 
-    if (start_date) {
-      const startDate = new Date(start_date);
-      startDate.setDate(startDate.getDate());
+    if (startDate) {
+      const start_date = new Date(startDate);
+      start_date.setDate(start_date.getDate());
 
       options.where.AND = [];
-      options.where.AND.push({ created_at: { gte: startDate } });
+      options.where.AND.push({ created_at: { gte: start_date } });
     }
     if (endDate) {
       const endDateFormat = new Date(endDate);

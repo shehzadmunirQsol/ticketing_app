@@ -105,6 +105,20 @@ export async function createProject(req: any, res: any) {
           },
         },
       },
+      include: {
+        ProjectTruckers: {
+          include: {
+            Trucker: true,
+          },
+        },
+      },
+    });
+    console.log({ truckerRole: result?.ProjectTruckers });
+    await sendTruckerEmail({
+      truckers: result?.ProjectTruckers,
+      userData,
+      clientData,
+      validate,
     });
     const emaildata = {
       type: 'project-invitation',
@@ -115,12 +129,6 @@ export async function createProject(req: any, res: any) {
       } invited you as client in ${validate?.data?.name} project.</p>`,
     };
     const clientEmailHTML: string = clientEmailLayout(emaildata);
-    const truckerEmail = await sendTruckerEmail({
-      truckers: findTruckerRole,
-      userData,
-      clientData,
-      validate,
-    });
     if (clientData)
       await sendInvitation({
         email: clientData?.email,
@@ -156,8 +164,9 @@ const sendTruckerEmail = async ({
   const clientEmailHTML: string = clientEmailLayout(emaildata);
 
   truckers?.map(async (turcker: any) => {
+    console.log({ turcker });
     await sendInvitation({
-      email: clientData?.email,
+      email: turcker?.Trucker?.email,
       from:
         (userData?.first_name ? userData?.first_name : userData?.username) ??
         'Owner',

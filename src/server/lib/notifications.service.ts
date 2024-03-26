@@ -198,8 +198,15 @@ export async function notificationHandler(params: any) {
 
   // make sure document_id is valid, string and wallet_address.
   console.log({ docData, params });
-  // const pushMessage: Messaging = getMessaging(app).sendToDevice();
-  // pushMessage.app().sendToDevice();
+  const pushMessage: any = getMessaging(app);
+  pushMessage.app().sendToDevice({
+    data: {
+      score: '850',
+      time: '2:45',
+    },
+    token:
+      'fEMMUNeQSuy6V0yIzwtNmF:APA91bHN6Upgyk3UbervvELgNEQ2Y-2PzJgO1wedG-wTCLPSoBq1dPP5kTc9CGfEB5B0nBWINOJh1NvNIKWjwORd4CSk0kOTQ4wlvf_j1EQ4G6iiyZKm7mWIWOPFvaFaYaX2Rhw65nv1',
+  });
   // pushMessage.sendToDevice({
   //   PushMessage: {
   //     data: {
