@@ -9,7 +9,7 @@ const html_to_pdf = require('html-pdf-node');
 */
 // const pdfAsync = promisify(pdf.create);
 // const readFileAsync = promisify(fs.readFile);
-async function getHtmlContent(data: any) {
+export async function getHtmlContent(data: any) {
   const htmlContent = ` 
   <!DOCTYPE html>
 <html lang="en">

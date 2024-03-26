@@ -88,6 +88,7 @@
     "draft-js": "^0.11.7",
     "ethers": "5.7.2",
     "firebase": "^10.9.0",
+    "file-system": "^2.2.2",
     "html-pdf": "^3.0.1",
     "html-pdf-node": "^1.0.8",
     "html-react-parser": "^4.2.2",
