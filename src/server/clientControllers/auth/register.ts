@@ -72,6 +72,8 @@ export async function registerCustomer(req: any, res: any) {
       first_name: result.first_name,
       role_id: result.role_id,
       role: result?.Role?.name,
+      device_id: result?.device_id,
+
       id: result.id,
     });
     return res.status(200).send({ customer: result, jwt });

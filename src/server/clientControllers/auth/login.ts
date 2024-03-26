@@ -93,6 +93,7 @@ export async function loginCustomer(req: any, res: any) {
       role_id: customer.role_id,
       first_name: customer.first_name,
       role: customer?.Role?.name,
+      device_id: customer.device_id,
 
       id: customer.id,
     });

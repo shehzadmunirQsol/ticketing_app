@@ -132,12 +132,7 @@ export async function getProjectAll(req: any, res: any) {
       options.where.OR.push({
         name: { contains: searchQuery, mode: 'insensitive' },
       });
-      options.where.OR.push({
-        description: {
-          contains: searchQuery,
-          mode: 'insensitive',
-        },
-      });
+
       // options.where.OR.push({
       //   price: { contains: input.searchQuery, mode: 'insensitive' },
       // });
