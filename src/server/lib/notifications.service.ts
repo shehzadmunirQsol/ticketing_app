@@ -11,7 +11,7 @@ import {
   getDocs,
   updateDoc,
 } from 'firebase/firestore';
-import { getMessaging } from 'firebase/messaging';
+import { Messaging, getMessaging } from 'firebase/messaging';
 import { v4 as uuidv4 } from 'uuid';
 import { app, db } from '~/utils/firebase';
 
@@ -198,7 +198,8 @@ export async function notificationHandler(params: any) {
 
   // make sure document_id is valid, string and wallet_address.
   console.log({ docData, params });
-  const pushMessage = getMessaging(app);
+  // const pushMessage: Messaging = getMessaging(app).sendToDevice();
+  // pushMessage.app().sendToDevice();
   // pushMessage.sendToDevice({
   //   PushMessage: {
   //     data: {
