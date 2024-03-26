@@ -1,4 +1,4 @@
-import { projectGetAllSchema, projectGetSchema } from '~/schema/project';
+import { projectGetSchema } from '~/schema/project';
 import { prisma } from '~/server/prisma';
 import { getUserData, stringToBoolean } from '~/utils/helper';
 
@@ -146,13 +146,9 @@ export async function getProjectAll(req: any, res: any) {
       };
     }
     if (searchQuery) {
-      options.where.OR = [];
-      options.where.OR.push({
-        name: { contains: searchQuery, mode: 'insensitive' },
-      });
       if (userData?.role == 'seller_trucker') {
-        options.where.AND = [];
-        options.where.AND.push({
+        options.where.OR.AND = [];
+        options.where.OR.AND.push({
           ProjectTruckers: {
             some: {
               AND: [
@@ -166,40 +162,41 @@ export async function getProjectAll(req: any, res: any) {
             },
           },
         });
-        options.where.AND.push({
+        options.where.OR.AND.push({
           created_by: userData?.id,
         });
+        options.where.OR.AND.push({
+          name: { contains: searchQuery, mode: 'insensitive' },
+        });
+      } else {
+        options.where.OR = [];
+        options.where.OR.push({
+          name: { contains: searchQuery, mode: 'insensitive' },
+        });
       }
-
-      // options.where.OR.push({
-      //   price: { contains: input.searchQuery, mode: 'insensitive' },
-      // });
     }
 
-    if (startDate) {
-      const start_date = new Date(startDate);
-      start_date.setDate(start_date.getDate());
-
-      options.where.AND = [];
-      options.where.AND.push({ created_at: { gte: start_date } });
+    if (startDate && !endDate) {
+      const start_Date = new Date(startDate)
+        ?.toISOString()
+        .split('T')[0] as string;
+      options.where.created_at = { gte: new Date(start_Date) };
     }
-    if (endDate) {
-      const endDateFormat = new Date(endDate);
-      endDateFormat.setDate(endDateFormat.getDate() + 1);
-
-      options.where.AND = options?.AND ?? [];
-      options.where.AND.push({ created_at: { lte: endDateFormat } });
+    if (endDate && !startDate) {
+      const end_Date = new Date(endDate)?.toISOString().split('T')[0] as string;
+      options.where.created_at = { lte: new Date(end_Date) };
     }
-    // if (is_archive) {
-    //   options.where = {
-    //     ...options.where,
-    //     ProjectStatus: {
-    //       some: {
-    //         AND: [{ created_by: userData?.id }, { is_archive }],
-    //       },
-    //     },
-    //   };
-    // }
+    if (endDate && startDate) {
+      const start_Date = new Date(startDate)
+        ?.toISOString()
+        .split('T')[0] as string;
+      const end_Date = new Date(endDate)?.toISOString().split('T')[0] as string;
+      options.where.created_at = {
+        gte: new Date(start_Date),
+        lte: new Date(end_Date),
+      };
+    }
+
     const totalProjectsPromise = prisma.projects.count({
       where: options?.where,
     });
