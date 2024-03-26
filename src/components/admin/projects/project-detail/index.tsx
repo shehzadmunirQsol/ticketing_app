@@ -5,6 +5,7 @@ import { LoadingDialog } from '~/components/common/modal/loadingModal';
 import CustomersDataTable from '~/components/common/table/customers';
 
 import ProjectsDataTable from '~/components/common/table/projects';
+import ProjectsTicketsDataTable from '~/components/common/table/projectsTickets';
 import ProjectsTruckersDataTable from '~/components/common/table/projectsTruckers';
 import { Badge } from '~/components/ui/Badge';
 import { Button } from '~/components/ui/button';
@@ -90,7 +91,7 @@ const ProjectTabs = (props: any) => {
         </TabsList>
         <Separator className="mt-1" />
         <TabsContent value="active">
-          <ProjectsDataTable type={'active'} />
+          <ProjectsTicketsDataTable  />
         </TabsContent>
         <TabsContent value="closed">
           <ProjectsTruckersDataTable id={props?.id} />

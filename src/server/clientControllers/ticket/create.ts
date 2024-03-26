@@ -4,6 +4,11 @@ import { createWeb3Ticket } from '../web3-controller/createWeb3Ticket';
 import { ticketCreateSchema } from '~/schema/ticket';
 import { getUserData } from '~/utils/helper';
 import { verifyJWT } from '~/utils/jwt';
+import {
+  notificationHandler,
+  notificationsMessages,
+  notificationsTypes,
+} from '~/server/lib/notifications.service';
 
 /**
  * This function handles the creation of a ticket.
@@ -56,6 +61,13 @@ export async function createTicket(req: any, res: any) {
           some: { AND: [{ trucker_id: userData?.id }, { status: 'accepted' }] },
         },
       },
+      include: {
+        User: {
+          select: {
+            id: true,
+          },
+        },
+      },
     });
 
     // If project is not found, send back an error response
@@ -70,7 +82,7 @@ export async function createTicket(req: any, res: any) {
 
     // Create a smart account using the decoded private address
     const smartAccount = await createSmartAccount({
-      private_address: decodePrivateAddress,
+      private_address: decodePrivateAddress?.address,
     });
 
     // Create a ticket on the blockchain using the smart account
@@ -85,6 +97,32 @@ export async function createTicket(req: any, res: any) {
       },
     });
 
+    // send Notification to  trucker
+    const truckerNotification = notificationHandler({
+      user_id: userData?.id.toString(),
+      document_id: userData?.id.toString(),
+      type: notificationsTypes.SUCCESS,
+      message: notificationsMessages?.ticketCreated({
+        project: findProject,
+        ...result,
+        userData,
+      }),
+      route: `/product-info/${txHash?.transactionHash}`,
+    });
+    // send notification to seller
+    const sellerNotification = notificationHandler({
+      user_id: findProject?.User?.id.toString(),
+      document_id: findProject?.User?.id.toString(),
+      type: notificationsTypes.SUCCESS,
+      message: notificationsMessages?.projectTicketCreated({
+        project: findProject,
+        ...result,
+        userData,
+      }),
+      route: `/product-info/${txHash?.transactionHash}`,
+    });
+    const notifications = [truckerNotification, sellerNotification];
+    const dataResult = await Promise.all(notifications);
     // Send back a success response with the created ticket
     return res.status(200).send({ ticket: result });
   } catch (err: any) {
