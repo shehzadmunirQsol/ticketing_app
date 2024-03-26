@@ -344,13 +344,8 @@ export async function getUserData(req: any, res: any) {
 }
 
 export async function getHtmlContent(data: any) {
-  if (data?.data === 'No data') {
-    return;
-  }
-
-  console.log('date', data?.data?.updated_at);
-  console.log('data real', data?.data);
-  const date = new Date(data?.data?.updated_at);
+  console.log('date', data);
+  const date = new Date(data?.updated_at);
 
   const formattedDate = date.toLocaleDateString('en-US', {
     month: 'short',
@@ -359,7 +354,7 @@ export async function getHtmlContent(data: any) {
   });
   let pickAddressString = '';
   let dropAddressString = '';
-  const projectAddresses = data?.data?.ProjectAddress;
+  const projectAddresses = data?.ProjectAddress;
 
   // Iterate through the project addresses
   for (const address of projectAddresses) {
@@ -375,23 +370,23 @@ export async function getHtmlContent(data: any) {
   console.log('Pick Address:', pickAddressString);
   console.log('Drop Address:', dropAddressString);
 
-  const clientData = data?.data?.Client;
-  const userData = data?.data?.User;
+  const clientData = data?.Client;
+  const userData = data?.User;
   // Extract usernames or fallback to first names if usernames are not available
   const clientUsername = clientData.username || clientData.first_name || 'N/A';
   const userUsername = userData.username || userData.first_name || 'N/A';
   const FinalizedData = {
     date: formattedDate,
-    invoiceid: data.data?.id,
-    from: data.data?.Client.email,
-    to: data.data?.User.email,
+    invoiceid: data?.id,
+    from: data?.Client.email,
+    to: data?.User.email,
     fromusername: clientUsername,
     tousername: userUsername,
     fromAddress: pickAddressString,
     toAddress: dropAddressString,
   };
 
-  const projectData = data?.data;
+  const projectData = data;
   function generateTicketRows() {
     const tickets = projectData.ProjectTickets || [];
     let rows = '';
