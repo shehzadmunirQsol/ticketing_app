@@ -7,6 +7,7 @@ import {
 } from '~/schema/project';
 
 import { prisma } from '~/server/prisma';
+import { getHtmlContent } from '~/utils/helper';
 
 export const projectRouter = router({
   getInvoiceTickets: publicProcedure
@@ -54,17 +55,13 @@ export const projectRouter = router({
         });
 
         const [projectDetail] = await Promise.all([projectPromise]);
-
-        if (!projectDetail) {
-          // Handle the case where projectDetail is null
-          return {
-            message: 'Detail not found',
-            data: 'No data', // or any default data you want to return
-          };
+        let invoicedata;
+        if (projectDetail !== null) {
+          invoicedata = await getHtmlContent(projectDetail);
         }
         return {
           message: 'Detail found',
-          data: projectDetail,
+          data: invoicedata,
         };
       } catch (error: any) {
         throw new TRPCError({
