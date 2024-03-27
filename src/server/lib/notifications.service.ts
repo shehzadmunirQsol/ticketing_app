@@ -15,55 +15,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { app, db } from '~/utils/firebase';
 import admin from 'firebase-admin';
 
-// export const notificationMessageTypes = {
-//   OFFER_RECEIVED: "offer-received",
-//   OFFER_ACCEPTED: "offer-accepted",
-//   OFFER_REJECTED: "offer-rejected",
-//   OFFER_EXPIRING: "offer-expiring",
-//   OFFER_EXPIRED: "offer-expired",
-//   OFFER_NFT_PURCHASED: "offer-nft-purchased",
-//   OFFER_NFT_SOLD: "offer-nft-sold",
-//   NFT_PURCHASED: "nft-purchased",
-//   NFT_SOLD: "nft-sold",
-//   NFT_REPORTED: "nft-reported",
-//   NFT_REPORTED_APPROVED: "nft-reported-approved",
-//   NFT_REPORTED_REJECTED: "nft-reported-rejected",
-//   NFT_LIKED: "nft-liked",
-//   NFT_BLOCKED: "nft-blocked",
-// };
-
-// export async function getOrCreateNotifications(wallet_address = "") {
-//   const response = {
-//     unsub: null,
-//     notifications: null,
-//   };
-
-//   if (!wallet_address) return response;
-
-//   try {
-//     response.unsub = onSnapshot(
-//       doc(db, "notifications", wallet_address),
-//       async (document) => {
-//         if (document.data()) {
-//           console.log(document.data());
-//           response.notifications = document.data();
-//         } else {
-//           await setDoc(doc(db, "notifications", wallet_address), {
-//             // notifications: arrayUnion(), ## also a correct way.
-//             notifications: [],
-//           });
-//         }
-//       }
-//     );
-
-//     console.log("I Ran");
-//     return response;
-//   } catch (err) {
-//     console.log(err);
-//     return response;
-//   }
-// }
-
 export const notificationQuery = (user_id: string, limitLength = 5) => {
   return query(
     collection(db, 'notifications', user_id, 'notifications'),
