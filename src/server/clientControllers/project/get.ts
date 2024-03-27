@@ -46,6 +46,7 @@ export async function getProjectAll(req: any, res: any) {
       orderBy,
       is_archive,
       searchQuery,
+      completed,
       ...data
     }: any = { ...validate.data };
 
@@ -147,8 +148,9 @@ export async function getProjectAll(req: any, res: any) {
     }
     if (searchQuery) {
       if (userData?.role == 'seller_trucker') {
-        options.where.OR.AND = [];
-        options.where.OR.AND.push({
+        options.where.AND = [];
+        options.where.AND.OR = [];
+        options.where.AND.OR.push({
           ProjectTruckers: {
             some: {
               AND: [
@@ -162,10 +164,10 @@ export async function getProjectAll(req: any, res: any) {
             },
           },
         });
-        options.where.OR.AND.push({
+        options.where.AND.OR.push({
           created_by: userData?.id,
         });
-        options.where.OR.AND.push({
+        options.where.AND.push({
           name: { contains: searchQuery, mode: 'insensitive' },
         });
       } else {
@@ -177,26 +179,30 @@ export async function getProjectAll(req: any, res: any) {
     }
 
     if (startDate && !endDate) {
-      const start_Date = new Date(startDate)
+      const start_date = new Date(startDate)
         ?.toISOString()
         .split('T')[0] as string;
-      options.where.created_at = { gte: new Date(start_Date) };
+      options.where.start_date = { gte: new Date(start_date) };
     }
     if (endDate && !startDate) {
       const end_Date = new Date(endDate)?.toISOString().split('T')[0] as string;
-      options.where.created_at = { lte: new Date(end_Date) };
+      options.where.delivery_date = { lte: new Date(end_Date) };
     }
     if (endDate && startDate) {
-      const start_Date = new Date(startDate)
+      const start_date = new Date(startDate)
         ?.toISOString()
         .split('T')[0] as string;
       const end_Date = new Date(endDate)?.toISOString().split('T')[0] as string;
-      options.where.created_at = {
-        gte: new Date(start_Date),
+      options.where.start_date = {
+        gte: new Date(start_date),
+      };
+      options.where.delivery_date = {
         lte: new Date(end_Date),
       };
     }
-
+    if (completed) {
+      options.where.is_invoiced = stringToBoolean(completed);
+    }
     const totalProjectsPromise = prisma.projects.count({
       where: options?.where,
     });

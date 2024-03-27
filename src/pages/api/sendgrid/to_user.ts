@@ -7,11 +7,8 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  console.log(req.body, 'req.body');
-
   try {
-  //  console.log("sent");
-    console.log("REQ.BODY", req.body);
+    //  console.log("sent");
     await sgMail.send({
       to: req.body.email, // Your email where you'll receive emails
       from: process.env.NEXT_PUBLIC_ADMIN_EMAIL ?? process.env.ADMIN_EMAIL,

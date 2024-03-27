@@ -11,9 +11,9 @@ import {
   getDocs,
   updateDoc,
 } from 'firebase/firestore';
-import { Messaging, getMessaging } from 'firebase/messaging';
 import { v4 as uuidv4 } from 'uuid';
 import { app, db } from '~/utils/firebase';
+import admin from 'firebase-admin';
 
 // export const notificationMessageTypes = {
 //   OFFER_RECEIVED: "offer-received",
@@ -187,36 +187,29 @@ export async function notificationHandler(params: any) {
     user_id: user_id,
     is_seen: false,
   };
-  const PushMessage = {
-    data: {
-      score: '850',
-      time: '2:45',
-    },
-    token: '',
-  };
+
   // const messaging = app.options.messagingSenderId.;
 
   // make sure document_id is valid, string and wallet_address.
   console.log({ docData, params });
-  const pushMessage: any = getMessaging(app);
-  pushMessage.app().sendToDevice({
-    data: {
-      score: '850',
-      time: '2:45',
-    },
-    token:
-      'fEMMUNeQSuy6V0yIzwtNmF:APA91bHN6Upgyk3UbervvELgNEQ2Y-2PzJgO1wedG-wTCLPSoBq1dPP5kTc9CGfEB5B0nBWINOJh1NvNIKWjwORd4CSk0kOTQ4wlvf_j1EQ4G6iiyZKm7mWIWOPFvaFaYaX2Rhw65nv1',
-  });
-  // pushMessage.sendToDevice({
-  //   PushMessage: {
-  //     data: {
-  //       score: '850',
-  //       time: '2:45',
-  //     },
-  //     token: 'registrationToken',
-  //   },
-  // });
 
+  const registrationToken =
+    'fEMMUNeQSuy6V0yIzwtNmF:APA91bHN6Upgyk3UbervvELgNEQ2Y-2PzJgO1wedG-wTCLPSoBq1dPP5kTc9CGfEB5B0nBWINOJh1NvNIKWjwORd4CSk0kOTQ4wlvf_j1EQ4G6iiyZKm7mWIWOPFvaFaYaX2Rhw65nv1';
+
+  const PushMessage = {
+    data: {
+      title: '850',
+      body: '2:45',
+    },
+    token: registrationToken,
+  };
+  const messgaData = await admin
+    .messaging()
+    .sendToDevice(registrationToken, PushMessage);
+  // const messgaData = await admin
+  //   .messaging()
+  //   .subscribeToTopic(registrationToken, 'PushMessage');
+  console.log({ messgaData: messgaData?.results });
   const ownersNotification = setDoc(
     doc(db, 'notifications', document_id, 'notifications', id),
     docData,

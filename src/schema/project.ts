@@ -23,8 +23,25 @@ export const projectGetSchema = z.object({
 
   first: z.string().optional(),
   rows: z.string().optional(),
-
+  material_type: z
+    .enum(['dump', 'sand'], {
+      required_error: 'please select material type',
+    })
+    .optional()
+    .nullable(),
+  truck_cap: z
+    .enum(['half', 'full'], {
+      required_error: 'please select truck capacity',
+    })
+    .optional()
+    .nullable(),
   searchQuery: z.string().optional().nullable(),
+  completed: z
+    .enum(['true', 'false'], {
+      required_error: 'please select truck capacity',
+    })
+    .optional()
+    .nullable(),
   startDate: z.string().optional().nullable(),
   endDate: z.string().optional().nullable(),
 });
