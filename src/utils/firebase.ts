@@ -3,7 +3,7 @@ import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { getMessaging } from 'firebase/messaging';
 import admin from 'firebase-admin';
-const serviceAccount = require('~/utils/ticketing-25ba6-firebase.json');
+import { serviceAccount } from './ticketing-25ba6-firebase';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -26,6 +26,6 @@ if (!admin.apps.length) {
     //   clientEmail: process.env?.FIREBASE_CLIENT_EMAIL,
     //   privateKey: process.env?.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
     // }),
-    credential: admin.credential.cert(serviceAccount),
+    credential: admin.credential.cert(JSON.stringify(serviceAccount)),
   });
 }
