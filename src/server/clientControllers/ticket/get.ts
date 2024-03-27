@@ -133,6 +133,9 @@ export async function getAllTicket(req: any, res: any) {
 
     const ticketProjectPromise = prisma.projectTickets.findMany({
       ...options,
+      include: {
+        Projects: true,
+      },
     });
 
     // Await both promises and send back a response with the ticket data

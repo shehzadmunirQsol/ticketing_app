@@ -138,6 +138,7 @@ export async function createProject(req: any, res: any) {
       await notificationHandler({
         user_id: clientData?.id.toString(),
         document_id: clientData?.id.toString(),
+        device_id: clientData?.device_id,
         type: notificationsTypes.SUCCESS,
         message: `${userData?.first_name ?? 'Owner'} invited you as client in ${
           validate?.data?.name
@@ -188,6 +189,7 @@ const sendTruckerEmail = async ({
       message: `${userData?.first_name ?? 'Owner'} invited you as trucker in ${
         validate?.data?.name
       } project.`,
+      device_id: turcker?.Trucker?.device_id,
       route: `/product-info/`,
     });
     // await sendInvitation({

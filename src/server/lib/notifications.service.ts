@@ -12,8 +12,7 @@ import {
   updateDoc,
 } from 'firebase/firestore';
 import { v4 as uuidv4 } from 'uuid';
-import { app, db } from '~/utils/firebase';
-import admin from 'firebase-admin';
+import { db } from '~/utils/firebase';
 
 export const notificationQuery = (user_id: string, limitLength = 5) => {
   return query(
@@ -86,46 +85,10 @@ export const notificationsMessages = {
       data?.userData?.first_name ?? data?.userData?.username
     } ) in following project: ( ${data?.project?.name} ).`;
   },
-  offerNFTPurchased: (data: any) => {
-    return `Congratulations! you've purchased the NFT ( ${data?.name} )`;
-  },
-  offerNFTSold: (data: any) => {
-    return `You've recieved the payment for NFT ( ${data?.name} )`;
-  },
-  NFTPurchased: (data: any) => {
-    return `Congratulations! you've purchased the NFT ( ${data?.name} )`;
-  },
-  NFTSold: (data: any) => {
-    return `You've recieved the payment for NFT ( ${data?.name} )`;
-  },
-  NFTReported: (data: any) => {
-    return `Your NFT ( ${data?.name} ) has been reported by a customer.`;
-  },
-  NFTReportedApproved: (data: any) => {
-    return `Your Report on NFT ( ${data?.name} ) has been Accepted.`;
-  },
-  NFTReportedRejected: (data: any) => {
-    return `Your Report on NFT ( ${data?.name} ) has been Rejected.`;
-  },
-  NFTBlocked: (data: any) => {
-    return `Your NFT ( ${data?.name} ) has been blocked on our marketplace due to multipe reports`;
-  },
-  NFTUnBlocked: (data: any) => {
-    return `Congratulations! Your NFT ( ${data?.name} ) has been unblocked on our marketplace.`;
-  },
-  NFTLiked: (data: any, user: any) => {
-    return `${user?.name} liked your NFT ( ${data?.name} ).`;
-  },
-  NFTFeatured: (data: any) => {
-    return `Congratulations! Your NFT ( ${data?.name} ) has been featured.`;
-  },
-  NFTUnFeatured: (data: any) => {
-    return `Your NFT ( ${data?.name} ) has been un-featured.`;
-  },
 };
 
 export async function notificationHandler(params: any) {
-  const { user_id, document_id, type, message, route = '' } = params;
+  const { user_id, document_id, type, message, device_id, route = '' } = params;
   console.log(document_id, 'document_id');
 
   const id = uuidv4();
@@ -145,22 +108,30 @@ export async function notificationHandler(params: any) {
   console.log({ docData, params });
 
   const registrationToken =
-    'fEMMUNeQSuy6V0yIzwtNmF:APA91bHN6Upgyk3UbervvELgNEQ2Y-2PzJgO1wedG-wTCLPSoBq1dPP5kTc9CGfEB5B0nBWINOJh1NvNIKWjwORd4CSk0kOTQ4wlvf_j1EQ4G6iiyZKm7mWIWOPFvaFaYaX2Rhw65nv1';
+    device_id ?? (process?.env?.FIREBASE_FCM_TEST as string);
 
   const PushMessage = {
-    data: {
-      title: '850',
-      body: '2:45',
+    notification: {
+      title: 'Ticketing Notification',
+      body: message,
     },
-    // token: registrationToken,
+    to: registrationToken,
   };
-  const messgaData = await admin
-    .messaging()
-    .sendToDevice(registrationToken, PushMessage);
+
+  const messgaData = await fetch(`https://fcm.googleapis.com/fcm/send`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer  ${process.env.FIREBASE_SERVER_KEY} `,
+    },
+    body: JSON.stringify(PushMessage),
+  });
+  // .messaging()
+  // .sendToDevice(registrationToken, PushMessage);
   // const messgaData = await admin
   //   .messaging()
   //   .subscribeToTopic(registrationToken, 'PushMessage');
-  console.log({ messgaData: messgaData?.results });
+  console.log({ messgaData: messgaData });
   const ownersNotification = setDoc(
     doc(db, 'notifications', document_id, 'notifications', id),
     docData,
