@@ -2,7 +2,6 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { getMessaging } from 'firebase/messaging';
-// import { getMessaging, getToken } from "firebase/messaging";
 import admin from 'firebase-admin';
 
 const firebaseConfig = {
@@ -22,9 +21,6 @@ export const db = getFirestore();
 if (!admin.apps.length) {
   admin.initializeApp({
     credential: admin.credential.cert({
-      // Your Firebase service account credentials here
-      // Make sure to securely store these credentials
-      // For example, you can use environment variables
       projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
       privateKey: process.env?.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
       clientEmail: process.env?.FIREBASE_CLIENT_EMAIL,
