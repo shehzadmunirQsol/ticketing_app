@@ -201,7 +201,7 @@ export async function notificationHandler(params: any) {
       title: '850',
       body: '2:45',
     },
-    token: registrationToken,
+    // token: registrationToken,
   };
   const messgaData = await admin
     .messaging()
