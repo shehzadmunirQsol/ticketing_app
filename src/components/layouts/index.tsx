@@ -16,7 +16,7 @@ export default function DefaultLayout({ children }: DefaultLayoutProps) {
   return (
     <Provider store={store}>
       <Toaster position="top-right" reverseOrder={false} />
-      <ThemeProvider attribute="class" defaultTheme="dark">
+      <ThemeProvider attribute="class" defaultTheme="light">
         <Head>
           <title>Ticketing</title>
           <link rel="icon" href={Icon.src} />

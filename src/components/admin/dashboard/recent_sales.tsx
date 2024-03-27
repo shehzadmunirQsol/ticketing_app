@@ -20,7 +20,7 @@ export function RecentSales() {
           return (
             <div
               key={index}
-              className="flex flex-row gap-2 jus w-full items-center text-white"
+              className="flex flex-row gap-2 jus w-full items-center text-muted-foreground"
             >
               <Avatar className="h-9 w-9">
                 <AvatarImage src="/avatars/05.png" alt="Avatar" />

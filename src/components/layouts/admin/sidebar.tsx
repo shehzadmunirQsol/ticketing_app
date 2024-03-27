@@ -12,7 +12,7 @@ export default function Sidebar() {
     <div
       className={`${
         isSidebarOpen ? 'w-64' : 'w-20 overflow-hidden'
-      } transition-all duration-150 p-4 space-y-2 text-grey bg-background h-full hidden xl:block overflow-y-scroll scroll-hide`}
+      } transition-all duration-150 p-4 space-y-2 text-grey bg-background h-full hidden xl:block overflow-y-scroll scroll-hide border-r border-border`}
     >
       <Content />
     </div>
