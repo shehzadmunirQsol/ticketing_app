@@ -88,8 +88,15 @@ export const notificationsMessages = {
 };
 
 export async function notificationHandler(params: any) {
-  const { user_id, document_id, type, message, device_id, route = '' } = params;
-  console.log(document_id, 'document_id');
+  const {
+    user_id,
+    document_id,
+    type,
+    message,
+    device_id,
+    title,
+    route = '',
+  } = params;
 
   const id = uuidv4();
   const docData = {
@@ -102,23 +109,18 @@ export async function notificationHandler(params: any) {
     is_seen: false,
   };
 
-  // const messaging = app.options.messagingSenderId.;
-
-  // make sure document_id is valid, string and wallet_address.
-  console.log({ docData, params });
-
   const registrationToken =
     device_id ?? (process?.env?.FIREBASE_FCM_TEST as string);
 
   const PushMessage = {
     notification: {
-      title: 'Ticketing Notification',
+      title: title,
       body: message,
     },
     to: registrationToken,
   };
 
-  const messgaData = await fetch(`https://fcm.googleapis.com/fcm/send`, {
+  await fetch(`https://fcm.googleapis.com/fcm/send`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -126,12 +128,7 @@ export async function notificationHandler(params: any) {
     },
     body: JSON.stringify(PushMessage),
   });
-  // .messaging()
-  // .sendToDevice(registrationToken, PushMessage);
-  // const messgaData = await admin
-  //   .messaging()
-  //   .subscribeToTopic(registrationToken, 'PushMessage');
-  console.log({ messgaData: messgaData });
+
   const ownersNotification = setDoc(
     doc(db, 'notifications', document_id, 'notifications', id),
     docData,

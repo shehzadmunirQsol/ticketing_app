@@ -16,6 +16,7 @@ export const projectGetAllSchema = z.object({
   startDate: z.string().optional().nullable(),
   endDate: z.string().optional().nullable(),
 });
+
 export const projectGetSchema = z.object({
   orderBy: z.string().default('desc'),
   // is_detail: z.string().optional(),
@@ -75,6 +76,7 @@ export const projectGetTicketDetailSchema = z.object({
     invalid_type_error: 'id is required',
   }),
 });
+
 export const projectCreateSchema = z.object({
   name: z.string({
     required_error: 'name required',
@@ -246,64 +248,76 @@ export const updateProjectTrcuker = z.object({
       message: 'Please select atleast one trucker',
     }),
 });
-export const updateProjectClient = z.object({
+export const updateProjectClientSchema = z.object({
   project_id: z.number({ required_error: 'Project ID is Missing' }),
-  client: z.object({
-    first_name: z.string({
-      required_error: 'client name required',
-      invalid_type_error: 'client name required',
+  delivery_date: z
+    .string({
+      invalid_type_error: 'Please select a delivery date',
+      required_error: 'Please select a delivery date',
+    })
+    .min(1, {
+      message: 'Please select a delivery date',
     }),
-    email: z
-      .string({
-        required_error: 'client email required',
-        invalid_type_error: 'client email required',
-      })
-      .email({
-        message: 'client email required',
-      })
-      .refine((val) => (val.includes('*') ? false : true), {
-        message: 'Please use a valid email ',
-      })
-      .refine((val) => (val.includes('-') ? false : true), {
-        message: 'Please use a valid email ',
-      })
-      .refine((val) => validateEmail(val), {
-        message: 'Invalid email format.',
+  client: z
+    .object({
+      first_name: z.string({
+        required_error: 'client name required',
+        invalid_type_error: 'client name required',
       }),
-    phone_number: z
-      .string()
-      .regex(new RegExp(/^[0-9]+$/), 'Please enter a valid phone number')
-      .min(1, {
-        message: 'Please enter your number',
+      email: z
+        .string({
+          required_error: 'client email required',
+          invalid_type_error: 'client email required',
+        })
+        .email({
+          message: 'client email required',
+        })
+        .refine((val) => (val.includes('*') ? false : true), {
+          message: 'Please use a valid email ',
+        })
+        .refine((val) => (val.includes('-') ? false : true), {
+          message: 'Please use a valid email ',
+        })
+        .refine((val) => validateEmail(val), {
+          message: 'Invalid email format.',
+        }),
+      phone_number: z
+        .string()
+        .regex(new RegExp(/^[0-9]+$/), 'Please enter a valid phone number')
+        .min(1, {
+          message: 'Please enter your number',
+        }),
+    })
+    .optional(),
+  address: z
+    .object({
+      address_type: z.enum(['drop'], {
+        required_error: ' please select address type',
       }),
-  }),
-  address: z.object({
-    address_type: z.enum(['drop'], {
-      required_error: ' please select address type',
-    }),
-    longitude: z.string({
-      required_error: 'Address longitude required',
-      invalid_type_error: 'Address longitude required',
-    }),
-    latitude: z.string({
-      required_error: 'Address latitude required',
-      invalid_type_error: 'Address latitude required',
-    }),
-    street_address_1: z
-      .string({
-        required_error: 'Street Address 1 is required',
-        invalid_type_error: 'Street Address 1 is required',
-      })
-      .optional()
-      .nullable(),
-    street_address_2: z
-      .string({
-        required_error: 'Street Address 2 is required',
-        invalid_type_error: 'Street Address 2 is required',
-      })
-      .optional()
-      .nullable(),
-  }),
+      longitude: z.string({
+        required_error: 'Address longitude required',
+        invalid_type_error: 'Address longitude required',
+      }),
+      latitude: z.string({
+        required_error: 'Address latitude required',
+        invalid_type_error: 'Address latitude required',
+      }),
+      street_address_1: z
+        .string({
+          required_error: 'Street Address 1 is required',
+          invalid_type_error: 'Street Address 1 is required',
+        })
+        .optional()
+        .nullable(),
+      street_address_2: z
+        .string({
+          required_error: 'Street Address 2 is required',
+          invalid_type_error: 'Street Address 2 is required',
+        })
+        .optional()
+        .nullable(),
+    })
+    .optional(),
 });
 // register schema for api
 

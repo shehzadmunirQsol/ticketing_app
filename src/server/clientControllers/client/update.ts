@@ -1,12 +1,8 @@
-import { projectCreateSchema, updateProjectTrcuker } from '~/schema/project';
+import { updateProjectClientSchema } from '~/schema/project';
+import { notificationsTypes } from '~/server/lib/notifications.service';
 import { prisma } from '~/server/prisma';
-import { sendInvitation } from '~/utils/clientMailer';
 import { getUserData } from '~/utils/helper';
-
-import { verifyJWT } from '~/utils/jwt';
-import { clientEmailLayout } from '~/utils/mailer';
-import { createSmartAccount } from '../web3-controller/createAccount';
-import { createWeb3Ticket } from '../web3-controller/createWeb3Ticket';
+import { sendNotifications } from '~/utils/utility';
 
 /**
  * This function retrieves all tickets based on the user's role and provided query parameters.
@@ -15,14 +11,17 @@ import { createWeb3Ticket } from '../web3-controller/createWeb3Ticket';
  * @param res - The response object to send back to the client.
  * @returns A response containing ticket data based on the user's role and query parameters.
  */
+
 export async function updateProjectClient(req: any, res: any) {
   try {
+    // check if payload is present
     if (!req.body)
       return res.status(400).send({ message: 'payload not found' });
 
     const input = req.body;
-    const validate = updateProjectTrcuker.safeParse(input);
 
+    const validate = updateProjectClientSchema.safeParse(input);
+    // validation if data present is accurate
     if (!validate.success)
       return res.status(400).send({
         message:
@@ -30,135 +29,81 @@ export async function updateProjectClient(req: any, res: any) {
             ? validate?.error?.errors[0]?.message
             : 'Bad Request',
       });
-
+    // get user dat from Authorization token
     const userData: any = await getUserData(req, res);
 
     const unAuthRole = ['trucker', 'client'];
-    const { truckers, ...data } = validate.data;
-    const uniqueTrucker = new Set(truckers.map((v: any) => v.trucker_id));
-    // check access
+    const { project_id, address, client, ...data } = validate.data;
+    // check access of user
     if (!userData || unAuthRole.includes(userData?.role)) {
       return res.status(400).send({
         message: 'You are not authorized to access!',
       });
     }
-    // check duplicate truckers
-    if (uniqueTrucker.size < truckers.length) {
+
+    //   find project tickets
+    const projectInfo = await prisma.projects.findFirst({
+      where: {
+        id: project_id,
+        is_invoiced: false,
+        is_deleted: false,
+        created_by: userData?.id,
+      },
+      include: {
+        ProjectTickets: true,
+      },
+    });
+
+    if (!projectInfo)
       return res.status(400).send({
-        message: `Duplicate Trucker Found.`,
+        message: `You're not authorize to access this.`,
+      });
+    if (projectInfo?.ProjectTickets?.length > 0 && client)
+      return res.status(400).send({
+        message: `You Cant update client information`,
+      });
+    let clientData;
+    if (client) {
+      clientData = await prisma.user.upsert({
+        where: {
+          email: client.email,
+        },
+        update: {},
+        create: {
+          ...client,
+          role_id: 5,
+        },
       });
     }
-    // check if truckers have trucker role
-    const truckerArray = truckers.map(function (obj) {
-      return obj.trucker_id;
-    });
-    const findTruckerRole = await prisma.user.findMany({
-      where: {
-        id: { in: truckerArray },
-        Role: {
-          name: {
-            not: {
-              in: ['trucker', 'seller_trucker'],
-            },
-          },
-        },
-      },
-    });
-    if (findTruckerRole.length > 0)
-      return res.status(400).send({
-        message: `User Role Conflict.`,
-      });
-    //   find project tickets
-    const projectTicket = await prisma.projectTickets.findMany({
-      where: {
-        project_id: data.project_id,
-        trucker_id: {
-          notIn: truckerArray,
-        },
-      },
-      select: {
-        project_id: true,
-        trucker_id: true,
-        Trucker: {
-          select: {
-            first_name: true,
-            username: true,
-          },
-        },
-      },
-    });
-    const ticketTruckerArray = projectTicket.map(function (obj) {
-      return obj.trucker_id;
-    });
-    if (projectTicket?.length > 0)
-      return res.status(400).send({
-        message: `Cant Delete Truckers Tickets Already Created.`,
-        data: ticketTruckerArray,
-        truckerArray,
-      });
-
     // find if  trucker is already assigned to project or not
-    const truckerProject = await prisma.projectTruckers.findMany({
+    const clientInfo = await prisma.projects.update({
       where: {
-        project_id: data?.project_id,
+        id: project_id,
+      },
+      data: {
+        client_id: clientData?.id ?? projectInfo?.client_id,
+        ...data,
       },
     });
+    if (clientData) {
+      await sendNotifications({
+        userData,
+        name: projectInfo?.name,
+        email: clientData.email,
+        type: 'project-invitation',
+        title: 'Project Invitation',
+        role: 'client',
+        notification: {
+          id: clientData?.id.toString(),
+          device_id: clientData?.device_id,
+          type: notificationsTypes.SUCCESS,
+          route: `/product-info/`,
+        },
+      });
+    }
+    await Promise.all([clientInfo]);
 
-    // Concatenate both arrays
-    const truckerUpdatePromise = truckerProject.map(async (value) => {
-      if (truckerArray.includes(value?.trucker_id as number)) {
-        await prisma.projectTruckers.update({
-          where: { id: value.id },
-          data: {
-            is_deleted: false,
-          },
-        });
-      }
-    });
-    const truckerCreatePromise = truckerArray.map(async (value) => {
-      console.log('i am inside create function');
-      const findElement = truckerProject.find(
-        (item) => item?.trucker_id === value,
-      );
-      if (!findElement) {
-        console.log('i am inside creating trucker');
-
-        await prisma.projectTruckers.create({
-          data: {
-            project_id: data?.project_id,
-            trucker_id: value,
-          },
-        });
-      }
-    });
-    const truckerDeletePromise = truckerProject.map(async (value) => {
-      if (!truckerArray.includes(value?.trucker_id as number)) {
-        console.log(' i am inside delete function');
-
-        await prisma.projectTruckers.updateMany({
-          where: {
-            project_id: data.project_id,
-            trucker_id: { notIn: truckerArray },
-          },
-          data: {
-            is_deleted: true,
-          },
-        });
-      }
-    });
-
-    await Promise.all([
-      truckerUpdatePromise,
-      truckerCreatePromise,
-      truckerDeletePromise,
-    ]);
-    // project trucker Creation
-    // const createTrucker = await prisma.projectTruckers.createMany({
-    //   data: uniqueValuesArray,
-    //   skipDuplicates: true,
-    // });
-
-    return res.status(200).send({ truckerInput: truckerProject });
+    return res.status(200).send({ truckerInput: clientInfo });
   } catch (err: any) {
     console.log({ err });
     res.status(500).send({ message: err.message as string });

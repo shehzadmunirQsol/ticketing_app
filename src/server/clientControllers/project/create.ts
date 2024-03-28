@@ -8,6 +8,7 @@ import { sendInvitation } from '~/utils/clientMailer';
 import { getUserData } from '~/utils/helper';
 
 import { clientEmailLayout } from '~/utils/mailer';
+import { sendNotifications } from '~/utils/utility';
 
 export async function createProject(req: any, res: any) {
   try {
@@ -88,7 +89,16 @@ export async function createProject(req: any, res: any) {
         ...client,
         role_id: 5,
       },
+      include: {
+        Role: true,
+      },
     });
+    console.log({ clientData });
+    if (clientData?.Role?.name !== 'client') {
+      return res.status(400).send({
+        message: `This email is already assigned role ${clientData?.Role?.name}`,
+      });
+    }
     // Create a new User instance with the hashed password
     const result = await prisma.projects.create({
       data: {
@@ -117,45 +127,29 @@ export async function createProject(req: any, res: any) {
         },
       },
     });
-    console.log({ truckerRole: result?.ProjectTruckers });
     await sendTruckerEmail({
       truckers: result?.ProjectTruckers,
       userData,
       clientData,
       validate,
     });
-    const emaildata = {
-      type: 'project-invitation',
-      userData: userData?.first_name ?? 'Owner',
-      validate: validate?.data?.name,
-      usercontent: `<p style="color: #FFFFFF; font-size: 13px;">${
-        userData?.first_name ?? 'Owner'
-      } invited you as client in ${validate?.data?.name} project.</p>`,
-    };
-    const clientEmailHTML: string = clientEmailLayout(emaildata);
+
     if (clientData) {
       // send notification to seller
-      await notificationHandler({
-        user_id: clientData?.id.toString(),
-        document_id: clientData?.id.toString(),
-        device_id: clientData?.device_id,
-        type: notificationsTypes.SUCCESS,
-        message: `${userData?.first_name ?? 'Owner'} invited you as client in ${
-          validate?.data?.name
-        } project.`,
-        route: `/product-info/`,
+      await sendNotifications({
+        userData,
+        name: validate?.data?.name,
+        email: clientData.email,
+        type: 'project-invitation',
+        title: 'Project Invitation',
+        role: 'client',
+        notification: {
+          id: clientData?.id.toString(),
+          device_id: clientData?.device_id,
+          type: notificationsTypes.SUCCESS,
+          route: `/product-info/`,
+        },
       });
-
-      // await sendInvitation({
-      //   email: clientData?.email,
-      //   from: userData?.first_name ?? 'Owner',
-      //   subject: `Project Invitation - ${validate?.data?.name}`,
-      //   type: 'project-invitation',
-      //   // raw: `<p> ${userData?.first_name ?? 'Owner'} invited you as client in ${
-      //   //   validate?.data?.name
-      //   // } project. </p>`,
-      //   html: clientEmailHTML, // Pass HTML content
-      // });
     }
 
     return res.status(200).send({ project: result });
@@ -164,45 +158,21 @@ export async function createProject(req: any, res: any) {
     res.status(500).send({ message: err.message as string });
   }
 }
-const sendTruckerEmail = async ({
-  userData,
-  clientData,
-  validate,
-  truckers,
-}: any) => {
-  const emaildata = {
-    type: 'project-invitation',
-    userData: userData?.first_name ?? 'Owner',
-    validate: validate?.data?.name,
-    usercontent: `<p style="color: #FFFFFF; font-size: 13px;">${
-      userData?.first_name ?? 'Owner'
-    } invited you as trucker in ${validate?.data?.name} project.</p>`,
-  };
-  const clientEmailHTML: string = clientEmailLayout(emaildata);
-
+const sendTruckerEmail = async ({ userData, validate, truckers }: any) => {
   truckers?.map(async (turcker: any) => {
-    console.log({ turcker });
-    await notificationHandler({
-      user_id: turcker?.Trucker?.id.toString(),
-      document_id: turcker?.Trucker?.id.toString(),
-      type: notificationsTypes.SUCCESS,
-      message: `${userData?.first_name ?? 'Owner'} invited you as trucker in ${
-        validate?.data?.name
-      } project.`,
-      device_id: turcker?.Trucker?.device_id,
-      route: `/product-info/`,
+    await sendNotifications({
+      userData,
+      name: validate?.data?.name,
+      email: turcker?.Trucker.email,
+      type: 'project-invitation',
+      title: 'Project Invitation',
+      role: 'trucker',
+      notification: {
+        id: turcker?.Trucker?.id.toString(),
+        device_id: turcker?.Trucker?.device_id,
+        type: notificationsTypes.SUCCESS,
+        route: `/product-info/`,
+      },
     });
-    // await sendInvitation({
-    //   email: turcker?.Trucker?.email,
-    //   from:
-    //     (userData?.first_name ? userData?.first_name : userData?.username) ??
-    //     'Owner',
-    //   subject: `Project Invitation - ${validate?.data?.name}`,
-    //   type: 'project-invitation',
-    //   // raw: `<p> ${userData?.first_name ?? 'Owner'} invited you as client in ${
-    //   //   validate?.data?.name
-    //   // } project. </p>`,
-    //   html: clientEmailHTML, // Pass HTML content
-    // });
   });
 };
