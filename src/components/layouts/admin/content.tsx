@@ -170,6 +170,31 @@ const SIDEBAR_DATA = [
     title: 'Tickets',
   },
   {
+    key: '/reports',
+    icon: <i className="fa-solid fa-chart-line p-4 rounded-full" />,
+    title: 'Reports',
+    child: [
+      {
+        key: '/admin/settings/roles',
+
+        icon: <i className={` fa-solid fa-users p-4 rounded-full`} />,
+        title: 'Customer',
+      },
+      {
+        key: '/admin/settings/resources',
+
+        icon: <i className=" fa-solid fa-diagram-project p-4 rounded-full" />,
+        title: 'Projects',
+      },
+      {
+        key: '/admin/settings/resources',
+
+        icon: <i className=" fa-solid fa-ticket p-4 rounded-full" />,
+        title: 'Tickets',
+      },
+    ],
+  },
+  {
     key: '/settings',
     icon: <i className="fa-solid fa-gear p-4 rounded-full" />,
     title: 'Settings',

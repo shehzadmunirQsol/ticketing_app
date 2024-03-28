@@ -5,7 +5,7 @@ import { getUserData } from '~/utils/helper';
 
 import { sendNotifications } from '~/utils/utility';
 
-export async function createProject(req: any, res: any) {
+export async function createQuickProject(req: any, res: any) {
   try {
     if (!req.body)
       return res.status(400).send({ message: 'payload not found' });
