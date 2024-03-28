@@ -44,6 +44,8 @@ export const projectRouter = router({
             },
             ProjectTickets: {
               select: {
+                id: true,
+                project_id: true,
                 trucker_id: true,
                 tx_hash: true,
                 Trucker: true,

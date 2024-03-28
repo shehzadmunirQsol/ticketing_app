@@ -27,7 +27,7 @@ export function InvoiceDialog(props: InvoiceModalInterface) {
         refetchOnWindowFocus: false,
       },
     );
-
+  console.log({ projectInvoiceData });
   function printHtmlContent(htmlContent: string) {
     const printWindow = window.open('', '_blank');
     printWindow?.document.write(htmlContent);

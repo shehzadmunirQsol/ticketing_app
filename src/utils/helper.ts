@@ -394,6 +394,7 @@ export async function getHtmlContent(data: any) {
     tickets.forEach(
       (ticket: {
         Trucker: { username: any; first_name: any };
+        id: number;
         trucker_id: any;
         tx_hash: any;
         status: any;
@@ -403,7 +404,7 @@ export async function getHtmlContent(data: any) {
 
         rows += `
               <tr class="item">
-                  <td>${ticket.trucker_id}</td>
+                  <td>${ticket.id}</td>
                   <td><a href="https://mumbai.polygonscan.com/tx/${
                     ticket.tx_hash
                   }" target="_blank">${customTruncateHandler(
