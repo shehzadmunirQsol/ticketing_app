@@ -71,7 +71,7 @@ function EmailChange() {
 
   return (
     <div className="py-4 text-[#eaeaea] border px-2 rounded-md border-border ">
-      <p className=" font-bold text-2xl mb-6 text-white">Update Email</p>
+      <p className=" font-bold text-2xl mb-6 text-gray-700">Update Email</p>
       <div dir="ltr">
         <Form {...form}>
           <form
@@ -83,10 +83,10 @@ function EmailChange() {
               name="email"
               render={({ field }) => (
                 <FormItem className=" w-full ">
-                  <FormLabel className="text-xs font-thin text-grayColor">
+                  <FormLabel className="text-xs font-thin text-gray-600">
                     Email *
                   </FormLabel>
-                  <FormControl className="rounded-md bg-inputColor ">
+                  <FormControl className="rounded-md bg-inputColor text-gray-600">
                     <Input type="email" {...field} />
                   </FormControl>
                   <div className="relative pb-2 errormsg">
@@ -98,7 +98,7 @@ function EmailChange() {
 
             <div className=" flex items-center ltr:justify-end rtl:justify-start">
               <Button
-                className="align-center  rounded-full px-5 text-base   text-black font-sans font-[900]   "
+                className="align-center  rounded-full px-5 text-base   text-white font-sans font-[700]   "
                 variant="clip"
               >
                 Update Email
