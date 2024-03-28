@@ -28,20 +28,8 @@ const IndexPage: NextPageWithLayout = () => (
       <Team />
       <Pricing />
       <Newsletter />
+      <ScrollToTop />
     </div>
-    {/* <Sponsors />
-    <About />
-    <HowItWorks />
-    <Features /> */}
-    {/* <Services />
-    <Cta />
-    <Testimonials />
-    <Team />
-    <Pricing />
-    <Newsletter />
-    <FAQ />
-    <Footer /> */}
-    <ScrollToTop />
   </>
 );
 
