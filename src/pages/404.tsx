@@ -25,10 +25,10 @@ const Custom404 = () => {
         <p className="mt-4 mb-6 text-gray-600">Lets get you back</p>
         <Link href={'/'}>
           <button className="buttonClass font-sans">
-            <span className="button_lg">
+            <div className="button_lg">
               <span className="button_sl"></span>
               <p className="button_text font-sans">Go to Home</p>
-            </span>
+            </div>
           </button>
         </Link>
       </div>
